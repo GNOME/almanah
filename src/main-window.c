@@ -168,7 +168,7 @@ diary_main_window_setup (GtkBuilder *builder)
 	gtk_tree_view_column_set_cell_data_func (diary->link_value_column, GTK_CELL_RENDERER (diary->link_value_renderer), mw_links_value_data_cb, NULL, NULL);
 
 	if (gtkspell_new_attach (diary->entry_view, NULL, &error) == FALSE) {
-		gchar *error_message = g_strdup_printf (_("The spelling checker could not be initialised: %s"), error->message);
+		gchar *error_message = g_strdup_printf (_("The spelling checker could not be initialized: %s"), error->message);
 		diary_interface_error (error_message, NULL);
 		g_free (error_message);
 	}
