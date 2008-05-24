@@ -37,6 +37,7 @@ diary_quit (void)
 	gtk_widget_destroy (diary->main_window);
 	gtk_widget_destroy (diary->add_link_dialog);
 	g_object_unref (diary->storage_manager);
+	g_free (diary);
 
 	if (gtk_main_level () > 0)
 		gtk_main_quit ();
