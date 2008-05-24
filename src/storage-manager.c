@@ -227,6 +227,41 @@ create_tables (DiaryStorageManager *self)
 }
 
 gboolean
+diary_storage_manager_get_statistics (DiaryStorageManager *self, guint *entry_count, guint *link_count, guint *character_count)
+{
+	DiaryQueryResults *results;
+
+	/* Get the number of entries and the number of letters */
+	results = diary_storage_manager_query (self, "SELECT COUNT (year), SUM (LENGTH (content)) FROM entries");
+	if (results->rows != 1) {
+		*entry_count = 0;
+		*character_count = 0;
+		*link_count = 0;
+
+		diary_storage_manager_free_results (results);
+		return FALSE;
+	} else {
+		*entry_count = atoi (results->data[2]);
+		*character_count = atoi (results->data[3]);
+	}
+	diary_storage_manager_free_results (results);
+
+	/* Get the number of links */
+	results = diary_storage_manager_query (self, "SELECT COUNT (year) FROM entry_links");
+	if (results->rows != 1) {
+		*link_count = 0;
+
+		diary_storage_manager_free_results (results);
+		return FALSE;
+	} else {
+		*link_count = atoi (results->data[1]);
+	}
+	diary_storage_manager_free_results (results);
+
+	return TRUE;
+}
+
+gboolean
 diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
 {
 	GDate *current_date, *entry_date;

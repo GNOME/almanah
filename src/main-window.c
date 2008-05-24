@@ -228,8 +228,9 @@ mw_delete_activate_cb (GtkAction *action, gpointer user_data)
 void
 mw_about_activate_cb (GtkAction *action, gpointer user_data)
 {
-	gchar *license;
-	const gchar *description = N_("A helpful diary keeper.");
+	gchar *license, *description;
+	guint entry_count, link_count, character_count;
+
 	const gchar *authors[] =
 	{
 		"Philip Withnall <philip@tecnocode.co.uk>",
@@ -255,10 +256,16 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 			  _(license_parts[2]),
 			  NULL);
 
+	diary_storage_manager_get_statistics (diary->storage_manager, &entry_count, &link_count, &character_count);
+	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries with %u links and a total of %u characters."),
+				      entry_count,
+				      link_count,
+				      character_count);
+
 	gtk_show_about_dialog (GTK_WINDOW (diary->main_window),
 				"version", VERSION,
 				"copyright", _("Copyright \xc2\xa9 2008 Philip Withnall"),
-				"comments", _(description),
+				"comments", description,
 				"authors", authors,
 				"translator-credits", _("translator-credits"),
 				"logo-icon-name", "diary",
@@ -269,6 +276,7 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 				NULL);
 
 	g_free (license);
+	g_free (description);
 }
 
 void
