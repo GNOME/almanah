@@ -11,8 +11,10 @@ See NEWS file.
 Dependencies
 ============
 
-GNOME 2.20 development platform
+GNOME 2.22 development platform
 	http://www.gnome.org
+SQLite 3
+	http://sqlite.org
 
 Copyright
 =========
@@ -23,7 +25,7 @@ BUGS
 ====
 
 Bugs should be sent to me:
-http://tecnocode.co.uk/?page=contact
+http://tecnocode.co.uk/contact
 
 To get a better debug output, run:
 # diary --debug
@@ -32,4 +34,4 @@ Contact
 =======
 
 Philip Withnall <philip@tecnocode.co.uk>
-http://tecnocode.co.uk?page=blog&action=view_item&id=60
+http://tecnocode.co.uk/projects/diary

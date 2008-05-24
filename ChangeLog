@@ -1,5 +1,12 @@
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* NEWS:
+	* README: Updated documentation.
+	* src/interface.c: Allowed interface file to load from either package
+	data directory or build directory.
+
+2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/links/email.c: Completely removed e-mail link type.
 
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>

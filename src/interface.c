@@ -39,7 +39,8 @@ diary_create_interface (void)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_from_file (builder, "./data/diary.ui", &error) == FALSE) {
+	if (gtk_builder_add_from_file (builder, PACKAGE_DATA_DIR"/diary/diary.ui", &error) == FALSE &&
+	    gtk_builder_add_from_file (builder, "./data/diary.ui", NULL) == FALSE) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 				GTK_DIALOG_MODAL,

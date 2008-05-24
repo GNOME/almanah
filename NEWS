@@ -2,3 +2,6 @@ Major new features in version...
 
 0.1:
 * Project created
+* Basic editing support
+* Spell checking
+* "Note", "URI" and "File" link types
