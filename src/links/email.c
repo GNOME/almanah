@@ -32,6 +32,7 @@ gchar *
 link_email_format_value (const DiaryLink *link)
 {
 	/* TODO: Show the message subject, or something? */
+
 	return g_strdup (_("E-mail"));
 }
 

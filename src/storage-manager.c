@@ -65,7 +65,7 @@ diary_storage_manager_class_init (DiaryStorageManagerClass *klass)
 
 	g_object_class_install_property (gobject_class, PROP_FILENAME,
 				g_param_spec_string ("filename",
-					"Database filename", "The path and filename for the SQlite database.",
+					"Database filename", "The path and filename for the SQLite database.",
 					NULL,
 					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
@@ -161,7 +161,8 @@ diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...)
 
 	results = g_slice_new (DiaryQueryResults);
 
-	g_debug ("Database query: %s", new_query);
+	if (diary->debug)
+		g_debug ("Database query: %s", new_query);
 	if (sqlite3_get_table (priv->connection, new_query, &(results->data), &(results->rows), &(results->columns), NULL) != SQLITE_OK) {
 		error_message = g_strdup_printf (_("Could not run query \"%s\". SQLite provided the following error message: %s"), new_query, sqlite3_errmsg (priv->connection));
 		diary_interface_error (error_message, diary->main_window);
@@ -193,7 +194,8 @@ diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
-	g_debug ("Database query: %s", new_query);
+	if (diary->debug)
+		g_debug ("Database query: %s", new_query);
 	if (sqlite3_exec (priv->connection, new_query, callback, user_data, NULL) != SQLITE_OK) {
 		error_message = g_strdup_printf (_("Could not run query \"%s\". SQLite provided the following error message: %s"), new_query, sqlite3_errmsg (priv->connection));
 		diary_interface_error (error_message, diary->main_window);

@@ -27,6 +27,7 @@
 
 #include "config.h"
 #include "main.h"
+#include "main-window.h"
 #include "add-link-dialog.h"
 #include "interface.h"
 
@@ -44,7 +45,7 @@ diary_create_interface (void)
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_OK,
-				_("UI file \""PACKAGE_DATA_DIR"/diary/diary.ui\" could not be loaded. Error: %s"), error->message);
+				_("UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"), PACKAGE_DATA_DIR, error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
 

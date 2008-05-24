@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
+#include "../interface.h"
 #include "../main.h"
 #include "../link.h"
 
@@ -38,7 +39,11 @@ link_file_format_value (const DiaryLink *link)
 gboolean
 link_file_view (const DiaryLink *link)
 {
-	return g_app_info_launch_default_for_uri (link->value, NULL, NULL);
+	if (g_app_info_launch_default_for_uri (link->value, NULL, NULL) == FALSE) {
+		diary_interface_error (_("Due to an unknown error the file cannot be opened."), diary->main_window);
+		return FALSE;
+	}
+	return TRUE;
 }
 
 void

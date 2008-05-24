@@ -253,7 +253,7 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 				"license", license,
 				"wrap-license", TRUE,
 				"website-label", _("Diary Website"),
-				"website", "http://tecnocode.co.uk?page=blog&action=view_item&id=60",
+				"website", "http://tecnocode.co.uk/projects/diary",
 				NULL);
 
 	g_free (license);
@@ -413,8 +413,8 @@ mw_links_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, 
 	gtk_tree_model_get_iter (GTK_TREE_MODEL (diary->links_store), &iter, path);
 	gtk_tree_model_get (GTK_TREE_MODEL (diary->links_store), &iter, 0, &(link.type), 1, &(link.value), 2, &(link.value2), -1);
 
-	if (diary_link_view (&link) == FALSE)
-		diary_interface_error (_("Due to an unknown error the link cannot be viewed."), diary->main_window);
+	/* NOTE: Link types should display their own errors, so one won't be displayed here. */
+	diary_link_view (&link);
 
 	g_free (link.type);
 	g_free (link.value);
@@ -454,8 +454,8 @@ mw_view_button_clicked_cb (GtkButton *button, gpointer user_data)
 		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) links->data);
 		gtk_tree_model_get (model, &iter, 0, &(link.type), 1, &(link.value), 2, &(link.value2), -1);
 
-		if (diary_link_view (&link) == FALSE)
-			diary_interface_error (_("Due to an unknown error the link cannot be viewed."), diary->main_window);
+		/* NOTE: Link types should display their own errors, so one won't be displayed here. */
+		diary_link_view (&link);
 
 		g_free (link.type);
 		g_free (link.value);

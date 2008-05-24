@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
+#include "../interface.h"
 #include "../main.h"
 #include "../link.h"
 
@@ -37,6 +38,7 @@
 gchar *
 link_picasa_format_value (const DiaryLink *link)
 {
+	/* Translators: First argument is the album name, second is the Google username. */
 	return g_strdup_printf (_("Picasa: %s by %s"), link->value2, link->value);
 }
 
@@ -47,6 +49,10 @@ link_picasa_view (const DiaryLink *link)
 	gchar *uri = g_strconcat ("http://picasaweb.google.com/", link->value2, "/", link->value, NULL);
 
 	return_value = g_app_info_launch_default_for_uri (uri, NULL, NULL);
+
+	if (return_value == FALSE)
+		diary_interface_error (_("Due to an unknown error the URI cannot be opened."), diary->main_window);
+
 	g_free (uri);
 
 	return return_value;

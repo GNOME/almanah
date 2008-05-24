@@ -52,6 +52,8 @@ LINK_TYPE (picasa)
 static const DiaryLinkType link_types[] = {
 	/* Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function */
 	/*{ "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },*/
+
+	/* Translators: These are the names and descriptions of the different link types. */
 	{ "file",	N_("File"),		N_("An attached file."),		"system-file-manager",		1,		&link_file_format_value,	&link_file_view,	&link_file_build_dialog,	&link_file_get_values },
 	{ "picasa", 	N_("Picasa Album"),	N_("A Picasa album on the Internet."),	"insert-image",			2,		&link_picasa_format_value,	&link_picasa_view,	&link_picasa_build_dialog,	&link_picasa_get_values },
 	{ "uri", 	N_("URI"),		N_("A URI of a file or web page."),	"applications-internet",	1,		&link_uri_format_value,		&link_uri_view,		&link_uri_build_dialog,		&link_uri_get_values }
@@ -67,7 +69,7 @@ diary_populate_link_model (GtkListStore *list_store, guint type_column, guint na
 		gtk_list_store_append (list_store, &iter);
 		gtk_list_store_set (list_store, &iter,
 				    type_column, link_types[i].type,
-				    name_column, link_types[i].name,
+				    name_column, _(link_types[i].name),
 				    icon_name_column, link_types[i].icon_name,
 				    -1);
 	}
@@ -122,6 +124,10 @@ diary_link_view (const DiaryLink *link)
 {
 	const DiaryLinkType *link_type = diary_link_get_type (link->type);
 	g_assert (link_type != NULL);
+
+	if (diary->debug)
+		g_debug ("Viewing %s link ('%s', '%s')", link->type, link->value, link->value2);
+
 	return link_type->view_func (link);
 }
 

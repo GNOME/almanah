@@ -14,13 +14,13 @@ dnl Options
 dnl ***************************************************************************
 
 AC_ARG_ENABLE([debug],
-	[ --enable-debug	Turn on debugging],
+	[  --enable-debug	Turn on debugging],
 	[case "${enableval}" in
 		yes) debug=true ;;
 		no)  debug=false ;;
 		*) AC_MSG_ERROR([bad value ${enableval} for --enable-debug]) ;;
 	esac],[debug=false])
-	AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
+AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
 
 dnl ***************************************************************************
 dnl Internationalisation
@@ -34,9 +34,9 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AM_PROG_LIBTOOL
 
-PKG_CHECK_MODULES(GTK, glib-2.0 gtk+-2.0 >= 2.11 gmodule-2.0 sqlite3 gtkspell-2.0)
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
+PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite3 gtkspell-2.0)
+AC_SUBST(STANDARD_CFLAGS)
+AC_SUBST(STANDARD_LIBS)
 
 AC_OUTPUT([
 Makefile
