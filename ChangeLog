@@ -1,3 +1,9 @@
+2008-04-10  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main-window.c:
+	* src/storage-manager.c: Fix use of memory after freeing it, and
+	actually delete entries from the database when they're blanked.
+
 2008-04-08  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* configure.ac:

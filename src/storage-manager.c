@@ -645,6 +645,8 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 			gtk_widget_destroy (dialog);
 			return TRUE;
 		}
+
+		diary_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, year, month, day);
 		gtk_widget_destroy (dialog);
 	}
 

@@ -60,8 +60,6 @@ save_current_entry ()
 	month++;
 
 	diary_storage_manager_set_entry (diary->storage_manager, year, month, day, entry_text);
-	g_free (entry_text);
-
 	gtk_text_buffer_set_modified (diary->entry_buffer, FALSE);
 
 	/* Mark the day on the calendar if the entry was non-empty
@@ -77,6 +75,8 @@ save_current_entry ()
 		gtk_widget_set_sensitive (GTK_WIDGET (diary->add_button), TRUE);
 		gtk_action_set_sensitive (diary->add_action, TRUE);
 	}
+
+	g_free (entry_text);
 }
 
 static void
