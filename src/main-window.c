@@ -260,6 +260,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	}
 	gtk_widget_set_sensitive (GTK_WIDGET (diary->remove_button), FALSE); /* Only sensitive if something's selected */
 	gtk_action_set_sensitive (diary->remove_action, FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (diary->view_button), FALSE);
 
 	g_free (entry_text);
 
@@ -316,10 +317,15 @@ mw_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data)
 void
 mw_links_selection_changed_cb (GtkTreeSelection *tree_selection, gpointer user_data)
 {
-	if (gtk_tree_selection_count_selected_rows (tree_selection) == 0)
+	if (gtk_tree_selection_count_selected_rows (tree_selection) == 0) {
 		gtk_widget_set_sensitive (GTK_WIDGET (diary->remove_button), FALSE);
-	else
+		gtk_widget_set_sensitive (GTK_WIDGET (diary->view_button), FALSE);
+		gtk_action_set_sensitive (diary->remove_action, FALSE);
+	} else {
 		gtk_widget_set_sensitive (GTK_WIDGET (diary->remove_button), TRUE);
+		gtk_widget_set_sensitive (GTK_WIDGET (diary->view_button), TRUE);
+		gtk_action_set_sensitive (diary->remove_action, TRUE);
+	}
 }
 
 void
@@ -388,4 +394,30 @@ void
 mw_remove_button_clicked_cb (GtkButton *button, gpointer user_data)
 {
 	remove_link_from_current_entry ();
+}
+
+void
+mw_view_button_clicked_cb (GtkButton *button, gpointer user_data)
+{
+	DiaryLink link;
+	GtkTreeIter iter;
+	GList *links;
+	GtkTreeModel *model;
+
+	links = gtk_tree_selection_get_selected_rows (diary->links_selection, &model);
+
+	for (; links != NULL; links = links->next) {
+		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) links->data);
+		gtk_tree_model_get (model, &iter, 0, &(link.type), 1, &(link.value), 2, &(link.value2), -1);
+
+		if (diary_link_view (&link) == FALSE)
+			diary_interface_error (_("Due to an unknown error the link cannot be viewed."), diary->main_window);
+
+		g_free (link.type);
+		g_free (link.value);
+		g_free (link.value2);
+
+		gtk_tree_path_free (links->data);
+	}
+	g_list_free (links);
 }

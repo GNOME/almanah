@@ -65,6 +65,7 @@ diary_create_interface (void)
 	diary->date_label = GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_date_label"));
 	diary->add_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_add_button"));
 	diary->remove_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_remove_button"));
+	diary->view_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_view_button"));
 	diary->add_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_add_link"));
 	diary->remove_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_remove_link"));
 	diary->links_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_mw_links_store"));

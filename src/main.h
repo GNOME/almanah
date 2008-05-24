@@ -41,6 +41,7 @@ typedef struct {
 	GtkLabel *date_label;
 	GtkButton *add_button;
 	GtkButton *remove_button;
+	GtkButton *view_button;
 	GtkAction *add_action;
 	GtkAction *remove_action;
 	GtkListStore *links_store;
