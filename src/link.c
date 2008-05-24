@@ -38,6 +38,7 @@ void link_##T##_get_values (DiaryLink *link);
 LINK_TYPE (email)
 LINK_TYPE (uri)
 LINK_TYPE (file)
+LINK_TYPE (picasa)
 
 /*
  * IMPORTANT:
@@ -49,10 +50,11 @@ LINK_TYPE (file)
  * Don't forget to add the function prototypes at the top of *this* file.
  */
 static const DiaryLinkType link_types[] = {
-	/* Type,	Name,		Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function */
-	/*{ "email", 	N_("E-mail"),	N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },*/
-	{ "file",	N_("File"),	N_("An attached file."),		"system-file-manager",		1,		&link_file_format_value,	&link_file_view,	&link_file_build_dialog,	&link_file_get_values },
-	{ "uri", 	N_("URI"),	N_("A URI of a file or web page."),	"applications-internet",	1,		&link_uri_format_value,		&link_uri_view,		&link_uri_build_dialog,		&link_uri_get_values }
+	/* Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function */
+	/*{ "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },*/
+	{ "file",	N_("File"),		N_("An attached file."),		"system-file-manager",		1,		&link_file_format_value,	&link_file_view,	&link_file_build_dialog,	&link_file_get_values },
+	{ "picasa", 	N_("Picasa Album"),	N_("A Picasa album on the Internet."),	"insert-image",			2,		&link_picasa_format_value,	&link_picasa_view,	&link_picasa_build_dialog,	&link_picasa_get_values },
+	{ "uri", 	N_("URI"),		N_("A URI of a file or web page."),	"applications-internet",	1,		&link_uri_format_value,		&link_uri_view,		&link_uri_build_dialog,		&link_uri_get_values }
 };
 
 void

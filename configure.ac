@@ -34,7 +34,7 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AM_PROG_LIBTOOL
 
-PKG_CHECK_MODULES(GTK, glib-2.0 gtk+-2.0 >= 2.11 gmodule-2.0 sqlite3)
+PKG_CHECK_MODULES(GTK, glib-2.0 gtk+-2.0 >= 2.11 gmodule-2.0 sqlite3 gtkspell-2.0)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 

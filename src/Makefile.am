@@ -31,7 +31,8 @@ diary_SOURCES = \
 	link.h			\
 	links/email.c		\
 	links/uri.c		\
-	links/file.c
+	links/file.c		\
+	links/picasa.c
 
 diary_LDFLAGS = 
 diary_LDADD = $(GTK_LIBS)

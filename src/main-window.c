@@ -24,6 +24,7 @@
 
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gtkspell/gtkspell.h>
 
 #include "config.h"
 #include "main.h"
@@ -37,6 +38,11 @@ static void save_current_entry ();
 static void add_link_to_current_entry ();
 static void remove_link_from_current_entry ();
 
+void mw_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data);
+void mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data);
+void mw_links_selection_changed_cb (GtkTreeSelection *tree_selection, gpointer user_data);
+void mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
+
 static void
 save_current_entry ()
 {
@@ -46,7 +52,9 @@ save_current_entry ()
 
 	g_assert (diary->entry_buffer != NULL);
 
-	if (gtk_text_view_get_editable (diary->entry_view) == FALSE)
+	/* Don't save if it hasn't been/can't be edited */
+	if (gtk_text_view_get_editable (diary->entry_view) == FALSE ||
+	    gtk_text_buffer_get_modified (diary->entry_buffer) == FALSE)
 		return;
 
 	/* Save the entry */
@@ -58,6 +66,8 @@ save_current_entry ()
 
 	diary_storage_manager_set_entry (diary->storage_manager, year, month, day, entry_text);
 	g_free (entry_text);
+
+	gtk_text_buffer_set_modified (diary->entry_buffer, FALSE);
 
 	/* Mark the day on the calendar */
 	gtk_calendar_mark_day (diary->calendar, day);
@@ -142,6 +152,26 @@ remove_link_from_current_entry ()
 		g_free (link_type);
 	}
 	g_list_free (links);
+}
+
+void
+diary_main_window_setup (GtkBuilder *builder)
+{
+	GError *error = NULL;
+
+	/* Select the current day and month */
+	mw_calendar_month_changed_cb (diary->calendar, NULL);
+	mw_calendar_day_selected_cb (diary->calendar, NULL);
+
+	/* Set up the treeview */
+	g_signal_connect (diary->links_selection, "changed", (GCallback) mw_links_selection_changed_cb, NULL);
+	gtk_tree_view_column_set_cell_data_func (diary->link_value_column, GTK_CELL_RENDERER (diary->link_value_renderer), mw_links_value_data_cb, NULL, NULL);
+
+	if (gtkspell_new_attach (diary->entry_view, NULL, &error) == FALSE) {
+		gchar *error_message = g_strdup_printf (_("The spelling checker could not be initialised: %s"), error->message);
+		diary_interface_error (error_message, NULL);
+		g_free (error_message);
+	}
 }
 
 void
@@ -375,13 +405,6 @@ mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, Gt
 }
 
 void
-mw_links_tree_view_realize_cb (GtkWidget *widget, gpointer user_data)
-{
-	g_signal_connect (diary->links_selection, "changed", (GCallback) mw_links_selection_changed_cb, NULL);
-	gtk_tree_view_column_set_cell_data_func (diary->link_value_column, GTK_CELL_RENDERER (diary->link_value_renderer), mw_links_value_data_cb, NULL, NULL);
-}
-
-void
 mw_links_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
 	DiaryLink link;
@@ -396,14 +419,6 @@ mw_links_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, 
 	g_free (link.type);
 	g_free (link.value);
 	g_free (link.value2);
-}
-
-void
-mw_calendar_realize_cb (GtkWidget *widget, gpointer user_data)
-{
-	/* Select the current day and month */
-	mw_calendar_month_changed_cb (GTK_CALENDAR (widget), user_data);
-	mw_calendar_day_selected_cb (GTK_CALENDAR (widget), user_data);
 }
 
 gboolean

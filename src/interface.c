@@ -74,6 +74,7 @@ diary_create_interface (void)
 	diary->links_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "dry_mw_links_tree_view")));
 	diary->link_value_column = GTK_TREE_VIEW_COLUMN (gtk_builder_get_object (builder, "dry_mw_link_value_column"));
 	diary->link_value_renderer = GTK_CELL_RENDERER_TEXT (gtk_builder_get_object (builder, "dry_mw_link_value_renderer"));
+	diary_main_window_setup (builder);
 
 	/* Set up the add link dialogue */
 	diary->add_link_dialog = GTK_WIDGET (gtk_builder_get_object (builder, "dry_add_link_dialog"));

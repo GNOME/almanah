@@ -199,7 +199,6 @@
 										<property name="can-focus">True</property>
 										<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
 										<signal name="month-changed" handler="mw_calendar_month_changed_cb"/>
-										<signal name="realize" handler="mw_calendar_realize_cb"/>
 									</object>
 									<packing>
 										<property name="position">1</property>
@@ -226,7 +225,7 @@
 											<object class="GtkTreeView" id="dry_mw_links_tree_view">
 												<property name="model">dry_mw_links_store</property>
 												<property name="can-focus">True</property>
-												<signal name="realize" handler="mw_links_tree_view_realize_cb"/>
+												<property name="headers-visible">False</property>
 												<signal name="row-activated" handler="mw_links_tree_view_row_activated_cb"/>
 												<child>
 													<object class="GtkTreeViewColumn" id="column3">
@@ -240,7 +239,6 @@
 												</child>
 												<child>
 													<object class="GtkTreeViewColumn" id="dry_mw_link_value_column">
-														<property name="title">Value</property>
 														<child>
 															<object class="GtkCellRendererText" id="dry_mw_link_value_renderer"/>
 														</child>

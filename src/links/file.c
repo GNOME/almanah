@@ -24,14 +24,39 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
-#ifndef DIARY_MAIN_WINDOW_H
-#define DIARY_MAIN_WINDOW_H
+#include "../main.h"
+#include "../link.h"
 
-G_BEGIN_DECLS
+gchar *
+link_file_format_value (const DiaryLink *link)
+{
+	return g_strdup (link->value);
+}
 
-void diary_main_window_setup (GtkBuilder *builder);
+gboolean
+link_file_view (const DiaryLink *link)
+{
+	return g_app_info_launch_default_for_uri (link->value, NULL, NULL);
+}
 
-G_END_DECLS
+void
+link_file_build_dialog (const gchar *type, GtkTable *dialog_table)
+{
+	GtkWidget *chooser;
 
-#endif /* !DIARY_MAIN_WINDOW_H */
+	chooser = gtk_file_chooser_button_new (_("Select File"), GTK_FILE_CHOOSER_ACTION_OPEN);
+	gtk_table_attach_defaults (dialog_table, chooser, 1, 3, 2, 3);
+	gtk_widget_show_all (GTK_WIDGET (dialog_table));
+
+	g_object_set_data (G_OBJECT (diary->add_link_dialog), "chooser", chooser);
+}
+
+void
+link_file_get_values (DiaryLink *link)
+{
+	GtkFileChooser *chooser = GTK_FILE_CHOOSER (g_object_get_data (G_OBJECT (diary->add_link_dialog), "chooser"));
+	link->value = gtk_file_chooser_get_uri (chooser);
+	link->value2 = NULL;
+}
