@@ -1,5 +1,10 @@
 2008-05-22  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/main-window.c: Add a translator comment to clarify the format
+	required for the translator-credits string.
+
+2008-05-22  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* Makefile.am: Don't explicitly state where to install documentation.
 
 2008-05-22  Philip Withnall  <philip@tecnocode.co.uk>

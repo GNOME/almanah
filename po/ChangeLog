@@ -1,3 +1,9 @@
+2008-05-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* LINGUAS:
+	* fr_FR.po: Add French translation by Jean-François Martin.
+	* en_GB.po: Updated British English translation.
+
 2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* POTFILES.in: Added printing files.

@@ -271,6 +271,11 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 				"copyright", _("Copyright \xc2\xa9 2008 Philip Withnall"),
 				"comments", description,
 				"authors", authors,
+				/* Translators: please include your names here to be credited for your hard work!
+				 * Format:
+				 * "Translator name 1 <translator@email.address>\n"
+				 * "Translator name 2 <translator2@email.address>"
+				 */
 				"translator-credits", _("translator-credits"),
 				"logo-icon-name", "diary",
 				"license", license,
