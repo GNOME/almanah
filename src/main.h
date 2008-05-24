@@ -36,6 +36,7 @@ typedef struct {
 	DiaryStorageManager *storage_manager;
 
 	GtkWidget *main_window;
+	GtkTextView *entry_view;
 	GtkTextBuffer *entry_buffer;
 	GtkCalendar *calendar;
 	GtkLabel *date_label;

@@ -224,6 +224,27 @@ create_tables (DiaryStorageManager *self)
 		diary_storage_manager_query_async (self, queries[i++], NULL, NULL);
 }
 
+gboolean
+diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
+{
+	GDate *current_date, *entry_date;
+	gint days_between;
+
+	current_date = g_date_new ();
+	g_date_set_time_t (current_date, time (NULL));
+	entry_date = g_date_new_dmy (day, month, year);
+
+	/* Entries can't be edited before they've happened, or after 7 days after they've happened */
+	days_between = g_date_days_between (entry_date, current_date);
+	g_date_free (entry_date);
+	g_date_free (current_date);
+
+	if (days_between < 0 || days_between > 7)
+		return FALSE;
+	else
+		return TRUE;
+}
+
 /* NOTE: Free results with g_free */
 gchar *
 diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
@@ -248,25 +269,38 @@ diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDat
 gboolean
 diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content)
 {
-	GDate *current_date, *entry_date;
-	gint days_between;
-
-	/* Can't nullify entries */
-	if (content == NULL || strcmp (content, "") == 0)
+	/* Make sure they're editable */
+	if (diary_storage_manager_entry_is_editable (self, year, month, day) == FALSE)
 		return TRUE;
 
-	current_date = g_date_new ();
-	g_date_set_time_t (current_date, time (NULL));
-	g_message ("Current: %u, %u, %u; entry: %u, %u, %u", g_date_get_year (current_date), g_date_get_month (current_date), g_date_get_day (current_date), year, month, day);
-	entry_date = g_date_new_dmy (day, month, year);
+	/* Can't nullify entries without permission */
+	if (content == NULL || strcmp (content, "") == 0) {
+		GDate *date;
+		gchar date_string[100];
+		GtkWidget *dialog;
 
-	/* Entries can't be edited before they've happened, or after 7 days after they've happened */
-	days_between = g_date_days_between (entry_date, current_date);
-	g_date_free (entry_date);
-	g_date_free (current_date);
+		date = g_date_new_dmy (day, month, year);
+		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", date);
 
-	if (days_between < 0 || days_between > 7)
-		return TRUE;
+		dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
+							    GTK_DIALOG_MODAL,
+							    GTK_MESSAGE_QUESTION,
+							    GTK_BUTTONS_NONE,
+							    _("Are you sure you want to delete this diary entry for %s?"),
+							    date_string);
+		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+					GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
+					NULL);
+		g_date_free (date);
+
+		gtk_widget_show_all (dialog);
+		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
+			gtk_widget_destroy (dialog);
+			return TRUE;
+		}
+		gtk_widget_destroy (dialog);
+	}
 
 	diary_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL, year, month, day, content);
 

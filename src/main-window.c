@@ -46,6 +46,9 @@ save_current_entry ()
 
 	g_assert (diary->entry_buffer != NULL);
 
+	if (gtk_text_view_get_editable (diary->entry_view) == FALSE)
+		return;
+
 	/* Save the entry */
 	gtk_text_buffer_get_bounds (diary->entry_buffer, &start_iter, &end_iter);
 	entry_text = gtk_text_buffer_get_text (diary->entry_buffer, &start_iter, &end_iter, FALSE);
@@ -155,6 +158,33 @@ mw_quit_activate_cb (GtkAction *action, gpointer user_data)
 }
 
 void
+mw_cut_activate_cb (GtkAction *action, gpointer user_data)
+{
+	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (diary->main_window)), GDK_SELECTION_CLIPBOARD);
+	gtk_text_buffer_cut_clipboard (diary->entry_buffer, clipboard, TRUE);
+}
+
+void
+mw_copy_activate_cb (GtkAction *action, gpointer user_data)
+{
+	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (diary->main_window)), GDK_SELECTION_CLIPBOARD);
+	gtk_text_buffer_copy_clipboard (diary->entry_buffer, clipboard);
+}
+
+void
+mw_paste_activate_cb (GtkAction *action, gpointer user_data)
+{
+	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (diary->main_window)), GDK_SELECTION_CLIPBOARD);
+	gtk_text_buffer_paste_clipboard (diary->entry_buffer, clipboard, NULL, TRUE);
+}
+
+void
+mw_delete_activate_cb (GtkAction *action, gpointer user_data)
+{
+	gtk_text_buffer_delete_selection (diary->entry_buffer, TRUE, TRUE);
+}
+
+void
 mw_about_activate_cb (GtkAction *action, gpointer user_data)
 {
 	gchar *license;
@@ -248,6 +278,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 
 	/* Update the entry */
 	entry_text = diary_storage_manager_get_entry (diary->storage_manager, year, month, day);
+	gtk_text_view_set_editable (diary->entry_view, diary_storage_manager_entry_is_editable (diary->storage_manager, year, month, day));
 
 	if (entry_text != NULL) {
 		gtk_text_buffer_set_text (diary->entry_buffer, entry_text, -1);

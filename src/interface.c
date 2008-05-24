@@ -60,7 +60,8 @@ diary_create_interface (void)
 	/* Set up the main window */
 	/* TODO: This is horrible */
 	diary->main_window = GTK_WIDGET (gtk_builder_get_object (builder, "dry_main_window"));
-	diary->entry_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gtk_builder_get_object (builder, "dry_mw_entry_view")));
+	diary->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "dry_mw_entry_view"));
+	diary->entry_buffer = gtk_text_view_get_buffer (diary->entry_view);
 	diary->calendar = GTK_CALENDAR (gtk_builder_get_object (builder, "dry_mw_calendar"));
 	diary->date_label = GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_date_label"));
 	diary->add_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_add_button"));

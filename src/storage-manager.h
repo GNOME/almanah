@@ -63,6 +63,7 @@ DiaryStorageManager *diary_storage_manager_new (const gchar *filename);
 DiaryQueryResults *diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...);
 void diary_storage_manager_free_results (DiaryQueryResults *results);
 gboolean diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query, const DiaryQueryCallback callback, gpointer user_data, ...);
+gboolean diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
 gchar *diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
 gboolean diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content);
 gboolean *diary_storage_manager_get_month_marked_days (DiaryStorageManager *self, GDateYear year, GDateMonth month);
