@@ -1,0 +1,21 @@
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* ChangeLog: Added ChangeLog.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* po/en_GB.po: Added British English translation.
+	* po/LINGUAS: Added en_GB (British English) translation.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* po/POTFILES.in: Added some missing files.
+
+2008-03-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* po/Makefile.in.in: Updated due to new intltool.
+
+2008-03-21  Philip Withnall  <philip@tecnocode.co.uk>
+
+	Initial commit with all the functionality that the Vala version had,
+	but written in an easier-to-use programming language.

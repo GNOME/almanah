@@ -1,0 +1,110 @@
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* ChangeLog: Added ChangeLog.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* .bzrignore: Updated bzr ignore list.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main-window.c: Changed all C strings to en_US and added an
+	en_GB translation.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main.c: Fix a small leak on quit caught with Valgrind.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* configure.ac:
+	* src/Makefile.am: Fixed test profiling in the Makefile.
+	* src/interface.c:
+	* src/link.c:
+	* src/links/email.c:
+	* src/links/file.c:
+	* src/links/picasa.c:
+	* src/links/uri.c:
+	* src/main-window.c: Some comments moved to stop them showing up in
+	the POT file unnecessarily.
+	* src/storage-manager.c: Improvements to the debug code.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/links/file.c:
+	* src/links/picasa.c: Added file and picasa link types.
+	* configure.ac:
+	* data/diary.ui:
+	* src/Makefile.am:
+	* src/interface.c:
+	* src/link.c:
+	* src/main-window.c:
+	* src/main-window.h: A few more small UI fixes, as well as the
+	addition of spelling checking using GtkSpell.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/diary.ui:
+	* src/Makefile.am:
+	* src/add-link-dialog.c:
+	* src/add-link-dialog.h:
+	* src/interface.c:
+	* src/link.c:
+	* src/main-window.c: Fixed changing the UI in the "Add Link" dialogue
+	when the link type was changed.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/diary.ui:
+	* src/interface.c:
+	* src/link.c:
+	* src/main-window.c:
+	* src/main.h:
+	* src/storage-manager.c:
+	* src/storage-manager.h: Some more UI tweaks to make editing easier.
+
+2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/diary.ui:
+	* src/interface.c:
+	* src/main-window.c:
+	* src/main.h: A few small UI fixes and enhancements.
+
+2008-03-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/links/email.c:
+	* src/links/uri.c:
+	* data/diary.ui:
+	* intltool-extract.in:
+	* intltool-merge.in:
+	* intltool-update.in:
+	* src/Makefile.am:
+	* src/add-link-dialog.c:
+	* src/add-link-dialog.h:
+	* src/interface.c:
+	* src/link.c:
+	* src/link.h:
+	* src/main-window.c:
+	* src/main.h:
+	* src/storage-manager.c: Rewrote the link handling and it's all
+	working quite well now. More link types now need to be added.
+
+2008-03-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/link.c:
+	* src/link.h:
+	* data/diary.ui:
+	* src/Makefile.am:
+	* src/add-link-dialog.c:
+	* src/interface.c:
+	* src/main-window.c:
+	* src/main.h:
+	* src/storage-manager.c:
+	* src/storage-manager.h: Lots of work on entry links, with most of a
+	working UI for adding dynamic and differing link types. Unfortunately,
+	this approach is flawed and so I'll rewrite it after this commit.
+
+2008-03-21  Philip Withnall  <philip@tecnocode.co.uk>
+
+	Initial commit with all the functionality that the Vala version had,
+	but written in an easier-to-use programming language.
