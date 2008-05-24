@@ -20,7 +20,26 @@ AC_ARG_ENABLE([debug],
 		no)  debug=false ;;
 		*) AC_MSG_ERROR([bad value ${enableval} for --enable-debug]) ;;
 	esac],[debug=false])
+
+if test $debug = "true"; then
+	AC_DEFINE([ENABLE_DEBUG],[1],[Define if you want debugging enabled])
+fi
+
 AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
+
+AC_ARG_ENABLE([encryption],
+	[  --enable-encryption	Enable database encryption support],
+	[case "${enableval}" in
+		yes) encryption=true ;;
+		no)  encryption=false ;;
+		*) AC_MSG_ERROR([bad value ${enableval} for --enable-encryption]) ;;
+	esac],[encryption=true])
+
+if test $encryption = "true"; then
+	AC_DEFINE([ENABLE_ENCRYPTION],[1],[Define if you want database encryption support])
+fi
+
+AM_CONDITIONAL([ENCRYPTION], [test x$encryption = xtrue])
 
 dnl ***************************************************************************
 dnl Internationalisation
@@ -38,41 +57,46 @@ PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
-dnl Check for GPGME, which doesn't provide a pkgconfig file
-dnl This code courtesy of seahorse
-min_gpgme_version=1.0.0
-AC_PATH_PROG(GPGME_CONFIG, gpgme-config, "failed")
-if test $GPGME_CONFIG != "failed" ; then
-      AC_MSG_CHECKING(for GPGME)
-      req_major=`echo $min_gpgme_version | \
-		 sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
-      req_minor=`echo $min_gpgme_version | \
-                 sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
-      req_micro=`echo $min_gpgme_version | \
-                 sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
-      gpgme_config_version=`$GPGME_CONFIG --version`
-      major=`echo $gpgme_config_version | \
-                 sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\1/'`
-      minor=`echo $gpgme_config_version | \
-                 sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\2/'`
-      micro=`echo $gpgme_config_version | \
-		 sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\3/'`
+if test $encryption = "true"; then
+	dnl Check for GPGME, which doesn't provide a pkgconfig file
+	dnl This code courtesy of seahorse
+	min_gpgme_version=1.0.0
+	AC_PATH_PROG(GPGME_CONFIG, gpgme-config, "failed")
+	if test $GPGME_CONFIG != "failed" ; then
+		AC_MSG_CHECKING(for GPGME)
+		req_major=`echo $min_gpgme_version | \
+			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
+		req_minor=`echo $min_gpgme_version | \
+			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
+		req_micro=`echo $min_gpgme_version | \
+			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
+		gpgme_config_version=`$GPGME_CONFIG --version`
+		major=`echo $gpgme_config_version | \
+			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\1/'`
+		minor=`echo $gpgme_config_version | \
+			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\2/'`
+		micro=`echo $gpgme_config_version | \
+			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\3/'`
 
-	if test "$major" -eq "$req_major"; then
-	   if test "$minor" -ge "$req_minor"; then
-	     if test "$micro" -ge "$req_micro"; then
-	       ok="yes"
-	     fi
-	   fi
+		if test "$major" -eq "$req_major"; then
+			if test "$minor" -ge "$req_minor"; then
+				if test "$micro" -ge "$req_micro"; then
+					ok="yes"
+				fi
+			fi
+		fi
 	fi
-fi
 
-if test $ok = "yes"; then
-  ENCRYPTION_CFLAGS=`$GPGME_CONFIG --cflags`
-  ENCRYPTION_LIBS=`$GPGME_CONFIG --libs`
-  AC_MSG_RESULT(yes)
+	if test $ok = "yes"; then
+		ENCRYPTION_CFLAGS=`$GPGME_CONFIG --cflags`
+		ENCRYPTION_LIBS=`$GPGME_CONFIG --libs`
+		AC_MSG_RESULT(yes)
+	else
+		AC_MSG_ERROR(GPGME $min_gpgme_version or later needed)
+	fi
 else
-  AC_MSG_ERROR(GPGME $min_gpgme_version or later needed)
+	ENCRYPTION_CFLAGS=""
+	ENCRYPTION_LIBS=""
 fi
 
 AC_SUBST(ENCRYPTION_CFLAGS)

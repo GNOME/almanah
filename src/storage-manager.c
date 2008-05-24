@@ -30,6 +30,7 @@
 #include "interface.h"
 #include "link.h"
 #include "storage-manager.h"
+#include "config.h"
 
 static void diary_storage_manager_init (DiaryStorageManager *self);
 static void diary_storage_manager_finalize (GObject *object);
@@ -158,6 +159,7 @@ create_tables (DiaryStorageManager *self)
 		diary_storage_manager_query_async (self, queries[i++], NULL, NULL);
 }
 
+#ifdef ENABLE_ENCRYPTION
 typedef struct {
 	GIOChannel *cipher_io_channel;
 	GIOChannel *plain_io_channel;
@@ -258,6 +260,7 @@ cipher_operation_free (CipherOperation *operation)
 		g_io_channel_unref (operation->plain_io_channel);
 	}
 
+	gpgme_signers_clear (operation->context);
 	gpgme_release (operation->context);
 	g_free (operation);
 }
@@ -331,7 +334,7 @@ encrypt_database (DiaryStorageManager *self, const gchar *encryption_key, GError
 	}
 
 	/* Set up signing and the recipient */
-	gpgme_error = gpgme_get_key (operation->context, encryption_key, &(gpgme_keys[0]), FALSE);
+	gpgme_error = gpgme_get_key (operation->context, encryption_key, &gpgme_keys[0], FALSE);
 	if (gpgme_error != GPG_ERR_NO_ERROR || gpgme_keys[0] == NULL) {
 		cipher_operation_free (operation);
 		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_GETTING_KEY,
@@ -350,9 +353,9 @@ encrypt_database (DiaryStorageManager *self, const gchar *encryption_key, GError
 
 	/* Encrypt and sign! */
 	gpgme_error = gpgme_op_encrypt_sign_start (operation->context, gpgme_keys, 0, operation->gpgme_plain, operation->gpgme_cipher);
+	gpgme_key_unref (gpgme_keys[0]);
+
 	if (gpgme_error != GPG_ERR_NO_ERROR) {
-		gpgme_key_unref (gpgme_keys[0]);
-		gpgme_key_unref (gpgme_keys[0]); /* Unref twice as gpgme_signers_add refs it */
 		cipher_operation_free (operation);
 
 		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_ENCRYPTING,
@@ -361,19 +364,52 @@ encrypt_database (DiaryStorageManager *self, const gchar *encryption_key, GError
 		return FALSE;
 	}
 
-	/* Clean up */
-	gpgme_key_unref (gpgme_keys[0]);
-	gpgme_key_unref (gpgme_keys[0]); /* Unref twice as gpgme_signers_add refs it */
-
 	/* The operation will be completed in the idle function */
 	g_idle_add ((GSourceFunc) database_idle_cb, operation);
+
+	/* Delete the plain file and wait for the idle function to quit us */
+	if (g_unlink (self->priv->plain_filename) != 0) {
+		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_ENCRYPTING,
+			     _("Could not delete plain database file \"%s\"."),
+			     self->priv->plain_filename);
+		return FALSE;
+	}
 
 	return TRUE;
 }
 
+static gchar *
+get_encryption_key (void)
+{
+	gchar **key_parts;
+	guint i;
+	gchar *encryption_key;
+
+	encryption_key = gconf_client_get_string (diary->gconf_client, "/desktop/pgp/default_key", NULL);
+	if (encryption_key == NULL || encryption_key[0] == '\0')
+		return NULL;
+
+	/* Key is generally in the form openpgp:FOOBARKEY, and GPGME doesn't
+	 * like the openpgp: prefix, so it must be removed. */
+	key_parts = g_strsplit (encryption_key, ":", 2);
+	g_free (encryption_key);
+
+	for (i = 0; key_parts[i] != NULL; i++) {
+		if (strcmp (key_parts[i], "openpgp") != 0)
+			encryption_key = key_parts[i];
+		else
+			g_free (key_parts[i]);
+	}
+	g_free (key_parts);
+
+	return encryption_key;
+}
+#endif /* ENABLE_ENCRYPTION */
+
 void
 diary_storage_manager_connect (DiaryStorageManager *self)
 {
+#ifdef ENABLE_ENCRYPTION
 	/* If we're decrypting, don't bother if the cipher file doesn't exist
 	 * (i.e. the database hasn't yet been created). */
 	if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == TRUE) {
@@ -397,6 +433,9 @@ diary_storage_manager_connect (DiaryStorageManager *self)
 	}
 
 	self->priv->decrypted = TRUE;
+#else
+	self->priv->decrypted = FALSE;
+#endif /* ENABLE_ENCRYPTION */
 
 	/* Open the plain database */
 	if (sqlite3_open (self->priv->plain_filename, &(self->priv->connection)) != SQLITE_OK) {
@@ -415,10 +454,10 @@ diary_storage_manager_connect (DiaryStorageManager *self)
 void
 diary_storage_manager_disconnect (DiaryStorageManager *self)
 {
+#ifdef ENABLE_ENCRYPTION
 	gchar *encryption_key;
 	GError *error = NULL;
-	gchar **key_parts;
-	guint i;
+#endif /* ENABLE_ENCRYPTION */
 
 	/* Close the DB connection */
 	sqlite3_close (self->priv->connection);
@@ -429,32 +468,13 @@ diary_storage_manager_disconnect (DiaryStorageManager *self)
 		return;
 	}
 
-	encryption_key = gconf_client_get_string (diary->gconf_client, "/desktop/pgp/default_key", NULL);
-	if (encryption_key == NULL || encryption_key[0] == '\0')
+#ifdef ENABLE_ENCRYPTION
+	encryption_key = get_encryption_key ();
+	if (encryption_key == NULL)
 		return;
 
-	/* Key is generally in the form openpgp:FOOBARKEY, and GPGME doesn't
-	 * like the openpgp: prefix, so it must be removed. */
-	key_parts = g_strsplit (encryption_key, ":", 2);
-	g_free (encryption_key);
-
-	for (i = 0; key_parts[i] != NULL; i++) {
-		if (strcmp (key_parts[i], "openpgp") != 0)
-			encryption_key = key_parts[i];
-		else
-			g_free (key_parts[i]);
-	}
-	g_free (key_parts);
-
 	/* Encrypt the plain DB file */
-	if (encrypt_database (self, encryption_key, &error) == TRUE) {
-		/* Delete the plain file and wait for the idle function to quit us */
-		if (g_unlink (self->priv->plain_filename) != 0) {
-			gchar *error_message = g_strdup_printf (_("Could not delete plain database file \"%s\"."), self->priv->plain_filename);
-			diary_interface_error (error_message, diary->main_window);
-			g_free (error_message);
-		}
-	} else {
+	if (encrypt_database (self, encryption_key, &error) != TRUE) {
 		if (error->code == DIARY_STORAGE_MANAGER_ERROR_GETTING_KEY) {
 			/* Log an error about being unable to get the key
 			 * then continue without encrypting. */
@@ -471,6 +491,7 @@ diary_storage_manager_disconnect (DiaryStorageManager *self)
 	}
 
 	g_free (encryption_key);
+#endif /* ENABLE_ENCRYPTION */
 }
 
 DiaryQueryResults *

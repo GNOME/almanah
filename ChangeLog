@@ -1,5 +1,11 @@
 2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* configure.ac:
+	* src/storage-manager.c: Made encrypted database support optional,
+	and cleaned up the code a little.
+
+2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/interface.c:
 	* src/interface.h:
 	* src/main-window.c:
