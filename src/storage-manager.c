@@ -572,6 +572,12 @@ diary_storage_manager_get_statistics (DiaryStorageManager *self, guint *entry_co
 		return FALSE;
 	} else {
 		*entry_count = atoi (results->data[2]);
+		if (*entry_count == 0) {
+			*character_count = 0;
+			*link_count = 0;
+			return TRUE;
+		}
+
 		*character_count = atoi (results->data[3]);
 	}
 	diary_storage_manager_free_results (results);

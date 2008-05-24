@@ -1,3 +1,8 @@
+2008-05-21  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/storage-manager.c: Fix a crasher bug if requesting statistics
+	for a database with no entries.
+
 ============ Version 0.2
 
 2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
