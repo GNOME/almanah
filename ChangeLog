@@ -1,5 +1,12 @@
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/main-window.c:
+	* src/storage-manager.c:
+	* src/storage-manager.h: Added some basic statistics on the about
+	dialogue.
+
+2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/Makefile.am:
 	* src/link.c:
 	* src/links/note.c: Added "note" link type.
