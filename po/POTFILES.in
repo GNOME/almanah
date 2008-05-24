@@ -8,4 +8,5 @@ src/links/note.c
 src/links/uri.c
 src/main-window.c
 src/main.c
+src/printing.c
 src/storage-manager.c

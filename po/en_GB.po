@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-30 23:38+0100\n"
+"POT-Creation-Date: 2008-05-20 23:11+0100\n"
 "PO-Revision-Date: 2008-03-23 12:45+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: \n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/interface.c:48
+#: ../src/interface.c:44
 #, c-format
 msgid "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
 msgstr "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
@@ -23,27 +23,27 @@ msgstr "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
 #. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
 #. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
 #. Translators: These are the names and descriptions of the different link types.
-#: ../src/link.c:57
+#: ../src/link.c:52
 msgid "File"
 msgstr "File"
 
-#: ../src/link.c:57
+#: ../src/link.c:52
 msgid "An attached file."
 msgstr "An attached file."
 
-#: ../src/link.c:58
+#: ../src/link.c:53
 msgid "Note"
 msgstr "Note"
 
-#: ../src/link.c:58
+#: ../src/link.c:53
 msgid "A note about an important event."
 msgstr "A note about an important event."
 
-#: ../src/link.c:59 ../src/links/uri.c:55
+#: ../src/link.c:54 ../src/links/uri.c:55
 msgid "URI"
 msgstr "URI"
 
-#: ../src/link.c:59
+#: ../src/link.c:54
 msgid "A URI of a file or web page."
 msgstr "A URI of a file or web page."
 
@@ -59,24 +59,24 @@ msgstr "Select File"
 msgid "Due to an unknown error the URI cannot be opened."
 msgstr "Due to an unknown error the URI cannot be opened."
 
-#: ../src/main-window.c:183
+#: ../src/main-window.c:178
 #, c-format
 msgid "The spelling checker could not be initialized: %s"
 msgstr "The spelling checker could not be initialised: %s"
 
-#: ../src/main-window.c:240
+#: ../src/main-window.c:245
 msgid ""
-"Diary is free software; you can redistribute it and/or modify it under the "
+"Diary is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
-"Foundation; either version 2 of the License, or (at your option) any later "
+"Foundation, either version 3 of the License, or (at your option) any later "
 "version."
 msgstr ""
-"Diary is free software; you can redistribute it and/or modify it under the "
+"Diary is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public Licence as published by the Free Software "
-"Foundation; either version 2 of the Licence, or (at your option) any later "
+"Foundation, either version 3 of the Licence, or (at your option) any later "
 "version."
 
-#: ../src/main-window.c:244
+#: ../src/main-window.c:249
 msgid ""
 "Diary is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -88,17 +88,15 @@ msgstr ""
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for more "
 "details."
 
-#: ../src/main-window.c:248
+#: ../src/main-window.c:253
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
-"Diary; if not, write to the Free Software Foundation, Inc., 59 Temple Place, "
-"Suite 330, Boston, MA  02111-1307  USA"
+"Diary.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 "You should have received a copy of the GNU General Public Licence along with "
-"Diary; if not, write to the Free Software Foundation, Inc., 59 Temple Place, "
-"Suite 330, Boston, MA  02111-1307  USA"
+"Diary.  If not, see <http://www.gnu.org/licences/>."
 
-#: ../src/main-window.c:260
+#: ../src/main-window.c:264
 #, c-format
 msgid ""
 "A helpful diary keeper, storing %u entries with %u links and a total of %u "
@@ -107,43 +105,103 @@ msgstr ""
 "A helpful diary keeper, storing %u entries with %u links and a total of %u "
 "characters."
 
-#: ../src/main-window.c:267
+#: ../src/main-window.c:271
 msgid "Copyright © 2008 Philip Withnall"
 msgstr "Copyright © 2008 Philip Withnall"
 
-#: ../src/main-window.c:270
+#: ../src/main-window.c:274
 msgid "translator-credits"
 msgstr "Philip Withnall <philip@tecnocode.co.uk>"
 
-#: ../src/main-window.c:274
+#: ../src/main-window.c:278
 msgid "Diary Website"
 msgstr "Diary Website"
 
-#. TODO: Somewhat hacky
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/main-window.c:324
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#: ../src/main-window.c:327 ../src/printing.c:66
 msgid "<b>%A, %e %B %Y</b>"
 msgstr "<b>%A, %e %B %Y</b>"
 
-#: ../src/main.c:56
+#: ../src/main.c:65
 msgid "Enable debug mode"
 msgstr "Enable debug mode"
 
-#: ../src/main.c:68
+#: ../src/main.c:77
 msgid "Diary"
 msgstr "Diary"
 
 #. Options
-#: ../src/main.c:72
+#: ../src/main.c:81
 msgid "- Manage your diary"
 msgstr "- Manage your diary"
 
-#: ../src/main.c:82
+#: ../src/main.c:91
 #, c-format
 msgid "Command-line options could not be parsed. Error: %s"
 msgstr "Command-line options could not be parsed. Error: %s"
 
-#: ../src/storage-manager.c:133
+#: ../src/printing.c:80
+msgid "<i>No entry for this date.</i>"
+msgstr "<i>No entry for this date.</i>"
+
+#: ../src/printing.c:210
+msgid "<b>Start Date</b>"
+msgstr "<b>Start Date</b>"
+
+#: ../src/printing.c:212
+msgid "<b>End Date</b>"
+msgstr "<b>End Date</b>"
+
+#: ../src/storage-manager.c:180
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME doesn't support OpenPGP: %s"
+
+#: ../src/storage-manager.c:189
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Error creating cipher context: %s"
+
+#: ../src/storage-manager.c:218
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Error opening encrypted database file \"%s\": %s"
+
+#: ../src/storage-manager.c:238
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Error opening plain database file \"%s\": %s"
+
+#: ../src/storage-manager.c:308
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Error decrypting database: %s"
+
+#: ../src/storage-manager.c:341
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Error getting encryption key: %s"
+
+#: ../src/storage-manager.c:362
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Error encrypting database: %s"
+
+#: ../src/storage-manager.c:373
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Could not delete plain database file \"%s\"."
+
+#: ../src/storage-manager.c:421
+msgid ""
+"Both an encrypted and plaintext version of the database exist, and one is "
+"likely corrupt. Please delete the corrupt one before continuing."
+msgstr ""
+"Both an encrypted and plaintext version of the database exist, and one is "
+"likely corrupt. Please delete the corrupt one before continuing."
+
+#: ../src/storage-manager.c:442
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -152,14 +210,14 @@ msgstr ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 
-#: ../src/storage-manager.c:167 ../src/storage-manager.c:200
+#: ../src/storage-manager.c:514 ../src/storage-manager.c:547
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 
-#: ../src/storage-manager.c:326
+#: ../src/storage-manager.c:671
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Are you sure you want to delete this diary entry for %s?"

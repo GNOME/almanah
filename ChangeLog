@@ -1,3 +1,12 @@
+============ Version 0.2
+
+2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* .bzrignore: Updated bzr ignore list.
+	* NEWS:
+	* configure.ac:
+	* README: Bump to version 0.2.
+
 2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* configure.ac:

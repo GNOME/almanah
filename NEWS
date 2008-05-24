@@ -1,5 +1,10 @@
 Major new features in version...
 
+0.2:
+* Relicensed from GPLv2 to GPLv3
+* Add database encryption support
+* Add printing support
+
 0.1:
 * Project created
 * Basic editing support

@@ -1,3 +1,8 @@
+2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* POTFILES.in: Added printing files.
+	* en_GB.po: Updated British English translation.
+
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* POTFILES.in: Updated to remove old files.
