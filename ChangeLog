@@ -1,3 +1,9 @@
+============ Version 0.1
+
+2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/storage-manager.c: Fix the time limit on editing entries.
+
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main.c: Load the database file from the user's data directory,

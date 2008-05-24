@@ -276,7 +276,7 @@ diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear ye
 	g_date_free (entry_date);
 	g_date_free (current_date);
 
-	if (days_between < 0 || days_between > 20)
+	if (days_between < 0 || days_between > 14)
 		return FALSE;
 	else
 		return TRUE;
