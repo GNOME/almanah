@@ -1,0 +1,35 @@
+Diary
+=====
+
+Diary is a small GTK+ application to allow you to keep a diary of your life.
+
+News
+====
+
+See NEWS file.
+
+Dependencies
+============
+
+GNOME 2.20 development platform
+	http://www.gnome.org
+
+Copyright
+=========
+
+Philip Withnall <philip@tecnocode.co.uk>
+
+BUGS
+====
+
+Bugs should be sent to me:
+http://tecnocode.co.uk/?page=contact
+
+To get a better debug output, run:
+# diary --debug
+
+Contact
+=======
+
+Philip Withnall <philip@tecnocode.co.uk>
+http://tecnocode.co.uk?page=blog&action=view_item&id=60
