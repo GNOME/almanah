@@ -32,6 +32,8 @@
 #include "storage-manager.h"
 #include "config.h"
 
+#define ENCRYPTION_KEY_GCONF_PATH "/desktop/pgp/default_key"
+
 static void diary_storage_manager_init (DiaryStorageManager *self);
 static void diary_storage_manager_finalize (GObject *object);
 static void diary_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
@@ -385,7 +387,7 @@ get_encryption_key (void)
 	guint i;
 	gchar *encryption_key;
 
-	encryption_key = gconf_client_get_string (diary->gconf_client, "/desktop/pgp/default_key", NULL);
+	encryption_key = gconf_client_get_string (diary->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
 	if (encryption_key == NULL || encryption_key[0] == '\0')
 		return NULL;
 
@@ -470,8 +472,12 @@ diary_storage_manager_disconnect (DiaryStorageManager *self)
 
 #ifdef ENABLE_ENCRYPTION
 	encryption_key = get_encryption_key ();
-	if (encryption_key == NULL)
+	if (encryption_key == NULL) {
+		g_warning (_("Error getting encryption key: GConf key \"%s\" invalid or empty."), ENCRYPTION_KEY_GCONF_PATH);
+		if (diary->quitting == TRUE)
+			diary_quit_real ();
 		return;
+	}
 
 	/* Encrypt the plain DB file */
 	if (encrypt_database (self, encryption_key, &error) != TRUE) {

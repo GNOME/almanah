@@ -1,3 +1,8 @@
+2008-05-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/storage-manager.c: Allow the application to close gracefully
+	if an encryption key can't be found.
+
 2008-05-21  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/storage-manager.c: Fix a crasher bug if requesting statistics
