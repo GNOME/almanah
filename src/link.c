@@ -35,10 +35,9 @@ gboolean link_##T##_view (const DiaryLink *link); \
 void link_##T##_build_dialog (const gchar *type, GtkTable *dialog_table); \
 void link_##T##_get_values (DiaryLink *link);
 
-LINK_TYPE (email)
+/*LINK_TYPE (email)*/
 LINK_TYPE (uri)
 LINK_TYPE (file)
-LINK_TYPE (picasa)
 
 /*
  * IMPORTANT:
@@ -55,7 +54,6 @@ static const DiaryLinkType link_types[] = {
 
 	/* Translators: These are the names and descriptions of the different link types. */
 	{ "file",	N_("File"),		N_("An attached file."),		"system-file-manager",		1,		&link_file_format_value,	&link_file_view,	&link_file_build_dialog,	&link_file_get_values },
-	{ "picasa", 	N_("Picasa Album"),	N_("A Picasa album on the Internet."),	"insert-image",			2,		&link_picasa_format_value,	&link_picasa_view,	&link_picasa_build_dialog,	&link_picasa_get_values },
 	{ "uri", 	N_("URI"),		N_("A URI of a file or web page."),	"applications-internet",	1,		&link_uri_format_value,		&link_uri_view,		&link_uri_build_dialog,		&link_uri_get_values }
 };
 

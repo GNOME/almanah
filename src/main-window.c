@@ -331,13 +331,16 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	i = 0;
 	while (links[i] != NULL) {
 		link_type = diary_link_get_type (links[i]->type);
-		gtk_list_store_append (diary->links_store, &iter);
-		gtk_list_store_set (diary->links_store, &iter,
-				    0, links[i]->type,
-				    1, links[i]->value,
-				    2, links[i]->value2,
-				    3, link_type->icon_name,
-				    -1);
+
+		if (link_type != NULL) {
+			gtk_list_store_append (diary->links_store, &iter);
+			gtk_list_store_set (diary->links_store, &iter,
+					    0, links[i]->type,
+					    1, links[i]->value,
+					    2, links[i]->value2,
+					    3, link_type->icon_name,
+					    -1);
+		}
 
 		g_free (links[i]->type);
 		g_free (links[i]->value);
