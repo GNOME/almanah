@@ -2,7 +2,8 @@ INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\"	\
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\"				\
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"				\
-	$(STANDARD_CFLAGS)
+	$(STANDARD_CFLAGS)						\
+	$(ENCRYPTION_CFLAGS)
 
 AM_CFLAGS = \
 	-Wall		\
@@ -34,4 +35,6 @@ diary_SOURCES = \
 	links/note.c
 
 diary_LDFLAGS = 
-diary_LDADD = $(STANDARD_LIBS)
+diary_LDADD = \
+	$(STANDARD_LIBS)	\
+	$(ENCRYPTION_LIBS)

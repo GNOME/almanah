@@ -1,3 +1,32 @@
+2008-04-08  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* configure.ac:
+	* data/diary.ui:
+	* src/Makefile.am:
+	* src/main-window.c:
+	* src/main.c:
+	* src/main.h:
+	* src/storage-manager.c:
+	* src/storage-manager.h: Add encryption support for the database, with
+	full backwards-compatibility for the old database filename. Also make
+	sure to save the current entry on quitting.
+
+2008-04-03  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* COPYING:
+	* src/add-link-dialog.c:
+	* src/add-link-dialog.h:
+	* src/interface.c:
+	* src/interface.h:
+	* src/link.c:
+	* src/link.h:
+	* src/main-window.c:
+	* src/main-window.h:
+	* src/main.c:
+	* src/main.h:
+	* src/storage-manager.c:
+	* src/storage-manager.h: Relicensed from GPLv2+ to GPLv3+.
+
 2008-04-02  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/storage-manager.c: Free the query strings with SQLite's memory

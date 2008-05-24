@@ -3,23 +3,18 @@
  * Diary
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software.
- * 
- * You may redistribute it and/or modify it under the terms of the
- * GNU General Public License, as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option)
- * any later version.
- * 
+ * Diary is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
  * Diary is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, write to:
- * 	The Free Software Foundation, Inc.,
- * 	51 Franklin Street, Fifth Floor
- * 	Boston, MA  02110-1301, USA.
+ * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef DIARY_STORAGE_MANAGER_H
@@ -33,6 +28,7 @@
 G_BEGIN_DECLS
 
 #define DIARY_TYPE_STORAGE_MANAGER		(diary_storage_manager_get_type ())
+#define DIARY_STORAGE_MANAGER_ERROR		(diary_storage_manager_error_quark ())
 #define DIARY_STORAGE_MANAGER(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), DIARY_TYPE_STORAGE_MANAGER, DiaryStorageManager))
 #define DIARY_STORAGE_MANAGER_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), DIARY_TYPE_STORAGE_MANAGER, DiaryStorageManagerClass))
 #define DIARY_IS_STORAGE_MANAGER(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), DIARY_TYPE_STORAGE_MANAGER))
@@ -50,6 +46,15 @@ typedef struct {
 	GObjectClass parent;
 } DiaryStorageManagerClass;
 
+typedef enum {
+	DIARY_STORAGE_MANAGER_ERROR_UNSUPPORTED,
+	DIARY_STORAGE_MANAGER_ERROR_OPENING_FILE,
+	DIARY_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
+	DIARY_STORAGE_MANAGER_ERROR_DECRYPTING,
+	DIARY_STORAGE_MANAGER_ERROR_ENCRYPTING,
+	DIARY_STORAGE_MANAGER_ERROR_GETTING_KEY
+} DiaryStorageManagerError;
+
 typedef gint (*DiaryQueryCallback) (gpointer user_data, gint columns, gchar **data, gchar **column_names);
 
 typedef struct {
@@ -59,7 +64,12 @@ typedef struct {
 } DiaryQueryResults;
 
 GType diary_storage_manager_get_type (void);
+GQuark diary_storage_manager_error_quark (void);
 DiaryStorageManager *diary_storage_manager_new (const gchar *filename);
+
+void diary_storage_manager_connect (DiaryStorageManager *self);
+void diary_storage_manager_disconnect (DiaryStorageManager *self);
+
 DiaryQueryResults *diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...);
 void diary_storage_manager_free_results (DiaryQueryResults *results);
 gboolean diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query, const DiaryQueryCallback callback, gpointer user_data, ...);

@@ -3,29 +3,23 @@
  * Diary
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software.
- * 
- * You may redistribute it and/or modify it under the terms of the
- * GNU General Public License, as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option)
- * any later version.
- * 
+ * Diary is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
  * Diary is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, write to:
- * 	The Free Software Foundation, Inc.,
- * 	51 Franklin Street, Fifth Floor
- * 	Boston, MA  02110-1301, USA.
+ * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <gtkspell/gtkspell.h>
-#include <string.h>
 
 #include "config.h"
 #include "main.h"
@@ -72,7 +66,7 @@ save_current_entry ()
 
 	/* Mark the day on the calendar if the entry was non-empty
 	 * and update the state of the add link button. */
-	if (entry_text == NULL || strcmp (entry_text, "") == 0) {
+	if (entry_text == NULL || entry_text[0] == '\0') {
 		gtk_calendar_unmark_day (diary->calendar, day);
 
 		gtk_widget_set_sensitive (GTK_WIDGET (diary->add_button), FALSE);
@@ -186,15 +180,19 @@ diary_main_window_setup (GtkBuilder *builder)
 	}
 }
 
-void
-mw_destroy_cb (GtkWindow *window, gpointer user_data)
+gboolean
+mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 {
+	save_current_entry ();
 	diary_quit ();
+
+	return TRUE;
 }
 
 void
 mw_quit_activate_cb (GtkAction *action, gpointer user_data)
 {
+	save_current_entry ();
 	diary_quit ();
 }
 
@@ -237,17 +235,16 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 		NULL
 	};
 	const gchar *license_parts[] = {
-		N_("Diary is free software; you can redistribute it and/or modify "
+		N_("Diary is free software: you can redistribute it and/or modify "
 		   "it under the terms of the GNU General Public License as published by "
-		   "the Free Software Foundation; either version 2 of the License, or "
+		   "the Free Software Foundation, either version 3 of the License, or "
 		   "(at your option) any later version."),
 		N_("Diary is distributed in the hope that it will be useful, "
 		   "but WITHOUT ANY WARRANTY; without even the implied warranty of "
 		   "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
 		   "GNU General Public License for more details."),
 		N_("You should have received a copy of the GNU General Public License "
-		   "along with Diary; if not, write to the Free Software Foundation, Inc., "
-		   "59 Temple Place, Suite 330, Boston, MA  02111-1307  USA"),
+		   "along with Diary.  If not, see <http://www.gnu.org/licenses/>."),
 	};
 
 	license = g_strjoin ("\n\n",

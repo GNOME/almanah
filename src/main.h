@@ -3,27 +3,23 @@
  * Diary
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software.
- * 
- * You may redistribute it and/or modify it under the terms of the
- * GNU General Public License, as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option)
- * any later version.
- * 
+ * Diary is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
  * Diary is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, write to:
- * 	The Free Software Foundation, Inc.,
- * 	51 Franklin Street, Fifth Floor
- * 	Boston, MA  02110-1301, USA.
+ * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <gtk/gtk.h>
 #include <glib.h>
+#include <gconf/gconf-client.h>
 
 #include "storage-manager.h"
 
@@ -34,6 +30,7 @@ G_BEGIN_DECLS
 
 typedef struct {
 	DiaryStorageManager *storage_manager;
+	GConfClient *gconf_client;
 
 	GtkWidget *main_window;
 	GtkTextView *entry_view;
@@ -56,11 +53,13 @@ typedef struct {
 	GtkListStore *ald_type_store;
 
 	gboolean debug;
+	gboolean quitting;
 } Diary;
 
 Diary *diary;
 
 void diary_quit (void);
+void diary_quit_real (void);
 
 G_END_DECLS
 
