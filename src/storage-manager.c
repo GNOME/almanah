@@ -167,11 +167,11 @@ diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...)
 		error_message = g_strdup_printf (_("Could not run query \"%s\". SQLite provided the following error message: %s"), new_query, sqlite3_errmsg (priv->connection));
 		diary_interface_error (error_message, diary->main_window);
 		g_free (error_message);
-		g_free (new_query);
+		sqlite3_free (new_query);
 		exit (1);
 	}
 
-	g_free (new_query);
+	sqlite3_free (new_query);
 
 	return results;
 }
@@ -200,11 +200,11 @@ diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query
 		error_message = g_strdup_printf (_("Could not run query \"%s\". SQLite provided the following error message: %s"), new_query, sqlite3_errmsg (priv->connection));
 		diary_interface_error (error_message, diary->main_window);
 		g_free (error_message);
-		g_free (new_query);
+		sqlite3_free (new_query);
 		exit (1);
 	}
 
-	g_free (new_query);
+	sqlite3_free (new_query);
 
 	return TRUE;
 }

@@ -1,3 +1,8 @@
+2008-04-02  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/storage-manager.c: Free the query strings with SQLite's memory
+	functions rather than GLib's.
+
 ============ Version 0.1
 
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
