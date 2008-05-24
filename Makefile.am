@@ -1,19 +1,15 @@
 SUBDIRS = src po data
 
-diarydocdir = ${prefix}/doc/diary
-diarydoc_DATA = \
-	README		\
-	COPYING		\
-	AUTHORS		\
-	INSTALL		\
-	NEWS
-
 EXTRA_DIST =			\
 	autogen.sh		\
 	intltool-extract.in	\
 	intltool-merge.in	\
 	intltool-update.in	\
-	$(diarydoc_DATA)
+	README			\
+	COPYING			\
+	AUTHORS			\
+	INSTALL			\
+	NEWS
 
 DISTCLEANFILES = \
 	intltool-extract	\
