@@ -28,19 +28,21 @@
 #include "config.h"
 #include "main.h"
 #include "storage-manager.h"
+#include "link.h"
 #include "main-window.h"
 
-static void save_current_diary_entry ();
+static void save_current_entry ();
+static void add_link_to_current_entry ();
+static void remove_link_from_current_entry ();
 
 static void
-save_current_diary_entry ()
+save_current_entry ()
 {
 	GtkTextIter start_iter, end_iter;
 	gchar *entry_text;
 	guint year, month, day;
 
-	if (diary->entry_buffer == NULL)
-		return;
+	g_assert (diary->entry_buffer != NULL);
 
 	/* Save the entry */
 	gtk_text_buffer_get_bounds (diary->entry_buffer, &start_iter, &end_iter);
@@ -49,11 +51,80 @@ save_current_diary_entry ()
 	gtk_calendar_get_date (diary->calendar, &year, &month, &day);
 	month++;
 
-	diary_storage_manager_set_diary_entry (diary->storage_manager, year, month, day, entry_text);
+	diary_storage_manager_set_entry (diary->storage_manager, year, month, day, entry_text);
 	g_free (entry_text);
 
 	/* Mark the day on the calendar */
 	gtk_calendar_mark_day (diary->calendar, day);
+}
+
+static void
+add_link_to_current_entry ()
+{
+	guint year, month, day;
+	GtkTreeIter iter;
+	const DiaryLinkType *link_type;
+
+	g_assert (diary->entry_buffer != NULL);
+	g_assert (gtk_text_buffer_get_char_count (diary->entry_buffer) != 0);
+
+	gtk_widget_show_all (diary->add_link_dialog);
+	if (gtk_dialog_run (GTK_DIALOG (diary->add_link_dialog)) == GTK_RESPONSE_OK) {
+		/* Add the link to the DB */
+		gtk_calendar_get_date (diary->calendar, &year, &month, &day);
+		month++;
+		diary_storage_manager_add_entry_link (diary->storage_manager,
+						      year, month, day,
+						      gtk_entry_get_text (diary->ald_type_entry),
+						      gtk_entry_get_text (diary->ald_value_entry),
+						      gtk_entry_get_text (diary->ald_value2_entry));
+
+		/* Add it to the treeview */
+		link_type = diary_link_get_type (gtk_entry_get_text (diary->ald_type_entry));
+		gtk_list_store_append (diary->links_store, &iter);
+		gtk_list_store_set (diary->links_store, &iter,
+				    0, gtk_entry_get_text (diary->ald_type_entry),
+				    1, gtk_entry_get_text (diary->ald_value_entry),
+				    2, gtk_entry_get_text (diary->ald_value2_entry),
+				    3, link_type->icon_name,
+				    4, _(link_type->name),
+				    -1);
+	}
+	gtk_widget_hide_all (diary->add_link_dialog);
+	gtk_entry_set_text (diary->ald_type_entry, "");
+	gtk_entry_set_text (diary->ald_value_entry, "");
+}
+
+static void
+remove_link_from_current_entry ()
+{
+	gchar *link_type;
+	guint year, month, day;
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+	GList *links;
+
+	g_assert (diary->entry_buffer != NULL);
+	g_assert (gtk_text_buffer_get_char_count (diary->entry_buffer) != 0);
+
+	links = gtk_tree_selection_get_selected_rows (diary->links_selection, &model);
+	gtk_calendar_get_date (diary->calendar, &year, &month, &day);
+	month++;
+
+	for (; links != NULL; links = links->next) {
+		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) links->data);
+		gtk_tree_model_get (model, &iter, 0, &link_type, -1);
+
+		/* Remove it from the DB */
+		diary_storage_manager_remove_entry_link (diary->storage_manager, year, month, day, link_type);
+
+		/* Remove it from the treeview */
+		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+
+		gtk_tree_path_free (links->data);
+		g_free (link_type);
+	}
+	g_list_free (links);
 }
 
 void
@@ -115,14 +186,39 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 }
 
 void
+mw_jump_to_today_activate_cb (GtkAction *action, gpointer user_data)
+{
+	GDate *current_date;
+	current_date = g_date_new ();
+	g_date_set_time_t (current_date, time (NULL));
+
+	gtk_calendar_select_day (diary->calendar, g_date_get_day (current_date));
+
+	g_date_free (current_date);
+}
+
+void
+mw_add_link_activate_cb (GtkAction *action, gpointer user_data)
+{
+	add_link_to_current_entry ();
+}
+
+void
+mw_remove_link_activate_cb (GtkAction *action, gpointer user_data)
+{
+	remove_link_from_current_entry ();
+}
+
+void
 mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 {
 	GDate *calendar_date;
 	gchar calendar_string[100], *entry_text;
 	guint year, month, day;
-	EntryLink **links;
+	DiaryLink **links;
 	guint i;
 	GtkTreeIter iter;
+	const DiaryLinkType *link_type;
 
 	/* Update the date label */
 	gtk_calendar_get_date (calendar, &year, &month, &day);
@@ -133,19 +229,24 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
 	g_date_strftime (calendar_string, sizeof (calendar_string), _("<b>%A, %e %B %Y</b>"), calendar_date);
 	gtk_label_set_markup (diary->date_label, calendar_string);
+	g_date_free (calendar_date);
 
 	/* Update the entry */
-	entry_text = diary_storage_manager_get_diary_entry (diary->storage_manager, year, month, day);
+	entry_text = diary_storage_manager_get_entry (diary->storage_manager, year, month, day);
 
 	if (entry_text != NULL) {
 		gtk_text_buffer_set_text (diary->entry_buffer, entry_text, -1);
 		gtk_widget_set_sensitive (GTK_WIDGET (diary->add_button), TRUE);
-		gtk_widget_set_sensitive (GTK_WIDGET (diary->remove_button), FALSE); /* Only sensitive if something's selected */
+		gtk_action_set_sensitive (diary->add_action, TRUE);
 	} else {
 		gtk_text_buffer_set_text (diary->entry_buffer, "", -1);
 		gtk_widget_set_sensitive (GTK_WIDGET (diary->add_button), FALSE);
-		gtk_widget_set_sensitive (GTK_WIDGET (diary->remove_button), FALSE);
+		gtk_action_set_sensitive (diary->add_action, FALSE);
 	}
+	gtk_widget_set_sensitive (GTK_WIDGET (diary->remove_button), FALSE); /* Only sensitive if something's selected */
+	gtk_action_set_sensitive (diary->remove_action, FALSE);
+
+	g_free (entry_text);
 
 	/* List the entry's links */
 	gtk_list_store_clear (diary->links_store);
@@ -153,12 +254,20 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 
 	i = 0;
 	while (links[i] != NULL) {
+		link_type = diary_link_get_type (links[i]->type);
 		gtk_list_store_append (diary->links_store, &iter);
-		gtk_list_store_set (diary->links_store, &iter, 0, links[i]->type, 1, links[i]->value, -1);
+		gtk_list_store_set (diary->links_store, &iter,
+				    0, links[i]->type,
+				    1, links[i]->value,
+				    2, links[i]->value2,
+				    3, link_type->icon_name,
+				    4, link_type->name,
+				    -1);
 
 		g_free (links[i]->type);
 		g_free (links[i]->value);
-		g_slice_free (EntryLink, links[i]);
+		g_free (links[i]->value2);
+		g_slice_free (DiaryLink, links[i]);
 
 		i++;
 	}
@@ -171,9 +280,11 @@ mw_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data)
 {
 	/* Mark the days on the calendar which have diary entries */
 	guint i, year, month;
+	gboolean *days;
+
 	gtk_calendar_get_date (calendar, &year, &month, NULL);
 	month++;
-	gboolean *days = diary_storage_manager_get_month_marked_days (diary->storage_manager, year, month);
+	days = diary_storage_manager_get_month_marked_days (diary->storage_manager, year, month);
 
 	/* TODO: Don't like hard-coding the array length here */
 	gtk_calendar_clear_marks (calendar);
@@ -197,6 +308,30 @@ mw_links_selection_changed_cb (GtkTreeSelection *tree_selection, gpointer user_d
 }
 
 void
+mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data)
+{
+	gchar *new_value;
+	DiaryLink link;
+
+	gtk_tree_model_get (model, iter, 0, &(link.type), 1, &(link.value), 2, &(link.value2), -1);
+
+	new_value = diary_link_format_value_for_display (&link);
+	g_object_set (renderer, "text", new_value, NULL);
+	g_free (new_value);
+
+	g_free (link.type);
+	g_free (link.value);
+	g_free (link.value2);
+}
+
+void
+mw_links_tree_view_realize_cb (GtkWidget *widget, gpointer user_data)
+{
+	g_signal_connect (diary->links_selection, "changed", (GCallback) mw_links_selection_changed_cb, NULL);
+	gtk_tree_view_column_set_cell_data_func (diary->link_value_column, GTK_CELL_RENDERER (diary->link_value_renderer), mw_links_value_data_cb, NULL, NULL);
+}
+
+void
 mw_calendar_realize_cb (GtkWidget *widget, gpointer user_data)
 {
 	/* Select the current day and month */
@@ -204,55 +339,21 @@ mw_calendar_realize_cb (GtkWidget *widget, gpointer user_data)
 	mw_calendar_day_selected_cb (GTK_CALENDAR (widget), user_data);
 }
 
-void
-mw_links_tree_view_realize_cb (GtkWidget *widget, gpointer user_data)
-{
-	g_signal_connect (diary->links_selection, "changed", (GCallback) mw_links_selection_changed_cb, NULL);
-}
-
 gboolean
 mw_entry_view_focus_out_event_cb (GtkWidget *entry_view, GdkEventFocus *event, gpointer user_data)
 {
-	save_current_diary_entry ();
+	save_current_entry ();
 	return FALSE;
 }
 
 void
 mw_add_button_clicked_cb (GtkButton *button, gpointer user_data)
 {
-	guint year, month, day;
-
-	gtk_widget_show_all (diary->add_link_dialog);
-	if (gtk_dialog_run (GTK_DIALOG (diary->add_link_dialog)) == GTK_RESPONSE_OK) {
-		/* Add the link to the DB */
-		gtk_calendar_get_date (diary->calendar, &year, &month, &day);
-		month++;
-		diary_storage_manager_add_entry_link (diary->storage_manager,
-						      year, month, day,
-						      gtk_entry_get_text (diary->ald_type_entry),
-						      gtk_entry_get_text (diary->ald_value_entry));
-	}
-	gtk_widget_hide_all (diary->add_link_dialog);
-	gtk_entry_set_text (diary->ald_type_entry, "");
-	gtk_entry_set_text (diary->ald_value_entry, "");
+	add_link_to_current_entry ();
 }
 
 void
 mw_remove_button_clicked_cb (GtkButton *button, gpointer user_data)
 {
-	gchar *link_type;
-	guint year, month, day;
-	GtkTreeIter iter;
-	GtkTreeModel *model;
-	GList *links = gtk_tree_selection_get_selected_rows (diary->links_selection, &model);
-	gtk_calendar_get_date (diary->calendar, &year, &month, &day);
-	month++;
-
-	for (; links != NULL; links = links->next) {
-		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) links->data);
-		gtk_tree_model_get (model, &iter, 0, &link_type, -1);
-		diary_storage_manager_remove_entry_link (diary->storage_manager, year, month, day, link_type);
-		gtk_tree_path_free (links->data);
-	}
-	g_list_free (links);
+	remove_link_from_current_entry ();
 }

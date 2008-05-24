@@ -24,39 +24,32 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <string.h>
 
-#include "link.h"
-#include "add-link-dialog.h"
+#ifndef DIARY_LINK_H
+#define DIARY_LINK_H
 
-void
-ald_destroy_cb (GtkWindow *window, gpointer user_data)
-{
-	gtk_widget_hide_all (GTK_WIDGET (window));
-}
+G_BEGIN_DECLS
 
-void
-ald_response_cb (GtkDialog *self, gint response_id, gpointer user_data)
-{
-	/* If the second value entry is hidden, empty it to keep the database clean */
-	if (GTK_WIDGET_VISIBLE (GTK_WIDGET (diary->ald_value2_entry)) == FALSE)
-		gtk_entry_set_text (diary->ald_value2_entry, "");
-}
-
-void
-ald_type_combo_box_changed_cb (GtkComboBox *self, gpointer user_data)
-{
-	/* TODO: Hide/Show the entries as appropriate */
-	GtkTreeIter iter;
+typedef struct {
 	gchar *type;
-	DiaryLinkType link_type;
+	gchar *value;
+	gchar *value2;
+} DiaryLink;
 
-	if (gtk_combo_box_get_active_iter (self, &iter) == FALSE)
-		return;
+typedef struct {
+	gchar *type;
+	gchar *name;
+	gchar *description;
+	gchar *icon_name;
+	guint columns;
+} DiaryLinkType;
 
-	gtk_tree_model_get (gtk_combo_box_get_model (self), &iter, 1, &type, -1);
+void diary_populate_link_model (GtkListStore *list_store, guint type_column, guint name_column);
+gboolean diary_validate_link_type (const gchar *type);
+const DiaryLinkType *diary_link_get_type (const gchar *type);
+gchar *diary_link_format_value_for_display (DiaryLink *link);
+void diary_link_view (DiaryLink *link);
 
-	
+G_END_DECLS
 
-	g_free (type);
-}
+#endif /* !DIARY_LINK_H */

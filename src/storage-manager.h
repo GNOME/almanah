@@ -28,6 +28,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "link.h"
+
 G_BEGIN_DECLS
 
 #define DIARY_TYPE_STORAGE_MANAGER		(diary_storage_manager_get_type ())
@@ -42,36 +44,30 @@ typedef struct _DiaryStorageManagerPrivate	DiaryStorageManagerPrivate;
 typedef struct {
 	GObject parent;
 	DiaryStorageManagerPrivate *priv;
-	/* TODO */
 } DiaryStorageManager;
 
 typedef struct {
 	GObjectClass parent;
 } DiaryStorageManagerClass;
 
-typedef gint (*QueryCallback) (gpointer user_data, gint columns, gchar **data, gchar **column_names);
+typedef gint (*DiaryQueryCallback) (gpointer user_data, gint columns, gchar **data, gchar **column_names);
 
 typedef struct {
 	gchar **data;
 	gint rows;
 	gint columns;
-} QueryResults;
-
-typedef struct {
-	gchar *type;
-	gchar *value;
-} EntryLink;
+} DiaryQueryResults;
 
 GType diary_storage_manager_get_type (void);
 DiaryStorageManager *diary_storage_manager_new (const gchar *filename);
-QueryResults *diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...);
-void diary_storage_manager_free_results (QueryResults *results);
-gboolean diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query, const QueryCallback callback, gpointer user_data, ...);
-gchar *diary_storage_manager_get_diary_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
-gboolean diary_storage_manager_set_diary_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content);
+DiaryQueryResults *diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...);
+void diary_storage_manager_free_results (DiaryQueryResults *results);
+gboolean diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query, const DiaryQueryCallback callback, gpointer user_data, ...);
+gchar *diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
+gboolean diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content);
 gboolean *diary_storage_manager_get_month_marked_days (DiaryStorageManager *self, GDateYear year, GDateMonth month);
-EntryLink **diary_storage_manager_get_entry_links (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
-gboolean diary_storage_manager_add_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type, const gchar *link_value);
+DiaryLink **diary_storage_manager_get_entry_links (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
+gboolean diary_storage_manager_add_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type, const gchar *link_value, const gchar *link_value2);
 gboolean diary_storage_manager_remove_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type);
 
 G_END_DECLS

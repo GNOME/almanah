@@ -26,7 +26,9 @@ diary_SOURCES = \
 	storage-manager.c	\
 	storage-manager-h	\
 	add-link-dialog.c	\
-	add-link-dialog.h
+	add-link-dialog.h	\
+	link.c			\
+	link.h
 
 diary_LDFLAGS = 
 diary_LDADD = $(GTK_LIBS)

@@ -58,19 +58,26 @@ diary_create_interface (void)
 	gtk_builder_connect_signals (builder, NULL);
 
 	/* Set up the main window */
+	/* TODO: This is horrible */
 	diary->main_window = GTK_WIDGET (gtk_builder_get_object (builder, "dry_main_window"));
 	diary->entry_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gtk_builder_get_object (builder, "dry_mw_entry_view")));
 	diary->calendar = GTK_CALENDAR (gtk_builder_get_object (builder, "dry_mw_calendar"));
 	diary->date_label = GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_date_label"));
 	diary->add_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_add_button"));
 	diary->remove_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_remove_button"));
+	diary->add_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_add_link"));
+	diary->remove_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_remove_link"));
 	diary->links_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_mw_links_store"));
 	diary->links_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "dry_mw_links_tree_view")));
+	diary->link_value_column = GTK_TREE_VIEW_COLUMN (gtk_builder_get_object (builder, "dry_mw_link_value_column"));
+	diary->link_value_renderer = GTK_CELL_RENDERER_TEXT (gtk_builder_get_object (builder, "dry_mw_link_value_renderer"));
 
 	/* Set up the add link dialogue */
 	diary->add_link_dialog = GTK_WIDGET (gtk_builder_get_object (builder, "dry_add_link_dialog"));
-	diary->ald_type_entry = GTK_ENTRY (gtk_builder_get_object (builder, "dry_ald_type_entry"));
+	diary->ald_type_combo_box = GTK_COMBO_BOX (gtk_builder_get_object (builder, "dry_ald_type_combo_box"));
 	diary->ald_value_entry = GTK_ENTRY (gtk_builder_get_object (builder, "dry_ald_value_entry"));
+	diary->ald_value2_entry = GTK_ENTRY (gtk_builder_get_object (builder, "dry_ald_value2_entry"));
+	diary->ald_type_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_ald_type_store"));
 
 	g_object_unref (builder);
 

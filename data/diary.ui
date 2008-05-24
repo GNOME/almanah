@@ -89,6 +89,30 @@
 						<signal name="activate" handler="mw_about_activate_cb"/>
 					</object>
 				</child>
+				<child>
+					<object class="GtkAction" id="dry_ui_jump_to_today">
+						<property name="stock-id">gtk-jump-to</property>
+						<property name="name">jump-to-today</property>
+						<property name="label" translatable="yes">Go To Today</property>
+						<signal name="activate" handler="mw_jump_to_today_activate_cb"/>
+					</object>
+				</child>
+				<child>
+					<object class="GtkAction" id="dry_ui_add_link">
+						<property name="stock-id">gtk-add</property>
+						<property name="name">add-link</property>
+						<property name="label" translatable="yes">Add Link</property>
+						<signal name="activate" handler="mw_add_link_activate_cb"/>
+					</object>
+				</child>
+				<child>
+					<object class="GtkAction" id="dry_ui_remove_link">
+						<property name="stock-id">gtk-remove</property>
+						<property name="name">remove-link</property>
+						<property name="label" translatable="yes">Remove Link</property>
+						<signal name="activate" handler="mw_remove_link_activate_cb"/>
+					</object>
+				</child>
 			</object>
 		</child>
 		<ui>
@@ -112,12 +136,22 @@
 					<menuitem action="imagemenuitem10"/>
 				</menu>
 			</menubar>
+			<toolbar name="dry_mw_toolbar">
+				<toolitem action="dry_ui_jump_to_today"/>
+				<separator/>
+				<toolitem action="dry_ui_add_link"/>
+				<toolitem action="dry_ui_remove_link"/>
+			</toolbar>
 		</ui>
 	</object>
+	<!-- TODO: Change to dry_mw_link_store -->
 	<object class="GtkListStore" id="dry_mw_links_store">
 		<columns>
 			<column type="gchararray"/><!--Type-->
 			<column type="gchararray"/><!--Value-->
+			<column type="gchararray"/><!--Value 2-->
+			<column type="gchararray"/><!--Icon name-->
+			<column type="gchararray"/><!--Name-->
 		</columns>
 	</object>
 	<object class="GtkWindow" id="dry_main_window">
@@ -126,50 +160,13 @@
 		<child>
 			<object class="GtkVBox" id="vbox1">
 				<child>
-					<object class="GtkMenuBar" constructor="dry_ui_manager" id="dry_mw_menu_bar">
-					</object>
+					<object class="GtkMenuBar" constructor="dry_ui_manager" id="dry_mw_menu_bar"/>
 					<packing>
 						<property name="expand">False</property>
 					</packing>
 				</child>
 				<child>
-					<object class="GtkToolbar" id="dry_mw_toolbar">
-						<child>
-							<object class="GtkToolButton" id="dry_today_toolbar_button">
-								<property name="label" translatable="yes">Go To Today</property>
-								<property name="stock_id">gtk-jump-to</property>
-							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkSeparatorToolItem" id="&lt;separator&gt;">
-							</object>
-							<packing>
-								<property name="expand">False</property>
-								<property name="homogeneous">False</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkToolButton" id="dry_attach_link_toolbar_button">
-								<property name="label" translatable="yes">Attach Link</property>
-								<property name="stock_id">gtk-add</property>
-							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkToolButton" id="dry_remove_link_toolbar_button">
-								<property name="label" translatable="yes">Remove Link</property>
-								<property name="stock_id">gtk-remove</property>
-							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
-						</child>
-					</object>
+					<object class="GtkToolbar" constructor="dry_ui_manager" id="dry_mw_toolbar"/>
 					<packing>
 						<property name="expand">False</property>
 						<property name="position">1</property>
@@ -258,24 +255,31 @@
 												<property name="can-focus">True</property>
 												<signal name="realize" handler="mw_links_tree_view_realize_cb"/>
 												<child>
-													<object class="GtkTreeViewColumn" id="column1">
-														<property name="title">Type</property>
+													<object class="GtkTreeViewColumn" id="column3">
 														<child>
-															<object class="GtkCellRendererText" id="renderer1"/>
+															<object class="GtkCellRendererPixbuf" id="renderer3"/>
 															<attributes>
-																<attribute name="text">0</attribute>
+																<attribute name="icon-name">3</attribute>
 															</attributes>
 														</child>
 													</object>
 												</child>
 												<child>
-													<object class="GtkTreeViewColumn" id="column2">
+													<object class="GtkTreeViewColumn" id="column1">
+														<property name="title">Type</property>
+														<child>
+															<object class="GtkCellRendererText" id="renderer1"/>
+															<attributes>
+																<attribute name="text">4</attribute>
+															</attributes>
+														</child>
+													</object>
+												</child>
+												<child>
+													<object class="GtkTreeViewColumn" id="dry_mw_link_value_column">
 														<property name="title">Value</property>
 														<child>
-															<object class="GtkCellRendererText" id="renderer2"/>
-															<attributes>
-																<attribute name="text">1</attribute>
-															</attributes>
+															<object class="GtkCellRendererText" id="dry_mw_link_value_renderer"/>
 														</child>
 													</object>
 												</child>
@@ -327,14 +331,22 @@
 			</object>
 		</child>
 	</object>
+	<object class="GtkListStore" id="dry_ald_type_store">
+		<columns>
+			<column type="gchararray"/><!--Name-->
+			<column type="gchararray"/><!--Type-->
+			<column type="gchararray"/><!--Icon name-->
+		</columns>
+	</object>
 	<object class="GtkDialog" id="dry_add_link_dialog">
 		<property name="title" translatable="yes">Add Link</property>
 		<signal name="destroy" handler="ald_destroy_cb"/>
+		<signal name="response" handler="ald_response_cb"/>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox1">
 				<child>
 					<object class="GtkTable" id="table1">
-						<property name="n-rows">2</property>
+						<property name="n-rows">3</property>
 						<property name="n-columns">2</property>
 						<property name="column-spacing">5</property>
 						<property name="row-spacing">5</property>
@@ -352,7 +364,22 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkEntry" id="dry_ald_type_entry"/>
+							<object class="GtkComboBox" id="dry_ald_type_combo_box">
+								<property name="model">dry_ald_type_store</property>
+								<signal name="changed" handler="ald_type_combo_box_changed_cb"/>
+								<child>
+									<object class="GtkCellRendererPixbuf" id="renderer5"/>
+									<attributes>
+										<attribute name="icon-name">2</attribute>
+									</attributes>
+								</child>
+								<child>
+									<object class="GtkCellRendererText" id="renderer4"/>
+									<attributes>
+										<attribute name="text">0</attribute>
+									</attributes>
+								</child>
+							</object>
 							<packing>
 								<property name="left-attach">2</property>
 								<property name="right-attach">3</property>
@@ -381,6 +408,27 @@
 								<property name="bottom-attach">3</property>
 							</packing>
 						</child>
+						<child>
+							<object class="GtkLabel" id="label3">
+								<property name="xalign">0</property>
+								<property name="label" translatable="yes">Link Value 2</property>
+							</object>
+							<packing>
+								<property name="left-attach">1</property>
+								<property name="right-attach">2</property>
+								<property name="top-attach">3</property>
+								<property name="bottom-attach">4</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkEntry" id="dry_ald_value2_entry"/>
+							<packing>
+								<property name="left-attach">2</property>
+								<property name="right-attach">3</property>
+								<property name="top-attach">3</property>
+								<property name="bottom-attach">4</property>
+							</packing>
+						</child>
 					</object>
 				</child>
 				<child internal-child="action_area">
@@ -389,14 +437,12 @@
 							<object class="GtkButton" id="dry_ald_cancel_button">
 								<property name="use-stock">True</property>
 								<property name="label">gtk-cancel</property>
-								<!--<signal name="clicked" handler="mw_add_button_clicked_cb"/>-->
 							</object>
 						</child>
 						<child>
 							<object class="GtkButton" id="dry_ald_add_button">
 								<property name="use-stock">True</property>
 								<property name="label">gtk-add</property>
-								<!--<signal name="clicked" handler="mw_add_button_clicked_cb"/>-->
 							</object>
 						</child>
 					</object>

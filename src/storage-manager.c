@@ -30,6 +30,7 @@
 
 #include "main.h"
 #include "interface.h"
+#include "link.h"
 #include "storage-manager.h"
 
 static void diary_storage_manager_init (DiaryStorageManager *self);
@@ -146,19 +147,19 @@ diary_storage_manager_set_property (GObject *object, guint property_id, const GV
 	}
 }
 
-QueryResults *
+DiaryQueryResults *
 diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...)
 {
 	DiaryStorageManagerPrivate *priv = DIARY_STORAGE_MANAGER_GET_PRIVATE (self);
 	gchar *error_message, *new_query;
 	va_list params;
-	QueryResults *results;
+	DiaryQueryResults *results;
 
 	va_start (params, query);
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
-	results = g_slice_new (QueryResults);
+	results = g_slice_new (DiaryQueryResults);
 
 	g_debug ("Database query: %s", new_query);
 	if (sqlite3_get_table (priv->connection, new_query, &(results->data), &(results->rows), &(results->columns), NULL) != SQLITE_OK) {
@@ -175,14 +176,14 @@ diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...)
 }
 
 void
-diary_storage_manager_free_results (QueryResults *results)
+diary_storage_manager_free_results (DiaryQueryResults *results)
 {
 	sqlite3_free_table (results->data);
-	g_slice_free (QueryResults, results);
+	g_slice_free (DiaryQueryResults, results);
 }
 
 gboolean
-diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query, const QueryCallback callback, gpointer user_data, ...)
+diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query, const DiaryQueryCallback callback, gpointer user_data, ...)
 {
 	DiaryStorageManagerPrivate *priv = DIARY_STORAGE_MANAGER_GET_PRIVATE (self);
 	gchar *error_message, *new_query;
@@ -213,7 +214,7 @@ create_tables (DiaryStorageManager *self)
 	guint i;
 	const gchar *queries[] = {
 		"CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day))",
-		"CREATE TABLE IF NOT EXISTS entry_links (year INTEGER, month INTEGER, day INTEGER, link_type TEXT, link_value TEXT, PRIMARY KEY (year, month, day, link_type))",
+		"CREATE TABLE IF NOT EXISTS entry_links (year INTEGER, month INTEGER, day INTEGER, link_type TEXT, link_value TEXT, link_value2 TEXT, PRIMARY KEY (year, month, day, link_type))",
 		"CREATE TABLE IF NOT EXISTS entry_attachments (year INTEGER, month INTEGER, day INTEGER, attachment_type TEXT, attachment_data BLOB, PRIMARY KEY (year, month, day, attachment_type))",
 		NULL
 	};
@@ -225,10 +226,10 @@ create_tables (DiaryStorageManager *self)
 
 /* NOTE: Free results with g_free */
 gchar *
-diary_storage_manager_get_diary_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
+diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
 {
 	gchar *content;
-	QueryResults *results;
+	DiaryQueryResults *results;
 
 	results = diary_storage_manager_query (self, "SELECT content FROM entries WHERE year = %u AND month = %u AND day = %u", year, month, day);
 
@@ -245,7 +246,7 @@ diary_storage_manager_get_diary_entry (DiaryStorageManager *self, GDateYear year
 }
 
 gboolean
-diary_storage_manager_set_diary_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content)
+diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content)
 {
 	GDate *current_date, *entry_date;
 	gint days_between;
@@ -261,7 +262,9 @@ diary_storage_manager_set_diary_entry (DiaryStorageManager *self, GDateYear year
 
 	/* Entries can't be edited before they've happened, or after 7 days after they've happened */
 	days_between = g_date_days_between (entry_date, current_date);
-	g_message ("%u", days_between);
+	g_date_free (entry_date);
+	g_date_free (current_date);
+
 	if (days_between < 0 || days_between > 7)
 		return TRUE;
 
@@ -274,7 +277,7 @@ diary_storage_manager_set_diary_entry (DiaryStorageManager *self, GDateYear year
 gboolean *
 diary_storage_manager_get_month_marked_days (DiaryStorageManager *self, GDateYear year, GDateMonth month)
 {
-	QueryResults *results;
+	DiaryQueryResults *results;
 	guint i;
 	gboolean *days = g_slice_alloc0 (sizeof (gboolean) * 32);
 
@@ -289,28 +292,29 @@ diary_storage_manager_get_month_marked_days (DiaryStorageManager *self, GDateYea
 }
 
 /* NOTE: Free array with g_free and each element with g_slice_free, *after* freeing ->type and ->value with g_free */
-EntryLink **
+DiaryLink **
 diary_storage_manager_get_entry_links (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
 {
-	QueryResults *results;
-	EntryLink **links;
+	DiaryQueryResults *results;
+	DiaryLink **links;
 	guint i;
 
-	results = diary_storage_manager_query (self, "SELECT link_type, link_value FROM entry_links WHERE year = %u AND month = %u AND day = %u", year, month, day);
+	results = diary_storage_manager_query (self, "SELECT link_type, link_value, link_value2 FROM entry_links WHERE year = %u AND month = %u AND day = %u", year, month, day);
 
 	if (results->rows == 0) {
 		diary_storage_manager_free_results (results);
 		/* Return empty array */
-		links = (EntryLink**) g_new (gpointer, 1);
+		links = (DiaryLink**) g_new (gpointer, 1);
 		links[0] = NULL;
 		return links;
 	}
 
-	links = (EntryLink**) g_new (gpointer, results->rows + 1);
+	links = (DiaryLink**) g_new (gpointer, results->rows + 1);
 	for (i = 0; i < results->rows; i++) {
-		links[i] = g_slice_new (EntryLink);
-		links[i]->type = g_strdup (results->data[(i + 1) * 2]);
-		links[i]->value = g_strdup (results->data[(i + 1) * 2 + 1]);
+		links[i] = g_slice_new (DiaryLink);
+		links[i]->type = g_strdup (results->data[(i + 1) * 3]);
+		links[i]->value = g_strdup (results->data[(i + 1) * 3 + 1]);
+		links[i]->value2 = g_strdup (results->data[(i + 1) * 3 + 2]);
 	}
 	links[i] = NULL;
 
@@ -320,10 +324,10 @@ diary_storage_manager_get_entry_links (DiaryStorageManager *self, GDateYear year
 }
 
 gboolean
-diary_storage_manager_add_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type, const gchar *link_value)
+diary_storage_manager_add_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type, const gchar *link_value, const gchar *link_value2)
 {
-	/* TODO: Validate link type? */
-	return diary_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value) VALUES (%u, %u, %u, '%q', '%q')", NULL, NULL, year, month, day, link_type, link_value);
+	g_assert (diary_validate_link_type (link_type));
+	return diary_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL, year, month, day, link_type, link_value, link_value2);
 }
 
 gboolean

@@ -41,12 +41,18 @@ typedef struct {
 	GtkLabel *date_label;
 	GtkButton *add_button;
 	GtkButton *remove_button;
+	GtkAction *add_action;
+	GtkAction *remove_action;
 	GtkListStore *links_store;
 	GtkTreeSelection *links_selection;
+	GtkTreeViewColumn *link_value_column;
+	GtkCellRendererText *link_value_renderer;
 
 	GtkWidget *add_link_dialog;
-	GtkEntry *ald_type_entry;
+	GtkComboBox *ald_type_combo_box;
 	GtkEntry *ald_value_entry;
+	GtkEntry *ald_value2_entry;
+	GtkListStore *ald_type_store;
 
 	gboolean debug;
 } Diary;
