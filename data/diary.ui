@@ -315,6 +315,7 @@
 	<object class="GtkDialog" id="dry_add_link_dialog">
 		<property name="title" translatable="yes">Add Link</property>
 		<property name="has-separator">False</property>
+		<property name="allow-grow">False</property>
 		<signal name="destroy" handler="ald_destroy_cb"/>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox1">
@@ -335,6 +336,7 @@
 								<property name="right-attach">2</property>
 								<property name="top-attach">1</property>
 								<property name="bottom-attach">2</property>
+								<property name="y-options">GTK_FILL</property>
 							</packing>
 						</child>
 						<child>
@@ -359,6 +361,7 @@
 								<property name="right-attach">3</property>
 								<property name="top-attach">1</property>
 								<property name="bottom-attach">2</property>
+								<property name="y-options">GTK_FILL</property>
 							</packing>
 						</child>
 						<!-- Placeholder -->

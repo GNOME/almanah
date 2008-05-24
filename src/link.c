@@ -38,6 +38,7 @@ void link_##T##_get_values (DiaryLink *link);
 /*LINK_TYPE (email)*/
 LINK_TYPE (uri)
 LINK_TYPE (file)
+LINK_TYPE (note)
 
 /*
  * IMPORTANT:
@@ -54,6 +55,7 @@ static const DiaryLinkType link_types[] = {
 
 	/* Translators: These are the names and descriptions of the different link types. */
 	{ "file",	N_("File"),		N_("An attached file."),		"system-file-manager",		1,		&link_file_format_value,	&link_file_view,	&link_file_build_dialog,	&link_file_get_values },
+	{ "note", 	N_("Note"),		N_("A note about an important event."),	"emblem-important",		1,		&link_note_format_value,	&link_note_view,	&link_note_build_dialog,	&link_note_get_values },
 	{ "uri", 	N_("URI"),		N_("A URI of a file or web page."),	"applications-internet",	1,		&link_uri_format_value,		&link_uri_view,		&link_uri_build_dialog,		&link_uri_get_values }
 };
 

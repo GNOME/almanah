@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <gtkspell/gtkspell.h>
+#include <string.h>
 
 #include "config.h"
 #include "main.h"
@@ -69,8 +70,19 @@ save_current_entry ()
 
 	gtk_text_buffer_set_modified (diary->entry_buffer, FALSE);
 
-	/* Mark the day on the calendar */
-	gtk_calendar_mark_day (diary->calendar, day);
+	/* Mark the day on the calendar if the entry was non-empty
+	 * and update the state of the add link button. */
+	if (entry_text == NULL || strcmp (entry_text, "") == 0) {
+		gtk_calendar_unmark_day (diary->calendar, day);
+
+		gtk_widget_set_sensitive (GTK_WIDGET (diary->add_button), FALSE);
+		gtk_action_set_sensitive (diary->add_action, FALSE);
+	} else {
+		gtk_calendar_mark_day (diary->calendar, day);
+
+		gtk_widget_set_sensitive (GTK_WIDGET (diary->add_button), TRUE);
+		gtk_action_set_sensitive (diary->add_action, TRUE);
+	}
 }
 
 static void
@@ -308,6 +320,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	/* Update the entry */
 	entry_text = diary_storage_manager_get_entry (diary->storage_manager, year, month, day);
 	gtk_text_view_set_editable (diary->entry_view, diary_storage_manager_entry_is_editable (diary->storage_manager, year, month, day));
+	gtk_text_buffer_set_modified (diary->entry_buffer, FALSE);
 
 	if (entry_text != NULL) {
 		gtk_text_buffer_set_text (diary->entry_buffer, entry_text, -1);

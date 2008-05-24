@@ -30,7 +30,8 @@ diary_SOURCES = \
 	link.c			\
 	link.h			\
 	links/uri.c		\
-	links/file.c
+	links/file.c		\
+	links/note.c
 
 diary_LDFLAGS = 
 diary_LDADD = $(STANDARD_LIBS)

@@ -1,3 +1,21 @@
+2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/Makefile.am:
+	* src/link.c:
+	* src/links/note.c: Added "note" link type.
+	* data/diary.ui:
+	* src/main-window.c:
+	* src/storage-manager.c: Various small fixes and UI improvements, as
+	well as some improvements to the handling of empty entries.
+
+2008-03-27  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/links/picasa.c: Removed Picasa link type --- use URIs instead.
+	* .bzrignore:
+	* src/Makefile.am:
+	* src/link.c:
+	* src/main-window.c: Made the link list more resilient to bad data.
+
 2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* .bzrignore: Updated bzr ignore list.

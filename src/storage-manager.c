@@ -236,12 +236,12 @@ diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear ye
 	g_date_set_time_t (current_date, time (NULL));
 	entry_date = g_date_new_dmy (day, month, year);
 
-	/* Entries can't be edited before they've happened, or after 7 days after they've happened */
+	/* Entries can't be edited before they've happened, or after 14 days after they've happened */
 	days_between = g_date_days_between (entry_date, current_date);
 	g_date_free (entry_date);
 	g_date_free (current_date);
 
-	if (days_between < 0 || days_between > 7)
+	if (days_between < 0 || days_between > 20)
 		return FALSE;
 	else
 		return TRUE;

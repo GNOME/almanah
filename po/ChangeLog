@@ -1,3 +1,7 @@
+2008-03-27  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* po/en_GB.po: Removed Picasa link type --- use URIs instead.
+
 2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* po/ChangeLog: Added ChangeLog.
