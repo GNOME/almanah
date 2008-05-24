@@ -59,12 +59,9 @@ save_current_entry ()
 	gtk_calendar_get_date (diary->calendar, &year, &month, &day);
 	month++;
 
-	diary_storage_manager_set_entry (diary->storage_manager, year, month, day, entry_text);
-	gtk_text_buffer_set_modified (diary->entry_buffer, FALSE);
-
-	/* Mark the day on the calendar if the entry was non-empty
+	/* Mark the day on the calendar if the entry was non-empty (and deleted)
 	 * and update the state of the add link button. */
-	if (entry_text == NULL || entry_text[0] == '\0') {
+	if (diary_storage_manager_set_entry (diary->storage_manager, year, month, day, entry_text) == FALSE) {
 		gtk_calendar_unmark_day (diary->calendar, day);
 
 		gtk_widget_set_sensitive (GTK_WIDGET (diary->add_button), FALSE);
@@ -76,6 +73,7 @@ save_current_entry ()
 		gtk_action_set_sensitive (diary->add_action, TRUE);
 	}
 
+	gtk_text_buffer_set_modified (diary->entry_buffer, FALSE);
 	g_free (entry_text);
 }
 
@@ -91,7 +89,10 @@ add_link_to_current_entry ()
 	g_assert (diary->entry_buffer != NULL);
 	g_assert (gtk_text_buffer_get_char_count (diary->entry_buffer) != 0);
 
+	/* Ensure that something is selected and its widgets displayed */
+	g_signal_emit_by_name (diary->ald_type_combo_box, "changed", NULL, NULL);
 	gtk_widget_show_all (diary->add_link_dialog);
+
 	if (gtk_dialog_run (GTK_DIALOG (diary->add_link_dialog)) == GTK_RESPONSE_OK) {
 		if (gtk_combo_box_get_active_iter (diary->ald_type_combo_box, &iter) == FALSE)
 			return;

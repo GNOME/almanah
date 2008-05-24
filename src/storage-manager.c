@@ -612,6 +612,21 @@ diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDat
 	return content;
 }
 
+/**
+ * diary_storage_manager_set_entry:
+ * @self: a #DiaryStorageManager
+ * @year: the entry's year
+ * @month: the entry's month
+ * @day: the entry's day
+ * @content: the content for the entry
+ *
+ * Saves the @content for the specified entry in the database. If
+ * @content is empty or %NULL, it will ask if the user wants to delete
+ * the entry for that date. It will return %TRUE if the content is
+ * non-empty, and %FALSE otherwise.
+ *
+ * Return value: %TRUE if the entry non-empty
+ **/
 gboolean
 diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content)
 {
@@ -643,11 +658,13 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			gtk_widget_destroy (dialog);
-			return TRUE;
+			return FALSE;
 		}
 
 		diary_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, year, month, day);
 		gtk_widget_destroy (dialog);
+
+		return FALSE;
 	}
 
 	diary_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL, year, month, day, content);

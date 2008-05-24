@@ -1,3 +1,9 @@
+2008-04-19  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main-window.c:
+	* src/storage-manager.c: Make deletion of entries more robust, and
+	fix display of the "Add Link" dialogue when opened for a second time.
+
 2008-04-10  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main-window.c:
