@@ -51,6 +51,7 @@ main (int argc, char *argv[])
 	GOptionContext *context;
 	GError *error = NULL;
 	gboolean debug = FALSE;
+	gchar *db_filename;
 
 	const GOptionEntry options[] = {
 	        { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Enable debug mode"), NULL },
@@ -92,8 +93,11 @@ main (int argc, char *argv[])
 	/* Setup */
 	diary = g_new (Diary, 1);
 	diary->debug = debug;
-	/* TODO: Better filename */
-	diary->storage_manager = diary_storage_manager_new ("./diary.db");
+
+	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
+	diary->storage_manager = diary_storage_manager_new (db_filename);
+	g_free (db_filename);
+
 	diary_create_interface ();
 	gtk_widget_show_all (diary->main_window);
 

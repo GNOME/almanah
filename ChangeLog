@@ -1,5 +1,10 @@
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/main.c: Load the database file from the user's data directory,
+	rather than the build directory.
+
+2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* NEWS:
 	* README: Updated documentation.
 	* src/interface.c: Allowed interface file to load from either package
