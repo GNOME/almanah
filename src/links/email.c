@@ -22,44 +22,34 @@
  * 	Boston, MA  02110-1301, USA.
  */
 
-#include <gtk/gtk.h>
 #include <glib.h>
+#include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
-#include "storage-manager.h"
+#include "../link.h"
 
-#ifndef DIARY_MAIN_H
-#define DIARY_MAIN_H
+gchar *
+link_email_format_value (const DiaryLink *link)
+{
+	/* TODO: Show the message subject, or something? */
+	return g_strdup (_("E-mail"));
+}
 
-G_BEGIN_DECLS
+gboolean
+link_email_view (const DiaryLink *link)
+{
+	/* TODO */
+	return TRUE;
+}
 
-typedef struct {
-	DiaryStorageManager *storage_manager;
+void
+link_email_build_dialog (const gchar *type, GtkTable *dialog_table)
+{
+	/* TODO */
+}
 
-	GtkWidget *main_window;
-	GtkTextBuffer *entry_buffer;
-	GtkCalendar *calendar;
-	GtkLabel *date_label;
-	GtkButton *add_button;
-	GtkButton *remove_button;
-	GtkAction *add_action;
-	GtkAction *remove_action;
-	GtkListStore *links_store;
-	GtkTreeSelection *links_selection;
-	GtkTreeViewColumn *link_value_column;
-	GtkCellRendererText *link_value_renderer;
-
-	GtkWidget *add_link_dialog;
-	GtkComboBox *ald_type_combo_box;
-	GtkTable *ald_table;
-	GtkListStore *ald_type_store;
-
-	gboolean debug;
-} Diary;
-
-Diary *diary;
-
-void diary_quit (void);
-
-G_END_DECLS
-
-#endif /* DIARY_MAIN_H */
+void
+link_email_get_values (DiaryLink *link)
+{
+	/* TODO */
+}

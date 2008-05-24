@@ -214,7 +214,7 @@ create_tables (DiaryStorageManager *self)
 	guint i;
 	const gchar *queries[] = {
 		"CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day))",
-		"CREATE TABLE IF NOT EXISTS entry_links (year INTEGER, month INTEGER, day INTEGER, link_type TEXT, link_value TEXT, link_value2 TEXT, PRIMARY KEY (year, month, day, link_type))",
+		"CREATE TABLE IF NOT EXISTS entry_links (year INTEGER, month INTEGER, day INTEGER, link_type TEXT, link_value TEXT, link_value2 TEXT, PRIMARY KEY (year, month, day, link_type, link_value, link_value2))",
 		"CREATE TABLE IF NOT EXISTS entry_attachments (year INTEGER, month INTEGER, day INTEGER, attachment_type TEXT, attachment_data BLOB, PRIMARY KEY (year, month, day, attachment_type))",
 		NULL
 	};
@@ -312,9 +312,9 @@ diary_storage_manager_get_entry_links (DiaryStorageManager *self, GDateYear year
 	links = (DiaryLink**) g_new (gpointer, results->rows + 1);
 	for (i = 0; i < results->rows; i++) {
 		links[i] = g_slice_new (DiaryLink);
-		links[i]->type = g_strdup (results->data[(i + 1) * 3]);
-		links[i]->value = g_strdup (results->data[(i + 1) * 3 + 1]);
-		links[i]->value2 = g_strdup (results->data[(i + 1) * 3 + 2]);
+		links[i]->type = g_strdup (results->data[(i + 1) * results->columns]);
+		links[i]->value = g_strdup (results->data[(i + 1) * results->columns + 1]);
+		links[i]->value2 = g_strdup (results->data[(i + 1) * results->columns + 2]);
 	}
 	links[i] = NULL;
 
@@ -327,7 +327,10 @@ gboolean
 diary_storage_manager_add_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type, const gchar *link_value, const gchar *link_value2)
 {
 	g_assert (diary_validate_link_type (link_type));
-	return diary_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL, year, month, day, link_type, link_value, link_value2);
+	if (link_value2 == NULL)
+		return diary_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value) VALUES (%u, %u, %u, '%q', '%q')", NULL, NULL, year, month, day, link_type, link_value);
+	else
+		return diary_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL, year, month, day, link_type, link_value, link_value2);
 }
 
 gboolean

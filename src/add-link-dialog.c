@@ -26,37 +26,39 @@
 #include <gtk/gtk.h>
 #include <string.h>
 
+#include "main.h"
 #include "link.h"
 #include "add-link-dialog.h"
 
 void
-ald_destroy_cb (GtkWindow *window, gpointer user_data)
+diary_hide_ald (void)
 {
-	gtk_widget_hide_all (GTK_WIDGET (window));
+	/* Resize the table so we lose all the custom widgets */
+	gtk_widget_hide_all (diary->add_link_dialog);
+	gtk_table_resize (diary->ald_table, 1, 2);
 }
 
 void
-ald_response_cb (GtkDialog *self, gint response_id, gpointer user_data)
+ald_destroy_cb (GtkWindow *window, gpointer user_data)
 {
-	/* If the second value entry is hidden, empty it to keep the database clean */
-	if (GTK_WIDGET_VISIBLE (GTK_WIDGET (diary->ald_value2_entry)) == FALSE)
-		gtk_entry_set_text (diary->ald_value2_entry, "");
+	diary_hide_ald ();
 }
 
 void
 ald_type_combo_box_changed_cb (GtkComboBox *self, gpointer user_data)
 {
-	/* TODO: Hide/Show the entries as appropriate */
 	GtkTreeIter iter;
 	gchar *type;
-	DiaryLinkType link_type;
+	const DiaryLinkType *link_type;
 
 	if (gtk_combo_box_get_active_iter (self, &iter) == FALSE)
 		return;
 
 	gtk_tree_model_get (gtk_combo_box_get_model (self), &iter, 1, &type, -1);
+	link_type = diary_link_get_type (type);
 
-	
+	g_assert (link_type != NULL);
+	link_type->build_dialog_func (type, diary->ald_table);
 
 	g_free (type);
 }

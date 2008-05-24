@@ -29,6 +29,8 @@
 
 G_BEGIN_DECLS
 
+void diary_hide_ald (void);
+
 G_END_DECLS
 
 #endif /* !DIARY_ADD_LINK_DIALOG_H */

@@ -249,11 +249,13 @@
 										<property name="can-focus">True</property>
 										<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 										<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+										<property name="shadow-type">GTK_SHADOW_IN</property>
 										<child>
 											<object class="GtkTreeView" id="dry_mw_links_tree_view">
 												<property name="model">dry_mw_links_store</property>
 												<property name="can-focus">True</property>
 												<signal name="realize" handler="mw_links_tree_view_realize_cb"/>
+												<signal name="row-activated" handler="mw_links_tree_view_row_activated_cb"/>
 												<child>
 													<object class="GtkTreeViewColumn" id="column3">
 														<child>
@@ -341,12 +343,11 @@
 	<object class="GtkDialog" id="dry_add_link_dialog">
 		<property name="title" translatable="yes">Add Link</property>
 		<signal name="destroy" handler="ald_destroy_cb"/>
-		<signal name="response" handler="ald_response_cb"/>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox1">
 				<child>
-					<object class="GtkTable" id="table1">
-						<property name="n-rows">3</property>
+					<object class="GtkTable" id="dry_ald_table">
+						<property name="n-rows">1</property>
 						<property name="n-columns">2</property>
 						<property name="column-spacing">5</property>
 						<property name="row-spacing">5</property>
@@ -387,48 +388,7 @@
 								<property name="bottom-attach">2</property>
 							</packing>
 						</child>
-						<child>
-							<object class="GtkLabel" id="label2">
-								<property name="xalign">0</property>
-								<property name="label" translatable="yes">Link Value</property>
-							</object>
-							<packing>
-								<property name="left-attach">1</property>
-								<property name="right-attach">2</property>
-								<property name="top-attach">2</property>
-								<property name="bottom-attach">3</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkEntry" id="dry_ald_value_entry"/>
-							<packing>
-								<property name="left-attach">2</property>
-								<property name="right-attach">3</property>
-								<property name="top-attach">2</property>
-								<property name="bottom-attach">3</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkLabel" id="label3">
-								<property name="xalign">0</property>
-								<property name="label" translatable="yes">Link Value 2</property>
-							</object>
-							<packing>
-								<property name="left-attach">1</property>
-								<property name="right-attach">2</property>
-								<property name="top-attach">3</property>
-								<property name="bottom-attach">4</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkEntry" id="dry_ald_value2_entry"/>
-							<packing>
-								<property name="left-attach">2</property>
-								<property name="right-attach">3</property>
-								<property name="top-attach">3</property>
-								<property name="bottom-attach">4</property>
-							</packing>
-						</child>
+						<!-- Placeholder -->
 					</object>
 				</child>
 				<child internal-child="action_area">
@@ -443,6 +403,8 @@
 							<object class="GtkButton" id="dry_ald_add_button">
 								<property name="use-stock">True</property>
 								<property name="label">gtk-add</property>
+								<property name="can-default">True</property>
+								<property name="has-default">True</property>
 							</object>
 						</child>
 					</object>

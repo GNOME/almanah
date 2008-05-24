@@ -29,6 +29,8 @@
 #include "main.h"
 #include "storage-manager.h"
 #include "link.h"
+#include "add-link-dialog.h"
+#include "interface.h"
 #include "main-window.h"
 
 static void save_current_entry ();
@@ -64,35 +66,48 @@ add_link_to_current_entry ()
 	guint year, month, day;
 	GtkTreeIter iter;
 	const DiaryLinkType *link_type;
+	gchar *type;
+	DiaryLink link;
 
 	g_assert (diary->entry_buffer != NULL);
 	g_assert (gtk_text_buffer_get_char_count (diary->entry_buffer) != 0);
 
 	gtk_widget_show_all (diary->add_link_dialog);
 	if (gtk_dialog_run (GTK_DIALOG (diary->add_link_dialog)) == GTK_RESPONSE_OK) {
-		/* Add the link to the DB */
+		if (gtk_combo_box_get_active_iter (diary->ald_type_combo_box, &iter) == FALSE)
+			return;
+
+		/* Get the link type, then the values entered in the dialogue (specific to the type) */
+		gtk_tree_model_get (GTK_TREE_MODEL (diary->ald_type_store), &iter, 1, &type, -1);
+		link_type = diary_link_get_type (type);
+		g_assert (link_type != NULL);
+		link.type = type;
+		link_type->get_values_func (&link);
+
+		/* Add to the DB */
 		gtk_calendar_get_date (diary->calendar, &year, &month, &day);
 		month++;
 		diary_storage_manager_add_entry_link (diary->storage_manager,
 						      year, month, day,
-						      gtk_entry_get_text (diary->ald_type_entry),
-						      gtk_entry_get_text (diary->ald_value_entry),
-						      gtk_entry_get_text (diary->ald_value2_entry));
+						      type,
+						      link.value,
+						      link.value2);
 
-		/* Add it to the treeview */
-		link_type = diary_link_get_type (gtk_entry_get_text (diary->ald_type_entry));
+		/* Add to the treeview */
 		gtk_list_store_append (diary->links_store, &iter);
 		gtk_list_store_set (diary->links_store, &iter,
-				    0, gtk_entry_get_text (diary->ald_type_entry),
-				    1, gtk_entry_get_text (diary->ald_value_entry),
-				    2, gtk_entry_get_text (diary->ald_value2_entry),
+				    0, type,
+				    1, link.value,
+				    2, link.value2,
 				    3, link_type->icon_name,
 				    4, _(link_type->name),
 				    -1);
+
+		g_free (type);
+		g_free (link.value);
+		g_free (link.value2);
 	}
-	gtk_widget_hide_all (diary->add_link_dialog);
-	gtk_entry_set_text (diary->ald_type_entry, "");
-	gtk_entry_set_text (diary->ald_value_entry, "");
+	diary_hide_ald ();
 }
 
 static void
@@ -315,7 +330,7 @@ mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, Gt
 
 	gtk_tree_model_get (model, iter, 0, &(link.type), 1, &(link.value), 2, &(link.value2), -1);
 
-	new_value = diary_link_format_value_for_display (&link);
+	new_value = diary_link_format_value (&link);
 	g_object_set (renderer, "text", new_value, NULL);
 	g_free (new_value);
 
@@ -329,6 +344,23 @@ mw_links_tree_view_realize_cb (GtkWidget *widget, gpointer user_data)
 {
 	g_signal_connect (diary->links_selection, "changed", (GCallback) mw_links_selection_changed_cb, NULL);
 	gtk_tree_view_column_set_cell_data_func (diary->link_value_column, GTK_CELL_RENDERER (diary->link_value_renderer), mw_links_value_data_cb, NULL, NULL);
+}
+
+void
+mw_links_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+{
+	DiaryLink link;
+	GtkTreeIter iter;
+
+	gtk_tree_model_get_iter (GTK_TREE_MODEL (diary->links_store), &iter, path);
+	gtk_tree_model_get (GTK_TREE_MODEL (diary->links_store), &iter, 0, &(link.type), 1, &(link.value), 2, &(link.value2), -1);
+
+	if (diary_link_view (&link) == FALSE)
+		diary_interface_error (_("Due to an unknown error the link cannot be viewed."), diary->main_window);
+
+	g_free (link.type);
+	g_free (link.value);
+	g_free (link.value2);
 }
 
 void

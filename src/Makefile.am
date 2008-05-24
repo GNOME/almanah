@@ -28,7 +28,9 @@ diary_SOURCES = \
 	add-link-dialog.c	\
 	add-link-dialog.h	\
 	link.c			\
-	link.h
+	link.h			\
+	links/email.c		\
+	links/uri.c
 
 diary_LDFLAGS = 
 diary_LDADD = $(GTK_LIBS)

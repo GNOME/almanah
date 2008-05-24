@@ -42,13 +42,19 @@ typedef struct {
 	gchar *description;
 	gchar *icon_name;
 	guint columns;
+	gchar *(*format_value_func) (const DiaryLink *link);
+	gboolean (*view_func) (const DiaryLink *link);
+	void (*build_dialog_func) (const gchar *type, GtkTable *dialog_table);
+	void (*get_values_func) (DiaryLink *link);
 } DiaryLinkType;
 
-void diary_populate_link_model (GtkListStore *list_store, guint type_column, guint name_column);
+void diary_populate_link_model (GtkListStore *list_store, guint type_column, guint name_column, guint icon_name_column);
 gboolean diary_validate_link_type (const gchar *type);
 const DiaryLinkType *diary_link_get_type (const gchar *type);
-gchar *diary_link_format_value_for_display (DiaryLink *link);
-void diary_link_view (DiaryLink *link);
+gchar *diary_link_format_value (const DiaryLink *link);
+gboolean diary_link_view (const DiaryLink *link);
+void diary_link_build_dialog (const DiaryLinkType *link_type);
+void diary_link_get_values (DiaryLink *link);
 
 G_END_DECLS
 

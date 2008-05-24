@@ -27,31 +27,45 @@
 #include <glib/gi18n.h>
 #include <string.h>
 
+#include "main.h"
 #include "link.h"
+
+#define LINK_TYPE(T) gchar *link_##T##_format_value (const DiaryLink *link); \
+gboolean link_##T##_view (const DiaryLink *link); \
+void link_##T##_build_dialog (const gchar *type, GtkTable *dialog_table); \
+void link_##T##_get_values (DiaryLink *link);
+
+LINK_TYPE (email)
+LINK_TYPE (uri)
 
 /*
  * IMPORTANT:
  * Make sure this list is kept in alphabetical order by type.
  *
- * To add a link type, add an entry here then add cases for the
- * link type in diary_link_format_value_for_display and
- * diary_link_view.
+ * To add a link type, add an entry here then add a file in src/links
+ * named after the link type, containing the format, view, dialogue-building
+ * and value-getting functions referenced in this table.
+ * Don't forget to add the function prototypes at the top of *this* file.
  */
 static const DiaryLinkType link_types[] = {
-	/* Type,   Name,         Description,                           Icon,        Columns */
-	{ "email", N_("E-mail"), N_("An e-mail you sent or received."), "mail-read", 2 },	/* Columns: client (e.g. "evolution"), ID (e.g. "123098" --- specific to client) */
-	{ "uri", N_("URI"), N_("A URI of a file or web page."), "system-file-manager", 1 }	/* Columns: URI (e.g. "http://google.com/") */
+	/* Type,	Name,		Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function */
+	{ "email", 	N_("E-mail"),	N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
+	{ "uri", 	N_("URI"),	N_("A URI of a file or web page."),	"applications-internet",	1,		&link_uri_format_value,		&link_uri_view,		&link_uri_build_dialog,		&link_uri_get_values }
 };
 
 void
-diary_populate_link_model (GtkListStore *list_store, guint type_column, guint name_column)
+diary_populate_link_model (GtkListStore *list_store, guint type_column, guint name_column, guint icon_name_column)
 {
 	GtkTreeIter iter;
 	guint i;
 
 	for (i = 0; i < G_N_ELEMENTS (link_types); i++) {
 		gtk_list_store_append (list_store, &iter);
-		gtk_list_store_set (list_store, &iter, type_column, link_types[i].type, name_column, link_types[i].name, -1);
+		gtk_list_store_set (list_store, &iter,
+				    type_column, link_types[i].type,
+				    name_column, link_types[i].name,
+				    icon_name_column, link_types[i].icon_name,
+				    -1);
 	}
 }
 
@@ -71,6 +85,7 @@ diary_link_get_type (const gchar *type)
 	lower_limit = 0;
 	upper_limit = G_N_ELEMENTS (link_types) - 1;
 
+	/* TODO: perhaps use GQuarks to make things less heavy on the strcmps */
 	do {
 		temp = ceil ((lower_limit + upper_limit) / 2);
 		comparison = strcmp (type, link_types[temp].type);
@@ -91,27 +106,32 @@ diary_link_get_type (const gchar *type)
 }
 
 gchar *
-diary_link_format_value_for_display (DiaryLink *link)
+diary_link_format_value (const DiaryLink *link)
 {
-	/* TODO: perhaps use GQuarks to make things less heavy on the strcmps */
-	if (strcmp (link->type, "email") == 0) {
-		/* TODO: get and display e-mail subject? */
-		return g_strdup (_("E-mail"));
-	} else {
-		return g_strdup (link->value);
-	}
+	const DiaryLinkType *link_type = diary_link_get_type (link->type);
+	g_assert (link_type != NULL);
+	return link_type->format_value_func (link);
+}
+
+gboolean
+diary_link_view (const DiaryLink *link)
+{
+	const DiaryLinkType *link_type = diary_link_get_type (link->type);
+	g_assert (link_type != NULL);
+	return link_type->view_func (link);
 }
 
 void
-diary_link_view (DiaryLink *link)
+diary_link_build_dialog (const DiaryLinkType *link_type)
 {
-	/* TODO: GQuarks? */
-	if (strcmp (link->type, "email") == 0) {
-		/* TODO */
-	} else if (strcmp (link->type, "uri") == 0) {
-		g_app_info_launch_default_for_uri   (link->value, NULL, NULL);
-	} else {
-		/* Eck! */
-		g_warning ("Tried to view unhandled link type '%s'.", link->type);
-	}
+	g_assert (link_type != NULL);
+	link_type->build_dialog_func (link_type->type, diary->ald_table);
+}
+
+void
+diary_link_get_values (DiaryLink *link)
+{
+	const DiaryLinkType *link_type = diary_link_get_type (link->type);
+	g_assert (link_type != NULL);
+	link_type->get_values_func (link);
 }
