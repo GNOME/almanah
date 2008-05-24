@@ -119,7 +119,6 @@
 			<column type="gchararray"/><!--Value-->
 			<column type="gchararray"/><!--Value 2-->
 			<column type="gchararray"/><!--Icon name-->
-			<column type="gchararray"/><!--Name-->
 		</columns>
 	</object>
 	<object class="GtkImage" id="dry_mw_view_button_image">
@@ -240,17 +239,6 @@
 													</object>
 												</child>
 												<child>
-													<object class="GtkTreeViewColumn" id="column1">
-														<property name="title">Type</property>
-														<child>
-															<object class="GtkCellRendererText" id="renderer1"/>
-															<attributes>
-																<attribute name="text">4</attribute>
-															</attributes>
-														</child>
-													</object>
-												</child>
-												<child>
 													<object class="GtkTreeViewColumn" id="dry_mw_link_value_column">
 														<property name="title">Value</property>
 														<child>
@@ -325,6 +313,7 @@
 			<column type="gchararray"/><!--Icon name-->
 		</columns>
 	</object>
+	<!-- TODO: Use the description of link types somewhere -->
 	<object class="GtkDialog" id="dry_add_link_dialog">
 		<property name="title" translatable="yes">Add Link</property>
 		<property name="has-separator">False</property>
@@ -339,7 +328,7 @@
 						<property name="row-spacing">5</property>
 						<property name="border-width">5</property>
 						<child>
-							<object class="GtkLabel" id="label1">
+							<object class="GtkLabel" id="dry_ald_type_label">
 								<property name="xalign">0</property>
 								<property name="label" translatable="yes">Link Type</property>
 							</object>

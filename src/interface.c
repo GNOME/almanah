@@ -27,6 +27,7 @@
 
 #include "config.h"
 #include "main.h"
+#include "add-link-dialog.h"
 #include "interface.h"
 
 GtkWidget *
@@ -79,8 +80,7 @@ diary_create_interface (void)
 	diary->ald_type_combo_box = GTK_COMBO_BOX (gtk_builder_get_object (builder, "dry_ald_type_combo_box"));
 	diary->ald_table = GTK_TABLE (gtk_builder_get_object (builder, "dry_ald_table"));
 	diary->ald_type_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_ald_type_store"));
-	diary_populate_link_model (diary->ald_type_store, 1, 0, 2);
-	gtk_combo_box_set_active (diary->ald_type_combo_box, 0);
+	diary_add_link_dialog_setup (builder);
 
 	g_object_unref (builder);
 

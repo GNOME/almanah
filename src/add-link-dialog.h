@@ -29,6 +29,7 @@
 
 G_BEGIN_DECLS
 
+void diary_add_link_dialog_setup (GtkBuilder *builder);
 void diary_hide_ald (void);
 
 G_END_DECLS

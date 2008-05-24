@@ -103,7 +103,6 @@ add_link_to_current_entry ()
 				    1, link.value,
 				    2, link.value2,
 				    3, link_type->icon_name,
-				    4, _(link_type->name),
 				    -1);
 
 		g_free (type);
@@ -308,7 +307,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 				    1, links[i]->value,
 				    2, links[i]->value2,
 				    3, link_type->icon_name,
-				    4, link_type->name,
 				    -1);
 
 		g_free (links[i]->type);
