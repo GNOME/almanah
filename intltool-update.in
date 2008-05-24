@@ -30,7 +30,7 @@
 
 ## Release information
 my $PROGRAM = "intltool-update";
-my $VERSION = "0.37.0";
+my $VERSION = "0.37.1";
 my $PACKAGE = "intltool";
 
 ## Loaded modules
@@ -124,7 +124,10 @@ my $arg_count = ($DIST_ARG > 0)
 
 &Console_Write_IntltoolHelp if $arg_count > 1;
 
-my $MODULE = $GETTEXT_PACKAGE || FindPackageName() || "unknown";
+my $PKGNAME = FindPackageName ();
+
+# --version and --help don't require a module name
+my $MODULE = $GETTEXT_PACKAGE || $PKGNAME || "unknown";
 
 if ($POT_ARG)
 {

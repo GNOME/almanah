@@ -1,3 +1,18 @@
+2008-05-20  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/interface.c:
+	* src/interface.h:
+	* src/main-window.c:
+	* src/Makefile.am:
+	* src/printing.c:
+	* src/printing.h:
+	* src/storage-manager.h:
+	* data/diary.ui: Add printing support.
+	* configure.ac: Remove redundant dependency on libcryptui.
+	* intltool-extract.in:
+	* intltool-merge.in:
+	* intltool-update.in: Upgrade intltool scripts.
+
 2008-04-19  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main-window.c:

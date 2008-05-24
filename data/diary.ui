@@ -10,6 +10,13 @@
 					</object>
 				</child>
 				<child>
+					<object class="GtkAction" id="dry_ui_print">
+						<property name="stock_id">gtk-print</property>
+						<property name="name">file-print</property>
+						<signal name="activate" handler="mw_print_activate_cb"/>
+					</object>
+				</child>
+				<child>
 					<object class="GtkAction" id="dry_ui_quit">
 						<property name="stock_id">gtk-quit</property>
 						<property name="name">file-quit</property>
@@ -92,6 +99,7 @@
 		<ui>
 			<menubar name="dry_mw_menu_bar">
 				<menu action="dry_ui_file">
+					<menuitem action="dry_ui_print"/>
 					<menuitem action="dry_ui_quit"/>
 				</menu>
 				<menu action="dry_ui_edit">
@@ -198,7 +206,7 @@
 										<property name="width-request">200</property>
 										<property name="can-focus">True</property>
 										<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
-										<signal name="month-changed" handler="mw_calendar_month_changed_cb"/>
+										<signal name="month-changed" handler="diary_calendar_month_changed_cb"/>
 									</object>
 									<packing>
 										<property name="position">1</property>

@@ -109,3 +109,25 @@ diary_interface_error (const gchar *message, GtkWidget *parent_window)
 	gtk_widget_destroy (dialog);
 }
 
+void
+diary_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data)
+{
+	/* Mark the days on the calendar which have diary entries */
+	guint i, year, month;
+	gboolean *days;
+
+	gtk_calendar_get_date (calendar, &year, &month, NULL);
+	month++;
+	days = diary_storage_manager_get_month_marked_days (diary->storage_manager, year, month);
+
+	/* TODO: Don't like hard-coding the array length here */
+	gtk_calendar_clear_marks (calendar);
+	for (i = 1; i < 32; i++) {
+		if (days[i] == TRUE)
+			gtk_calendar_mark_day (calendar, i);
+		else
+			gtk_calendar_unmark_day (calendar, i);
+	}
+
+	g_slice_free (gboolean, days);
+}

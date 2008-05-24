@@ -17,17 +17,15 @@
  * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtk/gtk.h>
+#include <glib.h>
 
-#ifndef DIARY_INTERFACE_H
-#define DIARY_INTERFACE_H
+#ifndef DIARY_PRINTING_H
+#define DIARY_PRINTING_H
 
 G_BEGIN_DECLS
 
-GtkWidget *diary_create_interface (void);
-void diary_interface_error (const gchar *message, GtkWidget *parent_window);
-void diary_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data);
+void diary_print_entries (void);
 
 G_END_DECLS
 
-#endif /* DIARY_INTERFACE_H */
+#endif /* !DIARY_PRINTING_H */

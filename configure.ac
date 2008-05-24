@@ -34,11 +34,9 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AM_PROG_LIBTOOL
 
-PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite3 gtkspell-2.0 gconf-2.0)
+PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite3 gtkspell-2.0 gconf-2.0 cairo)
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
-
-PKG_CHECK_MODULES(ENCRYPTION, cryptui-0.0)
 
 dnl Check for GPGME, which doesn't provide a pkgconfig file
 dnl This code courtesy of seahorse
@@ -70,15 +68,12 @@ if test $GPGME_CONFIG != "failed" ; then
 fi
 
 if test $ok = "yes"; then
-  GPGME_CFLAGS=`$GPGME_CONFIG --cflags`
-  GPGME_LIBS=`$GPGME_CONFIG --libs`
+  ENCRYPTION_CFLAGS=`$GPGME_CONFIG --cflags`
+  ENCRYPTION_LIBS=`$GPGME_CONFIG --libs`
   AC_MSG_RESULT(yes)
 else
   AC_MSG_ERROR(GPGME $min_gpgme_version or later needed)
 fi
-
-ENCRYPTION_CFLAGS="$ENCRYPTION_CFLAGS $GPGME_CFLAGS"
-ENCRYPTION_LIBS="$ENCRYPTION_LIBS $GPGME_LIBS"
 
 AC_SUBST(ENCRYPTION_CFLAGS)
 AC_SUBST(ENCRYPTION_LIBS)

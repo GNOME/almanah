@@ -28,12 +28,12 @@
 #include "add-link-dialog.h"
 #include "interface.h"
 #include "main-window.h"
+#include "printing.h"
 
 static void save_current_entry ();
 static void add_link_to_current_entry ();
 static void remove_link_from_current_entry ();
 
-void mw_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data);
 void mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data);
 void mw_links_selection_changed_cb (GtkTreeSelection *tree_selection, gpointer user_data);
 void mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
@@ -167,7 +167,7 @@ diary_main_window_setup (GtkBuilder *builder)
 	GError *error = NULL;
 
 	/* Select the current day and month */
-	mw_calendar_month_changed_cb (diary->calendar, NULL);
+	diary_calendar_month_changed_cb (diary->calendar, NULL);
 	mw_calendar_day_selected_cb (diary->calendar, NULL);
 
 	/* Set up the treeview */
@@ -188,6 +188,12 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 	diary_quit ();
 
 	return TRUE;
+}
+
+void
+mw_print_activate_cb (GtkAction *action, gpointer user_data)
+{
+	diary_print_entries ();
 }
 
 void
@@ -317,7 +323,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	month++;
 	calendar_date = g_date_new_dmy (day, month, year);
 
-	/* TODO: Somewhat hacky */
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
 	g_date_strftime (calendar_string, sizeof (calendar_string), _("<b>%A, %e %B %Y</b>"), calendar_date);
 	gtk_label_set_markup (diary->date_label, calendar_string);
@@ -370,29 +375,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	}
 
 	g_free (links);
-}
-
-void
-mw_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data)
-{
-	/* Mark the days on the calendar which have diary entries */
-	guint i, year, month;
-	gboolean *days;
-
-	gtk_calendar_get_date (calendar, &year, &month, NULL);
-	month++;
-	days = diary_storage_manager_get_month_marked_days (diary->storage_manager, year, month);
-
-	/* TODO: Don't like hard-coding the array length here */
-	gtk_calendar_clear_marks (calendar);
-	for (i = 1; i < 32; i++) {
-		if (days[i] == TRUE)
-			gtk_calendar_mark_day (calendar, i);
-		else
-			gtk_calendar_unmark_day (calendar, i);
-	}
-
-	g_slice_free (gboolean, days);
 }
 
 void
