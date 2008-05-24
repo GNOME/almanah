@@ -1,23 +1,28 @@
+2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* POTFILES.in: Updated to remove old files.
+	* en_GB.po: Updated British English translation.
+
 2008-03-27  Philip Withnall  <philip@tecnocode.co.uk>
 
-	* po/en_GB.po: Removed Picasa link type --- use URIs instead.
+	* en_GB.po: Removed Picasa link type --- use URIs instead.
 
 2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
 
-	* po/ChangeLog: Added ChangeLog.
+	* ChangeLog: Added ChangeLog.
 
 2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
 
-	* po/en_GB.po: Added British English translation.
-	* po/LINGUAS: Added en_GB (British English) translation.
+	* en_GB.po: Added British English translation.
+	* LINGUAS: Added en_GB (British English) translation.
 
 2008-03-23  Philip Withnall  <philip@tecnocode.co.uk>
 
-	* po/POTFILES.in: Added some missing files.
+	* POTFILES.in: Added some missing files.
 
 2008-03-22  Philip Withnall  <philip@tecnocode.co.uk>
 
-	* po/Makefile.in.in: Updated due to new intltool.
+	* Makefile.in.in: Updated due to new intltool.
 
 2008-03-21  Philip Withnall  <philip@tecnocode.co.uk>
 

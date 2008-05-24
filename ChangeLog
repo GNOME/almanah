@@ -1,5 +1,9 @@
 2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/links/email.c: Completely removed e-mail link type.
+
+2008-03-30  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/main-window.c:
 	* src/storage-manager.c:
 	* src/storage-manager.h: Added some basic statistics on the about

@@ -4,7 +4,7 @@ data/diary.ui
 src/interface.c
 src/link.c
 src/links/file.c
-src/links/picasa.c
+src/links/note.c
 src/links/uri.c
 src/main-window.c
 src/main.c
