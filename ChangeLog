@@ -1,3 +1,7 @@
+2008-06-07  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* MAINTAINERS: Added a maintainers file.
+
 2008-05-22  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main-window.c: Add a translator comment to clarify the format
