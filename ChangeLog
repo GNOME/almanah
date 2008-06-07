@@ -1,5 +1,11 @@
 2008-06-07  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* data/Makefile.am:
+	* data/diary.desktop.in: Added a desktop file, and updated svn:ignore
+	lists.
+
+2008-06-07  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* MAINTAINERS: Added a maintainers file.
 
 2008-05-22  Philip Withnall  <philip@tecnocode.co.uk>

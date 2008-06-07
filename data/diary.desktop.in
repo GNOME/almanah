@@ -1,0 +1,12 @@
+[Desktop Entry]
+_Name=Diary
+_Comment=Keep a personal diary
+Exec=diary
+Icon=diary
+Terminal=false
+Type=Application
+Categories=GTK;Utility;
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=diary
+X-GNOME-Bugzilla-Component=General
+StartupNotify=true
