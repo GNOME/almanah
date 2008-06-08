@@ -28,6 +28,8 @@ diary_SOURCES = \
 	storage-manager.h	\
 	add-link-dialog.c	\
 	add-link-dialog.h	\
+	search-dialog.c		\
+	search-dialog.h		\
 	printing.c		\
 	printing.h		\
 	link.c			\

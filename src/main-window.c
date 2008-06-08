@@ -181,6 +181,13 @@ diary_main_window_setup (GtkBuilder *builder)
 	}
 }
 
+void
+mw_select_date (GDate *date)
+{
+	gtk_calendar_select_month (diary->calendar, g_date_get_month (date) - 1, g_date_get_year (date));
+	gtk_calendar_select_day (diary->calendar, g_date_get_day (date));
+}
+
 gboolean
 mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 {
@@ -228,6 +235,19 @@ void
 mw_delete_activate_cb (GtkAction *action, gpointer user_data)
 {
 	gtk_text_buffer_delete_selection (diary->entry_buffer, TRUE, TRUE);
+}
+
+void
+mw_search_activate_cb (GtkAction *action, gpointer user_data)
+{
+	/* Ensure everything's tidy first */
+	gtk_list_store_clear (diary->sd_results_store);
+	gtk_entry_set_text (diary->sd_search_entry, "");
+
+	/* Run the dialogue */
+	gtk_widget_show_all (diary->search_dialog);
+	gtk_dialog_run (GTK_DIALOG (diary->search_dialog));
+	gtk_widget_hide_all (diary->search_dialog);
 }
 
 void
@@ -291,13 +311,9 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 void
 mw_jump_to_today_activate_cb (GtkAction *action, gpointer user_data)
 {
-	GDate *current_date;
-	current_date = g_date_new ();
-	g_date_set_time_t (current_date, time (NULL));
-
-	gtk_calendar_select_day (diary->calendar, g_date_get_day (current_date));
-
-	g_date_free (current_date);
+	GDate current_date;
+	g_date_set_time_t (&current_date, time (NULL));
+	mw_select_date (&current_date);
 }
 
 void
@@ -315,7 +331,7 @@ mw_remove_link_activate_cb (GtkAction *action, gpointer user_data)
 void
 mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 {
-	GDate *calendar_date;
+	GDate calendar_date;
 	gchar calendar_string[100], *entry_text;
 	guint year, month, day;
 	DiaryLink **links;
@@ -326,12 +342,11 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	/* Update the date label */
 	gtk_calendar_get_date (calendar, &year, &month, &day);
 	month++;
-	calendar_date = g_date_new_dmy (day, month, year);
+	g_date_set_dmy (&calendar_date, day, month, year);
 
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
-	g_date_strftime (calendar_string, sizeof (calendar_string), _("<b>%A, %e %B %Y</b>"), calendar_date);
+	g_date_strftime (calendar_string, sizeof (calendar_string), _("<b>%A, %e %B %Y</b>"), &calendar_date);
 	gtk_label_set_markup (diary->date_label, calendar_string);
-	g_date_free (calendar_date);
 
 	/* Update the entry */
 	entry_text = diary_storage_manager_get_entry (diary->storage_manager, year, month, day);

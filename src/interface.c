@@ -24,6 +24,7 @@
 #include "main.h"
 #include "main-window.h"
 #include "add-link-dialog.h"
+#include "search-dialog.h"
 #include "interface.h"
 
 GtkWidget *
@@ -79,6 +80,13 @@ diary_create_interface (void)
 	diary->ald_table = GTK_TABLE (gtk_builder_get_object (builder, "dry_ald_table"));
 	diary->ald_type_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_ald_type_store"));
 	diary_add_link_dialog_setup (builder);
+
+	/* Set up the search dialogue */
+	diary->search_dialog = GTK_WIDGET (gtk_builder_get_object (builder, "dry_search_dialog"));
+	diary->sd_search_entry = GTK_ENTRY (gtk_builder_get_object (builder, "dry_sd_search_entry"));
+	diary->sd_results_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_sd_results_store"));
+	diary->sd_results_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "dry_sd_results_tree_view")));
+	diary_search_dialog_setup (builder);
 
 	g_object_unref (builder);
 

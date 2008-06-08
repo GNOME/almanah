@@ -11,14 +11,14 @@
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_print">
-						<property name="stock_id">gtk-print</property>
+						<property name="stock-id">gtk-print</property>
 						<property name="name">file-print</property>
 						<signal name="activate" handler="mw_print_activate_cb"/>
 					</object>
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_quit">
-						<property name="stock_id">gtk-quit</property>
+						<property name="stock-id">gtk-quit</property>
 						<property name="name">file-quit</property>
 						<signal name="activate" handler="mw_quit_activate_cb"/>
 					</object>
@@ -31,30 +31,38 @@
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_cut">
-						<property name="stock_id">gtk-cut</property>
+						<property name="stock-id">gtk-cut</property>
 						<property name="name">edit-cut</property>
 						<signal name="activate" handler="mw_cut_activate_cb"/>
 					</object>
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_copy">
-						<property name="stock_id">gtk-copy</property>
+						<property name="stock-id">gtk-copy</property>
 						<property name="name">edit-copy</property>
 						<signal name="activate" handler="mw_copy_activate_cb"/>
 					</object>
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_paste">
-						<property name="stock_id">gtk-paste</property>
+						<property name="stock-id">gtk-paste</property>
 						<property name="name">edit-paste</property>
 						<signal name="activate" handler="mw_paste_activate_cb"/>
 					</object>
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_delete">
-						<property name="stock_id">gtk-delete</property>
+						<property name="stock-id">gtk-delete</property>
 						<property name="name">edit-delete</property>
 						<signal name="activate" handler="mw_delete_activate_cb"/>
+					</object>
+				</child>
+				<child>
+					<object class="GtkAction" id="dry_ui_search">
+						<property name="stock-id">gtk-find</property>
+						<property name="label" translatable="yes">_Search</property>
+						<property name="name">edit-search</property>
+						<signal name="activate" handler="mw_search_activate_cb"/>
 					</object>
 				</child>
 				<child>
@@ -65,7 +73,7 @@
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_about">
-						<property name="stock_id">gtk-about</property>
+						<property name="stock-id">gtk-about</property>
 						<property name="name">help-about</property>
 						<signal name="activate" handler="mw_about_activate_cb"/>
 					</object>
@@ -107,6 +115,8 @@
 					<menuitem action="dry_ui_copy"/>
 					<menuitem action="dry_ui_paste"/>
 					<menuitem action="dry_ui_delete"/>
+					<separator/>
+					<menuitem action="dry_ui_search"/>
 				</menu>
 				<menu action="dry_ui_help">
 					<menuitem action="dry_ui_about"/>
@@ -120,6 +130,7 @@
 			</toolbar>
 		</ui>
 	</object>
+
 	<!-- TODO: Change to dry_mw_link_store -->
 	<object class="GtkListStore" id="dry_mw_links_store">
 		<columns>
@@ -129,9 +140,11 @@
 			<column type="gchararray"/><!--Icon name-->
 		</columns>
 	</object>
+
 	<object class="GtkImage" id="dry_mw_view_button_image">
 		<property name="stock">gtk-open</property>
 	</object>
+
 	<object class="GtkWindow" id="dry_main_window">
 		<property name="title" translatable="yes">Diary</property>
 		<signal name="delete-event" handler="mw_delete_event_cb"/>
@@ -147,7 +160,6 @@
 					<object class="GtkToolbar" constructor="dry_ui_manager" id="dry_mw_toolbar"/>
 					<packing>
 						<property name="expand">False</property>
-						<property name="position">1</property>
 					</packing>
 				</child>
 				<child>
@@ -180,9 +192,6 @@
 											</object>
 										</child>
 									</object>
-									<packing>
-										<property name="position">1</property>
-									</packing>
 								</child>
 							</object>
 							<packing>
@@ -209,7 +218,6 @@
 										<signal name="month-changed" handler="diary_calendar_month_changed_cb"/>
 									</object>
 									<packing>
-										<property name="position">1</property>
 										<property name="expand">False</property>
 									</packing>
 								</child>
@@ -220,7 +228,6 @@
 									</object>
 									<packing>
 										<property name="expand">False</property>
-										<property name="position">2</property>
 									</packing>
 								</child>
 								<child>
@@ -255,9 +262,6 @@
 											</object>
 										</child>
 									</object>
-									<packing>
-										<property name="position">3</property>
-									</packing>
 								</child>
 								<child>
 									<object class="GtkHButtonBox" id="buttonbox1">
@@ -285,7 +289,6 @@
 										</child>
 									</object>
 									<packing>
-										<property name="position">4</property>
 										<property name="expand">False</property>
 									</packing>
 								</child>
@@ -296,9 +299,6 @@
 							</packing>
 						</child>
 					</object>
-					<packing>
-						<property name="position">2</property>
-					</packing>
 				</child>
 				<child>
 					<object class="GtkStatusbar" id="dry_mw_statusbar">
@@ -306,12 +306,12 @@
 					</object>
 					<packing>
 						<property name="expand">False</property>
-						<property name="position">3</property>
 					</packing>
 				</child>
 			</object>
 		</child>
 	</object>
+
 	<object class="GtkListStore" id="dry_ald_type_store">
 		<columns>
 			<column type="gchararray"/><!--Name-->
@@ -319,6 +319,7 @@
 			<column type="gchararray"/><!--Icon name-->
 		</columns>
 	</object>
+
 	<!-- TODO: Use the description of link types somewhere -->
 	<object class="GtkDialog" id="dry_add_link_dialog">
 		<property name="title" translatable="yes">Add Link</property>
@@ -396,8 +397,108 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-6">dry_ald_cancel_button</action-widget>
-			<action-widget response="-5">dry_ald_add_button</action-widget>
+			<action-widget response="-6">dry_ald_cancel_button</action-widget><!--GTK_RESPONSE_CANCEL-->
+			<action-widget response="-5">dry_ald_add_button</action-widget><!--GTK_RESPONSE_OK-->
+		</action-widgets>
+	</object>
+
+	<object class="GtkImage" id="dry_sd_search_button_image">
+		<property name="stock">gtk-find</property>
+	</object>
+
+	<object class="GtkListStore" id="dry_sd_results_store">
+		<columns>
+			<column type="guint"/><!--Day-->
+			<column type="guint"/><!--Month-->
+			<column type="guint"/><!--Year-->
+			<column type="gchararray"/><!--Formatted date-->
+		</columns>
+	</object>
+
+	<object class="GtkDialog" id="dry_search_dialog">
+		<property name="title" translatable="yes">Search</property>
+		<property name="has-separator">False</property>
+		<signal name="destroy" handler="sd_destroy_cb"/>
+		<child internal-child="vbox">
+			<object class="GtkVBox" id="vbox2">
+				<child>
+					<object class="GtkHBox" id="hbox2">
+						<child>
+							<object class="GtkEntry" id="dry_sd_search_entry">
+								<property name="activates-default">True</property>
+							</object>
+						</child>
+						<child>
+							<object class="GtkButton" id="dry_sd_search_button">
+								<property name="image">dry_sd_search_button_image</property>
+								<property name="label" translatable="yes">Search</property>
+								<property name="can-default">True</property>
+								<property name="has-default">True</property>
+								<signal name="clicked" handler="sd_search_button_clicked_cb"/>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+					</object>
+					<packing>
+						<property name="expand">False</property>
+					</packing>
+				</child>
+				<child>
+					<object class="GtkLabel" id="label2">
+						<property name="label">&lt;b&gt;Results&lt;/b&gt;</property>
+						<property name="use-markup">True</property>
+					</object>
+					<packing>
+						<property name="expand">False</property>
+					</packing>
+				</child>
+				<child>
+					<object class="GtkScrolledWindow" id="scrolledwindow2">
+						<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+						<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+						<property name="shadow-type">GTK_SHADOW_IN</property>
+						<child>
+							<object class="GtkTreeView" id="dry_sd_results_tree_view">
+								<property name="model">dry_sd_results_store</property>
+								<property name="headers-visible">False</property>
+								<signal name="row-activated" handler="sd_results_tree_view_row_activated_cb"/>
+								<child>
+									<object class="GtkTreeViewColumn" id="column0">
+										<child>
+											<object class="GtkCellRendererText" id="renderer0"/>
+											<attributes>
+												<attribute name="text">3</attribute>
+											</attributes>
+										</child>
+									</object>
+								</child>
+							</object>
+						</child>
+					</object>
+				</child>
+				<child internal-child="action_area">
+					<object class="GtkHButtonBox" id="hbuttonbox2">
+						<child>
+							<object class="GtkButton" id="dry_sd_view_button">
+								<property name="label" translatable="yes">View Entry</property>
+								<property name="sensitive">False</property>
+								<signal name="clicked" handler="sd_view_button_clicked_cb"/>
+							</object>
+						</child>
+						<child>
+							<object class="GtkButton" id="dry_sd_close_button">
+								<property name="use-stock">True</property>
+								<property name="label">gtk-close</property>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+		<action-widgets>
+			<action-widget response="-7">dry_sd_close_button</action-widget><!--GTK_RESPONSE_CLOSE-->
 		</action-widgets>
 	</object>
 </interface>

@@ -18,16 +18,14 @@
  */
 
 #include <glib.h>
-#include <gtk/gtk.h>
 
-#ifndef DIARY_MAIN_WINDOW_H
-#define DIARY_MAIN_WINDOW_H
+#ifndef DIARY_SEARCH_DIALOG_H
+#define DIARY_SEARCH_DIALOG_H
 
 G_BEGIN_DECLS
 
-void diary_main_window_setup (GtkBuilder *builder);
-void mw_select_date (GDate *date);
+void diary_search_dialog_setup (GtkBuilder *builder);
 
 G_END_DECLS
 
-#endif /* !DIARY_MAIN_WINDOW_H */
+#endif /* !DIARY_SEARCH_DIALOG_H */

@@ -606,17 +606,14 @@ diary_storage_manager_get_statistics (DiaryStorageManager *self, guint *entry_co
 gboolean
 diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
 {
-	GDate *current_date, *entry_date;
+	GDate current_date, entry_date;
 	gint days_between;
 
-	current_date = g_date_new ();
-	g_date_set_time_t (current_date, time (NULL));
-	entry_date = g_date_new_dmy (day, month, year);
+	g_date_set_time_t (&current_date, time (NULL));
+	g_date_set_dmy (&entry_date, day, month, year);
 
 	/* Entries can't be edited before they've happened, or after 14 days after they've happened */
-	days_between = g_date_days_between (entry_date, current_date);
-	g_date_free (entry_date);
-	g_date_free (current_date);
+	days_between = g_date_days_between (&entry_date, &current_date);
 
 	if (days_between < 0 || days_between > 14)
 		return FALSE;
@@ -658,7 +655,7 @@ diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDat
  * the entry for that date. It will return %TRUE if the content is
  * non-empty, and %FALSE otherwise.
  *
- * Return value: %TRUE if the entry non-empty
+ * Return value: %TRUE if the entry is non-empty
  **/
 gboolean
 diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content)
@@ -669,12 +666,12 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 
 	/* Can't nullify entries without permission */
 	if (content == NULL || content[0] == '\0') {
-		GDate *date;
+		GDate date;
 		gchar date_string[100];
 		GtkWidget *dialog;
 
-		date = g_date_new_dmy (day, month, year);
-		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", date);
+		g_date_set_dmy (&date, day, month, year);
+		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
 							    GTK_DIALOG_MODAL,
@@ -686,7 +683,6 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 					GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
 					NULL);
-		g_date_free (date);
 
 		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
@@ -703,6 +699,51 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 	diary_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL, year, month, day, content);
 
 	return TRUE;
+}
+
+/**
+ * diary_storage_manager_search_entries:
+ * @self: a #DiaryStorageManager
+ * @search_string: string for which to search in entry content
+ * @matches: return location for the results
+ *
+ * Searches for @search_string in the content in entries in the
+ * database, and returns a the number of results. The results
+ * themselves are returned in @matches as an array of #GDates.
+ *
+ * If there are no results, @matches will be set to %NULL. It
+ * must otherwise be freed with g_free().
+ *
+ * Return value: number of results
+ **/
+guint
+diary_storage_manager_search_entries (DiaryStorageManager *self, const gchar *search_string, GDate *matches[])
+{
+	DiaryQueryResults *results;
+	guint i;
+
+	results = diary_storage_manager_query (self, "SELECT day, month, year FROM entries WHERE content LIKE '%%%q%%'", search_string);
+
+	/* No results? */
+	if (results->rows < 1) {
+		diary_storage_manager_free_results (results);
+		*matches = NULL;
+		return 0;
+	}
+
+	/* Allocate and set the results */
+	*matches = g_new0 (GDate, results->rows);
+
+	for (i = 0; i < results->rows; i++) {
+		g_date_set_dmy (&((*matches)[i]),
+				(GDateDay) atoi (results->data[(i + 1) * results->columns]),
+				(GDateMonth) atoi (results->data[(i + 1) * results->columns + 1]),
+				(GDateYear) atoi (results->data[(i + 1) * results->columns + 2]));
+	}
+
+	diary_storage_manager_free_results (results);
+
+	return i;
 }
 
 /* NOTE: Free results with g_slice_free */

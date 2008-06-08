@@ -9,4 +9,5 @@ src/links/uri.c
 src/main-window.c
 src/main.c
 src/printing.c
+src/search-dialog.c
 src/storage-manager.c

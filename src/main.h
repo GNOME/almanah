@@ -52,6 +52,11 @@ typedef struct {
 	GtkTable *ald_table;
 	GtkListStore *ald_type_store;
 
+	GtkWidget *search_dialog;
+	GtkEntry *sd_search_entry;
+	GtkListStore *sd_results_store;
+	GtkTreeSelection *sd_results_selection;
+
 	gboolean debug;
 	gboolean quitting;
 } Diary;

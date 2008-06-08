@@ -34,6 +34,7 @@ diary_quit (void)
 	diary_storage_manager_disconnect (diary->storage_manager);
 
 	gtk_widget_destroy (diary->add_link_dialog);
+	gtk_widget_destroy (diary->search_dialog);
 	gtk_widget_destroy (diary->main_window);
 
 	/* Quitting is actually done in the idle handler for disconnection

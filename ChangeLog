@@ -1,3 +1,27 @@
+2008-06-08  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/diary.ui:
+	* src/Makefile.am:
+	* src/interface.c: (diary_create_interface):
+	* src/main-window.c: (mw_select_date), (mw_search_activate_cb),
+	(mw_jump_to_today_activate_cb), (mw_calendar_day_selected_cb):
+	* src/main-window.h:
+	* src/main.c: (diary_quit):
+	* src/main.h:
+	* src/search-dialog.c: (results_selection_changed_cb),
+	(diary_search_dialog_setup), (sd_destroy_cb),
+	(sd_search_button_clicked_cb), (select_date),
+	(sd_results_tree_view_row_activated_cb),
+	(sd_view_button_clicked_cb):
+	* src/search-dialog.h:
+	* src/storage-manager.c: (diary_storage_manager_entry_is_editable),
+	(diary_storage_manager_set_entry),
+	(diary_storage_manager_search_entries):
+	* src/storage-manager.h: Added search functionality with a new search
+	dialogue. This involved a few cleanups to the interface, and also
+	resulted in some efficiency improvements by moving some GDates to the
+	stack from the heap.
+
 2008-06-07  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/Makefile.am:
