@@ -26,8 +26,8 @@ Philip Withnall <philip@tecnocode.co.uk>
 BUGS
 ====
 
-Bugs should be sent to me:
-http://tecnocode.co.uk/contact
+Bugs should be filed in GNOME's Bugzilla:
+http://bugzilla.gnome.org/enter_bug.cgi?product=diary
 
 To get a better debug output, run:
 # diary --debug

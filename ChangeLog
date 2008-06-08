@@ -1,5 +1,9 @@
 2008-06-08  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* README: Updated the bug reporting instructions.
+
+2008-06-08  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* data/diary.ui:
 	* src/Makefile.am:
 	* src/interface.c: (diary_create_interface):
