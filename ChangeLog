@@ -1,3 +1,11 @@
+============ Version 0.3
+
+2008-06-20  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* NEWS:
+	* configure.ac:
+	* data/Makefile.am: Bump to version 0.3.
+
 2008-06-20  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* README:

@@ -24,6 +24,4 @@ desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-CLEANFILES = \
-	$(desktop_in_files)	\
-	$(desktop_DATA)
+CLEANFILES = $(desktop_DATA)

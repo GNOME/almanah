@@ -1,5 +1,13 @@
 Major new features in version...
 
+0.3:
+* Update documentation to point to new SVN repository
+* Add search functionality
+* Add an icon by Jakub Szypulka and a desktop file
+* Improvements to encryption support
+* Add a French translation by Jean-François Martin
+* Fix a crasher bug if requesting statistics for a database with no entries.
+
 0.2:
 * Relicensed from GPLv2 to GPLv3
 * Add database encryption support
