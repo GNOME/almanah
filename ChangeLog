@@ -1,3 +1,16 @@
+2008-06-20  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* README:
+	* configure.ac:
+	* data/Makefile.am:
+	* data/icons/16x16/Makefile.am:
+	* data/icons/22x22/Makefile.am:
+	* data/icons/32x32/Makefile.am:
+	* data/icons/48x48/Makefile.am:
+	* data/icons/Makefile.am: Added new icon by Jakub Szypulka.
+	* src/storage-manager.c: (diary_storage_manager_connect): Clarified
+	the error message given when both DB files exist.
+
 2008-06-08  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* README: Updated the bug reporting instructions.

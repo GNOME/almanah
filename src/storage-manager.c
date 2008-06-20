@@ -420,7 +420,11 @@ diary_storage_manager_connect (DiaryStorageManager *self)
 		/* If both files exist, throw an error. We can't be sure which is the corrupt one,
 		 * and attempting to go any further may jeopardise the good one. */
 		if (g_file_test (self->priv->plain_filename, G_FILE_TEST_IS_REGULAR) == TRUE) {
-			diary_interface_error (_("Both an encrypted and plaintext version of the database exist, and one is likely corrupt. Please delete the corrupt one before continuing."), diary->main_window);
+			gchar *error_message = g_strdup_printf (_("Both an encrypted and plaintext version of the database exist as \"%s\" and \"%s\", and one is likely corrupt. Please delete the corrupt one before continuing."),
+							self->priv->filename, 
+							self->priv->plain_filename);
+			diary_interface_error (error_message, diary->main_window);
+			g_free (error_message);
 			diary_quit ();
 		}
 
