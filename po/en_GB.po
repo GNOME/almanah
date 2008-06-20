@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-22 08:05+0100\n"
+"POT-Creation-Date: 2008-06-20 18:18+0100\n"
 "PO-Revision-Date: 2008-03-23 12:45+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: \n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/interface.c:44
+#: ../src/interface.c:45
 #, c-format
 msgid "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
 msgstr "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
@@ -64,7 +64,7 @@ msgstr "Due to an unknown error the URI cannot be opened."
 msgid "The spelling checker could not be initialized: %s"
 msgstr "The spelling checker could not be initialised: %s"
 
-#: ../src/main-window.c:245
+#: ../src/main-window.c:265
 msgid ""
 "Diary is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -76,7 +76,7 @@ msgstr ""
 "Foundation, either version 3 of the Licence, or (at your option) any later "
 "version."
 
-#: ../src/main-window.c:249
+#: ../src/main-window.c:269
 msgid ""
 "Diary is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -88,7 +88,7 @@ msgstr ""
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for more "
 "details."
 
-#: ../src/main-window.c:253
+#: ../src/main-window.c:273
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Diary.  If not, see <http://www.gnu.org/licenses/>."
@@ -96,7 +96,7 @@ msgstr ""
 "You should have received a copy of the GNU General Public Licence along with "
 "Diary.  If not, see <http://www.gnu.org/licences/>."
 
-#: ../src/main-window.c:264
+#: ../src/main-window.c:284
 #, c-format
 msgid ""
 "A helpful diary keeper, storing %u entries with %u links and a total of %u "
@@ -105,7 +105,7 @@ msgstr ""
 "A helpful diary keeper, storing %u entries with %u links and a total of %u "
 "characters."
 
-#: ../src/main-window.c:271
+#: ../src/main-window.c:291
 msgid "Copyright © 2008 Philip Withnall"
 msgstr "Copyright © 2008 Philip Withnall"
 
@@ -114,34 +114,34 @@ msgstr "Copyright © 2008 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:279
+#: ../src/main-window.c:299
 msgid "translator-credits"
 msgstr "Philip Withnall <philip@tecnocode.co.uk>"
 
-#: ../src/main-window.c:283
+#: ../src/main-window.c:303
 msgid "Diary Website"
 msgstr "Diary Website"
 
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
-#: ../src/main-window.c:332 ../src/printing.c:66
+#: ../src/main-window.c:348 ../src/printing.c:66
 msgid "<b>%A, %e %B %Y</b>"
 msgstr "<b>%A, %e %B %Y</b>"
 
-#: ../src/main.c:65
+#: ../src/main.c:66
 msgid "Enable debug mode"
 msgstr "Enable debug mode"
 
-#: ../src/main.c:77
+#: ../src/main.c:78
 msgid "Diary"
 msgstr "Diary"
 
 #. Options
-#: ../src/main.c:81
+#: ../src/main.c:82
 msgid "- Manage your diary"
 msgstr "- Manage your diary"
 
-#: ../src/main.c:91
+#: ../src/main.c:92
 #, c-format
 msgid "Command-line options could not be parsed. Error: %s"
 msgstr "Command-line options could not be parsed. Error: %s"
@@ -157,6 +157,11 @@ msgstr "<b>Start Date</b>"
 #: ../src/printing.c:212
 msgid "<b>End Date</b>"
 msgstr "<b>End Date</b>"
+
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/search-dialog.c:62
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
 
 #: ../src/storage-manager.c:182
 #, c-format
@@ -199,14 +204,17 @@ msgid "Could not delete plain database file \"%s\"."
 msgstr "Could not delete plain database file \"%s\"."
 
 #: ../src/storage-manager.c:423
+#, c-format
 msgid ""
-"Both an encrypted and plaintext version of the database exist, and one is "
-"likely corrupt. Please delete the corrupt one before continuing."
+"Both an encrypted and plaintext version of the database exist as \"%s\" and "
+"\"%s\", and one is likely corrupt. Please delete the corrupt one before "
+"continuing."
 msgstr ""
-"Both an encrypted and plaintext version of the database exist, and one is "
-"likely corrupt. Please delete the corrupt one before continuing."
+"Both an encrypted and plaintext version of the database exist as \"%s\" and "
+"\"%s\", and one is likely corrupt. Please delete the corrupt one before "
+"continuing."
 
-#: ../src/storage-manager.c:444
+#: ../src/storage-manager.c:448
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -215,19 +223,19 @@ msgstr ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 
-#: ../src/storage-manager.c:476
+#: ../src/storage-manager.c:480
 #, c-format
 msgid "Error getting encryption key: GConf key \"%s\" invalid or empty."
 msgstr "Error getting encryption key: GConf key \"%s\" invalid or empty."
 
-#: ../src/storage-manager.c:520 ../src/storage-manager.c:553
+#: ../src/storage-manager.c:524 ../src/storage-manager.c:557
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 
-#: ../src/storage-manager.c:683
+#: ../src/storage-manager.c:684
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Are you sure you want to delete this diary entry for %s?"
