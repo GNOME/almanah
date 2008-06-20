@@ -1,6 +1,11 @@
 2008-06-20  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* en_GB.po: Updated British English translation.
+	* POTFILES.in: Added desktop file.
+
+2008-06-20  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* en_GB.po: Updated British English translation.
 
 2008-06-08  Philip Withnall  <philip@tecnocode.co.uk>
 
