@@ -1,3 +1,8 @@
+2008-06-22  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: renamed fr_FR.po to fr.po and updated translation.
+	* ChangeLog, LINGUAS, POTFILES.in: removed executable bit.
+
 2008-06-20  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* en_GB.po: Updated British English translation.
