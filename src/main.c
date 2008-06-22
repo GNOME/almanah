@@ -21,7 +21,9 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#ifdef ENABLE_ENCRYPTION
 #include <gconf/gconf.h>
+#endif /* ENABLE_ENCRYPTION */
 
 #include "main.h"
 #include "storage-manager.h"
@@ -45,7 +47,9 @@ void
 diary_quit_real (void)
 {
 	g_object_unref (diary->storage_manager);
+#ifdef ENABLE_ENCRYPTION
 	g_object_unref (diary->gconf_client);
+#endif /* ENABLE_ENCRYPTION */
 	g_free (diary);
 
 	if (gtk_main_level () > 0)
@@ -104,8 +108,10 @@ main (int argc, char *argv[])
 	diary->debug = debug;
 	diary->quitting = FALSE;
 
+#ifdef ENABLE_ENCRYPTION
 	/* Open GConf */
 	diary->gconf_client = gconf_client_get_default ();
+#endif /* ENABLE_ENCRYPTION */
 
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);

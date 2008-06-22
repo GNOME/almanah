@@ -6,7 +6,7 @@ Major new features in version...
 * Add an icon by Jakub Szypulka and a desktop file
 * Improvements to encryption support
 * Add a French translation by Jean-François Martin
-* Fix a crasher bug if requesting statistics for a database with no entries.
+* Fix a crasher bug if requesting statistics for a database with no entries
 
 0.2:
 * Relicensed from GPLv2 to GPLv3

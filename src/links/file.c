@@ -25,6 +25,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gio/gio.h>
 
 #include "../interface.h"
 #include "../main.h"

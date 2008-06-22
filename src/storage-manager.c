@@ -17,20 +17,22 @@
  * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
 #include <sqlite3.h>
 #include <stdlib.h>
-#include <gpgme.h>
 #include <sys/stat.h>
 #include <string.h>
+#ifdef ENABLE_ENCRYPTION
+#include <gpgme.h>
+#endif /* ENABLE_ENCRYPTION */
 
 #include "main.h"
 #include "interface.h"
 #include "link.h"
 #include "storage-manager.h"
-#include "config.h"
 
 #define ENCRYPTION_KEY_GCONF_PATH "/desktop/pgp/default_key"
 

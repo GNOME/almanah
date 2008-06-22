@@ -17,11 +17,11 @@
  * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <gtkspell/gtkspell.h>
 
-#include "config.h"
 #include "main.h"
 #include "storage-manager.h"
 #include "link.h"

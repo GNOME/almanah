@@ -17,10 +17,10 @@
  * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
-#include "config.h"
 #include "main.h"
 #include "main-window.h"
 #include "add-link-dialog.h"

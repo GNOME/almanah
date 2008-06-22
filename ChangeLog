@@ -1,3 +1,15 @@
+2008-06-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* NEWS: Fix a typo.
+	* data/diary.ui: Make the search dialogue non-modal.
+	* configure.ac:
+	* src/interface.c:
+	* src/links/file.c:
+	* src/main-window.c:
+	* src/main.c: (diary_quit_real), (main):
+	* src/main.h:
+	* src/storage-manager.c: Fix the non-encryption build.
+
 ============ Version 0.3
 
 2008-06-20  Philip Withnall  <philip@tecnocode.co.uk>

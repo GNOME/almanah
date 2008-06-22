@@ -418,6 +418,7 @@
 	<object class="GtkDialog" id="dry_search_dialog">
 		<property name="title" translatable="yes">Search</property>
 		<property name="has-separator">False</property>
+		<property name="modal">False</property>
 		<signal name="destroy" handler="sd_destroy_cb"/>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox2">

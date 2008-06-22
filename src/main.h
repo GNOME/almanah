@@ -17,9 +17,12 @@
  * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
 #include <gtk/gtk.h>
 #include <glib.h>
+#ifdef ENABLE_ENCRYPTION
 #include <gconf/gconf-client.h>
+#endif /* ENABLE_ENCRYPTION */
 
 #include "storage-manager.h"
 
@@ -30,7 +33,9 @@ G_BEGIN_DECLS
 
 typedef struct {
 	DiaryStorageManager *storage_manager;
+#ifdef ENABLE_ENCRYPTION
 	GConfClient *gconf_client;
+#endif /* ENABLE_ENCRYPTION */
 
 	GtkWidget *main_window;
 	GtkTextView *entry_view;
