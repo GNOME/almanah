@@ -15,7 +15,9 @@ GNOME 2.22 development platform
 	http://www.gnome.org
 SQLite 3
 	http://sqlite.org
-GPGME
+GtkSpell 2.0
+	http://gtkspell.sourceforge.net/
+GPGME (optional)
 	http://www.gnupg.org/gpgme.html
 
 Copyright

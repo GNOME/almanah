@@ -1,3 +1,12 @@
+============ Version 0.3.1
+
+2008-06-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* NEWS:
+	* README:
+	* configure.ac: Bump to version 0.3.1.
+	* data/Makefile.am: Fix the desktop file.
+
 2008-06-22  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* NEWS: Fix a typo.

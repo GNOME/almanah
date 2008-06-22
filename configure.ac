@@ -1,4 +1,4 @@
-AC_INIT(diary, 0.3)
+AC_INIT(diary, 0.3.1)
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_CONFIG_HEADER(config.h)
@@ -109,7 +109,6 @@ Makefile
 src/Makefile
 po/Makefile.in
 data/Makefile
-data/diary.desktop
 data/icons/Makefile
 data/icons/16x16/Makefile
 data/icons/22x22/Makefile

@@ -16,12 +16,15 @@ update-icon-cache:
 # UI file
 uidir = $(datadir)/diary
 ui_DATA = diary.ui
-EXTRA_DIST = $(ui_DATA)
 
 # Desktop file
+@INTLTOOL_DESKTOP_RULE@
+
 desktop_in_files = diary.desktop.in
 desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
-@INTLTOOL_DESKTOP_RULE@
 
+EXTRA_DIST = \
+	$(ui_DATA)	\
+	$(desktop_in_files)
 CLEANFILES = $(desktop_DATA)

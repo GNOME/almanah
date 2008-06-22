@@ -1,5 +1,11 @@
 Major new features in version...
 
+0.3.1:
+* Update documentation
+* Fix the non-encryption build
+* Make the search dialogue non-modal
+* Fix the desktop file
+
 0.3:
 * Update documentation to point to new SVN repository
 * Add search functionality
