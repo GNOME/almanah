@@ -1,5 +1,9 @@
 2008-06-22  Claude Paroz  <claude@2xlibre.net>
 
+	* LINGUAS: Changed fr_Fr to fr.
+
+2008-06-22  Claude Paroz  <claude@2xlibre.net>
+
 	* fr.po: renamed fr_FR.po to fr.po and updated translation.
 	* ChangeLog, LINGUAS, POTFILES.in: removed executable bit.
 
