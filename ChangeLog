@@ -1,5 +1,9 @@
 2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/interface.c: (diary_create_interface): Remove debug code.
+
+2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* data/diary.ui: Mark some strings as translatable.
 	* src/interface.c: (diary_create_interface): Improve the error
 	message when the UI can't be loaded.
