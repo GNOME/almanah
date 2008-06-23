@@ -1,3 +1,8 @@
+2008-06-23  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Added Swedish translation.
+	* LINGUAS: Added sv
+
 2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* POTFILES.in: Fix translation of the UI.
