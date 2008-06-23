@@ -1,5 +1,12 @@
 2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* data/icons/16x16/diary.svg:
+	* data/icons/22x22/diary.svg:
+	* data/icons/32x32/diary.svg:
+	* data/icons/48x48/diary.svg: Add SVG versions of the icon.
+
+2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/storage-manager.c: (diary_storage_manager_connect),
 	(diary_storage_manager_disconnect): Improve error messages with
 	advice on how to fix the problems.
