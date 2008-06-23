@@ -1,5 +1,11 @@
 2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/storage-manager.c: (diary_storage_manager_connect),
+	(diary_storage_manager_disconnect): Improve error messages with
+	advice on how to fix the problems.
+
+2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/interface.c: (diary_create_interface): Remove debug code.
 
 2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
