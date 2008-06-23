@@ -1,0 +1,251 @@
+# Catalan translation of Diary.
+# Copyright (C) 2008 Free Software Foundation Inc.
+# This file is distributed under the same license as the diary package.
+# Gil Forcada <gilforcada@guifi.net>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: diary\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-06-23 09:33+0200\n"
+"PO-Revision-Date: 2008-06-23 09:41+0200\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/diary.desktop.in.h:1 ../src/main.c:82
+msgid "Diary"
+msgstr "Dietari"
+
+#: ../data/diary.desktop.in.h:2
+msgid "Keep a personal diary"
+msgstr "Escriu un dietari personal"
+
+#: ../src/interface.c:45
+#, c-format
+msgid "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
+msgstr ""
+"No s'ha pogut carregar el fitxer d'interfície gràfica «%s/diary/diary.ui». "
+"Error: %s"
+
+#. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
+#. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
+#. Translators: These are the names and descriptions of the different link types.
+#: ../src/link.c:52
+msgid "File"
+msgstr "Fitxer"
+
+#: ../src/link.c:52
+msgid "An attached file."
+msgstr "Un fitxer adjunt."
+
+#: ../src/link.c:53
+msgid "Note"
+msgstr "Nota"
+
+#: ../src/link.c:53
+msgid "A note about an important event."
+msgstr "Una nota sobre un esdeveniment important."
+
+#: ../src/link.c:54 ../src/links/uri.c:55
+msgid "URI"
+msgstr "URI"
+
+#: ../src/link.c:54
+msgid "A URI of a file or web page."
+msgstr "Un URI d'un fitxer o d'una pàgina web."
+
+#: ../src/links/file.c:44
+msgid "Due to an unknown error the file cannot be opened."
+msgstr "No es pot obrir el fitxer degut a un error desconegut."
+
+#: ../src/links/file.c:55
+msgid "Select File"
+msgstr "Seleccioneu un fitxer"
+
+#: ../src/links/uri.c:44
+msgid "Due to an unknown error the URI cannot be opened."
+msgstr "No es pot obrir l'URI degut a un error desconegut."
+
+#: ../src/main-window.c:178
+#, c-format
+msgid "The spelling checker could not be initialized: %s"
+msgstr "No s'ha pogut inicialitzar el verificador ortogràfic: %s"
+
+#: ../src/main-window.c:265
+msgid ""
+"Diary is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"El Diary és programari lliure; podeu redistribuir-lo i/o modificar-lo sota "
+"els termes de la Llicència Pública General GNU tal com ha estat publicada "
+"per la Free Software Foundation; ja sigui la versió 3 de la Llicència o bé "
+"(si ho preferiu) qualsevol altra versió posterior."
+
+#: ../src/main-window.c:269
+msgid ""
+"Diary is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"El Diary es distribueix amb l'expectativa que serà útil, però SENSE CAP "
+"GARANTIA; ni tan sols la garantia implícita de COMERCIABILITAT o ADEQUACIÓ "
+"PER A UN PROPÒSIT PARTICULAR. Vegeu la Llicència Pública General GNU per "
+"obtenir-ne més detalls."
+
+#: ../src/main-window.c:273
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Diary.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Hauríeu d'haver rebut una còpia de la Llicència Pública General GNU "
+"juntament amb el Diary. En cas contrari vegeu <http://www.gnu.org/licenses>."
+
+#: ../src/main-window.c:284
+#, c-format
+msgid ""
+"A helpful diary keeper, storing %u entries with %u links and a total of %u "
+"characters."
+msgstr ""
+"Un programa per a ajudar a mantenir un dietari. Hi ha %u entrades amb %u "
+"enllaços i un total de %u caràcters."
+
+#: ../src/main-window.c:291
+msgid "Copyright © 2008 Philip Withnall"
+msgstr "Copyright © 2008 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:299
+msgid "translator-credits"
+msgstr "Gil Forcada <gilforcada@guifi.net>"
+
+#: ../src/main-window.c:303
+msgid "Diary Website"
+msgstr "Lloc web del Diary"
+
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#: ../src/main-window.c:348 ../src/printing.c:66
+msgid "<b>%A, %e %B %Y</b>"
+msgstr "<b>%A %e %B %Y</b>"
+
+#: ../src/main.c:70
+msgid "Enable debug mode"
+msgstr "Habilita el mode de depuració"
+
+#. Options
+#: ../src/main.c:86
+msgid "- Manage your diary"
+msgstr "- Gestiona el dietari"
+
+#: ../src/main.c:96
+#, c-format
+msgid "Command-line options could not be parsed. Error: %s"
+msgstr "No s'han pogut analitzar les opcions de la línia d'ordres. Error: %s"
+
+#: ../src/printing.c:80
+msgid "<i>No entry for this date.</i>"
+msgstr "<i>No hi ha cap entrada en aquesta data.</i>"
+
+#: ../src/printing.c:210
+msgid "<b>Start Date</b>"
+msgstr "<b>Data d'inici</b>"
+
+#: ../src/printing.c:212
+msgid "<b>End Date</b>"
+msgstr "<b>Data de finalització</b>"
+
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/search-dialog.c:62
+msgid "%A, %e %B %Y"
+msgstr "%A %e %B %Y"
+
+#: ../src/storage-manager.c:184
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME no permet l'ús de OpenPGP: %s"
+
+#: ../src/storage-manager.c:193
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "S'ha produït un error en crear el context per al criptògraf: %s"
+
+#: ../src/storage-manager.c:222
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr ""
+"S'ha produït un error en obrir el fitxer de base de dades encriptat «%s»: %s"
+
+#: ../src/storage-manager.c:242
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "S'ha produït un error en obrir el fitxer de bases de dades «%s»: %s"
+
+#: ../src/storage-manager.c:312
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "S'ha produït un error en desencriptar la base de dades: %s"
+
+#: ../src/storage-manager.c:345
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "S'ha produït un error en obtenir la clau d'encriptatge: %s"
+
+#: ../src/storage-manager.c:366
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "S'ha produït un error en encriptar la base de dades: %s"
+
+#: ../src/storage-manager.c:377
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "No s'ha pogut suprimir el fitxer de base de dades «%s»."
+
+#: ../src/storage-manager.c:425
+#, c-format
+msgid ""
+"Both an encrypted and plaintext version of the database exist as \"%s\" and "
+"\"%s\", and one is likely corrupt. Please delete the corrupt one before "
+"continuing."
+msgstr ""
+"Existeix una versió encriptada de la base de dades i una sense encriptar, "
+"anomenades «%s» i «%s». Sembla que una de les dues està malmesa. Suprimiu-la "
+"per a continuar."
+
+#: ../src/storage-manager.c:450
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"No s'ha pogut obrir la base de dades «%s». L'SQLite ha proporcionat el "
+"missatge d'error següent: %s"
+
+#: ../src/storage-manager.c:482
+#, c-format
+msgid "Error getting encryption key: GConf key \"%s\" invalid or empty."
+msgstr ""
+"Error en obtenir la clau d'encriptació: La clau del GConf «%s» no és vàlida o "
+"és buida."
+
+#: ../src/storage-manager.c:526 ../src/storage-manager.c:559
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"No s'ha pogut executar la consulta «%s». L'SQLite ha proporcionat el missatge "
+"d'error següent: %s"
+
+#: ../src/storage-manager.c:686
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Segur que voleu suprimir aquesta entrada del dietari per a %s?"
