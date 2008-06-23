@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-20 18:48+0100\n"
+"POT-Creation-Date: 2008-06-23 17:08+0100\n"
 "PO-Revision-Date: 2008-03-23 12:45+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: \n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/diary.desktop.in.h:1 ../src/main.c:78
+#: ../data/diary.desktop.in.h:1 ../data/diary.ui.h:5 ../src/main.c:82
 msgid "Diary"
 msgstr "Diary"
 
@@ -23,10 +23,66 @@ msgstr "Diary"
 msgid "Keep a personal diary"
 msgstr "Keep a personal diary"
 
+#: ../data/diary.ui.h:1
+msgid "<b>Attached Links</b>"
+msgstr "<b>Attached Links</b>"
+
+#: ../data/diary.ui.h:2
+msgid "<b>Calendar</b>"
+msgstr "<b>Calendar</b>"
+
+#: ../data/diary.ui.h:3
+msgid "<b>Results</b>"
+msgstr "<b>Results</b>"
+
+#: ../data/diary.ui.h:4
+msgid "Add Link"
+msgstr "Add Link"
+
+#: ../data/diary.ui.h:6
+msgid "Go To Today"
+msgstr "Go To Today"
+
+#: ../data/diary.ui.h:7
+msgid "Link Type"
+msgstr "Link Type"
+
+#: ../data/diary.ui.h:8
+msgid "Remove Link"
+msgstr "Remove Link"
+
+#: ../data/diary.ui.h:9
+msgid "Search"
+msgstr "Search"
+
+#: ../data/diary.ui.h:10
+msgid "View"
+msgstr "View"
+
+#: ../data/diary.ui.h:11
+msgid "View Entry"
+msgstr "View Entry"
+
+#: ../data/diary.ui.h:12
+msgid "_Edit"
+msgstr "_Edit"
+
+#: ../data/diary.ui.h:13
+msgid "_File"
+msgstr "_File"
+
+#: ../data/diary.ui.h:14
+msgid "_Help"
+msgstr "_Help"
+
+#: ../data/diary.ui.h:15
+msgid "_Search"
+msgstr "_Search"
+
 #: ../src/interface.c:45
 #, c-format
-msgid "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
-msgstr "UI file \"%s/diary/diary.ui\" could not be loaded. Error: %s"
+msgid "UI file \"%s/diary/diary.ui\" could not be loaded."
+msgstr "UI file \"%s/diary/diary.ui\" could not be loaded."
 
 #. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
 #. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
@@ -55,11 +111,11 @@ msgstr "URI"
 msgid "A URI of a file or web page."
 msgstr "A URI of a file or web page."
 
-#: ../src/links/file.c:43
+#: ../src/links/file.c:44
 msgid "Due to an unknown error the file cannot be opened."
 msgstr "Due to an unknown error the file cannot be opened."
 
-#: ../src/links/file.c:54
+#: ../src/links/file.c:55
 msgid "Select File"
 msgstr "Select File"
 
@@ -136,16 +192,16 @@ msgstr "Diary Website"
 msgid "<b>%A, %e %B %Y</b>"
 msgstr "<b>%A, %e %B %Y</b>"
 
-#: ../src/main.c:66
+#: ../src/main.c:70
 msgid "Enable debug mode"
 msgstr "Enable debug mode"
 
 #. Options
-#: ../src/main.c:82
+#: ../src/main.c:86
 msgid "- Manage your diary"
 msgstr "- Manage your diary"
 
-#: ../src/main.c:92
+#: ../src/main.c:96
 #, c-format
 msgid "Command-line options could not be parsed. Error: %s"
 msgstr "Command-line options could not be parsed. Error: %s"
@@ -167,47 +223,47 @@ msgstr "<b>End Date</b>"
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/storage-manager.c:182
+#: ../src/storage-manager.c:184
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME doesn't support OpenPGP: %s"
 
-#: ../src/storage-manager.c:191
+#: ../src/storage-manager.c:193
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Error creating cipher context: %s"
 
-#: ../src/storage-manager.c:220
+#: ../src/storage-manager.c:222
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Error opening encrypted database file \"%s\": %s"
 
-#: ../src/storage-manager.c:240
+#: ../src/storage-manager.c:242
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Error opening plain database file \"%s\": %s"
 
-#: ../src/storage-manager.c:310
+#: ../src/storage-manager.c:312
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Error decrypting database: %s"
 
-#: ../src/storage-manager.c:343
+#: ../src/storage-manager.c:345
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Error getting encryption key: %s"
 
-#: ../src/storage-manager.c:364
+#: ../src/storage-manager.c:366
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Error encrypting database: %s"
 
-#: ../src/storage-manager.c:375
+#: ../src/storage-manager.c:377
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Could not delete plain database file \"%s\"."
 
-#: ../src/storage-manager.c:423
+#: ../src/storage-manager.c:425
 #, c-format
 msgid ""
 "Both an encrypted and plaintext version of the database exist as \"%s\" and "
@@ -218,7 +274,7 @@ msgstr ""
 "\"%s\", and one is likely corrupt. Please delete the corrupt one before "
 "continuing."
 
-#: ../src/storage-manager.c:448
+#: ../src/storage-manager.c:450
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -227,19 +283,19 @@ msgstr ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 
-#: ../src/storage-manager.c:480
+#: ../src/storage-manager.c:482
 #, c-format
 msgid "Error getting encryption key: GConf key \"%s\" invalid or empty."
 msgstr "Error getting encryption key: GConf key \"%s\" invalid or empty."
 
-#: ../src/storage-manager.c:524 ../src/storage-manager.c:557
+#: ../src/storage-manager.c:526 ../src/storage-manager.c:559
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 
-#: ../src/storage-manager.c:684
+#: ../src/storage-manager.c:686
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Are you sure you want to delete this diary entry for %s?"

@@ -1,3 +1,8 @@
+2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* POTFILES.in: Fix translation of the UI.
+	* en_GB.po: Updated British English translation.
+
 2008-06-23  Gil Forcada  <gforcada@gnome.org>
 
 	* ca.po: Added Catalan translation.

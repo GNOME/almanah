@@ -6,7 +6,7 @@
 				<child>
 					<object class="GtkAction" id="dry_ui_file">
 						<property name="name">file</property>
-						<property name="label">_File</property>
+						<property name="label" translatable="yes">_File</property>
 					</object>
 				</child>
 				<child>
@@ -26,7 +26,7 @@
 				<child>
 					<object class="GtkAction" id="dry_ui_edit">
 						<property name="name">edit</property>
-						<property name="label">_Edit</property>
+						<property name="label" translatable="yes">_Edit</property>
 					</object>
 				</child>
 				<child>
@@ -68,7 +68,7 @@
 				<child>
 					<object class="GtkAction" id="dry_ui_help">
 						<property name="name">help</property>
-						<property name="label">_Help</property>
+						<property name="label" translatable="yes">_Help</property>
 					</object>
 				</child>
 				<child>
@@ -169,7 +169,6 @@
 							<object class="GtkVBox" id="vbox3">
 								<child>
 									<object class="GtkLabel" id="dry_mw_date_label">
-										<property name="label" translatable="yes">&lt;big&gt;&lt;big&gt;&lt;b&gt;Wednesday, March 5, 2007&lt;/b&gt;&lt;/big&gt;&lt;/big&gt;</property>
 										<property name="use-markup">True</property>
 									</object>
 									<packing>
@@ -448,7 +447,7 @@
 				</child>
 				<child>
 					<object class="GtkLabel" id="label2">
-						<property name="label">&lt;b&gt;Results&lt;/b&gt;</property>
+						<property name="label" translatable="yes">&lt;b&gt;Results&lt;/b&gt;</property>
 						<property name="use-markup">True</property>
 					</object>
 					<packing>
