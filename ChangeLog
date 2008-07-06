@@ -1,5 +1,13 @@
 2008-07-06  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/links/file.c:
+	* src/links/note.c:
+	* src/links/uri.c: Fixed licence header to read GPLv3+, rather than
+	GPLv2+. These files were accidentally skipped when relicencing on
+	2008-04-03.
+
+2008-07-06  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* data/diary.ui:
 	* src/interface.c: (diary_create_interface),
 	(diary_interface_embolden_label):
