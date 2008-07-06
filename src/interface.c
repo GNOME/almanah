@@ -89,9 +89,24 @@ diary_create_interface (void)
 	diary->sd_results_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "dry_sd_results_tree_view")));
 	diary_search_dialog_setup (builder);
 
+	/* Embolden some labels */
+	diary_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_calendar_label")));
+	diary_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_attached_links_label")));
+	diary_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_sd_results_label")));
+
 	g_object_unref (builder);
 
 	return diary->main_window;
+}
+
+void
+diary_interface_embolden_label (GtkLabel *label)
+{
+	gchar *markup;
+
+	markup = g_strdup_printf ("<b>%s</b>", gtk_label_get_label (label));
+	gtk_label_set_markup_with_mnemonic (label, markup);
+	g_free (markup);
 }
 
 /**

@@ -345,8 +345,9 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	g_date_set_dmy (&calendar_date, day, month, year);
 
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
-	g_date_strftime (calendar_string, sizeof (calendar_string), _("<b>%A, %e %B %Y</b>"), &calendar_date);
+	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
 	gtk_label_set_markup (diary->date_label, calendar_string);
+	diary_interface_embolden_label (diary->date_label);
 
 	/* Update the entry */
 	entry_text = diary_storage_manager_get_entry (diary->storage_manager, year, month, day);

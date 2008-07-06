@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-24 21:02+0100\n"
+"POT-Creation-Date: 2008-07-06 14:23+0100\n"
 "PO-Revision-Date: 2008-03-23 12:45+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: \n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/diary.desktop.in.h:1 ../data/diary.ui.h:5 ../src/main.c:82
+#: ../data/diary.desktop.in.h:1 ../data/diary.ui.h:4 ../src/main.c:82
 msgid "Diary"
 msgstr "Diary"
 
@@ -24,32 +24,32 @@ msgid "Keep a personal diary"
 msgstr "Keep a personal diary"
 
 #: ../data/diary.ui.h:1
-msgid "<b>Attached Links</b>"
-msgstr "<b>Attached Links</b>"
-
-#: ../data/diary.ui.h:2
-msgid "<b>Calendar</b>"
-msgstr "<b>Calendar</b>"
-
-#: ../data/diary.ui.h:3
-msgid "<b>Results</b>"
-msgstr "<b>Results</b>"
-
-#: ../data/diary.ui.h:4
 msgid "Add Link"
 msgstr "Add Link"
 
-#: ../data/diary.ui.h:6
+#: ../data/diary.ui.h:2
+msgid "Attached Links"
+msgstr "Attached Links"
+
+#: ../data/diary.ui.h:3
+msgid "Calendar"
+msgstr "Calendar"
+
+#: ../data/diary.ui.h:5
 msgid "Go To Today"
 msgstr "Go To Today"
 
-#: ../data/diary.ui.h:7
+#: ../data/diary.ui.h:6
 msgid "Link Type"
 msgstr "Link Type"
 
-#: ../data/diary.ui.h:8
+#: ../data/diary.ui.h:7
 msgid "Remove Link"
 msgstr "Remove Link"
+
+#: ../data/diary.ui.h:8
+msgid "Results"
+msgstr "Results"
 
 #: ../data/diary.ui.h:9
 msgid "Search"
@@ -188,9 +188,10 @@ msgstr "Diary Website"
 
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
-#: ../src/main-window.c:348 ../src/printing.c:66
-msgid "<b>%A, %e %B %Y</b>"
-msgstr "<b>%A, %e %B %Y</b>"
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/main-window.c:348 ../src/printing.c:66 ../src/search-dialog.c:62
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
 
 #: ../src/main.c:70
 msgid "Enable debug mode"
@@ -206,22 +207,17 @@ msgstr "- Manage your diary"
 msgid "Command-line options could not be parsed. Error: %s"
 msgstr "Command-line options could not be parsed. Error: %s"
 
-#: ../src/printing.c:80
-msgid "<i>No entry for this date.</i>"
-msgstr "<i>No entry for this date.</i>"
+#: ../src/printing.c:82
+msgid "No entry for this date."
+msgstr "No entry for this date."
 
-#: ../src/printing.c:210
-msgid "<b>Start Date</b>"
-msgstr "<b>Start Date</b>"
+#: ../src/printing.c:213
+msgid "Start Date"
+msgstr "Start Date"
 
-#: ../src/printing.c:212
-msgid "<b>End Date</b>"
-msgstr "<b>End Date</b>"
-
-#. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/search-dialog.c:62
-msgid "%A, %e %B %Y"
-msgstr "%A, %e %B %Y"
+#: ../src/printing.c:216
+msgid "End Date"
+msgstr "End Date"
 
 #: ../src/storage-manager.c:184
 #, c-format
@@ -268,13 +264,13 @@ msgstr "Could not delete plain database file \"%s\"."
 msgid ""
 "Both an encrypted and plaintext version of the database exist as \"%s\" and "
 "\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
-"which is 0KiB in size) before continuing. If neither file is 0Kib, the "
+"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
 "problem will most likely have been caused by Diary being unable to encrypt "
 "the database, so you should move the first file."
 msgstr ""
 "Both an encrypted and plaintext version of the database exist as \"%s\" and "
 "\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
-"which is 0KiB in size) before continuing. If neither file is 0Kib, the "
+"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
 "problem will most likely have been caused by Diary being unable to encrypt "
 "the database, so you should move the first file."
 
@@ -309,6 +305,9 @@ msgstr ""
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Are you sure you want to delete this diary entry for %s?"
+
+#~ msgid "<b>%A, %e %B %Y</b>"
+#~ msgstr "<b>%A, %e %B %Y</b>"
 
 #~ msgid "Error getting encryption key: GConf key \"%s\" invalid or empty."
 #~ msgstr "Error getting encryption key: GConf key \"%s\" invalid or empty."

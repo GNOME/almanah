@@ -1,3 +1,15 @@
+2008-07-06  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/diary.ui:
+	* src/interface.c: (diary_create_interface),
+	(diary_interface_embolden_label):
+	* src/interface.h:
+	* src/main-window.c: (mw_calendar_day_selected_cb):
+	* src/printing.c: (print_entry), (create_custom_widget_cb): Remove
+	markup from translatable strings. (Closes: #541709)
+	* src/storage-manager.c: (diary_storage_manager_connect): Fix a typo
+	in an error message. (Closes: #541716)
+
 2008-06-23  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/icons/16x16/diary.svg:

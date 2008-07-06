@@ -422,7 +422,7 @@ diary_storage_manager_connect (DiaryStorageManager *self)
 		/* If both files exist, throw an error. We can't be sure which is the corrupt one,
 		 * and attempting to go any further may jeopardise the good one. */
 		if (g_file_test (self->priv->plain_filename, G_FILE_TEST_IS_REGULAR) == TRUE) {
-			gchar *error_message = g_strdup_printf (_("Both an encrypted and plaintext version of the database exist as \"%s\" and \"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one which is 0KiB in size) before continuing. If neither file is 0Kib, the problem will most likely have been caused by Diary being unable to encrypt the database, so you should move the first file."),
+			gchar *error_message = g_strdup_printf (_("Both an encrypted and plaintext version of the database exist as \"%s\" and \"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one which is 0KiB in size) before continuing. If neither file is 0KiB, the problem will most likely have been caused by Diary being unable to encrypt the database, so you should move the first file."),
 							self->priv->filename, 
 							self->priv->plain_filename);
 			diary_interface_error (error_message, diary->main_window);

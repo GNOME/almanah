@@ -201,9 +201,8 @@
 						<child>
 							<object class="GtkVBox" id="vbox2">
 								<child>
-									<object class="GtkLabel" id="label1">
-										<property name="label" translatable="yes">&lt;b&gt;Calendar&lt;/b&gt;</property>
-										<property name="use-markup">True</property>
+									<object class="GtkLabel" id="dry_mw_calendar_label">
+										<property name="label" translatable="yes">Calendar</property>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -221,9 +220,8 @@
 									</packing>
 								</child>
 								<child>
-									<object class="GtkLabel" id="label2">
-										<property name="label" translatable="yes">&lt;b&gt;Attached Links&lt;/b&gt;</property>
-										<property name="use-markup">True</property>
+									<object class="GtkLabel" id="dry_mw_attached_links_label">
+										<property name="label" translatable="yes">Attached Links</property>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -446,9 +444,8 @@
 					</packing>
 				</child>
 				<child>
-					<object class="GtkLabel" id="label2">
-						<property name="label" translatable="yes">&lt;b&gt;Results&lt;/b&gt;</property>
-						<property name="use-markup">True</property>
+					<object class="GtkLabel" id="dry_sd_results_label">
+						<property name="label" translatable="yes">Results</property>
 					</object>
 					<packing>
 						<property name="expand">False</property>

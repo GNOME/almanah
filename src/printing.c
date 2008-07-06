@@ -44,7 +44,7 @@ typedef struct {
 static gboolean
 print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintOperation *diary_operation)
 {
-	gchar *entry, title[100];
+	gchar *entry, title[100], *title_markup;
 	PangoLayout *title_layout = NULL, *entry_layout;
 	PangoLayoutLine *entry_line;
 	PangoRectangle logical_extents;
@@ -63,8 +63,10 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 		pango_layout_set_width (title_layout, gtk_print_context_get_width (context) * PANGO_SCALE);
 
 		/* Translators: This is a strftime()-format string for the date displayed above each printed entry. */
-		g_date_strftime (title, sizeof (title), _("<b>%A, %e %B %Y</b>"), diary_operation->current_date);
-		pango_layout_set_markup (title_layout, title, -1);
+		g_date_strftime (title, sizeof (title), _("%A, %e %B %Y"), diary_operation->current_date);
+		title_markup = g_strdup_printf ("<b>%s</b>", title);
+		pango_layout_set_markup (title_layout, title_markup, -1);
+		g_free (title_markup);
 
 		title_y = diary_operation->y;
 		pango_layout_get_pixel_size (title_layout, NULL, &height);
@@ -77,9 +79,9 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
 
 	if (entry == NULL)
-		pango_layout_set_markup (entry_layout, _("<i>No entry for this date.</i>"), -1);
-	else
-		pango_layout_set_text (entry_layout, entry, -1);
+		entry = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
+
+	pango_layout_set_text (entry_layout, entry, -1);
 
 	/* Check we're not orphaning things */
 	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout), diary_operation->current_line + MAX_ORPHANS) - 1);
@@ -198,7 +200,8 @@ draw_page_cb (GtkPrintOperation *operation, GtkPrintContext *context, gint page_
 static GtkWidget *
 create_custom_widget_cb (GtkPrintOperation *operation, DiaryPrintOperation *diary_operation)
 {
-	GtkWidget *start_calendar, *end_calendar, *start_label, *end_label;
+	GtkWidget *start_calendar, *end_calendar;
+	GtkLabel *start_label, *end_label;
 	GtkTable *table;
 
 	start_calendar = gtk_calendar_new ();
@@ -206,16 +209,18 @@ create_custom_widget_cb (GtkPrintOperation *operation, DiaryPrintOperation *diar
 	end_calendar = gtk_calendar_new ();
 	g_signal_connect (end_calendar, "month-changed", G_CALLBACK (diary_calendar_month_changed_cb), NULL);
 
-	start_label = gtk_label_new (NULL);
-	gtk_label_set_markup (GTK_LABEL (start_label), _("<b>Start Date</b>"));
-	end_label = gtk_label_new (NULL);
-	gtk_label_set_markup (GTK_LABEL (end_label), _("<b>End Date</b>"));
+	start_label = GTK_LABEL (gtk_label_new (NULL));
+	gtk_label_set_markup (start_label, _("Start Date"));
+	diary_interface_embolden_label (start_label);
+	end_label = GTK_LABEL (gtk_label_new (NULL));
+	gtk_label_set_markup (end_label, _("End Date"));
+	diary_interface_embolden_label (end_label);
 
 	table = GTK_TABLE (gtk_table_new (2, 2, FALSE));
 	gtk_table_attach (table, start_calendar, 0, 1, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
 	gtk_table_attach (table, end_calendar, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
-	gtk_table_attach (table, start_label, 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
-	gtk_table_attach (table, end_label, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
+	gtk_table_attach (table, GTK_WIDGET (start_label), 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
+	gtk_table_attach (table, GTK_WIDGET (end_label), 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
 
 	diary_operation->start_calendar = GTK_CALENDAR (start_calendar);
 	diary_operation->end_calendar = GTK_CALENDAR (end_calendar);
