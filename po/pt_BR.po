@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Diary\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-05 03:19+0000\n"
-"PO-Revision-Date: 2008-07-06 17:18-0300\n"
+"POT-Creation-Date: 2008-07-07 05:13+0000\n"
+"PO-Revision-Date: 2008-07-07 19:10-0300\n"
 "Last-Translator: Fabrício Godoy <skarllot@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../data/diary.desktop.in.h:1 ../data/diary.ui.h:5 ../src/main.c:82
+#: ../data/diary.desktop.in.h:1 ../data/diary.ui.h:4 ../src/main.c:82
 msgid "Diary"
 msgstr "Diary"
 
@@ -25,32 +25,32 @@ msgid "Keep a personal diary"
 msgstr "Faça um diário pessoal"
 
 #: ../data/diary.ui.h:1
-msgid "<b>Attached Links</b>"
-msgstr "<b>Links anexados</b>"
-
-#: ../data/diary.ui.h:2
-msgid "<b>Calendar</b>"
-msgstr "<b>Calendário</b>"
-
-#: ../data/diary.ui.h:3
-msgid "<b>Results</b>"
-msgstr "<b>Resultados</b>"
-
-#: ../data/diary.ui.h:4
 msgid "Add Link"
 msgstr "Adicionar link"
 
-#: ../data/diary.ui.h:6
+#: ../data/diary.ui.h:2
+msgid "Attached Links"
+msgstr "Links anexados"
+
+#: ../data/diary.ui.h:3
+msgid "Calendar"
+msgstr "Calendário"
+
+#: ../data/diary.ui.h:5
 msgid "Go To Today"
 msgstr "Ir para hoje"
 
-#: ../data/diary.ui.h:7
+#: ../data/diary.ui.h:6
 msgid "Link Type"
 msgstr "Tipo de link"
 
-#: ../data/diary.ui.h:8
+#: ../data/diary.ui.h:7
 msgid "Remove Link"
 msgstr "Remover link"
+
+#: ../data/diary.ui.h:8
+msgid "Results"
+msgstr "Resultados"
 
 #: ../data/diary.ui.h:9
 msgid "Search"
@@ -106,7 +106,7 @@ msgstr "Nota"
 msgid "A note about an important event."
 msgstr "Uma nota sobre um evento importante."
 
-#: ../src/link.c:54 ../src/links/uri.c:55
+#: ../src/link.c:54 ../src/links/uri.c:50
 msgid "URI"
 msgstr "URI"
 
@@ -114,15 +114,15 @@ msgstr "URI"
 msgid "A URI of a file or web page."
 msgstr "Um URI de um arquivo ou página Web."
 
-#: ../src/links/file.c:44
+#: ../src/links/file.c:39
 msgid "Due to an unknown error the file cannot be opened."
 msgstr "Devido a um erro desconhecido o arquivo não pôde ser aberto."
 
-#: ../src/links/file.c:55
+#: ../src/links/file.c:50
 msgid "Select File"
 msgstr "Selecionar arquivo"
 
-#: ../src/links/uri.c:44
+#: ../src/links/uri.c:39
 msgid "Due to an unknown error the URI cannot be opened."
 msgstr "Devido a um erro desconhecido o URI não pôde ser aberto."
 
@@ -190,12 +190,12 @@ msgstr "Fabrício Godoy <skarllot@gmail.com>"
 msgid "Diary Website"
 msgstr "Site do Diary"
 
-# %A - dia da semana [Domingo-Sábado], %e dia [ 1-31], %B - mês [Janeiro-Dezembro], %Y - ano com 4 dígitos
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
-#: ../src/main-window.c:348 ../src/printing.c:66
-msgid "<b>%A, %e %B %Y</b>"
-msgstr "<b>%A, %e de %B de %Y</b>"
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/main-window.c:348 ../src/printing.c:66 ../src/search-dialog.c:62
+msgid "%A, %e %B %Y"
+msgstr "%A, %e de %B de %Y"
 
 #: ../src/main.c:70
 msgid "Enable debug mode"
@@ -211,22 +211,17 @@ msgstr "- Gerencie seu diário"
 msgid "Command-line options could not be parsed. Error: %s"
 msgstr "Não foi possível analisar as opções da linha de comando. Erro: %s"
 
-#: ../src/printing.c:80
-msgid "<i>No entry for this date.</i>"
-msgstr "<i>Nenhuma entrada para esta data.</i>"
+#: ../src/printing.c:82
+msgid "No entry for this date."
+msgstr "Nenhuma entrada para esta data."
 
-#: ../src/printing.c:210
-msgid "<b>Start Date</b>"
-msgstr "<b>Data inicial</b>"
+#: ../src/printing.c:213
+msgid "Start Date"
+msgstr "Data inicial"
 
-#: ../src/printing.c:212
-msgid "<b>End Date</b>"
-msgstr "<b>Data final</b>"
-
-#. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/search-dialog.c:62
-msgid "%A, %e %B %Y"
-msgstr "%A, %e de %B de %Y"
+#: ../src/printing.c:216
+msgid "End Date"
+msgstr "Data final"
 
 #: ../src/storage-manager.c:184
 #, c-format
@@ -273,16 +268,16 @@ msgstr "Não foi possível remover o arquivo de banco de dados em \"%s\"."
 msgid ""
 "Both an encrypted and plaintext version of the database exist as \"%s\" and "
 "\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
-"which is 0KiB in size) before continuing. If neither file is 0Kib, the "
+"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
 "problem will most likely have been caused by Diary being unable to encrypt "
 "the database, so you should move the first file."
 msgstr ""
 "Tanto a versão criptografada quanto a versão de texto puro do banco de dados "
-"existem em \"%s\" e \"%s\", e um deles parece corrompido. Por favor, remova "
-"o corrompido (isto é, um com 0KiB de tamanho) antes de continuar. Se nenhum "
-"dos arquivos têm 0KiB, o problema provavelmente foi causado porque o Diary "
-"foi incapaz de criptografar o banco de dados, assim você deveria mover o "
-"primeiro arquivo."
+"existem em \"%s\" e \"%s\", e uma delas parece corrompida. Por favor, exclua "
+"a corrompida (isto é, 0KiB de tamanho) antes de continuar. Se nenhum dos "
+"arquivos tiver 0KiB, o problema provavelmente terá sido provavelmente "
+"causado pelo Diary ter sido incapaz de criptografar o banco de dados, assim "
+"você deveria mover o primeiro arquivo."
 
 #: ../src/storage-manager.c:450
 #, c-format
@@ -316,3 +311,7 @@ msgstr ""
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Você tem certeza que quer remover essa entrada de diário para %s?"
+
+# %A - dia da semana [Domingo-Sábado], %e dia [ 1-31], %B - mês [Janeiro-Dezembro], %Y - ano com 4 dígitos
+#~ msgid "<b>%A, %e %B %Y</b>"
+#~ msgstr "<b>%A, %e de %B de %Y</b>"
