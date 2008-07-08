@@ -35,14 +35,14 @@ diary_create_interface (void)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_from_file (builder, PACKAGE_DATA_DIR"/diary/diary.ui", &error) == FALSE &&
-	    gtk_builder_add_from_file (builder, "./data/diary.ui", NULL) == FALSE) {
+	if (gtk_builder_add_from_file (builder, PACKAGE_DATA_DIR"/almanah/almanah.ui", &error) == FALSE &&
+	    gtk_builder_add_from_file (builder, "./data/almanah.ui", NULL) == FALSE) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_OK,
-				_("UI file \"%s/diary/diary.ui\" could not be loaded."), PACKAGE_DATA_DIR);
+				_("UI file \"%s/almanah/almanah.ui\" could not be loaded."), PACKAGE_DATA_DIR);
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

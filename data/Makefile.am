@@ -14,13 +14,13 @@ update-icon-cache:
 	fi
 
 # UI file
-uidir = $(datadir)/diary
-ui_DATA = diary.ui
+uidir = $(datadir)/almanah
+ui_DATA = almanah.ui
 
 # Desktop file
 @INTLTOOL_DESKTOP_RULE@
 
-desktop_in_files = diary.desktop.in
+desktop_in_files = almanah.desktop.in
 desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 

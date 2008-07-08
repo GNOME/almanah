@@ -1,7 +1,7 @@
 # List of source files containing translatable strings.
 [encoding: UTF-8]
-data/diary.desktop.in
-[type: gettext/glade]data/diary.ui
+data/almanah.desktop.in
+[type: gettext/glade]data/almanah.ui
 src/interface.c
 src/link.c
 src/links/file.c

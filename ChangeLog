@@ -1,3 +1,28 @@
+2008-07-08  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* README:
+	* configure.ac:
+	* data/Makefile.am:
+	* data/almanah.desktop.in:
+	* data/almanah.ui:
+	* data/diary.desktop.in:
+	* data/diary.ui:
+	* data/icons/16x16/Makefile.am:
+	* data/icons/16x16/diary.svg:
+	* data/icons/22x22/Makefile.am:
+	* data/icons/22x22/diary.svg:
+	* data/icons/32x32/Makefile.am:
+	* data/icons/32x32/diary.svg:
+	* data/icons/48x48/Makefile.am:
+	* data/icons/48x48/diary.svg:
+	* src/Makefile.am:
+	* src/interface.c: (diary_create_interface):
+	* src/main.c: (main): Changed the application name from "Diary" to
+	"Almanah Diary", and the executable from "diary" to "almanah" to make
+	it less generic. Some data files have moved around, orphaning the old
+	ones, but the database is still in the same place and retains the old
+	schema.
+
 2008-07-06  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/links/file.c:

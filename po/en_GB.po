@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-06 14:23+0100\n"
+"POT-Creation-Date: 2008-07-08 20:31+0100\n"
 "PO-Revision-Date: 2008-03-23 12:45+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: \n"
@@ -15,74 +15,78 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/diary.desktop.in.h:1 ../data/diary.ui.h:4 ../src/main.c:82
+#: ../data/almanah.desktop.in.h:1 ../data/almanah.ui.h:2 ../src/main.c:82
+msgid "Almanah Diary"
+msgstr "Almanah Diary"
+
+#: ../data/almanah.desktop.in.h:2
 msgid "Diary"
 msgstr "Diary"
 
-#: ../data/diary.desktop.in.h:2
+#: ../data/almanah.desktop.in.h:3
 msgid "Keep a personal diary"
 msgstr "Keep a personal diary"
 
-#: ../data/diary.ui.h:1
+#: ../data/almanah.ui.h:1
 msgid "Add Link"
 msgstr "Add Link"
 
-#: ../data/diary.ui.h:2
+#: ../data/almanah.ui.h:3
 msgid "Attached Links"
 msgstr "Attached Links"
 
-#: ../data/diary.ui.h:3
+#: ../data/almanah.ui.h:4
 msgid "Calendar"
 msgstr "Calendar"
 
-#: ../data/diary.ui.h:5
+#: ../data/almanah.ui.h:5
 msgid "Go To Today"
 msgstr "Go To Today"
 
-#: ../data/diary.ui.h:6
+#: ../data/almanah.ui.h:6
 msgid "Link Type"
 msgstr "Link Type"
 
-#: ../data/diary.ui.h:7
+#: ../data/almanah.ui.h:7
 msgid "Remove Link"
 msgstr "Remove Link"
 
-#: ../data/diary.ui.h:8
+#: ../data/almanah.ui.h:8
 msgid "Results"
 msgstr "Results"
 
-#: ../data/diary.ui.h:9
+#: ../data/almanah.ui.h:9
 msgid "Search"
 msgstr "Search"
 
-#: ../data/diary.ui.h:10
+#: ../data/almanah.ui.h:10
 msgid "View"
 msgstr "View"
 
-#: ../data/diary.ui.h:11
+#: ../data/almanah.ui.h:11
 msgid "View Entry"
 msgstr "View Entry"
 
-#: ../data/diary.ui.h:12
+#: ../data/almanah.ui.h:12
 msgid "_Edit"
 msgstr "_Edit"
 
-#: ../data/diary.ui.h:13
+#: ../data/almanah.ui.h:13
 msgid "_File"
 msgstr "_File"
 
-#: ../data/diary.ui.h:14
+#: ../data/almanah.ui.h:14
 msgid "_Help"
 msgstr "_Help"
 
-#: ../data/diary.ui.h:15
+#: ../data/almanah.ui.h:15
 msgid "_Search"
 msgstr "_Search"
 
 #: ../src/interface.c:45
 #, c-format
-msgid "UI file \"%s/diary/diary.ui\" could not be loaded."
-msgstr "UI file \"%s/diary/diary.ui\" could not be loaded."
+msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
+msgstr "UI file \"%s/almanah/almanah.ui\" could not be loaded."
 
 #. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
 #. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
@@ -103,7 +107,7 @@ msgstr "Note"
 msgid "A note about an important event."
 msgstr "A note about an important event."
 
-#: ../src/link.c:54 ../src/links/uri.c:55
+#: ../src/link.c:54 ../src/links/uri.c:50
 msgid "URI"
 msgstr "URI"
 
@@ -111,15 +115,15 @@ msgstr "URI"
 msgid "A URI of a file or web page."
 msgstr "A URI of a file or web page."
 
-#: ../src/links/file.c:44
+#: ../src/links/file.c:39
 msgid "Due to an unknown error the file cannot be opened."
 msgstr "Due to an unknown error the file cannot be opened."
 
-#: ../src/links/file.c:55
+#: ../src/links/file.c:50
 msgid "Select File"
 msgstr "Select File"
 
-#: ../src/links/uri.c:44
+#: ../src/links/uri.c:39
 msgid "Due to an unknown error the URI cannot be opened."
 msgstr "Due to an unknown error the URI cannot be opened."
 

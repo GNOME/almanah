@@ -15,9 +15,9 @@ AM_CFLAGS += \
 	-ftest-coverage
 endif
 
-bin_PROGRAMS = diary
+bin_PROGRAMS = almanah
 
-diary_SOURCES = \
+almanah_SOURCES = \
 	main.c			\
 	main.h			\
 	interface.c		\
@@ -38,7 +38,7 @@ diary_SOURCES = \
 	links/file.c		\
 	links/note.c
 
-diary_LDFLAGS = 
-diary_LDADD = \
+almanah_LDFLAGS = 
+almanah_LDADD = \
 	$(STANDARD_LIBS)	\
 	$(ENCRYPTION_LIBS)

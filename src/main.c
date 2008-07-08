@@ -79,8 +79,8 @@ main (int argc, char *argv[])
 
 	gtk_set_locale ();
 	gtk_init (&argc, &argv);
-	g_set_application_name (_("Diary"));
-	gtk_window_set_default_icon_name ("diary");
+	g_set_application_name (_("Almanah Diary"));
+	gtk_window_set_default_icon_name ("almanah");
 
 	/* Options */
 	context = g_option_context_new (_("- Manage your diary"));

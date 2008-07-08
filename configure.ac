@@ -1,4 +1,4 @@
-AC_INIT(diary, 0.3.1)
+AC_INIT(almanah, 0.3.1)
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_CONFIG_HEADER(config.h)
@@ -45,7 +45,7 @@ dnl ***************************************************************************
 dnl Internationalisation
 dnl ***************************************************************************
 
-GETTEXT_PACKAGE=diary
+GETTEXT_PACKAGE=almanah
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 AM_GLIB_GNU_GETTEXT

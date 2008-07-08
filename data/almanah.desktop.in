@@ -1,7 +1,8 @@
 [Desktop Entry]
-_Name=Diary
+_Name=Almanah Diary
 _Comment=Keep a personal diary
-Exec=diary
+_GenericName=Diary
+Exec=almanah
 Icon=diary
 Terminal=false
 Type=Application

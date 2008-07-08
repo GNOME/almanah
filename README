@@ -1,7 +1,7 @@
-Diary
-=====
+Almanah
+=======
 
-Diary is a small GTK+ application to allow you to keep a diary of your life.
+Almanah is a small GTK+ application to allow you to keep a diary of your life.
 
 News
 ====
@@ -34,7 +34,7 @@ Bugs should be filed in GNOME's Bugzilla:
 http://bugzilla.gnome.org/enter_bug.cgi?product=diary
 
 To get a better debug output, run:
-# diary --debug
+# almanah --debug
 
 Contact
 =======
