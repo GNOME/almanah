@@ -1,0 +1,347 @@
+# German translation for almanah diary.
+# Copyright (C) 2008 Christoph Wickert <christoph.wickert@googlemail.de
+# This file is distributed under the same license as the almanah package.
+#
+# Philip Withnall <philip@tecnocode.co.uk>, 2008.
+# Christoph Wickert <christoph.wickert@googlemail.de, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: almanah 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-07-09 07:04+0100\n"
+"PO-Revision-Date: 2008-07-09 03:07+0100\n"
+"Last-Translator: Christoph Wickert <christoph.wickert@googlemail.de>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+
+#: ../data/almanah.desktop.in.h:1 ../data/almanah.ui.h:2 ../src/main.c:82
+msgid "Almanah Diary"
+msgstr "Almanah Tagebuch"
+
+#: ../data/almanah.desktop.in.h:2
+msgid "Diary"
+msgstr "Tagebuch"
+
+#: ../data/almanah.desktop.in.h:3
+msgid "Keep a personal diary"
+msgstr "Ein persönliches Tagebuch führen"
+
+#: ../data/almanah.ui.h:1
+msgid "Add Link"
+msgstr "Link hinzufügen"
+
+#: ../data/almanah.ui.h:3
+msgid "Attached Links"
+msgstr "Anhänge"
+
+#: ../data/almanah.ui.h:4
+msgid "Calendar"
+msgstr "Kalender"
+
+#: ../data/almanah.ui.h:5
+msgid "Go To Today"
+msgstr "Gehe zum heutigen Tag"
+
+#: ../data/almanah.ui.h:6
+msgid "Link Type"
+msgstr "Art"
+
+#: ../data/almanah.ui.h:7
+msgid "Remove Link"
+msgstr "Link entfernen"
+
+#: ../data/almanah.ui.h:8
+msgid "Results"
+msgstr "Ergebnisse"
+
+#: ../data/almanah.ui.h:9
+msgid "Search"
+msgstr "Suchen"
+
+#: ../data/almanah.ui.h:10
+msgid "View"
+msgstr "Anzeigen"
+
+#: ../data/almanah.ui.h:11
+msgid "View Entry"
+msgstr "Eintrag anzeigen"
+
+#: ../data/almanah.ui.h:12
+msgid "_Edit"
+msgstr "_Bearbeiten"
+
+#: ../data/almanah.ui.h:13
+msgid "_File"
+msgstr "_Datei"
+
+#: ../data/almanah.ui.h:14
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: ../data/almanah.ui.h:15
+msgid "_Search"
+msgstr "_Suchen"
+
+#: ../src/interface.c:45
+#, c-format
+msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
+msgstr ""
+"Benutzerschnittstellen-Datei \"%s/almanah/almanah.ui\" konnte nicht geladen "
+"werden."
+
+#. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
+#. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
+#. Translators: These are the names and descriptions of the different link types.
+#: ../src/link.c:52
+msgid "File"
+msgstr "Datei"
+
+#: ../src/link.c:52
+msgid "An attached file."
+msgstr "Eine angehängte Datei."
+
+#: ../src/link.c:53
+msgid "Note"
+msgstr "Notiz"
+
+#: ../src/link.c:53
+msgid "A note about an important event."
+msgstr "Eine Notiz über einen wichtiges Ereignis."
+
+#: ../src/link.c:54 ../src/links/uri.c:50
+msgid "URI"
+msgstr "Adresse"
+
+#: ../src/link.c:54
+msgid "A URI of a file or web page."
+msgstr "Adresse einer Datei oder Webseite."
+
+#: ../src/links/file.c:39
+msgid "Due to an unknown error the file cannot be opened."
+msgstr ""
+"Die Datei kann aufgrund eines unbekannten Fehlers nicht geöffnet werden."
+
+#: ../src/links/file.c:50
+msgid "Select File"
+msgstr "Datei wählen"
+
+#: ../src/links/uri.c:39
+msgid "Due to an unknown error the URI cannot be opened."
+msgstr ""
+"Die Adresse kann aufgrund eines unbekannten Fehlers nicht geöffnet werden."
+
+#: ../src/main-window.c:178
+#, c-format
+msgid "The spelling checker could not be initialized: %s"
+msgstr "Die Rechtschreibprüfung konnte nicht gestartet werden: %s"
+
+#: ../src/main-window.c:265
+msgid ""
+"Diary is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah ist freie Software: Sie können sie unter den Bedingungen der GNU "
+"General Public Licence, wie sie von der Free Software Foundation "
+"veröffentlicht wurde, entweder Version 3 der Lizenz oder (nach Ihrer "
+"Ansicht) jeder späteren Version, weiterverteilen und/oder verändern."
+
+#: ../src/main-window.c:269
+msgid ""
+"Diary is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah wird in der Hoffnung, dass es hilfreich ist, vertrieben, aber OHNE "
+"JEDE GARANTIE; sogar ohne Mängelgewährleistung oder Zusicherung allgemeiner "
+"Gebrauchstauglichkeit. Für weitere Details schauen Sie in die GNU General "
+"Public License."
+
+#: ../src/main-window.c:273
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Diary.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Sie sollten eine Kopie der GNU General Public Licence zusammen mit Almanah "
+"erhalten haben. Falls nicht, schauen Sie unter <http://www.gnu.org/licences/"
+">."
+
+#: ../src/main-window.c:284
+#, c-format
+msgid ""
+"A helpful diary keeper, storing %u entries with %u links and a total of %u "
+"characters."
+msgstr ""
+"Ein hilfreicher Tagebuchführer, der %u Einträge mit %u Links und insgesamt %"
+"u Zeichen enthält."
+
+#: ../src/main-window.c:291
+msgid "Copyright © 2008 Philip Withnall"
+msgstr "Copyright © 2008 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:299
+msgid "translator-credits"
+msgstr "Christoph Wickert <christoph.wickert@googlemail.com>"
+
+#: ../src/main-window.c:303
+msgid "Diary Website"
+msgstr "Almanah Website"
+
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/main-window.c:348 ../src/printing.c:66 ../src/search-dialog.c:62
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: ../src/main.c:70
+msgid "Enable debug mode"
+msgstr "Debug-Modus einschalten"
+
+#. Options
+#: ../src/main.c:86
+msgid "- Manage your diary"
+msgstr "- Ihr Tagebuch verwalten"
+
+#: ../src/main.c:96
+#, c-format
+msgid "Command-line options could not be parsed. Error: %s"
+msgstr "Kommandozeilen-Optionen konnten nicht verarbeitet werden. Fehler: %s"
+
+#: ../src/printing.c:82
+msgid "No entry for this date."
+msgstr "Kein Eintrag für dieses Datum."
+
+#: ../src/printing.c:213
+msgid "Start Date"
+msgstr "Startdatum"
+
+#: ../src/printing.c:216
+msgid "End Date"
+msgstr "Enddatum"
+
+#: ../src/storage-manager.c:184
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME unterstützt kein OpenPGP: %s"
+
+#: ../src/storage-manager.c:193
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Fehler beim Erzeugen des Verschlüsselungskontextes: %s"
+
+#: ../src/storage-manager.c:222
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Fehler beim Öffnen der verschlüsselten Datenbankdatei \"%s\": %s"
+
+#: ../src/storage-manager.c:242
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Fehler beim Öffnen der unverschlüsselten Datenbankdatei \"%s\": %s"
+
+#: ../src/storage-manager.c:312
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Fehler beim Entschlüsseln der Datenbank: %s"
+
+#: ../src/storage-manager.c:345
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Fehler beim Holen des OpenPGP-Schlüssels: %s"
+
+#: ../src/storage-manager.c:366
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Fehler beim Verschlüsseln der Datenbank: %s"
+
+#: ../src/storage-manager.c:377
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Konnte die einfache Datenbankdatei \"%s\" nicht löschen."
+
+#: ../src/storage-manager.c:425
+#, c-format
+msgid ""
+"Both an encrypted and plaintext version of the database exist as \"%s\" and "
+"\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
+"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
+"problem will most likely have been caused by Diary being unable to encrypt "
+"the database, so you should move the first file."
+msgstr ""
+"Es existiert sowohl eine verschlüsselte als auch eine unverschlüsselte "
+"Version der Datenbank als \"%s\" und \"%s\", und eine von beiden ist "
+"wahrscheinlich fehlerhaft. Bitte löschen Sie die fehlerhafte Datei, bevor "
+"Sie fortfahren (z. B. diejenige, die 0 KB groß ist). Falls keine von beiden "
+"0 KB groß ist, wird das Problem wahrscheinlich dadurch verursacht, dass "
+"Almanah die Datenbank nicht verschlüsseln konnte, also sollten Sie die erste "
+"Datei verschieben."
+
+#: ../src/storage-manager.c:450
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Konnte die Datenbank \"%s\" nicht öffnen. SQLite gab die folgende "
+"Fehlermeldung zurück: %s"
+
+#: ../src/storage-manager.c:482
+#, c-format
+msgid ""
+"Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary "
+"will not be encrypted; please install Seahorse and set up a default key, or "
+"ignore this message."
+msgstr ""
+"Fehler beim Öffnen des OpenPGP-Schlüssels: GConf-Schlüssel \"%s\" ist "
+"ungültig oder leer. Ihr Tagebuch wird nicht verschlüsselt. Bitte "
+"installieren Sie Seahorse und stellen Sie einen Vorgabeschlüssel ein oder "
+"ignorieren Sie diese Nachricht."
+
+#: ../src/storage-manager.c:526 ../src/storage-manager.c:559
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"Konnte die Abfrage \"%s\" nicht ausführen. SQLite gab die folgende "
+"Fehlermeldung zurück: %s"
+
+#: ../src/storage-manager.c:686
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Sind sie sicher, dass Sie den Tagebucheintrag für %s löschen möchten?"
+
+#~ msgid "<b>%A, %e %B %Y</b>"
+#~ msgstr "<b>%A, %e %B %Y</b>"
+
+#~ msgid "Error getting encryption key: GConf key \"%s\" invalid or empty."
+#~ msgstr "Error getting encryption key: GConf key \"%s\" invalid or empty."
+
+#~ msgid "Picasa Album"
+#~ msgstr "Picasa Album"
+
+#~ msgid "A Picasa album on the Internet."
+#~ msgstr "A Picasa album on the Internet."
+
+#~ msgid "Picasa: %s by %s"
+#~ msgstr "Picasa: %s by %s"
+
+#~ msgid "Google Username"
+#~ msgstr "Google Username"
+
+#~ msgid "Album Name"
+#~ msgstr "Album Name"
+
+#~ msgid "A helpful diary keeper."
+#~ msgstr "A helpful diary keeper."

@@ -1,3 +1,8 @@
+2008-07-09  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* LINGUAS: Added de (German) translation.
+	* de.po: Added German translation by Christoph Wickert.
+
 2008-07-08  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* POTFILES.in: Updated to reflect new application name.
