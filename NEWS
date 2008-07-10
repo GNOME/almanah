@@ -1,5 +1,12 @@
 Major new features in version...
 
+0.4:
+* Fix various translation problems, including untranslatable strings and strings containing markup
+* Improve some error messages
+* Add icon SVG sources
+* Fix licencing problems introduced with the change to GPLv3+
+* Rename the application to "Almanah Diary" (the data store remains compatible, however)
+
 0.3.1:
 * Update documentation
 * Fix the non-encryption build
