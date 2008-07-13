@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-27 03:20+0000\n"
-"PO-Revision-Date: 2008-06-28 00:38+0200\n"
+"POT-Creation-Date: 2008-07-08 19:36+0000\n"
+"PO-Revision-Date: 2008-07-13 20:15+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,74 +17,78 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../data/diary.desktop.in.h:1 ../data/diary.ui.h:5 ../src/main.c:82
+#: ../data/almanah.desktop.in.h:1 ../data/almanah.ui.h:2 ../src/main.c:82
+msgid "Almanah Diary"
+msgstr ""
+
+#: ../data/almanah.desktop.in.h:2
 msgid "Diary"
 msgstr "Diary"
 
-#: ../data/diary.desktop.in.h:2
+#: ../data/almanah.desktop.in.h:3
 msgid "Keep a personal diary"
 msgstr "Mantenga un diario personal"
 
-#: ../data/diary.ui.h:1
-msgid "<b>Attached Links</b>"
-msgstr "<b>Enlaces adjuntos</b>"
-
-#: ../data/diary.ui.h:2
-msgid "<b>Calendar</b>"
-msgstr "<b>Calendario</b>"
-
-#: ../data/diary.ui.h:3
-msgid "<b>Results</b>"
-msgstr "<b>Resultados</b>"
-
-#: ../data/diary.ui.h:4
+#: ../data/almanah.ui.h:1
 msgid "Add Link"
 msgstr "Añadir enlace"
 
-#: ../data/diary.ui.h:6
+#: ../data/almanah.ui.h:3
+msgid "Attached Links"
+msgstr "Enlaces adjuntos"
+
+#: ../data/almanah.ui.h:4
+msgid "Calendar"
+msgstr "Calendario"
+
+#: ../data/almanah.ui.h:5
 msgid "Go To Today"
 msgstr "Ir a hoy"
 
-#: ../data/diary.ui.h:7
+#: ../data/almanah.ui.h:6
 msgid "Link Type"
 msgstr "Tipo de enlace"
 
-#: ../data/diary.ui.h:8
+#: ../data/almanah.ui.h:7
 msgid "Remove Link"
 msgstr "Quitar enlace"
 
-#: ../data/diary.ui.h:9
+#: ../data/almanah.ui.h:8
+msgid "Results"
+msgstr "Resultados"
+
+#: ../data/almanah.ui.h:9
 msgid "Search"
 msgstr "Buscar"
 
-#: ../data/diary.ui.h:10
+#: ../data/almanah.ui.h:10
 msgid "View"
 msgstr "Ver"
 
-#: ../data/diary.ui.h:11
+#: ../data/almanah.ui.h:11
 msgid "View Entry"
 msgstr "Ver entrada"
 
-#: ../data/diary.ui.h:12
+#: ../data/almanah.ui.h:12
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../data/diary.ui.h:13
+#: ../data/almanah.ui.h:13
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../data/diary.ui.h:14
+#: ../data/almanah.ui.h:14
 msgid "_Help"
 msgstr "Ay_uda"
 
-#: ../data/diary.ui.h:15
+#: ../data/almanah.ui.h:15
 msgid "_Search"
 msgstr "_Buscar"
 
 #: ../src/interface.c:45
 #, c-format
-msgid "UI file \"%s/diary/diary.ui\" could not be loaded."
-msgstr "No se pudo cargar el archivo de interfaz de usuario «%s/diary/diary.ui»"
+msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
+msgstr "No se pudo cargar el archivo de interfaz de usuario «%s/almanah/almanah.ui»."
 
 #. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
 #. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
@@ -105,7 +109,7 @@ msgstr "Nota"
 msgid "A note about an important event."
 msgstr "Una nota acerca de un evento importante."
 
-#: ../src/link.c:54 ../src/links/uri.c:55
+#: ../src/link.c:54 ../src/links/uri.c:50
 msgid "URI"
 msgstr "URI"
 
@@ -113,22 +117,22 @@ msgstr "URI"
 msgid "A URI of a file or web page."
 msgstr "Un URI de un archivo o página web."
 
-#: ../src/links/file.c:44
+#: ../src/links/file.c:39
 msgid "Due to an unknown error the file cannot be opened."
 msgstr "El archivo no se pudo cargar debido a un error desconocido."
 
-#: ../src/links/file.c:55
+#: ../src/links/file.c:50
 msgid "Select File"
 msgstr "Seleccionar archivo"
 
-#: ../src/links/uri.c:44
+#: ../src/links/uri.c:39
 msgid "Due to an unknown error the URI cannot be opened."
 msgstr "El URI no se pudo abrir debido a un error desconocido."
 
 #: ../src/main-window.c:178
 #, c-format
 msgid "The spelling checker could not be initialized: %s"
-msgstr ""
+msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
 #: ../src/main-window.c:265
 msgid ""
@@ -178,9 +182,10 @@ msgstr "Página web de Diary"
 
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
-#: ../src/main-window.c:348 ../src/printing.c:66
-msgid "<b>%A, %e %B %Y</b>"
-msgstr "<b>%A, %e %B %Y</b>"
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/main-window.c:348 ../src/printing.c:66 ../src/search-dialog.c:62
+msgid "%A, %e %B %Y"
+msgstr ""
 
 #: ../src/main.c:70
 msgid "Enable debug mode"
@@ -196,21 +201,16 @@ msgstr ""
 msgid "Command-line options could not be parsed. Error: %s"
 msgstr ""
 
-#: ../src/printing.c:80
-msgid "<i>No entry for this date.</i>"
+#: ../src/printing.c:82
+msgid "No entry for this date."
 msgstr ""
 
-#: ../src/printing.c:210
-msgid "<b>Start Date</b>"
+#: ../src/printing.c:213
+msgid "Start Date"
 msgstr ""
 
-#: ../src/printing.c:212
-msgid "<b>End Date</b>"
-msgstr ""
-
-#. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/search-dialog.c:62
-msgid "%A, %e %B %Y"
+#: ../src/printing.c:216
+msgid "End Date"
 msgstr ""
 
 #: ../src/storage-manager.c:184
@@ -258,7 +258,7 @@ msgstr ""
 msgid ""
 "Both an encrypted and plaintext version of the database exist as \"%s\" and "
 "\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
-"which is 0KiB in size) before continuing. If neither file is 0Kib, the "
+"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
 "problem will most likely have been caused by Diary being unable to encrypt "
 "the database, so you should move the first file."
 msgstr ""
