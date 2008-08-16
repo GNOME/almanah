@@ -1,3 +1,10 @@
+2008-08-16  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.desktop.in:
+	* src/main-window.c: (mw_about_activate_cb): Patch from Mikel
+	Olasagasti <hey_neken@mundurat.net> to fix icons in the about dialogue
+	and main window. (Closes: #543739)
+
 ============ Version 0.4.0
 
 2008-07-10  Philip Withnall  <philip@tecnocode.co.uk>

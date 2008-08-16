@@ -297,7 +297,7 @@ mw_about_activate_cb (GtkAction *action, gpointer user_data)
 				 * "Translator name 2 <translator2@email.address>"
 				 */
 				"translator-credits", _("translator-credits"),
-				"logo-icon-name", "diary",
+				"logo-icon-name", "almanah",
 				"license", license,
 				"wrap-license", TRUE,
 				"website-label", _("Diary Website"),
