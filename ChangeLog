@@ -1,5 +1,10 @@
 2008-08-16  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/main.c: (main): Ensure the user's data directory exists before
+	creating the database file. (Closes: #543963)
+
+2008-08-16  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* data/almanah.desktop.in:
 	* src/main-window.c: (mw_about_activate_cb): Patch from Mikel
 	Olasagasti <hey_neken@mundurat.net> to fix icons in the about dialogue

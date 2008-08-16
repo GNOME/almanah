@@ -113,6 +113,10 @@ main (int argc, char *argv[])
 	diary->gconf_client = gconf_client_get_default ();
 #endif /* ENABLE_ENCRYPTION */
 
+	/* Ensure the DB directory exists */
+	if (g_file_test (g_get_user_data_dir (), G_FILE_TEST_IS_DIR) == FALSE)
+		g_mkdir_with_parents (g_get_user_data_dir (), 0700);
+
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
 	diary->storage_manager = diary_storage_manager_new (db_filename);
