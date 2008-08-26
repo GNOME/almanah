@@ -55,6 +55,15 @@ typedef enum {
 	DIARY_STORAGE_MANAGER_ERROR_GETTING_KEY
 } DiaryStorageManagerError;
 
+typedef enum {
+	DIARY_ENTRY_EDITABLE = 1,
+	DIARY_ENTRY_FUTURE = 2,
+	DIARY_ENTRY_PAST = 0
+} DiaryEntryEditable;
+
+/* The number of days after which a diary entry requires confirmation to be edited */
+#define DIARY_ENTRY_CUTOFF_AGE 14
+
 typedef gint (*DiaryQueryCallback) (gpointer user_data, gint columns, gchar **data, gchar **column_names);
 
 typedef struct {
@@ -77,7 +86,8 @@ gboolean diary_storage_manager_query_async (DiaryStorageManager *self, const gch
 /* TODO: Surely just passing in GDates to these functions would be easier? */
 gboolean diary_storage_manager_get_statistics (DiaryStorageManager *self, guint *entry_count, guint *link_count, guint *character_count);
 
-gboolean diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
+gboolean diary_storage_manager_entry_exists (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
+DiaryEntryEditable diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
 gchar *diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day);
 gboolean diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content);
 guint diary_storage_manager_search_entries (DiaryStorageManager *self, const gchar *search_string, GDate *matches[]);

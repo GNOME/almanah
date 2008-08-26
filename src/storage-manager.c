@@ -610,6 +610,21 @@ diary_storage_manager_get_statistics (DiaryStorageManager *self, guint *entry_co
 }
 
 gboolean
+diary_storage_manager_entry_exists (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
+{
+	DiaryQueryResults *results;
+	gboolean exists = FALSE;
+
+	results = diary_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND day = %u LIMIT 1", year, month, day);
+
+	if (results->rows == 1)
+		exists = TRUE;
+
+	diary_storage_manager_free_results (results);
+	return exists;
+}
+
+DiaryEntryEditable
 diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
 {
 	GDate current_date, entry_date;
@@ -618,13 +633,15 @@ diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear ye
 	g_date_set_time_t (&current_date, time (NULL));
 	g_date_set_dmy (&entry_date, day, month, year);
 
-	/* Entries can't be edited before they've happened, or after 14 days after they've happened */
+	/* Entries can't be edited before they've happened */
 	days_between = g_date_days_between (&entry_date, &current_date);
 
-	if (days_between < 0 || days_between > 14)
-		return FALSE;
+	if (days_between < 0)
+		return DIARY_ENTRY_FUTURE;
+	else if (days_between > DIARY_ENTRY_CUTOFF_AGE)
+		return DIARY_ENTRY_PAST;
 	else
-		return TRUE;
+		return DIARY_ENTRY_EDITABLE;
 }
 
 /* NOTE: Free results with g_free */
@@ -666,12 +683,43 @@ diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDat
 gboolean
 diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content)
 {
-	/* Make sure they're editable */
-	if (diary_storage_manager_entry_is_editable (self, year, month, day) == FALSE)
-		return TRUE;
+	gboolean entry_exists = diary_storage_manager_entry_exists (self, year, month, day);
+	DiaryEntryEditable editability = diary_storage_manager_entry_is_editable (self, year, month, day);
 
-	/* Can't nullify entries without permission */
-	if (content == NULL || content[0] == '\0') {
+	/* Make sure they're editable: don't allow entries in the future to be edited,
+	 * but allow entries in the past to be added or edited, as long as permission is given.
+	 * If an entry is being deleted, permission must be given for that as a priority. */
+	if (editability == DIARY_ENTRY_FUTURE) {
+		return TRUE;
+	} else if (editability == DIARY_ENTRY_PAST &&
+		   content != NULL && content[0] != '\0') {
+		GDate date;
+		gchar date_string[100];
+		GtkWidget *dialog;
+
+		g_date_set_dmy (&date, day, month, year);
+		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
+
+		dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
+							    GTK_DIALOG_MODAL,
+							    GTK_MESSAGE_QUESTION,
+							    GTK_BUTTONS_NONE,
+							    _("Are you sure you want to edit this diary entry for %s?"),
+							    date_string);
+		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+					GTK_STOCK_EDIT, GTK_RESPONSE_ACCEPT,
+					NULL);
+
+		gtk_widget_show_all (dialog);
+		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
+			gtk_widget_destroy (dialog);
+			return FALSE;
+		}
+
+		gtk_widget_destroy (dialog);
+	} else if (entry_exists == TRUE &&
+		   (content == NULL || content[0] == '\0')) {
 		GDate date;
 		gchar date_string[100];
 		GtkWidget *dialog;
@@ -699,6 +747,9 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 		diary_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, year, month, day);
 		gtk_widget_destroy (dialog);
 
+		return FALSE;
+	} else if (entry_exists == FALSE &&
+		   (content == NULL || content[0] == '\0')) {
 		return FALSE;
 	}
 

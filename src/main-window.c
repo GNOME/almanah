@@ -351,7 +351,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 
 	/* Update the entry */
 	entry_text = diary_storage_manager_get_entry (diary->storage_manager, year, month, day);
-	gtk_text_view_set_editable (diary->entry_view, diary_storage_manager_entry_is_editable (diary->storage_manager, year, month, day));
+	gtk_text_view_set_editable (diary->entry_view, diary_storage_manager_entry_is_editable (diary->storage_manager, year, month, day) != DIARY_ENTRY_FUTURE ? TRUE : FALSE);
 	gtk_text_buffer_set_modified (diary->entry_buffer, FALSE);
 
 	if (entry_text != NULL) {

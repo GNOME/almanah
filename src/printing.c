@@ -78,10 +78,12 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	pango_layout_set_width (entry_layout, gtk_print_context_get_width (context) * PANGO_SCALE);
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
 
-	if (entry == NULL)
+	if (entry == NULL) {
 		entry = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
-
-	pango_layout_set_text (entry_layout, entry, -1);
+		pango_layout_set_markup (entry_layout, entry, -1);
+	} else {
+		pango_layout_set_text (entry_layout, entry, -1);
+	}
 
 	/* Check we're not orphaning things */
 	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout), diary_operation->current_line + MAX_ORPHANS) - 1);

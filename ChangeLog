@@ -1,3 +1,14 @@
+2008-08-26  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main-window.c: (mw_calendar_day_selected_cb):
+	* src/storage-manager.c: (diary_storage_manager_entry_exists),
+	(diary_storage_manager_entry_is_editable),
+	(diary_storage_manager_set_entry):
+	* src/storage-manager.h: Tidy up handling past and future diary
+	entries. Past entries can now be edited, but the user is warned if the
+	entries are older than a certain age.
+	* src/printing.c: (print_entry): Fix printing some Pango markup.
+
 2008-08-16  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main.c: (main): Ensure the user's data directory exists before
