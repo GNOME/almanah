@@ -338,6 +338,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	guint i;
 	GtkTreeIter iter;
 	const DiaryLinkType *link_type;
+	GtkSpell *gtkspell;
 
 	/* Update the date label */
 	gtk_calendar_get_date (calendar, &year, &month, &day);
@@ -368,6 +369,10 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, gpointer user_data)
 	gtk_widget_set_sensitive (GTK_WIDGET (diary->view_button), FALSE);
 
 	g_free (entry_text);
+
+	/* Ensure the spell-checking is updated */
+	gtkspell = gtkspell_get_from_text_view (diary->entry_view);
+	gtkspell_recheck_all (gtkspell);
 
 	/* List the entry's links */
 	gtk_list_store_clear (diary->links_store);

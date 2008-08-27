@@ -1,3 +1,9 @@
+2008-08-27  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main-window.c: (mw_calendar_day_selected_cb): Force GtkSpell to
+	re-check the text view for spelling errors when the day changes.
+	(Closes: #546789)
+
 2008-08-26  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main-window.c: (mw_calendar_day_selected_cb):
