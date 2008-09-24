@@ -1,3 +1,10 @@
+2008-09-24  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.desktop.in:
+	* src/main-window.c (mw_about_activate_cb): Update the Bugzilla
+	details and fix a few incorrect and stubbornly-remaining instances
+	of the old application name.
+
 2008-08-27  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main-window.c: (mw_calendar_day_selected_cb): Force GtkSpell to
