@@ -24,6 +24,7 @@
 
 G_BEGIN_DECLS
 
+const gchar *diary_get_interface_filename (void);
 GtkWidget *diary_create_interface (void);
 void diary_interface_embolden_label (GtkLabel *label);
 void diary_interface_error (const gchar *message, GtkWidget *parent_window);

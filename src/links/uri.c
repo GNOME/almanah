@@ -1,70 +1,114 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
- * Diary
+ * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software: you can redistribute it and/or modify
+ * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Diary is distributed in the hope that it will be useful,
+ * Almanah is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <glib.h>
-#include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <gio/gio.h>
 
+#include "uri.h"
+#include "../link.h"
 #include "../interface.h"
 #include "../main.h"
-#include "../link.h"
 
-gchar *
-link_uri_format_value (const DiaryLink *link)
+/* TODO: Sort out build so that the links have a separate Makefile */
+
+static void almanah_uri_link_init (AlmanahURILink *self);
+static gchar *uri_format_value (AlmanahLink *link);
+static gboolean uri_view (AlmanahLink *link);
+static void uri_build_dialog (AlmanahLink *link, GtkVBox *parent_vbox);
+static void uri_get_values (AlmanahLink *link);
+
+struct _AlmanahURILinkPrivate {
+	GtkWidget *entry;
+};
+
+G_DEFINE_TYPE (AlmanahURILink, almanah_uri_link, ALMANAH_TYPE_LINK)
+#define ALMANAH_URI_LINK_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_URI_LINK, AlmanahURILinkPrivate))
+
+static void
+almanah_uri_link_class_init (AlmanahURILinkClass *klass)
 {
-	return g_strdup (link->value);
+	AlmanahLinkClass *link_class = ALMANAH_LINK_CLASS (klass);
+
+	g_type_class_add_private (klass, sizeof (AlmanahURILinkPrivate));
+
+	link_class->type_id = "uri";
+	link_class->name = _("URI");
+	link_class->description = _("A URI of a file or web page.");
+	link_class->icon_name = "applications-internet";
+
+	link_class->format_value = uri_format_value;
+	link_class->view = uri_view;
+	link_class->build_dialog = uri_build_dialog;
+	link_class->get_values = uri_get_values;
 }
 
-gboolean
-link_uri_view (const DiaryLink *link)
+static void
+almanah_uri_link_init (AlmanahURILink *self)
 {
-	if (g_app_info_launch_default_for_uri (link->value, NULL, NULL) == FALSE) {
+	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_URI_LINK, AlmanahURILinkPrivate);
+}
+
+static gchar *
+uri_format_value (AlmanahLink *link)
+{
+	return almanah_link_get_value (link);
+}
+
+static gboolean
+uri_view (AlmanahLink *link)
+{
+	gchar *value = almanah_link_get_value (link);
+	if (g_app_info_launch_default_for_uri (value, NULL, NULL) == FALSE) {
 		diary_interface_error (_("Due to an unknown error the URI cannot be opened."), diary->main_window);
+		g_free (value);
 		return FALSE;
 	}
+
+	g_free (value);
 	return TRUE;
 }
 
-void
-link_uri_build_dialog (const gchar *type, GtkTable *dialog_table)
+static void
+uri_build_dialog (AlmanahLink *link, GtkVBox *parent_vbox)
 {
-	GtkWidget *label, *entry;
+	GtkWidget *label, *hbox;
+	AlmanahURILinkPrivate *priv = ALMANAH_URI_LINK (link)->priv;
+
+	hbox = gtk_hbox_new (FALSE, 5);
 
 	label = gtk_label_new (_("URI"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, TRUE, 0);
 
-	entry = gtk_entry_new ();
-	gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
+	priv->entry = gtk_entry_new ();
+	gtk_entry_set_activates_default (GTK_ENTRY (priv->entry), TRUE);
+	gtk_box_pack_start (GTK_BOX (hbox), priv->entry, TRUE, TRUE, 0);
 
-	gtk_table_attach_defaults (dialog_table, label, 1, 2, 2, 3);
-	gtk_table_attach_defaults (dialog_table, entry, 2, 3, 2, 3);
-
-	gtk_widget_show_all (GTK_WIDGET (dialog_table));
-
-	g_object_set_data (G_OBJECT (diary->add_link_dialog), "entry", entry);
+	gtk_box_pack_start (GTK_BOX (parent_vbox), hbox, TRUE, TRUE, 0);
+	gtk_widget_show_all (GTK_WIDGET (parent_vbox));
 }
 
-void
-link_uri_get_values (DiaryLink *link)
+static void
+uri_get_values (AlmanahLink *link)
 {
-	GtkEntry *entry = GTK_ENTRY (g_object_get_data (G_OBJECT (diary->add_link_dialog), "entry"));
-	link->value = g_strdup (gtk_entry_get_text (entry));
-	link->value2 = NULL;
+	AlmanahURILinkPrivate *priv = ALMANAH_URI_LINK (link)->priv;
+
+	almanah_link_set_value (link, gtk_entry_get_text (GTK_ENTRY (priv->entry)));
+	almanah_link_set_value2 (link, NULL);
 }

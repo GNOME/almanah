@@ -32,11 +32,13 @@ almanah_SOURCES = \
 	search-dialog.h		\
 	printing.c		\
 	printing.h		\
+	entry.c			\
+	entry.h			\
 	link.c			\
 	link.h			\
-	links/uri.c		\
 	links/file.c		\
-	links/note.c
+	links/note.c		\
+	links/uri.c
 
 almanah_LDFLAGS = 
 almanah_LDADD = \

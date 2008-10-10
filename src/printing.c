@@ -44,7 +44,8 @@ typedef struct {
 static gboolean
 print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintOperation *diary_operation)
 {
-	gchar *entry, title[100], *title_markup;
+	AlmanahEntry *entry;
+	gchar title[100], *title_markup;
 	PangoLayout *title_layout = NULL, *entry_layout;
 	PangoLayoutLine *entry_line;
 	PangoRectangle logical_extents;
@@ -52,10 +53,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	guint i;
 	gdouble title_y = 0, entry_y;
 	cairo_t *cr = NULL;
-
-	entry = diary_storage_manager_get_entry (diary->storage_manager, g_date_get_year (diary_operation->current_date),
-									 g_date_get_month (diary_operation->current_date),
-									 g_date_get_day (diary_operation->current_date));
 
 	if (diary_operation->current_line == 0) {
 		/* Set up the title layout */
@@ -78,12 +75,18 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	pango_layout_set_width (entry_layout, gtk_print_context_get_width (context) * PANGO_SCALE);
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
 
-	if (entry == NULL) {
-		entry = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
-		pango_layout_set_markup (entry_layout, entry, -1);
+	entry = almanah_storage_manager_get_entry (diary->storage_manager, diary_operation->current_date);
+
+	if (almanah_entry_is_empty (entry)) {
+		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
+		pango_layout_set_markup (entry_layout, entry_text, -1);
 	} else {
-		pango_layout_set_text (entry_layout, entry, -1);
+		gchar *entry_text = almanah_entry_get_content (entry);
+		pango_layout_set_text (entry_layout, entry_text, -1);
+		g_free (entry_text);
 	}
+
+	g_object_unref (entry);
 
 	/* Check we're not orphaning things */
 	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout), diary_operation->current_line + MAX_ORPHANS) - 1);
@@ -94,7 +97,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 		if (title_layout != NULL)
 			g_object_unref (title_layout);
 		g_object_unref (entry_layout);
-		g_free (entry);
 
 		diary_operation->current_line = 0;
 
@@ -124,7 +126,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 			if (title_layout != NULL)
 				g_object_unref (title_layout);
 			g_object_unref (entry_layout);
-			g_free (entry);
 
 			diary_operation->current_line = i;
 
@@ -147,7 +148,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	if (title_layout != NULL)
 		g_object_unref (title_layout);
 	g_object_unref (entry_layout);
-	g_free (entry);
 
 	diary_operation->current_line = 0;
 

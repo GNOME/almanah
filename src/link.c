@@ -1,142 +1,327 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
- * Diary
+ * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software: you can redistribute it and/or modify
+ * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Diary is distributed in the hope that it will be useful,
+ * Almanah is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <glib.h>
-#include <math.h>
 #include <glib/gi18n.h>
+#include <math.h>
 #include <string.h>
 
-#include "main.h"
 #include "link.h"
+#include "main.h"
 
-#define LINK_TYPE(T) gchar *link_##T##_format_value (const DiaryLink *link); \
-gboolean link_##T##_view (const DiaryLink *link); \
-void link_##T##_build_dialog (const gchar *type, GtkTable *dialog_table); \
-void link_##T##_get_values (DiaryLink *link);
+typedef struct {
+	gchar *type_id;
+	GType (*type_function) (void);
+} AlmanahLinkType;
 
-/*LINK_TYPE (email)*/
-LINK_TYPE (uri)
-LINK_TYPE (file)
-LINK_TYPE (note)
+/* TODO: This is still a little hacky */
 
-/*
- * IMPORTANT:
- * Make sure this list is kept in alphabetical order by type.
- *
- * To add a link type, add an entry here then add a file in src/links
- * named after the link type, containing the format, view, dialogue-building
- * and value-getting functions referenced in this table.
- * Don't forget to add the function prototypes at the top of *this* file.
- */
-static const DiaryLinkType link_types[] = {
-	/* Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function */
-	/*{ "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },*/
+#include "links/file.h"
+#include "links/note.h"
+#include "links/uri.h"
 
-	/* Translators: These are the names and descriptions of the different link types. */
-	{ "file",	N_("File"),		N_("An attached file."),		"system-file-manager",		1,		&link_file_format_value,	&link_file_view,	&link_file_build_dialog,	&link_file_get_values },
-	{ "note", 	N_("Note"),		N_("A note about an important event."),	"emblem-important",		1,		&link_note_format_value,	&link_note_view,	&link_note_build_dialog,	&link_note_get_values },
-	{ "uri", 	N_("URI"),		N_("A URI of a file or web page."),	"applications-internet",	1,		&link_uri_format_value,		&link_uri_view,		&link_uri_build_dialog,		&link_uri_get_values }
+static const AlmanahLinkType link_types[] = {
+	{ "file", &almanah_file_link_get_type },
+	{ "note", &almanah_note_link_get_type },
+	{ "uri", &almanah_uri_link_get_type }
 };
 
-void
-diary_populate_link_model (GtkListStore *list_store, guint type_column, guint name_column, guint icon_name_column)
-{
-	GtkTreeIter iter;
-	guint i;
+static void almanah_link_init (AlmanahLink *self);
+static void almanah_link_finalize (GObject *object);
+static void almanah_link_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void almanah_link_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 
-	for (i = 0; i < G_N_ELEMENTS (link_types); i++) {
-		gtk_list_store_append (list_store, &iter);
-		gtk_list_store_set (list_store, &iter,
-				    type_column, link_types[i].type,
-				    name_column, _(link_types[i].name),
-				    icon_name_column, link_types[i].icon_name,
-				    -1);
+struct _AlmanahLinkPrivate {
+	gchar *value;
+	gchar *value2;
+};
+
+enum {
+	PROP_TYPE_ID = 1,
+	PROP_NAME,
+	PROP_DESCRIPTION,
+	PROP_ICON_NAME,
+	PROP_VALUE,
+	PROP_VALUE2
+};
+
+G_DEFINE_ABSTRACT_TYPE (AlmanahLink, almanah_link, G_TYPE_OBJECT)
+#define ALMANAH_LINK_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_LINK, AlmanahLinkPrivate))
+
+static void
+almanah_link_class_init (AlmanahLinkClass *klass)
+{
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+	g_type_class_add_private (klass, sizeof (AlmanahLinkPrivate));
+
+	gobject_class->set_property = almanah_link_set_property;
+	gobject_class->get_property = almanah_link_get_property;
+	gobject_class->finalize = almanah_link_finalize;
+
+	g_object_class_install_property (gobject_class, PROP_TYPE_ID,
+				g_param_spec_string ("type-id",
+					"Type ID", "The type ID of this link.",
+					NULL,
+					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_NAME,
+				g_param_spec_string ("name",
+					"Name", "The human-readable name for this link type.",
+					NULL,
+					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_DESCRIPTION,
+				g_param_spec_string ("description",
+					"Description", "The human-readable description for this link type.",
+					NULL,
+					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_ICON_NAME,
+				g_param_spec_string ("icon-name",
+					"Icon Name", "The icon name for this link type.",
+					NULL,
+					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_VALUE,
+				g_param_spec_string ("value",
+					"Value", "The first value of this link.",
+					NULL,
+					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_VALUE2,
+				g_param_spec_string ("value2",
+					"Value 2", "The second value of this link.",
+					NULL,
+					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+}
+
+static void
+almanah_link_init (AlmanahLink *self)
+{
+	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_LINK, AlmanahLinkPrivate);
+}
+
+static void
+almanah_link_finalize (GObject *object)
+{
+	AlmanahLinkPrivate *priv = ALMANAH_LINK (object)->priv;
+
+	g_free (priv->value);
+	g_free (priv->value2);
+
+	/* Chain up to the parent class */
+	G_OBJECT_CLASS (almanah_link_parent_class)->finalize (object);
+}
+
+static void
+almanah_link_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
+{
+	AlmanahLinkPrivate *priv = ALMANAH_LINK (object)->priv;
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (object);
+
+	switch (property_id) {
+		case PROP_TYPE_ID:
+			g_value_set_string (value, g_strdup (klass->type_id));
+			break;
+		case PROP_NAME:
+			g_value_set_string (value, g_strdup (klass->name));
+			break;
+		case PROP_DESCRIPTION:
+			g_value_set_string (value, g_strdup (klass->description));
+			break;
+		case PROP_ICON_NAME:
+			g_value_set_string (value, g_strdup (klass->icon_name));
+			break;
+		case PROP_VALUE:
+			g_value_set_string (value, g_strdup (priv->value));
+			break;
+		case PROP_VALUE2:
+			g_value_set_string (value, g_strdup (priv->value2));
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
 	}
 }
 
-gboolean
-diary_validate_link_type (const gchar *type)
+static void
+almanah_link_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	return (diary_link_get_type (type) == NULL) ? FALSE : TRUE;
+	AlmanahLinkPrivate *priv = ALMANAH_LINK (object)->priv;
+
+	switch (property_id) {
+		case PROP_VALUE:
+			g_free (priv->value);
+			priv->value = g_value_dup_string (value);
+			break;
+		case PROP_VALUE2:
+			g_free (priv->value2);
+			priv->value2 = g_value_dup_string (value);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
 }
 
-const DiaryLinkType *
-diary_link_get_type (const gchar *type)
+AlmanahLink *
+almanah_link_new (const gchar *type_id)
 {
-	guint lower_limit, upper_limit, temp;
-	gint comparison;
+	guint lower_limit, upper_limit;
 
 	/* Do a binary search */
 	lower_limit = 0;
 	upper_limit = G_N_ELEMENTS (link_types) - 1;
 
-	/* TODO: perhaps use GQuarks to make things less heavy on the strcmps */
-	do {
+	/* TODO: Use GQuarks to make things less heavy on the strcmp()s? */
+	while (TRUE) {
+		guint temp;
+		gint comparison;
+
 		temp = ceil ((lower_limit + upper_limit) / 2);
-		comparison = strcmp (type, link_types[temp].type);
+		comparison = strcmp (type_id, link_types[temp].type_id);
 
 		/* Exit condition */
 		if (lower_limit == upper_limit && comparison != 0)
 			return NULL;
 
-		if (comparison < 0)
+		if (comparison < 0) {
 			upper_limit = temp - 1; /* It's in the lower half */
-		else if (comparison > 0)
+		} else if (comparison > 0) {
 			lower_limit = temp + 1; /* It's in the upper half */
-		else
-			return &(link_types[temp]); /* Match! */
-	} while (TRUE);
+		} else {
+			/* Match! */
+			return g_object_new (link_types[temp].type_function (), NULL);
+		}
+	};
 
 	return NULL;
 }
 
 gchar *
-diary_link_format_value (const DiaryLink *link)
+almanah_link_format_value (AlmanahLink *self)
 {
-	const DiaryLinkType *link_type = diary_link_get_type (link->type);
-	g_assert (link_type != NULL);
-	return link_type->format_value_func (link);
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	g_assert (klass->format_value != NULL);
+	return klass->format_value (self);
 }
 
 gboolean
-diary_link_view (const DiaryLink *link)
+almanah_link_view (AlmanahLink *self)
 {
-	const DiaryLinkType *link_type = diary_link_get_type (link->type);
-	g_assert (link_type != NULL);
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	g_assert (klass->view != NULL);
 
 	if (diary->debug)
-		g_debug ("Viewing %s link ('%s', '%s')", link->type, link->value, link->value2);
+		g_debug ("Viewing %s link ('%s', '%s')", klass->type_id, self->priv->value, self->priv->value2);
 
-	return link_type->view_func (link);
+	return klass->view (self);
 }
 
 void
-diary_link_build_dialog (const DiaryLinkType *link_type)
+almanah_link_build_dialog (AlmanahLink *self, GtkVBox *parent_vbox)
 {
-	g_assert (link_type != NULL);
-	link_type->build_dialog_func (link_type->type, diary->ald_table);
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	g_assert (klass->build_dialog != NULL);
+	return klass->build_dialog (self, parent_vbox);
 }
 
 void
-diary_link_get_values (DiaryLink *link)
+almanah_link_get_values (AlmanahLink *self)
 {
-	const DiaryLinkType *link_type = diary_link_get_type (link->type);
-	g_assert (link_type != NULL);
-	link_type->get_values_func (link);
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	g_assert (klass->get_values != NULL);
+	return klass->get_values (self);
 }
+
+void
+almanah_link_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint icon_name_column)
+{
+	GtkTreeIter iter;
+	guint i;
+
+	for (i = 0; i < G_N_ELEMENTS (link_types); i++) {
+		AlmanahLink *link = g_object_new (link_types[i].type_function (), NULL);
+
+		if (link == NULL)
+			continue;
+
+		gtk_list_store_append (list_store, &iter);
+		gtk_list_store_set (list_store, &iter,
+				    type_id_column, link_types[i].type_id,
+				    name_column, almanah_link_get_name (link),
+				    icon_name_column, almanah_link_get_icon_name (link),
+				    -1);
+	}
+}
+
+const gchar *
+almanah_link_get_type_id (AlmanahLink *self)
+{
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	return klass->type_id;
+}
+
+const gchar *
+almanah_link_get_name (AlmanahLink *self)
+{
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	return klass->name;
+}
+
+const gchar *
+almanah_link_get_description (AlmanahLink *self)
+{
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	return klass->description;
+}
+
+const gchar *
+almanah_link_get_icon_name (AlmanahLink *self)
+{
+	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	return klass->icon_name;
+}
+
+gchar *
+almanah_link_get_value (AlmanahLink *self)
+{
+	return g_strdup (self->priv->value);
+}
+
+void
+almanah_link_set_value (AlmanahLink *self, const gchar *value)
+{
+	g_free (self->priv->value);
+	self->priv->value = g_strdup (value);
+}
+
+gchar *
+almanah_link_get_value2 (AlmanahLink *self)
+{
+	return g_strdup (self->priv->value2);
+}
+
+/* TODO: Perhaps an almanah_link_set_values (AlmanahLink *self, const gchar *value, const gchar *value2) API would be better? */
+
+void
+almanah_link_set_value2 (AlmanahLink *self, const gchar *value)
+{
+	g_free (self->priv->value2);
+	self->priv->value2 = g_strdup (value);
+}
+

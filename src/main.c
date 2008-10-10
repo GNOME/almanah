@@ -33,7 +33,7 @@ void
 diary_quit (void)
 {
 	diary->quitting = TRUE;
-	diary_storage_manager_disconnect (diary->storage_manager);
+	almanah_storage_manager_disconnect (diary->storage_manager);
 
 	gtk_widget_destroy (diary->add_link_dialog);
 	gtk_widget_destroy (diary->search_dialog);
@@ -119,10 +119,10 @@ main (int argc, char *argv[])
 
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
-	diary->storage_manager = diary_storage_manager_new (db_filename);
+	diary->storage_manager = almanah_storage_manager_new (db_filename);
 	g_free (db_filename);
 
-	diary_storage_manager_connect (diary->storage_manager);
+	almanah_storage_manager_connect (diary->storage_manager);
 
 	/* Create and show the interface */
 	diary_create_interface ();

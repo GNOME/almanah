@@ -1,63 +1,109 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
- * Diary
+ * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software: you can redistribute it and/or modify
+ * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Diary is distributed in the hope that it will be useful,
+ * Almanah is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <glib.h>
-#include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <gio/gio.h>
 
+#include "file.h"
+#include "../link.h"
 #include "../interface.h"
 #include "../main.h"
-#include "../link.h"
 
-gchar *
-link_file_format_value (const DiaryLink *link)
+/* TODO: Sort out build so that the links have a separate Makefile */
+
+static void almanah_file_link_init (AlmanahFileLink *self);
+static gchar *file_format_value (AlmanahLink *link);
+static gboolean file_view (AlmanahLink *link);
+static void file_build_dialog (AlmanahLink *link, GtkVBox *parent_vbox);
+static void file_get_values (AlmanahLink *link);
+
+struct _AlmanahFileLinkPrivate {
+	GtkWidget *chooser;
+};
+
+G_DEFINE_TYPE (AlmanahFileLink, almanah_file_link, ALMANAH_TYPE_LINK)
+#define ALMANAH_FILE_LINK_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_FILE_LINK, AlmanahFileLinkPrivate))
+
+static void
+almanah_file_link_class_init (AlmanahFileLinkClass *klass)
 {
-	return g_strdup (link->value);
+	AlmanahLinkClass *link_class = ALMANAH_LINK_CLASS (klass);
+
+	g_type_class_add_private (klass, sizeof (AlmanahFileLinkPrivate));
+
+	link_class->type_id = "file";
+	link_class->name = _("File");
+	link_class->description = _("An attached file.");
+	link_class->icon_name = "system-file-manager";
+
+	link_class->format_value = file_format_value;
+	link_class->view = file_view;
+	link_class->build_dialog = file_build_dialog;
+	link_class->get_values = file_get_values;
 }
 
-gboolean
-link_file_view (const DiaryLink *link)
+static void
+almanah_file_link_init (AlmanahFileLink *self)
 {
-	if (g_app_info_launch_default_for_uri (link->value, NULL, NULL) == FALSE) {
+	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_FILE_LINK, AlmanahFileLinkPrivate);
+}
+
+static gchar *
+file_format_value (AlmanahLink *link)
+{
+	return almanah_link_get_value (link);
+}
+
+static gboolean
+file_view (AlmanahLink *link)
+{
+	gchar *value = almanah_link_get_value (link);
+
+	if (g_app_info_launch_default_for_uri (value, NULL, NULL) == FALSE) {
+		g_free (value);
 		diary_interface_error (_("Due to an unknown error the file cannot be opened."), diary->main_window);
 		return FALSE;
 	}
+
+	g_free (value);
 	return TRUE;
 }
 
-void
-link_file_build_dialog (const gchar *type, GtkTable *dialog_table)
+static void
+file_build_dialog (AlmanahLink *link, GtkVBox *parent_vbox)
 {
-	GtkWidget *chooser;
+	AlmanahFileLinkPrivate *priv = ALMANAH_FILE_LINK (link)->priv;
 
-	chooser = gtk_file_chooser_button_new (_("Select File"), GTK_FILE_CHOOSER_ACTION_OPEN);
-	gtk_table_attach_defaults (dialog_table, chooser, 1, 3, 2, 3);
-	gtk_widget_show_all (GTK_WIDGET (dialog_table));
+	priv->chooser = gtk_file_chooser_button_new (_("Select File"), GTK_FILE_CHOOSER_ACTION_OPEN);
 
-	g_object_set_data (G_OBJECT (diary->add_link_dialog), "chooser", chooser);
+	gtk_box_pack_start (GTK_BOX (parent_vbox), priv->chooser, TRUE, TRUE, 0);
+	gtk_widget_show_all (GTK_WIDGET (parent_vbox));
 }
 
-void
-link_file_get_values (DiaryLink *link)
+static void
+file_get_values (AlmanahLink *link)
 {
-	GtkFileChooser *chooser = GTK_FILE_CHOOSER (g_object_get_data (G_OBJECT (diary->add_link_dialog), "chooser"));
-	link->value = gtk_file_chooser_get_uri (chooser);
-	link->value2 = NULL;
+	AlmanahFileLinkPrivate *priv = ALMANAH_FILE_LINK (link)->priv;
+	gchar *value = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (priv->chooser));
+
+	almanah_link_set_value (link, value);
+	g_free (value);
+
+	almanah_link_set_value2 (link, NULL);
 }

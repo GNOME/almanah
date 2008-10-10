@@ -32,35 +32,16 @@
 G_BEGIN_DECLS
 
 typedef struct {
-	DiaryStorageManager *storage_manager;
+	AlmanahStorageManager *storage_manager;
 #ifdef ENABLE_ENCRYPTION
 	GConfClient *gconf_client;
 #endif /* ENABLE_ENCRYPTION */
 
 	GtkWidget *main_window;
-	GtkTextView *entry_view;
-	GtkTextBuffer *entry_buffer;
-	GtkCalendar *calendar;
-	GtkLabel *date_label;
-	GtkButton *add_button;
-	GtkButton *remove_button;
-	GtkButton *view_button;
-	GtkAction *add_action;
-	GtkAction *remove_action;
-	GtkListStore *links_store;
-	GtkTreeSelection *links_selection;
-	GtkTreeViewColumn *link_value_column;
-	GtkCellRendererText *link_value_renderer;
-
 	GtkWidget *add_link_dialog;
-	GtkComboBox *ald_type_combo_box;
-	GtkTable *ald_table;
-	GtkListStore *ald_type_store;
-
 	GtkWidget *search_dialog;
-	GtkEntry *sd_search_entry;
-	GtkListStore *sd_results_store;
-	GtkTreeSelection *sd_results_selection;
+
+	GdkAtom native_serialisation_atom;
 
 	gboolean debug;
 	gboolean quitting;

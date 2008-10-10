@@ -66,6 +66,30 @@
 					</object>
 				</child>
 				<child>
+					<object class="GtkAction" id="dry_ui_format">
+						<property name="name">format</property>
+						<property name="label" translatable="yes">F_ormat</property>
+					</object>
+				</child>
+				<child>
+					<object class="GtkToggleAction" id="dry_ui_bold">
+						<property name="stock-id">gtk-bold</property>
+						<property name="name">format-bold</property>
+					</object>
+				</child>
+				<child>
+					<object class="GtkToggleAction" id="dry_ui_italic">
+						<property name="stock-id">gtk-italic</property>
+						<property name="name">format-italic</property>
+					</object>
+				</child>
+				<child>
+					<object class="GtkToggleAction" id="dry_ui_underline">
+						<property name="stock-id">gtk-underline</property>
+						<property name="name">format-underline</property>
+					</object>
+				</child>
+				<child>
 					<object class="GtkAction" id="dry_ui_help">
 						<property name="name">help</property>
 						<property name="label" translatable="yes">_Help</property>
@@ -118,6 +142,11 @@
 					<separator/>
 					<menuitem action="dry_ui_search"/>
 				</menu>
+				<menu action="dry_ui_format">
+					<menuitem action="dry_ui_bold"/>
+					<menuitem action="dry_ui_italic"/>
+					<menuitem action="dry_ui_underline"/>
+				</menu>
 				<menu action="dry_ui_help">
 					<menuitem action="dry_ui_about"/>
 				</menu>
@@ -127,12 +156,15 @@
 				<separator/>
 				<toolitem action="dry_ui_add_link"/>
 				<toolitem action="dry_ui_remove_link"/>
+				<separator/>
+				<toolitem action="dry_ui_bold"/>
+				<toolitem action="dry_ui_italic"/>
+				<toolitem action="dry_ui_underline"/>
 			</toolbar>
 		</ui>
 	</object>
 
-	<!-- TODO: Change to dry_mw_link_store -->
-	<object class="GtkListStore" id="dry_mw_links_store">
+	<object class="GtkListStore" id="dry_mw_link_store">
 		<columns>
 			<column type="gchararray"/><!--Type-->
 			<column type="gchararray"/><!--Value-->
@@ -145,9 +177,7 @@
 		<property name="stock">gtk-open</property>
 	</object>
 
-	<object class="GtkWindow" id="dry_main_window">
-		<property name="title" translatable="yes">Almanah Diary</property>
-		<signal name="delete-event" handler="mw_delete_event_cb"/>
+	<object class="AlmanahMainWindow" id="dry_main_window">
 		<child>
 			<object class="GtkVBox" id="vbox1">
 				<child>
@@ -235,7 +265,7 @@
 										<property name="shadow-type">GTK_SHADOW_IN</property>
 										<child>
 											<object class="GtkTreeView" id="dry_mw_links_tree_view">
-												<property name="model">dry_mw_links_store</property>
+												<property name="model">dry_mw_link_store</property>
 												<property name="can-focus">True</property>
 												<property name="headers-visible">False</property>
 												<signal name="row-activated" handler="mw_links_tree_view_row_activated_cb"/>
@@ -318,16 +348,12 @@
 	</object>
 
 	<!-- TODO: Use the description of link types somewhere -->
-	<object class="GtkDialog" id="dry_add_link_dialog">
-		<property name="title" translatable="yes">Add Link</property>
-		<property name="has-separator">False</property>
-		<property name="allow-grow">False</property>
-		<signal name="destroy" handler="ald_destroy_cb"/>
+	<object class="AlmanahAddLinkDialog" id="dry_add_link_dialog">
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox1">
 				<child>
 					<object class="GtkTable" id="dry_ald_table">
-						<property name="n-rows">1</property>
+						<property name="n-rows">2</property>
 						<property name="n-columns">2</property>
 						<property name="column-spacing">5</property>
 						<property name="row-spacing">5</property>
@@ -370,7 +396,15 @@
 								<property name="y-options">GTK_FILL</property>
 							</packing>
 						</child>
-						<!-- Placeholder -->
+						<child>
+							<object class="GtkVBox" id="dry_ald_vbox"/>
+							<packing>
+								<property name="left-attach">1</property>
+								<property name="right-attach">3</property>
+								<property name="top-attach">2</property>
+								<property name="bottom-attach">3</property>
+							</packing>
+						</child>
 					</object>
 				</child>
 				<child internal-child="action_area">
@@ -412,11 +446,7 @@
 		</columns>
 	</object>
 
-	<object class="GtkDialog" id="dry_search_dialog">
-		<property name="title" translatable="yes">Search</property>
-		<property name="has-separator">False</property>
-		<property name="modal">False</property>
-		<signal name="destroy" handler="sd_destroy_cb"/>
+	<object class="AlmanahSearchDialog" id="dry_search_dialog">
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox2">
 				<child>

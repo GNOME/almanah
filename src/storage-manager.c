@@ -1,20 +1,20 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
- * Diary
+ * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software: you can redistribute it and/or modify
+ * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Diary is distributed in the hope that it will be useful,
+ * Almanah is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <config.h>
@@ -30,18 +30,20 @@
 #endif /* ENABLE_ENCRYPTION */
 
 #include "main.h"
+/* TODO: Remove dependency on interface.h --- use GErrors better */
 #include "interface.h"
+#include "entry.h"
 #include "link.h"
 #include "storage-manager.h"
 
 #define ENCRYPTION_KEY_GCONF_PATH "/desktop/pgp/default_key"
 
-static void diary_storage_manager_init (DiaryStorageManager *self);
-static void diary_storage_manager_finalize (GObject *object);
-static void diary_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
-static void diary_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
+static void almanah_storage_manager_init (AlmanahStorageManager *self);
+static void almanah_storage_manager_finalize (GObject *object);
+static void almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 
-struct _DiaryStorageManagerPrivate {
+struct _AlmanahStorageManagerPrivate {
 	gchar *filename, *plain_filename;
 	sqlite3 *connection;
 	gboolean decrypted;
@@ -51,25 +53,25 @@ enum {
 	PROP_FILENAME = 1
 };
 
-G_DEFINE_TYPE (DiaryStorageManager, diary_storage_manager, G_TYPE_OBJECT)
-#define DIARY_STORAGE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), DIARY_TYPE_STORAGE_MANAGER, DiaryStorageManagerPrivate))
+G_DEFINE_TYPE (AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT)
+#define ALMANAH_STORAGE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate))
 
 GQuark
-diary_storage_manager_error_quark (void)
+almanah_storage_manager_error_quark (void)
 {
-  return g_quark_from_static_string ("diary-storage-manager-error-quark");
+	return g_quark_from_static_string ("almanah-storage-manager-error-quark");
 }
 
 static void
-diary_storage_manager_class_init (DiaryStorageManagerClass *klass)
+almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-	g_type_class_add_private (klass, sizeof (DiaryStorageManagerPrivate));
+	g_type_class_add_private (klass, sizeof (AlmanahStorageManagerPrivate));
 
-	gobject_class->set_property = diary_storage_manager_set_property;
-	gobject_class->get_property = diary_storage_manager_get_property;
-	gobject_class->finalize = diary_storage_manager_finalize;
+	gobject_class->set_property = almanah_storage_manager_set_property;
+	gobject_class->get_property = almanah_storage_manager_get_property;
+	gobject_class->finalize = almanah_storage_manager_finalize;
 
 	g_object_class_install_property (gobject_class, PROP_FILENAME,
 				g_param_spec_string ("filename",
@@ -79,44 +81,44 @@ diary_storage_manager_class_init (DiaryStorageManagerClass *klass)
 }
 
 static void
-diary_storage_manager_init (DiaryStorageManager *self)
+almanah_storage_manager_init (AlmanahStorageManager *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, DIARY_TYPE_STORAGE_MANAGER, DiaryStorageManagerPrivate);
+	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate);
 	self->priv->filename = NULL;
 	self->priv->plain_filename = NULL;
 	self->priv->decrypted = FALSE;
 }
 
 /**
- * diary_storage_manager_new:
+ * almanah_storage_manager_new:
  * @filename: database filename to open
  *
- * Creates a new #DiaryStorageManager, connected to the given database @filename.
+ * Creates a new #AlmanahStorageManager, connected to the given database @filename.
  *
- * Return value: the new #DiaryStorageManager
+ * Return value: the new #AlmanahStorageManager
  **/
-DiaryStorageManager *
-diary_storage_manager_new (const gchar *filename)
+AlmanahStorageManager *
+almanah_storage_manager_new (const gchar *filename)
 {
-	return g_object_new (DIARY_TYPE_STORAGE_MANAGER, "filename", filename, NULL);
+	return g_object_new (ALMANAH_TYPE_STORAGE_MANAGER, "filename", filename, NULL);
 }
 
 static void
-diary_storage_manager_finalize (GObject *object)
+almanah_storage_manager_finalize (GObject *object)
 {
-	DiaryStorageManagerPrivate *priv = DIARY_STORAGE_MANAGER_GET_PRIVATE (object);
+	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
 
 	g_free (priv->filename);
 	g_free (priv->plain_filename);
 
 	/* Chain up to the parent class */
-	G_OBJECT_CLASS (diary_storage_manager_parent_class)->finalize (object);
+	G_OBJECT_CLASS (almanah_storage_manager_parent_class)->finalize (object);
 }
 
 static void
-diary_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
+almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	DiaryStorageManagerPrivate *priv = DIARY_STORAGE_MANAGER_GET_PRIVATE (object);
+	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
 
 	switch (property_id) {
 	  	case PROP_FILENAME:
@@ -130,9 +132,9 @@ diary_storage_manager_get_property (GObject *object, guint property_id, GValue *
 }
 
 static void
-diary_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
+almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	DiaryStorageManagerPrivate *priv = DIARY_STORAGE_MANAGER_GET_PRIVATE (object);
+	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
 
 	switch (property_id) {
 		case PROP_FILENAME:
@@ -147,7 +149,7 @@ diary_storage_manager_set_property (GObject *object, guint property_id, const GV
 }
 
 static void
-create_tables (DiaryStorageManager *self)
+create_tables (AlmanahStorageManager *self)
 {
 	/* Dates are stored in ISO 8601 format...sort of */
 	guint i;
@@ -160,7 +162,7 @@ create_tables (DiaryStorageManager *self)
 
 	i = 0;
 	while (queries[i] != NULL)
-		diary_storage_manager_query_async (self, queries[i++], NULL, NULL);
+		almanah_storage_manager_query_async (self, queries[i++], NULL, NULL);
 }
 
 #ifdef ENABLE_ENCRYPTION
@@ -173,14 +175,14 @@ typedef struct {
 } CipherOperation;
 
 static gboolean
-prepare_gpgme (DiaryStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
+prepare_gpgme (AlmanahStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
 {
 	gpgme_error_t gpgme_error;
 
 	/* Check OpenPGP's supported */
 	gpgme_error = gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP);
 	if (gpgme_error != GPG_ERR_NO_ERROR) {
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_UNSUPPORTED,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_UNSUPPORTED,
 			     _("GPGME doesn't support OpenPGP: %s"),
 			     gpgme_strerror (gpgme_error));
 		return FALSE;
@@ -189,7 +191,7 @@ prepare_gpgme (DiaryStorageManager *self, gboolean encrypting, CipherOperation *
 	/* Set up for the operation */
 	gpgme_error = gpgme_new (&(operation->context));
 	if (gpgme_error != GPG_ERR_NO_ERROR) {
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
 			     _("Error creating cipher context: %s"),
 			     gpgme_strerror (gpgme_error));
 		return FALSE;
@@ -203,7 +205,7 @@ prepare_gpgme (DiaryStorageManager *self, gboolean encrypting, CipherOperation *
 }
 
 static gboolean
-open_db_files (DiaryStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
+open_db_files (AlmanahStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
 {
 	GError *io_error = NULL;
 	gpgme_error_t gpgme_error;
@@ -218,7 +220,7 @@ open_db_files (DiaryStorageManager *self, gboolean encrypting, CipherOperation *
 	/* Pass it to GPGME */
 	gpgme_error = gpgme_data_new_from_fd (&(operation->gpgme_cipher), g_io_channel_unix_get_fd (operation->cipher_io_channel));
 	if (gpgme_error != GPG_ERR_NO_ERROR) {
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_OPENING_FILE,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 			     _("Error opening encrypted database file \"%s\": %s"),
 			     self->priv->filename,
 			     gpgme_strerror (gpgme_error));
@@ -238,7 +240,7 @@ open_db_files (DiaryStorageManager *self, gboolean encrypting, CipherOperation *
 	/* Pass it to GPGME */
 	gpgme_error = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
 	if (gpgme_error != GPG_ERR_NO_ERROR) {
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_OPENING_FILE,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 			     _("Error opening plain database file \"%s\": %s"),
 			     self->priv->plain_filename,
 			     gpgme_strerror (gpgme_error));
@@ -288,7 +290,7 @@ database_idle_cb (CipherOperation *operation)
 }
 
 static gboolean
-decrypt_database (DiaryStorageManager *self, GError **error)
+decrypt_database (AlmanahStorageManager *self, GError **error)
 {
 	GError *preparation_error = NULL;
 	CipherOperation *operation;
@@ -308,7 +310,7 @@ decrypt_database (DiaryStorageManager *self, GError **error)
 	gpgme_error = gpgme_op_decrypt_verify (operation->context, operation->gpgme_cipher, operation->gpgme_plain);
 	if (gpgme_error != GPG_ERR_NO_ERROR) {
 		cipher_operation_free (operation);
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_DECRYPTING,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_DECRYPTING,
 			     _("Error decrypting database: %s"),
 			     gpgme_strerror (gpgme_error));
 		return FALSE;
@@ -321,7 +323,7 @@ decrypt_database (DiaryStorageManager *self, GError **error)
 }
 
 static gboolean
-encrypt_database (DiaryStorageManager *self, const gchar *encryption_key, GError **error)
+encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GError **error)
 {
 	GError *preparation_error = NULL;
 	CipherOperation *operation;
@@ -341,7 +343,7 @@ encrypt_database (DiaryStorageManager *self, const gchar *encryption_key, GError
 	gpgme_error = gpgme_get_key (operation->context, encryption_key, &gpgme_keys[0], FALSE);
 	if (gpgme_error != GPG_ERR_NO_ERROR || gpgme_keys[0] == NULL) {
 		cipher_operation_free (operation);
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_GETTING_KEY,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY,
 			     _("Error getting encryption key: %s"),
 			     gpgme_strerror (gpgme_error));
 		return FALSE;
@@ -362,7 +364,7 @@ encrypt_database (DiaryStorageManager *self, const gchar *encryption_key, GError
 	if (gpgme_error != GPG_ERR_NO_ERROR) {
 		cipher_operation_free (operation);
 
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_ENCRYPTING,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_ENCRYPTING,
 			     _("Error encrypting database: %s"),
 			     gpgme_strerror (gpgme_error));
 		return FALSE;
@@ -373,7 +375,7 @@ encrypt_database (DiaryStorageManager *self, const gchar *encryption_key, GError
 
 	/* Delete the plain file and wait for the idle function to quit us */
 	if (g_unlink (self->priv->plain_filename) != 0) {
-		g_set_error (error, DIARY_STORAGE_MANAGER_ERROR, DIARY_STORAGE_MANAGER_ERROR_ENCRYPTING,
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_ENCRYPTING,
 			     _("Could not delete plain database file \"%s\"."),
 			     self->priv->plain_filename);
 		return FALSE;
@@ -411,7 +413,7 @@ get_encryption_key (void)
 #endif /* ENABLE_ENCRYPTION */
 
 void
-diary_storage_manager_connect (DiaryStorageManager *self)
+almanah_storage_manager_connect (AlmanahStorageManager *self)
 {
 #ifdef ENABLE_ENCRYPTION
 	/* If we're decrypting, don't bother if the cipher file doesn't exist
@@ -422,7 +424,7 @@ diary_storage_manager_connect (DiaryStorageManager *self)
 		/* If both files exist, throw an error. We can't be sure which is the corrupt one,
 		 * and attempting to go any further may jeopardise the good one. */
 		if (g_file_test (self->priv->plain_filename, G_FILE_TEST_IS_REGULAR) == TRUE) {
-			gchar *error_message = g_strdup_printf (_("Both an encrypted and plaintext version of the database exist as \"%s\" and \"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one which is 0KiB in size) before continuing. If neither file is 0KiB, the problem will most likely have been caused by Diary being unable to encrypt the database, so you should move the first file."),
+			gchar *error_message = g_strdup_printf (_("Both an encrypted and plaintext version of the database exist as \"%s\" and \"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one which is 0KiB in size) before continuing. If neither file is 0KiB, the problem will most likely have been caused by Almanah being unable to encrypt the database, so you should move the first file."),
 							self->priv->filename, 
 							self->priv->plain_filename);
 			diary_interface_error (error_message, diary->main_window);
@@ -460,7 +462,7 @@ diary_storage_manager_connect (DiaryStorageManager *self)
 }
 
 void
-diary_storage_manager_disconnect (DiaryStorageManager *self)
+almanah_storage_manager_disconnect (AlmanahStorageManager *self)
 {
 #ifdef ENABLE_ENCRYPTION
 	gchar *encryption_key;
@@ -479,7 +481,7 @@ diary_storage_manager_disconnect (DiaryStorageManager *self)
 #ifdef ENABLE_ENCRYPTION
 	encryption_key = get_encryption_key ();
 	if (encryption_key == NULL) {
-		g_message (_("Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary will not be encrypted; please install Seahorse and set up a default key, or ignore this message."), ENCRYPTION_KEY_GCONF_PATH);
+		g_message (_("Error getting encryption key: GConf key \"%s\" invalid or empty. Your almanah will not be encrypted; please install Seahorse and set up a default key, or ignore this message."), ENCRYPTION_KEY_GCONF_PATH);
 		if (diary->quitting == TRUE)
 			diary_quit_real ();
 		return;
@@ -487,10 +489,10 @@ diary_storage_manager_disconnect (DiaryStorageManager *self)
 
 	/* Encrypt the plain DB file */
 	if (encrypt_database (self, encryption_key, &error) != TRUE) {
-		if (error->code == DIARY_STORAGE_MANAGER_ERROR_GETTING_KEY) {
+		if (error->code == ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY) {
 			/* Log an error about being unable to get the key
 			 * then continue without encrypting. */
-			g_warning (error->message);
+			g_warning ("%s", error->message);
 		} else {
 			/* Display an error */
 			diary_interface_error (error->message, diary->main_window);
@@ -506,19 +508,19 @@ diary_storage_manager_disconnect (DiaryStorageManager *self)
 #endif /* ENABLE_ENCRYPTION */
 }
 
-DiaryQueryResults *
-diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...)
+AlmanahQueryResults *
+almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, ...)
 {
-	DiaryStorageManagerPrivate *priv = DIARY_STORAGE_MANAGER_GET_PRIVATE (self);
+	AlmanahStorageManagerPrivate *priv = self->priv;
 	gchar *error_message, *new_query;
 	va_list params;
-	DiaryQueryResults *results;
+	AlmanahQueryResults *results;
 
 	va_start (params, query);
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
-	results = g_slice_new (DiaryQueryResults);
+	results = g_slice_new (AlmanahQueryResults);
 
 	if (diary->debug)
 		g_debug ("Database query: %s", new_query);
@@ -536,16 +538,16 @@ diary_storage_manager_query (DiaryStorageManager *self, const gchar *query, ...)
 }
 
 void
-diary_storage_manager_free_results (DiaryQueryResults *results)
+almanah_storage_manager_free_results (AlmanahQueryResults *results)
 {
 	sqlite3_free_table (results->data);
-	g_slice_free (DiaryQueryResults, results);
+	g_slice_free (AlmanahQueryResults, results);
 }
 
 gboolean
-diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query, const DiaryQueryCallback callback, gpointer user_data, ...)
+almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data, ...)
 {
-	DiaryStorageManagerPrivate *priv = DIARY_STORAGE_MANAGER_GET_PRIVATE (self);
+	AlmanahStorageManagerPrivate *priv = self->priv;
 	gchar *error_message, *new_query;
 	va_list params;
 
@@ -569,18 +571,18 @@ diary_storage_manager_query_async (DiaryStorageManager *self, const gchar *query
 }
 
 gboolean
-diary_storage_manager_get_statistics (DiaryStorageManager *self, guint *entry_count, guint *link_count, guint *character_count)
+almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *link_count, guint *character_count)
 {
-	DiaryQueryResults *results;
+	AlmanahQueryResults *results;
 
 	/* Get the number of entries and the number of letters */
-	results = diary_storage_manager_query (self, "SELECT COUNT (year), SUM (LENGTH (content)) FROM entries");
+	results = almanah_storage_manager_query (self, "SELECT COUNT (year), SUM (LENGTH (content)) FROM entries");
 	if (results->rows != 1) {
 		*entry_count = 0;
 		*character_count = 0;
 		*link_count = 0;
 
-		diary_storage_manager_free_results (results);
+		almanah_storage_manager_free_results (results);
 		return FALSE;
 	} else {
 		*entry_count = atoi (results->data[2]);
@@ -592,119 +594,121 @@ diary_storage_manager_get_statistics (DiaryStorageManager *self, guint *entry_co
 
 		*character_count = atoi (results->data[3]);
 	}
-	diary_storage_manager_free_results (results);
+	almanah_storage_manager_free_results (results);
 
 	/* Get the number of links */
-	results = diary_storage_manager_query (self, "SELECT COUNT (year) FROM entry_links");
+	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM entry_links");
 	if (results->rows != 1) {
 		*link_count = 0;
 
-		diary_storage_manager_free_results (results);
+		almanah_storage_manager_free_results (results);
 		return FALSE;
 	} else {
 		*link_count = atoi (results->data[1]);
 	}
-	diary_storage_manager_free_results (results);
+	almanah_storage_manager_free_results (results);
 
 	return TRUE;
 }
 
 gboolean
-diary_storage_manager_entry_exists (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
+almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 {
-	DiaryQueryResults *results;
+	AlmanahQueryResults *results;
 	gboolean exists = FALSE;
 
-	results = diary_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND day = %u LIMIT 1", year, month, day);
+	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND day = %u LIMIT 1",
+					       g_date_get_year (date),
+					       g_date_get_month (date),
+					       g_date_get_day (date));
 
 	if (results->rows == 1)
 		exists = TRUE;
 
-	diary_storage_manager_free_results (results);
+	almanah_storage_manager_free_results (results);
+
 	return exists;
 }
 
-DiaryEntryEditable
-diary_storage_manager_entry_is_editable (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
+/**
+ * almanah_storage_manager_get_entry:
+ * @self: a #AlmanahStorageManager
+ * @date: the date of the entry
+ *
+ * Gets the entry for the specified day from the database.
+ * If an entry can't be found it will return %NULL.
+ *
+ * Return value: an #AlmanahEntry or %NULL
+ **/
+AlmanahEntry *
+almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 {
-	GDate current_date, entry_date;
-	gint days_between;
+	AlmanahQueryResults *results;
+	AlmanahEntry *entry;
 
-	g_date_set_time_t (&current_date, time (NULL));
-	g_date_set_dmy (&entry_date, day, month, year);
-
-	/* Entries can't be edited before they've happened */
-	days_between = g_date_days_between (&entry_date, &current_date);
-
-	if (days_between < 0)
-		return DIARY_ENTRY_FUTURE;
-	else if (days_between > DIARY_ENTRY_CUTOFF_AGE)
-		return DIARY_ENTRY_PAST;
-	else
-		return DIARY_ENTRY_EDITABLE;
-}
-
-/* NOTE: Free results with g_free */
-gchar *
-diary_storage_manager_get_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
-{
-	gchar *content;
-	DiaryQueryResults *results;
-
-	results = diary_storage_manager_query (self, "SELECT content FROM entries WHERE year = %u AND month = %u AND day = %u", year, month, day);
+	results = almanah_storage_manager_query (self, "SELECT content FROM entries WHERE year = %u AND month = %u AND day = %u",
+						 g_date_get_year (date),
+						 g_date_get_month (date),
+						 g_date_get_day (date));
 
 	if (results->rows != 1) {
 		/* Invalid number of rows returned. */
-		diary_storage_manager_free_results (results);
+		almanah_storage_manager_free_results (results);
 		return NULL;
 	}
 
-	content = g_strdup (results->data[1]);
-	diary_storage_manager_free_results (results);
+	entry = almanah_entry_new (date);
+	almanah_entry_set_content (entry, results->data[1]);
+	almanah_storage_manager_free_results (results);
 
-	return content;
+	return entry;
 }
 
 /**
- * diary_storage_manager_set_entry:
- * @self: a #DiaryStorageManager
- * @year: the entry's year
- * @month: the entry's month
- * @day: the entry's day
- * @content: the content for the entry
+ * almanah_storage_manager_set_entry:
+ * @self: a #AlmanahStorageManager
+ * @entry: an #AlmanahEntry
  *
- * Saves the @content for the specified entry in the database. If
- * @content is empty or %NULL, it will ask if the user wants to delete
+ * Saves the specified @entry in the database. If the @entry
+ * content is empty or %NULL, it will ask if the user wants to delete
  * the entry for that date. It will return %TRUE if the content is
  * non-empty, and %FALSE otherwise.
  *
  * Return value: %TRUE if the entry is non-empty
  **/
 gboolean
-diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *content)
+almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *entry)
 {
-	gboolean entry_exists = diary_storage_manager_entry_exists (self, year, month, day);
-	DiaryEntryEditable editability = diary_storage_manager_entry_is_editable (self, year, month, day);
+	GDate date;
+	gchar *content;
+	gboolean entry_exists;
+	AlmanahEntryEditability editability;
+
+	almanah_entry_get_date (entry, &date);
+	entry_exists = almanah_storage_manager_entry_exists (self, &date);
+	editability = almanah_entry_get_editability (entry);
+	content = almanah_entry_get_content (entry);
 
 	/* Make sure they're editable: don't allow entries in the future to be edited,
 	 * but allow entries in the past to be added or edited, as long as permission is given.
 	 * If an entry is being deleted, permission must be given for that as a priority. */
-	if (editability == DIARY_ENTRY_FUTURE) {
+	if (editability == ALMANAH_ENTRY_FUTURE) {
+		g_free (content);
 		return TRUE;
-	} else if (editability == DIARY_ENTRY_PAST &&
+	} else if (editability == ALMANAH_ENTRY_PAST &&
 		   content != NULL && content[0] != '\0') {
-		GDate date;
 		gchar date_string[100];
 		GtkWidget *dialog;
 
-		g_date_set_dmy (&date, day, month, year);
+		g_free (content);
+
 		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
 							    GTK_DIALOG_MODAL,
 							    GTK_MESSAGE_QUESTION,
 							    GTK_BUTTONS_NONE,
-							    _("Are you sure you want to edit this diary entry for %s?"),
+							    _("Are you sure you want to edit this almanah entry for %s?"),
 							    date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
 					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
@@ -720,18 +724,18 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 		gtk_widget_destroy (dialog);
 	} else if (entry_exists == TRUE &&
 		   (content == NULL || content[0] == '\0')) {
-		GDate date;
 		gchar date_string[100];
 		GtkWidget *dialog;
 
-		g_date_set_dmy (&date, day, month, year);
+		g_free (content);
+
 		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
 							    GTK_DIALOG_MODAL,
 							    GTK_MESSAGE_QUESTION,
 							    GTK_BUTTONS_NONE,
-							    _("Are you sure you want to delete this diary entry for %s?"),
+							    _("Are you sure you want to delete this almanah entry for %s?"),
 							    date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
 					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
@@ -744,23 +748,32 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
 			return FALSE;
 		}
 
-		diary_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, year, month, day);
+		almanah_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL,
+						     g_date_get_year (&date),
+						     g_date_get_month (&date),
+						     g_date_get_day (&date));
 		gtk_widget_destroy (dialog);
 
 		return FALSE;
 	} else if (entry_exists == FALSE &&
 		   (content == NULL || content[0] == '\0')) {
+		g_free (content);
 		return FALSE;
 	}
 
-	diary_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL, year, month, day, content);
+	almanah_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL,
+					   g_date_get_year (&date),
+					   g_date_get_month (&date),
+					   g_date_get_day (&date),
+					   content);
+	g_free (content);
 
 	return TRUE;
 }
 
 /**
- * diary_storage_manager_search_entries:
- * @self: a #DiaryStorageManager
+ * almanah_storage_manager_search_entries:
+ * @self: a #AlmanahStorageManager
  * @search_string: string for which to search in entry content
  * @matches: return location for the results
  *
@@ -774,16 +787,16 @@ diary_storage_manager_set_entry (DiaryStorageManager *self, GDateYear year, GDat
  * Return value: number of results
  **/
 guint
-diary_storage_manager_search_entries (DiaryStorageManager *self, const gchar *search_string, GDate *matches[])
+almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, GDate *matches[])
 {
-	DiaryQueryResults *results;
+	AlmanahQueryResults *results;
 	guint i;
 
-	results = diary_storage_manager_query (self, "SELECT day, month, year FROM entries WHERE content LIKE '%%%q%%'", search_string);
+	results = almanah_storage_manager_query (self, "SELECT day, month, year FROM entries WHERE content LIKE '%%%q%%'", search_string);
 
 	/* No results? */
 	if (results->rows < 1) {
-		diary_storage_manager_free_results (results);
+		almanah_storage_manager_free_results (results);
 		*matches = NULL;
 		return 0;
 	}
@@ -798,73 +811,103 @@ diary_storage_manager_search_entries (DiaryStorageManager *self, const gchar *se
 				(GDateYear) atoi (results->data[(i + 1) * results->columns + 2]));
 	}
 
-	diary_storage_manager_free_results (results);
+	almanah_storage_manager_free_results (results);
 
 	return i;
 }
 
 /* NOTE: Free results with g_slice_free */
 gboolean *
-diary_storage_manager_get_month_marked_days (DiaryStorageManager *self, GDateYear year, GDateMonth month)
+almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month)
 {
-	DiaryQueryResults *results;
+	AlmanahQueryResults *results;
 	guint i;
 	gboolean *days = g_slice_alloc0 (sizeof (gboolean) * 32);
 
-	results = diary_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", year, month);
+	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", year, month);
 
 	for (i = 1; i <= results->rows; i++)
 		days[atoi (results->data[i])] = TRUE;
 
-	diary_storage_manager_free_results (results);
+	almanah_storage_manager_free_results (results);
 
 	return days;
 }
 
-/* NOTE: Free array with g_free and each element with g_slice_free, *after* freeing ->type and ->value with g_free */
-DiaryLink **
-diary_storage_manager_get_entry_links (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day)
+/* NOTE: Free array with g_free and each element with g_object_unref */
+AlmanahLink **
+almanah_storage_manager_get_entry_links (AlmanahStorageManager *self, GDate *date)
 {
-	DiaryQueryResults *results;
-	DiaryLink **links;
+	AlmanahQueryResults *results;
+	AlmanahLink **links;
 	guint i;
 
-	results = diary_storage_manager_query (self, "SELECT link_type, link_value, link_value2 FROM entry_links WHERE year = %u AND month = %u AND day = %u", year, month, day);
+	results = almanah_storage_manager_query (self, "SELECT link_type, link_value, link_value2 FROM entry_links WHERE year = %u AND month = %u AND day = %u",
+						 g_date_get_year (date),
+						 g_date_get_month (date),
+						 g_date_get_day (date));
 
 	if (results->rows == 0) {
-		diary_storage_manager_free_results (results);
+		almanah_storage_manager_free_results (results);
 		/* Return empty array */
-		links = (DiaryLink**) g_new (gpointer, 1);
+		links = (AlmanahLink**) g_new (AlmanahLink*, 1);
 		links[0] = NULL;
 		return links;
 	}
 
-	links = (DiaryLink**) g_new (gpointer, results->rows + 1);
+	links = (AlmanahLink**) g_new (AlmanahLink*, results->rows + 1);
 	for (i = 0; i < results->rows; i++) {
-		links[i] = g_slice_new (DiaryLink);
-		links[i]->type = g_strdup (results->data[(i + 1) * results->columns]);
-		links[i]->value = g_strdup (results->data[(i + 1) * results->columns + 1]);
-		links[i]->value2 = g_strdup (results->data[(i + 1) * results->columns + 2]);
+		links[i] = almanah_link_new (results->data[(i + 1) * results->columns]);
+		almanah_link_set_value (links[i], results->data[(i + 1) * results->columns + 1]);
+		almanah_link_set_value2 (links[i], results->data[(i + 1) * results->columns + 2]);
 	}
 	links[i] = NULL;
 
-	diary_storage_manager_free_results (results);
+	almanah_storage_manager_free_results (results);
 
 	return links;
 }
 
 gboolean
-diary_storage_manager_add_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type, const gchar *link_value, const gchar *link_value2)
+almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date, AlmanahLink *link)
 {
-	g_assert (diary_validate_link_type (link_type));
-	if (link_value2 == NULL)
-		return diary_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value) VALUES (%u, %u, %u, '%q', '%q')", NULL, NULL, year, month, day, link_type, link_value);
-	else
-		return diary_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL, year, month, day, link_type, link_value, link_value2);
+	gboolean return_value;
+	gchar *value, *value2;
+	const gchar *type_id;
+
+	type_id = almanah_link_get_type_id (link);
+	value = almanah_link_get_value (link);
+	value2 = almanah_link_get_value2 (link);
+
+	if (value2 == NULL) {
+		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value) VALUES (%u, %u, %u, '%q', '%q')", NULL, NULL,
+								    g_date_get_year (date),
+								    g_date_get_month (date),
+								    g_date_get_day (date),
+								    type_id,
+								    value);
+	} else {
+		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL,
+								    g_date_get_year (date),
+								    g_date_get_month (date),
+								    g_date_get_day (date),
+								    type_id,
+								    value,
+								    value2);
+	}
+
+	g_free (value);
+	g_free (value2);
+
+	return return_value;
 }
 
 gboolean
-diary_storage_manager_remove_entry_link (DiaryStorageManager *self, GDateYear year, GDateMonth month, GDateDay day, const gchar *link_type)
+almanah_storage_manager_remove_entry_link (AlmanahStorageManager *self, GDate *date, const gchar *link_type_id)
 {
-	return diary_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u AND link_type = '%q'", NULL, NULL, year, month, day, link_type);
+	return almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u AND link_type = '%q'", NULL, NULL,
+						    g_date_get_year (date),
+						    g_date_get_month (date),
+						    g_date_get_day (date),
+						    link_type_id);
 }
