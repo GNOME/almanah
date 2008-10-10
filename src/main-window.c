@@ -17,10 +17,13 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#ifdef ENABLE_SPELL_CHECKING
 #include <gtkspell/gtkspell.h>
+#endif /* ENABLE_SPELL_CHECKING */
 
 #include "main-window.h"
 #include "main.h"
@@ -174,12 +177,14 @@ almanah_main_window_new (void)
 				    "underline", PANGO_UNDERLINE_SINGLE,
 				    NULL);
 
+#ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking */
 	if (gtkspell_new_attach (priv->entry_view, NULL, &error) == FALSE) {
 		gchar *error_message = g_strdup_printf (_("The spelling checker could not be initialized: %s"), error->message);
 		diary_interface_error (error_message, NULL);
 		g_free (error_message);
 	}
+#endif /* ENABLE_SPELL_CHECKING */
 
 	/* Make sure we're notified if the cursor moves position so we can check the tag stack */
 	g_signal_connect (priv->entry_buffer, "notify::cursor-position", G_CALLBACK (mw_entry_buffer_cursor_position_changed_cb), main_window);
@@ -639,7 +644,9 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	AlmanahLink **links;
 	guint i;
 	GtkTreeIter iter;
+#ifdef ENABLE_SPELL_CHECKING
 	GtkSpell *gtkspell;
+#endif /* ENABLE_SPELL_CHECKING */
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 
 	/* Update the date label */
@@ -679,10 +686,12 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	gtk_action_set_sensitive (priv->remove_action, FALSE);
 	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
 
+#ifdef ENABLE_SPELL_CHECKING
 	/* Ensure the spell-checking is updated */
 	gtkspell = gtkspell_get_from_text_view (priv->entry_view);
 	if (gtkspell)
 		gtkspell_recheck_all (gtkspell);
+#endif /* ENABLE_SPELL_CHECKING */
 
 	/* List the entry's links */
 	gtk_list_store_clear (priv->link_store);

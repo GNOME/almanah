@@ -3,7 +3,8 @@ INCLUDES = \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\"				\
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"				\
 	$(STANDARD_CFLAGS)						\
-	$(ENCRYPTION_CFLAGS)
+	$(ENCRYPTION_CFLAGS)						\
+	$(SPELL_CHECKING_CFLAGS)
 
 AM_CFLAGS = \
 	-Wall		\
@@ -43,4 +44,5 @@ almanah_SOURCES = \
 almanah_LDFLAGS = 
 almanah_LDADD = \
 	$(STANDARD_LIBS)	\
-	$(ENCRYPTION_LIBS)
+	$(ENCRYPTION_LIBS)	\
+	$(SPELL_CHECKING_LIBS)

@@ -41,6 +41,20 @@ fi
 
 AM_CONDITIONAL([ENCRYPTION], [test x$encryption = xtrue])
 
+AC_ARG_ENABLE([spell-checking],
+	[  --enable-spell-checking	Enable spell checking support],
+	[case "${enableval}" in
+		yes) spell_checking=true ;;
+		no)  spell_checking=false ;;
+		*) AC_MSG_ERROR([bad value ${enableval} for --enable-spell-checking]) ;;
+	esac],[spell_checking=true])
+
+if test $spell_checking = "true"; then
+	AC_DEFINE([ENABLE_SPELL_CHECKING],[1],[Define if you want spell checking support])
+fi
+
+AM_CONDITIONAL([SPELL_CHECKING], [test x$spell_checking = xtrue])
+
 dnl ***************************************************************************
 dnl Internationalisation
 dnl ***************************************************************************
@@ -53,9 +67,15 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AM_PROG_LIBTOOL
 
-PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite3 gtkspell-2.0 cairo)
+PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite3 cairo)
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
+
+if test $spell_checking = "true"; then
+	PKG_CHECK_MODULES(SPELL_CHECKING, gtkspell-2.0)
+	AC_SUBST(SPELL_CHECKING_CFLAGS)
+	AC_SUBST(SPELL_CHECKING_LIBS)
+fi
 
 if test $encryption = "true"; then
 	PKG_CHECK_MODULES(ENCRYPTION, gconf-2.0)

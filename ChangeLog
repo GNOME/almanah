@@ -1,3 +1,12 @@
+2008-10-11  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* Makefile.am:
+	* configure.ac:
+	* src/Makefile.am:
+	* src/main-window.c (almanah_main_window_new),
+	(mw_calendar_day_selected_cb): Make spell checking optional at
+	compile time.
+
 2008-10-10  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main-window.c (save_current_entry),
