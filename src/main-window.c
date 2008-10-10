@@ -211,8 +211,10 @@ save_current_entry (AlmanahMainWindow *self)
 {
 	GtkTextIter start_iter, end_iter;
 	gchar *entry_text;
+	gboolean entry_exists, entry_is_empty;
 	GDate date;
 	AlmanahMainWindowPrivate *priv = self->priv;
+	AlmanahEntryEditability editability;
 
 	g_assert (priv->entry_buffer != NULL);
 
@@ -228,12 +230,78 @@ save_current_entry (AlmanahMainWindow *self)
 	almanah_entry_set_content (priv->current_entry, entry_text);
 	g_free (entry_text);
 
+	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
+
 	/* TODO: Serialise the buffer contents instead of just grabbing the text, so we can
 	 * keep tags between saves. Could use gtk_text_buffer_register_serialize_tagset() et al
 	 * for this, but could also add a more general framework for serialisation, which would aid
 	 * output/export to other formats from the program. */
 
 	almanah_entry_get_date (priv->current_entry, &date);
+	editability = almanah_entry_get_editability (priv->current_entry);
+	entry_exists = almanah_storage_manager_entry_exists (diary->storage_manager, &date);
+	entry_is_empty = almanah_entry_is_empty (priv->current_entry);
+	editability = almanah_entry_get_editability (priv->current_entry);
+
+	/* Make sure they're editable: don't allow entries in the future to be edited,
+	 * but allow entries in the past to be added or edited, as long as permission is given.
+	 * If an entry is being deleted, permission must be given for that as a priority. */
+	if (editability == ALMANAH_ENTRY_FUTURE) {
+		/* Can't edit entries for dates in the future */
+		return;
+	} else if (editability == ALMANAH_ENTRY_PAST && entry_is_empty == FALSE) {
+		/* Attempting to edit an existing entry in the past */
+		gchar date_string[100];
+		GtkWidget *dialog;
+
+		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
+
+		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
+						 GTK_DIALOG_MODAL,
+						 GTK_MESSAGE_QUESTION,
+						 GTK_BUTTONS_NONE,
+						 _("Are you sure you want to edit this diary entry for %s?"),
+						 date_string);
+		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+					GTK_STOCK_EDIT, GTK_RESPONSE_ACCEPT,
+					NULL);
+
+		gtk_widget_show_all (dialog);
+		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
+			/* Cancelled the edit */
+			gtk_widget_destroy (dialog);
+			return;
+		}
+
+		gtk_widget_destroy (dialog);
+	} else if (entry_exists == TRUE && entry_is_empty == TRUE) {
+		/* Deleting an existing entry */
+		gchar date_string[100];
+		GtkWidget *dialog;
+
+		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
+
+		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
+						 GTK_DIALOG_MODAL,
+						 GTK_MESSAGE_QUESTION,
+						 GTK_BUTTONS_NONE,
+						 _("Are you sure you want to delete this diary entry for %s?"),
+						 date_string);
+		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+					GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
+					NULL);
+
+		gtk_widget_show_all (dialog);
+		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
+			/* Cancelled deletion */
+			gtk_widget_destroy (dialog);
+			return;
+		}
+
+		gtk_widget_destroy (dialog);
+	}
 
 	/* Mark the day on the calendar if the entry was non-empty (and deleted)
 	 * and update the state of the add link button. */
@@ -243,14 +311,15 @@ save_current_entry (AlmanahMainWindow *self)
 
 		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), FALSE);
 		gtk_action_set_sensitive (priv->add_action, FALSE);
+
+		/* Since the entry is empty, remove all the links from the treeview */
+		gtk_list_store_clear (priv->link_store);
 	} else {
 		gtk_calendar_mark_day (priv->calendar, g_date_get_day (&date));
 
 		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), TRUE);
 		gtk_action_set_sensitive (priv->add_action, TRUE);
 	}
-
-	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
 }
 
 static void
@@ -263,7 +332,6 @@ add_link_to_current_entry (AlmanahMainWindow *self)
 	g_assert (gtk_text_buffer_get_char_count (priv->entry_buffer) != 0);
 
 	/* Ensure that something is selected and its widgets displayed */
-	/* TODO: Find a replacement for: g_signal_emit_by_name (diary->ald_type_combo_box, "changed", NULL, NULL);*/
 	gtk_widget_show_all (diary->add_link_dialog);
 
 	if (gtk_dialog_run (GTK_DIALOG (diary->add_link_dialog)) == GTK_RESPONSE_OK) {
@@ -305,9 +373,6 @@ remove_link_from_current_entry (AlmanahMainWindow *self)
 	GtkTreeModel *model;
 	GList *links;
 	AlmanahMainWindowPrivate *priv = self->priv;
-
-	g_assert (priv->entry_buffer != NULL);
-	g_assert (gtk_text_buffer_get_char_count (priv->entry_buffer) != 0);
 
 	links = gtk_tree_selection_get_selected_rows (priv->links_selection, &model);
 	gtk_calendar_get_date (priv->calendar, &year, &month, &day);

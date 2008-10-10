@@ -1,5 +1,15 @@
 2008-10-10  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/main-window.c (save_current_entry),
+	(add_link_to_current_entry), (remove_link_from_current_entry):
+	* src/storage-manager.c (almanah_storage_manager_set_entry):
+	Remove any GTK+ code from the storage manager, moving it to the
+	main window instead. Ensure that links aren't orphaned when an entry
+	is deleted. Similarly, ensure the links treeview is cleared when an
+	entry is deleted.
+
+2008-10-10  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* data/almanah.ui:
 	* src/Makefile.am:
 	* src/add-link-dialog.c (almanah_add_link_dialog_class_init),

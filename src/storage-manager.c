@@ -680,95 +680,33 @@ gboolean
 almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *entry)
 {
 	GDate date;
-	gchar *content;
-	gboolean entry_exists;
-	AlmanahEntryEditability editability;
 
 	almanah_entry_get_date (entry, &date);
-	entry_exists = almanah_storage_manager_entry_exists (self, &date);
-	editability = almanah_entry_get_editability (entry);
-	content = almanah_entry_get_content (entry);
 
-	/* Make sure they're editable: don't allow entries in the future to be edited,
-	 * but allow entries in the past to be added or edited, as long as permission is given.
-	 * If an entry is being deleted, permission must be given for that as a priority. */
-	if (editability == ALMANAH_ENTRY_FUTURE) {
-		g_free (content);
-		return TRUE;
-	} else if (editability == ALMANAH_ENTRY_PAST &&
-		   content != NULL && content[0] != '\0') {
-		gchar date_string[100];
-		GtkWidget *dialog;
-
-		g_free (content);
-
-		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
-
-		dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_QUESTION,
-							    GTK_BUTTONS_NONE,
-							    _("Are you sure you want to edit this almanah entry for %s?"),
-							    date_string);
-		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-					GTK_STOCK_EDIT, GTK_RESPONSE_ACCEPT,
-					NULL);
-
-		gtk_widget_show_all (dialog);
-		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
-			gtk_widget_destroy (dialog);
-			return FALSE;
-		}
-
-		gtk_widget_destroy (dialog);
-	} else if (entry_exists == TRUE &&
-		   (content == NULL || content[0] == '\0')) {
-		gchar date_string[100];
-		GtkWidget *dialog;
-
-		g_free (content);
-
-		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
-
-		dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_QUESTION,
-							    GTK_BUTTONS_NONE,
-							    _("Are you sure you want to delete this almanah entry for %s?"),
-							    date_string);
-		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-					GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
-					NULL);
-
-		gtk_widget_show_all (dialog);
-		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
-			gtk_widget_destroy (dialog);
-			return FALSE;
-		}
-
+	if (almanah_entry_is_empty (entry) == TRUE) {
+		/* Delete the entry */
 		almanah_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL,
 						     g_date_get_year (&date),
 						     g_date_get_month (&date),
 						     g_date_get_day (&date));
-		gtk_widget_destroy (dialog);
+		almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u", NULL, NULL,
+						     g_date_get_year (&date),
+						     g_date_get_month (&date),
+						     g_date_get_day (&date));
 
 		return FALSE;
-	} else if (entry_exists == FALSE &&
-		   (content == NULL || content[0] == '\0')) {
+	} else {
+		/* Update the entry */
+		gchar *content = almanah_entry_get_content (entry);
+
+		almanah_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL,
+						     g_date_get_year (&date),
+						     g_date_get_month (&date),
+						     g_date_get_day (&date),
+						     content);
 		g_free (content);
-		return FALSE;
+		return TRUE;
 	}
-
-	almanah_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL,
-					   g_date_get_year (&date),
-					   g_date_get_month (&date),
-					   g_date_get_day (&date),
-					   content);
-	g_free (content);
-
-	return TRUE;
 }
 
 /**
