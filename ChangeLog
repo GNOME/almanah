@@ -1,3 +1,30 @@
+2008-10-12  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main.c (storage_manager_disconnected_cb), (diary_quit),
+	(main):
+	* src/main.h:
+	* src/storage-manager.c (almanah_storage_manager_class_init),
+	(create_tables), (cipher_operation_free), (database_idle_cb),
+	(decrypt_database), (encrypt_database),
+	(almanah_storage_manager_connect),
+	(almanah_storage_manager_disconnect),
+	(almanah_storage_manager_query),
+	(almanah_storage_manager_query_async),
+	(almanah_storage_manager_get_statistics),
+	(almanah_storage_manager_entry_exists),
+	(almanah_storage_manager_get_entry),
+	(almanah_storage_manager_set_entry),
+	(almanah_storage_manager_search_entries),
+	(almanah_storage_manager_get_month_marked_days),
+	(almanah_storage_manager_get_entry_links),
+	(almanah_storage_manager_add_entry_link),
+	(almanah_storage_manager_remove_entry_link):
+	* src/storage-manager.h: Cleaned up AlmanahStorageManager, removing
+	all GUI code from it, and replacing it with signals and GErrors.
+	Also improved recovery from database corruption, with better logic in
+	place for handling missing or empty plaintext/encrypted database
+	files.
+
 2008-10-11  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* Makefile.am:

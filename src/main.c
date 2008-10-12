@@ -29,22 +29,8 @@
 #include "storage-manager.h"
 #include "interface.h"
 
-void
-diary_quit (void)
-{
-	diary->quitting = TRUE;
-	almanah_storage_manager_disconnect (diary->storage_manager);
-
-	gtk_widget_destroy (diary->add_link_dialog);
-	gtk_widget_destroy (diary->search_dialog);
-	gtk_widget_destroy (diary->main_window);
-
-	/* Quitting is actually done in the idle handler for disconnection
-	 * which calls diary_quit_real. */
-}
-
-void
-diary_quit_real (void)
+static void
+storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data)
 {
 	g_object_unref (diary->storage_manager);
 #ifdef ENABLE_ENCRYPTION
@@ -56,6 +42,29 @@ diary_quit_real (void)
 		gtk_main_quit ();
 
 	exit (0);
+}
+
+void
+diary_quit (void)
+{
+	GError *error = NULL;
+
+	g_signal_connect (diary->storage_manager, "disconnected", storage_manager_disconnected_cb, NULL);
+	if (almanah_storage_manager_disconnect (diary->storage_manager, &error) == FALSE) {
+		diary_interface_error (error->message, diary->main_window);
+	}
+
+	gtk_widget_destroy (diary->add_link_dialog);
+	gtk_widget_destroy (diary->search_dialog);
+	gtk_widget_destroy (diary->main_window);
+
+	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once
+	 * the storage manager has encrypted the DB and disconnected from it.
+	 * Unless, that is, disconnection failed. */
+	if (error != NULL) {
+		g_error_free (error);
+		storage_manager_disconnected_cb (diary->storage_manager, NULL);
+	}
 }
 
 int
@@ -106,7 +115,6 @@ main (int argc, char *argv[])
 	/* Setup */
 	diary = g_new (Diary, 1);
 	diary->debug = debug;
-	diary->quitting = FALSE;
 
 #ifdef ENABLE_ENCRYPTION
 	/* Open GConf */
@@ -122,7 +130,10 @@ main (int argc, char *argv[])
 	diary->storage_manager = almanah_storage_manager_new (db_filename);
 	g_free (db_filename);
 
-	almanah_storage_manager_connect (diary->storage_manager);
+	if (almanah_storage_manager_connect (diary->storage_manager, &error) == FALSE) {
+		diary_interface_error (error->message, NULL);
+		diary_quit ();
+	}
 
 	/* Create and show the interface */
 	diary_create_interface ();

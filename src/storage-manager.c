@@ -30,8 +30,6 @@
 #endif /* ENABLE_ENCRYPTION */
 
 #include "main.h"
-/* TODO: Remove dependency on interface.h --- use GErrors better */
-#include "interface.h"
 #include "entry.h"
 #include "link.h"
 #include "storage-manager.h"
@@ -52,6 +50,14 @@ struct _AlmanahStorageManagerPrivate {
 enum {
 	PROP_FILENAME = 1
 };
+
+enum {
+	SIGNAL_DISCONNECTED,
+	LAST_SIGNAL
+};
+
+static guint storage_manager_signals[LAST_SIGNAL] = { 0, };
+
 
 G_DEFINE_TYPE (AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT)
 #define ALMANAH_STORAGE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate))
@@ -78,6 +84,13 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 					"Database filename", "The path and filename for the unencrypted SQLite database.",
 					NULL,
 					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	storage_manager_signals[SIGNAL_DISCONNECTED] = g_signal_new ("disconnected",
+				G_TYPE_FROM_CLASS (klass),
+				G_SIGNAL_RUN_LAST,
+				0, NULL, NULL,
+				g_cclosure_marshal_VOID__OBJECT,
+				G_TYPE_NONE, 1, ALMANAH_TYPE_STORAGE_MANAGER);
 }
 
 static void
@@ -162,11 +175,12 @@ create_tables (AlmanahStorageManager *self)
 
 	i = 0;
 	while (queries[i] != NULL)
-		almanah_storage_manager_query_async (self, queries[i++], NULL, NULL);
+		almanah_storage_manager_query_async (self, queries[i++], NULL, NULL, NULL);
 }
 
 #ifdef ENABLE_ENCRYPTION
 typedef struct {
+	AlmanahStorageManager *storage_manager;
 	GIOChannel *cipher_io_channel;
 	GIOChannel *plain_io_channel;
 	gpgme_data_t gpgme_cipher;
@@ -268,6 +282,8 @@ cipher_operation_free (CipherOperation *operation)
 
 	gpgme_signers_clear (operation->context);
 	gpgme_release (operation->context);
+
+	g_object_unref (operation->storage_manager);
 	g_free (operation);
 }
 
@@ -277,11 +293,12 @@ database_idle_cb (CipherOperation *operation)
 	gpgme_error_t gpgme_error;
 
 	if (!(gpgme_wait (operation->context, &gpgme_error, FALSE) == NULL && gpgme_error == 0)) {
+		/* A slight assumption that we're disconnecting at this point (we're technically
+		 * only encrypting), but a valid one. */
+		g_signal_emit (operation->storage_manager, storage_manager_signals[SIGNAL_DISCONNECTED], 0, operation->storage_manager);
+
 		/* Finished! */
 		cipher_operation_free (operation);
-
-		if (diary->quitting == TRUE)
-			diary_quit_real ();
 
 		return FALSE;
 	}
@@ -297,6 +314,7 @@ decrypt_database (AlmanahStorageManager *self, GError **error)
 	gpgme_error_t gpgme_error;
 
 	operation = g_new0 (CipherOperation, 1);
+	operation->storage_manager = g_object_ref (self);
 
 	/* Set up */
 	if (prepare_gpgme (self, FALSE, operation, &preparation_error) != TRUE ||
@@ -331,6 +349,7 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 	gpgme_key_t gpgme_keys[2] = { NULL, };
 
 	operation = g_new0 (CipherOperation, 1);
+	operation->storage_manager = g_object_ref (self);
 
 	/* Set up */
 	if (prepare_gpgme (self, TRUE, operation, &preparation_error) != TRUE) {
@@ -412,34 +431,38 @@ get_encryption_key (void)
 }
 #endif /* ENABLE_ENCRYPTION */
 
-void
-almanah_storage_manager_connect (AlmanahStorageManager *self)
+gboolean
+almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 {
 #ifdef ENABLE_ENCRYPTION
+	struct stat encrypted_db_stat, plaintext_db_stat;
+
+	g_stat (self->priv->filename, &encrypted_db_stat);
+
 	/* If we're decrypting, don't bother if the cipher file doesn't exist
-	 * (i.e. the database hasn't yet been created). */
-	if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == TRUE) {
-		GError *error = NULL;
+	 * (i.e. the database hasn't yet been created), or is empty (i.e. corrupt). */
+	if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
+		GError *child_error = NULL;
 
-		/* If both files exist, throw an error. We can't be sure which is the corrupt one,
-		 * and attempting to go any further may jeopardise the good one. */
-		if (g_file_test (self->priv->plain_filename, G_FILE_TEST_IS_REGULAR) == TRUE) {
-			gchar *error_message = g_strdup_printf (_("Both an encrypted and plaintext version of the database exist as \"%s\" and \"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one which is 0KiB in size) before continuing. If neither file is 0KiB, the problem will most likely have been caused by Almanah being unable to encrypt the database, so you should move the first file."),
-							self->priv->filename, 
-							self->priv->plain_filename);
-			diary_interface_error (error_message, diary->main_window);
-			g_free (error_message);
-			diary_quit ();
+		g_stat (self->priv->plain_filename, &plaintext_db_stat);
+
+		/* Only decrypt the database if the plaintext database doesn't exist or is empty. If the plaintext
+		 * database exists and is non-empty, don't decrypt --- just use that database. */
+		if (g_file_test (self->priv->plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
+			/* Decrypt the database, or display an error if that fails (but not if it
+			 * fails due to a missing encrypted DB file --- just fall through and
+			 * try to open the plain DB file in that case). */
+			if (decrypt_database (self, &child_error) != TRUE) {
+				if (child_error->code != G_FILE_ERROR_NOENT) {
+					g_propagate_error (error, child_error);
+					return FALSE;
+				}
+
+				g_error_free (child_error);
+			}
 		}
 
-		/* Decrypt the database, or display an error if that fails (but not if it
-		 * fails due to a missing encrypted DB file --- just fall through and
-		 * try to open the plain DB file in that case). */
-		if (decrypt_database (self, &error) != TRUE && error->code != G_FILE_ERROR_NOENT) {
-			diary_interface_error (error->message, diary->main_window);
-			g_error_free (error);
-			diary_quit ();
-		}
+		
 	}
 
 	self->priv->decrypted = TRUE;
@@ -449,74 +472,74 @@ almanah_storage_manager_connect (AlmanahStorageManager *self)
 
 	/* Open the plain database */
 	if (sqlite3_open (self->priv->plain_filename, &(self->priv->connection)) != SQLITE_OK) {
-		gchar *error_message = g_strdup_printf (_("Could not open database \"%s\". SQLite provided the following error message: %s"),
-							self->priv->filename, 
-							sqlite3_errmsg (self->priv->connection));
-		diary_interface_error (error_message, diary->main_window);
-		g_free (error_message);
-		diary_quit ();
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
+			     _("Could not open database \"%s\". SQLite provided the following error message: %s"),
+			     self->priv->filename, 
+			     sqlite3_errmsg (self->priv->connection));
+		return FALSE;
 	}
 
 	/* Can't hurt to create the tables now */
 	create_tables (self);
+
+	return TRUE;
 }
 
-void
-almanah_storage_manager_disconnect (AlmanahStorageManager *self)
+gboolean
+almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 {
 #ifdef ENABLE_ENCRYPTION
 	gchar *encryption_key;
-	GError *error = NULL;
+	GError *child_error = NULL;
 #endif /* ENABLE_ENCRYPTION */
 
 	/* Close the DB connection */
 	sqlite3_close (self->priv->connection);
 
 	if (self->priv->decrypted == FALSE) {
-		if (diary->quitting == TRUE)
-			diary_quit_real ();
-		return;
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
+		return TRUE;
 	}
 
 #ifdef ENABLE_ENCRYPTION
 	encryption_key = get_encryption_key ();
 	if (encryption_key == NULL) {
 		g_message (_("Error getting encryption key: GConf key \"%s\" invalid or empty. Your almanah will not be encrypted; please install Seahorse and set up a default key, or ignore this message."), ENCRYPTION_KEY_GCONF_PATH);
-		if (diary->quitting == TRUE)
-			diary_quit_real ();
-		return;
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
+		return TRUE;
 	}
 
 	/* Encrypt the plain DB file */
-	if (encrypt_database (self, encryption_key, &error) != TRUE) {
-		if (error->code == ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY) {
-			/* Log an error about being unable to get the key
-			 * then continue without encrypting. */
-			g_warning ("%s", error->message);
-		} else {
-			/* Display an error */
-			diary_interface_error (error->message, diary->main_window);
+	if (encrypt_database (self, encryption_key, &child_error) != TRUE) {
+		if (child_error->code != ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY) {
+			/* Propagate the error */
+			g_propagate_error (error, child_error);
+			return FALSE;
 		}
 
-		g_error_free (error);
+		/* Log an error about being unable to get the key
+		 * then continue without encrypting. */
+		g_warning ("%s", child_error->message);
+		g_error_free (child_error);
 
-		if (diary->quitting == TRUE)
-			diary_quit_real ();
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
 	}
 
 	g_free (encryption_key);
 #endif /* ENABLE_ENCRYPTION */
+
+	return TRUE;
 }
 
 AlmanahQueryResults *
-almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, ...)
+almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...)
 {
 	AlmanahStorageManagerPrivate *priv = self->priv;
-	gchar *error_message, *new_query;
+	gchar *new_query;
 	va_list params;
 	AlmanahQueryResults *results;
 
-	va_start (params, query);
+	va_start (params, error);
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
@@ -525,11 +548,12 @@ almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, 
 	if (diary->debug)
 		g_debug ("Database query: %s", new_query);
 	if (sqlite3_get_table (priv->connection, new_query, &(results->data), &(results->rows), &(results->columns), NULL) != SQLITE_OK) {
-		error_message = g_strdup_printf (_("Could not run query \"%s\". SQLite provided the following error message: %s"), new_query, sqlite3_errmsg (priv->connection));
-		diary_interface_error (error_message, diary->main_window);
-		g_free (error_message);
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
+			     _("Could not run query \"%s\". SQLite provided the following error message: %s"),
+			     new_query,
+			     sqlite3_errmsg (priv->connection));
 		sqlite3_free (new_query);
-		diary_quit ();
+		return NULL;
 	}
 
 	sqlite3_free (new_query);
@@ -545,24 +569,25 @@ almanah_storage_manager_free_results (AlmanahQueryResults *results)
 }
 
 gboolean
-almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data, ...)
+almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data, GError **error, ...)
 {
 	AlmanahStorageManagerPrivate *priv = self->priv;
-	gchar *error_message, *new_query;
+	gchar *new_query;
 	va_list params;
 
-	va_start (params, user_data);
+	va_start (params, error);
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
 	if (diary->debug)
 		g_debug ("Database query: %s", new_query);
 	if (sqlite3_exec (priv->connection, new_query, callback, user_data, NULL) != SQLITE_OK) {
-		error_message = g_strdup_printf (_("Could not run query \"%s\". SQLite provided the following error message: %s"), new_query, sqlite3_errmsg (priv->connection));
-		diary_interface_error (error_message, diary->main_window);
-		g_free (error_message);
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
+			     _("Could not run query \"%s\". SQLite provided the following error message: %s"),
+			     new_query,
+			     sqlite3_errmsg (priv->connection));
 		sqlite3_free (new_query);
-		diary_quit ();
+		return FALSE;
 	}
 
 	sqlite3_free (new_query);
@@ -575,13 +600,15 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 {
 	AlmanahQueryResults *results;
 
-	/* Get the number of entries and the number of letters */
-	results = almanah_storage_manager_query (self, "SELECT COUNT (year), SUM (LENGTH (content)) FROM entries");
-	if (results->rows != 1) {
-		*entry_count = 0;
-		*character_count = 0;
-		*link_count = 0;
+	*entry_count = 0;
+	*character_count = 0;
+	*link_count = 0;
 
+	/* Get the number of entries and the number of letters */
+	results = almanah_storage_manager_query (self, "SELECT COUNT (year), SUM (LENGTH (content)) FROM entries", NULL);
+	if (results == NULL) {
+		return FALSE;
+	} else if (results->rows != 1) {
 		almanah_storage_manager_free_results (results);
 		return FALSE;
 	} else {
@@ -597,8 +624,10 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 	almanah_storage_manager_free_results (results);
 
 	/* Get the number of links */
-	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM entry_links");
-	if (results->rows != 1) {
+	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM entry_links", NULL);
+	if (results == NULL) {
+		return FALSE;
+	} else if (results->rows != 1) {
 		*link_count = 0;
 
 		almanah_storage_manager_free_results (results);
@@ -617,11 +646,13 @@ almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 	AlmanahQueryResults *results;
 	gboolean exists = FALSE;
 
-	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND day = %u LIMIT 1",
-					       g_date_get_year (date),
-					       g_date_get_month (date),
-					       g_date_get_day (date));
+	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND day = %u LIMIT 1", NULL,
+						 g_date_get_year (date),
+						 g_date_get_month (date),
+						 g_date_get_day (date));
 
+	if (results == NULL)
+		return FALSE;
 	if (results->rows == 1)
 		exists = TRUE;
 
@@ -646,11 +677,13 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 	AlmanahQueryResults *results;
 	AlmanahEntry *entry;
 
-	results = almanah_storage_manager_query (self, "SELECT content FROM entries WHERE year = %u AND month = %u AND day = %u",
+	results = almanah_storage_manager_query (self, "SELECT content FROM entries WHERE year = %u AND month = %u AND day = %u", NULL,
 						 g_date_get_year (date),
 						 g_date_get_month (date),
 						 g_date_get_day (date));
 
+	if (results == NULL)
+		return NULL;
 	if (results->rows != 1) {
 		/* Invalid number of rows returned. */
 		almanah_storage_manager_free_results (results);
@@ -685,11 +718,11 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 	if (almanah_entry_is_empty (entry) == TRUE) {
 		/* Delete the entry */
-		almanah_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL,
+		almanah_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, NULL,
 						     g_date_get_year (&date),
 						     g_date_get_month (&date),
 						     g_date_get_day (&date));
-		almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u", NULL, NULL,
+		almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u", NULL, NULL, NULL,
 						     g_date_get_year (&date),
 						     g_date_get_month (&date),
 						     g_date_get_day (&date));
@@ -699,7 +732,7 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		/* Update the entry */
 		gchar *content = almanah_entry_get_content (entry);
 
-		almanah_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL,
+		almanah_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL, NULL,
 						     g_date_get_year (&date),
 						     g_date_get_month (&date),
 						     g_date_get_day (&date),
@@ -730,12 +763,16 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	AlmanahQueryResults *results;
 	guint i;
 
-	results = almanah_storage_manager_query (self, "SELECT day, month, year FROM entries WHERE content LIKE '%%%q%%'", search_string);
+	results = almanah_storage_manager_query (self, "SELECT day, month, year FROM entries WHERE content LIKE '%%%q%%'", NULL,
+						 search_string);
+
+	*matches = NULL;
+	if (results == NULL)
+		return 0;
 
 	/* No results? */
 	if (results->rows < 1) {
 		almanah_storage_manager_free_results (results);
-		*matches = NULL;
 		return 0;
 	}
 
@@ -762,7 +799,12 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 	guint i;
 	gboolean *days = g_slice_alloc0 (sizeof (gboolean) * 32);
 
-	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", year, month);
+	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", NULL,
+						 year,
+						 month);
+
+	if (results == NULL)
+		return days;
 
 	for (i = 1; i <= results->rows; i++)
 		days[atoi (results->data[i])] = TRUE;
@@ -780,13 +822,15 @@ almanah_storage_manager_get_entry_links (AlmanahStorageManager *self, GDate *dat
 	AlmanahLink **links;
 	guint i;
 
-	results = almanah_storage_manager_query (self, "SELECT link_type, link_value, link_value2 FROM entry_links WHERE year = %u AND month = %u AND day = %u",
+	results = almanah_storage_manager_query (self, "SELECT link_type, link_value, link_value2 FROM entry_links WHERE year = %u AND month = %u AND day = %u", NULL,
 						 g_date_get_year (date),
 						 g_date_get_month (date),
 						 g_date_get_day (date));
 
-	if (results->rows == 0) {
-		almanah_storage_manager_free_results (results);
+	if (results == NULL || results->rows == 0) {
+		if (results != NULL)
+			almanah_storage_manager_free_results (results);
+
 		/* Return empty array */
 		links = (AlmanahLink**) g_new (AlmanahLink*, 1);
 		links[0] = NULL;
@@ -818,14 +862,14 @@ almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date
 	value2 = almanah_link_get_value2 (link);
 
 	if (value2 == NULL) {
-		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value) VALUES (%u, %u, %u, '%q', '%q')", NULL, NULL,
+		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value) VALUES (%u, %u, %u, '%q', '%q')", NULL, NULL, NULL,
 								    g_date_get_year (date),
 								    g_date_get_month (date),
 								    g_date_get_day (date),
 								    type_id,
 								    value);
 	} else {
-		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL,
+		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL, NULL,
 								    g_date_get_year (date),
 								    g_date_get_month (date),
 								    g_date_get_day (date),
@@ -843,7 +887,7 @@ almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date
 gboolean
 almanah_storage_manager_remove_entry_link (AlmanahStorageManager *self, GDate *date, const gchar *link_type_id)
 {
-	return almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u AND link_type = '%q'", NULL, NULL,
+	return almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u AND link_type = '%q'", NULL, NULL, NULL,
 						    g_date_get_year (date),
 						    g_date_get_month (date),
 						    g_date_get_day (date),

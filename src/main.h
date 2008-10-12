@@ -44,13 +44,11 @@ typedef struct {
 	GdkAtom native_serialisation_atom;
 
 	gboolean debug;
-	gboolean quitting;
 } Diary;
 
 Diary *diary;
 
 void diary_quit (void);
-void diary_quit_real (void);
 
 G_END_DECLS
 

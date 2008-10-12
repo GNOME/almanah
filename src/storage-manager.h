@@ -53,7 +53,8 @@ typedef enum {
 	ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
 	ALMANAH_STORAGE_MANAGER_ERROR_DECRYPTING,
 	ALMANAH_STORAGE_MANAGER_ERROR_ENCRYPTING,
-	ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY
+	ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY,
+	ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY
 } AlmanahStorageManagerError;
 
 typedef gint (*AlmanahQueryCallback) (gpointer user_data, gint columns, gchar **data, gchar **column_names);
@@ -68,12 +69,12 @@ GType almanah_storage_manager_get_type (void);
 GQuark almanah_storage_manager_error_quark (void);
 AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename);
 
-void almanah_storage_manager_connect (AlmanahStorageManager *self);
-void almanah_storage_manager_disconnect (AlmanahStorageManager *self);
+gboolean almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error);
+gboolean almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error);
 
-AlmanahQueryResults *almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, ...);
+AlmanahQueryResults *almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...);
 void almanah_storage_manager_free_results (AlmanahQueryResults *results);
-gboolean almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data, ...);
+gboolean almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data, GError **error, ...);
 
 gboolean almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *link_count, guint *character_count);
 
