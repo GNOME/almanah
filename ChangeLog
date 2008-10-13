@@ -1,3 +1,25 @@
+2008-10-14  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* configure.ac:
+	* data/Makefile.am:
+	* data/almanah.schemas.in:
+	* data/almanah.ui:
+	* src/Makefile.am:
+	* src/interface.c (diary_create_interface):
+	* src/main-window.c (almanah_main_window_new),
+	(mw_preferences_activate_cb):
+	* src/main.c (diary_quit):
+	* src/main.h:
+	* src/preferences-dialog.c (almanah_preferences_dialog_class_init),
+	(almanah_preferences_dialog_init),
+	(almanah_preferences_dialog_dispose),
+	(almanah_preferences_dialog_new), (pd_key_combo_changed_cb),
+	(pd_response_cb):
+	* src/preferences-dialog.h:
+	* src/storage-manager.c (get_encryption_key): Add a preferences
+	dialogue, with the ability to choose the encryption key, but not
+	yet the ability to create new keys. (Helps: #539792)
+
 2008-10-12  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main.c (storage_manager_disconnected_cb), (diary_quit),

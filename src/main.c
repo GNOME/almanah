@@ -49,13 +49,14 @@ diary_quit (void)
 {
 	GError *error = NULL;
 
-	g_signal_connect (diary->storage_manager, "disconnected", storage_manager_disconnected_cb, NULL);
+	g_signal_connect (diary->storage_manager, "disconnected", G_CALLBACK (storage_manager_disconnected_cb), NULL);
 	if (almanah_storage_manager_disconnect (diary->storage_manager, &error) == FALSE) {
 		diary_interface_error (error->message, diary->main_window);
 	}
 
 	gtk_widget_destroy (diary->add_link_dialog);
 	gtk_widget_destroy (diary->search_dialog);
+	gtk_widget_destroy (diary->preferences_dialog);
 	gtk_widget_destroy (diary->main_window);
 
 	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once

@@ -1,3 +1,7 @@
+2008-10-14  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* POTFILES.in: Added preferences dialogue and GConf schema files.
+
 2008-10-10  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* Makefile.in.in: intltool updated

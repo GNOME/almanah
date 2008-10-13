@@ -25,6 +25,7 @@
 #include "main-window.h"
 #include "add-link-dialog.h"
 #include "search-dialog.h"
+#include "preferences-dialog.h"
 #include "interface.h"
 
 const gchar *
@@ -42,6 +43,7 @@ diary_create_interface (void)
 	diary->main_window = GTK_WIDGET (almanah_main_window_new ());
 	diary->add_link_dialog = GTK_WIDGET (almanah_add_link_dialog_new ());
 	diary->search_dialog = GTK_WIDGET (almanah_search_dialog_new ());
+	diary->preferences_dialog = GTK_WIDGET (almanah_preferences_dialog_new ());
 
 	return diary->main_window;
 }

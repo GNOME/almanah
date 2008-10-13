@@ -29,6 +29,10 @@
 #ifndef DIARY_MAIN_H
 #define DIARY_MAIN_H
 
+#ifdef ENABLE_ENCRYPTION
+#define ENCRYPTION_KEY_GCONF_PATH "/apps/almanah/encryption_key"
+#endif /* ENABLE_ENCRYPTION */
+
 G_BEGIN_DECLS
 
 typedef struct {
@@ -40,6 +44,7 @@ typedef struct {
 	GtkWidget *main_window;
 	GtkWidget *add_link_dialog;
 	GtkWidget *search_dialog;
+	GtkWidget *preferences_dialog;
 
 	GdkAtom native_serialisation_atom;
 

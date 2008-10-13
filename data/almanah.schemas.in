@@ -1,0 +1,15 @@
+<gconfschemafile>
+	<schemalist>
+		<schema>
+			<key>/schemas/apps/almanah/encryption_key</key>
+			<applyto>/apps/almanah/encryption_key</applyto>
+			<owner>almanah</owner>
+			<type>string</type>
+			<default></default>
+			<locale name="C">
+				<short>Database encryption key ID</short>
+		        	<long>The ID of the key to use to encrypt and decrypt the database, if Almanah has been built with encryption support. Leave blank to disable database encryption.</long>
+			</locale>
+		</schema>
+	</schemalist>
+</gconfschemafile>

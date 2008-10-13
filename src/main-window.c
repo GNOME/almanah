@@ -183,6 +183,7 @@ almanah_main_window_new (void)
 		gchar *error_message = g_strdup_printf (_("The spelling checker could not be initialized: %s"), error->message);
 		diary_interface_error (error_message, NULL);
 		g_free (error_message);
+		g_error_free (error);
 	}
 #endif /* ENABLE_SPELL_CHECKING */
 
@@ -522,6 +523,13 @@ mw_search_activate_cb (GtkAction *action, gpointer user_data)
 {
 	gtk_widget_show_all (diary->search_dialog);
 	gtk_dialog_run (GTK_DIALOG (diary->search_dialog));
+}
+
+void
+mw_preferences_activate_cb (GtkAction *action, gpointer user_data)
+{
+	gtk_widget_show_all (diary->preferences_dialog);
+	gtk_dialog_run (GTK_DIALOG (diary->preferences_dialog));
 }
 
 static void

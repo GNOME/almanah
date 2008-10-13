@@ -34,8 +34,6 @@
 #include "link.h"
 #include "storage-manager.h"
 
-#define ENCRYPTION_KEY_GCONF_PATH "/desktop/pgp/default_key"
-
 static void almanah_storage_manager_init (AlmanahStorageManager *self);
 static void almanah_storage_manager_finalize (GObject *object);
 static void almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
@@ -411,8 +409,10 @@ get_encryption_key (void)
 	gchar *encryption_key;
 
 	encryption_key = gconf_client_get_string (diary->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
-	if (encryption_key == NULL || encryption_key[0] == '\0')
+	if (encryption_key == NULL || encryption_key[0] == '\0') {
+		g_free (encryption_key);
 		return NULL;
+	}
 
 	/* Key is generally in the form openpgp:FOOBARKEY, and GPGME doesn't
 	 * like the openpgp: prefix, so it must be removed. */

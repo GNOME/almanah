@@ -66,6 +66,13 @@
 					</object>
 				</child>
 				<child>
+					<object class="GtkAction" id="dry_ui_preferences">
+						<property name="stock-id">gtk-preferences</property>
+						<property name="name">edit-preferences</property>
+						<signal name="activate" handler="mw_preferences_activate_cb"/>
+					</object>
+				</child>
+				<child>
 					<object class="GtkAction" id="dry_ui_format">
 						<property name="name">format</property>
 						<property name="label" translatable="yes">F_ormat</property>
@@ -141,6 +148,8 @@
 					<menuitem action="dry_ui_delete"/>
 					<separator/>
 					<menuitem action="dry_ui_search"/>
+					<separator/>
+					<menuitem action="dry_ui_preferences"/>
 				</menu>
 				<menu action="dry_ui_format">
 					<menuitem action="dry_ui_bold"/>
@@ -166,10 +175,10 @@
 
 	<object class="GtkListStore" id="dry_mw_link_store">
 		<columns>
-			<column type="gchararray"/><!--Type-->
-			<column type="gchararray"/><!--Value-->
-			<column type="gchararray"/><!--Value 2-->
-			<column type="gchararray"/><!--Icon name-->
+			<column type="gchararray"/><!-- Type -->
+			<column type="gchararray"/><!-- Value -->
+			<column type="gchararray"/><!-- Value 2 -->
+			<column type="gchararray"/><!-- Icon name -->
 		</columns>
 	</object>
 
@@ -308,7 +317,6 @@
 										</child>
 										<child>
 											<object class="GtkButton" id="dry_mw_view_button">
-												<!--<property name="use-stock">True</property>-->
 												<property name="image">dry_mw_view_button_image</property>
 												<property name="label" translatable="yes">View</property>
 												<signal name="clicked" handler="mw_view_button_clicked_cb"/>
@@ -341,9 +349,9 @@
 
 	<object class="GtkListStore" id="dry_ald_type_store">
 		<columns>
-			<column type="gchararray"/><!--Name-->
-			<column type="gchararray"/><!--Type-->
-			<column type="gchararray"/><!--Icon name-->
+			<column type="gchararray"/><!-- Name -->
+			<column type="gchararray"/><!-- Type -->
+			<column type="gchararray"/><!-- Icon name -->
 		</columns>
 	</object>
 
@@ -428,8 +436,8 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-6">dry_ald_cancel_button</action-widget><!--GTK_RESPONSE_CANCEL-->
-			<action-widget response="-5">dry_ald_add_button</action-widget><!--GTK_RESPONSE_OK-->
+			<action-widget response="-6">dry_ald_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
+			<action-widget response="-5">dry_ald_add_button</action-widget><!-- GTK_RESPONSE_OK -->
 		</action-widgets>
 	</object>
 
@@ -439,10 +447,10 @@
 
 	<object class="GtkListStore" id="dry_sd_results_store">
 		<columns>
-			<column type="guint"/><!--Day-->
-			<column type="guint"/><!--Month-->
-			<column type="guint"/><!--Year-->
-			<column type="gchararray"/><!--Formatted date-->
+			<column type="guint"/><!-- Day -->
+			<column type="guint"/><!-- Month -->
+			<column type="guint"/><!-- Year -->
+			<column type="gchararray"/><!-- Formatted date -->
 		</columns>
 	</object>
 
@@ -525,7 +533,39 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-7">dry_sd_close_button</action-widget><!--GTK_RESPONSE_CLOSE-->
+			<action-widget response="-7">dry_sd_close_button</action-widget><!-- GTK_RESPONSE_CLOSE -->
+		</action-widgets>
+	</object>
+
+	<object class="AlmanahPreferencesDialog" id="dry_preferences_dialog">
+		<child internal-child="vbox">
+			<object class="GtkVBox" id="vbox4">
+				<child>
+					<object class="GtkTable" id="dry_pd_table">
+						<property name="n-rows">1</property>
+						<property name="n-columns">2</property>
+						<property name="column-spacing">5</property>
+						<property name="row-spacing">5</property>
+						<property name="border-width">5</property>
+						<!-- Encryption key chooser and label go here, programmatically -->
+					</object>
+				</child>
+				<child internal-child="action_area">
+					<object class="GtkHButtonBox" id="hbuttonbox2">
+						<child>
+							<object class="GtkButton" id="dry_pd_close_button">
+								<property name="use-stock">True</property>
+								<property name="label">gtk-close</property>
+								<property name="can-default">True</property>
+								<property name="has-default">True</property>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+		<action-widgets>
+			<action-widget response="-7">dry_pd_close_button</action-widget><!-- GTK_RESPONSE_CLOSE -->
 		</action-widgets>
 	</object>
 </interface>

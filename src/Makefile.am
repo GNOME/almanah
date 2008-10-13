@@ -31,6 +31,8 @@ almanah_SOURCES = \
 	add-link-dialog.h	\
 	search-dialog.c		\
 	search-dialog.h		\
+	preferences-dialog.c	\
+	preferences-dialog.h	\
 	printing.c		\
 	printing.h		\
 	entry.c			\

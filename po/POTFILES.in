@@ -1,6 +1,7 @@
 # List of source files containing translatable strings.
 [encoding: UTF-8]
 data/almanah.desktop.in
+data/almanah.schemas.in
 [type: gettext/glade]data/almanah.ui
 src/interface.c
 src/link.c
@@ -9,6 +10,7 @@ src/links/note.c
 src/links/uri.c
 src/main-window.c
 src/main.c
+src/preferences-dialog.c
 src/printing.c
 src/search-dialog.c
 src/storage-manager.c
