@@ -543,7 +543,7 @@
 				<child>
 					<object class="GtkTable" id="dry_pd_table">
 						<property name="n-rows">1</property>
-						<property name="n-columns">2</property>
+						<property name="n-columns">3</property>
 						<property name="column-spacing">5</property>
 						<property name="row-spacing">5</property>
 						<property name="border-width">5</property>

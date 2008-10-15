@@ -25,6 +25,7 @@
 #define LIBCRYPTUI_API_SUBJECT_TO_CHANGE
 #include <libcryptui/cryptui-key-combo.h>
 #include <libcryptui/cryptui-keyset.h>
+#include <libcryptui/cryptui.h>
 #endif /* ENABLE_ENCRYPTION */
 
 #include "preferences-dialog.h"
@@ -36,6 +37,7 @@ static void almanah_preferences_dialog_init (AlmanahPreferencesDialog *self);
 static void almanah_preferences_dialog_dispose (GObject *object);
 #ifdef ENABLE_ENCRYPTION
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
+static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
 static void pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog);
 
@@ -96,7 +98,7 @@ almanah_preferences_dialog_new (void)
 {
 	GtkBuilder *builder;
 #ifdef ENABLE_ENCRYPTION
-	GtkWidget *label;
+	GtkWidget *label, *button;
 	GtkTable *table;
 	gchar *key;
 #endif /* ENABLE_ENCRYPTION */
@@ -164,6 +166,10 @@ almanah_preferences_dialog_new (void)
 	g_free (key);
 
 	g_signal_connect (priv->key_combo, "changed", G_CALLBACK (pd_key_combo_changed_cb), preferences_dialog);
+
+	button = gtk_button_new_with_mnemonic (_("New _Key"));
+	gtk_table_attach (table, button, 3, 4, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
+	g_signal_connect (button, "clicked", G_CALLBACK (pd_new_key_button_clicked_cb), preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
 
 	g_object_unref (builder);
@@ -185,6 +191,21 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 
 	if (gconf_client_set_string (diary->gconf_client, ENCRYPTION_KEY_GCONF_PATH, key, &error) == FALSE) {
 		gchar *error_message = g_strdup_printf (_("There was an error saving the encryption key: %s"), error->message);
+		diary_interface_error (error_message, GTK_WIDGET (preferences_dialog));
+		g_free (error_message);
+		g_error_free (error);
+	}
+}
+
+static void
+pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog)
+{
+	/* NOTE: pilfered from cryptui_need_to_get_keys */
+	gchar *argv[2] = { "seahorse", NULL };
+	GError *error = NULL;
+
+	if (g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
+		gchar *error_message = g_strdup_printf (_("There was an error opening Seahorse: %s"), error->message);
 		diary_interface_error (error_message, GTK_WIDGET (preferences_dialog));
 		g_free (error_message);
 		g_error_free (error);

@@ -1,3 +1,11 @@
+2008-10-15  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.ui:
+	* src/preferences-dialog.c (almanah_preferences_dialog_new),
+	(pd_new_key_button_clicked_cb): Add a button to launch Seahorse
+	to enable creation of new keys from the preferences dialogue.
+	(Closes: #539792)
+
 2008-10-14  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* configure.ac:
