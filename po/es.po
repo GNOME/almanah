@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-08 19:36+0000\n"
-"PO-Revision-Date: 2008-07-13 20:15+0200\n"
+"POT-Creation-Date: 2008-10-15 06:44+0000\n"
+"PO-Revision-Date: 2008-10-18 12:37+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,9 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../data/almanah.desktop.in.h:1 ../data/almanah.ui.h:2 ../src/main.c:82
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:86 ../src/main.c:92
 msgid "Almanah Diary"
-msgstr ""
+msgstr "Diario Almanah"
 
 #: ../data/almanah.desktop.in.h:2
 msgid "Diary"
@@ -29,17 +29,35 @@ msgstr "Diary"
 msgid "Keep a personal diary"
 msgstr "Mantenga un diario personal"
 
+#: ../data/almanah.schemas.in.h:1
+msgid "Database encryption key ID"
+msgstr "ID de la clave de cifrado de la base de datos"
+
+#: ../data/almanah.schemas.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"La ID de la clave usada para cifrar y descifrar la base de datos, si Almanah "
+"se ha construido con soporte de cifrado. Déjelo en blanco para desactivar e "
+"cifrado de la base de datos."
+
 #: ../data/almanah.ui.h:1
 msgid "Add Link"
 msgstr "Añadir enlace"
 
-#: ../data/almanah.ui.h:3
+#: ../data/almanah.ui.h:2
 msgid "Attached Links"
 msgstr "Enlaces adjuntos"
 
-#: ../data/almanah.ui.h:4
+#: ../data/almanah.ui.h:3
 msgid "Calendar"
 msgstr "Calendario"
+
+#: ../data/almanah.ui.h:4
+msgid "F_ormat"
+msgstr "F_ormato"
 
 #: ../data/almanah.ui.h:5
 msgid "Go To Today"
@@ -57,7 +75,7 @@ msgstr "Quitar enlace"
 msgid "Results"
 msgstr "Resultados"
 
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:9 ../src/search-dialog.c:57
 msgid "Search"
 msgstr "Buscar"
 
@@ -85,85 +103,112 @@ msgstr "Ay_uda"
 msgid "_Search"
 msgstr "_Buscar"
 
-#: ../src/interface.c:45
-#, c-format
-msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
-msgstr "No se pudo cargar el archivo de interfaz de usuario «%s/almanah/almanah.ui»."
-
-#. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
-#. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
-#. Translators: These are the names and descriptions of the different link types.
-#: ../src/link.c:52
+#: ../src/links/file.c:51
 msgid "File"
 msgstr "Archivo"
 
-#: ../src/link.c:52
+#: ../src/links/file.c:52
 msgid "An attached file."
 msgstr "Un archivo adjunto."
 
-#: ../src/link.c:53
-msgid "Note"
-msgstr "Nota"
-
-#: ../src/link.c:53
-msgid "A note about an important event."
-msgstr "Una nota acerca de un evento importante."
-
-#: ../src/link.c:54 ../src/links/uri.c:50
-msgid "URI"
-msgstr "URI"
-
-#: ../src/link.c:54
-msgid "A URI of a file or web page."
-msgstr "Un URI de un archivo o página web."
-
-#: ../src/links/file.c:39
+#: ../src/links/file.c:80
 msgid "Due to an unknown error the file cannot be opened."
 msgstr "El archivo no se pudo cargar debido a un error desconocido."
 
-#: ../src/links/file.c:50
+#: ../src/links/file.c:93
 msgid "Select File"
 msgstr "Seleccionar archivo"
 
-#: ../src/links/uri.c:39
+#: ../src/links/note.c:51
+msgid "Note"
+msgstr "Nota"
+
+#: ../src/links/note.c:52
+msgid "A note about an important event."
+msgstr "Una nota acerca de un evento importante."
+
+#: ../src/links/uri.c:51 ../src/links/uri.c:95
+msgid "URI"
+msgstr "URI"
+
+#: ../src/links/uri.c:52
+msgid "A URI of a file or web page."
+msgstr "Un URI de un archivo o página web."
+
+#: ../src/links/uri.c:78
 msgid "Due to an unknown error the URI cannot be opened."
 msgstr "El URI no se pudo abrir debido a un error desconocido."
 
-#: ../src/main-window.c:178
+#: ../src/main-window.c:129 ../src/preferences-dialog.c:122
+#: ../src/search-dialog.c:83
+#, c-format
+msgid "UI file \"%s\" could not be loaded."
+msgstr "No se pudo cargar el archivo de interfaz de usuario «%s»."
+
+#: ../src/main-window.c:183
 #, c-format
 msgid "The spelling checker could not be initialized: %s"
 msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
-#: ../src/main-window.c:265
+#: ../src/main-window.c:269
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "¿Está seguro de que quiere editar esta entrada del diario para %s?"
+
+#: ../src/main-window.c:295
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "¿Está seguro de que quiere borrar esta entrada del diario para %s?"
+
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:451
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr ""
+"Etiqueta de texto «%s» desconocida o duplicada en la entrada. Ignorando."
+
+#: ../src/main-window.c:580
 msgid ""
-"Diary is free software: you can redistribute it and/or modify it under the "
+"Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
 "Foundation, either version 3 of the License, or (at your option) any later "
 "version."
 msgstr ""
+"Almanah es software libre; puede redistribuirlo y/o modificarlo bajo los "
+"términos de la Licencia Pública General de GNU tal como la publica la Free "
+"Software Foundation; tanto en la versión 3 de la Licencia como (a su "
+"elección) cualquier versión posterior."
 
-#: ../src/main-window.c:269
+#: ../src/main-window.c:584
 msgid ""
-"Diary is distributed in the hope that it will be useful, but WITHOUT ANY "
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
 "details."
 msgstr ""
+"Almanah se distribuye con la esperanza de que sea útil, pero SIN NINGUNA "
+"GARANTÍA; sin incluso la garantía implícita de MERCANTIBILIDAD o ADECUACIÓN "
+"PARA UN PROPÓSITO PARTICULAR. Vea la Licencia Publica General para más "
+"detalles."
 
-#: ../src/main-window.c:273
+#: ../src/main-window.c:588
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
-"Diary.  If not, see <http://www.gnu.org/licenses/>."
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Debería haber recibido una copia de la Licencia Pública General GNU junto "
+"con Almanah. Si no la recibió, consulte <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:284
+#: ../src/main-window.c:599
 #, c-format
 msgid ""
 "A helpful diary keeper, storing %u entries with %u links and a total of %u "
 "characters."
 msgstr ""
+"Un diario útil, almacenando %u entradas con %u enlaces y un total de %u "
+"caracteres."
 
-#: ../src/main-window.c:291
+#: ../src/main-window.c:606
 msgid "Copyright © 2008 Philip Withnall"
 msgstr "Copyright © 2008 Philip Withnall"
 
@@ -172,119 +217,138 @@ msgstr "Copyright © 2008 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:299
+#: ../src/main-window.c:614
 msgid "translator-credits"
 msgstr "Jorge González <jorgegonz@svn.gnome.org>, 2008"
 
-#: ../src/main-window.c:303
-msgid "Diary Website"
-msgstr "Página web de Diary"
+#: ../src/main-window.c:618
+msgid "Almanah Website"
+msgstr "Página web de Almanah"
 
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:348 ../src/printing.c:66 ../src/search-dialog.c:62
+#: ../src/main-window.c:666 ../src/printing.c:63 ../src/search-dialog.c:152
 msgid "%A, %e %B %Y"
-msgstr ""
+msgstr "%A, %e de %B de %Y"
 
-#: ../src/main.c:70
+#: ../src/main.c:80
 msgid "Enable debug mode"
-msgstr ""
+msgstr "Activar modo de depuración"
 
 #. Options
-#: ../src/main.c:86
-msgid "- Manage your diary"
-msgstr ""
-
 #: ../src/main.c:96
+msgid "- Manage your diary"
+msgstr "- Gestione su diario"
+
+#: ../src/main.c:106
 #, c-format
 msgid "Command-line options could not be parsed. Error: %s"
 msgstr ""
+"No se pudieron analizar las opciones de la línea de comandos. Error: %s"
 
-#: ../src/printing.c:82
+#: ../src/preferences-dialog.c:71
+msgid "Almanah Preferences"
+msgstr "Preferencias de Almanah"
+
+#: ../src/preferences-dialog.c:147
+msgid "Encryption Key"
+msgstr "Clave de cifrado"
+
+#: ../src/preferences-dialog.c:153
+msgid "None (don't encrypt)"
+msgstr "Ninguna (no cifrar)"
+
+#: ../src/preferences-dialog.c:170
+msgid "New _Key"
+msgstr "_Clave nueva"
+
+#: ../src/preferences-dialog.c:193
+#, c-format
+msgid "There was an error saving the encryption key: %s"
+msgstr "Hubo un error al guardar la clave de cifrado: %s"
+
+#: ../src/preferences-dialog.c:208
+#, c-format
+msgid "There was an error opening Seahorse: %s"
+msgstr "Hubo un error al abrir Seahorse: %s"
+
+#: ../src/printing.c:81
 msgid "No entry for this date."
-msgstr ""
+msgstr "No hay entradas para esta fecha."
 
-#: ../src/printing.c:213
+#: ../src/printing.c:215
 msgid "Start Date"
-msgstr ""
+msgstr "Fecha de inicio"
 
-#: ../src/printing.c:216
+#: ../src/printing.c:218
 msgid "End Date"
-msgstr ""
+msgstr "Fecha de finalización"
 
-#: ../src/storage-manager.c:184
+#: ../src/storage-manager.c:198
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
-msgstr ""
+msgstr "GPGME no soporta OpenPGP: %s"
 
-#: ../src/storage-manager.c:193
+#: ../src/storage-manager.c:207
 #, c-format
 msgid "Error creating cipher context: %s"
-msgstr ""
+msgstr "Error al crear el contexto de cifrado: %s"
 
-#: ../src/storage-manager.c:222
+#: ../src/storage-manager.c:236
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
-msgstr ""
+msgstr "Error al abrir el archivo cifrado de la base de datos «%s»: %s"
 
-#: ../src/storage-manager.c:242
+#: ../src/storage-manager.c:256
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
-msgstr ""
+msgstr "Error al abrir el archivo plano de la base de datos «%s»: %s"
 
-#: ../src/storage-manager.c:312
+#: ../src/storage-manager.c:330
 #, c-format
 msgid "Error decrypting database: %s"
-msgstr ""
+msgstr "Error al descifrar la base de datos: %s"
 
-#: ../src/storage-manager.c:345
+#: ../src/storage-manager.c:364
 #, c-format
 msgid "Error getting encryption key: %s"
-msgstr ""
+msgstr "Error al obtener la clave de cifrado: %s"
 
-#: ../src/storage-manager.c:366
+#: ../src/storage-manager.c:385
 #, c-format
 msgid "Error encrypting database: %s"
-msgstr ""
+msgstr "Error al cifrar la base de datos: %s"
 
-#: ../src/storage-manager.c:377
+#: ../src/storage-manager.c:396
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
-msgstr ""
+msgstr "No se pudo borrar el archivo plano de la base de datos «%s»."
 
-#: ../src/storage-manager.c:425
-#, c-format
-msgid ""
-"Both an encrypted and plaintext version of the database exist as \"%s\" and "
-"\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
-"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
-"problem will most likely have been caused by Diary being unable to encrypt "
-"the database, so you should move the first file."
-msgstr ""
-
-#: ../src/storage-manager.c:450
+#: ../src/storage-manager.c:476
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr ""
+"No se pudo abrir la base de datos «%s». SQLite proporcionó el siguiente "
+"mensaje de error: %s"
 
-#: ../src/storage-manager.c:482
+#: ../src/storage-manager.c:507
 #, c-format
 msgid ""
-"Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary "
-"will not be encrypted; please install Seahorse and set up a default key, or "
-"ignore this message."
+"Error getting encryption key: GConf key \"%s\" invalid or empty. Your "
+"almanah will not be encrypted; please install Seahorse and set up a default "
+"key, or ignore this message."
 msgstr ""
+"Error al obtener la clave de cifrado: La clave «%s» de GConf no es válida o "
+"está vacía. Su Almanah no se cifrará; instale Seahorse y configure una clave "
+"predeterminada o ignore este mensaje."
 
-#: ../src/storage-manager.c:526 ../src/storage-manager.c:559
+#: ../src/storage-manager.c:552 ../src/storage-manager.c:586
 #, c-format
-msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
-
-#: ../src/storage-manager.c:686
-#, c-format
-msgid "Are you sure you want to delete this diary entry for %s?"
-msgstr ""
-
+"No se pudo ejecutar la consulta «%s». SQLite proporcionó el siguiente mensaje "
+"de error: %s"
