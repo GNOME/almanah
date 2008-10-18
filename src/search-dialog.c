@@ -110,6 +110,8 @@ almanah_search_dialog_new (void)
 	g_signal_connect (priv->sd_results_selection, "changed", G_CALLBACK (sd_results_selection_changed_cb),
 			  gtk_builder_get_object (builder, "dry_sd_view_button"));
 
+	gtk_widget_grab_default (GTK_WIDGET (gtk_builder_get_object (builder, "dry_sd_search_button")));
+
 	/* Prettify the UI */
 	diary_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_sd_results_label")));
 

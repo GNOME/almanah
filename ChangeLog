@@ -1,3 +1,9 @@
+2008-10-18  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/search-dialog.c (almanah_search_dialog_new): Make the "Search"
+	button the default so that it is activated when enter is pressed in
+	the search entry.
+
 2008-10-15  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.ui:
