@@ -215,8 +215,6 @@ almanah_main_window_new (void)
 static void
 save_current_entry (AlmanahMainWindow *self)
 {
-	GtkTextIter start_iter, end_iter;
-	gchar *entry_text;
 	gboolean entry_exists, entry_is_empty;
 	GDate date;
 	AlmanahMainWindowPrivate *priv = self->priv;
@@ -231,17 +229,8 @@ save_current_entry (AlmanahMainWindow *self)
 		return;
 
 	/* Save the entry */
-	gtk_text_buffer_get_bounds (priv->entry_buffer, &start_iter, &end_iter);
-	entry_text = gtk_text_buffer_get_text (priv->entry_buffer, &start_iter, &end_iter, FALSE);
-	almanah_entry_set_content (priv->current_entry, entry_text);
-	g_free (entry_text);
-
+	almanah_entry_set_content (priv->current_entry, priv->entry_buffer);
 	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
-
-	/* TODO: Serialise the buffer contents instead of just grabbing the text, so we can
-	 * keep tags between saves. Could use gtk_text_buffer_register_serialize_tagset() et al
-	 * for this, but could also add a more general framework for serialisation, which would aid
-	 * output/export to other formats from the program. */
 
 	almanah_entry_get_date (priv->current_entry, &date);
 	editability = almanah_entry_get_editability (priv->current_entry);
@@ -309,10 +298,12 @@ save_current_entry (AlmanahMainWindow *self)
 		gtk_widget_destroy (dialog);
 	}
 
+	/* Store the entry! */
+	almanah_storage_manager_set_entry (diary->storage_manager, priv->current_entry);
+
 	/* Mark the day on the calendar if the entry was non-empty (and deleted)
 	 * and update the state of the add link button. */
-	if (almanah_storage_manager_set_entry (diary->storage_manager, priv->current_entry) == FALSE) {
-		/* TODO: This sort of thing should be done by connecting to signals from the storage manager */
+	if (entry_is_empty == TRUE) {
 		gtk_calendar_unmark_day (priv->calendar, g_date_get_day (&date));
 
 		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), FALSE);
@@ -569,7 +560,7 @@ void
 mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	gchar *license, *description;
-	guint entry_count, link_count, character_count;
+	guint entry_count, link_count;
 
 	const gchar *authors[] =
 	{
@@ -595,11 +586,10 @@ mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 			  _(license_parts[2]),
 			  NULL);
 
-	almanah_storage_manager_get_statistics (diary->storage_manager, &entry_count, &link_count, &character_count);
-	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries with %u links and a total of %u characters."),
+	almanah_storage_manager_get_statistics (diary->storage_manager, &entry_count, &link_count);
+	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries and %u links."),
 				      entry_count,
-				      link_count,
-				      character_count);
+				      link_count);
 
 	gtk_show_about_dialog (GTK_WINDOW (main_window),
 				"version", VERSION,
@@ -677,22 +667,36 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	gtk_text_view_set_editable (priv->entry_view, almanah_entry_get_editability (priv->current_entry) != ALMANAH_ENTRY_FUTURE ? TRUE : FALSE);
 	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
 
+	/* Prepare for the possibility of failure --- do as much of the general interface changes as possible first */
+	gtk_list_store_clear (priv->link_store);
+	gtk_widget_set_sensitive (GTK_WIDGET (priv->remove_button), FALSE); /* Only sensitive if something's selected */
+	gtk_action_set_sensitive (priv->remove_action, FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), FALSE);
+	gtk_action_set_sensitive (priv->add_action, FALSE);
+
 	if (almanah_entry_is_empty (priv->current_entry) == FALSE) {
-		gchar *entry_content = almanah_entry_get_content (priv->current_entry);
-		gtk_text_buffer_set_text (priv->entry_buffer, entry_content, -1);
-		g_free (entry_content);
+		GError *error = NULL;
+
+		gtk_text_buffer_set_text (priv->entry_buffer, "", 0);
+		if (almanah_entry_get_content (priv->current_entry, priv->entry_buffer, &error) == FALSE) {
+			gchar *error_message = g_strdup_printf (_("The entry content could not be loaded: %s"), error->message);
+			diary_interface_error (error_message, NULL);
+			g_free (error_message);
+			g_error_free (error);
+
+			/* Make sure the interface is left in a decent state before we return */
+			gtk_text_view_set_editable (priv->entry_view, FALSE);
+
+			return;
+		}
 
 		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), TRUE);
 		gtk_action_set_sensitive (priv->add_action, TRUE);
 	} else {
+		/* Set the buffer to be empty */
 		gtk_text_buffer_set_text (priv->entry_buffer, "", -1);
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), FALSE);
-		gtk_action_set_sensitive (priv->add_action, FALSE);
 	}
-
-	gtk_widget_set_sensitive (GTK_WIDGET (priv->remove_button), FALSE); /* Only sensitive if something's selected */
-	gtk_action_set_sensitive (priv->remove_action, FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Ensure the spell-checking is updated */
@@ -702,7 +706,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* List the entry's links */
-	gtk_list_store_clear (priv->link_store);
 	links = almanah_storage_manager_get_entry_links (diary->storage_manager, &calendar_date);
 
 	i = 0;

@@ -30,6 +30,7 @@
 #define MAX_ORPHANS 3 /* maximum number of orphan lines to be forced to the next page */
 
 typedef struct {
+	GtkTextBuffer *buffer;
 	GDate *start_date;
 	GDate *end_date;
 	GDate *current_date;
@@ -39,6 +40,197 @@ typedef struct {
 	gboolean paginated;
 	gdouble y;
 } DiaryPrintOperation;
+
+/* Adapted from code in GtkSourceView's gtksourceprintcompositor.c, previously LGPL >= 2.1
+ * Copyright (C) 2000, 2001 Chema Celorio  
+ * Copyright (C) 2003  Gustavo Giráldez
+ * Copyright (C) 2004  Red Hat, Inc.
+ * Copyright (C) 2001-2007  Paolo Maggi
+ * Copyright (C) 2008  Paolo Maggi, Paolo Borelli and Yevgen Muntyan */
+static GSList *
+get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
+{
+	GSList *attrs = NULL;
+	GSList *tags;
+	PangoAttribute *bg = NULL, *fg = NULL, *style = NULL, *ul = NULL;
+	PangoAttribute *weight = NULL, *st = NULL;
+
+	tags = gtk_text_iter_get_tags (iter);
+	gtk_text_iter_forward_to_tag_toggle (iter, NULL);
+
+	if (gtk_text_iter_compare (iter, limit) > 0)
+		*iter = *limit;
+
+	while (tags)
+	{
+		GtkTextTag *tag;
+		gboolean bg_set, fg_set, style_set, ul_set, weight_set, st_set;
+
+		tag = tags->data;
+		tags = g_slist_delete_link (tags, tags);
+
+		g_object_get (tag,
+			     "background-set", &bg_set,
+			     "foreground-set", &fg_set,
+			     "style-set", &style_set,
+			     "underline-set", &ul_set,
+			     "weight-set", &weight_set,
+			     "strikethrough-set", &st_set,
+			     NULL);
+
+		if (bg_set)
+		{
+			GdkColor *color = NULL;
+			if (bg) pango_attribute_destroy (bg);
+			g_object_get (tag, "background-gdk", &color, NULL);
+			bg = pango_attr_background_new (color->red, color->green, color->blue);
+			gdk_color_free (color);
+		}
+
+		if (fg_set)
+		{
+			GdkColor *color = NULL;
+			if (fg) pango_attribute_destroy (fg);
+			g_object_get (tag, "foreground-gdk", &color, NULL);
+			fg = pango_attr_foreground_new (color->red, color->green, color->blue);
+			gdk_color_free (color);
+		}
+
+		if (style_set)
+		{
+			PangoStyle style_value;
+			if (style) pango_attribute_destroy (style);
+			g_object_get (tag, "style", &style_value, NULL);
+			style = pango_attr_style_new (style_value);
+		}
+
+		if (ul_set)
+		{
+			PangoUnderline underline;
+			if (ul) pango_attribute_destroy (ul);
+			g_object_get (tag, "underline", &underline, NULL);
+			ul = pango_attr_underline_new (underline);
+		}
+
+		if (weight_set)
+		{
+			PangoWeight weight_value;
+			if (weight) pango_attribute_destroy (weight);
+			g_object_get (tag, "weight", &weight_value, NULL);
+			weight = pango_attr_weight_new (weight_value);
+		}
+
+		if (st_set)
+		{
+			gboolean strikethrough;
+			if (st) pango_attribute_destroy (st);
+			g_object_get (tag, "strikethrough", &strikethrough, NULL);
+			st = pango_attr_strikethrough_new (strikethrough);
+		}
+	}
+
+	if (bg)
+		attrs = g_slist_prepend (attrs, bg);
+	if (fg)
+		attrs = g_slist_prepend (attrs, fg);
+	if (style)
+		attrs = g_slist_prepend (attrs, style);
+	if (ul)
+		attrs = g_slist_prepend (attrs, ul);
+	if (weight)
+		attrs = g_slist_prepend (attrs, weight);
+	if (st)
+		attrs = g_slist_prepend (attrs, st);
+
+	return attrs;
+}
+
+/* Adapted from code in GtkSourceView's gtksourceprintcompositor.c, previously LGPL >= 2.1
+ * Copyright (C) 2000, 2001 Chema Celorio  
+ * Copyright (C) 2003  Gustavo Giráldez
+ * Copyright (C) 2004  Red Hat, Inc.
+ * Copyright (C) 2001-2007  Paolo Maggi
+ * Copyright (C) 2008  Paolo Maggi, Paolo Borelli and Yevgen Muntyan */
+static gboolean
+is_empty_line (const gchar *text)
+{
+	if (*text != '\0') {
+		const gchar *p;
+
+		for (p = text; p != NULL; p = g_utf8_next_char (p)) {
+			if (!g_unichar_isspace (*p))
+				return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+/* Adapted from code in GtkSourceView's gtksourceprintcompositor.c, previously LGPL >= 2.1
+ * Copyright (C) 2000, 2001 Chema Celorio  
+ * Copyright (C) 2003  Gustavo Giráldez
+ * Copyright (C) 2004  Red Hat, Inc.
+ * Copyright (C) 2001-2007  Paolo Maggi
+ * Copyright (C) 2008  Paolo Maggi, Paolo Borelli and Yevgen Muntyan */
+static void
+lay_out_entry (PangoLayout *layout, GtkTextIter *start, GtkTextIter *end)
+{
+	gchar *text;
+	PangoAttrList *attr_list = NULL;
+	GtkTextIter segm_start, segm_end;
+	int start_index;
+
+	text = gtk_text_iter_get_slice (start, end);
+
+	/* If it is an empty line (or it just contains tabs) pango has problems:
+	 * see for instance comment #22 and #23 on bug #143874 and bug #457990.
+	 * We just hack around it by inserting a space... not elegant but
+	 * works :-) */
+	if (gtk_text_iter_ends_line (start) || is_empty_line (text)) {
+		pango_layout_set_text (layout, " ", 1);
+		g_free (text);
+		return;
+	}
+
+	pango_layout_set_text (layout, text, -1);
+	g_free (text);
+
+	segm_start = *start;
+	start_index = gtk_text_iter_get_line_index (start);
+
+	while (gtk_text_iter_compare (&segm_start, end) < 0) {
+		GSList *attrs;
+		int si, ei;
+
+		segm_end = segm_start;
+		attrs = get_iter_attrs (&segm_end, end);
+		if (attrs) {
+			si = gtk_text_iter_get_line_index (&segm_start) - start_index;
+			ei = gtk_text_iter_get_line_index (&segm_end) - start_index;
+		}
+
+		while (attrs) {
+			PangoAttribute *a = attrs->data;
+
+			a->start_index = si;
+			a->end_index = ei;
+
+			if (!attr_list)
+				attr_list = pango_attr_list_new ();
+
+			pango_attr_list_insert (attr_list, a);
+
+			attrs = g_slist_delete_link (attrs, attrs);
+		}
+
+		segm_start = segm_end;
+	}
+
+	pango_layout_set_attributes (layout, attr_list);
+
+	if (attr_list)
+		pango_attr_list_unref (attr_list);
+}
 
 /* TRUE if the entry was printed OK on the current page, FALSE if it needs to be moved to a new page/is split across pages */
 static gboolean
@@ -77,16 +269,21 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 
 	entry = almanah_storage_manager_get_entry (diary->storage_manager, diary_operation->current_date);
 
-	if (almanah_entry_is_empty (entry)) {
+	if (entry == NULL || almanah_entry_is_empty (entry)) {
 		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
 		pango_layout_set_markup (entry_layout, entry_text, -1);
 	} else {
-		gchar *entry_text = almanah_entry_get_content (entry);
-		pango_layout_set_text (entry_layout, entry_text, -1);
-		g_free (entry_text);
+		GtkTextIter start, end;
+
+		gtk_text_buffer_set_text (diary_operation->buffer, "", 0);
+		if (almanah_entry_get_content (entry, diary_operation->buffer, NULL) == TRUE) {
+			gtk_text_buffer_get_bounds (diary_operation->buffer, &start, &end);
+			lay_out_entry (entry_layout, &start, &end);
+		}
 	}
 
-	g_object_unref (entry);
+	if (entry != NULL)
+		g_object_unref (entry);
 
 	/* Check we're not orphaning things */
 	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout), diary_operation->current_line + MAX_ORPHANS) - 1);
@@ -244,11 +441,20 @@ custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, DiaryPr
 	/* Start date */
 	gtk_calendar_get_date (diary_operation->start_calendar, &year, &month, &day);
 	diary_operation->start_date = g_date_new_dmy (day, month + 1, year);
-	diary_operation->current_date = g_memdup (diary_operation->start_date, sizeof (*diary_operation->start_date));
 
 	/* End date */
 	gtk_calendar_get_date (diary_operation->end_calendar, &year, &month, &day);
 	diary_operation->end_date = g_date_new_dmy (day, month + 1, year);
+
+	/* Ensure they're in order */
+	if (g_date_compare (diary_operation->start_date, diary_operation->end_date) > 0) {
+		GDate *temp;
+		temp = diary_operation->start_date;
+		diary_operation->start_date = diary_operation->end_date;
+		diary_operation->end_date = temp;
+	}
+
+	diary_operation->current_date = g_memdup (diary_operation->start_date, sizeof (*(diary_operation->start_date)));
 }
 
 void
@@ -264,6 +470,17 @@ diary_print_entries (void)
 	diary_operation.paginated = FALSE;
 	diary_operation.y = 0;
 	diary_operation.current_line = 0;
+
+	diary_operation.buffer = gtk_text_buffer_new (NULL);
+	gtk_text_buffer_create_tag (diary_operation.buffer, "bold", 
+				    "weight", PANGO_WEIGHT_BOLD, 
+				    NULL);
+	gtk_text_buffer_create_tag (diary_operation.buffer, "italic",
+				    "style", PANGO_STYLE_ITALIC,
+				    NULL);
+	gtk_text_buffer_create_tag (diary_operation.buffer, "underline",
+				    "underline", PANGO_UNDERLINE_SINGLE,
+				    NULL);
 
 	if (settings != NULL) 
 		gtk_print_operation_set_print_settings (operation, settings);
@@ -285,6 +502,7 @@ diary_print_entries (void)
 	}
 
 	if (diary_operation.current_date != NULL) {
+		g_object_unref (diary_operation.buffer);
 		g_date_free (diary_operation.current_date);
 		g_date_free (diary_operation.start_date);
 		g_date_free (diary_operation.end_date);

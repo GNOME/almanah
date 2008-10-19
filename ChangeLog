@@ -1,3 +1,25 @@
+2008-10-19  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/entry.c (almanah_entry_class_init), (almanah_entry_init),
+	(almanah_entry_finalize), (almanah_entry_get_property),
+	(almanah_entry_set_property), (almanah_entry_get_data),
+	(almanah_entry_set_data), (almanah_entry_get_content),
+	(almanah_entry_set_content), (almanah_entry_is_empty):
+	* src/entry.h:
+	* src/main-window.c (save_current_entry), (mw_about_activate_cb),
+	(mw_calendar_day_selected_cb):
+	* src/printing.c (get_iter_attrs), (is_empty_line),
+	(lay_out_entry), (print_entry), (custom_widget_apply_cb),
+	(diary_print_entries):
+	* src/storage-manager.c (almanah_storage_manager_get_statistics),
+	(almanah_storage_manager_get_entry),
+	(almanah_storage_manager_set_entry),
+	(almanah_storage_manager_search_entries):
+	* src/storage-manager.h: Serialise and deserialise entries when
+	writing them to/from the database to enable persistence of formatting
+	tags. Modify the printing code to also be able to deal with
+	formatting tags.
+
 2008-10-18  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/search-dialog.c (almanah_search_dialog_new): Make the "Search"

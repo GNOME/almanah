@@ -596,16 +596,15 @@ almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *q
 }
 
 gboolean
-almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *link_count, guint *character_count)
+almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *link_count)
 {
 	AlmanahQueryResults *results;
 
 	*entry_count = 0;
-	*character_count = 0;
 	*link_count = 0;
 
 	/* Get the number of entries and the number of letters */
-	results = almanah_storage_manager_query (self, "SELECT COUNT (year), SUM (LENGTH (content)) FROM entries", NULL);
+	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM entries", NULL);
 	if (results == NULL) {
 		return FALSE;
 	} else if (results->rows != 1) {
@@ -614,12 +613,9 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 	} else {
 		*entry_count = atoi (results->data[2]);
 		if (*entry_count == 0) {
-			*character_count = 0;
 			*link_count = 0;
 			return TRUE;
 		}
-
-		*character_count = atoi (results->data[3]);
 	}
 	almanah_storage_manager_free_results (results);
 
@@ -674,25 +670,37 @@ almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 AlmanahEntry *
 almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 {
-	AlmanahQueryResults *results;
 	AlmanahEntry *entry;
+	sqlite3_stmt *statement;
 
-	results = almanah_storage_manager_query (self, "SELECT content FROM entries WHERE year = %u AND month = %u AND day = %u", NULL,
-						 g_date_get_year (date),
-						 g_date_get_month (date),
-						 g_date_get_day (date));
+	/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here
+	 * as we can't otherwise reliably bind the data blob to the query --- if we pass it in as
+	 * a string, it gets cut off at the first nul character, which could occur anywhere in
+	 * the blob. */
 
-	if (results == NULL)
-		return NULL;
-	if (results->rows != 1) {
-		/* Invalid number of rows returned. */
-		almanah_storage_manager_free_results (results);
+	/* Prepare the statement */
+	if (sqlite3_prepare_v2 (self->priv->connection,
+				"SELECT content FROM entries WHERE year = ? AND month = ? AND day = ?", -1,
+				&statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
 
+	/* Bind parameters */
+	sqlite3_bind_int (statement, 1, g_date_get_year (date));
+	sqlite3_bind_int (statement, 2, g_date_get_month (date));
+	sqlite3_bind_int (statement, 3, g_date_get_day (date));
+
+	/* Execute the statement */
+	if (sqlite3_step (statement) != SQLITE_ROW) {
+		sqlite3_finalize (statement);
+		return NULL;
+	}
+
+	/* Get the data */
 	entry = almanah_entry_new (date);
-	almanah_entry_set_content (entry, results->data[1]);
-	almanah_storage_manager_free_results (results);
+	almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+
+	sqlite3_finalize (statement);
 
 	return entry;
 }
@@ -702,12 +710,11 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
  * @self: a #AlmanahStorageManager
  * @entry: an #AlmanahEntry
  *
- * Saves the specified @entry in the database. If the @entry
- * content is empty or %NULL, it will ask if the user wants to delete
- * the entry for that date. It will return %TRUE if the content is
- * non-empty, and %FALSE otherwise.
+ * Saves the specified @entry in the database synchronously.
+ * If the @entry's content is empty, it will delete @entry's rows
+ * in the database (as well as its links' rows).
  *
- * Return value: %TRUE if the entry is non-empty
+ * Return value: %TRUE on success, %FALSE otherwise
  **/
 gboolean
 almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *entry)
@@ -727,17 +734,40 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 						     g_date_get_month (&date),
 						     g_date_get_day (&date));
 
-		return FALSE;
+		return TRUE;
 	} else {
-		/* Update the entry */
-		gchar *content = almanah_entry_get_content (entry);
+		const guint8 *data;
+		gsize length;
+		sqlite3_stmt *statement;
 
-		almanah_storage_manager_query_async (self, "REPLACE INTO entries (year, month, day, content) VALUES (%u, %u, %u, '%q')", NULL, NULL, NULL,
-						     g_date_get_year (&date),
-						     g_date_get_month (&date),
-						     g_date_get_day (&date),
-						     content);
-		g_free (content);
+		/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here
+		 * as we can't otherwise reliably bind the data blob to the query --- if we pass it in as
+		 * a string, it gets cut off at the first nul character, which could occur anywhere in
+		 * the blob. */
+
+		/* Prepare the statement */
+		if (sqlite3_prepare_v2 (self->priv->connection,
+					"REPLACE INTO entries (year, month, day, content) VALUES (?, ?, ?, ?)", -1,
+					&statement, NULL) != SQLITE_OK) {
+			return FALSE;
+		}
+
+		/* Bind parameters */
+		sqlite3_bind_int (statement, 1, g_date_get_year (&date));
+		sqlite3_bind_int (statement, 2, g_date_get_month (&date));
+		sqlite3_bind_int (statement, 3, g_date_get_day (&date));
+
+		data = almanah_entry_get_data (entry, &length);
+		sqlite3_bind_blob (statement, 4, data, length, SQLITE_TRANSIENT);
+
+		/* Execute the statement */
+		if (sqlite3_step (statement) != SQLITE_DONE) {
+			sqlite3_finalize (statement);
+			return FALSE;
+		}
+
+		sqlite3_finalize (statement);
+
 		return TRUE;
 	}
 }
@@ -763,6 +793,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	AlmanahQueryResults *results;
 	guint i;
 
+	/* TODO: Won't really work with serialized data */
 	results = almanah_storage_manager_query (self, "SELECT day, month, year FROM entries WHERE content LIKE '%%%q%%'", NULL,
 						 search_string);
 

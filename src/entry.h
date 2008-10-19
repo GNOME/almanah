@@ -54,8 +54,10 @@ typedef struct {
 
 GType almanah_entry_get_type (void);
 AlmanahEntry *almanah_entry_new (GDate *date);
-void almanah_entry_set_content (AlmanahEntry *self, const gchar *content);
-gchar *almanah_entry_get_content (AlmanahEntry *self);
+const guint8 *almanah_entry_get_data (AlmanahEntry *self, gsize *length);
+void almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length);
+gboolean almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, GError **error);
+void almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer);
 void almanah_entry_get_date (AlmanahEntry *self, GDate *date);
 AlmanahEntryEditability almanah_entry_get_editability (AlmanahEntry *self);
 gboolean almanah_entry_is_empty (AlmanahEntry *self);

@@ -17,7 +17,9 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
 #include <glib.h>
+#include <gtk/gtk.h>
 
 #include "entry.h"
 
@@ -28,14 +30,15 @@ static void almanah_entry_set_property (GObject *object, guint property_id, cons
 
 struct _AlmanahEntryPrivate {
 	GDate date;
-	gchar *content;
+	guint8 *data;
+	gsize length;
+	gboolean is_empty;
 };
 
 enum {
 	PROP_DAY = 1,
 	PROP_MONTH,
-	PROP_YEAR,
-	PROP_CONTENT
+	PROP_YEAR
 };
 
 G_DEFINE_TYPE (AlmanahEntry, almanah_entry, G_TYPE_OBJECT)
@@ -67,17 +70,14 @@ almanah_entry_class_init (AlmanahEntryClass *klass)
 					"Year", "The year for which this is the entry.",
 					1, (1 << 16) - 1, 1,
 					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-	g_object_class_install_property (gobject_class, PROP_CONTENT,
-				g_param_spec_string ("content",
-					"Content", "The textual content of the entry.",
-					NULL,
-					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
 almanah_entry_init (AlmanahEntry *self)
 {
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_ENTRY, AlmanahEntryPrivate);
+	self->priv->data = NULL;
+	self->priv->length = 0;
 	g_date_clear (&(self->priv->date), 1);
 }
 
@@ -86,8 +86,8 @@ almanah_entry_finalize (GObject *object)
 {
 	AlmanahEntryPrivate *priv = ALMANAH_ENTRY (object)->priv;
 
-	g_free (priv->content);
-	priv->content = NULL;
+	g_free (priv->data);
+	priv->data = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_entry_parent_class)->finalize (object);
@@ -107,9 +107,6 @@ almanah_entry_get_property (GObject *object, guint property_id, GValue *value, G
 			break;
 		case PROP_YEAR:
 			g_value_set_uint (value, g_date_get_year (&(priv->date)));
-			break;
-		case PROP_CONTENT:
-			g_value_set_string (value, priv->content);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -133,9 +130,6 @@ almanah_entry_set_property (GObject *object, guint property_id, const GValue *va
 		case PROP_YEAR:
 			g_date_set_year (&(priv->date), g_value_get_uint (value));
 			break;
-		case PROP_CONTENT:
-			almanah_entry_set_content (ALMANAH_ENTRY (object), g_value_get_string (value));
-			break;
 		default:
 			/* We don't have any other property... */
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -153,18 +147,78 @@ almanah_entry_new (GDate *date)
 			     NULL);
 }
 
-void
-almanah_entry_set_content (AlmanahEntry *self, const gchar *content)
+/* NOTE: There's a difference between content and data, as recognised by AlmanahEntry.
+ * Content is deserialized, and handled in terms of GtkTextBuffers.
+ * Data is serialized, and handled in terms of a guint8 *data and gsize length. */
+const guint8 *
+almanah_entry_get_data (AlmanahEntry *self, gsize *length)
 {
-	g_free (self->priv->content);
-	self->priv->content = g_strdup (content);
-	g_object_notify (G_OBJECT (self), "content");
+	if (length != NULL)
+		*length = self->priv->length;
+	return self->priv->data;
 }
 
-gchar *
-almanah_entry_get_content (AlmanahEntry *self)
+void
+almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length)
 {
-	return g_strdup (self->priv->content);
+	AlmanahEntryPrivate *priv = self->priv;
+
+	g_free (priv->data);
+
+	priv->data = g_memdup (data, length * sizeof (*data));
+	priv->length = length;
+	priv->is_empty = FALSE;
+}
+
+gboolean
+almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, GError **error)
+{
+	GdkAtom format_atom;
+	GtkTextIter start_iter;
+	AlmanahEntryPrivate *priv = self->priv;
+	GError *deserialise_error = NULL;
+
+	format_atom = gtk_text_buffer_register_deserialize_tagset (text_buffer, PACKAGE_NAME);
+	gtk_text_buffer_get_start_iter (text_buffer, &start_iter);
+
+	/* Try deserializing the (hopefully) serialized data first */
+	if (gtk_text_buffer_deserialize (text_buffer, text_buffer,
+					 format_atom,
+					 &start_iter,
+					 priv->data, priv->length,
+					 &deserialise_error) == FALSE) {
+		/* Since that failed, check the data's in the old format, and try to just load it as text */
+		if (g_strcmp0 (priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
+			gtk_text_buffer_set_text (text_buffer, (gchar*) priv->data, priv->length);
+			g_error_free (deserialise_error);
+			return TRUE;
+		}
+
+		g_propagate_error (error, deserialise_error);
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+void
+almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer)
+{
+	GtkTextIter start, end;
+	GdkAtom format_atom;
+	AlmanahEntryPrivate *priv = self->priv;
+
+	/* Update our cached empty status */
+	self->priv->is_empty = (gtk_text_buffer_get_char_count (text_buffer) == 0) ? TRUE : FALSE;
+
+	g_free (priv->data);
+
+	gtk_text_buffer_get_bounds (text_buffer, &start, &end);
+	format_atom = gtk_text_buffer_register_serialize_tagset (text_buffer, PACKAGE_NAME);
+	priv->data = gtk_text_buffer_serialize (text_buffer, text_buffer,
+						format_atom,
+						&start, &end,
+						&(priv->length));
 }
 
 /* NOTE: Designed for use on the stack */
@@ -199,5 +253,8 @@ almanah_entry_get_editability (AlmanahEntry *self)
 gboolean
 almanah_entry_is_empty (AlmanahEntry *self)
 {
-	return (self->priv->content == NULL || self->priv->content[0] == '\0') ? TRUE : FALSE;
+	return (self->priv->is_empty == TRUE ||
+		self->priv->length == 0 ||
+		self->priv->data == NULL ||
+		self->priv->data[0] == '\0') ? TRUE : FALSE;
 }
