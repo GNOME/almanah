@@ -179,6 +179,7 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, GErro
 	GError *deserialise_error = NULL;
 
 	format_atom = gtk_text_buffer_register_deserialize_tagset (text_buffer, PACKAGE_NAME);
+	gtk_text_buffer_deserialize_set_can_create_tags (text_buffer, format_atom, TRUE);
 	gtk_text_buffer_get_start_iter (text_buffer, &start_iter);
 
 	/* Try deserializing the (hopefully) serialized data first */

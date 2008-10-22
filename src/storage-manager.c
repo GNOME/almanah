@@ -785,41 +785,58 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
  * If there are no results, @matches will be set to %NULL. It
  * must otherwise be freed with g_free().
  *
- * Return value: number of results
+ * Return value: number of results, or -1 on failure
  **/
-guint
+gint
 almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, GDate *matches[])
 {
-	AlmanahQueryResults *results;
-	guint i;
+	sqlite3_stmt *statement;
+	GtkTextBuffer *text_buffer;
+	guint result_count = 1; /* initialise to 1 to account for the working array element */
 
-	/* TODO: Won't really work with serialized data */
-	results = almanah_storage_manager_query (self, "SELECT day, month, year FROM entries WHERE content LIKE '%%%q%%'", NULL,
-						 search_string);
-
-	*matches = NULL;
-	if (results == NULL)
-		return 0;
-
-	/* No results? */
-	if (results->rows < 1) {
-		almanah_storage_manager_free_results (results);
-		return 0;
+	/* Prepare the statement */
+	if (sqlite3_prepare_v2 (self->priv->connection,
+				"SELECT content, day, month, year FROM entries", -1,
+				&statement, NULL) != SQLITE_OK) {
+		return -1;
 	}
 
-	/* Allocate and set the results */
-	*matches = g_new0 (GDate, results->rows);
+	text_buffer = gtk_text_buffer_new (NULL);
+	*matches = g_malloc (sizeof (GDate));
 
-	for (i = 0; i < results->rows; i++) {
-		g_date_set_dmy (&((*matches)[i]),
-				(GDateDay) atoi (results->data[(i + 1) * results->columns]),
-				(GDateMonth) atoi (results->data[(i + 1) * results->columns + 1]),
-				(GDateYear) atoi (results->data[(i + 1) * results->columns + 2]));
+	/* Execute the statement */
+	while (sqlite3_step (statement) == SQLITE_ROW) {
+		AlmanahEntry *entry;
+		GDate *date = &((*matches)[result_count - 1]);
+		GtkTextIter iter;
+
+		g_date_set_dmy (date, sqlite3_column_int (statement, 1), sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3));
+		entry = almanah_entry_new (date);
+		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+
+		/* Deserialise the entry into our buffer */
+		gtk_text_buffer_set_text (text_buffer, "", 0);
+		if (almanah_entry_get_content (entry, text_buffer, NULL) == FALSE) {
+			g_object_unref (entry);
+			continue;
+		}
+
+		/* Perform the search */
+		gtk_text_buffer_get_start_iter (text_buffer, &iter);
+		if (gtk_text_iter_forward_search (&iter, search_string, GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY, NULL, NULL, NULL) == TRUE) {
+			/* A match was found, so move to the next working array element
+			 * (effectively add the date to the results list, by preventing it being overwritten). */
+			*matches = g_realloc (*matches, ++result_count * sizeof (GDate));
+		}
+
+		/* Free stuff up and continue */
+		g_object_unref (entry);
 	}
 
-	almanah_storage_manager_free_results (results);
+	sqlite3_finalize (statement);
+	g_object_unref (text_buffer);
 
-	return i;
+	return result_count - 1;
 }
 
 /* NOTE: Free results with g_slice_free */

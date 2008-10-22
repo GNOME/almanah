@@ -259,7 +259,7 @@
 										<property name="width-request">200</property>
 										<property name="can-focus">True</property>
 										<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
-										<signal name="month-changed" handler="diary_calendar_month_changed_cb"/>
+										<signal name="month-changed" handler="almanah_calendar_month_changed_cb"/>
 									</object>
 									<packing>
 										<property name="expand">False</property>

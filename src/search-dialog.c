@@ -140,7 +140,8 @@ void
 sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
 	GDate *results;
-	guint result_count, i;
+	gint result_count;
+	guint i;
 	GtkTreeIter iter;
 	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
 

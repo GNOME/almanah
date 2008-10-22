@@ -1,5 +1,14 @@
 2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* data/almanah.ui: Fix one missing rename from the previous commit.
+	* src/entry.c (almanah_entry_get_content):
+	* src/search-dialog.c (sd_search_button_clicked_cb):
+	* src/storage-manager.c (almanah_storage_manager_search_entries):
+	* src/storage-manager.h: Rewrite the method to search for an entry
+	so that it now works with the new serialised entry format.
+
+2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/add-link-dialog.c (almanah_add_link_dialog_new):
 	* src/interface.c (almanah_get_interface_filename),
 	(almanah_create_interface), (almanah_interface_embolden_label),
