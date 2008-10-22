@@ -1,5 +1,16 @@
 2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/main-window.c (almanah_main_window_new),
+	(mw_entry_buffer_cursor_position_cb),
+	(mw_entry_buffer_insert_text_cb),
+	(mw_entry_buffer_insert_text_after_cb), (apply_formatting),
+	(mw_bold_toggled_cb), (mw_italic_toggled_cb),
+	(mw_underline_toggled_cb): Fix some corner case problems with text
+	formatting, especially when adding text to the end of a formatted
+	range.
+
+2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* data/almanah.ui:
 	* src/main-window.c (almanah_main_window_new),
 	(mw_entry_buffer_cursor_position_cb),

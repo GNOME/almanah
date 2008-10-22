@@ -37,6 +37,8 @@ static void almanah_main_window_init (AlmanahMainWindow *self);
 static void almanah_main_window_dispose (GObject *object);
 static gboolean mw_delete_event_cb (GtkWindow *window, gpointer user_data);
 static void mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
+static void mw_entry_buffer_insert_text_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
+static void mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
 static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
 static void mw_bold_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
@@ -66,7 +68,10 @@ struct _AlmanahMainWindowPrivate {
 	GtkAction *copy_action;
 	GtkAction *delete_action;
 
-	gboolean updating_formatting_actions;
+	gboolean updating_formatting;
+	gboolean pending_bold_active;
+	gboolean pending_italic_active;
+	gboolean pending_underline_active;
 
 	AlmanahEntry *current_entry;
 };
@@ -196,6 +201,11 @@ almanah_main_window_new (void)
 
 	/* Make sure we're notified if the cursor moves position so we can check the tag stack */
 	g_signal_connect (priv->entry_buffer, "notify::cursor-position", G_CALLBACK (mw_entry_buffer_cursor_position_cb), main_window);
+
+	/* Make sure we're notified when text is inserted, so we can format it consistently.
+	 * This must be done after the default handler, as that's where the text is actually inserted. */
+	g_signal_connect (priv->entry_buffer, "insert-text", G_CALLBACK (mw_entry_buffer_insert_text_cb), main_window);
+	g_signal_connect_after (priv->entry_buffer, "insert-text", G_CALLBACK (mw_entry_buffer_insert_text_after_cb), main_window);
 
 	/* Similarly, make sure we're notified when there's a selection so we can change the status of cut/copy/paste actions */
 	g_signal_connect (priv->entry_buffer, "notify::has-selection", G_CALLBACK (mw_entry_buffer_has_selection_cb), main_window);
@@ -414,18 +424,28 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 {
 	GtkTextIter iter;
 	AlmanahMainWindowPrivate *priv = main_window->priv;
-	GSList *tag_list = NULL;
+	GSList *_tag_list = NULL, *tag_list = NULL;
+	gboolean range_selected = FALSE;
 	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE;
+
+	/* Ensure we don't overwrite current formatting options when characters are being typed.
+	 * (Execution of this function will be sandwiched between:
+	 * * mw_entry_buffer_insert_text_cb and
+	 * * mw_entry_buffer_insert_text_after_cb */
+	if (priv->updating_formatting == TRUE)
+		return;
 
 	/* Only get the tag list if there's no selection (just an insertion cursor),
 	 * since we want the buttons untoggled if there's a selection. */
-	if (gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &iter, NULL) == FALSE)
-		tag_list = gtk_text_iter_get_tags (&iter);
+	range_selected = gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &iter, NULL);
+	if (range_selected == FALSE)
+		_tag_list = gtk_text_iter_get_tags (&iter);
 
 	/* Block signal handlers for the formatting actions while we're executing,
 	 * so formatting doesn't get unwittingly changed. */
-	priv->updating_formatting_actions = TRUE;
+	priv->updating_formatting = TRUE;
 
+	tag_list = _tag_list;
 	while (tag_list != NULL) {
 		gchar *tag_name;
 		GtkToggleAction *action = NULL;
@@ -456,18 +476,51 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 		tag_list = tag_list->next;
 	}
 
-	g_slist_free (tag_list);
+	g_slist_free (_tag_list);
 
-	/* Untoggle the remaining actions */
-	if (bold_toggled == FALSE)
-		gtk_toggle_action_set_active (priv->bold_action, FALSE);
-	if (italic_toggled == FALSE)
-		gtk_toggle_action_set_active (priv->italic_action, FALSE);
-	if (underline_toggled == FALSE)
-		gtk_toggle_action_set_active (priv->underline_action, FALSE);
+	if (range_selected == FALSE) {
+		/* Untoggle the remaining actions */
+		if (bold_toggled == FALSE)
+			gtk_toggle_action_set_active (priv->bold_action, FALSE);
+		if (italic_toggled == FALSE)
+			gtk_toggle_action_set_active (priv->italic_action, FALSE);
+		if (underline_toggled == FALSE)
+			gtk_toggle_action_set_active (priv->underline_action, FALSE);
+	}
 
 	/* Unblock signals */
-	priv->updating_formatting_actions = FALSE;
+	priv->updating_formatting = FALSE;
+}
+
+static void
+mw_entry_buffer_insert_text_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window)
+{
+	AlmanahMainWindowPrivate *priv = main_window->priv;
+
+	priv->updating_formatting = TRUE;
+
+	priv->pending_bold_active = gtk_toggle_action_get_active (priv->bold_action);
+	priv->pending_italic_active = gtk_toggle_action_get_active (priv->italic_action);
+	priv->pending_underline_active = gtk_toggle_action_get_active (priv->underline_action);
+}
+
+static void
+mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *end, gchar *text, gint len, AlmanahMainWindow *main_window)
+{
+	GtkTextIter start;
+	AlmanahMainWindowPrivate *priv = main_window->priv;
+
+	start = *end;
+	gtk_text_iter_backward_chars (&start, len);
+
+	if (priv->pending_bold_active == TRUE)
+		gtk_text_buffer_apply_tag_by_name (text_buffer, "bold", &start, end);
+	if (priv->pending_italic_active == TRUE)
+		gtk_text_buffer_apply_tag_by_name (text_buffer, "italic", &start, end);
+	if (priv->pending_underline_active == TRUE)
+		gtk_text_buffer_apply_tag_by_name (text_buffer, "underline", &start, end);
+
+	priv->updating_formatting = FALSE;
 }
 
 static void
@@ -548,6 +601,11 @@ apply_formatting (AlmanahMainWindow *self, const gchar *tag_name, gboolean apply
 {
 	GtkTextIter start, end;
 
+	/* Make sure we don't muck up the formatting when the actions are having
+	 * their sensitivity set by the code. */
+	if (self->priv->updating_formatting == TRUE)
+		return;
+
 	gtk_text_buffer_get_selection_bounds (self->priv->entry_buffer, &start, &end);
 	if (applying == TRUE)
 		gtk_text_buffer_apply_tag_by_name (self->priv->entry_buffer, tag_name, &start, &end);
@@ -558,22 +616,19 @@ apply_formatting (AlmanahMainWindow *self, const gchar *tag_name, gboolean apply
 static void
 mw_bold_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window)
 {
-	if (main_window->priv->updating_formatting_actions == FALSE)
-		apply_formatting (main_window, "bold", gtk_toggle_action_get_active (action));
+	apply_formatting (main_window, "bold", gtk_toggle_action_get_active (action));
 }
 
 static void
 mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window)
 {
-	if (main_window->priv->updating_formatting_actions == FALSE)
-		apply_formatting (main_window, "italic", gtk_toggle_action_get_active (action));
+	apply_formatting (main_window, "italic", gtk_toggle_action_get_active (action));
 }
 
 static void
 mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window)
 {
-	if (main_window->priv->updating_formatting_actions == FALSE)
-		apply_formatting (main_window, "underline", gtk_toggle_action_get_active (action));
+	apply_formatting (main_window, "underline", gtk_toggle_action_get_active (action));
 }
 
 void
