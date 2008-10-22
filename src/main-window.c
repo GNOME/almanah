@@ -36,7 +36,8 @@
 static void almanah_main_window_init (AlmanahMainWindow *self);
 static void almanah_main_window_dispose (GObject *object);
 static gboolean mw_delete_event_cb (GtkWindow *window, gpointer user_data);
-static void mw_entry_buffer_cursor_position_changed_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
+static void mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
+static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
 static void mw_bold_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
@@ -61,6 +62,9 @@ struct _AlmanahMainWindowPrivate {
 	GtkToggleAction *bold_action;
 	GtkToggleAction *italic_action;
 	GtkToggleAction *underline_action;
+	GtkAction *cut_action;
+	GtkAction *copy_action;
+	GtkAction *delete_action;
 
 	gboolean updating_formatting_actions;
 
@@ -165,6 +169,9 @@ almanah_main_window_new (void)
 	priv->bold_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "dry_ui_bold"));;
 	priv->italic_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "dry_ui_italic"));
 	priv->underline_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "dry_ui_underline"));
+	priv->cut_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_cut"));
+	priv->copy_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_copy"));
+	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_delete"));
 
 	/* Set up text formatting */
 	gtk_text_buffer_create_tag (priv->entry_buffer, "bold", 
@@ -188,7 +195,10 @@ almanah_main_window_new (void)
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Make sure we're notified if the cursor moves position so we can check the tag stack */
-	g_signal_connect (priv->entry_buffer, "notify::cursor-position", G_CALLBACK (mw_entry_buffer_cursor_position_changed_cb), main_window);
+	g_signal_connect (priv->entry_buffer, "notify::cursor-position", G_CALLBACK (mw_entry_buffer_cursor_position_cb), main_window);
+
+	/* Similarly, make sure we're notified when there's a selection so we can change the status of cut/copy/paste actions */
+	g_signal_connect (priv->entry_buffer, "notify::has-selection", G_CALLBACK (mw_entry_buffer_has_selection_cb), main_window);
 
 	/* Connect up the formatting actions */
 	g_signal_connect (priv->bold_action, "toggled", G_CALLBACK (mw_bold_toggled_cb), main_window);
@@ -400,7 +410,7 @@ almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date)
 }
 
 static void
-mw_entry_buffer_cursor_position_changed_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window)
+mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window)
 {
 	GtkTextIter iter;
 	AlmanahMainWindowPrivate *priv = main_window->priv;
@@ -458,6 +468,16 @@ mw_entry_buffer_cursor_position_changed_cb (GObject *object, GParamSpec *pspec, 
 
 	/* Unblock signals */
 	priv->updating_formatting_actions = FALSE;
+}
+
+static void
+mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window)
+{
+	gboolean has_selection = gtk_text_buffer_get_has_selection (GTK_TEXT_BUFFER (object));
+
+	gtk_action_set_sensitive (main_window->priv->cut_action, has_selection);
+	gtk_action_set_sensitive (main_window->priv->copy_action, has_selection);
+	gtk_action_set_sensitive (main_window->priv->delete_action, has_selection);
 }
 
 static gboolean

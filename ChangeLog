@@ -1,3 +1,12 @@
+2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.ui:
+	* src/main-window.c (almanah_main_window_new),
+	(mw_entry_buffer_cursor_position_cb),
+	(mw_entry_buffer_has_selection_cb): Ensure the Cut/Copy/Delete actions
+	are only sensitive when a text range is selected in the current entry.
+	Also ensure that the entry text view has the default focus.
+
 2008-10-19  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/entry.c (almanah_entry_class_init), (almanah_entry_init),

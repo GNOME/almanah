@@ -33,6 +33,7 @@
 					<object class="GtkAction" id="dry_ui_cut">
 						<property name="stock-id">gtk-cut</property>
 						<property name="name">edit-cut</property>
+						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
 						<signal name="activate" handler="mw_cut_activate_cb"/>
 					</object>
 				</child>
@@ -40,6 +41,7 @@
 					<object class="GtkAction" id="dry_ui_copy">
 						<property name="stock-id">gtk-copy</property>
 						<property name="name">edit-copy</property>
+						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
 						<signal name="activate" handler="mw_copy_activate_cb"/>
 					</object>
 				</child>
@@ -54,6 +56,7 @@
 					<object class="GtkAction" id="dry_ui_delete">
 						<property name="stock-id">gtk-delete</property>
 						<property name="name">edit-delete</property>
+						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
 						<signal name="activate" handler="mw_delete_activate_cb"/>
 					</object>
 				</child>
@@ -83,18 +86,21 @@
 						<property name="stock-id">gtk-bold</property>
 						<property name="name">format-bold</property>
 					</object>
+					<accelerator key="B" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
 					<object class="GtkToggleAction" id="dry_ui_italic">
 						<property name="stock-id">gtk-italic</property>
 						<property name="name">format-italic</property>
 					</object>
+					<accelerator key="I" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
 					<object class="GtkToggleAction" id="dry_ui_underline">
 						<property name="stock-id">gtk-underline</property>
 						<property name="name">format-underline</property>
 					</object>
+					<accelerator key="U" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
 					<object class="GtkAction" id="dry_ui_help">
@@ -203,7 +209,7 @@
 				</child>
 				<child>
 					<object class="GtkHPaned" id="hpaned1">
-						<property name="can_focus">True</property>
+						<property name="can-focus">True</property>
 						<child>
 							<object class="GtkVBox" id="vbox3">
 								<child>
@@ -225,6 +231,7 @@
 												<property name="width-request">300</property>
 												<property name="height-request">300</property>
 												<property name="can-focus">True</property>
+												<property name="has-focus">True</property>
 												<property name="wrap-mode">GTK_WRAP_WORD</property>
 												<signal name="focus-out-event" handler="mw_entry_view_focus_out_event_cb"/>
 											</object>
