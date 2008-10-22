@@ -1,31 +1,31 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
- * Diary
+ * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software: you can redistribute it and/or modify
+ * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Diary is distributed in the hope that it will be useful,
+ * Almanah is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <glib.h>
 
-#ifndef DIARY_PRINTING_H
-#define DIARY_PRINTING_H
+#ifndef ALMANAH_PRINTING_H
+#define ALMANAH_PRINTING_H
 
 G_BEGIN_DECLS
 
-void diary_print_entries (void);
+void almanah_print_entries (void);
 
 G_END_DECLS
 
-#endif /* !DIARY_PRINTING_H */
+#endif /* !ALMANAH_PRINTING_H */

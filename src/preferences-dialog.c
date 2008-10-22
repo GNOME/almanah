@@ -105,7 +105,7 @@ almanah_preferences_dialog_new (void)
 	AlmanahPreferencesDialog *preferences_dialog;
 	AlmanahPreferencesDialogPrivate *priv;
 	GError *error = NULL;
-	const gchar *interface_filename = diary_get_interface_filename ();
+	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"dry_preferences_dialog",
 		NULL
@@ -145,7 +145,7 @@ almanah_preferences_dialog_new (void)
 	/* Grab our child widgets */
 	table = GTK_TABLE (gtk_builder_get_object (builder, "dry_pd_table"));
 	label = gtk_label_new (_("Encryption Key"));
-	diary_interface_embolden_label (GTK_LABEL (label));
+	almanah_interface_embolden_label (GTK_LABEL (label));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_table_attach (table, label, 1, 2, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
 
@@ -156,7 +156,7 @@ almanah_preferences_dialog_new (void)
 	gtk_table_attach_defaults (table, GTK_WIDGET (priv->key_combo), 2, 3, 1, 2);
 
 	/* Set the selected key combo value */
-	key = gconf_client_get_string (diary->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
+	key = gconf_client_get_string (almanah->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
 	if (*key == '\0') {
 		g_free (key);
 		key = NULL;
@@ -189,9 +189,9 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 	if (key == NULL)
 		key = "";
 
-	if (gconf_client_set_string (diary->gconf_client, ENCRYPTION_KEY_GCONF_PATH, key, &error) == FALSE) {
+	if (gconf_client_set_string (almanah->gconf_client, ENCRYPTION_KEY_GCONF_PATH, key, &error) == FALSE) {
 		gchar *error_message = g_strdup_printf (_("There was an error saving the encryption key: %s"), error->message);
-		diary_interface_error (error_message, GTK_WIDGET (preferences_dialog));
+		almanah_interface_error (error_message, GTK_WIDGET (preferences_dialog));
 		g_free (error_message);
 		g_error_free (error);
 	}
@@ -206,7 +206,7 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 
 	if (g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
 		gchar *error_message = g_strdup_printf (_("There was an error opening Seahorse: %s"), error->message);
-		diary_interface_error (error_message, GTK_WIDGET (preferences_dialog));
+		almanah_interface_error (error_message, GTK_WIDGET (preferences_dialog));
 		g_free (error_message);
 		g_error_free (error);
 	}

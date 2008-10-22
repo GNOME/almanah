@@ -64,7 +64,7 @@ almanah_search_dialog_new (void)
 	AlmanahSearchDialog *search_dialog;
 	AlmanahSearchDialogPrivate *priv;
 	GError *error = NULL;
-	const gchar *interface_filename = diary_get_interface_filename ();
+	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"dry_search_dialog",
 		"dry_sd_search_button_image",
@@ -113,7 +113,7 @@ almanah_search_dialog_new (void)
 	gtk_widget_grab_default (GTK_WIDGET (gtk_builder_get_object (builder, "dry_sd_search_button")));
 
 	/* Prettify the UI */
-	diary_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_sd_results_label")));
+	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_sd_results_label")));
 
 	g_object_unref (builder);
 
@@ -144,7 +144,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	GtkTreeIter iter;
 	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
 
-	result_count = almanah_storage_manager_search_entries (diary->storage_manager,
+	result_count = almanah_storage_manager_search_entries (almanah->storage_manager,
 							       gtk_entry_get_text (priv->sd_search_entry), &results);
 
 	for (i = 0; i < result_count; i++) {
@@ -178,7 +178,7 @@ select_date (GtkTreeModel *model, GtkTreeIter *iter)
 			    -1);
 
 	g_date_set_dmy (&date, day, month, year);
-	almanah_main_window_select_date (ALMANAH_MAIN_WINDOW (diary->main_window), &date);
+	almanah_main_window_select_date (ALMANAH_MAIN_WINDOW (almanah->main_window), &date);
 }
 
 void

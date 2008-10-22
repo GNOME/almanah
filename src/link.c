@@ -226,7 +226,7 @@ almanah_link_view (AlmanahLink *self)
 	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
 	g_assert (klass->view != NULL);
 
-	if (diary->debug)
+	if (almanah->debug)
 		g_debug ("Viewing %s link ('%s', '%s')", klass->type_id, self->priv->value, self->priv->value2);
 
 	return klass->view (self);

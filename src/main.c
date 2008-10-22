@@ -1,20 +1,20 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
- * Diary
+ * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software: you can redistribute it and/or modify
+ * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Diary is distributed in the hope that it will be useful,
+ * Almanah is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <config.h>
@@ -32,11 +32,11 @@
 static void
 storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data)
 {
-	g_object_unref (diary->storage_manager);
+	g_object_unref (almanah->storage_manager);
 #ifdef ENABLE_ENCRYPTION
-	g_object_unref (diary->gconf_client);
+	g_object_unref (almanah->gconf_client);
 #endif /* ENABLE_ENCRYPTION */
-	g_free (diary);
+	g_free (almanah);
 
 	if (gtk_main_level () > 0)
 		gtk_main_quit ();
@@ -45,26 +45,26 @@ storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data
 }
 
 void
-diary_quit (void)
+almanah_quit (void)
 {
 	GError *error = NULL;
 
-	g_signal_connect (diary->storage_manager, "disconnected", G_CALLBACK (storage_manager_disconnected_cb), NULL);
-	if (almanah_storage_manager_disconnect (diary->storage_manager, &error) == FALSE) {
-		diary_interface_error (error->message, diary->main_window);
+	g_signal_connect (almanah->storage_manager, "disconnected", G_CALLBACK (storage_manager_disconnected_cb), NULL);
+	if (almanah_storage_manager_disconnect (almanah->storage_manager, &error) == FALSE) {
+		almanah_interface_error (error->message, almanah->main_window);
 	}
 
-	gtk_widget_destroy (diary->add_link_dialog);
-	gtk_widget_destroy (diary->search_dialog);
-	gtk_widget_destroy (diary->preferences_dialog);
-	gtk_widget_destroy (diary->main_window);
+	gtk_widget_destroy (almanah->add_link_dialog);
+	gtk_widget_destroy (almanah->search_dialog);
+	gtk_widget_destroy (almanah->preferences_dialog);
+	gtk_widget_destroy (almanah->main_window);
 
 	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once
 	 * the storage manager has encrypted the DB and disconnected from it.
 	 * Unless, that is, disconnection failed. */
 	if (error != NULL) {
 		g_error_free (error);
-		storage_manager_disconnected_cb (diary->storage_manager, NULL);
+		storage_manager_disconnected_cb (almanah->storage_manager, NULL);
 	}
 }
 
@@ -114,12 +114,12 @@ main (int argc, char *argv[])
 	g_option_context_free (context);
 
 	/* Setup */
-	diary = g_new (Diary, 1);
-	diary->debug = debug;
+	almanah = g_new (Almanah, 1);
+	almanah->debug = debug;
 
 #ifdef ENABLE_ENCRYPTION
 	/* Open GConf */
-	diary->gconf_client = gconf_client_get_default ();
+	almanah->gconf_client = gconf_client_get_default ();
 #endif /* ENABLE_ENCRYPTION */
 
 	/* Ensure the DB directory exists */
@@ -128,17 +128,17 @@ main (int argc, char *argv[])
 
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
-	diary->storage_manager = almanah_storage_manager_new (db_filename);
+	almanah->storage_manager = almanah_storage_manager_new (db_filename);
 	g_free (db_filename);
 
-	if (almanah_storage_manager_connect (diary->storage_manager, &error) == FALSE) {
-		diary_interface_error (error->message, NULL);
-		diary_quit ();
+	if (almanah_storage_manager_connect (almanah->storage_manager, &error) == FALSE) {
+		almanah_interface_error (error->message, NULL);
+		almanah_quit ();
 	}
 
 	/* Create and show the interface */
-	diary_create_interface ();
-	gtk_widget_show_all (diary->main_window);
+	almanah_create_interface ();
+	gtk_widget_show_all (almanah->main_window);
 
 	gtk_main ();
 	return 0;

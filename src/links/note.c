@@ -74,7 +74,7 @@ static gboolean
 note_view (AlmanahLink *link)
 {
 	gchar *value = almanah_link_get_value (link);
-	GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (diary->main_window),
+	GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
 				GTK_DIALOG_DESTROY_WITH_PARENT,
 				GTK_MESSAGE_INFO,
 				GTK_BUTTONS_CLOSE,

@@ -1,5 +1,38 @@
 2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/add-link-dialog.c (almanah_add_link_dialog_new):
+	* src/interface.c (almanah_get_interface_filename),
+	(almanah_create_interface), (almanah_interface_embolden_label),
+	(almanah_interface_error), (almanah_calendar_month_changed_cb):
+	* src/interface.h:
+	* src/link.c (almanah_link_view):
+	* src/links/file.c (file_view):
+	* src/links/note.c (note_view):
+	* src/links/uri.c (uri_view):
+	* src/main-window.c (almanah_main_window_new),
+	(save_current_entry), (add_link_to_current_entry),
+	(remove_link_from_current_entry), (mw_delete_event_cb),
+	(mw_print_activate_cb), (mw_quit_activate_cb),
+	(mw_search_activate_cb), (mw_preferences_activate_cb),
+	(mw_about_activate_cb), (mw_calendar_day_selected_cb):
+	* src/main.c (storage_manager_disconnected_cb), (almanah_quit),
+	(main):
+	* src/main.h:
+	* src/preferences-dialog.c (almanah_preferences_dialog_new),
+	(pd_key_combo_changed_cb), (pd_new_key_button_clicked_cb):
+	* src/printing.c (print_entry), (paginate_cb), (draw_page_cb),
+	(create_custom_widget_cb), (custom_widget_apply_cb),
+	(almanah_print_entries):
+	* src/printing.h:
+	* src/search-dialog.c (almanah_search_dialog_new),
+	(sd_search_button_clicked_cb), (select_date):
+	* src/storage-manager.c (get_encryption_key),
+	(almanah_storage_manager_query),
+	(almanah_storage_manager_query_async): Rewrite the API to consistently
+	use the "almanah" namespace, rather than "diary".
+
+2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/main-window.c (almanah_main_window_new),
 	(mw_entry_buffer_cursor_position_cb),
 	(mw_entry_buffer_insert_text_cb),

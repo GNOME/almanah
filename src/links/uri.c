@@ -75,7 +75,7 @@ uri_view (AlmanahLink *link)
 {
 	gchar *value = almanah_link_get_value (link);
 	if (g_app_info_launch_default_for_uri (value, NULL, NULL) == FALSE) {
-		diary_interface_error (_("Due to an unknown error the URI cannot be opened."), diary->main_window);
+		almanah_interface_error (_("Due to an unknown error the URI cannot be opened."), almanah->main_window);
 		g_free (value);
 		return FALSE;
 	}

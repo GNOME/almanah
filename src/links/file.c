@@ -77,7 +77,7 @@ file_view (AlmanahLink *link)
 
 	if (g_app_info_launch_default_for_uri (value, NULL, NULL) == FALSE) {
 		g_free (value);
-		diary_interface_error (_("Due to an unknown error the file cannot be opened."), diary->main_window);
+		almanah_interface_error (_("Due to an unknown error the file cannot be opened."), almanah->main_window);
 		return FALSE;
 	}
 

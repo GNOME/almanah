@@ -118,7 +118,7 @@ almanah_main_window_new (void)
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
 	GError *error = NULL;
-	const gchar *interface_filename = diary_get_interface_filename ();
+	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"dry_main_window",
 		"dry_mw_link_store",
@@ -193,7 +193,7 @@ almanah_main_window_new (void)
 	/* Set up spell checking */
 	if (gtkspell_new_attach (priv->entry_view, NULL, &error) == FALSE) {
 		gchar *error_message = g_strdup_printf (_("The spelling checker could not be initialized: %s"), error->message);
-		diary_interface_error (error_message, NULL);
+		almanah_interface_error (error_message, NULL);
 		g_free (error_message);
 		g_error_free (error);
 	}
@@ -216,7 +216,7 @@ almanah_main_window_new (void)
 	g_signal_connect (priv->underline_action, "toggled", G_CALLBACK (mw_underline_toggled_cb), main_window);
 
 	/* Select the current day and month */
-	diary_calendar_month_changed_cb (priv->calendar, NULL);
+	almanah_calendar_month_changed_cb (priv->calendar, NULL);
 	mw_calendar_day_selected_cb (priv->calendar, main_window);
 
 	/* Set up the treeview */
@@ -224,8 +224,8 @@ almanah_main_window_new (void)
 	gtk_tree_view_column_set_cell_data_func (priv->link_value_column, GTK_CELL_RENDERER (priv->link_value_renderer), mw_links_value_data_cb, NULL, NULL);
 
 	/* Prettify the UI */
-	diary_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_calendar_label")));
-	diary_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_attached_links_label")));
+	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_calendar_label")));
+	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_attached_links_label")));
 
 	g_object_unref (builder);
 
@@ -254,7 +254,7 @@ save_current_entry (AlmanahMainWindow *self)
 
 	almanah_entry_get_date (priv->current_entry, &date);
 	editability = almanah_entry_get_editability (priv->current_entry);
-	entry_exists = almanah_storage_manager_entry_exists (diary->storage_manager, &date);
+	entry_exists = almanah_storage_manager_entry_exists (almanah->storage_manager, &date);
 	entry_is_empty = almanah_entry_is_empty (priv->current_entry);
 	editability = almanah_entry_get_editability (priv->current_entry);
 
@@ -319,7 +319,7 @@ save_current_entry (AlmanahMainWindow *self)
 	}
 
 	/* Store the entry! */
-	almanah_storage_manager_set_entry (diary->storage_manager, priv->current_entry);
+	almanah_storage_manager_set_entry (almanah->storage_manager, priv->current_entry);
 
 	/* Mark the day on the calendar if the entry was non-empty (and deleted)
 	 * and update the state of the add link button. */
@@ -349,12 +349,12 @@ add_link_to_current_entry (AlmanahMainWindow *self)
 	g_assert (gtk_text_buffer_get_char_count (priv->entry_buffer) != 0);
 
 	/* Ensure that something is selected and its widgets displayed */
-	gtk_widget_show_all (diary->add_link_dialog);
+	gtk_widget_show_all (almanah->add_link_dialog);
 
-	if (gtk_dialog_run (GTK_DIALOG (diary->add_link_dialog)) == GTK_RESPONSE_OK) {
+	if (gtk_dialog_run (GTK_DIALOG (almanah->add_link_dialog)) == GTK_RESPONSE_OK) {
 		guint year, month, day;
 		GDate date;
-		AlmanahLink *link = almanah_add_link_dialog_get_link (ALMANAH_ADD_LINK_DIALOG (diary->add_link_dialog));
+		AlmanahLink *link = almanah_add_link_dialog_get_link (ALMANAH_ADD_LINK_DIALOG (almanah->add_link_dialog));
 
 		if (link == NULL)
 			return;
@@ -365,7 +365,7 @@ add_link_to_current_entry (AlmanahMainWindow *self)
 		month++;
 		g_date_set_dmy (&date, day, month, year);
 
-		almanah_storage_manager_add_entry_link (diary->storage_manager, &date, link);
+		almanah_storage_manager_add_entry_link (almanah->storage_manager, &date, link);
 
 		/* Add to the treeview */
 		gtk_list_store_append (priv->link_store, &iter);
@@ -401,7 +401,7 @@ remove_link_from_current_entry (AlmanahMainWindow *self)
 		gtk_tree_model_get (model, &iter, 0, &link_type, -1);
 
 		/* Remove it from the DB */
-		almanah_storage_manager_remove_entry_link (diary->storage_manager, &date, link_type);
+		almanah_storage_manager_remove_entry_link (almanah->storage_manager, &date, link_type);
 
 		/* Remove it from the treeview */
 		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
@@ -537,7 +537,7 @@ static gboolean
 mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 {
 	save_current_entry (ALMANAH_MAIN_WINDOW (window));
-	diary_quit ();
+	almanah_quit ();
 
 	return TRUE;
 }
@@ -545,14 +545,14 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 void
 mw_print_activate_cb (GtkAction *action, gpointer user_data)
 {
-	diary_print_entries ();
+	almanah_print_entries ();
 }
 
 void
 mw_quit_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	save_current_entry (main_window);
-	diary_quit ();
+	almanah_quit ();
 }
 
 void
@@ -585,15 +585,15 @@ mw_delete_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_search_activate_cb (GtkAction *action, gpointer user_data)
 {
-	gtk_widget_show_all (diary->search_dialog);
-	gtk_dialog_run (GTK_DIALOG (diary->search_dialog));
+	gtk_widget_show_all (almanah->search_dialog);
+	gtk_dialog_run (GTK_DIALOG (almanah->search_dialog));
 }
 
 void
 mw_preferences_activate_cb (GtkAction *action, gpointer user_data)
 {
-	gtk_widget_show_all (diary->preferences_dialog);
-	gtk_dialog_run (GTK_DIALOG (diary->preferences_dialog));
+	gtk_widget_show_all (almanah->preferences_dialog);
+	gtk_dialog_run (GTK_DIALOG (almanah->preferences_dialog));
 }
 
 static void
@@ -661,7 +661,7 @@ mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 			  _(license_parts[2]),
 			  NULL);
 
-	almanah_storage_manager_get_statistics (diary->storage_manager, &entry_count, &link_count);
+	almanah_storage_manager_get_statistics (almanah->storage_manager, &entry_count, &link_count);
 	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries and %u links."),
 				      entry_count,
 				      link_count);
@@ -730,12 +730,12 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
 	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
 	gtk_label_set_markup (priv->date_label, calendar_string);
-	diary_interface_embolden_label (priv->date_label);
+	almanah_interface_embolden_label (priv->date_label);
 
 	/* Update the entry */
 	if (priv->current_entry != NULL)
 		g_object_unref (priv->current_entry);
-	priv->current_entry = almanah_storage_manager_get_entry (diary->storage_manager, &calendar_date);
+	priv->current_entry = almanah_storage_manager_get_entry (almanah->storage_manager, &calendar_date);
 	if (priv->current_entry == NULL)
 		priv->current_entry = almanah_entry_new (&calendar_date);
 
@@ -756,7 +756,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 		gtk_text_buffer_set_text (priv->entry_buffer, "", 0);
 		if (almanah_entry_get_content (priv->current_entry, priv->entry_buffer, &error) == FALSE) {
 			gchar *error_message = g_strdup_printf (_("The entry content could not be loaded: %s"), error->message);
-			diary_interface_error (error_message, NULL);
+			almanah_interface_error (error_message, NULL);
 			g_free (error_message);
 			g_error_free (error);
 
@@ -781,7 +781,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* List the entry's links */
-	links = almanah_storage_manager_get_entry_links (diary->storage_manager, &calendar_date);
+	links = almanah_storage_manager_get_entry_links (almanah->storage_manager, &calendar_date);
 
 	i = 0;
 	while (links[i] != NULL) {

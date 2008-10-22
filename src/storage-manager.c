@@ -408,7 +408,7 @@ get_encryption_key (void)
 	guint i;
 	gchar *encryption_key;
 
-	encryption_key = gconf_client_get_string (diary->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
+	encryption_key = gconf_client_get_string (almanah->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
 	if (encryption_key == NULL || encryption_key[0] == '\0') {
 		g_free (encryption_key);
 		return NULL;
@@ -545,7 +545,7 @@ almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, 
 
 	results = g_slice_new (AlmanahQueryResults);
 
-	if (diary->debug)
+	if (almanah->debug)
 		g_debug ("Database query: %s", new_query);
 	if (sqlite3_get_table (priv->connection, new_query, &(results->data), &(results->rows), &(results->columns), NULL) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
@@ -579,7 +579,7 @@ almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *q
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
-	if (diary->debug)
+	if (almanah->debug)
 		g_debug ("Database query: %s", new_query);
 	if (sqlite3_exec (priv->connection, new_query, callback, user_data, NULL) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,

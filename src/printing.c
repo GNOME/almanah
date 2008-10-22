@@ -1,20 +1,20 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
- * Diary
+ * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
  * 
- * Diary is free software: you can redistribute it and/or modify
+ * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Diary is distributed in the hope that it will be useful,
+ * Almanah is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Diary.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <glib.h>
@@ -39,7 +39,7 @@ typedef struct {
 	guint current_line;
 	gboolean paginated;
 	gdouble y;
-} DiaryPrintOperation;
+} AlmanahPrintOperation;
 
 /* Adapted from code in GtkSourceView's gtksourceprintcompositor.c, previously LGPL >= 2.1
  * Copyright (C) 2000, 2001 Chema Celorio  
@@ -234,7 +234,7 @@ lay_out_entry (PangoLayout *layout, GtkTextIter *start, GtkTextIter *end)
 
 /* TRUE if the entry was printed OK on the current page, FALSE if it needs to be moved to a new page/is split across pages */
 static gboolean
-print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintOperation *diary_operation)
+print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrintOperation *almanah_operation)
 {
 	AlmanahEntry *entry;
 	gchar title[100], *title_markup;
@@ -246,20 +246,20 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	gdouble title_y = 0, entry_y;
 	cairo_t *cr = NULL;
 
-	if (diary_operation->current_line == 0) {
+	if (almanah_operation->current_line == 0) {
 		/* Set up the title layout */
 		title_layout = gtk_print_context_create_pango_layout (context);
 		pango_layout_set_width (title_layout, gtk_print_context_get_width (context) * PANGO_SCALE);
 
 		/* Translators: This is a strftime()-format string for the date displayed above each printed entry. */
-		g_date_strftime (title, sizeof (title), _("%A, %e %B %Y"), diary_operation->current_date);
+		g_date_strftime (title, sizeof (title), _("%A, %e %B %Y"), almanah_operation->current_date);
 		title_markup = g_strdup_printf ("<b>%s</b>", title);
 		pango_layout_set_markup (title_layout, title_markup, -1);
 		g_free (title_markup);
 
-		title_y = diary_operation->y;
+		title_y = almanah_operation->y;
 		pango_layout_get_pixel_size (title_layout, NULL, &height);
-		diary_operation->y += height + TITLE_MARGIN_BOTTOM;
+		almanah_operation->y += height + TITLE_MARGIN_BOTTOM;
 	}
 
 	/* Set up the entry layout */
@@ -267,7 +267,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	pango_layout_set_width (entry_layout, gtk_print_context_get_width (context) * PANGO_SCALE);
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
 
-	entry = almanah_storage_manager_get_entry (diary->storage_manager, diary_operation->current_date);
+	entry = almanah_storage_manager_get_entry (almanah->storage_manager, almanah_operation->current_date);
 
 	if (entry == NULL || almanah_entry_is_empty (entry)) {
 		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
@@ -275,9 +275,9 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 	} else {
 		GtkTextIter start, end;
 
-		gtk_text_buffer_set_text (diary_operation->buffer, "", 0);
-		if (almanah_entry_get_content (entry, diary_operation->buffer, NULL) == TRUE) {
-			gtk_text_buffer_get_bounds (diary_operation->buffer, &start, &end);
+		gtk_text_buffer_set_text (almanah_operation->buffer, "", 0);
+		if (almanah_entry_get_content (entry, almanah_operation->buffer, NULL) == TRUE) {
+			gtk_text_buffer_get_bounds (almanah_operation->buffer, &start, &end);
 			lay_out_entry (entry_layout, &start, &end);
 		}
 	}
@@ -286,34 +286,34 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 		g_object_unref (entry);
 
 	/* Check we're not orphaning things */
-	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout), diary_operation->current_line + MAX_ORPHANS) - 1);
+	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout), almanah_operation->current_line + MAX_ORPHANS) - 1);
 	pango_layout_line_get_pixel_extents (entry_line, NULL, &logical_extents);
 
-	if (diary_operation->y + (MIN (pango_layout_get_line_count (entry_layout), MAX_ORPHANS) * logical_extents.height) > gtk_print_context_get_height (context)) {
+	if (almanah_operation->y + (MIN (pango_layout_get_line_count (entry_layout), MAX_ORPHANS) * logical_extents.height) > gtk_print_context_get_height (context)) {
 		/* Not enough space on the page to contain the title and orphaned lines */
 		if (title_layout != NULL)
 			g_object_unref (title_layout);
 		g_object_unref (entry_layout);
 
-		diary_operation->current_line = 0;
+		almanah_operation->current_line = 0;
 
 		return FALSE;
 	}
 
-	if (diary_operation->paginated == TRUE) {
+	if (almanah_operation->paginated == TRUE) {
 		cr = gtk_print_context_get_cairo_context (context);
 
-		if (diary_operation->current_line == 0) {
+		if (almanah_operation->current_line == 0) {
 			/* Draw the title */
 			cairo_move_to (cr, 0, title_y);
 			pango_cairo_show_layout (cr, title_layout);
 		}
 	}
 
-	entry_y = diary_operation->y;
+	entry_y = almanah_operation->y;
 
 	/* Draw the lines in the entry */
-	for (i = diary_operation->current_line; i < pango_layout_get_line_count (entry_layout); i++) {
+	for (i = almanah_operation->current_line; i < pango_layout_get_line_count (entry_layout); i++) {
 		entry_line = pango_layout_get_line_readonly (entry_layout, i);
 		pango_layout_line_get_pixel_extents (entry_line, NULL, &logical_extents);
 
@@ -324,12 +324,12 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 				g_object_unref (title_layout);
 			g_object_unref (entry_layout);
 
-			diary_operation->current_line = i;
+			almanah_operation->current_line = i;
 
 			return FALSE;
 		}
 
-		if (diary_operation->paginated == TRUE) {
+		if (almanah_operation->paginated == TRUE) {
 			/* Draw the entry line */
 			cairo_move_to (cr, 0, entry_y);
 			pango_cairo_show_layout_line (cr, entry_line);
@@ -340,27 +340,27 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 
 	/* Add the entry's height to the amount printed for this page */
 	pango_layout_get_pixel_size (entry_layout, NULL, &height);
-	diary_operation->y = entry_y + ENTRY_MARGIN_BOTTOM;
+	almanah_operation->y = entry_y + ENTRY_MARGIN_BOTTOM;
 
 	if (title_layout != NULL)
 		g_object_unref (title_layout);
 	g_object_unref (entry_layout);
 
-	diary_operation->current_line = 0;
+	almanah_operation->current_line = 0;
 
 	return TRUE;
 }
 
 static gboolean
-paginate_cb (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintOperation *diary_operation)
+paginate_cb (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrintOperation *almanah_operation)
 {
 	/* Calculate the number of pages by laying everything out :( */
-	while (g_date_compare (diary_operation->current_date, diary_operation->end_date) <= 0 &&
-	       print_entry (operation, context, diary_operation) == TRUE) {
-		g_date_add_days (diary_operation->current_date, 1);
+	while (g_date_compare (almanah_operation->current_date, almanah_operation->end_date) <= 0 &&
+	       print_entry (operation, context, almanah_operation) == TRUE) {
+		g_date_add_days (almanah_operation->current_date, 1);
 	}
 
-	if (g_date_compare (diary_operation->current_date, diary_operation->end_date) > 0) {
+	if (g_date_compare (almanah_operation->current_date, almanah_operation->end_date) > 0) {
 		/* We're done paginating */
 		return TRUE;
 	} else {
@@ -369,51 +369,51 @@ paginate_cb (GtkPrintOperation *operation, GtkPrintContext *context, DiaryPrintO
 		g_object_get (operation, "n-pages", &pages, NULL);
 		gtk_print_operation_set_n_pages (operation, pages + 1);
 
-		diary_operation->y = 0;
+		almanah_operation->y = 0;
 
 		return FALSE;
 	}
 }
 
 static void
-draw_page_cb (GtkPrintOperation *operation, GtkPrintContext *context, gint page_number, DiaryPrintOperation *diary_operation)
+draw_page_cb (GtkPrintOperation *operation, GtkPrintContext *context, gint page_number, AlmanahPrintOperation *almanah_operation)
 {
-	if (diary_operation->paginated == FALSE) {
+	if (almanah_operation->paginated == FALSE) {
 		/* Reset things before we start printing */
-		diary_operation->paginated = TRUE;
-		diary_operation->current_line = 0;
-		g_date_set_dmy (diary_operation->current_date,
-				g_date_get_day (diary_operation->start_date),
-				g_date_get_month (diary_operation->start_date),
-				g_date_get_year (diary_operation->start_date));
+		almanah_operation->paginated = TRUE;
+		almanah_operation->current_line = 0;
+		g_date_set_dmy (almanah_operation->current_date,
+				g_date_get_day (almanah_operation->start_date),
+				g_date_get_month (almanah_operation->start_date),
+				g_date_get_year (almanah_operation->start_date));
 	}
 
-	diary_operation->y = 0;
+	almanah_operation->y = 0;
 
-	while (g_date_compare (diary_operation->current_date, diary_operation->end_date) <= 0 &&
-	       print_entry (operation, context, diary_operation) == TRUE) {
-		g_date_add_days (diary_operation->current_date, 1);
+	while (g_date_compare (almanah_operation->current_date, almanah_operation->end_date) <= 0 &&
+	       print_entry (operation, context, almanah_operation) == TRUE) {
+		g_date_add_days (almanah_operation->current_date, 1);
 	}
 }
 
 static GtkWidget *
-create_custom_widget_cb (GtkPrintOperation *operation, DiaryPrintOperation *diary_operation)
+create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *almanah_operation)
 {
 	GtkWidget *start_calendar, *end_calendar;
 	GtkLabel *start_label, *end_label;
 	GtkTable *table;
 
 	start_calendar = gtk_calendar_new ();
-	g_signal_connect (start_calendar, "month-changed", G_CALLBACK (diary_calendar_month_changed_cb), NULL);
+	g_signal_connect (start_calendar, "month-changed", G_CALLBACK (almanah_calendar_month_changed_cb), NULL);
 	end_calendar = gtk_calendar_new ();
-	g_signal_connect (end_calendar, "month-changed", G_CALLBACK (diary_calendar_month_changed_cb), NULL);
+	g_signal_connect (end_calendar, "month-changed", G_CALLBACK (almanah_calendar_month_changed_cb), NULL);
 
 	start_label = GTK_LABEL (gtk_label_new (NULL));
 	gtk_label_set_markup (start_label, _("Start Date"));
-	diary_interface_embolden_label (start_label);
+	almanah_interface_embolden_label (start_label);
 	end_label = GTK_LABEL (gtk_label_new (NULL));
 	gtk_label_set_markup (end_label, _("End Date"));
-	diary_interface_embolden_label (end_label);
+	almanah_interface_embolden_label (end_label);
 
 	table = GTK_TABLE (gtk_table_new (2, 2, FALSE));
 	gtk_table_attach (table, start_calendar, 0, 1, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
@@ -421,64 +421,64 @@ create_custom_widget_cb (GtkPrintOperation *operation, DiaryPrintOperation *diar
 	gtk_table_attach (table, GTK_WIDGET (start_label), 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
 	gtk_table_attach (table, GTK_WIDGET (end_label), 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
 
-	diary_operation->start_calendar = GTK_CALENDAR (start_calendar);
-	diary_operation->end_calendar = GTK_CALENDAR (end_calendar);
+	almanah_operation->start_calendar = GTK_CALENDAR (start_calendar);
+	almanah_operation->end_calendar = GTK_CALENDAR (end_calendar);
 
 	gtk_widget_show_all (GTK_WIDGET (table));
 
 	/* Make sure they have the dates with entries marked */
-	diary_calendar_month_changed_cb (GTK_CALENDAR (start_calendar), NULL);
-	diary_calendar_month_changed_cb (GTK_CALENDAR (end_calendar), NULL);
+	almanah_calendar_month_changed_cb (GTK_CALENDAR (start_calendar), NULL);
+	almanah_calendar_month_changed_cb (GTK_CALENDAR (end_calendar), NULL);
 
 	return GTK_WIDGET (table);
 }
 
 static void
-custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, DiaryPrintOperation *diary_operation)
+custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, AlmanahPrintOperation *almanah_operation)
 {
 	guint year, month, day;
 
 	/* Start date */
-	gtk_calendar_get_date (diary_operation->start_calendar, &year, &month, &day);
-	diary_operation->start_date = g_date_new_dmy (day, month + 1, year);
+	gtk_calendar_get_date (almanah_operation->start_calendar, &year, &month, &day);
+	almanah_operation->start_date = g_date_new_dmy (day, month + 1, year);
 
 	/* End date */
-	gtk_calendar_get_date (diary_operation->end_calendar, &year, &month, &day);
-	diary_operation->end_date = g_date_new_dmy (day, month + 1, year);
+	gtk_calendar_get_date (almanah_operation->end_calendar, &year, &month, &day);
+	almanah_operation->end_date = g_date_new_dmy (day, month + 1, year);
 
 	/* Ensure they're in order */
-	if (g_date_compare (diary_operation->start_date, diary_operation->end_date) > 0) {
+	if (g_date_compare (almanah_operation->start_date, almanah_operation->end_date) > 0) {
 		GDate *temp;
-		temp = diary_operation->start_date;
-		diary_operation->start_date = diary_operation->end_date;
-		diary_operation->end_date = temp;
+		temp = almanah_operation->start_date;
+		almanah_operation->start_date = almanah_operation->end_date;
+		almanah_operation->end_date = temp;
 	}
 
-	diary_operation->current_date = g_memdup (diary_operation->start_date, sizeof (*(diary_operation->start_date)));
+	almanah_operation->current_date = g_memdup (almanah_operation->start_date, sizeof (*(almanah_operation->start_date)));
 }
 
 void
-diary_print_entries (void)
+almanah_print_entries (void)
 {
 	GtkPrintOperation *operation;
 	GtkPrintOperationResult res;
 	static GtkPrintSettings *settings;
-	DiaryPrintOperation diary_operation;
+	AlmanahPrintOperation almanah_operation;
 
 	operation = gtk_print_operation_new ();
-	diary_operation.current_date = NULL;
-	diary_operation.paginated = FALSE;
-	diary_operation.y = 0;
-	diary_operation.current_line = 0;
+	almanah_operation.current_date = NULL;
+	almanah_operation.paginated = FALSE;
+	almanah_operation.y = 0;
+	almanah_operation.current_line = 0;
 
-	diary_operation.buffer = gtk_text_buffer_new (NULL);
-	gtk_text_buffer_create_tag (diary_operation.buffer, "bold", 
+	almanah_operation.buffer = gtk_text_buffer_new (NULL);
+	gtk_text_buffer_create_tag (almanah_operation.buffer, "bold", 
 				    "weight", PANGO_WEIGHT_BOLD, 
 				    NULL);
-	gtk_text_buffer_create_tag (diary_operation.buffer, "italic",
+	gtk_text_buffer_create_tag (almanah_operation.buffer, "italic",
 				    "style", PANGO_STYLE_ITALIC,
 				    NULL);
-	gtk_text_buffer_create_tag (diary_operation.buffer, "underline",
+	gtk_text_buffer_create_tag (almanah_operation.buffer, "underline",
 				    "underline", PANGO_UNDERLINE_SINGLE,
 				    NULL);
 
@@ -487,13 +487,13 @@ diary_print_entries (void)
 
 	gtk_print_operation_set_n_pages (operation, 1);
 
-	g_signal_connect (operation, "paginate", G_CALLBACK (paginate_cb), &diary_operation);
-	g_signal_connect (operation, "draw-page", G_CALLBACK (draw_page_cb), &diary_operation);
-	g_signal_connect (operation, "create-custom-widget", G_CALLBACK (create_custom_widget_cb), &diary_operation);
-	g_signal_connect (operation, "custom-widget-apply", G_CALLBACK (custom_widget_apply_cb), &diary_operation);
+	g_signal_connect (operation, "paginate", G_CALLBACK (paginate_cb), &almanah_operation);
+	g_signal_connect (operation, "draw-page", G_CALLBACK (draw_page_cb), &almanah_operation);
+	g_signal_connect (operation, "create-custom-widget", G_CALLBACK (create_custom_widget_cb), &almanah_operation);
+	g_signal_connect (operation, "custom-widget-apply", G_CALLBACK (custom_widget_apply_cb), &almanah_operation);
 
 	res = gtk_print_operation_run (operation, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-				       GTK_WINDOW (diary->main_window), NULL);
+				       GTK_WINDOW (almanah->main_window), NULL);
 
 	if (res == GTK_PRINT_OPERATION_RESULT_APPLY) {
 		if (settings != NULL)
@@ -501,11 +501,11 @@ diary_print_entries (void)
 		settings = g_object_ref (gtk_print_operation_get_print_settings (operation));
 	}
 
-	if (diary_operation.current_date != NULL) {
-		g_object_unref (diary_operation.buffer);
-		g_date_free (diary_operation.current_date);
-		g_date_free (diary_operation.start_date);
-		g_date_free (diary_operation.end_date);
+	if (almanah_operation.current_date != NULL) {
+		g_object_unref (almanah_operation.buffer);
+		g_date_free (almanah_operation.current_date);
+		g_date_free (almanah_operation.start_date);
+		g_date_free (almanah_operation.end_date);
 	}
 	g_object_unref (operation);
 }

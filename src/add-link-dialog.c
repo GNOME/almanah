@@ -82,7 +82,7 @@ almanah_add_link_dialog_new (void)
 	AlmanahAddLinkDialog *add_link_dialog;
 	AlmanahAddLinkDialogPrivate *priv;
 	GError *error = NULL;
-	const gchar *interface_filename = diary_get_interface_filename ();
+	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"dry_add_link_dialog",
 		"dry_ald_type_store",
