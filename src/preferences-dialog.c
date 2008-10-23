@@ -119,7 +119,7 @@ almanah_preferences_dialog_new (void)
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_OK,
-				_("UI file \"%s\" could not be loaded."), interface_filename);
+				_("UI file \"%s\" could not be loaded"), interface_filename);
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -190,9 +190,13 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 		key = "";
 
 	if (gconf_client_set_string (almanah->gconf_client, ENCRYPTION_KEY_GCONF_PATH, key, &error) == FALSE) {
-		gchar *error_message = g_strdup_printf (_("There was an error saving the encryption key: %s"), error->message);
-		almanah_interface_error (error_message, GTK_WIDGET (preferences_dialog));
-		g_free (error_message);
+		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->preferences_dialog),
+							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Error saving the encryption key"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
 		g_error_free (error);
 	}
 }
@@ -205,9 +209,13 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 	GError *error = NULL;
 
 	if (g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
-		gchar *error_message = g_strdup_printf (_("There was an error opening Seahorse: %s"), error->message);
-		almanah_interface_error (error_message, GTK_WIDGET (preferences_dialog));
-		g_free (error_message);
+		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->preferences_dialog),
+							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Error opening Seahorse"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
 		g_error_free (error);
 	}
 }

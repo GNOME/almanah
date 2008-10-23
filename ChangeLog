@@ -1,3 +1,19 @@
+2008-10-23  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/add-link-dialog.c (almanah_add_link_dialog_new):
+	* src/interface.c:
+	* src/interface.h:
+	* src/links/file.c (file_view):
+	* src/links/note.c:
+	* src/links/uri.c (uri_view):
+	* src/main-window.c (almanah_main_window_new),
+	(save_current_entry), (mw_calendar_day_selected_cb):
+	* src/main.c (almanah_quit), (main):
+	* src/preferences-dialog.c (almanah_preferences_dialog_new),
+	(pd_key_combo_changed_cb), (pd_new_key_button_clicked_cb):
+	* src/search-dialog.c (almanah_search_dialog_new):
+	Kill almanah_interface_error.
+
 2008-10-22  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.ui: Fix one missing rename from the previous commit.

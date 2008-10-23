@@ -80,7 +80,7 @@ almanah_search_dialog_new (void)
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_OK,
-				_("UI file \"%s\" could not be loaded."), interface_filename);
+				_("UI file \"%s\" could not be loaded"), interface_filename);
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

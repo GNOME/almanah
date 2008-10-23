@@ -25,8 +25,6 @@
 #include "../interface.h"
 #include "../main.h"
 
-/* TODO: Sort out build so that the links have a separate Makefile */
-
 static void almanah_note_link_init (AlmanahNoteLink *self);
 static gchar *note_format_value (AlmanahLink *link);
 static gboolean note_view (AlmanahLink *link);

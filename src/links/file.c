@@ -25,8 +25,6 @@
 #include "../interface.h"
 #include "../main.h"
 
-/* TODO: Sort out build so that the links have a separate Makefile */
-
 static void almanah_file_link_init (AlmanahFileLink *self);
 static gchar *file_format_value (AlmanahLink *link);
 static gboolean file_view (AlmanahLink *link);
@@ -73,11 +71,20 @@ file_format_value (AlmanahLink *link)
 static gboolean
 file_view (AlmanahLink *link)
 {
+	GError *error = NULL;
 	gchar *value = almanah_link_get_value (link);
 
-	if (g_app_info_launch_default_for_uri (value, NULL, NULL) == FALSE) {
+	if (g_app_info_launch_default_for_uri (value, NULL, &error) == FALSE) {
+		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Error opening file"));
+		gtk_message_dialog_format_secondary_text (GTK_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
 		g_free (value);
-		almanah_interface_error (_("Due to an unknown error the file cannot be opened."), almanah->main_window);
+		g_error_free (error);
+
 		return FALSE;
 	}
 

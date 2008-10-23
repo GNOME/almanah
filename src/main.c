@@ -51,7 +51,12 @@ almanah_quit (void)
 
 	g_signal_connect (almanah->storage_manager, "disconnected", G_CALLBACK (storage_manager_disconnected_cb), NULL);
 	if (almanah_storage_manager_disconnect (almanah->storage_manager, &error) == FALSE) {
-		almanah_interface_error (error->message, almanah->main_window);
+		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Error closing database"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
 	}
 
 	gtk_widget_destroy (almanah->add_link_dialog);
@@ -103,7 +108,8 @@ main (int argc, char *argv[])
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_OK,
-				_("Command-line options could not be parsed. Error: %s"), error->message);
+				_("Command-line options could not be parsed"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
 
@@ -132,7 +138,13 @@ main (int argc, char *argv[])
 	g_free (db_filename);
 
 	if (almanah_storage_manager_connect (almanah->storage_manager, &error) == FALSE) {
-		almanah_interface_error (error->message, NULL);
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
+							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Error opening database"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
 		almanah_quit ();
 	}
 

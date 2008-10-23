@@ -58,30 +58,6 @@ almanah_interface_embolden_label (GtkLabel *label)
 	g_free (markup);
 }
 
-/**
- * almanah_interface_error:
- * @message: Error message
- * @parent_window: The error dialog's parent window
- *
- * Display an error message and print the message to
- * the console.
- **/
-void
-almanah_interface_error (const gchar *message, GtkWidget *parent_window)
-{
-	GtkWidget *dialog;
-
-	g_warning ("%s", message);
-
-	dialog = gtk_message_dialog_new (GTK_WINDOW (parent_window),
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_ERROR,
-				GTK_BUTTONS_OK,
-				"%s", message);
-	gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
-}
-
 /* TODO: This exists so that different calendars can be highlighted according to which days have entries
  * (i.e. the ones on the print dialogue). This should eventually be replaced by a custom calendar widget. */
 void

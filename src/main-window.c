@@ -135,7 +135,7 @@ almanah_main_window_new (void)
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_OK,
-				_("UI file \"%s\" could not be loaded."), interface_filename);
+				_("UI file \"%s\" could not be loaded"), interface_filename);
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -192,9 +192,13 @@ almanah_main_window_new (void)
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking */
 	if (gtkspell_new_attach (priv->entry_view, NULL, &error) == FALSE) {
-		gchar *error_message = g_strdup_printf (_("The spelling checker could not be initialized: %s"), error->message);
-		almanah_interface_error (error_message, NULL);
-		g_free (error_message);
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
+							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Spelling checker could not be initialized"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
 		g_error_free (error);
 	}
 #endif /* ENABLE_SPELL_CHECKING */
@@ -272,9 +276,7 @@ save_current_entry (AlmanahMainWindow *self)
 		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
-						 GTK_DIALOG_MODAL,
-						 GTK_MESSAGE_QUESTION,
-						 GTK_BUTTONS_NONE,
+						 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
 						 _("Are you sure you want to edit this diary entry for %s?"),
 						 date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
@@ -298,9 +300,7 @@ save_current_entry (AlmanahMainWindow *self)
 		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
-						 GTK_DIALOG_MODAL,
-						 GTK_MESSAGE_QUESTION,
-						 GTK_BUTTONS_NONE,
+						 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
 						 _("Are you sure you want to delete this diary entry for %s?"),
 						 date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
@@ -755,9 +755,13 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 		gtk_text_buffer_set_text (priv->entry_buffer, "", 0);
 		if (almanah_entry_get_content (priv->current_entry, priv->entry_buffer, &error) == FALSE) {
-			gchar *error_message = g_strdup_printf (_("The entry content could not be loaded: %s"), error->message);
-			almanah_interface_error (error_message, NULL);
-			g_free (error_message);
+			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+								    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+								    _("Entry content could not be loaded"));
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+			gtk_dialog_run (GTK_DIALOG (dialog));
+			gtk_widget_destroy (dialog);
+
 			g_error_free (error);
 
 			/* Make sure the interface is left in a decent state before we return */

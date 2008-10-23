@@ -27,7 +27,6 @@ G_BEGIN_DECLS
 const gchar *almanah_get_interface_filename (void);
 GtkWidget *almanah_create_interface (void);
 void almanah_interface_embolden_label (GtkLabel *label);
-void almanah_interface_error (const gchar *message, GtkWidget *parent_window);
 void almanah_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data);
 
 G_END_DECLS
