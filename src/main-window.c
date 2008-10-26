@@ -35,6 +35,8 @@
 
 static void almanah_main_window_init (AlmanahMainWindow *self);
 static void almanah_main_window_dispose (GObject *object);
+static void save_window_state (AlmanahMainWindow *self);
+static void restore_window_state (AlmanahMainWindow *self);
 static gboolean mw_delete_event_cb (GtkWindow *window, gpointer user_data);
 static void mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
 static void mw_entry_buffer_insert_text_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
@@ -101,7 +103,6 @@ almanah_main_window_dispose (GObject *object)
 {
 	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW (object)->priv;
 
-	/* TODO: Free UI objects? */
 	if (priv->current_entry != NULL) {
 		g_object_unref (priv->current_entry);
 		priv->current_entry = NULL;
@@ -233,7 +234,72 @@ almanah_main_window_new (void)
 
 	g_object_unref (builder);
 
+	restore_window_state (main_window);
+
 	return main_window;
+}
+
+static void
+save_window_state (AlmanahMainWindow *self)
+{
+	GdkWindow *window;
+	GdkWindowState state;
+	gint width, height, x, y;
+
+	window = gtk_widget_get_window (GTK_WIDGET (self));
+	state = gdk_window_get_state (window);
+	gconf_client_set_bool (almanah->gconf_client, "/apps/almanah/state/main_window_maximized", state & GDK_WINDOW_STATE_MAXIMIZED ? TRUE : FALSE, NULL);
+
+	/* If we're maximised, don't bother saving size/position */
+	if (state & GDK_WINDOW_STATE_MAXIMIZED)
+		return;
+
+	/* Save the window dimensions */
+	gtk_window_get_size (GTK_WINDOW (self), &width, &height);
+
+	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_width", width, NULL);
+	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_height", height, NULL);
+
+	/* Save the window position */
+	gtk_window_get_position (GTK_WINDOW (self), &x, &y);
+
+	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_x_position", x, NULL);
+	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_y_position", y, NULL);
+}
+
+static void
+restore_window_state (AlmanahMainWindow *self)
+{
+	gint width, height, x, y;
+
+	width = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_width", NULL);
+	height = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_height", NULL);
+	x = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_x_position", NULL);
+	y = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_y_position", NULL);
+
+	/* Make sure the dimensions and position are sane */
+	if (width > 1 && height > 1) {
+		GdkScreen *screen;
+		gint max_width, max_height;
+
+		screen = gtk_widget_get_screen (GTK_WIDGET (self));
+		max_width = gdk_screen_get_width (screen);
+		max_height = gdk_screen_get_height (screen);
+
+		width = CLAMP (width, 0, max_width);
+		height = CLAMP (height, 0, max_height);
+
+		x = CLAMP (x, 0, max_width - width);
+		y = CLAMP (y, 0, max_height - height);
+
+		gtk_window_set_default_size (GTK_WINDOW (self), width, height);
+	}
+
+	gtk_window_move (GTK_WINDOW (self), x, y);
+
+	/* Maximised? */
+	if (gconf_client_get_bool (almanah->gconf_client, "/apps/almanah/state/main_window_maximized", NULL) == TRUE)
+		gtk_window_maximize (GTK_WINDOW (self));
 }
 
 static void
@@ -537,6 +603,7 @@ static gboolean
 mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 {
 	save_current_entry (ALMANAH_MAIN_WINDOW (window));
+	save_window_state (ALMANAH_MAIN_WINDOW (window));
 	almanah_quit ();
 
 	return TRUE;

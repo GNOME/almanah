@@ -46,7 +46,6 @@ schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
 
 install-data-local:
 if GCONF_SCHEMAS_INSTALL
-if ENCRYPTION
 	@GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 \
 		--makefile-install-rule $(schemas_DATA) || \
 		(echo ;\
@@ -54,7 +53,6 @@ if ENCRYPTION
 		echo "Installation of schemas failed: install them manually"; \
 		echo "*****************************************************";)
 	@true
-endif
 endif
 
 ###############################################################################

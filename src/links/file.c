@@ -78,7 +78,7 @@ file_view (AlmanahLink *link)
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error opening file"));
-		gtk_message_dialog_format_secondary_text (GTK_DIALOG (dialog), "%s", error->message);
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
 

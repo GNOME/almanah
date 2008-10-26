@@ -1,3 +1,17 @@
+2008-10-26  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* configure.ac:
+	* data/Makefile.am:
+	* data/almanah.schemas.in:
+	* src/main-window.c (almanah_main_window_dispose),
+	(almanah_main_window_new), (save_window_state),
+	(restore_window_state), (mw_delete_event_cb): Save the window
+	dimensions and position upon exiting, and restore them when starting
+	the program. Promotes the dependency on GConf to be mandatory (was
+	previously dependent on compiling with encryption support).
+	* src/links/file.c (file_view): Fix a compilation error about
+	mismatched pointer types.
+
 2008-10-23  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/add-link-dialog.c (almanah_add_link_dialog_new):

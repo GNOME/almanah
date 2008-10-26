@@ -68,7 +68,7 @@ IT_PROG_INTLTOOL([0.35.0])
 AM_PROG_LIBTOOL
 AM_GCONF_SOURCE_2
 
-PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite3 cairo)
+PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.12 gmodule-2.0 gio-2.0 sqlite3 cairo gconf-2.0)
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
@@ -79,7 +79,7 @@ if test $spell_checking = "true"; then
 fi
 
 if test $encryption = "true"; then
-	PKG_CHECK_MODULES(ENCRYPTION, cryptui-0.0 gconf-2.0)
+	PKG_CHECK_MODULES(ENCRYPTION, cryptui-0.0)
 
 	dnl Check for GPGME, which doesn't provide a pkgconfig file
 	dnl This code courtesy of seahorse
