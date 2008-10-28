@@ -611,7 +611,7 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 		almanah_storage_manager_free_results (results);
 		return FALSE;
 	} else {
-		*entry_count = atoi (results->data[2]);
+		*entry_count = atoi (results->data[1]);
 		if (*entry_count == 0) {
 			*link_count = 0;
 			return TRUE;

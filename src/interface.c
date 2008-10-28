@@ -25,7 +25,9 @@
 #include "main-window.h"
 #include "add-link-dialog.h"
 #include "search-dialog.h"
+#ifdef ENABLE_ENCRYPTION
 #include "preferences-dialog.h"
+#endif /* ENABLE_ENCRYPTION */
 #include "interface.h"
 
 const gchar *
@@ -43,7 +45,9 @@ almanah_create_interface (void)
 	almanah->main_window = GTK_WIDGET (almanah_main_window_new ());
 	almanah->add_link_dialog = GTK_WIDGET (almanah_add_link_dialog_new ());
 	almanah->search_dialog = GTK_WIDGET (almanah_search_dialog_new ());
+#ifdef ENABLE_ENCRYPTION
 	almanah->preferences_dialog = GTK_WIDGET (almanah_preferences_dialog_new ());
+#endif /* ENABLE_ENCRYPTION */
 
 	return almanah->main_window;
 }

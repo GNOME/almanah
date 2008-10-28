@@ -21,9 +21,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#ifdef ENABLE_ENCRYPTION
 #include <gconf/gconf.h>
-#endif /* ENABLE_ENCRYPTION */
 
 #include "main.h"
 #include "storage-manager.h"
@@ -33,9 +31,8 @@ static void
 storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data)
 {
 	g_object_unref (almanah->storage_manager);
-#ifdef ENABLE_ENCRYPTION
 	g_object_unref (almanah->gconf_client);
-#endif /* ENABLE_ENCRYPTION */
+
 	g_free (almanah);
 
 	if (gtk_main_level () > 0)
@@ -61,7 +58,9 @@ almanah_quit (void)
 
 	gtk_widget_destroy (almanah->add_link_dialog);
 	gtk_widget_destroy (almanah->search_dialog);
+#ifdef ENABLE_ENCRYPTION
 	gtk_widget_destroy (almanah->preferences_dialog);
+#endif /* ENABLE_ENCRYPTION */
 	gtk_widget_destroy (almanah->main_window);
 
 	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once
@@ -123,10 +122,8 @@ main (int argc, char *argv[])
 	almanah = g_new (Almanah, 1);
 	almanah->debug = debug;
 
-#ifdef ENABLE_ENCRYPTION
 	/* Open GConf */
 	almanah->gconf_client = gconf_client_get_default ();
-#endif /* ENABLE_ENCRYPTION */
 
 	/* Ensure the DB directory exists */
 	if (g_file_test (g_get_user_data_dir (), G_FILE_TEST_IS_DIR) == FALSE)

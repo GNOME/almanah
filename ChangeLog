@@ -1,5 +1,19 @@
 2008-10-28  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/Makefile.am:
+	* src/entry.c (almanah_entry_get_content):
+	* src/interface.c (almanah_create_interface):
+	* src/main-window.c (almanah_main_window_new),
+	(mw_preferences_activate_cb):
+	* src/main.c (storage_manager_disconnected_cb), (almanah_quit),
+	(main):
+	* src/main.h: Only allow the Preferences dialogue to be opened if
+	encryption support is compiled in.
+	* src/storage-manager.c (almanah_storage_manager_get_statistics):
+	Fix a crasher when getting database statistics.
+
+2008-10-28  Philip Withnall  <philip@tecnocode.co.uk>
+
 	Updated svn:ignore lists.
 
 2008-10-26  Philip Withnall  <philip@tecnocode.co.uk>

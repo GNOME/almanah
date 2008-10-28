@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gconf/gconf.h>
 #ifdef ENABLE_SPELL_CHECKING
 #include <gtkspell/gtkspell.h>
 #endif /* ENABLE_SPELL_CHECKING */
@@ -231,6 +232,11 @@ almanah_main_window_new (void)
 	/* Prettify the UI */
 	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_calendar_label")));
 	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_attached_links_label")));
+
+#ifndef ENABLE_ENCRYPTION
+	/* Remove the "Preferences" entry from the menu */
+	gtk_action_set_visible (GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_preferences")), FALSE);
+#endif /* !ENABLE_ENCRYPTION */
 
 	g_object_unref (builder);
 
@@ -659,8 +665,10 @@ mw_search_activate_cb (GtkAction *action, gpointer user_data)
 void
 mw_preferences_activate_cb (GtkAction *action, gpointer user_data)
 {
+#ifdef ENABLE_ENCRYPTION
 	gtk_widget_show_all (almanah->preferences_dialog);
 	gtk_dialog_run (GTK_DIALOG (almanah->preferences_dialog));
+#endif /* ENABLE_ENCRYPTION */
 }
 
 static void

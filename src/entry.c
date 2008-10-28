@@ -189,7 +189,7 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, GErro
 					 priv->data, priv->length,
 					 &deserialise_error) == FALSE) {
 		/* Since that failed, check the data's in the old format, and try to just load it as text */
-		if (g_strcmp0 (priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
+		if (g_strcmp0 ((gchar*) priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
 			gtk_text_buffer_set_text (text_buffer, (gchar*) priv->data, priv->length);
 			g_error_free (deserialise_error);
 			return TRUE;

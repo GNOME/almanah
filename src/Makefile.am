@@ -31,8 +31,6 @@ almanah_SOURCES = \
 	add-link-dialog.h	\
 	search-dialog.c		\
 	search-dialog.h		\
-	preferences-dialog.c	\
-	preferences-dialog.h	\
 	printing.c		\
 	printing.h		\
 	entry.c			\
@@ -42,6 +40,12 @@ almanah_SOURCES = \
 	links/file.c		\
 	links/note.c		\
 	links/uri.c
+
+if ENCRYPTION
+almanah_SOURCES += \
+	preferences-dialog.c	\
+	preferences-dialog.h
+endif
 
 almanah_LDFLAGS = 
 almanah_LDADD = \
