@@ -840,13 +840,18 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	return result_count - 1;
 }
 
-/* NOTE: Free results with g_free */
+/* NOTE: Free results with g_free. Return value is 0-based. */
 gboolean *
-almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month)
+almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
 {
 	AlmanahQueryResults *results;
 	guint i;
-	gboolean *days = g_malloc0 (sizeof (gboolean) * 32);
+	gboolean *days;
+
+	i = g_date_get_days_in_month (month, year);
+	if (num_days != NULL)
+		*num_days = i;
+	days = g_malloc0 (sizeof (gboolean) * i);
 
 	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", NULL,
 						 year,
@@ -856,7 +861,7 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 		return days;
 
 	for (i = 1; i <= results->rows; i++)
-		days[atoi (results->data[i])] = TRUE;
+		days[atoi (results->data[i]) - 1] = TRUE;
 
 	almanah_storage_manager_free_results (results);
 

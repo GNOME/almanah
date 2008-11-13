@@ -412,6 +412,16 @@ save_current_entry (AlmanahMainWindow *self)
 }
 
 static void
+get_selected_date (AlmanahMainWindow *self, GDate *date)
+{
+	guint year, month, day;
+
+	gtk_calendar_get_date (self->priv->calendar, &year, &month, &day);
+	month++;
+	g_date_set_dmy (date, day, month, year);
+}
+
+static void
 add_link_to_current_entry (AlmanahMainWindow *self)
 {
 	GtkTreeIter iter;
@@ -424,7 +434,6 @@ add_link_to_current_entry (AlmanahMainWindow *self)
 	gtk_widget_show_all (almanah->add_link_dialog);
 
 	if (gtk_dialog_run (GTK_DIALOG (almanah->add_link_dialog)) == GTK_RESPONSE_OK) {
-		guint year, month, day;
 		GDate date;
 		AlmanahLink *link = almanah_add_link_dialog_get_link (ALMANAH_ADD_LINK_DIALOG (almanah->add_link_dialog));
 
@@ -432,11 +441,7 @@ add_link_to_current_entry (AlmanahMainWindow *self)
 			return;
 
 		/* Add to the DB */
-		/* TODO: Clean this date stuff up and separate it out into its own function */
-		gtk_calendar_get_date (priv->calendar, &year, &month, &day);
-		month++;
-		g_date_set_dmy (&date, day, month, year);
-
+		get_selected_date (self, &date);
 		almanah_storage_manager_add_entry_link (almanah->storage_manager, &date, link);
 
 		/* Add to the treeview */
@@ -456,7 +461,6 @@ static void
 remove_link_from_current_entry (AlmanahMainWindow *self)
 {
 	gchar *link_type;
-	guint year, month, day;
 	GDate date;
 	GtkTreeIter iter;
 	GtkTreeModel *model;
@@ -464,9 +468,7 @@ remove_link_from_current_entry (AlmanahMainWindow *self)
 	AlmanahMainWindowPrivate *priv = self->priv;
 
 	links = gtk_tree_selection_get_selected_rows (priv->links_selection, &model);
-	gtk_calendar_get_date (priv->calendar, &year, &month, &day);
-	month++;
-	g_date_set_dmy (&date, day, month, year);
+	get_selected_date (self, &date);
 
 	for (; links != NULL; links = links->next) {
 		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) links->data);
@@ -788,7 +790,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 {
 	GDate calendar_date;
 	gchar calendar_string[100];
-	guint year, month, day;
 	AlmanahLink **links;
 	guint i;
 	GtkTreeIter iter;
@@ -798,9 +799,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 
 	/* Update the date label */
-	gtk_calendar_get_date (calendar, &year, &month, &day);
-	month++;
-	g_date_set_dmy (&calendar_date, day, month, year);
+	get_selected_date (main_window, &calendar_date);
 
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
 	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
@@ -909,7 +908,7 @@ mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, Gt
 	gchar *new_value, *value, *value2, *type;
 	AlmanahLink *link;
 
-	/* TODO: Should really create a new model to render AlmanahLinks --- or at least attach the approprite AlmanahLink to each tree model row */
+	/* TODO: Should really create a new model to render AlmanahLinks --- or at least attach the appropriate AlmanahLink to each tree model row */
 
 	gtk_tree_model_get (model, iter,
 			    0, &type,

@@ -68,20 +68,19 @@ void
 almanah_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data)
 {
 	/* Mark the days on the calendar which have diary entries */
-	guint i, year, month;
+	guint i, year, month, num_days;
 	gboolean *days;
 
 	gtk_calendar_get_date (calendar, &year, &month, NULL);
 	month++;
-	days = almanah_storage_manager_get_month_marked_days (almanah->storage_manager, year, month);
+	days = almanah_storage_manager_get_month_marked_days (almanah->storage_manager, year, month, &num_days);
 
-	/* TODO: Don't like hard-coding the array length here */
 	gtk_calendar_clear_marks (calendar);
-	for (i = 1; i < 32; i++) {
+	for (i = 0; i < num_days; i++) {
 		if (days[i] == TRUE)
-			gtk_calendar_mark_day (calendar, i);
+			gtk_calendar_mark_day (calendar, i + 1);
 		else
-			gtk_calendar_unmark_day (calendar, i);
+			gtk_calendar_unmark_day (calendar, i + 1);
 	}
 
 	g_free (days);

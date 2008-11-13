@@ -83,7 +83,7 @@ AlmanahEntry *almanah_storage_manager_get_entry (AlmanahStorageManager *self, GD
 gboolean almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *entry);
 gint almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, GDate *matches[]);
 
-gboolean *almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month);
+gboolean *almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
 
 AlmanahLink **almanah_storage_manager_get_entry_links (AlmanahStorageManager *self, GDate *date);
 gboolean almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date, AlmanahLink *link);

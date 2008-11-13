@@ -316,8 +316,6 @@ almanah_link_get_value2 (AlmanahLink *self)
 	return g_strdup (self->priv->value2);
 }
 
-/* TODO: Perhaps an almanah_link_set_values (AlmanahLink *self, const gchar *value, const gchar *value2) API would be better? */
-
 void
 almanah_link_set_value2 (AlmanahLink *self, const gchar *value)
 {

@@ -1,5 +1,18 @@
 2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/link.c: Remove an unnecessary comment.
+	* src/main-window.c (get_selected_date),
+	(add_link_to_current_entry), (remove_link_from_current_entry),
+	(mw_calendar_day_selected_cb), (mw_links_value_data_cb):
+	Refactor some of the date handling code into a separate function.
+	* src/interface.c (almanah_calendar_month_changed_cb):
+	* src/storage-manager.c
+	(almanah_storage_manager_get_month_marked_days):
+	* src/storage-manager.h: Use a variable-length array for the
+	mark data for each month.
+
+2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* configure.ac: Use AC_HELP_STRING.
 
 2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
