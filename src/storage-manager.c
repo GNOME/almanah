@@ -543,7 +543,7 @@ almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, 
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
-	results = g_slice_new (AlmanahQueryResults);
+	results = g_new (AlmanahQueryResults, 1);
 
 	if (almanah->debug)
 		g_debug ("Database query: %s", new_query);
@@ -565,7 +565,7 @@ void
 almanah_storage_manager_free_results (AlmanahQueryResults *results)
 {
 	sqlite3_free_table (results->data);
-	g_slice_free (AlmanahQueryResults, results);
+	g_free (results);
 }
 
 gboolean
@@ -614,6 +614,7 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 		*entry_count = atoi (results->data[1]);
 		if (*entry_count == 0) {
 			*link_count = 0;
+			almanah_storage_manager_free_results (results);
 			return TRUE;
 		}
 	}
@@ -625,7 +626,6 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 		return FALSE;
 	} else if (results->rows != 1) {
 		*link_count = 0;
-
 		almanah_storage_manager_free_results (results);
 		return FALSE;
 	} else {
@@ -839,13 +839,13 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	return result_count - 1;
 }
 
-/* NOTE: Free results with g_slice_free */
+/* NOTE: Free results with g_free */
 gboolean *
 almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month)
 {
 	AlmanahQueryResults *results;
 	guint i;
-	gboolean *days = g_slice_alloc0 (sizeof (gboolean) * 32);
+	gboolean *days = g_malloc0 (sizeof (gboolean) * 32);
 
 	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", NULL,
 						 year,

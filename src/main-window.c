@@ -541,7 +541,7 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 			gtk_toggle_action_set_active (action, TRUE);
 		} else {
 			/* Print a warning about the unknown tag */
-			g_message (_("Unknown or duplicate text tag \"%s\" in entry. Ignoring."), tag_name);
+			g_warning (_("Unknown or duplicate text tag \"%s\" in entry. Ignoring."), tag_name);
 		}
 
 		g_free (tag_name);

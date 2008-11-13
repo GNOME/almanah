@@ -1,3 +1,14 @@
+2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/interface.c (almanah_calendar_month_changed_cb):
+	* src/main-window.c (mw_entry_buffer_cursor_position_cb):
+	* src/storage-manager.c (almanah_storage_manager_query),
+	(almanah_storage_manager_free_results),
+	(almanah_storage_manager_get_statistics),
+	(almanah_storage_manager_get_month_marked_days): Changed from GSlice
+	allocation to the more-appropriate g_malloc and g_new.
+	May fix some slice-related crashes on quitting.
+
 2008-10-28  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/Makefile.am:

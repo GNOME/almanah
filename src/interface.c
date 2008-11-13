@@ -84,5 +84,5 @@ almanah_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data)
 			gtk_calendar_unmark_day (calendar, i);
 	}
 
-	g_slice_free (gboolean, days);
+	g_free (days);
 }
