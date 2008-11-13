@@ -1,5 +1,17 @@
 2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/entry.c (almanah_entry_get_content):
+	* src/entry.h:
+	* src/main-window.c (mw_calendar_day_selected_cb):
+	* src/printing.c (print_entry):
+	* src/storage-manager.c (almanah_storage_manager_search_entries):
+	Fix problems with automatically creating tags when deserialising an
+	entry into a GtkTextBuffer.
+	* src/search-dialog.c (sd_search_button_clicked_cb): Make sure the
+	result list is cleared before doing a new search.
+
+2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/storage-manager.c (almanah_storage_manager_disconnect): Fixed
 	string ("s/almanah/diary/").
 

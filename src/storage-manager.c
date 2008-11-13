@@ -816,8 +816,9 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 		/* Deserialise the entry into our buffer */
 		gtk_text_buffer_set_text (text_buffer, "", 0);
-		if (almanah_entry_get_content (entry, text_buffer, NULL) == FALSE) {
+		if (almanah_entry_get_content (entry, text_buffer, TRUE, NULL) == FALSE) {
 			g_object_unref (entry);
+			g_warning (_("Error deserializing entry into buffer while searching."));
 			continue;
 		}
 

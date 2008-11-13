@@ -145,6 +145,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	GtkTreeIter iter;
 	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
 
+	gtk_list_store_clear (search_dialog->priv->sd_results_store);
 	result_count = almanah_storage_manager_search_entries (almanah->storage_manager,
 							       gtk_entry_get_text (priv->sd_search_entry), &results);
 

@@ -829,7 +829,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 		GError *error = NULL;
 
 		gtk_text_buffer_set_text (priv->entry_buffer, "", 0);
-		if (almanah_entry_get_content (priv->current_entry, priv->entry_buffer, &error) == FALSE) {
+		if (almanah_entry_get_content (priv->current_entry, priv->entry_buffer, FALSE, &error) == FALSE) {
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
 								    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 								    _("Entry content could not be loaded"));

@@ -171,7 +171,7 @@ almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length)
 }
 
 gboolean
-almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, GError **error)
+almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gboolean create_tags, GError **error)
 {
 	GdkAtom format_atom;
 	GtkTextIter start_iter;
@@ -179,7 +179,7 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, GErro
 	GError *deserialise_error = NULL;
 
 	format_atom = gtk_text_buffer_register_deserialize_tagset (text_buffer, PACKAGE_NAME);
-	gtk_text_buffer_deserialize_set_can_create_tags (text_buffer, format_atom, TRUE);
+	gtk_text_buffer_deserialize_set_can_create_tags (text_buffer, format_atom, create_tags);
 	gtk_text_buffer_get_start_iter (text_buffer, &start_iter);
 
 	/* Try deserializing the (hopefully) serialized data first */
