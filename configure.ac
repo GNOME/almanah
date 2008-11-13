@@ -14,7 +14,7 @@ dnl Options
 dnl ***************************************************************************
 
 AC_ARG_ENABLE([debug],
-	[  --enable-debug	Turn on debugging],
+	AC_HELP_STRING([--enable-debug], [turn on debugging]),
 	[case "${enableval}" in
 		yes) debug=true ;;
 		no)  debug=false ;;
@@ -28,7 +28,7 @@ fi
 AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
 
 AC_ARG_ENABLE([encryption],
-	[  --enable-encryption	Enable database encryption support],
+	AC_HELP_STRING([--enable-encryption], [enable database encryption support]),
 	[case "${enableval}" in
 		yes) encryption=true ;;
 		no)  encryption=false ;;
@@ -42,7 +42,7 @@ fi
 AM_CONDITIONAL([ENCRYPTION], [test x$encryption = xtrue])
 
 AC_ARG_ENABLE([spell-checking],
-	[  --enable-spell-checking	Enable spell checking support],
+	AC_HELP_STRING([--enable-spell-checking], [enable spell checking support]),
 	[case "${enableval}" in
 		yes) spell_checking=true ;;
 		no)  spell_checking=false ;;

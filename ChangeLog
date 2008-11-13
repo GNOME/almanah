@@ -1,5 +1,9 @@
 2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* configure.ac: Use AC_HELP_STRING.
+
+2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/entry.c (almanah_entry_get_content):
 	* src/entry.h:
 	* src/main-window.c (mw_calendar_day_selected_cb):
