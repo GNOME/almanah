@@ -3,6 +3,7 @@
 data/almanah.desktop.in
 data/almanah.schemas.in
 [type: gettext/glade]data/almanah.ui
+src/add-link-dialog.c
 src/interface.c
 src/link.c
 src/links/file.c

@@ -1,5 +1,10 @@
 2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/storage-manager.c (almanah_storage_manager_disconnect): Fixed
+	string ("s/almanah/diary/").
+
+2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/interface.c (almanah_calendar_month_changed_cb):
 	* src/main-window.c (mw_entry_buffer_cursor_position_cb):
 	* src/storage-manager.c (almanah_storage_manager_query),

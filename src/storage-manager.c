@@ -504,7 +504,7 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 #ifdef ENABLE_ENCRYPTION
 	encryption_key = get_encryption_key ();
 	if (encryption_key == NULL) {
-		g_message (_("Error getting encryption key: GConf key \"%s\" invalid or empty. Your almanah will not be encrypted; please install Seahorse and set up a default key, or ignore this message."), ENCRYPTION_KEY_GCONF_PATH);
+		g_message (_("Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary will not be encrypted; please install Seahorse and set up a default key, or ignore this message."), ENCRYPTION_KEY_GCONF_PATH);
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
 		return TRUE;
 	}
