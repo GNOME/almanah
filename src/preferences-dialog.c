@@ -165,7 +165,7 @@ almanah_preferences_dialog_new (void)
 
 	/* Set the selected key combo value */
 	key = gconf_client_get_string (almanah->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
-	if (*key == '\0') {
+	if (key != NULL && *key == '\0') {
 		g_free (key);
 		key = NULL;
 	}

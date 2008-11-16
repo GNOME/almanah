@@ -1,5 +1,10 @@
 2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/preferences-dialog.c (almanah_preferences_dialog_new):
+	Fix a crash caused by dereferencing a NULL pointer.
+
+2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
+
 	Fix file permissions.
 
 2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
