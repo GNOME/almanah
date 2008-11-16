@@ -120,6 +120,10 @@ almanah_main_window_new (void)
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
 	GError *error = NULL;
+#ifdef ENABLE_SPELL_CHECKING
+	GtkSpell *gtkspell;
+	gchar *spelling_language;
+#endif /* ENABLE_SPELL_CHECKING */
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"dry_main_window",
@@ -193,7 +197,18 @@ almanah_main_window_new (void)
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking */
-	if (gtkspell_new_attach (priv->entry_view, NULL, &error) == FALSE) {
+	spelling_language = gconf_client_get_string (almanah->gconf_client, "/apps/almanah/spelling_language", NULL);
+
+	/* Make sure it's either NULL or a proper locale specifier */
+	if (spelling_language != NULL && spelling_language[0] == '\0') {
+		g_free (spelling_language);
+		spelling_language = NULL;
+	}
+
+	gtkspell = gtkspell_new_attach (priv->entry_view, spelling_language, &error);
+	g_free (spelling_language);
+
+	if (gtkspell == NULL) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Spelling checker could not be initialized"));

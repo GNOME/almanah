@@ -12,6 +12,17 @@
 			</locale>
 		</schema>
 		<schema>
+			<key>/schemas/apps/almanah/spelling_language</key>
+			<applyto>/apps/almanah/spelling_language</applyto>
+			<owner>almanah</owner>
+			<type>string</type>
+			<default></default>
+			<locale name="C">
+				<short>Spell checking language</short>
+				<long>The locale specifier of the language in which to check entry spellings.</long>
+			</locale>
+		</schema>
+		<schema>
 			<key>/schemas/apps/almanah/state/main_window_maximized</key>
 			<applyto>/apps/almanah/state/main_window_maximized</applyto>
 			<owner>almanah</owner>

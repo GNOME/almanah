@@ -1,5 +1,11 @@
 2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* data/almanah.schemas.in:
+	* src/main-window.c (almanah_main_window_new): Allow the spelling
+	language to be set with a GConf key.
+
+2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* README:
 	* configure.ac: Updated GTK+ dependency to 2.14 for gtk_show_uri().
 	* src/link.c (almanah_link_get_value), (almanah_link_get_value2):
