@@ -1,5 +1,9 @@
 2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
 
+	Fix file permissions.
+
+2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* configure.ac:
 	* data/almanah.ui:
 	* src/links/uri.c (uri_build_dialog):
