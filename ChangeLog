@@ -1,3 +1,17 @@
+2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* README:
+	* configure.ac: Updated GTK+ dependency to 2.14 for gtk_show_uri().
+	* src/link.c (almanah_link_get_value), (almanah_link_get_value2):
+	* src/link.h:
+	* src/links/file.c (file_format_value), (file_view):
+	* src/links/note.c (note_format_value), (note_view):
+	* src/links/uri.c (uri_format_value), (uri_view):
+	* src/main-window.c (mw_calendar_day_selected_cb):
+	* src/storage-manager.c (almanah_storage_manager_add_entry_link):
+	Clean up the link API a little to reduce the number of string
+	duplications, and also clean up the code for viewing URIs and files.
+
 2008-11-13  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/link.c: Remove an unnecessary comment.

@@ -908,8 +908,7 @@ gboolean
 almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date, AlmanahLink *link)
 {
 	gboolean return_value;
-	gchar *value, *value2;
-	const gchar *type_id;
+	const gchar *type_id, *value, *value2;
 
 	type_id = almanah_link_get_type_id (link);
 	value = almanah_link_get_value (link);
@@ -931,9 +930,6 @@ almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date
 								    value,
 								    value2);
 	}
-
-	g_free (value);
-	g_free (value2);
 
 	return return_value;
 }

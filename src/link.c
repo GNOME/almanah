@@ -297,10 +297,10 @@ almanah_link_get_icon_name (AlmanahLink *self)
 	return klass->icon_name;
 }
 
-gchar *
+const gchar *
 almanah_link_get_value (AlmanahLink *self)
 {
-	return g_strdup (self->priv->value);
+	return self->priv->value;
 }
 
 void
@@ -310,10 +310,10 @@ almanah_link_set_value (AlmanahLink *self, const gchar *value)
 	self->priv->value = g_strdup (value);
 }
 
-gchar *
+const gchar *
 almanah_link_get_value2 (AlmanahLink *self)
 {
-	return g_strdup (self->priv->value2);
+	return self->priv->value2;
 }
 
 void

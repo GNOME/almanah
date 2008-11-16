@@ -65,13 +65,14 @@ almanah_note_link_init (AlmanahNoteLink *self)
 static gchar *
 note_format_value (AlmanahLink *link)
 {
-	return almanah_link_get_value (link);
+	return g_strdup (almanah_link_get_value (link));
 }
 
 static gboolean
 note_view (AlmanahLink *link)
 {
-	gchar *value = almanah_link_get_value (link);
+	const gchar *value = almanah_link_get_value (link);
+
 	GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
 				GTK_DIALOG_DESTROY_WITH_PARENT,
 				GTK_MESSAGE_INFO,
@@ -79,7 +80,6 @@ note_view (AlmanahLink *link)
 				"%s", value);
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
-	g_free (value);
 
 	return TRUE;
 }

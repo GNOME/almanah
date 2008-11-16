@@ -863,7 +863,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 	i = 0;
 	while (links[i] != NULL) {
-		gchar *value, *value2;
+		const gchar *value, *value2;
 
 		value = almanah_link_get_value (links[i]);
 		value2 = almanah_link_get_value2 (links[i]);
@@ -876,8 +876,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 				    3, almanah_link_get_icon_name (links[i]),
 				    -1);
 
-		g_free (value);
-		g_free (value2);
 		g_object_unref (links[i]);
 
 		i++;

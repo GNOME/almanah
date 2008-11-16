@@ -11,7 +11,7 @@ See NEWS file.
 Dependencies
 ============
 
-GNOME 2.22 development platform
+GNOME 2.24 development platform
 	http://www.gnome.org
 SQLite 3
 	http://sqlite.org
@@ -31,7 +31,7 @@ BUGS
 ====
 
 Bugs should be filed in GNOME's Bugzilla:
-http://bugzilla.gnome.org/enter_bug.cgi?product=diary
+http://bugzilla.gnome.org/enter_bug.cgi?product=almanah
 
 To get a better debug output, run:
 # almanah --debug
@@ -40,4 +40,4 @@ Contact
 =======
 
 Philip Withnall <philip@tecnocode.co.uk>
-http://tecnocode.co.uk/projects/diary
+http://tecnocode.co.uk/projects/almanah

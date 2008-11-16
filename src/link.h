@@ -65,9 +65,9 @@ const gchar *almanah_link_get_type_id (AlmanahLink *self);
 const gchar *almanah_link_get_name (AlmanahLink *self);
 const gchar *almanah_link_get_description (AlmanahLink *self);
 const gchar *almanah_link_get_icon_name (AlmanahLink *self);
-gchar *almanah_link_get_value (AlmanahLink *self);
+const gchar *almanah_link_get_value (AlmanahLink *self);
 void almanah_link_set_value (AlmanahLink *self, const gchar *value);
-gchar *almanah_link_get_value2 (AlmanahLink *self);
+const gchar *almanah_link_get_value2 (AlmanahLink *self);
 void almanah_link_set_value2 (AlmanahLink *self, const gchar *value);
 
 G_END_DECLS
