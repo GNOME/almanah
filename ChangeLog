@@ -1,3 +1,13 @@
+============ Version 0.5.0
+
+2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* NEWS:
+	* configure.ac: Bump to version 0.5.0.
+	* src/Makefile.am:
+	* src/link.c: Fix a build error where the link type headers
+	weren't being found.
+
 2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.schemas.in:

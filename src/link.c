@@ -32,9 +32,9 @@ typedef struct {
 
 /* TODO: This is still a little hacky */
 
-#include "links/file.h"
-#include "links/note.h"
-#include "links/uri.h"
+#include "file.h"
+#include "note.h"
+#include "uri.h"
 
 static const AlmanahLinkType link_types[] = {
 	{ "file", &almanah_file_link_get_type },

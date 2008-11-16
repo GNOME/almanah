@@ -1,5 +1,19 @@
 Major new features in version...
 
+0.5:
+Note that the database format used in 0.5 is not backwards-compatible
+with previous versions, so once an entry has been added in 0.5, the
+database will not be usable with previous versions of Almanah.
+
+* Complete the name change to "Almanah Diary"
+* Update the architecture, moving to GObject
+* Make spell checking optional at compile time
+* Add text formatting support
+* Improve ability to recover from database corruption
+* Allow an encryption key to be chosen
+* Make window dimensions persistent
+* Allow the spelling language to be set via GConf
+
 0.4:
 * Fix various translation problems, including untranslatable strings and strings containing markup
 * Improve some error messages

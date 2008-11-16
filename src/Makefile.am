@@ -2,6 +2,7 @@ INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\"	\
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\"				\
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"				\
+	-I$(srcdir)/links						\
 	$(STANDARD_CFLAGS)						\
 	$(ENCRYPTION_CFLAGS)						\
 	$(SPELL_CHECKING_CFLAGS)
@@ -38,8 +39,11 @@ almanah_SOURCES = \
 	link.c			\
 	link.h			\
 	links/file.c		\
+	links/file.h		\
 	links/note.c		\
-	links/uri.c
+	links/note.h		\
+	links/uri.c		\
+	links/uri.h
 
 if ENCRYPTION
 almanah_SOURCES += \
