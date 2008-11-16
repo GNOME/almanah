@@ -1,3 +1,12 @@
+2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* configure.ac:
+	* data/almanah.ui:
+	* src/links/uri.c (uri_build_dialog):
+	* src/preferences-dialog.c (almanah_preferences_dialog_new):
+	Add accessibility information to the UI, so that it is navigable in
+	both Accerciser and GOK. Note: adds a depencency on ATK.
+
 ============ Version 0.5.0
 
 2008-11-16  Philip Withnall  <philip@tecnocode.co.uk>

@@ -19,6 +19,7 @@
 
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <atk/atk.h>
 
 #include "uri.h"
 #include "../link.h"
@@ -94,6 +95,7 @@ static void
 uri_build_dialog (AlmanahLink *link, GtkVBox *parent_vbox)
 {
 	GtkWidget *label, *hbox;
+	AtkObject *a11y_label, *a11y_entry;
 	AlmanahURILinkPrivate *priv = ALMANAH_URI_LINK (link)->priv;
 
 	hbox = gtk_hbox_new (FALSE, 5);
@@ -105,6 +107,12 @@ uri_build_dialog (AlmanahLink *link, GtkVBox *parent_vbox)
 	priv->entry = gtk_entry_new ();
 	gtk_entry_set_activates_default (GTK_ENTRY (priv->entry), TRUE);
 	gtk_box_pack_start (GTK_BOX (hbox), priv->entry, TRUE, TRUE, 0);
+
+	/* Set up the accessibility relationships */
+	a11y_label = gtk_widget_get_accessible (GTK_WIDGET (label));
+	a11y_entry = gtk_widget_get_accessible (GTK_WIDGET (priv->entry));
+	atk_object_add_relationship (a11y_label, ATK_RELATION_LABEL_FOR, a11y_entry);
+	atk_object_add_relationship (a11y_entry, ATK_RELATION_LABELLED_BY, a11y_label);
 
 	gtk_box_pack_start (GTK_BOX (parent_vbox), hbox, TRUE, TRUE, 0);
 	gtk_widget_show_all (GTK_WIDGET (parent_vbox));

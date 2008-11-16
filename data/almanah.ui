@@ -234,6 +234,11 @@
 												<property name="has-focus">True</property>
 												<property name="wrap-mode">GTK_WRAP_WORD</property>
 												<signal name="focus-out-event" handler="mw_entry_view_focus_out_event_cb"/>
+												<child internal-child="accessible">
+													<object class="AtkObject" id="a11y-dry_mw_entry_view">
+														<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>
+													</object>
+												</child>
 											</object>
 										</child>
 									</object>
@@ -249,6 +254,9 @@
 								<child>
 									<object class="GtkLabel" id="dry_mw_calendar_label">
 										<property name="label" translatable="yes">Calendar</property>
+										<accessibility>
+											<relation target="dry_mw_calendar" type="label-for"/>
+										</accessibility>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -260,6 +268,14 @@
 										<property name="can-focus">True</property>
 										<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
 										<signal name="month-changed" handler="almanah_calendar_month_changed_cb"/>
+										<accessibility>
+											<relation target="dry_mw_calendar_label" type="labelled-by"/>
+										</accessibility>
+										<child internal-child="accessible">
+											<object class="AtkObject" id="a11y-dry_mw_calendar">
+												<property name="AtkObject::accessible-name" translatable="yes">Calendar</property>
+											</object>
+										</child>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -268,6 +284,9 @@
 								<child>
 									<object class="GtkLabel" id="dry_mw_attached_links_label">
 										<property name="label" translatable="yes">Attached Links</property>
+										<accessibility>
+											<relation target="dry_mw_links_tree_view" type="label-for"/>
+										</accessibility>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -285,6 +304,14 @@
 												<property name="can-focus">True</property>
 												<property name="headers-visible">False</property>
 												<signal name="row-activated" handler="mw_links_tree_view_row_activated_cb"/>
+												<accessibility>
+													<relation target="dry_mw_attached_links_label" type="labelled-by"/>
+												</accessibility>
+												<child internal-child="accessible">
+													<object class="AtkObject" id="a11y-dry_mw_links_tree_view">
+														<property name="AtkObject::accessible-name" translatable="yes">Link List</property>
+													</object>
+												</child>
 												<child>
 													<object class="GtkTreeViewColumn" id="column3">
 														<child>
@@ -313,6 +340,11 @@
 												<property name="use-stock">True</property>
 												<property name="label">gtk-add</property>
 												<signal name="clicked" handler="mw_add_button_clicked_cb"/>
+												<child internal-child="accessible">
+													<object class="AtkObject" id="a11y-dry_mw_add_button">
+														<property name="AtkObject::accessible-name" translatable="yes">Add Link</property>
+													</object>
+												</child>
 											</object>
 										</child>
 										<child>
@@ -320,6 +352,11 @@
 												<property name="use-stock">True</property>
 												<property name="label">gtk-remove</property>
 												<signal name="clicked" handler="mw_remove_button_clicked_cb"/>
+												<child internal-child="accessible">
+													<object class="AtkObject" id="a11y-dry_mw_remove_button">
+														<property name="AtkObject::accessible-name" translatable="yes">Remove Link</property>
+													</object>
+												</child>
 											</object>
 										</child>
 										<child>
@@ -327,6 +364,11 @@
 												<property name="image">dry_mw_view_button_image</property>
 												<property name="label" translatable="yes">View</property>
 												<signal name="clicked" handler="mw_view_button_clicked_cb"/>
+												<child internal-child="accessible">
+													<object class="AtkObject" id="a11y-dry_mw_view_button">
+														<property name="AtkObject::accessible-name" translatable="yes">View Link</property>
+													</object>
+												</child>
 											</object>
 										</child>
 									</object>
@@ -341,14 +383,6 @@
 							</packing>
 						</child>
 					</object>
-				</child>
-				<child>
-					<object class="GtkStatusbar" id="dry_mw_statusbar">
-						<property name="spacing">2</property>
-					</object>
-					<packing>
-						<property name="expand">False</property>
-					</packing>
 				</child>
 			</object>
 		</child>
@@ -377,6 +411,9 @@
 							<object class="GtkLabel" id="dry_ald_type_label">
 								<property name="xalign">0</property>
 								<property name="label" translatable="yes">Link Type</property>
+								<accessibility>
+									<relation target="dry_ald_type_combo_box" type="label-for"/>
+								</accessibility>
 							</object>
 							<packing>
 								<property name="left-attach">1</property>
@@ -390,6 +427,9 @@
 							<object class="GtkComboBox" id="dry_ald_type_combo_box">
 								<property name="model">dry_ald_type_store</property>
 								<signal name="changed" handler="ald_type_combo_box_changed_cb"/>
+								<accessibility>
+									<relation target="dry_ald_type_label" type="labelled-by"/>
+								</accessibility>
 								<child>
 									<object class="GtkCellRendererPixbuf" id="renderer5"/>
 									<attributes>
@@ -469,6 +509,14 @@
 						<child>
 							<object class="GtkEntry" id="dry_sd_search_entry">
 								<property name="activates-default">True</property>
+								<accessibility>
+									<relation target="dry_sd_search_button" type="labelled-by"/>
+								</accessibility>
+								<child internal-child="accessible">
+									<object class="AtkObject" id="a11y-dry_sd_search_entry">
+										<property name="AtkObject::accessible-name" translatable="yes">Search entry</property>
+									</object>
+								</child>
 							</object>
 						</child>
 						<child>
@@ -478,6 +526,9 @@
 								<property name="can-default">True</property>
 								<property name="has-default">True</property>
 								<signal name="clicked" handler="sd_search_button_clicked_cb"/>
+								<accessibility>
+									<relation target="dry_sd_search_entry" type="label-for"/>
+								</accessibility>
 							</object>
 							<packing>
 								<property name="expand">False</property>
@@ -491,6 +542,9 @@
 				<child>
 					<object class="GtkLabel" id="dry_sd_results_label">
 						<property name="label" translatable="yes">Results</property>
+						<accessibility>
+							<relation target="dry_sd_results_tree_view" type="label-for"/>
+						</accessibility>
 					</object>
 					<packing>
 						<property name="expand">False</property>
@@ -506,6 +560,14 @@
 								<property name="model">dry_sd_results_store</property>
 								<property name="headers-visible">False</property>
 								<signal name="row-activated" handler="sd_results_tree_view_row_activated_cb"/>
+								<accessibility>
+									<relation target="dry_sd_results_label" type="labelled-by"/>
+								</accessibility>
+								<child internal-child="accessible">
+									<object class="AtkObject" id="a11y-dry_sd_results_tree_view">
+										<property name="AtkObject::accessible-name" translatable="yes">Result List</property>
+									</object>
+								</child>
 								<child>
 									<object class="GtkTreeViewColumn" id="column0">
 										<child>

@@ -26,6 +26,7 @@
 #include <libcryptui/cryptui-key-combo.h>
 #include <libcryptui/cryptui-keyset.h>
 #include <libcryptui/cryptui.h>
+#include <atk/atk.h>
 #endif /* ENABLE_ENCRYPTION */
 
 #include "preferences-dialog.h"
@@ -99,6 +100,7 @@ almanah_preferences_dialog_new (void)
 	GtkBuilder *builder;
 #ifdef ENABLE_ENCRYPTION
 	GtkWidget *label, *button;
+	AtkObject *a11y_label, *a11y_key_combo;
 	GtkTable *table;
 	gchar *key;
 #endif /* ENABLE_ENCRYPTION */
@@ -154,6 +156,12 @@ almanah_preferences_dialog_new (void)
 	priv->key_combo = cryptui_key_combo_new (priv->key_store);
 
 	gtk_table_attach_defaults (table, GTK_WIDGET (priv->key_combo), 2, 3, 1, 2);
+
+	/* Set up the accessibility relationships */
+	a11y_label = gtk_widget_get_accessible (GTK_WIDGET (label));
+	a11y_key_combo = gtk_widget_get_accessible (GTK_WIDGET (priv->key_combo));
+	atk_object_add_relationship (a11y_label, ATK_RELATION_LABEL_FOR, a11y_key_combo);
+	atk_object_add_relationship (a11y_key_combo, ATK_RELATION_LABELLED_BY, a11y_label);
 
 	/* Set the selected key combo value */
 	key = gconf_client_get_string (almanah->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
