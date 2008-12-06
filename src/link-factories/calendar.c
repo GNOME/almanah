@@ -135,7 +135,7 @@ get_links (AlmanahLinkFactory *link_factory, GDate *date)
 			}
 		} else {
 			/* Appointment */
-			link = ALMANAH_LINK (almanah_calendar_appointment_link_new (event->event.appointment.uid, event->event.appointment.summary));
+			link = ALMANAH_LINK (almanah_calendar_appointment_link_new (event->event.appointment.summary, event->event.appointment.start_time));
 		}
 
 		if (link != NULL)

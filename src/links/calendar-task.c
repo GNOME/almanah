@@ -22,6 +22,7 @@
 
 #include "link.h"
 #include "calendar-task.h"
+#include "main.h"
 
 static void almanah_calendar_task_link_init (AlmanahCalendarTaskLink *self);
 static void almanah_calendar_task_link_finalize (GObject *object);
@@ -84,13 +85,37 @@ almanah_calendar_task_link_new (const gchar *uid, const gchar *summary)
 static const gchar *
 almanah_calendar_task_link_format_value (AlmanahLink *link)
 {
-	/* TODO */
 	return ALMANAH_CALENDAR_TASK_LINK (link)->priv->summary;
 }
 
 static gboolean
 almanah_calendar_task_link_view (AlmanahLink *link)
 {
-	/* TODO */
+	AlmanahCalendarTaskLinkPrivate *priv = ALMANAH_CALENDAR_TASK_LINK (link)->priv;
+	gchar *command_line;
+	gboolean retval;
+	GError *error = NULL;
+
+	command_line = g_strdup_printf ("evolution task:%s", priv->uid);
+
+	if (almanah->debug == TRUE)
+		g_debug ("Executing \"%s\".", command_line);
+
+	retval = gdk_spawn_command_line_on_screen (gtk_widget_get_screen (almanah->main_window), command_line, &error);
+	g_free (command_line);
+
+	if (retval == FALSE) {
+		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Error launching Evolution"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
+		g_error_free (error);
+
+		return FALSE;
+	}
+
 	return TRUE;
 }

@@ -46,7 +46,7 @@ typedef struct {
 } AlmanahCalendarAppointmentLinkClass;
 
 GType almanah_calendar_appointment_link_get_type (void);
-AlmanahCalendarAppointmentLink *almanah_calendar_appointment_link_new (const gchar *uid, const gchar *summary);
+AlmanahCalendarAppointmentLink *almanah_calendar_appointment_link_new (const gchar *summary, GTime start_time);
 
 G_END_DECLS
 

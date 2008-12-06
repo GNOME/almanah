@@ -1,5 +1,21 @@
 2008-12-06  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/link-factories/calendar.c (get_links):
+	* src/links/calendar-appointment.c
+	(almanah_calendar_appointment_link_finalize),
+	(almanah_calendar_appointment_link_new),
+	(almanah_calendar_appointment_link_format_value),
+	(almanah_calendar_appointment_link_view):
+	* src/links/calendar-appointment.h:
+	* src/links/calendar-task.c
+	(almanah_calendar_task_link_format_value),
+	(almanah_calendar_task_link_view): Allow appointment and task links to
+	be viewed by spawning Evolution.
+	* src/main-window.c (clear_factory_links), (mw_links_updated_cb):
+	Fix a memory leak caused by not unreffing some links.
+
+2008-12-06  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* configure.ac:
 	* data/almanah.ui:
 	* src/Makefile.am:

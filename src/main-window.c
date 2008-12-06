@@ -826,7 +826,6 @@ clear_factory_links (AlmanahMainWindow *self, AlmanahLinkFactoryType type_id)
 
 		gtk_tree_model_get (model, &iter, 2, &row_type_id, -1);
 
-		/* TODO: Make sure the links are unreffed appropriately */
 		if (row_type_id == type_id) {
 			if (almanah->debug == TRUE) {
 				AlmanahLink *link;
@@ -875,6 +874,8 @@ mw_links_updated_cb (AlmanahLinkManager *link_manager, AlmanahLinkFactoryType ty
 				    1, almanah_link_get_icon_name (link),
 				    2, type_id,
 				    -1);
+
+		g_object_unref (link);
 	}
 
 	if (almanah->debug == TRUE)
