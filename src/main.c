@@ -25,6 +25,7 @@
 
 #include "main.h"
 #include "storage-manager.h"
+#include "link-manager.h"
 #include "interface.h"
 
 static void
@@ -56,12 +57,14 @@ almanah_quit (void)
 		gtk_widget_destroy (dialog);
 	}
 
-	gtk_widget_destroy (almanah->add_link_dialog);
+	gtk_widget_destroy (almanah->add_definition_dialog);
 	gtk_widget_destroy (almanah->search_dialog);
 #ifdef ENABLE_ENCRYPTION
 	gtk_widget_destroy (almanah->preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
 	gtk_widget_destroy (almanah->main_window);
+
+	g_object_unref (almanah->link_manager);
 
 	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once
 	 * the storage manager has encrypted the DB and disconnected from it.
@@ -144,6 +147,9 @@ main (int argc, char *argv[])
 
 		almanah_quit ();
 	}
+
+	/* Create the link manager */
+	almanah->link_manager = almanah_link_manager_new ();
 
 	/* Create and show the interface */
 	almanah_create_interface ();

@@ -56,7 +56,7 @@ fi
 AM_CONDITIONAL([SPELL_CHECKING], [test x$spell_checking = xtrue])
 
 dnl ***************************************************************************
-dnl Internationalisation
+dnl Dependencies
 dnl ***************************************************************************
 
 GETTEXT_PACKAGE=almanah
@@ -67,8 +67,9 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AM_PROG_LIBTOOL
 AM_GCONF_SOURCE_2
+AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 
-PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.14 gmodule-2.0 gio-2.0 sqlite3 cairo gconf-2.0 atk)
+PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.14 gmodule-2.0 gio-2.0 sqlite3 cairo gconf-2.0 atk libecal-1.2 libedataserver-1.2 libedataserverui-1.2)
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 

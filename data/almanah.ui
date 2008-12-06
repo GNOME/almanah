@@ -119,24 +119,39 @@
 					<object class="GtkAction" id="dry_ui_jump_to_today">
 						<property name="stock-id">gtk-jump-to</property>
 						<property name="name">jump-to-today</property>
-						<property name="label" translatable="yes">Go To Today</property>
+						<property name="label" translatable="yes">Go to _Today</property>
 						<signal name="activate" handler="mw_jump_to_today_activate_cb"/>
 					</object>
 				</child>
 				<child>
-					<object class="GtkAction" id="dry_ui_add_link">
-						<property name="stock-id">gtk-add</property>
-						<property name="name">add-link</property>
-						<property name="label" translatable="yes">Add Link</property>
-						<signal name="activate" handler="mw_add_link_activate_cb"/>
+					<object class="GtkAction" id="dry_ui_definitions">
+						<property name="name">definitions</property>
+						<property name="label" translatable="yes">_Definitions</property>
 					</object>
 				</child>
 				<child>
-					<object class="GtkAction" id="dry_ui_remove_link">
+					<object class="GtkAction" id="dry_ui_add_definition">
+						<property name="stock-id">gtk-add</property>
+						<property name="name">add-definition</property>
+						<property name="label" translatable="yes">_Add Definition</property>
+						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
+						<signal name="activate" handler="mw_add_definition_activate_cb"/>
+					</object>
+				</child>
+				<child>
+					<object class="GtkAction" id="dry_ui_remove_definition">
 						<property name="stock-id">gtk-remove</property>
-						<property name="name">remove-link</property>
-						<property name="label" translatable="yes">Remove Link</property>
-						<signal name="activate" handler="mw_remove_link_activate_cb"/>
+						<property name="name">remove-definition</property>
+						<property name="label" translatable="yes">_Remove Definition</property>
+						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
+						<signal name="activate" handler="mw_remove_definition_activate_cb"/>
+					</object>
+				</child>
+				<child>
+					<object class="GtkAction" id="dry_ui_view_definitions">
+						<property name="name">view-definitions</property>
+						<property name="label" translatable="yes">_View Definitions</property>
+						<signal name="activate" handler="mw_remove_definition_activate_cb"/>
 					</object>
 				</child>
 			</object>
@@ -162,6 +177,12 @@
 					<menuitem action="dry_ui_italic"/>
 					<menuitem action="dry_ui_underline"/>
 				</menu>
+				<menu action="dry_ui_definitions">
+					<menuitem action="dry_ui_add_definition"/>
+					<menuitem action="dry_ui_remove_definition"/>
+					<separator/>
+					<menuitem action="dry_ui_view_definitions"/>
+				</menu>
 				<menu action="dry_ui_help">
 					<menuitem action="dry_ui_about"/>
 				</menu>
@@ -169,22 +190,21 @@
 			<toolbar name="dry_mw_toolbar">
 				<toolitem action="dry_ui_jump_to_today"/>
 				<separator/>
-				<toolitem action="dry_ui_add_link"/>
-				<toolitem action="dry_ui_remove_link"/>
-				<separator/>
 				<toolitem action="dry_ui_bold"/>
 				<toolitem action="dry_ui_italic"/>
 				<toolitem action="dry_ui_underline"/>
+				<separator/>
+				<toolitem action="dry_ui_add_definition"/>
+				<toolitem action="dry_ui_remove_definition"/>
 			</toolbar>
 		</ui>
 	</object>
 
 	<object class="GtkListStore" id="dry_mw_link_store">
 		<columns>
-			<column type="gchararray"/><!-- Type -->
-			<column type="gchararray"/><!-- Value -->
-			<column type="gchararray"/><!-- Value 2 -->
+			<column type="AlmanahLink"/><!-- Link object -->
 			<column type="gchararray"/><!-- Icon name -->
+			<column type="guint"/><!-- Factory type ID -->
 		</columns>
 	</object>
 
@@ -283,7 +303,7 @@
 								</child>
 								<child>
 									<object class="GtkLabel" id="dry_mw_attached_links_label">
-										<property name="label" translatable="yes">Attached Links</property>
+										<property name="label" translatable="yes">Past Events</property>
 										<accessibility>
 											<relation target="dry_mw_links_tree_view" type="label-for"/>
 										</accessibility>
@@ -309,7 +329,7 @@
 												</accessibility>
 												<child internal-child="accessible">
 													<object class="AtkObject" id="a11y-dry_mw_links_tree_view">
-														<property name="AtkObject::accessible-name" translatable="yes">Link List</property>
+														<property name="AtkObject::accessible-name" translatable="yes">Past Event List</property>
 													</object>
 												</child>
 												<child>
@@ -317,7 +337,7 @@
 														<child>
 															<object class="GtkCellRendererPixbuf" id="renderer3"/>
 															<attributes>
-																<attribute name="icon-name">3</attribute>
+																<attribute name="icon-name">1</attribute>
 															</attributes>
 														</child>
 													</object>
@@ -336,37 +356,13 @@
 								<child>
 									<object class="GtkHButtonBox" id="buttonbox1">
 										<child>
-											<object class="GtkButton" id="dry_mw_add_button">
-												<property name="use-stock">True</property>
-												<property name="label">gtk-add</property>
-												<signal name="clicked" handler="mw_add_button_clicked_cb"/>
-												<child internal-child="accessible">
-													<object class="AtkObject" id="a11y-dry_mw_add_button">
-														<property name="AtkObject::accessible-name" translatable="yes">Add Link</property>
-													</object>
-												</child>
-											</object>
-										</child>
-										<child>
-											<object class="GtkButton" id="dry_mw_remove_button">
-												<property name="use-stock">True</property>
-												<property name="label">gtk-remove</property>
-												<signal name="clicked" handler="mw_remove_button_clicked_cb"/>
-												<child internal-child="accessible">
-													<object class="AtkObject" id="a11y-dry_mw_remove_button">
-														<property name="AtkObject::accessible-name" translatable="yes">Remove Link</property>
-													</object>
-												</child>
-											</object>
-										</child>
-										<child>
 											<object class="GtkButton" id="dry_mw_view_button">
 												<property name="image">dry_mw_view_button_image</property>
 												<property name="label" translatable="yes">View</property>
 												<signal name="clicked" handler="mw_view_button_clicked_cb"/>
 												<child internal-child="accessible">
 													<object class="AtkObject" id="a11y-dry_mw_view_button">
-														<property name="AtkObject::accessible-name" translatable="yes">View Link</property>
+														<property name="AtkObject::accessible-name" translatable="yes">View Event</property>
 													</object>
 												</child>
 											</object>
@@ -388,31 +384,31 @@
 		</child>
 	</object>
 
-	<object class="GtkListStore" id="dry_ald_type_store">
+	<object class="GtkListStore" id="dry_add_type_store">
 		<columns>
 			<column type="gchararray"/><!-- Name -->
-			<column type="gchararray"/><!-- Type -->
+			<column type="guint"/><!-- Type -->
 			<column type="gchararray"/><!-- Icon name -->
 		</columns>
 	</object>
 
-	<!-- TODO: Use the description of link types somewhere -->
-	<object class="AlmanahAddLinkDialog" id="dry_add_link_dialog">
+	<!-- TODO: Use the description of definition types somewhere -->
+	<object class="AlmanahAddDefinitionDialog" id="dry_add_definition_dialog">
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox1">
 				<child>
-					<object class="GtkTable" id="dry_ald_table">
+					<object class="GtkTable" id="dry_add_table">
 						<property name="n-rows">2</property>
 						<property name="n-columns">2</property>
 						<property name="column-spacing">5</property>
 						<property name="row-spacing">5</property>
 						<property name="border-width">5</property>
 						<child>
-							<object class="GtkLabel" id="dry_ald_type_label">
+							<object class="GtkLabel" id="dry_add_type_label">
 								<property name="xalign">0</property>
-								<property name="label" translatable="yes">Link Type</property>
+								<property name="label" translatable="yes">Definition Type</property>
 								<accessibility>
-									<relation target="dry_ald_type_combo_box" type="label-for"/>
+									<relation target="dry_add_type_combo_box" type="label-for"/>
 								</accessibility>
 							</object>
 							<packing>
@@ -424,11 +420,11 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkComboBox" id="dry_ald_type_combo_box">
-								<property name="model">dry_ald_type_store</property>
-								<signal name="changed" handler="ald_type_combo_box_changed_cb"/>
+							<object class="GtkComboBox" id="dry_add_type_combo_box">
+								<property name="model">dry_add_type_store</property>
+								<signal name="changed" handler="add_type_combo_box_changed_cb"/>
 								<accessibility>
-									<relation target="dry_ald_type_label" type="labelled-by"/>
+									<relation target="dry_add_type_label" type="labelled-by"/>
 								</accessibility>
 								<child>
 									<object class="GtkCellRendererPixbuf" id="renderer5"/>
@@ -452,7 +448,7 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkVBox" id="dry_ald_vbox"/>
+							<object class="GtkVBox" id="dry_add_vbox"/>
 							<packing>
 								<property name="left-attach">1</property>
 								<property name="right-attach">3</property>
@@ -465,13 +461,13 @@
 				<child internal-child="action_area">
 					<object class="GtkHButtonBox" id="hbuttonbox1">
 						<child>
-							<object class="GtkButton" id="dry_ald_cancel_button">
+							<object class="GtkButton" id="dry_add_cancel_button">
 								<property name="use-stock">True</property>
 								<property name="label">gtk-cancel</property>
 							</object>
 						</child>
 						<child>
-							<object class="GtkButton" id="dry_ald_add_button">
+							<object class="GtkButton" id="dry_add_add_button">
 								<property name="use-stock">True</property>
 								<property name="label">gtk-add</property>
 								<property name="can-default">True</property>
@@ -483,8 +479,8 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-6">dry_ald_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
-			<action-widget response="-5">dry_ald_add_button</action-widget><!-- GTK_RESPONSE_OK -->
+			<action-widget response="-6">dry_add_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
+			<action-widget response="-5">dry_add_add_button</action-widget><!-- GTK_RESPONSE_OK -->
 		</action-widgets>
 	</object>
 

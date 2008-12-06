@@ -472,15 +472,7 @@ almanah_print_entries (void)
 	almanah_operation.current_line = 0;
 
 	almanah_operation.buffer = gtk_text_buffer_new (NULL);
-	gtk_text_buffer_create_tag (almanah_operation.buffer, "bold", 
-				    "weight", PANGO_WEIGHT_BOLD, 
-				    NULL);
-	gtk_text_buffer_create_tag (almanah_operation.buffer, "italic",
-				    "style", PANGO_STYLE_ITALIC,
-				    NULL);
-	gtk_text_buffer_create_tag (almanah_operation.buffer, "underline",
-				    "underline", PANGO_UNDERLINE_SINGLE,
-				    NULL);
+	almanah_interface_create_text_tags (almanah_operation.buffer, FALSE);
 
 	if (settings != NULL) 
 		gtk_print_operation_set_print_settings (operation, settings);

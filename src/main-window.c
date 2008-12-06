@@ -29,10 +29,12 @@
 #include "main-window.h"
 #include "main.h"
 #include "interface.h"
-#include "add-link-dialog.h"
+#include "add-definition-dialog.h"
 #include "printing.h"
 #include "entry.h"
 #include "storage-manager.h"
+#include "link.h"
+#include "definition.h"
 
 static void almanah_main_window_init (AlmanahMainWindow *self);
 static void almanah_main_window_dispose (GObject *object);
@@ -46,6 +48,7 @@ static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec
 static void mw_bold_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
+static void mw_links_updated_cb (AlmanahLinkManager *link_manager, AlmanahLinkFactoryType type_id, AlmanahMainWindow *main_window);
 void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
 static void mw_links_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window);
 static void mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
@@ -55,8 +58,6 @@ struct _AlmanahMainWindowPrivate {
 	GtkTextBuffer *entry_buffer;
 	GtkCalendar *calendar;
 	GtkLabel *date_label;
-	GtkButton *add_button;
-	GtkButton *remove_button;
 	GtkButton *view_button;
 	GtkAction *add_action;
 	GtkAction *remove_action;
@@ -168,11 +169,9 @@ almanah_main_window_new (void)
 	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
 	priv->calendar = GTK_CALENDAR (gtk_builder_get_object (builder, "dry_mw_calendar"));
 	priv->date_label = GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_date_label"));
-	priv->add_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_add_button"));
-	priv->remove_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_remove_button"));
 	priv->view_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_view_button"));
-	priv->add_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_add_link"));
-	priv->remove_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_remove_link"));
+	priv->add_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_add_definition"));
+	priv->remove_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_remove_definition"));
 	priv->link_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_mw_link_store"));
 	priv->links_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "dry_mw_links_tree_view")));
 	priv->link_value_column = GTK_TREE_VIEW_COLUMN (gtk_builder_get_object (builder, "dry_mw_link_value_column"));
@@ -185,15 +184,7 @@ almanah_main_window_new (void)
 	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_delete"));
 
 	/* Set up text formatting */
-	gtk_text_buffer_create_tag (priv->entry_buffer, "bold", 
-				    "weight", PANGO_WEIGHT_BOLD, 
-				    NULL);
-	gtk_text_buffer_create_tag (priv->entry_buffer, "italic",
-				    "style", PANGO_STYLE_ITALIC,
-				    NULL);
-	gtk_text_buffer_create_tag (priv->entry_buffer, "underline",
-				    "underline", PANGO_UNDERLINE_SINGLE,
-				    NULL);
+	almanah_interface_create_text_tags (priv->entry_buffer, TRUE);
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking */
@@ -235,6 +226,9 @@ almanah_main_window_new (void)
 	g_signal_connect (priv->bold_action, "toggled", G_CALLBACK (mw_bold_toggled_cb), main_window);
 	g_signal_connect (priv->italic_action, "toggled", G_CALLBACK (mw_italic_toggled_cb), main_window);
 	g_signal_connect (priv->underline_action, "toggled", G_CALLBACK (mw_underline_toggled_cb), main_window);
+
+	/* Notification for link changes */
+	g_signal_connect (almanah->link_manager, "links-updated", G_CALLBACK (mw_links_updated_cb), main_window);
 
 	/* Select the current day and month */
 	almanah_calendar_month_changed_cb (priv->calendar, NULL);
@@ -409,20 +403,14 @@ save_current_entry (AlmanahMainWindow *self)
 	almanah_storage_manager_set_entry (almanah->storage_manager, priv->current_entry);
 
 	/* Mark the day on the calendar if the entry was non-empty (and deleted)
-	 * and update the state of the add link button. */
+	 * and update the state of the add definition action. */
 	if (entry_is_empty == TRUE) {
 		gtk_calendar_unmark_day (priv->calendar, g_date_get_day (&date));
-
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), FALSE);
-		gtk_action_set_sensitive (priv->add_action, FALSE);
 
 		/* Since the entry is empty, remove all the links from the treeview */
 		gtk_list_store_clear (priv->link_store);
 	} else {
 		gtk_calendar_mark_day (priv->calendar, g_date_get_day (&date));
-
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), TRUE);
-		gtk_action_set_sensitive (priv->add_action, TRUE);
 	}
 }
 
@@ -437,68 +425,78 @@ get_selected_date (AlmanahMainWindow *self, GDate *date)
 }
 
 static void
-add_link_to_current_entry (AlmanahMainWindow *self)
+add_definition_to_current_entry (AlmanahMainWindow *self)
 {
-	GtkTreeIter iter;
 	AlmanahMainWindowPrivate *priv = self->priv;
+	GtkTextIter start_iter, end_iter;
+	gchar *text;
 
 	g_assert (priv->entry_buffer != NULL);
 	g_assert (gtk_text_buffer_get_char_count (priv->entry_buffer) != 0);
 
-	/* Ensure that something is selected and its widgets displayed */
-	gtk_widget_show_all (almanah->add_link_dialog);
+	if (gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start_iter, &end_iter) == FALSE)
+		return;
 
-	if (gtk_dialog_run (GTK_DIALOG (almanah->add_link_dialog)) == GTK_RESPONSE_OK) {
-		GDate date;
-		AlmanahLink *link = almanah_add_link_dialog_get_link (ALMANAH_ADD_LINK_DIALOG (almanah->add_link_dialog));
+	text = gtk_text_buffer_get_text (priv->entry_buffer, &start_iter, &end_iter, FALSE);
 
-		if (link == NULL)
+	/* Ensure that something is selected and its widget's displayed */
+	almanah_add_definition_dialog_set_text (ALMANAH_ADD_DEFINITION_DIALOG (almanah->add_definition_dialog), text);
+	g_free (text);
+	gtk_widget_show_all (almanah->add_definition_dialog);
+
+	if (gtk_dialog_run (GTK_DIALOG (almanah->add_definition_dialog)) == GTK_RESPONSE_OK) {
+		AlmanahDefinition *definition;
+
+		definition = almanah_add_definition_dialog_get_definition (ALMANAH_ADD_DEFINITION_DIALOG (almanah->add_definition_dialog));
+		if (definition == NULL)
 			return;
 
 		/* Add to the DB */
-		get_selected_date (self, &date);
-		almanah_storage_manager_add_entry_link (almanah->storage_manager, &date, link);
+		almanah_storage_manager_add_definition (almanah->storage_manager, definition);
 
-		/* Add to the treeview */
-		gtk_list_store_append (priv->link_store, &iter);
-		gtk_list_store_set (priv->link_store, &iter,
-				    0, almanah_link_get_type_id (link),
-				    1, almanah_link_get_value (link),
-				    2, almanah_link_get_value2 (link),
-				    3, almanah_link_get_icon_name (link),
-				    -1);
-
-		g_object_unref (link);
+		/* Add a GtkTextTag to the GtkTextBuffer to mark the definition */
+		gtk_text_buffer_apply_tag_by_name (priv->entry_buffer, "definition", &start_iter, &end_iter);
+		gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
 	}
 }
 
 static void
-remove_link_from_current_entry (AlmanahMainWindow *self)
+remove_definition_from_current_entry (AlmanahMainWindow *self)
 {
-	gchar *link_type;
-	GDate date;
-	GtkTreeIter iter;
-	GtkTreeModel *model;
-	GList *links;
+	/* We don't actually remove the definition from the database, since other entries may use it;
+	 * we simply remove the formatting. */
 	AlmanahMainWindowPrivate *priv = self->priv;
+	GtkTextIter start_iter, end_iter;
+	GtkTextTag *tag;
+	GtkTextTagTable *tag_table;
 
-	links = gtk_tree_selection_get_selected_rows (priv->links_selection, &model);
-	get_selected_date (self, &date);
+	/* Find the tag in the tag table */
+	tag_table = gtk_text_buffer_get_tag_table (priv->entry_buffer);
+	tag = gtk_text_tag_table_lookup (tag_table, "definition");
+	g_assert (tag != NULL);
 
-	for (; links != NULL; links = links->next) {
-		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) links->data);
-		gtk_tree_model_get (model, &iter, 0, &link_type, -1);
+	/* Find the boundaries of the tag (ignoring everything except the position
+	 * of the start iter of any selection the user's made). */
+	gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start_iter, NULL);
+	end_iter = start_iter;
 
-		/* Remove it from the DB */
-		almanah_storage_manager_remove_entry_link (almanah->storage_manager, &date, link_type);
-
-		/* Remove it from the treeview */
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-
-		gtk_tree_path_free (links->data);
-		g_free (link_type);
+	if (gtk_text_iter_begins_tag (&start_iter, tag) == TRUE) {
+		/* We're at the start of the tag */
+		gtk_text_iter_forward_to_tag_toggle (&end_iter, tag);
+	} else if (gtk_text_iter_ends_tag (&start_iter, tag) == TRUE) {
+		/* We're at the end of the tag */
+		end_iter = start_iter;
+		gtk_text_iter_backward_to_tag_toggle (&start_iter, tag);
+	} else {
+		/* We're somewhere in the middle of the tag */
+		gtk_text_iter_backward_to_tag_toggle (&start_iter, tag);
+		end_iter = start_iter;
+		gtk_text_iter_forward_to_tag_toggle (&end_iter, tag);
 	}
-	g_list_free (links);
+		
+	/* Remove the tag */
+	gtk_text_buffer_remove_tag (priv->entry_buffer, tag, &start_iter, &end_iter);
+	gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
 }
 
 void
@@ -515,7 +513,7 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 	GSList *_tag_list = NULL, *tag_list = NULL;
 	gboolean range_selected = FALSE;
-	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE;
+	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE, remove_definition_toggled = FALSE;
 
 	/* Ensure we don't overwrite current formatting options when characters are being typed.
 	 * (Execution of this function will be sandwiched between:
@@ -529,6 +527,9 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 	range_selected = gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &iter, NULL);
 	if (range_selected == FALSE)
 		_tag_list = gtk_text_iter_get_tags (&iter);
+
+	/* We can only have the "add definition" action sensitive if there's a range selected */
+	gtk_action_set_sensitive (priv->add_action, (range_selected == TRUE) ? TRUE : FALSE);
 
 	/* Block signal handlers for the formatting actions while we're executing,
 	 * so formatting doesn't get unwittingly changed. */
@@ -553,7 +554,11 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 			underline_toggled = TRUE;
 		}
 
-		if (action) {
+		if (strcmp (tag_name, "definition") == 0) {
+			/* Deal with definition tags slightly differently --- just toggle the sensitivity of the "remove definition" action */
+			gtk_action_set_sensitive (priv->remove_action, TRUE);
+			remove_definition_toggled = TRUE;
+		} else if (action != NULL) {
 			/* Force the toggle status on the action */
 			gtk_toggle_action_set_active (action, TRUE);
 		} else {
@@ -575,6 +580,8 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 			gtk_toggle_action_set_active (priv->italic_action, FALSE);
 		if (underline_toggled == FALSE)
 			gtk_toggle_action_set_active (priv->underline_action, FALSE);
+		if (remove_definition_toggled == FALSE)
+			gtk_action_set_sensitive (priv->remove_action, FALSE);
 	}
 
 	/* Unblock signals */
@@ -691,18 +698,20 @@ mw_preferences_activate_cb (GtkAction *action, gpointer user_data)
 static void
 apply_formatting (AlmanahMainWindow *self, const gchar *tag_name, gboolean applying)
 {
+	AlmanahMainWindowPrivate *priv = self->priv;
 	GtkTextIter start, end;
 
 	/* Make sure we don't muck up the formatting when the actions are having
 	 * their sensitivity set by the code. */
-	if (self->priv->updating_formatting == TRUE)
+	if (priv->updating_formatting == TRUE)
 		return;
 
-	gtk_text_buffer_get_selection_bounds (self->priv->entry_buffer, &start, &end);
+	gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start, &end);
 	if (applying == TRUE)
-		gtk_text_buffer_apply_tag_by_name (self->priv->entry_buffer, tag_name, &start, &end);
+		gtk_text_buffer_apply_tag_by_name (priv->entry_buffer, tag_name, &start, &end);
 	else
-		gtk_text_buffer_remove_tag_by_name (self->priv->entry_buffer, tag_name, &start, &end);
+		gtk_text_buffer_remove_tag_by_name (priv->entry_buffer, tag_name, &start, &end);
+	gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
 }
 
 static void
@@ -727,7 +736,7 @@ void
 mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	gchar *license, *description;
-	guint entry_count, link_count;
+	guint entry_count, definition_count;
 
 	const gchar *authors[] =
 	{
@@ -753,10 +762,10 @@ mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 			  _(license_parts[2]),
 			  NULL);
 
-	almanah_storage_manager_get_statistics (almanah->storage_manager, &entry_count, &link_count);
-	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries and %u links."),
+	almanah_storage_manager_get_statistics (almanah->storage_manager, &entry_count, &definition_count);
+	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries and %u definitions."),
 				      entry_count,
-				      link_count);
+				      definition_count);
 
 	gtk_show_about_dialog (GTK_WINDOW (main_window),
 				"version", VERSION,
@@ -789,15 +798,89 @@ mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 }
 
 void
-mw_add_link_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+mw_add_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	add_link_to_current_entry (main_window);
+	add_definition_to_current_entry (main_window);
 }
 
 void
-mw_remove_link_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+mw_remove_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	remove_link_from_current_entry (main_window);
+	remove_definition_from_current_entry (main_window);
+}
+
+static void
+clear_factory_links (AlmanahMainWindow *self, AlmanahLinkFactoryType type_id)
+{
+	GtkTreeIter iter;
+	GtkTreeModel *model = GTK_TREE_MODEL (self->priv->link_store);
+
+	if (almanah->debug == TRUE)
+		g_debug ("Removing links belonging to factory %u from the list store...", type_id);
+
+	if (gtk_tree_model_get_iter_first (model, &iter) == FALSE)
+		return;
+
+	while (TRUE) {
+		AlmanahLinkFactoryType row_type_id;
+
+		gtk_tree_model_get (model, &iter, 2, &row_type_id, -1);
+
+		/* TODO: Make sure the links are unreffed appropriately */
+		if (row_type_id == type_id) {
+			if (almanah->debug == TRUE) {
+				AlmanahLink *link;
+				gtk_tree_model_get (model, &iter, 0, &link, -1);
+				g_debug ("\t%s", almanah_link_format_value (link));
+			}
+
+			if (gtk_list_store_remove (GTK_LIST_STORE (model), &iter) == FALSE)
+				break;
+		} else if (gtk_tree_model_iter_next (model, &iter) == FALSE) {
+			/* Come to the end of the list */
+			break;
+		}
+	}
+
+	if (almanah->debug == TRUE)
+		g_debug ("Finished removing links.");
+}
+
+static void
+mw_links_updated_cb (AlmanahLinkManager *link_manager, AlmanahLinkFactoryType type_id, AlmanahMainWindow *main_window)
+{
+	AlmanahMainWindowPrivate *priv = main_window->priv;
+	GSList *_links, *links;
+	GDate date;
+
+	get_selected_date (main_window, &date);
+	_links = almanah_link_manager_get_links (link_manager, type_id, &date);
+
+	/* Clear all the links generated by this factory out of the list store first */
+	clear_factory_links (main_window, type_id);
+
+	if (almanah->debug == TRUE)
+		g_debug ("Adding links from factory %u to the list store...", type_id);
+
+	for (links = _links; links != NULL; links = g_slist_next (links)) {
+		GtkTreeIter iter;
+		AlmanahLink *link = links->data;
+
+		if (almanah->debug == TRUE)
+			g_debug ("\t%s", almanah_link_format_value (link));
+
+		gtk_list_store_append (priv->link_store, &iter);
+		gtk_list_store_set (priv->link_store, &iter,
+				    0, link,
+				    1, almanah_link_get_icon_name (link),
+				    2, type_id,
+				    -1);
+	}
+
+	if (almanah->debug == TRUE)
+		g_debug ("Finished adding links.");
+
+	g_slist_free (_links);
 }
 
 void
@@ -805,9 +888,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 {
 	GDate calendar_date;
 	gchar calendar_string[100];
-	AlmanahLink **links;
-	guint i;
-	GtkTreeIter iter;
 #ifdef ENABLE_SPELL_CHECKING
 	GtkSpell *gtkspell;
 #endif /* ENABLE_SPELL_CHECKING */
@@ -833,11 +913,9 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 	/* Prepare for the possibility of failure --- do as much of the general interface changes as possible first */
 	gtk_list_store_clear (priv->link_store);
-	gtk_widget_set_sensitive (GTK_WIDGET (priv->remove_button), FALSE); /* Only sensitive if something's selected */
-	gtk_action_set_sensitive (priv->remove_action, FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), FALSE);
 	gtk_action_set_sensitive (priv->add_action, FALSE);
+	gtk_action_set_sensitive (priv->remove_action, FALSE); /* Only sensitive if something's selected */
+	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
 
 	if (almanah_entry_is_empty (priv->current_entry) == FALSE) {
 		GError *error = NULL;
@@ -858,9 +936,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 			return;
 		}
-
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->add_button), TRUE);
-		gtk_action_set_sensitive (priv->add_action, TRUE);
 	} else {
 		/* Set the buffer to be empty */
 		gtk_text_buffer_set_text (priv->entry_buffer, "", -1);
@@ -874,100 +949,45 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* List the entry's links */
-	links = almanah_storage_manager_get_entry_links (almanah->storage_manager, &calendar_date);
-
-	i = 0;
-	while (links[i] != NULL) {
-		const gchar *value, *value2;
-
-		value = almanah_link_get_value (links[i]);
-		value2 = almanah_link_get_value2 (links[i]);
-
-		gtk_list_store_append (priv->link_store, &iter);
-		gtk_list_store_set (priv->link_store, &iter,
-				    0, almanah_link_get_type_id (links[i]),
-				    1, value,
-				    2, value2,
-				    3, almanah_link_get_icon_name (links[i]),
-				    -1);
-
-		g_object_unref (links[i]);
-
-		i++;
-	}
-
-	g_free (links);
+	almanah_link_manager_query_links (almanah->link_manager, ALMANAH_LINK_FACTORY_UNKNOWN, &calendar_date);
 }
 
 static void
 mw_links_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window)
 {
 	AlmanahMainWindowPrivate *priv = main_window->priv;
-
-	if (gtk_tree_selection_count_selected_rows (tree_selection) == 0) {
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->remove_button), FALSE);
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
-		gtk_action_set_sensitive (priv->remove_action, FALSE);
-	} else {
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->remove_button), TRUE);
-		gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), TRUE);
-		gtk_action_set_sensitive (priv->remove_action, TRUE);
-	}
+	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), (gtk_tree_selection_count_selected_rows (tree_selection) == 0) ? FALSE : TRUE);
 }
 
 static void
 mw_links_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data)
 {
-	gchar *new_value, *value, *value2, *type;
+	const gchar *new_value;
 	AlmanahLink *link;
 
-	/* TODO: Should really create a new model to render AlmanahLinks --- or at least attach the appropriate AlmanahLink to each tree model row */
+	/* TODO: Should really create a new model to render AlmanahLinks */
 
 	gtk_tree_model_get (model, iter,
-			    0, &type,
-			    1, &value,
-			    2, &value2,
+			    0, &link,
 			    -1);
-
-	link = almanah_link_new (type);
-	almanah_link_set_value (link, value);
-	almanah_link_set_value2 (link, value2);
 
 	new_value = almanah_link_format_value (link);
 	g_object_set (renderer, "text", new_value, NULL);
-	g_free (new_value);
-
-	g_free (type);
-	g_free (value);
-	g_free (value2);
-	g_object_unref (link);
 }
 
 void
 mw_links_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window)
 {
 	AlmanahLink *link;
-	gchar *value, *value2, *type;
 	GtkTreeIter iter;
 
 	gtk_tree_model_get_iter (GTK_TREE_MODEL (main_window->priv->link_store), &iter, path);
 	gtk_tree_model_get (GTK_TREE_MODEL (main_window->priv->link_store), &iter,
-			    0, &type,
-			    1, &value,
-			    2, &value2,
+			    0, &link,
 			    -1);
-
-	link = almanah_link_new (type);
-	almanah_link_set_value (link, value);
-	almanah_link_set_value2 (link, value2);
 
 	/* NOTE: Link types should display their own errors, so one won't be displayed here. */
 	almanah_link_view (link);
-
-	g_free (type);
-	g_free (value);
-	g_free (value2);
-	g_object_unref (link);
 }
 
 gboolean
@@ -975,18 +995,6 @@ mw_entry_view_focus_out_event_cb (GtkWidget *entry_view, GdkEventFocus *event, A
 {
 	save_current_entry (main_window);
 	return FALSE;
-}
-
-void
-mw_add_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window)
-{
-	add_link_to_current_entry (main_window);
-}
-
-void
-mw_remove_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window)
-{
-	remove_link_from_current_entry (main_window);
 }
 
 void
@@ -999,27 +1007,15 @@ mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window)
 
 	for (; links != NULL; links = links->next) {
 		AlmanahLink *link;
-		gchar *value, *value2, *type;
 		GtkTreeIter iter;
 
 		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) links->data);
 		gtk_tree_model_get (model, &iter,
-				    0, &type,
-				    1, &value,
-				    2, &value2,
+				    0, &link,
 				    -1);
-
-		link = almanah_link_new (type);
-		almanah_link_set_value (link, value);
-		almanah_link_set_value2 (link, value2);
 
 		/* NOTE: Link types should display their own errors, so one won't be displayed here. */
 		almanah_link_view (link);
-
-		g_free (type);
-		g_free (value);
-		g_free (value2);
-		g_object_unref (link);
 
 		gtk_tree_path_free (links->data);
 	}

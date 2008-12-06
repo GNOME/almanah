@@ -24,7 +24,7 @@
 #include <glib-object.h>
 
 #include "entry.h"
-#include "link.h"
+#include "definition.h"
 
 G_BEGIN_DECLS
 
@@ -85,9 +85,10 @@ gint almanah_storage_manager_search_entries (AlmanahStorageManager *self, const 
 
 gboolean *almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
 
-AlmanahLink **almanah_storage_manager_get_entry_links (AlmanahStorageManager *self, GDate *date);
-gboolean almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date, AlmanahLink *link);
-gboolean almanah_storage_manager_remove_entry_link (AlmanahStorageManager *self, GDate *date, const gchar *link_type_id);
+AlmanahDefinition **almanah_storage_manager_get_definitions (AlmanahStorageManager *self);
+AlmanahDefinition *almanah_storage_manager_get_definition (AlmanahStorageManager *self, const gchar *definition_text);
+gboolean almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefinition *definition);
+gboolean almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text);
 
 G_END_DECLS
 

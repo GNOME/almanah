@@ -31,7 +31,7 @@
 
 #include "main.h"
 #include "entry.h"
-#include "link.h"
+#include "definition.h"
 #include "storage-manager.h"
 
 static void almanah_storage_manager_init (AlmanahStorageManager *self);
@@ -55,7 +55,6 @@ enum {
 };
 
 static guint storage_manager_signals[LAST_SIGNAL] = { 0, };
-
 
 G_DEFINE_TYPE (AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT)
 #define ALMANAH_STORAGE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate))
@@ -162,12 +161,16 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 static void
 create_tables (AlmanahStorageManager *self)
 {
+	/* Old queries:
+		"CREATE TABLE IF NOT EXISTS entry_links (year INTEGER, month INTEGER, day INTEGER, link_type TEXT, link_value TEXT, link_value2 TEXT, PRIMARY KEY (year, month, day, link_type, link_value, link_value2))"
+		"CREATE TABLE IF NOT EXISTS entry_attachments (year INTEGER, month INTEGER, day INTEGER, attachment_type TEXT, attachment_data BLOB, PRIMARY KEY (year, month, day, attachment_type))"
+	 */
+
 	/* Dates are stored in ISO 8601 format...sort of */
 	guint i;
 	const gchar *queries[] = {
 		"CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day))",
-		"CREATE TABLE IF NOT EXISTS entry_links (year INTEGER, month INTEGER, day INTEGER, link_type TEXT, link_value TEXT, link_value2 TEXT, PRIMARY KEY (year, month, day, link_type, link_value, link_value2))",
-		"CREATE TABLE IF NOT EXISTS entry_attachments (year INTEGER, month INTEGER, day INTEGER, attachment_type TEXT, attachment_data BLOB, PRIMARY KEY (year, month, day, attachment_type))",
+		"CREATE TABLE IF NOT EXISTS definitions (definition_text TEXT, definition_type INTEGER, definition_value TEXT, definition_value2 TEXT, PRIMARY KEY (definition_text))",
 		NULL
 	};
 
@@ -596,12 +599,12 @@ almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *q
 }
 
 gboolean
-almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *link_count)
+almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *definition_count)
 {
 	AlmanahQueryResults *results;
 
 	*entry_count = 0;
-	*link_count = 0;
+	*definition_count = 0;
 
 	/* Get the number of entries and the number of letters */
 	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM entries", NULL);
@@ -613,23 +616,23 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 	} else {
 		*entry_count = atoi (results->data[1]);
 		if (*entry_count == 0) {
-			*link_count = 0;
+			*definition_count = 0;
 			almanah_storage_manager_free_results (results);
 			return TRUE;
 		}
 	}
 	almanah_storage_manager_free_results (results);
 
-	/* Get the number of links */
-	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM entry_links", NULL);
+	/* Get the number of definitions */
+	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM definitions", NULL);
 	if (results == NULL) {
 		return FALSE;
 	} else if (results->rows != 1) {
-		*link_count = 0;
+		*definition_count = 0;
 		almanah_storage_manager_free_results (results);
 		return FALSE;
 	} else {
-		*link_count = atoi (results->data[1]);
+		*definition_count = atoi (results->data[1]);
 	}
 	almanah_storage_manager_free_results (results);
 
@@ -712,7 +715,7 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
  *
  * Saves the specified @entry in the database synchronously.
  * If the @entry's content is empty, it will delete @entry's rows
- * in the database (as well as its links' rows).
+ * in the database (as well as its definitions' rows).
  *
  * Return value: %TRUE on success, %FALSE otherwise
  **/
@@ -726,10 +729,6 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 	if (almanah_entry_is_empty (entry) == TRUE) {
 		/* Delete the entry */
 		almanah_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, NULL,
-						     g_date_get_year (&date),
-						     g_date_get_month (&date),
-						     g_date_get_day (&date));
-		almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u", NULL, NULL, NULL,
 						     g_date_get_year (&date),
 						     g_date_get_month (&date),
 						     g_date_get_day (&date));
@@ -869,77 +868,95 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 }
 
 /* NOTE: Free array with g_free and each element with g_object_unref */
-AlmanahLink **
-almanah_storage_manager_get_entry_links (AlmanahStorageManager *self, GDate *date)
+AlmanahDefinition **
+almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 {
 	AlmanahQueryResults *results;
-	AlmanahLink **links;
+	AlmanahDefinition **definitions;
 	guint i;
 
-	results = almanah_storage_manager_query (self, "SELECT link_type, link_value, link_value2 FROM entry_links WHERE year = %u AND month = %u AND day = %u", NULL,
-						 g_date_get_year (date),
-						 g_date_get_month (date),
-						 g_date_get_day (date));
+	results = almanah_storage_manager_query (self, "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions", NULL);
 
 	if (results == NULL || results->rows == 0) {
 		if (results != NULL)
 			almanah_storage_manager_free_results (results);
 
 		/* Return empty array */
-		links = (AlmanahLink**) g_new (AlmanahLink*, 1);
-		links[0] = NULL;
-		return links;
+		definitions = (AlmanahDefinition**) g_new (AlmanahDefinition*, 1);
+		definitions[0] = NULL;
+		return definitions;
 	}
 
-	links = (AlmanahLink**) g_new (AlmanahLink*, results->rows + 1);
+	definitions = (AlmanahDefinition**) g_new (AlmanahDefinition*, results->rows + 1);
 	for (i = 0; i < results->rows; i++) {
-		links[i] = almanah_link_new (results->data[(i + 1) * results->columns]);
-		almanah_link_set_value (links[i], results->data[(i + 1) * results->columns + 1]);
-		almanah_link_set_value2 (links[i], results->data[(i + 1) * results->columns + 2]);
+		definitions[i] = almanah_definition_new (atoi (results->data[(i + 1) * results->columns]));
+		almanah_definition_set_value (definitions[i], results->data[(i + 1) * results->columns + 1]);
+		almanah_definition_set_value2 (definitions[i], results->data[(i + 1) * results->columns + 2]);
+		almanah_definition_set_text (definitions[i], results->data[(i + 1) * results->columns + 3]);
 	}
-	links[i] = NULL;
+	definitions[i] = NULL;
 
 	almanah_storage_manager_free_results (results);
 
-	return links;
+	return definitions;
+}
+
+AlmanahDefinition *
+almanah_storage_manager_get_definition (AlmanahStorageManager *self, const gchar *definition_text)
+{
+	AlmanahQueryResults *results;
+	AlmanahDefinition *definition;
+
+	results = almanah_storage_manager_query (self, "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions WHERE definition_text = '%q' LIMIT 1", NULL,
+						 definition_text);
+
+	if (results == NULL || results->rows == 0) {
+		if (results != NULL)
+			almanah_storage_manager_free_results (results);
+		return NULL;
+	}
+
+	definition = almanah_definition_new (atoi (results->data[results->columns]));
+	almanah_definition_set_value (definition, results->data[results->columns + 1]);
+	almanah_definition_set_value2 (definition, results->data[results->columns + 2]);
+	almanah_definition_set_text (definition, results->data[results->columns + 3]);
+
+	almanah_storage_manager_free_results (results);
+
+	return definition;
 }
 
 gboolean
-almanah_storage_manager_add_entry_link (AlmanahStorageManager *self, GDate *date, AlmanahLink *link)
+almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefinition *definition)
 {
 	gboolean return_value;
-	const gchar *type_id, *value, *value2;
+	const gchar *value, *value2, *text;
+	AlmanahDefinitionType type_id;
 
-	type_id = almanah_link_get_type_id (link);
-	value = almanah_link_get_value (link);
-	value2 = almanah_link_get_value2 (link);
+	type_id = almanah_definition_get_type_id (definition);
+	value = almanah_definition_get_value (definition);
+	value2 = almanah_definition_get_value2 (definition);
+	text = almanah_definition_get_text (definition);
 
 	if (value2 == NULL) {
-		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value) VALUES (%u, %u, %u, '%q', '%q')", NULL, NULL, NULL,
-								    g_date_get_year (date),
-								    g_date_get_month (date),
-								    g_date_get_day (date),
-								    type_id,
-								    value);
-	} else {
-		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO entry_links (year, month, day, link_type, link_value, link_value2) VALUES (%u, %u, %u, '%q', '%q', '%q')", NULL, NULL, NULL,
-								    g_date_get_year (date),
-								    g_date_get_month (date),
-								    g_date_get_day (date),
+		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO definitions (definition_type, definition_value, definition_text) VALUES (%u, '%q', '%q')", NULL, NULL, NULL,
 								    type_id,
 								    value,
-								    value2);
+								    text);
+	} else {
+		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO definitions (definition_type, definition_value, definition_value2, definition_text) VALUES (%u, '%q', '%q', '%q')", NULL, NULL, NULL,
+								    type_id,
+								    value,
+								    value2,
+								    text);
 	}
 
 	return return_value;
 }
 
 gboolean
-almanah_storage_manager_remove_entry_link (AlmanahStorageManager *self, GDate *date, const gchar *link_type_id)
+almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text)
 {
-	return almanah_storage_manager_query_async (self, "DELETE FROM entry_links WHERE year = %u AND month = %u AND day = %u AND link_type = '%q'", NULL, NULL, NULL,
-						    g_date_get_year (date),
-						    g_date_get_month (date),
-						    g_date_get_day (date),
-						    link_type_id);
+	return almanah_storage_manager_query_async (self, "DELETE FROM definitions WHERE definition_text = '%q'", NULL, NULL, NULL,
+						    definition_text);
 }

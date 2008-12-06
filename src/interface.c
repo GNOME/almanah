@@ -23,7 +23,7 @@
 
 #include "main.h"
 #include "main-window.h"
-#include "add-link-dialog.h"
+#include "add-definition-dialog.h"
 #include "search-dialog.h"
 #ifdef ENABLE_ENCRYPTION
 #include "preferences-dialog.h"
@@ -43,7 +43,7 @@ GtkWidget *
 almanah_create_interface (void)
 {
 	almanah->main_window = GTK_WIDGET (almanah_main_window_new ());
-	almanah->add_link_dialog = GTK_WIDGET (almanah_add_link_dialog_new ());
+	almanah->add_definition_dialog = GTK_WIDGET (almanah_add_definition_dialog_new ());
 	almanah->search_dialog = GTK_WIDGET (almanah_search_dialog_new ());
 #ifdef ENABLE_ENCRYPTION
 	almanah->preferences_dialog = GTK_WIDGET (almanah_preferences_dialog_new ());
@@ -60,6 +60,63 @@ almanah_interface_embolden_label (GtkLabel *label)
 	markup = g_strdup_printf ("<b>%s</b>", gtk_label_get_label (label));
 	gtk_label_set_markup_with_mnemonic (label, markup);
 	g_free (markup);
+}
+
+static gboolean
+definition_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkTextIter *iter, gpointer user_data)
+{
+	AlmanahDefinition *definition;
+	gchar *text;
+	GtkTextIter start_iter, end_iter;
+
+	/* TODO: Display a popup menu on right-clicking? Display a list of definitions, or allow this one to be edited, when Ctrl clicking? */
+	/* Handle only double- or control-click events on any definition tags, so they can act like hyperlinks */
+	if ((event->type != GDK_BUTTON_RELEASE && event->type != GDK_2BUTTON_PRESS) ||
+	    (event->type == GDK_BUTTON_RELEASE && !(event->button.state & GDK_CONTROL_MASK))) {
+		return FALSE;
+	}
+
+	/* Get the start and end iters for this tag instance */
+	start_iter = *iter;
+	if (gtk_text_iter_backward_to_tag_toggle (&start_iter, tag) == FALSE)
+		start_iter = *iter;
+
+	end_iter = start_iter;
+	if (gtk_text_iter_forward_to_tag_toggle (&end_iter, tag) == FALSE)
+		end_iter = *iter;
+
+	/* Get the tag's text */
+	text = gtk_text_iter_get_text (&start_iter, &end_iter);
+	definition = almanah_storage_manager_get_definition (almanah->storage_manager, text);
+	g_free (text);
+
+	if (definition == NULL)
+		return FALSE;
+
+	return almanah_definition_view (definition);
+}
+
+void
+almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)
+{
+	GtkTextTag *tag;
+
+	gtk_text_buffer_create_tag (text_buffer, "bold", 
+				    "weight", PANGO_WEIGHT_BOLD, 
+				    NULL);
+	gtk_text_buffer_create_tag (text_buffer, "italic",
+				    "style", PANGO_STYLE_ITALIC,
+				    NULL);
+	gtk_text_buffer_create_tag (text_buffer, "underline",
+				    "underline", PANGO_UNDERLINE_SINGLE,
+				    NULL);
+	tag = gtk_text_buffer_create_tag (text_buffer, "definition",
+					  "foreground", "blue",
+					  "underline", PANGO_UNDERLINE_SINGLE,
+					  NULL);
+
+	if (connect_events == TRUE)
+		g_signal_connect (tag, "event", G_CALLBACK (definition_tag_event_cb), NULL);
 }
 
 /* TODO: This exists so that different calendars can be highlighted according to which days have entries

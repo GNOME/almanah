@@ -37,38 +37,26 @@ typedef struct _AlmanahLinkPrivate	AlmanahLinkPrivate;
 
 typedef struct {
 	GObject parent;
-	AlmanahLinkPrivate *priv;
 } AlmanahLink;
 
 typedef struct {
 	GObjectClass parent;
 
-	gchar *type_id;
 	gchar *name;
 	gchar *description;
 	gchar *icon_name;
 
-	gchar *(*format_value) (AlmanahLink *link);
+	const gchar *(*format_value) (AlmanahLink *link);
 	gboolean (*view) (AlmanahLink *link);
-	void (*build_dialog) (AlmanahLink *link, GtkVBox *parent_vbox);
-	void (*get_values) (AlmanahLink *link);
 } AlmanahLinkClass;
 
 GType almanah_link_get_type (void);
-AlmanahLink *almanah_link_new (const gchar *type_id);
-gchar *almanah_link_format_value (AlmanahLink *self);
+
+const gchar *almanah_link_format_value (AlmanahLink *self);
 gboolean almanah_link_view (AlmanahLink *self);
-void almanah_link_build_dialog (AlmanahLink *self, GtkVBox *parent_vbox);
-void almanah_link_get_values (AlmanahLink *self);
-void almanah_link_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint icon_name_column);
-const gchar *almanah_link_get_type_id (AlmanahLink *self);
 const gchar *almanah_link_get_name (AlmanahLink *self);
 const gchar *almanah_link_get_description (AlmanahLink *self);
 const gchar *almanah_link_get_icon_name (AlmanahLink *self);
-const gchar *almanah_link_get_value (AlmanahLink *self);
-void almanah_link_set_value (AlmanahLink *self, const gchar *value);
-const gchar *almanah_link_get_value2 (AlmanahLink *self);
-void almanah_link_set_value2 (AlmanahLink *self, const gchar *value);
 
 G_END_DECLS
 
