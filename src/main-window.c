@@ -341,7 +341,6 @@ save_current_entry (AlmanahMainWindow *self)
 	editability = almanah_entry_get_editability (priv->current_entry);
 	entry_exists = almanah_storage_manager_entry_exists (almanah->storage_manager, &date);
 	entry_is_empty = almanah_entry_is_empty (priv->current_entry);
-	editability = almanah_entry_get_editability (priv->current_entry);
 
 	/* Make sure they're editable: don't allow entries in the future to be edited,
 	 * but allow entries in the past to be added or edited, as long as permission is given.

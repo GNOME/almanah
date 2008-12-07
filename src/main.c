@@ -80,11 +80,12 @@ main (int argc, char *argv[])
 {
 	GOptionContext *context;
 	GError *error = NULL;
-	gboolean debug = FALSE;
+	gboolean debug = FALSE, import_mode = FALSE;
 	gchar *db_filename;
 
 	const GOptionEntry options[] = {
 		{ "debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Enable debug mode"), NULL },
+		{ "import-mode", 0, 0, G_OPTION_ARG_NONE, &import_mode, N_("Enable import mode"), NULL },
 		{ NULL }
 	};
 
@@ -124,6 +125,7 @@ main (int argc, char *argv[])
 	/* Setup */
 	almanah = g_new (Almanah, 1);
 	almanah->debug = debug;
+	almanah->import_mode = import_mode;
 
 	/* Open GConf */
 	almanah->gconf_client = gconf_client_get_default ();

@@ -1,3 +1,13 @@
+2008-12-07  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/entry.c (almanah_entry_get_editability):
+	* src/main-window.c (save_current_entry):
+	* src/main.c (main):
+	* src/main.h: Added a command-line --import-mode option to allow
+	entries to be edited, regardless of their status and the current date.
+	This allows for old entries to easily be one-time imported into
+	Almanah from previous diaries. (Closes: #561106)
+
 2008-12-06  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/link-factories/calendar.c (get_links):
