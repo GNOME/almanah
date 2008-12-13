@@ -146,8 +146,8 @@ almanah_add_definition_dialog_new (void)
 	GError *error = NULL;
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
-		"dry_add_definition_dialog",
-		"dry_add_type_store",
+		"almanah_add_definition_dialog",
+		"almanah_add_type_store",
 		NULL
 	};
 
@@ -171,7 +171,7 @@ almanah_add_definition_dialog_new (void)
 	}
 
 	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	add_definition_dialog = ALMANAH_ADD_DEFINITION_DIALOG (gtk_builder_get_object (builder, "dry_add_definition_dialog"));
+	add_definition_dialog = ALMANAH_ADD_DEFINITION_DIALOG (gtk_builder_get_object (builder, "almanah_add_definition_dialog"));
 	gtk_builder_connect_signals (builder, add_definition_dialog);
 
 	if (add_definition_dialog == NULL) {
@@ -182,9 +182,9 @@ almanah_add_definition_dialog_new (void)
 	priv = add_definition_dialog->priv;
 
 	/* Grab our child widgets */
-	priv->type_combo_box = GTK_COMBO_BOX (gtk_builder_get_object (builder, "dry_add_type_combo_box"));
-	priv->vbox = GTK_VBOX (gtk_builder_get_object (builder, "dry_add_vbox"));
-	priv->type_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_add_type_store"));
+	priv->type_combo_box = GTK_COMBO_BOX (gtk_builder_get_object (builder, "almanah_add_type_combo_box"));
+	priv->vbox = GTK_VBOX (gtk_builder_get_object (builder, "almanah_add_vbox"));
+	priv->type_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_add_type_store"));
 
 	almanah_definition_populate_model (priv->type_store, 1, 0, 2);
 	gtk_combo_box_set_active (priv->type_combo_box, 0);

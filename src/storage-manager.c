@@ -51,6 +51,8 @@ enum {
 
 enum {
 	SIGNAL_DISCONNECTED,
+	SIGNAL_DEFINITION_ADDED,
+	SIGNAL_DEFINITION_REMOVED,
 	LAST_SIGNAL
 };
 
@@ -88,6 +90,18 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 				0, NULL, NULL,
 				g_cclosure_marshal_VOID__OBJECT,
 				G_TYPE_NONE, 1, ALMANAH_TYPE_STORAGE_MANAGER);
+	storage_manager_signals[SIGNAL_DEFINITION_ADDED] = g_signal_new ("definition-added",
+				G_TYPE_FROM_CLASS (klass),
+				G_SIGNAL_RUN_LAST,
+				0, NULL, NULL,
+				g_cclosure_marshal_VOID__OBJECT,
+				G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
+	storage_manager_signals[SIGNAL_DEFINITION_REMOVED] = g_signal_new ("definition-removed",
+				G_TYPE_FROM_CLASS (klass),
+				G_SIGNAL_RUN_LAST,
+				0, NULL, NULL,
+				g_cclosure_marshal_VOID__STRING,
+				G_TYPE_NONE, 1, G_TYPE_STRING);
 }
 
 static void
@@ -951,12 +965,19 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 								    text);
 	}
 
+	if (return_value == TRUE)
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_ADDED], 0, definition);
+
 	return return_value;
 }
 
 gboolean
 almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text)
 {
-	return almanah_storage_manager_query_async (self, "DELETE FROM definitions WHERE definition_text = '%q'", NULL, NULL, NULL,
-						    definition_text);
+	if (almanah_storage_manager_query_async (self, "DELETE FROM definitions WHERE definition_text = '%q'", NULL, NULL, NULL, definition_text) == TRUE) {
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_REMOVED], 0, definition_text);
+		return TRUE;
+	}
+
+	return FALSE;
 }

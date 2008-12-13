@@ -1,6 +1,18 @@
 2008-12-13  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.ui:
+	* src/add-definition-dialog.c (almanah_add_definition_dialog_new):
+	* src/main-window.c (almanah_main_window_new):
+	* src/preferences-dialog.c (almanah_preferences_dialog_new):
+	* src/search-dialog.c (almanah_search_dialog_new):
+	* src/storage-manager.c (almanah_storage_manager_class_init),
+	(almanah_storage_manager_add_definition),
+	(almanah_storage_manager_remove_definition): Replace the "dry_" UI
+	prefix with "almanah_" for consistency.
+
+2008-12-13  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.ui:
 	* src/Makefile.am:
 	* src/event-factories/calendar.c
 	(almanah_calendar_event_factory_class_init),

@@ -66,9 +66,9 @@ almanah_search_dialog_new (void)
 	GError *error = NULL;
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
-		"dry_search_dialog",
-		"dry_sd_search_button_image",
-		"dry_sd_results_store",
+		"almanah_search_dialog",
+		"almanah_sd_search_button_image",
+		"almanah_sd_results_store",
 		NULL
 	};
 
@@ -92,7 +92,7 @@ almanah_search_dialog_new (void)
 	}
 
 	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	search_dialog = ALMANAH_SEARCH_DIALOG (gtk_builder_get_object (builder, "dry_search_dialog"));
+	search_dialog = ALMANAH_SEARCH_DIALOG (gtk_builder_get_object (builder, "almanah_search_dialog"));
 	gtk_builder_connect_signals (builder, search_dialog);
 
 	if (search_dialog == NULL) {
@@ -103,17 +103,17 @@ almanah_search_dialog_new (void)
 	priv = ALMANAH_SEARCH_DIALOG (search_dialog)->priv;
 
 	/* Grab our child widgets */
-	priv->sd_search_entry = GTK_ENTRY (gtk_builder_get_object (builder, "dry_sd_search_entry"));
-	priv->sd_results_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_sd_results_store"));
-	priv->sd_results_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "dry_sd_results_tree_view")));
+	priv->sd_search_entry = GTK_ENTRY (gtk_builder_get_object (builder, "almanah_sd_search_entry"));
+	priv->sd_results_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_sd_results_store"));
+	priv->sd_results_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_sd_results_tree_view")));
 
 	g_signal_connect (priv->sd_results_selection, "changed", G_CALLBACK (sd_results_selection_changed_cb),
-			  gtk_builder_get_object (builder, "dry_sd_view_button"));
+			  gtk_builder_get_object (builder, "almanah_sd_view_button"));
 
-	gtk_widget_grab_default (GTK_WIDGET (gtk_builder_get_object (builder, "dry_sd_search_button")));
+	gtk_widget_grab_default (GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_search_button")));
 
 	/* Prettify the UI */
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_sd_results_label")));
+	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_sd_results_label")));
 
 	g_object_unref (builder);
 

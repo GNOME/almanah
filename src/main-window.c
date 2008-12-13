@@ -127,10 +127,10 @@ almanah_main_window_new (void)
 #endif /* ENABLE_SPELL_CHECKING */
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
-		"dry_main_window",
-		"dry_mw_event_store",
-		"dry_mw_view_button_image",
-		"dry_ui_manager",
+		"almanah_main_window",
+		"almanah_mw_event_store",
+		"almanah_mw_view_button_image",
+		"almanah_ui_manager",
 		NULL
 	};
 
@@ -154,7 +154,7 @@ almanah_main_window_new (void)
 	}
 
 	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	main_window = ALMANAH_MAIN_WINDOW (gtk_builder_get_object (builder, "dry_main_window"));
+	main_window = ALMANAH_MAIN_WINDOW (gtk_builder_get_object (builder, "almanah_main_window"));
 	gtk_builder_connect_signals (builder, main_window);
 
 	if (main_window == NULL) {
@@ -165,23 +165,23 @@ almanah_main_window_new (void)
 	priv = ALMANAH_MAIN_WINDOW (main_window)->priv;
 
 	/* Grab our child widgets */
-	priv->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "dry_mw_entry_view"));
+	priv->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
 	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
-	priv->calendar = GTK_CALENDAR (gtk_builder_get_object (builder, "dry_mw_calendar"));
-	priv->date_label = GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_date_label"));
-	priv->view_button = GTK_BUTTON (gtk_builder_get_object (builder, "dry_mw_view_button"));
-	priv->add_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_add_definition"));
-	priv->remove_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_remove_definition"));
-	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "dry_mw_event_store"));
-	priv->events_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "dry_mw_events_tree_view")));
-	priv->event_value_column = GTK_TREE_VIEW_COLUMN (gtk_builder_get_object (builder, "dry_mw_event_value_column"));
-	priv->event_value_renderer = GTK_CELL_RENDERER_TEXT (gtk_builder_get_object (builder, "dry_mw_event_value_renderer"));
-	priv->bold_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "dry_ui_bold"));;
-	priv->italic_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "dry_ui_italic"));
-	priv->underline_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "dry_ui_underline"));
-	priv->cut_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_cut"));
-	priv->copy_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_copy"));
-	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_delete"));
+	priv->calendar = GTK_CALENDAR (gtk_builder_get_object (builder, "almanah_mw_calendar"));
+	priv->date_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_date_label"));
+	priv->view_button = GTK_BUTTON (gtk_builder_get_object (builder, "almanah_mw_view_button"));
+	priv->add_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_add_definition"));
+	priv->remove_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_remove_definition"));
+	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
+	priv->events_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_mw_events_tree_view")));
+	priv->event_value_column = GTK_TREE_VIEW_COLUMN (gtk_builder_get_object (builder, "almanah_mw_event_value_column"));
+	priv->event_value_renderer = GTK_CELL_RENDERER_TEXT (gtk_builder_get_object (builder, "almanah_mw_event_value_renderer"));
+	priv->bold_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_bold"));;
+	priv->italic_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_italic"));
+	priv->underline_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_underline"));
+	priv->cut_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_cut"));
+	priv->copy_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_copy"));
+	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_delete"));
 
 	/* Set up text formatting */
 	almanah_interface_create_text_tags (priv->entry_buffer, TRUE);
@@ -239,12 +239,12 @@ almanah_main_window_new (void)
 	gtk_tree_view_column_set_cell_data_func (priv->event_value_column, GTK_CELL_RENDERER (priv->event_value_renderer), mw_events_value_data_cb, NULL, NULL);
 
 	/* Prettify the UI */
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_calendar_label")));
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "dry_mw_events_label")));
+	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_calendar_label")));
+	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_events_label")));
 
 #ifndef ENABLE_ENCRYPTION
 	/* Remove the "Preferences" entry from the menu */
-	gtk_action_set_visible (GTK_ACTION (gtk_builder_get_object (builder, "dry_ui_preferences")), FALSE);
+	gtk_action_set_visible (GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_preferences")), FALSE);
 #endif /* !ENABLE_ENCRYPTION */
 
 	g_object_unref (builder);

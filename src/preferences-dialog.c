@@ -109,7 +109,7 @@ almanah_preferences_dialog_new (void)
 	GError *error = NULL;
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
-		"dry_preferences_dialog",
+		"almanah_preferences_dialog",
 		NULL
 	};
 
@@ -133,7 +133,7 @@ almanah_preferences_dialog_new (void)
 	}
 
 	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	preferences_dialog = ALMANAH_PREFERENCES_DIALOG (gtk_builder_get_object (builder, "dry_preferences_dialog"));
+	preferences_dialog = ALMANAH_PREFERENCES_DIALOG (gtk_builder_get_object (builder, "almanah_preferences_dialog"));
 	gtk_builder_connect_signals (builder, preferences_dialog);
 
 	if (preferences_dialog == NULL) {
@@ -145,7 +145,7 @@ almanah_preferences_dialog_new (void)
 
 #ifdef ENABLE_ENCRYPTION
 	/* Grab our child widgets */
-	table = GTK_TABLE (gtk_builder_get_object (builder, "dry_pd_table"));
+	table = GTK_TABLE (gtk_builder_get_object (builder, "almanah_pd_table"));
 	label = gtk_label_new (_("Encryption Key"));
 	almanah_interface_embolden_label (GTK_LABEL (label));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
