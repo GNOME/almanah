@@ -1,3 +1,63 @@
+2008-12-13  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.ui:
+	* src/Makefile.am:
+	* src/event-factories/calendar.c
+	(almanah_calendar_event_factory_class_init),
+	(almanah_calendar_event_factory_init),
+	(almanah_calendar_event_factory_dispose), (query_events),
+	(events_changed_cb), (get_events):
+	* src/event-factories/calendar.h:
+	* src/event-factory.c (almanah_event_factory_class_init),
+	(almanah_event_factory_init), (almanah_event_factory_get_property),
+	(almanah_event_factory_get_type_id),
+	(almanah_event_factory_query_events),
+	(almanah_event_factory_get_events):
+	* src/event-factory.h:
+	* src/event-manager.c (almanah_event_manager_class_init),
+	(almanah_event_manager_init), (almanah_event_manager_dispose),
+	(almanah_event_manager_new), (events_updated_cb),
+	(almanah_event_manager_query_events),
+	(almanah_event_manager_get_events):
+	* src/event-manager.h:
+	* src/event.c (almanah_event_class_init), (almanah_event_init),
+	(almanah_event_get_property), (almanah_event_format_value),
+	(almanah_event_view), (almanah_event_get_name),
+	(almanah_event_get_description), (almanah_event_get_icon_name):
+	* src/event.h:
+	* src/events/calendar-appointment.c
+	(almanah_calendar_appointment_event_class_init),
+	(almanah_calendar_appointment_event_init),
+	(almanah_calendar_appointment_event_finalize),
+	(almanah_calendar_appointment_event_new),
+	(almanah_calendar_appointment_event_format_value),
+	(almanah_calendar_appointment_event_view):
+	* src/events/calendar-appointment.h:
+	* src/events/calendar-task.c
+	(almanah_calendar_task_event_class_init),
+	(almanah_calendar_task_event_init),
+	(almanah_calendar_task_event_finalize),
+	(almanah_calendar_task_event_new),
+	(almanah_calendar_task_event_format_value),
+	(almanah_calendar_task_event_view):
+	* src/events/calendar-task.h:
+	* src/link-factory.c:
+	* src/link-factory.h:
+	* src/link-manager.c:
+	* src/link-manager.h:
+	* src/link.c:
+	* src/link.h:
+	* src/main-window.c (almanah_main_window_new),
+	(save_current_entry), (clear_factory_events),
+	(mw_events_updated_cb), (mw_calendar_day_selected_cb),
+	(mw_events_selection_changed_cb), (mw_events_value_data_cb),
+	(mw_events_tree_view_row_activated_cb),
+	(mw_view_button_clicked_cb):
+	* src/main.c (almanah_quit), (main):
+	* src/main.h:
+	* src/storage-manager.h: Renamed "links" to "events", a name which
+	slightly better reflects what they are.
+
 2008-12-07  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/entry.c (almanah_entry_get_editability):

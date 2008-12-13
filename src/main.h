@@ -23,7 +23,7 @@
 #include <gconf/gconf-client.h>
 
 #include "storage-manager.h"
-#include "link-manager.h"
+#include "event-manager.h"
 
 #ifndef ALMANAH_MAIN_H
 #define ALMANAH_MAIN_H
@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 
 typedef struct {
 	AlmanahStorageManager *storage_manager;
-	AlmanahLinkManager *link_manager;
+	AlmanahEventManager *event_manager;
 	GConfClient *gconf_client;
 
 	GtkWidget *main_window;

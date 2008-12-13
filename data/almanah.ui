@@ -200,9 +200,9 @@
 		</ui>
 	</object>
 
-	<object class="GtkListStore" id="dry_mw_link_store">
+	<object class="GtkListStore" id="dry_mw_event_store">
 		<columns>
-			<column type="AlmanahLink"/><!-- Link object -->
+			<column type="AlmanahEvent"/><!-- Event object -->
 			<column type="gchararray"/><!-- Icon name -->
 			<column type="guint"/><!-- Factory type ID -->
 		</columns>
@@ -302,10 +302,10 @@
 									</packing>
 								</child>
 								<child>
-									<object class="GtkLabel" id="dry_mw_attached_links_label">
+									<object class="GtkLabel" id="dry_mw_events_label">
 										<property name="label" translatable="yes">Past Events</property>
 										<accessibility>
-											<relation target="dry_mw_links_tree_view" type="label-for"/>
+											<relation target="dry_mw_events_tree_view" type="label-for"/>
 										</accessibility>
 									</object>
 									<packing>
@@ -319,16 +319,16 @@
 										<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 										<property name="shadow-type">GTK_SHADOW_IN</property>
 										<child>
-											<object class="GtkTreeView" id="dry_mw_links_tree_view">
-												<property name="model">dry_mw_link_store</property>
+											<object class="GtkTreeView" id="dry_mw_events_tree_view">
+												<property name="model">dry_mw_event_store</property>
 												<property name="can-focus">True</property>
 												<property name="headers-visible">False</property>
-												<signal name="row-activated" handler="mw_links_tree_view_row_activated_cb"/>
+												<signal name="row-activated" handler="mw_events_tree_view_row_activated_cb"/>
 												<accessibility>
-													<relation target="dry_mw_attached_links_label" type="labelled-by"/>
+													<relation target="dry_mw_events_label" type="labelled-by"/>
 												</accessibility>
 												<child internal-child="accessible">
-													<object class="AtkObject" id="a11y-dry_mw_links_tree_view">
+													<object class="AtkObject" id="a11y-dry_mw_events_tree_view">
 														<property name="AtkObject::accessible-name" translatable="yes">Past Event List</property>
 													</object>
 												</child>
@@ -343,9 +343,9 @@
 													</object>
 												</child>
 												<child>
-													<object class="GtkTreeViewColumn" id="dry_mw_link_value_column">
+													<object class="GtkTreeViewColumn" id="dry_mw_event_value_column">
 														<child>
-															<object class="GtkCellRendererText" id="dry_mw_link_value_renderer"/>
+															<object class="GtkCellRendererText" id="dry_mw_event_value_renderer"/>
 														</child>
 													</object>
 												</child>

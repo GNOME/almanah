@@ -22,11 +22,11 @@
 #include <math.h>
 #include <string.h>
 
-#include "link.h"
+#include "event.h"
 #include "main.h"
 
-static void almanah_link_init (AlmanahLink *self);
-static void almanah_link_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void almanah_event_init (AlmanahEvent *self);
+static void almanah_event_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 
 enum {
 	PROP_NAME = 1,
@@ -34,42 +34,42 @@ enum {
 	PROP_ICON_NAME
 };
 
-G_DEFINE_ABSTRACT_TYPE (AlmanahLink, almanah_link, G_TYPE_OBJECT)
-#define ALMANAH_LINK_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_LINK, AlmanahLinkPrivate))
+G_DEFINE_ABSTRACT_TYPE (AlmanahEvent, almanah_event, G_TYPE_OBJECT)
+#define ALMANAH_EVENT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_EVENT, AlmanahEventPrivate))
 
 static void
-almanah_link_class_init (AlmanahLinkClass *klass)
+almanah_event_class_init (AlmanahEventClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-	gobject_class->get_property = almanah_link_get_property;
+	gobject_class->get_property = almanah_event_get_property;
 
 	g_object_class_install_property (gobject_class, PROP_NAME,
 				g_param_spec_string ("name",
-					"Name", "The human-readable name for this link type.",
+					"Name", "The human-readable name for this event type.",
 					NULL,
 					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_DESCRIPTION,
 				g_param_spec_string ("description",
-					"Description", "The human-readable description for this link type.",
+					"Description", "The human-readable description for this event type.",
 					NULL,
 					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_ICON_NAME,
 				g_param_spec_string ("icon-name",
-					"Icon Name", "The icon name for this link type.",
+					"Icon Name", "The icon name for this event type.",
 					NULL,
 					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
-almanah_link_init (AlmanahLink *self)
+almanah_event_init (AlmanahEvent *self)
 {
 }
 
 static void
-almanah_link_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
+almanah_event_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (object);
+	AlmanahEventClass *klass = ALMANAH_EVENT_GET_CLASS (object);
 
 	switch (property_id) {
 		case PROP_NAME:
@@ -89,38 +89,38 @@ almanah_link_get_property (GObject *object, guint property_id, GValue *value, GP
 }
 
 const gchar *
-almanah_link_format_value (AlmanahLink *self)
+almanah_event_format_value (AlmanahEvent *self)
 {
-	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	AlmanahEventClass *klass = ALMANAH_EVENT_GET_CLASS (self);
 	g_assert (klass->format_value != NULL);
 	return klass->format_value (self);
 }
 
 gboolean
-almanah_link_view (AlmanahLink *self)
+almanah_event_view (AlmanahEvent *self)
 {
-	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	AlmanahEventClass *klass = ALMANAH_EVENT_GET_CLASS (self);
 	g_assert (klass->view != NULL);
 	return klass->view (self);
 }
 
 const gchar *
-almanah_link_get_name (AlmanahLink *self)
+almanah_event_get_name (AlmanahEvent *self)
 {
-	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	AlmanahEventClass *klass = ALMANAH_EVENT_GET_CLASS (self);
 	return klass->name;
 }
 
 const gchar *
-almanah_link_get_description (AlmanahLink *self)
+almanah_event_get_description (AlmanahEvent *self)
 {
-	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	AlmanahEventClass *klass = ALMANAH_EVENT_GET_CLASS (self);
 	return klass->description;
 }
 
 const gchar *
-almanah_link_get_icon_name (AlmanahLink *self)
+almanah_event_get_icon_name (AlmanahEvent *self)
 {
-	AlmanahLinkClass *klass = ALMANAH_LINK_GET_CLASS (self);
+	AlmanahEventClass *klass = ALMANAH_EVENT_GET_CLASS (self);
 	return klass->icon_name;
 }

@@ -76,7 +76,7 @@ AlmanahQueryResults *almanah_storage_manager_query (AlmanahStorageManager *self,
 void almanah_storage_manager_free_results (AlmanahQueryResults *results);
 gboolean almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data, GError **error, ...);
 
-gboolean almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *link_count);
+gboolean almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *definition_count);
 
 gboolean almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date);
 AlmanahEntry *almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date);
