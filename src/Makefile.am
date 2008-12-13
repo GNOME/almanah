@@ -32,6 +32,8 @@ almanah_SOURCES = \
 	interface.h		\
 	main-window.c		\
 	main-window.h		\
+	definition-manager-window.c	\
+	definition-manager-window.h	\
 	storage-manager.c	\
 	storage-manager.h	\
 	add-definition-dialog.c	\

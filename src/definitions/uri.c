@@ -31,6 +31,7 @@ static gboolean uri_view (AlmanahDefinition *definition);
 static void uri_build_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox);
 static void uri_close_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox);
 static void uri_parse_text (AlmanahDefinition *definition, const gchar *text);
+static gchar *uri_get_blurb (AlmanahDefinition *definition);
 
 struct _AlmanahURIDefinitionPrivate {
 	GtkWidget *entry;
@@ -55,6 +56,7 @@ almanah_uri_definition_class_init (AlmanahURIDefinitionClass *klass)
 	definition_class->build_dialog = uri_build_dialog;
 	definition_class->close_dialog = uri_close_dialog;
 	definition_class->parse_text = uri_parse_text;
+	definition_class->get_blurb = uri_get_blurb;
 }
 
 static void
@@ -130,4 +132,10 @@ static void
 uri_parse_text (AlmanahDefinition *definition, const gchar *text)
 {
 	/* TODO */
+}
+
+static gchar *
+uri_get_blurb (AlmanahDefinition *definition)
+{
+	return g_strdup (almanah_definition_get_value (definition));
 }

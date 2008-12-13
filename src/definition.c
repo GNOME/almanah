@@ -259,6 +259,14 @@ almanah_definition_parse_text (AlmanahDefinition *self, const gchar *text)
 	return klass->parse_text (self, text);
 }
 
+gchar *
+almanah_definition_get_blurb (AlmanahDefinition *self)
+{
+	AlmanahDefinitionClass *klass = ALMANAH_DEFINITION_GET_CLASS (self);
+	g_assert (klass->get_blurb != NULL);
+	return klass->get_blurb (self);
+}
+
 const gchar *
 almanah_definition_get_text (AlmanahDefinition *self)
 {

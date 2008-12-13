@@ -45,7 +45,6 @@ typedef struct {
 
 GType almanah_main_window_get_type (void);
 AlmanahMainWindow *almanah_main_window_new (void);
-void almanah_main_window_setup (AlmanahMainWindow *self, GtkBuilder *builder);
 void almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date);
 
 G_END_DECLS

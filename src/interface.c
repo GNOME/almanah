@@ -90,8 +90,11 @@ definition_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkT
 	definition = almanah_storage_manager_get_definition (almanah->storage_manager, text);
 	g_free (text);
 
-	if (definition == NULL)
+	if (definition == NULL) {
+		/* If the definition no longer exists, remove the tag */
+		gtk_text_buffer_remove_tag (gtk_text_iter_get_buffer (iter), tag, &start_iter, &end_iter);
 		return FALSE;
+	}
 
 	return almanah_definition_view (definition);
 }

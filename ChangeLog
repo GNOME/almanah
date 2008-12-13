@@ -1,6 +1,36 @@
 2008-12-13  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.ui:
+	* src/Makefile.am:
+	* src/definition-manager-window.c
+	(almanah_definition_manager_window_class_init),
+	(almanah_definition_manager_window_init), (definitions_dispose_cb),
+	(almanah_definition_manager_window_dispose),
+	(almanah_definition_manager_window_new),
+	(dmw_definition_tree_view_row_activated_cb),
+	(dmw_view_button_clicked_cb), (dmw_remove_button_clicked_cb),
+	(definition_selection_changed_cb), (definition_added_cb),
+	(definition_removed_cb), (populate_definition_store):
+	* src/definition-manager-window.h:
+	* src/definition.c (almanah_definition_get_blurb):
+	* src/definition.h:
+	* src/definitions/file.c (almanah_file_definition_class_init),
+	(file_get_blurb):
+	* src/definitions/note.c (almanah_note_definition_class_init),
+	(note_get_blurb):
+	* src/definitions/uri.c (almanah_uri_definition_class_init),
+	(uri_get_blurb):
+	* src/interface.c (definition_tag_event_cb):
+	* src/main-window.c (almanah_main_window_dispose),
+	(almanah_main_window_new), (mw_entry_buffer_apply_tag_cb),
+	(mw_view_definitions_activate_cb), (mw_definition_removed_cb):
+	* src/main-window.h:
+	* src/storage-manager.c: Added a "Definition Manager" interface, which
+	allows the user to list all their definitions and manage them.
+
+2008-12-13  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.ui:
 	* src/add-definition-dialog.c (almanah_add_definition_dialog_new):
 	* src/main-window.c (almanah_main_window_new):
 	* src/preferences-dialog.c (almanah_preferences_dialog_new):

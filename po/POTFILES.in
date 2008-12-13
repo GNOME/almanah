@@ -3,12 +3,17 @@
 data/almanah.desktop.in
 data/almanah.schemas.in
 [type: gettext/glade]data/almanah.ui
-src/add-link-dialog.c
+src/add-definition-dialog.c
+src/events/calendar-appointment.c
+src/events/calendar-task.c
 src/interface.c
-src/link.c
-src/links/file.c
-src/links/note.c
-src/links/uri.c
+src/definition-manager-window.c
+src/definition.c
+src/definitions/file.c
+src/definitions/note.c
+src/definitions/uri.c
+src/links/calendar-appointment.c
+src/links/calendar-task.c
 src/main-window.c
 src/main.c
 src/preferences-dialog.c

@@ -29,6 +29,7 @@ static gboolean file_view (AlmanahDefinition *definition);
 static void file_build_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox);
 static void file_close_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox);
 static void file_parse_text (AlmanahDefinition *definition, const gchar *text);
+static gchar *file_get_blurb (AlmanahDefinition *definition);
 
 struct _AlmanahFileDefinitionPrivate {
 	GtkWidget *chooser;
@@ -53,6 +54,7 @@ almanah_file_definition_class_init (AlmanahFileDefinitionClass *klass)
 	definition_class->build_dialog = file_build_dialog;
 	definition_class->close_dialog = file_close_dialog;
 	definition_class->parse_text = file_parse_text;
+	definition_class->get_blurb = file_get_blurb;
 }
 
 static void
@@ -115,4 +117,10 @@ static void
 file_parse_text (AlmanahDefinition *definition, const gchar *text)
 {
 	/* TODO */
+}
+
+static gchar *
+file_get_blurb (AlmanahDefinition *definition)
+{
+	return g_strdup (almanah_definition_get_value (definition));
 }

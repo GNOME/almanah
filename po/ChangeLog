@@ -1,3 +1,7 @@
+2008-12-13  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* POTFILES.in: Changed files in accordance with various renamings.
+
 2008-12-05  Mario Blättermann  <mariobl@svn.gnome.org>
 
 	* de.po: Updated German translation

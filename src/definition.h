@@ -59,6 +59,7 @@ typedef struct {
 	void (*build_dialog) (AlmanahDefinition *definition, GtkVBox *parent_vbox);
 	void (*close_dialog) (AlmanahDefinition *definition, GtkVBox *parent_vbox);
 	void (*parse_text) (AlmanahDefinition *definition, const gchar *text);
+	gchar *(*get_blurb) (AlmanahDefinition *definition);
 } AlmanahDefinitionClass;
 
 GType almanah_definition_get_type (void);
@@ -74,6 +75,7 @@ gboolean almanah_definition_view (AlmanahDefinition *self);
 void almanah_definition_build_dialog (AlmanahDefinition *self, GtkVBox *parent_vbox);
 void almanah_definition_close_dialog (AlmanahDefinition *self, GtkVBox *parent_vbox);
 void almanah_definition_parse_text (AlmanahDefinition *self, const gchar *text);
+gchar *almanah_definition_get_blurb (AlmanahDefinition *self);
 
 const gchar *almanah_definition_get_text (AlmanahDefinition *self);
 void almanah_definition_set_text (AlmanahDefinition *self, const gchar *text);

@@ -676,7 +676,7 @@ almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 
 /**
  * almanah_storage_manager_get_entry:
- * @self: a #AlmanahStorageManager
+ * @self: an #AlmanahStorageManager
  * @date: the date of the entry
  *
  * Gets the entry for the specified day from the database.
@@ -724,7 +724,7 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 
 /**
  * almanah_storage_manager_set_entry:
- * @self: a #AlmanahStorageManager
+ * @self: an #AlmanahStorageManager
  * @entry: an #AlmanahEntry
  *
  * Saves the specified @entry in the database synchronously.
@@ -787,7 +787,7 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 /**
  * almanah_storage_manager_search_entries:
- * @self: a #AlmanahStorageManager
+ * @self: an #AlmanahStorageManager
  * @search_string: string for which to search in entry content
  * @matches: return location for the results
  *
@@ -881,7 +881,19 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 	return days;
 }
 
-/* NOTE: Free array with g_free and each element with g_object_unref */
+/**
+ * almanah_storage_manager_get_definitions:
+ * @self: an #AlmanahStorageManager
+ *
+ * Returns a %NULL-terminated array of all the #AlmanahDefinitions in the
+ * database. Each #AlmanahDefinition should be unreffed, and the array should
+ * be freed with g_free().
+ *
+ * On error, an array with a single %NULL element will be returned. The array
+ * should still be freed with g_free().
+ *
+ * Return value: a %NULL-terminated array of #AlmanahDefinitions
+ **/
 AlmanahDefinition **
 almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 {

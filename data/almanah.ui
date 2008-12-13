@@ -151,7 +151,7 @@
 					<object class="GtkAction" id="almanah_ui_view_definitions">
 						<property name="name">view-definitions</property>
 						<property name="label" translatable="yes">_View Definitions</property>
-						<signal name="activate" handler="mw_remove_definition_activate_cb"/>
+						<signal name="activate" handler="mw_view_definitions_activate_cb"/>
 					</object>
 				</child>
 			</object>
@@ -501,7 +501,7 @@
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox2">
 				<child>
-					<object class="GtkHBox" id="hbox2">
+					<object class="GtkHBox" id="hbox0">
 						<child>
 							<object class="GtkEntry" id="almanah_sd_search_entry">
 								<property name="activates-default">True</property>
@@ -632,5 +632,160 @@
 		<action-widgets>
 			<action-widget response="-7">almanah_pd_close_button</action-widget><!-- GTK_RESPONSE_CLOSE -->
 		</action-widgets>
+	</object>
+
+	<object class="GtkListStore" id="almanah_dmw_definition_store">
+		<columns>
+			<column type="AlmanahDefinition"/><!-- Definition object -->
+			<column type="gchararray"/><!-- Definition text -->
+		</columns>
+	</object>
+
+	<object class="AlmanahDefinitionManagerWindow" id="almanah_definition_manager_window">
+		<child>
+			<object class="GtkHBox" id="hbox1">
+				<child>
+					<object class="GtkScrolledWindow" id="scrolledwindow3">
+						<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+						<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+						<property name="shadow-type">GTK_SHADOW_IN</property>
+						<property name="width-request">200</property>
+						<child>
+							<object class="GtkTreeView" id="almanah_dmw_definition_tree_view">
+								<property name="model">almanah_dmw_definition_store</property>
+								<property name="headers-visible">False</property>
+								<signal name="row-activated" handler="dmw_definition_tree_view_row_activated_cb"/>
+								<child internal-child="accessible">
+									<object class="AtkObject" id="a11y-almanah_dmw_definition_tree_view">
+										<property name="AtkObject::accessible-name" translatable="yes">Definition List</property>
+									</object>
+								</child>
+								<child>
+									<object class="GtkTreeViewColumn" id="column1">
+										<child>
+											<object class="GtkCellRendererText" id="renderer1"/>
+											<attributes>
+												<attribute name="text">1</attribute>
+											</attributes>
+										</child>
+									</object>
+								</child>
+							</object>
+						</child>
+					</object>
+					<packing>
+						<property name="expand">False</property>
+					</packing>
+				</child>
+				<child>
+					<object class="GtkTable" id="almanah_dmw_table">
+						<property name="n-rows">3</property>
+						<property name="n-columns">2</property>
+						<property name="column-spacing">5</property>
+						<property name="row-spacing">5</property>
+						<property name="border-width">5</property>
+						<child>
+							<object class="GtkLabel" id="almanah_dmw_name_label_label">
+								<property name="label" translatable="yes">Type</property>
+								<property name="xalign">1</property>
+								<accessibility>
+									<relation target="almanah_dmw_name_label" type="label-for"/>
+								</accessibility>
+							</object>
+							<packing>
+								<property name="left-attach">1</property>
+								<property name="right-attach">2</property>
+								<property name="top-attach">1</property>
+								<property name="bottom-attach">2</property>
+								<property name="x-options">GTK_FILL</property>
+								<property name="y-options">GTK_FILL</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkLabel" id="almanah_dmw_name_label">
+								<property name="label" translatable="yes">Nothing selected</property>
+								<property name="xalign">0</property>
+								<accessibility>
+									<relation target="almanah_dmw_name_label_label" type="labelled-by"/>
+								</accessibility>
+							</object>
+							<packing>
+								<property name="left-attach">2</property>
+								<property name="right-attach">3</property>
+								<property name="top-attach">1</property>
+								<property name="bottom-attach">2</property>
+								<property name="y-options">GTK_FILL</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkLabel" id="almanah_dmw_description_label_label">
+								<property name="label" translatable="yes">Description</property>
+								<property name="xalign">1</property>
+								<property name="yalign">0</property>
+								<accessibility>
+									<relation target="almanah_dmw_description_label" type="label-for"/>
+								</accessibility>
+							</object>
+							<packing>
+								<property name="left-attach">1</property>
+								<property name="right-attach">2</property>
+								<property name="top-attach">2</property>
+								<property name="bottom-attach">3</property>
+								<property name="x-options">GTK_FILL</property>
+								<property name="y-options">GTK_FILL</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkLabel" id="almanah_dmw_description_label">
+								<property name="wrap">True</property>
+								<property name="xalign">0</property>
+								<property name="yalign">0</property>
+								<accessibility>
+									<relation target="almanah_dmw_description_label_label" type="labelled-by"/>
+								</accessibility>
+							</object>
+							<packing>
+								<property name="left-attach">2</property>
+								<property name="right-attach">3</property>
+								<property name="top-attach">2</property>
+								<property name="bottom-attach">3</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkHButtonBox" id="almanah_dmw_button_box">
+								<child>
+									<object class="GtkButton" id="almanah_dmw_remove_button">
+										<property name="use-stock">True</property>
+										<property name="label">gtk-remove</property>
+										<property name="sensitive">False</property>
+										<signal name="clicked" handler="dmw_remove_button_clicked_cb"/>
+									</object>
+								</child>
+								<child>
+									<object class="GtkButton" id="almanah_dmw_view_button">
+										<property name="image">almanah_mw_view_button_image</property>
+										<property name="label" translatable="yes">View</property>
+										<property name="sensitive">False</property>
+										<signal name="clicked" handler="dmw_view_button_clicked_cb"/>
+										<child internal-child="accessible">
+											<object class="AtkObject" id="a11y-almanah_dmw_view_button">
+												<property name="AtkObject::accessible-name" translatable="yes">View Event</property>
+											</object>
+										</child>
+									</object>
+								</child>
+							</object>
+							<packing>
+								<property name="left-attach">1</property>
+								<property name="right-attach">3</property>
+								<property name="top-attach">3</property>
+								<property name="bottom-attach">4</property>
+								<property name="y-options">GTK_FILL</property>
+							</packing>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
 	</object>
 </interface>
