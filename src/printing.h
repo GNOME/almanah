@@ -24,7 +24,8 @@
 
 G_BEGIN_DECLS
 
-void almanah_print_entries (void);
+void almanah_print_entries (gboolean print_preview);
+void almanah_print_page_setup (void);
 
 G_END_DECLS
 

@@ -674,9 +674,21 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 }
 
 void
+mw_page_setup_activate_cb (GtkAction *action, gpointer user_data)
+{
+	almanah_print_page_setup ();
+}
+
+void
+mw_print_preview_activate_cb (GtkAction *action, gpointer user_data)
+{
+	almanah_print_entries (TRUE);
+}
+
+void
 mw_print_activate_cb (GtkAction *action, gpointer user_data)
 {
-	almanah_print_entries ();
+	almanah_print_entries (FALSE);
 }
 
 void

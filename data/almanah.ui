@@ -10,11 +10,27 @@
 					</object>
 				</child>
 				<child>
+					<object class="GtkAction" id="almanah_ui_page_setup">
+						<property name="stock-id">gtk-page-setup</property>
+						<property name="name">file-page-setup</property>
+						<signal name="activate" handler="mw_page_setup_activate_cb"/>
+					</object>
+				</child>
+				<child>
+					<object class="GtkAction" id="almanah_ui_print_preview">
+						<property name="stock-id">gtk-print-preview</property>
+						<property name="name">file-print-preview</property>
+						<signal name="activate" handler="mw_print_preview_activate_cb"/>
+					</object>
+					<accelerator key="P" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
+				</child>
+				<child>
 					<object class="GtkAction" id="almanah_ui_print">
 						<property name="stock-id">gtk-print</property>
 						<property name="name">file-print</property>
 						<signal name="activate" handler="mw_print_activate_cb"/>
 					</object>
+					<accelerator key="P" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
 					<object class="GtkAction" id="almanah_ui_quit">
@@ -22,6 +38,7 @@
 						<property name="name">file-quit</property>
 						<signal name="activate" handler="mw_quit_activate_cb"/>
 					</object>
+					<accelerator key="Q" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
 					<object class="GtkAction" id="almanah_ui_edit">
@@ -159,7 +176,10 @@
 		<ui>
 			<menubar name="almanah_mw_menu_bar">
 				<menu action="almanah_ui_file">
+					<menuitem action="almanah_ui_page_setup"/>
+					<menuitem action="almanah_ui_print_preview"/>
 					<menuitem action="almanah_ui_print"/>
+					<separator/>
 					<menuitem action="almanah_ui_quit"/>
 				</menu>
 				<menu action="almanah_ui_edit">

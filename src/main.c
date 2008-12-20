@@ -33,6 +33,8 @@ storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data
 {
 	g_object_unref (almanah->storage_manager);
 	g_object_unref (almanah->gconf_client);
+	g_object_unref (almanah->page_setup);
+	g_object_unref (almanah->print_settings);
 
 	g_free (almanah);
 
@@ -152,6 +154,10 @@ main (int argc, char *argv[])
 
 	/* Create the event manager */
 	almanah->event_manager = almanah_event_manager_new ();
+
+	/* Set up printing objects */
+	almanah->print_settings = gtk_print_settings_new ();
+	almanah->page_setup = gtk_page_setup_new ();
 
 	/* Create and show the interface */
 	almanah_create_interface ();

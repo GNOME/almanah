@@ -440,11 +440,12 @@ custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, Almanah
 
 	/* Start date */
 	gtk_calendar_get_date (almanah_operation->start_calendar, &year, &month, &day);
-	almanah_operation->start_date = g_date_new_dmy (day, month + 1, year);
+	g_date_set_dmy (almanah_operation->start_date, day, month + 1, year);
+	g_date_set_dmy (almanah_operation->current_date, day, month + 1, year);
 
 	/* End date */
 	gtk_calendar_get_date (almanah_operation->end_calendar, &year, &month, &day);
-	almanah_operation->end_date = g_date_new_dmy (day, month + 1, year);
+	g_date_set_dmy (almanah_operation->end_date, day, month + 1, year);
 
 	/* Ensure they're in order */
 	if (g_date_compare (almanah_operation->start_date, almanah_operation->end_date) > 0) {
@@ -453,16 +454,13 @@ custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, Almanah
 		almanah_operation->start_date = almanah_operation->end_date;
 		almanah_operation->end_date = temp;
 	}
-
-	almanah_operation->current_date = g_memdup (almanah_operation->start_date, sizeof (*(almanah_operation->start_date)));
 }
 
 void
-almanah_print_entries (void)
+almanah_print_entries (gboolean print_preview)
 {
 	GtkPrintOperation *operation;
 	GtkPrintOperationResult res;
-	static GtkPrintSettings *settings;
 	AlmanahPrintOperation almanah_operation;
 
 	operation = gtk_print_operation_new ();
@@ -474,8 +472,20 @@ almanah_print_entries (void)
 	almanah_operation.buffer = gtk_text_buffer_new (NULL);
 	almanah_interface_create_text_tags (almanah_operation.buffer, FALSE);
 
-	if (settings != NULL) 
-		gtk_print_operation_set_print_settings (operation, settings);
+	/* Set up default dates here for print previews */
+	almanah_operation.start_date = g_date_new ();
+	g_date_set_time_t (almanah_operation.start_date, time (NULL));
+	g_date_subtract_months (almanah_operation.start_date, 1);
+
+	almanah_operation.end_date = g_date_new ();
+	g_date_set_time_t (almanah_operation.end_date, time (NULL));
+
+	almanah_operation.current_date = g_memdup (almanah_operation.start_date, sizeof (*(almanah_operation.start_date)));
+
+	if (almanah->print_settings != NULL) 
+		gtk_print_operation_set_print_settings (operation, almanah->print_settings);
+	if (almanah->page_setup != NULL)
+		gtk_print_operation_set_default_page_setup (operation, almanah->page_setup);
 
 	gtk_print_operation_set_n_pages (operation, 1);
 
@@ -484,13 +494,18 @@ almanah_print_entries (void)
 	g_signal_connect (operation, "create-custom-widget", G_CALLBACK (create_custom_widget_cb), &almanah_operation);
 	g_signal_connect (operation, "custom-widget-apply", G_CALLBACK (custom_widget_apply_cb), &almanah_operation);
 
-	res = gtk_print_operation_run (operation, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+	res = gtk_print_operation_run (operation,
+				       (print_preview == TRUE) ? GTK_PRINT_OPERATION_ACTION_PREVIEW : GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
 				       GTK_WINDOW (almanah->main_window), NULL);
 
 	if (res == GTK_PRINT_OPERATION_RESULT_APPLY) {
-		if (settings != NULL)
-			g_object_unref (settings);
-		settings = g_object_ref (gtk_print_operation_get_print_settings (operation));
+		if (almanah->print_settings != NULL)
+			g_object_unref (almanah->print_settings);
+		almanah->print_settings = g_object_ref (gtk_print_operation_get_print_settings (operation));
+
+		if (almanah->page_setup != NULL)
+			g_object_unref (almanah->page_setup);
+		almanah->page_setup = g_object_ref (gtk_print_operation_get_default_page_setup (operation));
 	}
 
 	if (almanah_operation.current_date != NULL) {
@@ -502,3 +517,13 @@ almanah_print_entries (void)
 	g_object_unref (operation);
 }
 
+void
+almanah_print_page_setup (void)
+{
+	GtkPageSetup *page_setup;
+
+	page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (almanah->main_window), almanah->page_setup, almanah->print_settings);
+	if (almanah->page_setup != NULL)
+		g_object_unref (almanah->page_setup);
+	almanah->page_setup = page_setup;
+}

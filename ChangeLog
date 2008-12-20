@@ -1,3 +1,15 @@
+2008-12-20  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.ui:
+	* src/main-window.c (mw_page_setup_activate_cb),
+	(mw_print_preview_activate_cb), (mw_print_activate_cb):
+	* src/main.c (storage_manager_disconnected_cb), (main):
+	* src/main.h:
+	* src/printing.c (custom_widget_apply_cb), (almanah_print_entries),
+	(almanah_print_page_setup):
+	* src/printing.h: Add Page Setup and Print Preview menu entries,
+	and improve the print settings code. (Helps: #564706)
+
 2008-12-13  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.ui:

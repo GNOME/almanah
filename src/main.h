@@ -38,6 +38,8 @@ typedef struct {
 	AlmanahStorageManager *storage_manager;
 	AlmanahEventManager *event_manager;
 	GConfClient *gconf_client;
+	GtkPrintSettings *print_settings;
+	GtkPageSetup *page_setup;
 
 	GtkWidget *main_window;
 	GtkWidget *add_definition_dialog;
