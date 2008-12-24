@@ -28,6 +28,7 @@
 #define TITLE_MARGIN_BOTTOM 15 /* margin under the title, in pixels */
 #define ENTRY_MARGIN_BOTTOM 10 /* margin under the entry, in pixels */
 #define MAX_ORPHANS 3 /* maximum number of orphan lines to be forced to the next page */
+#define PAGE_MARGIN 20 /* left- and right-hand page margin size, in pixels */
 
 typedef struct {
 	GtkTextBuffer *buffer;
@@ -249,7 +250,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	if (almanah_operation->current_line == 0) {
 		/* Set up the title layout */
 		title_layout = gtk_print_context_create_pango_layout (context);
-		pango_layout_set_width (title_layout, gtk_print_context_get_width (context) * PANGO_SCALE);
+		pango_layout_set_width (title_layout, (gtk_print_context_get_width (context) - 2 * PAGE_MARGIN) * PANGO_SCALE);
 
 		/* Translators: This is a strftime()-format string for the date displayed above each printed entry. */
 		g_date_strftime (title, sizeof (title), _("%A, %e %B %Y"), almanah_operation->current_date);
@@ -264,7 +265,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 	/* Set up the entry layout */
 	entry_layout = gtk_print_context_create_pango_layout (context);
-	pango_layout_set_width (entry_layout, gtk_print_context_get_width (context) * PANGO_SCALE);
+	pango_layout_set_width (entry_layout, (gtk_print_context_get_width (context) - 2 * PAGE_MARGIN) * PANGO_SCALE);
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
 
 	entry = almanah_storage_manager_get_entry (almanah->storage_manager, almanah_operation->current_date);
@@ -305,7 +306,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 		if (almanah_operation->current_line == 0) {
 			/* Draw the title */
-			cairo_move_to (cr, 0, title_y);
+			cairo_move_to (cr, PAGE_MARGIN, title_y);
 			pango_cairo_show_layout (cr, title_layout);
 		}
 	}
@@ -331,7 +332,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 		if (almanah_operation->paginated == TRUE) {
 			/* Draw the entry line */
-			cairo_move_to (cr, 0, entry_y);
+			cairo_move_to (cr, PAGE_MARGIN, entry_y);
 			pango_cairo_show_layout_line (cr, entry_line);
 		}
 

@@ -1,3 +1,8 @@
+2008-12-24  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/printing.c (print_entry): Add a default margin of 20px when
+	printing. (Closes: #564706)
+
 2008-12-20  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.ui:
