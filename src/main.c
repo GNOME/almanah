@@ -131,6 +131,7 @@ main (int argc, char *argv[])
 
 	/* Open GConf */
 	almanah->gconf_client = gconf_client_get_default ();
+	gconf_client_add_dir (almanah->gconf_client, "/apps/almanah", GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
 
 	/* Ensure the DB directory exists */
 	if (g_file_test (g_get_user_data_dir (), G_FILE_TEST_IS_DIR) == FALSE)

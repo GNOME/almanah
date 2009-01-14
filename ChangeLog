@@ -1,3 +1,20 @@
+2009-01-14  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.schemas.in:
+	* src/main-window.c (almanah_main_window_new),
+	(mw_preferences_activate_cb),
+	(almanah_main_window_enable_spell_checking),
+	(almanah_main_window_disable_spell_checking):
+	* src/main-window.h:
+	* src/main.c (main):
+	* src/preferences-dialog.c (almanah_preferences_dialog_init),
+	(almanah_preferences_dialog_dispose),
+	(almanah_preferences_dialog_new),
+	(spell_checking_enabled_notify_cb),
+	(pd_spell_checking_enabled_check_button_toggled_cb):
+	Allow spell checking to be disabled at runtime with a GConf option.
+	(Closes: #567359)
+
 2008-12-24  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/printing.c (print_entry): Add a default margin of 20px when

@@ -40,7 +40,11 @@ static void almanah_preferences_dialog_dispose (GObject *object);
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
 static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
+#ifdef ENABLE_SPELL_CHECKING
 static void pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog);
+static void spell_checking_enabled_notify_cb (GConfClient *client, guint connection_id, GConfEntry *entry, AlmanahPreferencesDialog *self);
+static void pd_spell_checking_enabled_check_button_toggled_cb (GtkToggleButton *toggle_button, gpointer user_data);
+#endif /* ENABLE_SPELL_CHECKING */
 
 struct _AlmanahPreferencesDialogPrivate {
 #ifdef ENABLE_ENCRYPTION
@@ -48,6 +52,10 @@ struct _AlmanahPreferencesDialogPrivate {
 	CryptUIKeyStore *key_store;
 	GtkComboBox *key_combo;
 #endif /* ENABLE_ENCRYPTION */
+#ifdef ENABLE_SPELL_CHECKING
+	guint spell_checking_enabled_id;
+	GtkCheckButton *spell_checking_enabled_check_button;
+#endif /* ENABLE_SPELL_CHECKING */
 };
 
 G_DEFINE_TYPE (AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG)
@@ -70,7 +78,8 @@ almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Preferences"));
-	gtk_widget_set_size_request (GTK_WIDGET (self), 400, 100);
+	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
+	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 }
 
 static void
@@ -89,6 +98,9 @@ almanah_preferences_dialog_dispose (GObject *object)
 		priv->key_store = NULL;
 	}
 #endif /* ENABLE_ENCRYPTION */
+#ifdef ENABLE_SPELL_CHECKING
+	gconf_client_notify_remove (almanah->gconf_client, priv->spell_checking_enabled_id);
+#endif /* ENABLE_SPELL_CHECKING */
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_preferences_dialog_parent_class)->dispose (object);
@@ -98,10 +110,10 @@ AlmanahPreferencesDialog *
 almanah_preferences_dialog_new (void)
 {
 	GtkBuilder *builder;
+	GtkTable *table;
 #ifdef ENABLE_ENCRYPTION
 	GtkWidget *label, *button;
 	AtkObject *a11y_label, *a11y_key_combo;
-	GtkTable *table;
 	gchar *key;
 #endif /* ENABLE_ENCRYPTION */
 	AlmanahPreferencesDialog *preferences_dialog;
@@ -142,10 +154,10 @@ almanah_preferences_dialog_new (void)
 	}
 
 	priv = ALMANAH_PREFERENCES_DIALOG (preferences_dialog)->priv;
+	table = GTK_TABLE (gtk_builder_get_object (builder, "almanah_pd_table"));
 
 #ifdef ENABLE_ENCRYPTION
 	/* Grab our child widgets */
-	table = GTK_TABLE (gtk_builder_get_object (builder, "almanah_pd_table"));
 	label = gtk_label_new (_("Encryption Key"));
 	almanah_interface_embolden_label (GTK_LABEL (label));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -179,6 +191,18 @@ almanah_preferences_dialog_new (void)
 	gtk_table_attach (table, button, 3, 4, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
 	g_signal_connect (button, "clicked", G_CALLBACK (pd_new_key_button_clicked_cb), preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
+
+#ifdef ENABLE_SPELL_CHECKING
+	/* Set up the "Enable spell checking" check button */
+	priv->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_("Enable _spell checking")));
+	gtk_table_attach_defaults (table, GTK_WIDGET (priv->spell_checking_enabled_check_button), 1, 4, 2, 3);
+
+	spell_checking_enabled_notify_cb (NULL, 0, NULL, preferences_dialog);
+	g_signal_connect (priv->spell_checking_enabled_check_button, "toggled", G_CALLBACK (pd_spell_checking_enabled_check_button_toggled_cb), preferences_dialog);
+	priv->spell_checking_enabled_id = gconf_client_notify_add (almanah->gconf_client, "/apps/almanah/spell_checking_enabled",
+								   (GConfClientNotifyFunc) spell_checking_enabled_notify_cb, preferences_dialog,
+								   NULL, NULL);
+#endif /* ENABLE_SPELL_CHECKING */
 
 	g_object_unref (builder);
 
@@ -233,4 +257,45 @@ static void
 pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog)
 {
 	gtk_widget_hide_all (GTK_WIDGET (dialog));
+}
+
+static void
+spell_checking_enabled_notify_cb (GConfClient *client, guint connection_id, GConfEntry *entry, AlmanahPreferencesDialog *self)
+{
+	gboolean enabled;
+
+	enabled = gconf_client_get_bool (almanah->gconf_client, "/apps/almanah/spell_checking_enabled", NULL);
+
+	if (almanah->debug)
+		g_debug ("spell_checking_enabled_notify_cb called with %u.", enabled);
+
+	g_signal_handlers_block_by_func (self->priv->spell_checking_enabled_check_button, pd_spell_checking_enabled_check_button_toggled_cb, self);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (self->priv->spell_checking_enabled_check_button), enabled);
+	g_signal_handlers_unblock_by_func (self->priv->spell_checking_enabled_check_button, pd_spell_checking_enabled_check_button_toggled_cb, self);
+
+	if (enabled == TRUE) {
+		GError *error = NULL;
+
+		almanah_main_window_enable_spell_checking (ALMANAH_MAIN_WINDOW (almanah->main_window), &error);
+
+		if (error != NULL) {
+			GtkWidget *dialog = gtk_message_dialog_new (NULL,
+								    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+								    _("Spelling checker could not be initialized"));
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+			gtk_dialog_run (GTK_DIALOG (dialog));
+			gtk_widget_destroy (dialog);
+
+			g_error_free (error);
+		}
+	} else {
+		almanah_main_window_disable_spell_checking (ALMANAH_MAIN_WINDOW (almanah->main_window));
+	}
+}
+
+static void
+pd_spell_checking_enabled_check_button_toggled_cb (GtkToggleButton *toggle_button, gpointer user_data)
+{
+	gconf_client_set_bool (almanah->gconf_client, "/apps/almanah/spell_checking_enabled",
+			       gtk_toggle_button_get_active (toggle_button), NULL);
 }

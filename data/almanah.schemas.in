@@ -23,6 +23,17 @@
 			</locale>
 		</schema>
 		<schema>
+			<key>/schemas/apps/almanah/spell_checking_enabled</key>
+			<applyto>/apps/almanah/spell_checking_enabled</applyto>
+			<owner>almanah</owner>
+			<type>bool</type>
+			<default>true</default>
+			<locale name="C">
+				<short>Spell checking enabled?</short>
+				<long>Whether spell checking of entries is enabled.</long>
+			</locale>
+		</schema>
+		<schema>
 			<key>/schemas/apps/almanah/state/main_window_maximized</key>
 			<applyto>/apps/almanah/state/main_window_maximized</applyto>
 			<owner>almanah</owner>

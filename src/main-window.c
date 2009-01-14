@@ -123,10 +123,6 @@ almanah_main_window_new (void)
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
 	GError *error = NULL;
-#ifdef ENABLE_SPELL_CHECKING
-	GtkSpell *gtkspell;
-	gchar *spelling_language;
-#endif /* ENABLE_SPELL_CHECKING */
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_main_window",
@@ -189,28 +185,9 @@ almanah_main_window_new (void)
 	almanah_interface_create_text_tags (priv->entry_buffer, TRUE);
 
 #ifdef ENABLE_SPELL_CHECKING
-	/* Set up spell checking */
-	spelling_language = gconf_client_get_string (almanah->gconf_client, "/apps/almanah/spelling_language", NULL);
-
-	/* Make sure it's either NULL or a proper locale specifier */
-	if (spelling_language != NULL && spelling_language[0] == '\0') {
-		g_free (spelling_language);
-		spelling_language = NULL;
-	}
-
-	gtkspell = gtkspell_new_attach (priv->entry_view, spelling_language, &error);
-	g_free (spelling_language);
-
-	if (gtkspell == NULL) {
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-							    _("Spelling checker could not be initialized"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-	}
+	/* Set up spell checking, if it's enabled */
+	if (gconf_client_get_bool (almanah->gconf_client, "/apps/almanah/spell_checking_enabled", NULL) == TRUE)
+		almanah_main_window_enable_spell_checking (main_window, NULL);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Make sure we're notified if the cursor moves position so we can check the tag stack */
@@ -251,8 +228,10 @@ almanah_main_window_new (void)
 	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_events_label")));
 
 #ifndef ENABLE_ENCRYPTION
+#ifndef ENABLE_SPELL_CHECKING
 	/* Remove the "Preferences" entry from the menu */
 	gtk_action_set_visible (GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_preferences")), FALSE);
+#endif /* !ENABLE_SPELL_CHECKING */
 #endif /* !ENABLE_ENCRYPTION */
 
 	g_object_unref (builder);
@@ -735,10 +714,8 @@ mw_search_activate_cb (GtkAction *action, gpointer user_data)
 void
 mw_preferences_activate_cb (GtkAction *action, gpointer user_data)
 {
-#ifdef ENABLE_ENCRYPTION
 	gtk_widget_show_all (almanah->preferences_dialog);
 	gtk_dialog_run (GTK_DIALOG (almanah->preferences_dialog));
-#endif /* ENABLE_ENCRYPTION */
 }
 
 static void
@@ -1086,3 +1063,39 @@ mw_definition_removed_cb (AlmanahStorageManager *storage_manager, const gchar *d
 	 * probably easier to just reload the current entry, though. */
 	mw_calendar_day_selected_cb (main_window->priv->calendar, main_window);
 }
+
+#ifdef ENABLE_SPELL_CHECKING
+gboolean
+almanah_main_window_enable_spell_checking (AlmanahMainWindow *self, GError **error)
+{
+	GtkSpell *gtkspell;
+	gchar *spelling_language;
+
+	spelling_language = gconf_client_get_string (almanah->gconf_client, "/apps/almanah/spelling_language", NULL);
+
+	/* Make sure it's either NULL or a proper locale specifier */
+	if (spelling_language != NULL && spelling_language[0] == '\0') {
+		g_free (spelling_language);
+		spelling_language = NULL;
+	}
+
+	gtkspell = gtkspell_new_attach (self->priv->entry_view, spelling_language, error);
+	g_free (spelling_language);
+
+	if (gtkspell == NULL)
+		return FALSE;
+	return TRUE;
+}
+
+void
+almanah_main_window_disable_spell_checking (AlmanahMainWindow *self)
+{
+	GtkSpell *gtkspell;
+
+	gtkspell = gtkspell_get_from_text_view (self->priv->entry_view);
+	if (gtkspell != NULL) {
+		gtkspell_detach (gtkspell);
+		g_object_unref (gtkspell);
+	}
+}
+#endif /* ENABLE_SPELL_CHECKING */
