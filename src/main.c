@@ -26,7 +26,7 @@
 #include "main.h"
 #include "storage-manager.h"
 #include "event-manager.h"
-#include "interface.h"
+#include "main-window.h"
 
 Almanah *almanah;
 
@@ -61,11 +61,16 @@ almanah_quit (void)
 		gtk_widget_destroy (dialog);
 	}
 
-	gtk_widget_destroy (almanah->add_definition_dialog);
-	gtk_widget_destroy (almanah->search_dialog);
+	if (almanah->add_definition_dialog != NULL)
+		gtk_widget_destroy (almanah->add_definition_dialog);
+	if (almanah->search_dialog != NULL)
+		gtk_widget_destroy (almanah->search_dialog);
 #ifdef ENABLE_ENCRYPTION
-	gtk_widget_destroy (almanah->preferences_dialog);
+	if (almanah->preferences_dialog != NULL)
+		gtk_widget_destroy (almanah->preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
+	if (almanah->definition_manager_window != NULL)
+		gtk_widget_destroy (almanah->definition_manager_window);
 	gtk_widget_destroy (almanah->main_window);
 
 	g_object_unref (almanah->event_manager);
@@ -127,7 +132,7 @@ main (int argc, char *argv[])
 	g_option_context_free (context);
 
 	/* Setup */
-	almanah = g_new (Almanah, 1);
+	almanah = g_new0 (Almanah, 1);
 	almanah->debug = debug;
 	almanah->import_mode = import_mode;
 
@@ -163,7 +168,7 @@ main (int argc, char *argv[])
 	almanah->page_setup = gtk_page_setup_new ();
 
 	/* Create and show the interface */
-	almanah_create_interface ();
+	almanah->main_window = GTK_WIDGET (almanah_main_window_new ());
 	gtk_widget_show_all (almanah->main_window);
 
 	gtk_main ();

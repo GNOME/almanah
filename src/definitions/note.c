@@ -69,7 +69,7 @@ note_view (AlmanahDefinition *definition)
 {
 	const gchar *value = almanah_definition_get_value (definition);
 
-	GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+	GtkWidget *dialog = gtk_message_dialog_new (NULL,
 				GTK_DIALOG_DESTROY_WITH_PARENT,
 				GTK_MESSAGE_INFO,
 				GTK_BUTTONS_CLOSE,

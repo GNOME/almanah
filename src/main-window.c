@@ -425,6 +425,10 @@ add_definition_to_current_entry (AlmanahMainWindow *self)
 
 	text = gtk_text_buffer_get_text (priv->entry_buffer, &start_iter, &end_iter, FALSE);
 
+	/* Create the Add Definition dialogue if it doesn't already exist */
+	if (almanah->add_definition_dialog == NULL)
+		almanah->add_definition_dialog = GTK_WIDGET (almanah_add_definition_dialog_new ());
+
 	/* Ensure that something is selected and its widget's displayed */
 	almanah_add_definition_dialog_set_text (ALMANAH_ADD_DEFINITION_DIALOG (almanah->add_definition_dialog), text);
 	g_free (text);
@@ -707,6 +711,9 @@ mw_delete_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_search_activate_cb (GtkAction *action, gpointer user_data)
 {
+	if (almanah->search_dialog == NULL)
+		almanah->search_dialog = GTK_WIDGET (almanah_search_dialog_new ());
+
 	gtk_widget_show_all (almanah->search_dialog);
 	gtk_dialog_run (GTK_DIALOG (almanah->search_dialog));
 }
@@ -714,8 +721,13 @@ mw_search_activate_cb (GtkAction *action, gpointer user_data)
 void
 mw_preferences_activate_cb (GtkAction *action, gpointer user_data)
 {
+#ifdef ENABLE_ENCRYPTION
+	if (almanah->preferences_dialog == NULL)
+		almanah->preferences_dialog = GTK_WIDGET (almanah_preferences_dialog_new ());
+
 	gtk_widget_show_all (almanah->preferences_dialog);
 	gtk_dialog_run (GTK_DIALOG (almanah->preferences_dialog));
+#endif /* ENABLE_ENCRYPTION */
 }
 
 static void
@@ -835,10 +847,10 @@ mw_remove_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_win
 void
 mw_view_definitions_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	GtkWidget *definition_manager_window;
+	if (almanah->definition_manager_window == NULL)
+		almanah->definition_manager_window = GTK_WIDGET (almanah_definition_manager_window_new ());
 
-	definition_manager_window = GTK_WIDGET (almanah_definition_manager_window_new ());
-	gtk_widget_show_all (definition_manager_window);
+	gtk_widget_show_all (almanah->definition_manager_window);
 }
 
 static void

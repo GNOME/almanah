@@ -66,6 +66,7 @@ almanah_definition_manager_window_init (AlmanahDefinitionManagerWindow *self)
 	gtk_window_set_title (GTK_WINDOW (self), _("Definition Manager"));
 	gtk_window_set_default_size (GTK_WINDOW (self), 500, 400);
 	/*gtk_window_set_resizable (GTK_WINDOW (self), FALSE);*/
+	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 }
 
 static gboolean

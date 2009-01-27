@@ -25,7 +25,6 @@
 G_BEGIN_DECLS
 
 const gchar *almanah_get_interface_filename (void);
-GtkWidget *almanah_create_interface (void);
 void almanah_interface_embolden_label (GtkLabel *label);
 void almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events);
 void almanah_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data);

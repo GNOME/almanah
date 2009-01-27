@@ -1,5 +1,22 @@
 2009-01-27  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/definitions/note.c (note_view): Ensure that the main window
+	doesn't steal the focus when viewing a note from the definition
+	manager.
+	* src/definition-manager-window.c
+	(almanah_definition_manager_window_init):
+	* src/interface.c:
+	* src/interface.h:
+	* src/main-window.c (add_definition_to_current_entry),
+	(mw_search_activate_cb), (mw_preferences_activate_cb),
+	(mw_view_definitions_activate_cb):
+	* src/main.c (almanah_quit), (main):
+	* src/main.h: Rearrange how dialogues and windows are opened such
+	that they aren't resident in memory until first opened, which should
+	speed up Almanah on startup, and reduce initial memory consumption.
+
+2009-01-27  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/event-factories/calendar-sources.c: Updated from gnome-panel
 	trunk.
 	* src/main.c:

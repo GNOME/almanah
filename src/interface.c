@@ -39,19 +39,6 @@ almanah_get_interface_filename (void)
 		return PACKAGE_DATA_DIR"/almanah/almanah.ui";
 }
 
-GtkWidget *
-almanah_create_interface (void)
-{
-	almanah->main_window = GTK_WIDGET (almanah_main_window_new ());
-	almanah->add_definition_dialog = GTK_WIDGET (almanah_add_definition_dialog_new ());
-	almanah->search_dialog = GTK_WIDGET (almanah_search_dialog_new ());
-#ifdef ENABLE_ENCRYPTION
-	almanah->preferences_dialog = GTK_WIDGET (almanah_preferences_dialog_new ());
-#endif /* ENABLE_ENCRYPTION */
-
-	return almanah->main_window;
-}
-
 void
 almanah_interface_embolden_label (GtkLabel *label)
 {
