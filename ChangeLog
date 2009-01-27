@@ -1,5 +1,11 @@
 2009-01-27  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* src/link-factories/:
+	* src/links/: Remove directories which should've been removed when
+	renaming links to events.
+
+2009-01-27  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/main.c:
 	* src/main.h: Fix a compilation error when compiling with -fno-common.
 
