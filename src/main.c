@@ -28,6 +28,8 @@
 #include "event-manager.h"
 #include "interface.h"
 
+Almanah *almanah;
+
 static void
 storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data)
 {

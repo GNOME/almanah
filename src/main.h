@@ -52,7 +52,7 @@ typedef struct {
 	gboolean import_mode;
 } Almanah;
 
-Almanah *almanah;
+extern Almanah *almanah;
 
 void almanah_quit (void);
 
