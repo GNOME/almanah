@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: diary 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-16 13:28+0000\n"
+"POT-Creation-Date: 2009-01-27 21:18+0000\n"
 "PO-Revision-Date: 2008-03-23 12:45+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: \n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:98 ../src/main.c:96
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:102 ../src/main.c:109
 msgid "Almanah Diary"
 msgstr "Almanah Diary"
 
@@ -52,10 +52,14 @@ msgid "Main window width"
 msgstr "Main window width"
 
 #: ../data/almanah.schemas.in.h:7
+msgid "Spell checking enabled?"
+msgstr "Spell checking enabled?"
+
+#: ../data/almanah.schemas.in.h:8
 msgid "Spell checking language"
 msgstr "Spell checking language"
 
-#: ../data/almanah.schemas.in.h:8
+#: ../data/almanah.schemas.in.h:9
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -65,153 +69,232 @@ msgstr ""
 "been built with encryption support. Leave blank to disable database "
 "encryption."
 
-#: ../data/almanah.schemas.in.h:9
+#: ../data/almanah.schemas.in.h:10
 msgid "The X position of the main window."
 msgstr "The X position of the main window."
 
-#: ../data/almanah.schemas.in.h:10
+#: ../data/almanah.schemas.in.h:11
 msgid "The Y position of the main window."
 msgstr "The Y position of the main window."
 
-#: ../data/almanah.schemas.in.h:11
+#: ../data/almanah.schemas.in.h:12
 msgid "The height of the main window."
 msgstr "The height of the main window."
 
-#: ../data/almanah.schemas.in.h:12
-msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "The locale specifier of the language in which to check entry spellings."
-
 #: ../data/almanah.schemas.in.h:13
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr ""
+"The locale specifier of the language in which to check entry spellings."
+
+#: ../data/almanah.schemas.in.h:14
 msgid "The width of the main window."
 msgstr "The width of the main window."
 
-#: ../data/almanah.schemas.in.h:14
+#: ../data/almanah.schemas.in.h:15
+msgid "Whether spell checking of entries is enabled."
+msgstr "Whether spell checking of entries is enabled."
+
+#: ../data/almanah.schemas.in.h:16
 msgid "Whether the main window should start maximized."
 msgstr "Whether the main window should start maximised."
 
-#: ../data/almanah.ui.h:1 ../src/add-link-dialog.c:61
-msgid "Add Link"
-msgstr "Add Link"
-
-#: ../data/almanah.ui.h:2
-msgid "Attached Links"
-msgstr "Attached Links"
-
-#: ../data/almanah.ui.h:3
+#: ../data/almanah.ui.h:1
 msgid "Calendar"
 msgstr "Calendar"
 
+#: ../data/almanah.ui.h:2
+msgid "Definition List"
+msgstr "Definition List"
+
+#: ../data/almanah.ui.h:3
+msgid "Definition Type"
+msgstr "Definition Type"
+
 #: ../data/almanah.ui.h:4
+msgid "Description"
+msgstr "Description"
+
+#: ../data/almanah.ui.h:5
+msgid "Entry editing area"
+msgstr "Entry editing area"
+
+#: ../data/almanah.ui.h:6
 msgid "F_ormat"
 msgstr "F_ormat"
 
-#: ../data/almanah.ui.h:5
-msgid "Go To Today"
-msgstr "Go To Today"
-
-#: ../data/almanah.ui.h:6
-msgid "Link Type"
-msgstr "Link Type"
-
 #: ../data/almanah.ui.h:7
-msgid "Remove Link"
-msgstr "Remove Link"
+msgid "Go to _Today"
+msgstr "Go to _Today"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:8 ../src/definition-manager-window.c:243
+msgid "Nothing selected"
+msgstr "Nothing selected"
+
+#: ../data/almanah.ui.h:9
+msgid "Past Event List"
+msgstr "Past Event List"
+
+#: ../data/almanah.ui.h:10
+msgid "Past Events"
+msgstr "Past Events"
+
+#: ../data/almanah.ui.h:11
+msgid "Result List"
+msgstr "Result List"
+
+#: ../data/almanah.ui.h:12
 msgid "Results"
 msgstr "Results"
 
-#: ../data/almanah.ui.h:9 ../src/search-dialog.c:57
+#: ../data/almanah.ui.h:13 ../src/search-dialog.c:57
 msgid "Search"
 msgstr "Search"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:14
+msgid "Search entry"
+msgstr "Search entry"
+
+#: ../data/almanah.ui.h:15
+msgid "Type"
+msgstr "Type"
+
+#: ../data/almanah.ui.h:16
 msgid "View"
 msgstr "View"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:17
 msgid "View Entry"
 msgstr "View Entry"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:18
+msgid "View Event"
+msgstr "View Event"
+
+#: ../data/almanah.ui.h:19
+msgid "_Add Definition"
+msgstr "_Add Definition"
+
+#: ../data/almanah.ui.h:20
+msgid "_Definitions"
+msgstr "_Definitions"
+
+#: ../data/almanah.ui.h:21
 msgid "_Edit"
 msgstr "_Edit"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:22
 msgid "_File"
 msgstr "_File"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:23
 msgid "_Help"
 msgstr "_Help"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:24
+msgid "_Remove Definition"
+msgstr "_Remove Definition"
+
+#: ../data/almanah.ui.h:25
 msgid "_Search"
 msgstr "_Search"
 
-#: ../src/add-link-dialog.c:100 ../src/main-window.c:144
-#: ../src/preferences-dialog.c:122 ../src/search-dialog.c:83
+#: ../data/almanah.ui.h:26
+msgid "_View Definitions"
+msgstr "_View Definitions"
+
+#: ../src/add-definition-dialog.c:80
+msgid "Add Definition"
+msgstr "Add Definition"
+
+#: ../src/add-definition-dialog.c:162 ../src/definition-manager-window.c:126
+#: ../src/main-window.c:143 ../src/preferences-dialog.c:136
+#: ../src/search-dialog.c:83
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "UI file \"%s\" could not be loaded"
 
-#: ../src/links/file.c:49
+#: ../src/events/calendar-appointment.c:50
+msgid "Calendar Appointment"
+msgstr "Calendar Appointment"
+
+#: ../src/events/calendar-appointment.c:51
+msgid "An appointment on an Evolution calendar."
+msgstr "An appointment on an Evolution calendar."
+
+#: ../src/events/calendar-appointment.c:121 ../src/events/calendar-task.c:110
+msgid "Error launching Evolution"
+msgstr "Error launching Evolution"
+
+#: ../src/events/calendar-task.c:50
+msgid "Calendar Task"
+msgstr "Calendar Task"
+
+#: ../src/events/calendar-task.c:51
+msgid "A task on an Evolution calendar."
+msgstr "A task on an Evolution calendar."
+
+#: ../src/definition-manager-window.c:66
+msgid "Definition Manager"
+msgstr "Definition Manager"
+
+#: ../src/definition-manager-window.c:200
+#, c-format
+msgid "Are you sure you want to delete the definition for \"%s\"?"
+msgstr "Are you sure you want to delete the definition for \"%s\"?"
+
+#: ../src/definitions/file.c:49
 msgid "File"
 msgstr "File"
 
-#: ../src/links/file.c:50
+#: ../src/definitions/file.c:50
 msgid "An attached file."
 msgstr "An attached file."
 
-#: ../src/links/file.c:80
+#: ../src/definitions/file.c:75
 msgid "Error opening file"
 msgstr "Error opening file"
 
-#: ../src/links/file.c:98
+#: ../src/definitions/file.c:94
 msgid "Select File"
 msgstr "Select File"
 
-#: ../src/links/note.c:49
+#: ../src/definitions/note.c:50
 msgid "Note"
 msgstr "Note"
 
-#: ../src/links/note.c:50
+#: ../src/definitions/note.c:51
 msgid "A note about an important event."
 msgstr "A note about an important event."
 
-#: ../src/links/uri.c:49 ../src/links/uri.c:101
+#: ../src/definitions/uri.c:51 ../src/definitions/uri.c:100
 msgid "URI"
 msgstr "URI"
 
-#: ../src/links/uri.c:50
+#: ../src/definitions/uri.c:52
 msgid "A URI of a file or web page."
 msgstr "A URI of a file or web page."
 
-#: ../src/links/uri.c:80
+#: ../src/definitions/uri.c:77
 msgid "Error opening URI"
 msgstr "Error opening URI"
 
-#: ../src/main-window.c:214
-msgid "Spelling checker could not be initialized"
-msgstr "Spelling checker could not be initialised"
-
-#: ../src/main-window.c:367
+#: ../src/main-window.c:347
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Are you sure you want to edit this diary entry for %s?"
 
-#: ../src/main-window.c:391
+#: ../src/main-window.c:371
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Are you sure you want to delete this diary entry for %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:561
+#: ../src/main-window.c:556
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 
-#: ../src/main-window.c:738
+#: ../src/main-window.c:782
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -223,7 +306,7 @@ msgstr ""
 "Foundation, either version 3 of the Licence, or (at your option) any later "
 "version."
 
-#: ../src/main-window.c:742
+#: ../src/main-window.c:786
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -235,7 +318,7 @@ msgstr ""
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for more "
 "details."
 
-#: ../src/main-window.c:746
+#: ../src/main-window.c:790
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -243,12 +326,12 @@ msgstr ""
 "You should have received a copy of the GNU General Public Licence along with "
 "Almanah.  If not, see <http://www.gnu.org/licences/>."
 
-#: ../src/main-window.c:757
+#: ../src/main-window.c:801
 #, c-format
-msgid "A helpful diary keeper, storing %u entries and %u links."
-msgstr "A helpful diary keeper, storing %u entries and %u links."
+msgid "A helpful diary keeper, storing %u entries and %u definitions."
+msgstr "A helpful diary keeper, storing %u entries and %u definitions."
 
-#: ../src/main-window.c:763
+#: ../src/main-window.c:807
 msgid "Copyright © 2008 Philip Withnall"
 msgstr "Copyright © 2008 Philip Withnall"
 
@@ -257,123 +340,137 @@ msgstr "Copyright © 2008 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:771
+#: ../src/main-window.c:815
 msgid "translator-credits"
 msgstr "Philip Withnall <philip@tecnocode.co.uk>"
 
-#: ../src/main-window.c:775
+#: ../src/main-window.c:819
 msgid "Almanah Website"
 msgstr "Almanah Website"
 
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:820 ../src/printing.c:255 ../src/search-dialog.c:156
+#: ../src/main-window.c:945 ../src/printing.c:256 ../src/search-dialog.c:156
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/main-window.c:849
+#: ../src/main-window.c:972
 msgid "Entry content could not be loaded"
 msgstr "Entry content could not be loaded"
 
-#: ../src/main.c:53
+#: ../src/main.c:58
 msgid "Error closing database"
 msgstr "Error closing database"
 
-#: ../src/main.c:84
+#: ../src/main.c:96
 msgid "Enable debug mode"
 msgstr "Enable debug mode"
 
+#: ../src/main.c:97
+msgid "Enable import mode"
+msgstr "Enable import mode"
+
 #. Options
-#: ../src/main.c:100
+#: ../src/main.c:113
 msgid "- Manage your diary"
 msgstr "- Manage your diary"
 
-#: ../src/main.c:110
+#: ../src/main.c:123
 msgid "Command-line options could not be parsed"
 msgstr "Command-line options could not be parsed"
 
-#: ../src/main.c:140
+#: ../src/main.c:155
 msgid "Error opening database"
 msgstr "Error opening database"
 
-#: ../src/preferences-dialog.c:71
+#: ../src/preferences-dialog.c:80
 msgid "Almanah Preferences"
 msgstr "Almanah Preferences"
 
-#: ../src/preferences-dialog.c:147
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:161
 msgid "Encryption Key"
 msgstr "Encryption Key"
 
-#: ../src/preferences-dialog.c:153
+#: ../src/preferences-dialog.c:167
 msgid "None (don't encrypt)"
 msgstr "None (don't encrypt)"
 
-#: ../src/preferences-dialog.c:170
+#: ../src/preferences-dialog.c:190
 msgid "New _Key"
 msgstr "New _Key"
 
-#: ../src/preferences-dialog.c:195
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:197
+msgid "Enable _spell checking"
+msgstr "Enable _spell checking"
+
+#: ../src/preferences-dialog.c:227
 msgid "Error saving the encryption key"
 msgstr "Error saving the encryption key"
 
-#: ../src/preferences-dialog.c:214
+#: ../src/preferences-dialog.c:246
 msgid "Error opening Seahorse"
 msgstr "Error opening Seahorse"
 
-#: ../src/printing.c:273
+#: ../src/preferences-dialog.c:284
+msgid "Spelling checker could not be initialized"
+msgstr "Spelling checker could not be initialised"
+
+#: ../src/printing.c:274
 msgid "No entry for this date."
 msgstr "No entry for this date."
 
-#: ../src/printing.c:412
+#: ../src/printing.c:413
 msgid "Start Date"
 msgstr "Start Date"
 
-#: ../src/printing.c:415
+#: ../src/printing.c:416
 msgid "End Date"
 msgstr "End Date"
 
-#: ../src/storage-manager.c:198
+#: ../src/storage-manager.c:215
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME doesn't support OpenPGP: %s"
 
-#: ../src/storage-manager.c:207
+#: ../src/storage-manager.c:224
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Error creating cipher context: %s"
 
-#: ../src/storage-manager.c:236
+#: ../src/storage-manager.c:253
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Error opening encrypted database file \"%s\": %s"
 
-#: ../src/storage-manager.c:256
+#: ../src/storage-manager.c:273
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Error opening plain database file \"%s\": %s"
 
-#: ../src/storage-manager.c:330
+#: ../src/storage-manager.c:347
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Error decrypting database: %s"
 
-#: ../src/storage-manager.c:364
+#: ../src/storage-manager.c:381
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Error getting encryption key: %s"
 
-#: ../src/storage-manager.c:385
+#: ../src/storage-manager.c:402
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Error encrypting database: %s"
 
-#: ../src/storage-manager.c:396
+#: ../src/storage-manager.c:413
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Could not delete plain database file \"%s\"."
 
-#: ../src/storage-manager.c:476
+#: ../src/storage-manager.c:493
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -382,7 +479,7 @@ msgstr ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 
-#: ../src/storage-manager.c:507
+#: ../src/storage-manager.c:524
 #, c-format
 msgid ""
 "Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary "
@@ -393,16 +490,22 @@ msgstr ""
 "will not be encrypted; please install Seahorse and set up a default key, or "
 "ignore this message."
 
-#: ../src/storage-manager.c:552 ../src/storage-manager.c:586
+#: ../src/storage-manager.c:569 ../src/storage-manager.c:603
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 
-#: ../src/storage-manager.c:821
+#: ../src/storage-manager.c:834
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Error deserialising entry into buffer while searching."
+
+#~ msgid "Add Link"
+#~ msgstr "Add Link"
+
+#~ msgid "Attached Links"
+#~ msgstr "Attached Links"
 
 #~ msgid "Due to an unknown error the file cannot be opened."
 #~ msgstr "Due to an unknown error the file cannot be opened."

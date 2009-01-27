@@ -12,8 +12,6 @@ src/definition.c
 src/definitions/file.c
 src/definitions/note.c
 src/definitions/uri.c
-src/links/calendar-appointment.c
-src/links/calendar-task.c
 src/main-window.c
 src/main.c
 src/preferences-dialog.c
