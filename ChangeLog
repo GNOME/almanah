@@ -1,3 +1,10 @@
+============ Version 0.6.0
+
+2009-01-27  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* NEWS:
+	* configure.ac: Bump to version 0.6.0.
+
 2009-01-27  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/definitions/note.c (note_view): Ensure that the main window

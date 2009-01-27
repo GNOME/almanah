@@ -1,5 +1,21 @@
 Major new features in version...
 
+0.6:
+Note that 0.6 removes the old concept of "links", and all stored links will no longer be accessible. They will,
+however, remain in the database, and can be accessed using the following commands while Almanah's running:
+	sqlite3 ~/.local/share/diary.db
+	.headers ON
+	SELECT * FROM entry_links;
+
+* Improve accessibility support so the UI's navigable in both Accerciser and GOK
+* Rename "links" to "definitions", and change them such that one "definition" can be used across multiple
+  diary entries to catalogue things of importance which are relevant to many diary entries
+* Concurrently, introduce "events", which are displayed automatically with each diary entry and aim to show
+  what you were doing on that day; Evolution appointments and tasks are currently the only supported events
+* Add an --import-mode, which allows entries to be edited regardless of their status and the current date to
+  allow, for example, a one-time import of a previous diary into Almanah
+* Improve printing support, adding page settings, print preview and a default page margin of 20px
+
 0.5:
 Note that the database format used in 0.5 is not backwards-compatible
 with previous versions, so once an entry has been added in 0.5, the
