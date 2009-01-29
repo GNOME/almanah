@@ -1,3 +1,10 @@
+2009-01-29  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/storage-manager.c (database_idle_cb), (encrypt_database):
+	Only delete the plaintext database file if the encrypted database
+	file's size is greater than 0B, to try and prevent data loss in
+	odd situations.
+
 ============ Version 0.6.0
 
 2009-01-27  Philip Withnall  <philip@tecnocode.co.uk>

@@ -305,12 +305,26 @@ cipher_operation_free (CipherOperation *operation)
 static gboolean
 database_idle_cb (CipherOperation *operation)
 {
+	AlmanahStorageManager *self = operation->storage_manager;
 	gpgme_error_t gpgme_error;
 
 	if (!(gpgme_wait (operation->context, &gpgme_error, FALSE) == NULL && gpgme_error == 0)) {
+		struct stat db_stat;
+
+		/* Check to see if the encrypted file is 0B in size, which isn't good.
+		 * Not much we can do about it except quit without deleting the plaintext database. */
+		g_stat (self->priv->filename, &db_stat);
+		if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == FALSE || db_stat.st_size == 0) {
+			g_warning (_("Error encrypting database: %s"),
+				   _("The encrypted database is empty. The plain database file has been left undeleted as backup."));
+		} else if (g_unlink (self->priv->plain_filename) != 0) {
+			/* Delete the plain file */
+			g_warning (_("Could not delete plain database file \"%s\"."), self->priv->plain_filename);
+		}
+
 		/* A slight assumption that we're disconnecting at this point (we're technically
 		 * only encrypting), but a valid one. */
-		g_signal_emit (operation->storage_manager, storage_manager_signals[SIGNAL_DISCONNECTED], 0, operation->storage_manager);
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
 
 		/* Finished! */
 		cipher_operation_free (operation);
@@ -406,14 +420,6 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 
 	/* The operation will be completed in the idle function */
 	g_idle_add ((GSourceFunc) database_idle_cb, operation);
-
-	/* Delete the plain file and wait for the idle function to quit us */
-	if (g_unlink (self->priv->plain_filename) != 0) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_ENCRYPTING,
-			     _("Could not delete plain database file \"%s\"."),
-			     self->priv->plain_filename);
-		return FALSE;
-	}
 
 	return TRUE;
 }
