@@ -52,6 +52,8 @@ almanah_SOURCES = \
 	event-manager.h		\
 	definition.c		\
 	definition.h		\
+	definitions/contact.c		\
+	definitions/contact.h		\
 	definitions/file.c		\
 	definitions/file.h		\
 	definitions/note.c		\

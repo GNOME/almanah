@@ -1,3 +1,17 @@
+2009-02-08  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/Makefile.am:
+	* src/definition.c:
+	* src/definition.h:
+	* src/definitions/contact.c
+	(almanah_contact_definition_class_init),
+	(almanah_contact_definition_init),
+	(almanah_contact_definition_dispose), (contact_view),
+	(contact_build_dialog), (contact_close_dialog),
+	(contact_parse_text), (contact_get_blurb):
+	* src/definitions/contact.h: Add a new "Contact" definition type,
+	which allows linking of definitions to Evolution contacts.
+
 2009-01-29  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/storage-manager.c (database_idle_cb), (encrypt_database):

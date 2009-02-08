@@ -35,11 +35,13 @@ typedef struct {
 #include "file.h"
 #include "note.h"
 #include "uri.h"
+#include "contact.h"
 
 const DefinitionType definition_types[] = {
 	{ ALMANAH_DEFINITION_FILE, almanah_file_definition_get_type },
 	{ ALMANAH_DEFINITION_NOTE, almanah_note_definition_get_type },
-	{ ALMANAH_DEFINITION_URI, almanah_uri_definition_get_type }
+	{ ALMANAH_DEFINITION_URI, almanah_uri_definition_get_type },
+	{ ALMANAH_DEFINITION_CONTACT, almanah_contact_definition_get_type }
 };
 
 static void almanah_definition_init (AlmanahDefinition *self);

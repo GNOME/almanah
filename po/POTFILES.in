@@ -9,6 +9,7 @@ src/events/calendar-task.c
 src/interface.c
 src/definition-manager-window.c
 src/definition.c
+src/definitions/contact.c
 src/definitions/file.c
 src/definitions/note.c
 src/definitions/uri.c
