@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-01 10:28+0100\n"
-"PO-Revision-Date: 2009-02-01 11:15+0100\n"
+"POT-Creation-Date: 2009-02-11 02:46+0100\n"
+"PO-Revision-Date: 2009-02-11 02:47+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -241,6 +241,27 @@ msgstr "Definitionshanterare"
 #, c-format
 msgid "Are you sure you want to delete the definition for \"%s\"?"
 msgstr "Är du säker på att du vill ta bort definitionen för \"%s\"?"
+
+#: ../src/definitions/contact.c:54
+msgid "Contact"
+msgstr "Kontakt"
+
+#: ../src/definitions/contact.c:55
+msgid "An Evolution contact."
+msgstr "En Evolution-kontakt."
+
+#: ../src/definitions/contact.c:74
+msgid "Select Contact"
+msgstr "Välj kontakt"
+
+#: ../src/definitions/contact.c:104
+#: ../src/definitions/contact.c:225
+msgid "Error opening contact"
+msgstr "Fel vid öppnande av kontakten"
+
+#: ../src/definitions/contact.c:137
+msgid "Error opening Evolution"
+msgstr "Fel vid öppnande av Evolution"
 
 #: ../src/definitions/file.c:49
 msgid "File"
