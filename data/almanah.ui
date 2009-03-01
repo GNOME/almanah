@@ -120,6 +120,14 @@
 					<accelerator key="U" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
+					<object class="GtkToggleAction" id="almanah_ui_insert_time">
+						<property name="name">format-insert-time</property>
+						<property name="label" translatable="yes">Insert _Time</property>
+						<signal name="activate" handler="mw_insert_time_activate_cb"/>
+					</object>
+					<accelerator key="T" modifiers="GDK_CONTROL_MASK"/>
+				</child>
+				<child>
 					<object class="GtkAction" id="almanah_ui_help">
 						<property name="name">help</property>
 						<property name="label" translatable="yes">_Help</property>
@@ -196,6 +204,8 @@
 					<menuitem action="almanah_ui_bold"/>
 					<menuitem action="almanah_ui_italic"/>
 					<menuitem action="almanah_ui_underline"/>
+					<separator/>
+					<menuitem action="almanah_ui_insert_time"/>
 				</menu>
 				<menu action="almanah_ui_definitions">
 					<menuitem action="almanah_ui_add_definition"/>

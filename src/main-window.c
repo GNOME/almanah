@@ -18,6 +18,7 @@
  */
 
 #include <config.h>
+#include <time.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
@@ -342,7 +343,8 @@ save_current_entry (AlmanahMainWindow *self)
 		gchar date_string[100];
 		GtkWidget *dialog;
 
-		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
+		/* Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry. */
+		g_date_strftime (date_string, sizeof (date_string), _("%A, %e %B %Y"), &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
 						 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
@@ -366,7 +368,8 @@ save_current_entry (AlmanahMainWindow *self)
 		gchar date_string[100];
 		GtkWidget *dialog;
 
-		g_date_strftime (date_string, sizeof (date_string), "%A, %e %B %Y", &date);
+		/* Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry. */
+		g_date_strftime (date_string, sizeof (date_string), _("%A, %e %B %Y"), &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
 						 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
@@ -708,6 +711,18 @@ void
 mw_delete_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	gtk_text_buffer_delete_selection (main_window->priv->entry_buffer, TRUE, TRUE);
+}
+
+void
+mw_insert_time_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+{
+	gchar time_string[100];
+	time_t time_struct;
+
+	/* Translators: This is a strftime()-format string for the time to insert into an entry when using Edit->Insert Time. */
+	time_struct = time (NULL);
+	strftime (time_string, sizeof (time_string), _("%X"), localtime (&time_struct));
+	gtk_text_buffer_insert_at_cursor (main_window->priv->entry_buffer, time_string, -1);
 }
 
 void

@@ -1,5 +1,12 @@
 2009-03-01  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* data/almanah.ui:
+	* src/main-window.c (save_current_entry),
+	(mw_insert_time_activate_cb): Added an "Insert Time" action, which
+	inserts the current time at the cursor position. (Closes: #572544)
+
+2009-03-01  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/main-window.c: Added some missing #includes.
 	* src/storage-manager.c (back_up_file),
 	(almanah_storage_manager_connect): Make an automatic backup of the
