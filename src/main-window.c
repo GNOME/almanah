@@ -30,6 +30,8 @@
 #include "main.h"
 #include "interface.h"
 #include "add-definition-dialog.h"
+#include "preferences-dialog.h"
+#include "search-dialog.h"
 #include "printing.h"
 #include "entry.h"
 #include "storage-manager.h"

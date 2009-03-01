@@ -1,3 +1,10 @@
+2009-03-01  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/main-window.c: Added some missing #includes.
+	* src/storage-manager.c (back_up_file),
+	(almanah_storage_manager_connect): Make an automatic backup of the
+	database before opening it just to be safe. (Closes: #572926)
+
 2009-02-08  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/Makefile.am:
