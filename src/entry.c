@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,12 +34,14 @@ struct _AlmanahEntryPrivate {
 	guint8 *data;
 	gsize length;
 	gboolean is_empty;
+	gboolean is_important;
 };
 
 enum {
 	PROP_DAY = 1,
 	PROP_MONTH,
-	PROP_YEAR
+	PROP_YEAR,
+	PROP_IS_IMPORTANT
 };
 
 G_DEFINE_TYPE (AlmanahEntry, almanah_entry, G_TYPE_OBJECT)
@@ -71,6 +73,10 @@ almanah_entry_class_init (AlmanahEntryClass *klass)
 					"Year", "The year for which this is the entry.",
 					1, (1 << 16) - 1, 1,
 					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_IS_IMPORTANT,
+				g_param_spec_boolean ("is-important",
+					"Important?", "Whether the entry is particularly important to the user.",
+					FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -88,7 +94,6 @@ almanah_entry_finalize (GObject *object)
 	AlmanahEntryPrivate *priv = ALMANAH_ENTRY (object)->priv;
 
 	g_free (priv->data);
-	priv->data = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_entry_parent_class)->finalize (object);
@@ -108,6 +113,9 @@ almanah_entry_get_property (GObject *object, guint property_id, GValue *value, G
 			break;
 		case PROP_YEAR:
 			g_value_set_uint (value, g_date_get_year (&(priv->date)));
+			break;
+		case PROP_IS_IMPORTANT:
+			g_value_set_boolean (value, priv->is_important);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -130,6 +138,9 @@ almanah_entry_set_property (GObject *object, guint property_id, const GValue *va
 			break;
 		case PROP_YEAR:
 			g_date_set_year (&(priv->date), g_value_get_uint (value));
+			break;
+		case PROP_IS_IMPORTANT:
+			priv->is_important = g_value_get_boolean (value);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -263,4 +274,17 @@ almanah_entry_is_empty (AlmanahEntry *self)
 		self->priv->length == 0 ||
 		self->priv->data == NULL ||
 		self->priv->data[0] == '\0') ? TRUE : FALSE;
+}
+
+gboolean
+almanah_entry_is_important (AlmanahEntry *self)
+{
+	return self->priv->is_important;
+}
+
+void
+almanah_entry_set_is_important (AlmanahEntry *self, gboolean is_important)
+{
+	self->priv->is_important = is_important;
+	g_object_notify (G_OBJECT (self), "is-important");
 }

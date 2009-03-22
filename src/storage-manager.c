@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -185,6 +185,7 @@ create_tables (AlmanahStorageManager *self)
 	const gchar *queries[] = {
 		"CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day))",
 		"CREATE TABLE IF NOT EXISTS definitions (definition_text TEXT, definition_type INTEGER, definition_value TEXT, definition_value2 TEXT, PRIMARY KEY (definition_text))",
+		"ALTER TABLE entries ADD COLUMN is_important INTEGER", /* added in 0.7.0 */
 		NULL
 	};
 
@@ -725,7 +726,7 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT content FROM entries WHERE year = ? AND month = ? AND day = ?", -1,
+				"SELECT content, is_important FROM entries WHERE year = ? AND month = ? AND day = ?", -1,
 				&statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
@@ -744,6 +745,7 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 	/* Get the data */
 	entry = almanah_entry_new (date);
 	almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+	almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
 
 	sqlite3_finalize (statement);
 
@@ -788,7 +790,7 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 		/* Prepare the statement */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-					"REPLACE INTO entries (year, month, day, content) VALUES (?, ?, ?, ?)", -1,
+					"REPLACE INTO entries (year, month, day, content, is_important) VALUES (?, ?, ?, ?, ?)", -1,
 					&statement, NULL) != SQLITE_OK) {
 			return FALSE;
 		}
@@ -800,6 +802,8 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 		data = almanah_entry_get_data (entry, &length);
 		sqlite3_bind_blob (statement, 4, data, length, SQLITE_TRANSIENT);
+
+		sqlite3_bind_int (statement, 5, almanah_entry_is_important (entry));
 
 		/* Execute the statement */
 		if (sqlite3_step (statement) != SQLITE_DONE) {
@@ -837,7 +841,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT content, day, month, year FROM entries", -1,
+				"SELECT content, day, month, year, is_important FROM entries", -1,
 				&statement, NULL) != SQLITE_OK) {
 		return -1;
 	}
@@ -854,6 +858,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 		g_date_set_dmy (date, sqlite3_column_int (statement, 1), sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3));
 		entry = almanah_entry_new (date);
 		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+		almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 4) == 1) ? TRUE : FALSE);
 
 		/* Deserialise the entry into our buffer */
 		gtk_text_buffer_set_text (text_buffer, "", 0);

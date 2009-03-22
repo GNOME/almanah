@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,6 +77,7 @@ struct _AlmanahMainWindowPrivate {
 	GtkAction *cut_action;
 	GtkAction *copy_action;
 	GtkAction *delete_action;
+	GtkAction *important_action;
 
 	gboolean updating_formatting;
 	gboolean pending_bold_active;
@@ -183,6 +184,7 @@ almanah_main_window_new (void)
 	priv->cut_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_cut"));
 	priv->copy_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_copy"));
 	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_delete"));
+	priv->important_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_important"));
 
 	/* Set up text formatting */
 	almanah_interface_create_text_tags (priv->entry_buffer, TRUE);
@@ -726,6 +728,12 @@ mw_insert_time_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 }
 
 void
+mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+{
+	almanah_entry_set_is_important (main_window->priv->current_entry, gtk_toggle_action_get_active(GTK_TOGGLE_ACTION (action)));
+}
+
+void
 mw_search_activate_cb (GtkAction *action, gpointer user_data)
 {
 	if (almanah->search_dialog == NULL)
@@ -821,7 +829,7 @@ mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 
 	gtk_show_about_dialog (GTK_WINDOW (main_window),
 				"version", VERSION,
-				"copyright", _("Copyright \xc2\xa9 2008 Philip Withnall"),
+				"copyright", _("Copyright \xc2\xa9 2008-2009 Philip Withnall"),
 				"comments", description,
 				"authors", authors,
 				/* Translators: please include your names here to be credited for your hard work!
@@ -972,6 +980,8 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 	gtk_text_view_set_editable (priv->entry_view, almanah_entry_get_editability (priv->current_entry) != ALMANAH_ENTRY_FUTURE ? TRUE : FALSE);
 	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
+	gtk_action_set_sensitive (priv->important_action, almanah_entry_get_editability (priv->current_entry) != ALMANAH_ENTRY_FUTURE ? TRUE : FALSE);
+	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->important_action), almanah_entry_is_important (priv->current_entry));
 
 	/* Prepare for the possibility of failure --- do as much of the general interface changes as possible first */
 	gtk_list_store_clear (priv->event_store);

@@ -120,12 +120,21 @@
 					<accelerator key="U" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
-					<object class="GtkToggleAction" id="almanah_ui_insert_time">
+					<object class="GtkAction" id="almanah_ui_insert_time">
 						<property name="name">format-insert-time</property>
 						<property name="label" translatable="yes">Insert _Time</property>
 						<signal name="activate" handler="mw_insert_time_activate_cb"/>
 					</object>
 					<accelerator key="T" modifiers="GDK_CONTROL_MASK"/>
+				</child>
+				<child>
+					<object class="GtkToggleAction" id="almanah_ui_important">
+						<property name="name">format-important</property>
+						<property name="label" translatable="yes">I_mportant</property>
+						<property name="icon-name">gtk-info</property>
+						<signal name="activate" handler="mw_important_activate_cb"/>
+					</object>
+					<accelerator key="M" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
 					<object class="GtkAction" id="almanah_ui_help">
@@ -188,6 +197,8 @@
 					<menuitem action="almanah_ui_print_preview"/>
 					<menuitem action="almanah_ui_print"/>
 					<separator/>
+					<menuitem action="almanah_ui_jump_to_today"/>
+					<separator/>
 					<menuitem action="almanah_ui_quit"/>
 				</menu>
 				<menu action="almanah_ui_edit">
@@ -206,6 +217,7 @@
 					<menuitem action="almanah_ui_underline"/>
 					<separator/>
 					<menuitem action="almanah_ui_insert_time"/>
+					<menuitem action="almanah_ui_important"/>
 				</menu>
 				<menu action="almanah_ui_definitions">
 					<menuitem action="almanah_ui_add_definition"/>
@@ -219,6 +231,7 @@
 			</menubar>
 			<toolbar name="almanah_mw_toolbar">
 				<toolitem action="almanah_ui_jump_to_today"/>
+				<toolitem action="almanah_ui_important"/>
 				<separator/>
 				<toolitem action="almanah_ui_bold"/>
 				<toolitem action="almanah_ui_italic"/>

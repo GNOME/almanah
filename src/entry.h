@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,9 @@ void almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer);
 void almanah_entry_get_date (AlmanahEntry *self, GDate *date);
 AlmanahEntryEditability almanah_entry_get_editability (AlmanahEntry *self);
 gboolean almanah_entry_is_empty (AlmanahEntry *self);
+
+gboolean almanah_entry_is_important (AlmanahEntry *self);
+void almanah_entry_set_is_important (AlmanahEntry *self, gboolean is_important);
 
 G_END_DECLS
 

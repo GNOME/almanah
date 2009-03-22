@@ -1,3 +1,20 @@
+2009-03-22  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* data/almanah.ui:
+	* src/entry.c (almanah_entry_class_init), (almanah_entry_finalize),
+	(almanah_entry_get_property), (almanah_entry_set_property),
+	(almanah_entry_is_important), (almanah_entry_set_is_important):
+	* src/entry.h:
+	* src/main-window.c (almanah_main_window_new),
+	(mw_important_activate_cb), (mw_about_activate_cb),
+	(mw_calendar_day_selected_cb):
+	* src/storage-manager.c (create_tables),
+	(almanah_storage_manager_get_entry),
+	(almanah_storage_manager_set_entry),
+	(almanah_storage_manager_search_entries):
+	* src/storage-manager.h: Add the ability to mark entries as important.
+	(Helps: #572927)
+
 2009-03-01  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* data/almanah.ui:
