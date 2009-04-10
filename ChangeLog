@@ -1,5 +1,29 @@
 2009-04-10  Philip Withnall  <philip@tecnocode.co.uk>
 
+	* configure.ac:
+	* src/Makefile.am:
+	* src/event-factories/f-spot.c
+	(almanah_f_spot_event_factory_class_init),
+	(almanah_f_spot_event_factory_init),
+	(almanah_f_spot_event_factory_dispose),
+	(almanah_f_spot_event_factory_finalize), (query_info_complete_cb),
+	(query_events_complete_cb), (date_to_int64), (cancel_query),
+	(query_events), (get_events):
+	* src/event-factories/f-spot.h:
+	* src/event-factory.h:
+	* src/event-manager.c:
+	* src/events/f-spot-photo.c
+	(almanah_f_spot_photo_event_class_init),
+	(almanah_f_spot_photo_event_init),
+	(almanah_f_spot_photo_event_finalize),
+	(almanah_f_spot_photo_event_new),
+	(almanah_f_spot_photo_event_format_value),
+	(almanah_f_spot_photo_event_view):
+	* src/events/f-spot-photo.h: Added an F-Spot photo event type, allowing
+	photos in F-Spot for the given day to be listed. (Closes: #578063)
+
+2009-04-10  Philip Withnall  <philip@tecnocode.co.uk>
+
 	* src/interface.c (almanah_interface_create_text_tags):
 	* src/main-window.c (almanah_main_window_new),
 	(almanah_main_window_enable_spell_checking),

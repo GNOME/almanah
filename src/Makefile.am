@@ -64,13 +64,17 @@ almanah_SOURCES = \
 	events/calendar-appointment.h	\
 	events/calendar-task.c		\
 	events/calendar-task.h		\
+	events/f-spot-photo.c		\
+	events/f-spot-photo.h		\
 	event-factories/calendar.c	\
 	event-factories/calendar.h	\
 	event-factories/calendar-client.c	\
 	event-factories/calendar-client.h	\
 	event-factories/calendar-debug.h	\
 	event-factories/calendar-sources.c	\
-	event-factories/calendar-sources.h
+	event-factories/calendar-sources.h	\
+	event-factories/f-spot.c		\
+	event-factories/f-spot.h
 
 if ENCRYPTION
 almanah_SOURCES += \

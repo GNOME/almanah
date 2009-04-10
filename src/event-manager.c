@@ -32,9 +32,11 @@ typedef struct {
 
 #include "calendar.h"
 #include "main.h"
+#include "f-spot.h"
 
 const EventFactoryType event_factory_types[] = {
-	{ ALMANAH_EVENT_FACTORY_CALENDAR, almanah_calendar_event_factory_get_type }
+	{ ALMANAH_EVENT_FACTORY_CALENDAR, almanah_calendar_event_factory_get_type },
+	{ ALMANAH_EVENT_FACTORY_F_SPOT, almanah_f_spot_event_factory_get_type }
 };
 
 static void almanah_event_manager_init (AlmanahEventManager *self);
