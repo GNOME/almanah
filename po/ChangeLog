@@ -1,3 +1,7 @@
+2009-04-10  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* POTFILES.in: Added F-Spot photo event type.
+
 2009-03-25  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* en_GB.po: Updated British English translation by Jen Ockwell

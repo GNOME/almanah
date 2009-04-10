@@ -6,6 +6,7 @@ data/almanah.schemas.in
 src/add-definition-dialog.c
 src/events/calendar-appointment.c
 src/events/calendar-task.c
+src/events/f-spot-photo.c
 src/interface.c
 src/definition-manager-window.c
 src/definition.c
