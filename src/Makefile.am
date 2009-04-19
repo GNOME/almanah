@@ -143,3 +143,5 @@ CLEANFILES = \
 	event-factory-builtins.h		\
 	event-factory-builtins.c		\
 	stamp-event-factory-builtins.h
+
+-include $(top_srcdir)/git.mk

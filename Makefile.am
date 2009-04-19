@@ -8,14 +8,30 @@ EXTRA_DIST =			\
 	README			\
 	COPYING			\
 	AUTHORS			\
-	INSTALL			\
 	NEWS			\
-	ChangeLog.pre-git
+	MAINTAINERS		\
+	ChangeLog.pre-git	\
+	almanah.doap
 
 DISTCLEANFILES = \
 	intltool-extract	\
 	intltool-merge		\
 	intltool-update
+
+MAINTAINERCLEANFILES = \
+	INSTALL		\
+	aclocal.m4	\
+	compile		\
+	config.guess	\
+	config.h.in	\
+	config.sub	\
+	depcomp		\
+	install-sh	\
+	ltmain.sh	\
+	missing		\
+	mkinstalldirs	\
+	ChangeLog	\
+	`find "$(srcdir)" -type f -name Makefile.in -print`
 
 # Copy all the spec files. Of course, only one is actually used.
 dist-hook:
@@ -40,3 +56,5 @@ ChangeLog:
 	  echo A git checkout and git-log is required to generate this file >> $@); \
 	fi
 .PHONY: ChangeLog
+
+-include $(top_srcdir)/git.mk
