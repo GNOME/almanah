@@ -27,7 +27,6 @@
 #include "../event-factory.h"
 #include "../events/f-spot-photo.h"
 
-static void almanah_f_spot_event_factory_init (AlmanahFSpotEventFactory *self);
 static void almanah_f_spot_event_factory_dispose (GObject *object);
 static void almanah_f_spot_event_factory_finalize (GObject *object);
 static void query_events (AlmanahEventFactory *event_factory, GDate *date);

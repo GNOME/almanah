@@ -30,7 +30,7 @@
 
 Almanah *almanah;
 
-static void
+static G_GNUC_NORETURN void
 storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data)
 {
 	g_object_unref (almanah->storage_manager);

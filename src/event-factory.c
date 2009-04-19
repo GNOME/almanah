@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #include "event-factory.h"
 #include "event-factory-builtins.h"
 
-static void almanah_event_factory_init (AlmanahEventFactory *self);
 static void almanah_event_factory_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 
 struct _AlmanahEventFactoryPrivate {

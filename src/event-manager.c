@@ -39,7 +39,6 @@ const EventFactoryType event_factory_types[] = {
 	{ ALMANAH_EVENT_FACTORY_F_SPOT, almanah_f_spot_event_factory_get_type }
 };
 
-static void almanah_event_manager_init (AlmanahEventManager *self);
 static void almanah_event_manager_dispose (GObject *object);
 static void events_updated_cb (AlmanahEventFactory *factory, AlmanahEventManager *self);
 

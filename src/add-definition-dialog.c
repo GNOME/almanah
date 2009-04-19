@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,12 +28,14 @@
 #include "main.h"
 #include "storage-manager.h"
 
-static void almanah_add_definition_dialog_init (AlmanahAddDefinitionDialog *self);
 static void almanah_add_definition_dialog_dispose (GObject *object);
 static void almanah_add_definition_dialog_finalize (GObject *object);
 static void almanah_add_definition_dialog_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_add_definition_dialog_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void response_cb (GtkDialog *dialog, gint response_id, AlmanahAddDefinitionDialog *self);
+
+/* GtkBuilder callbacks */
+void add_type_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahAddDefinitionDialog *self);
 
 struct _AlmanahAddDefinitionDialogPrivate {
 	GtkComboBox *type_combo_box;

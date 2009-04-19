@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "storage-manager.h"
 #include "interface.h"
 #include "main.h"
+#include "printing.h"
 
 #define TITLE_MARGIN_BOTTOM 15 /* margin under the title, in pixels */
 #define ENTRY_MARGIN_BOTTOM 10 /* margin under the entry, in pixels */
@@ -314,7 +315,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	entry_y = almanah_operation->y;
 
 	/* Draw the lines in the entry */
-	for (i = almanah_operation->current_line; i < pango_layout_get_line_count (entry_layout); i++) {
+	for (i = almanah_operation->current_line; (gint) i < pango_layout_get_line_count (entry_layout); i++) {
 		entry_line = pango_layout_get_line_readonly (entry_layout, i);
 		pango_layout_line_get_pixel_extents (entry_line, NULL, &logical_extents);
 

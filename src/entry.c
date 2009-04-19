@@ -24,7 +24,6 @@
 #include "entry.h"
 #include "main.h"
 
-static void almanah_entry_init (AlmanahEntry *self);
 static void almanah_entry_finalize (GObject *object);
 static void almanah_entry_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_entry_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);

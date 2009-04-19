@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@
 #include "../interface.h"
 #include "../main.h"
 
-static void almanah_uri_definition_init (AlmanahURIDefinition *self);
 static gboolean uri_view (AlmanahDefinition *definition);
 static void uri_build_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox);
 static void uri_close_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox);

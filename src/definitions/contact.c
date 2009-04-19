@@ -25,7 +25,6 @@
 #include "../definition.h"
 #include "../main.h"
 
-static void almanah_contact_definition_init (AlmanahContactDefinition *self);
 static void almanah_contact_definition_dispose (GObject *object);
 static gboolean contact_view (AlmanahDefinition *definition);
 static void contact_build_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox);

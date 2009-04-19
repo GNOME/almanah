@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@
 #include "main.h"
 #include "main-window.h"
 
-static void almanah_preferences_dialog_init (AlmanahPreferencesDialog *self);
 static void almanah_preferences_dialog_dispose (GObject *object);
 #ifdef ENABLE_ENCRYPTION
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
@@ -237,10 +236,10 @@ static void
 pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog)
 {
 	/* NOTE: pilfered from cryptui_need_to_get_keys */
-	gchar *argv[2] = { "seahorse", NULL };
+	const gchar *argv[2] = { "seahorse", NULL };
 	GError *error = NULL;
 
-	if (g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
+	if (g_spawn_async (NULL, (gchar**) argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->preferences_dialog),
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error opening Seahorse"));

@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,13 @@
 #include "main.h"
 #include "main-window.h"
 
-static void almanah_search_dialog_init (AlmanahSearchDialog *self);
 static void sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search_dialog);
 static void sd_results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkWidget *button);
+
+/* GtkBuilder callbacks */
+void sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
+void sd_results_tree_view_row_activated_cb (GtkTreeView *self, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data);
+void sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
 
 struct _AlmanahSearchDialogPrivate {
 	GtkEntry *sd_search_entry;
@@ -141,7 +145,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 {
 	GDate *results;
 	gint result_count;
-	guint i;
+	gint i;
 	GtkTreeIter iter;
 	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
 

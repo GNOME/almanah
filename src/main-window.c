@@ -40,7 +40,6 @@
 #include "definition.h"
 #include "definition-manager-window.h"
 
-static void almanah_main_window_init (AlmanahMainWindow *self);
 static void almanah_main_window_dispose (GObject *object);
 static void save_window_state (AlmanahMainWindow *self);
 static void restore_window_state (AlmanahMainWindow *self);
@@ -54,10 +53,32 @@ static void mw_bold_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main
 static void mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
-void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
 static void mw_events_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window);
 static void mw_events_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
 static void mw_definition_removed_cb (AlmanahStorageManager *storage_manager, const gchar *definition_text, AlmanahMainWindow *main_window);
+
+/* GtkBuilder callbacks */
+void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
+void mw_page_setup_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_print_preview_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_print_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_quit_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_cut_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_copy_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_paste_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_delete_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_insert_time_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_add_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_remove_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_view_definitions_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
+gboolean mw_entry_view_focus_out_event_cb (GtkWidget *entry_view, GdkEventFocus *event, AlmanahMainWindow *main_window);
+void mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window);
 
 struct _AlmanahMainWindowPrivate {
 	GtkTextView *entry_view;
@@ -665,19 +686,19 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 }
 
 void
-mw_page_setup_activate_cb (GtkAction *action, gpointer user_data)
+mw_page_setup_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	almanah_print_page_setup ();
 }
 
 void
-mw_print_preview_activate_cb (GtkAction *action, gpointer user_data)
+mw_print_preview_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	almanah_print_entries (TRUE);
 }
 
 void
-mw_print_activate_cb (GtkAction *action, gpointer user_data)
+mw_print_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	almanah_print_entries (FALSE);
 }
@@ -735,7 +756,7 @@ mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 }
 
 void
-mw_search_activate_cb (GtkAction *action, gpointer user_data)
+mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	if (almanah->search_dialog == NULL)
 		almanah->search_dialog = GTK_WIDGET (almanah_search_dialog_new ());
@@ -745,7 +766,7 @@ mw_search_activate_cb (GtkAction *action, gpointer user_data)
 }
 
 void
-mw_preferences_activate_cb (GtkAction *action, gpointer user_data)
+mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 #ifdef ENABLE_ENCRYPTION
 	if (almanah->preferences_dialog == NULL)

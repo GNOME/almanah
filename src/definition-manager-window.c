@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,12 +29,17 @@
 #include "definition.h"
 #include "storage-manager.h"
 
-static void almanah_definition_manager_window_init (AlmanahDefinitionManagerWindow *self);
 static void almanah_definition_manager_window_dispose (GObject *object);
 static void definition_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahDefinitionManagerWindow *self);
 static void definition_added_cb (AlmanahStorageManager *storage_manager, AlmanahDefinition *definition, AlmanahDefinitionManagerWindow *self);
 static void definition_removed_cb (AlmanahStorageManager *storage_manager, const gchar *definition_text, AlmanahDefinitionManagerWindow *self);
 static void populate_definition_store (AlmanahDefinitionManagerWindow *self);
+
+/* GtkBuilder callbacks */
+void dmw_definition_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column,
+						AlmanahDefinitionManagerWindow *self);
+void dmw_view_button_clicked_cb (GtkButton *button, AlmanahDefinitionManagerWindow *self);
+void dmw_remove_button_clicked_cb (GtkButton *button, AlmanahDefinitionManagerWindow *self);
 
 struct _AlmanahDefinitionManagerWindowPrivate {
 	GtkLabel *name_label;

@@ -34,7 +34,6 @@
 #include "definition.h"
 #include "storage-manager.h"
 
-static void almanah_storage_manager_init (AlmanahStorageManager *self);
 static void almanah_storage_manager_finalize (GObject *object);
 static void almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
@@ -207,23 +206,23 @@ typedef struct {
 static gboolean
 prepare_gpgme (AlmanahStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
 {
-	gpgme_error_t gpgme_error;
+	gpgme_error_t error_gpgme;
 
 	/* Check OpenPGP's supported */
-	gpgme_error = gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP);
-	if (gpgme_error != GPG_ERR_NO_ERROR) {
+	error_gpgme = gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP);
+	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_UNSUPPORTED,
 			     _("GPGME doesn't support OpenPGP: %s"),
-			     gpgme_strerror (gpgme_error));
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
 	/* Set up for the operation */
-	gpgme_error = gpgme_new (&(operation->context));
-	if (gpgme_error != GPG_ERR_NO_ERROR) {
+	error_gpgme = gpgme_new (&(operation->context));
+	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
 			     _("Error creating cipher context: %s"),
-			     gpgme_strerror (gpgme_error));
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -238,7 +237,7 @@ static gboolean
 open_db_files (AlmanahStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
 {
 	GError *io_error = NULL;
-	gpgme_error_t gpgme_error;
+	gpgme_error_t error_gpgme;
 
 	/* Open the encrypted file */
 	operation->cipher_io_channel = g_io_channel_new_file (self->priv->filename, encrypting ? "w" : "r", &io_error);
@@ -248,12 +247,12 @@ open_db_files (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 	}
 
 	/* Pass it to GPGME */
-	gpgme_error = gpgme_data_new_from_fd (&(operation->gpgme_cipher), g_io_channel_unix_get_fd (operation->cipher_io_channel));
-	if (gpgme_error != GPG_ERR_NO_ERROR) {
+	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_cipher), g_io_channel_unix_get_fd (operation->cipher_io_channel));
+	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 			     _("Error opening encrypted database file \"%s\": %s"),
 			     self->priv->filename,
-			     gpgme_strerror (gpgme_error));
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -268,12 +267,12 @@ open_db_files (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 	fchmod (g_io_channel_unix_get_fd (operation->plain_io_channel), S_IRWXU);
 
 	/* Pass it to GPGME */
-	gpgme_error = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
-	if (gpgme_error != GPG_ERR_NO_ERROR) {
+	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
+	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 			     _("Error opening plain database file \"%s\": %s"),
 			     self->priv->plain_filename,
-			     gpgme_strerror (gpgme_error));
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -307,9 +306,9 @@ static gboolean
 database_idle_cb (CipherOperation *operation)
 {
 	AlmanahStorageManager *self = operation->storage_manager;
-	gpgme_error_t gpgme_error;
+	gpgme_error_t error_gpgme;
 
-	if (!(gpgme_wait (operation->context, &gpgme_error, FALSE) == NULL && gpgme_error == 0)) {
+	if (!(gpgme_wait (operation->context, &error_gpgme, FALSE) == NULL && error_gpgme == 0)) {
 		struct stat db_stat;
 
 		/* Check to see if the encrypted file is 0B in size, which isn't good.
@@ -341,7 +340,7 @@ decrypt_database (AlmanahStorageManager *self, GError **error)
 {
 	GError *preparation_error = NULL;
 	CipherOperation *operation;
-	gpgme_error_t gpgme_error;
+	gpgme_error_t error_gpgme;
 
 	operation = g_new0 (CipherOperation, 1);
 	operation->storage_manager = g_object_ref (self);
@@ -355,12 +354,12 @@ decrypt_database (AlmanahStorageManager *self, GError **error)
 	}
 
 	/* Decrypt and verify! */
-	gpgme_error = gpgme_op_decrypt_verify (operation->context, operation->gpgme_cipher, operation->gpgme_plain);
-	if (gpgme_error != GPG_ERR_NO_ERROR) {
+	error_gpgme = gpgme_op_decrypt_verify (operation->context, operation->gpgme_cipher, operation->gpgme_plain);
+	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		cipher_operation_free (operation);
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_DECRYPTING,
 			     _("Error decrypting database: %s"),
-			     gpgme_strerror (gpgme_error));
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -375,7 +374,7 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 {
 	GError *preparation_error = NULL;
 	CipherOperation *operation;
-	gpgme_error_t gpgme_error;
+	gpgme_error_t error_gpgme;
 	gpgme_key_t gpgme_keys[2] = { NULL, };
 
 	operation = g_new0 (CipherOperation, 1);
@@ -389,12 +388,12 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 	}
 
 	/* Set up signing and the recipient */
-	gpgme_error = gpgme_get_key (operation->context, encryption_key, &gpgme_keys[0], FALSE);
-	if (gpgme_error != GPG_ERR_NO_ERROR || gpgme_keys[0] == NULL) {
+	error_gpgme = gpgme_get_key (operation->context, encryption_key, &gpgme_keys[0], FALSE);
+	if (error_gpgme != GPG_ERR_NO_ERROR || gpgme_keys[0] == NULL) {
 		cipher_operation_free (operation);
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY,
 			     _("Error getting encryption key: %s"),
-			     gpgme_strerror (gpgme_error));
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -407,15 +406,15 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 	}
 
 	/* Encrypt and sign! */
-	gpgme_error = gpgme_op_encrypt_sign_start (operation->context, gpgme_keys, 0, operation->gpgme_plain, operation->gpgme_cipher);
+	error_gpgme = gpgme_op_encrypt_sign_start (operation->context, gpgme_keys, 0, operation->gpgme_plain, operation->gpgme_cipher);
 	gpgme_key_unref (gpgme_keys[0]);
 
-	if (gpgme_error != GPG_ERR_NO_ERROR) {
+	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		cipher_operation_free (operation);
 
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_ENCRYPTING,
 			     _("Error encrypting database: %s"),
-			     gpgme_strerror (gpgme_error));
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -891,7 +890,7 @@ gboolean *
 almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
 {
 	AlmanahQueryResults *results;
-	guint i;
+	gint i;
 	gboolean *days;
 
 	i = g_date_get_days_in_month (month, year);
@@ -932,7 +931,7 @@ almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 {
 	AlmanahQueryResults *results;
 	AlmanahDefinition **definitions;
-	guint i;
+	gint i;
 
 	results = almanah_storage_manager_query (self, "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions", NULL);
 

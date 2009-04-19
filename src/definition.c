@@ -44,7 +44,6 @@ const DefinitionType definition_types[] = {
 	{ ALMANAH_DEFINITION_CONTACT, almanah_contact_definition_get_type }
 };
 
-static void almanah_definition_init (AlmanahDefinition *self);
 static void almanah_definition_finalize (GObject *object);
 static void almanah_definition_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_definition_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);

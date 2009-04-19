@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ typedef struct {
 
 GType almanah_add_definition_dialog_get_type (void);
 
-AlmanahAddDefinitionDialog *almanah_add_definition_dialog_new ();
+AlmanahAddDefinitionDialog *almanah_add_definition_dialog_new (void);
 
 const gchar *almanah_add_definition_dialog_get_text (AlmanahAddDefinitionDialog *self);
 void almanah_add_definition_dialog_set_text (AlmanahAddDefinitionDialog *self, const gchar *text);

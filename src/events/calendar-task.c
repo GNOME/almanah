@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@
 #include "calendar-task.h"
 #include "main.h"
 
-static void almanah_calendar_task_event_init (AlmanahCalendarTaskEvent *self);
 static void almanah_calendar_task_event_finalize (GObject *object);
 static const gchar *almanah_calendar_task_event_format_value (AlmanahEvent *event);
 static gboolean almanah_calendar_task_event_view (AlmanahEvent *event);

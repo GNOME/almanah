@@ -24,7 +24,6 @@
 #include "f-spot-photo.h"
 #include "main.h"
 
-static void almanah_f_spot_photo_event_init (AlmanahFSpotPhotoEvent *self);
 static void almanah_f_spot_photo_event_finalize (GObject *object);
 static const gchar *almanah_f_spot_photo_event_format_value (AlmanahEvent *event);
 static gboolean almanah_f_spot_photo_event_view (AlmanahEvent *event);
