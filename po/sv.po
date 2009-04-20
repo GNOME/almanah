@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-24 10:28+0100\n"
-"PO-Revision-Date: 2009-03-24 10:28+0100\n"
+"POT-Creation-Date: 2009-04-20 17:36+0200\n"
+"PO-Revision-Date: 2009-04-20 17:37+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/almanah.desktop.in.h:1
-#: ../src/main-window.c:106
+#: ../src/main-window.c:127
 #: ../src/main.c:109
 msgid "Almanah Diary"
 msgstr "Dagboksprogrammet Almanah"
@@ -130,7 +130,7 @@ msgid "Insert _Time"
 msgstr "Infoga _tid"
 
 #: ../data/almanah.ui.h:10
-#: ../src/definition-manager-window.c:243
+#: ../src/definition-manager-window.c:248
 msgid "Nothing selected"
 msgstr "Ingenting markerat"
 
@@ -151,7 +151,7 @@ msgid "Results"
 msgstr "Resultat"
 
 #: ../data/almanah.ui.h:15
-#: ../src/search-dialog.c:57
+#: ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Sök"
 
@@ -207,104 +207,116 @@ msgstr "_Sök"
 msgid "_View Definitions"
 msgstr "_Visa definitioner"
 
-#: ../src/add-definition-dialog.c:80
+#: ../src/add-definition-dialog.c:82
 msgid "Add Definition"
 msgstr "Lägg till definition"
 
-#: ../src/add-definition-dialog.c:162
-#: ../src/definition-manager-window.c:126
-#: ../src/main-window.c:147
-#: ../src/preferences-dialog.c:136
-#: ../src/search-dialog.c:83
+#: ../src/add-definition-dialog.c:164
+#: ../src/definition-manager-window.c:131
+#: ../src/main-window.c:168
+#: ../src/preferences-dialog.c:135
+#: ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Användargränssnittsfilen \"%s\" kunde inte läsas in"
 
-#: ../src/events/calendar-appointment.c:50
+#: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
 msgstr "Kalendermöte"
 
-#: ../src/events/calendar-appointment.c:51
+#: ../src/events/calendar-appointment.c:50
 msgid "An appointment on an Evolution calendar."
 msgstr "Ett möte i en Evolution-kalender."
 
-#: ../src/events/calendar-appointment.c:121
-#: ../src/events/calendar-task.c:110
+#: ../src/events/calendar-appointment.c:120
+#: ../src/events/calendar-task.c:109
 msgid "Error launching Evolution"
 msgstr "Fel vid start av Evolution"
 
-#: ../src/events/calendar-task.c:50
+#: ../src/events/calendar-task.c:49
 msgid "Calendar Task"
 msgstr "Kalenderaktivitet"
 
-#: ../src/events/calendar-task.c:51
+#: ../src/events/calendar-task.c:50
 msgid "A task on an Evolution calendar."
 msgstr "En uppgift i en Evolution-kalender."
 
-#: ../src/definition-manager-window.c:66
+#: ../src/events/f-spot-photo.c:49
+msgid "F-Spot Photo"
+msgstr "F-Spot-foto"
+
+#: ../src/events/f-spot-photo.c:50
+msgid "A photo stored in F-Spot."
+msgstr "Ett foto lagrat i F-Spot."
+
+#: ../src/events/f-spot-photo.c:109
+msgid "Error launching F-Spot"
+msgstr "Fel vid start av F-Spot"
+
+#: ../src/definition-manager-window.c:71
 msgid "Definition Manager"
 msgstr "Definitionshanterare"
 
-#: ../src/definition-manager-window.c:200
+#: ../src/definition-manager-window.c:205
 #, c-format
 msgid "Are you sure you want to delete the definition for \"%s\"?"
 msgstr "Är du säker på att du vill ta bort definitionen för \"%s\"?"
 
-#: ../src/definitions/contact.c:54
+#: ../src/definitions/contact.c:53
 msgid "Contact"
 msgstr "Kontakt"
 
-#: ../src/definitions/contact.c:55
+#: ../src/definitions/contact.c:54
 msgid "An Evolution contact."
 msgstr "En Evolution-kontakt."
 
-#: ../src/definitions/contact.c:74
+#: ../src/definitions/contact.c:73
 msgid "Select Contact"
 msgstr "Välj kontakt"
 
-#: ../src/definitions/contact.c:104
-#: ../src/definitions/contact.c:225
+#: ../src/definitions/contact.c:103
+#: ../src/definitions/contact.c:224
 msgid "Error opening contact"
 msgstr "Fel vid öppnande av kontakten"
 
-#: ../src/definitions/contact.c:137
+#: ../src/definitions/contact.c:136
 msgid "Error opening Evolution"
 msgstr "Fel vid öppnande av Evolution"
 
-#: ../src/definitions/file.c:49
+#: ../src/definitions/file.c:48
 msgid "File"
 msgstr "Fil"
 
-#: ../src/definitions/file.c:50
+#: ../src/definitions/file.c:49
 msgid "An attached file."
 msgstr "En bifogad fil."
 
-#: ../src/definitions/file.c:75
+#: ../src/definitions/file.c:74
 msgid "Error opening file"
 msgstr "Fel vid öppnade av filen"
 
-#: ../src/definitions/file.c:94
+#: ../src/definitions/file.c:93
 msgid "Select File"
 msgstr "Välj fil"
 
-#: ../src/definitions/note.c:50
+#: ../src/definitions/note.c:49
 msgid "Note"
 msgstr "Anteckning"
 
-#: ../src/definitions/note.c:51
+#: ../src/definitions/note.c:50
 msgid "A note about an important event."
 msgstr "En anteckning om en viktig händelse."
 
-#: ../src/definitions/uri.c:51
-#: ../src/definitions/uri.c:100
+#: ../src/definitions/uri.c:50
+#: ../src/definitions/uri.c:99
 msgid "URI"
 msgstr "URI"
 
-#: ../src/definitions/uri.c:52
+#: ../src/definitions/uri.c:51
 msgid "A URI of a file or web page."
 msgstr "En URI till en fil eller webbsida."
 
-#: ../src/definitions/uri.c:77
+#: ../src/definitions/uri.c:76
 msgid "Error opening URI"
 msgstr "Fel vid öppnande av URI"
 
@@ -313,53 +325,53 @@ msgstr "Fel vid öppnande av URI"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:349
-#: ../src/main-window.c:374
-#: ../src/main-window.c:970
-#: ../src/printing.c:256
-#: ../src/search-dialog.c:156
+#: ../src/main-window.c:371
+#: ../src/main-window.c:396
+#: ../src/main-window.c:992
+#: ../src/printing.c:257
+#: ../src/search-dialog.c:160
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/main-window.c:353
+#: ../src/main-window.c:375
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Är du säker på att du vill redigera denna dagbokspost för %s?"
 
-#: ../src/main-window.c:378
+#: ../src/main-window.c:400
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Är du säker på att du vill ta bort denna dagbokspost för %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:563
+#: ../src/main-window.c:585
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Okänd eller dubblett texttagg \"%s\" i post. Ignorerar."
 
-#: ../src/main-window.c:726
+#: ../src/main-window.c:748
 #, c-format
 msgid "%X"
 msgstr "%X"
 
-#: ../src/main-window.c:807
+#: ../src/main-window.c:829
 msgid "Almanah is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
 msgstr "Almanah är fri programvara. Du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 3 eller (om du så vill) någon senare version."
 
-#: ../src/main-window.c:811
+#: ../src/main-window.c:833
 msgid "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
 msgstr "Almanah distribueras i hopp om att det ska vara användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för ytterligare information."
 
-#: ../src/main-window.c:815
+#: ../src/main-window.c:837
 msgid "You should have received a copy of the GNU General Public License along with Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr "Du bör ha fått en kopia av GNU General Public License tillsammans med Almanah. Om inte, se <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:826
+#: ../src/main-window.c:848
 #, c-format
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgstr "Ett behjälpligt dagboksprogram, lagrar %u poster och %u definitioner."
 
-#: ../src/main-window.c:832
+#: ../src/main-window.c:854
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -368,7 +380,7 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:840
+#: ../src/main-window.c:862
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander <po@danielnylander.se>\n"
@@ -376,11 +388,11 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "tp-sv@listor.tp-sv.se"
 
-#: ../src/main-window.c:844
+#: ../src/main-window.c:866
 msgid "Almanah Website"
 msgstr "Webbplats för Almanah"
 
-#: ../src/main-window.c:999
+#: ../src/main-window.c:1021
 msgid "Entry content could not be loaded"
 msgstr "Postens innehåll kunde inte läsas in"
 
@@ -409,115 +421,115 @@ msgstr "Kommandoradsflaggor kunde inte tolkas"
 msgid "Error opening database"
 msgstr "Fel vid öppnande av databasen"
 
-#: ../src/preferences-dialog.c:80
+#: ../src/preferences-dialog.c:79
 msgid "Almanah Preferences"
 msgstr "Inställningar för Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:161
+#: ../src/preferences-dialog.c:160
 msgid "Encryption Key"
 msgstr "Krypteringsnyckel"
 
-#: ../src/preferences-dialog.c:167
+#: ../src/preferences-dialog.c:166
 msgid "None (don't encrypt)"
 msgstr "Ingen (kryptera inte)"
 
-#: ../src/preferences-dialog.c:190
+#: ../src/preferences-dialog.c:189
 msgid "New _Key"
 msgstr "Ny n_yckel"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:197
+#: ../src/preferences-dialog.c:196
 msgid "Enable _spell checking"
 msgstr "Aktivera _stavningskontroll"
 
-#: ../src/preferences-dialog.c:227
+#: ../src/preferences-dialog.c:226
 msgid "Error saving the encryption key"
 msgstr "Fel vid sparande av krypteringsnyckeln"
 
-#: ../src/preferences-dialog.c:246
+#: ../src/preferences-dialog.c:245
 msgid "Error opening Seahorse"
 msgstr "Fel vid öppnande av Seahorse"
 
-#: ../src/preferences-dialog.c:284
+#: ../src/preferences-dialog.c:283
 msgid "Spelling checker could not be initialized"
 msgstr "Stavningskontrollen kunde inte initieras"
 
-#: ../src/printing.c:274
+#: ../src/printing.c:275
 msgid "No entry for this date."
 msgstr "Ingen post för detta datum."
 
-#: ../src/printing.c:413
+#: ../src/printing.c:414
 msgid "Start Date"
 msgstr "Startdatum"
 
-#: ../src/printing.c:416
+#: ../src/printing.c:417
 msgid "End Date"
 msgstr "Slutdatum"
 
-#: ../src/storage-manager.c:216
+#: ../src/storage-manager.c:215
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME har inte stöd för OpenPGP: %s"
 
-#: ../src/storage-manager.c:225
+#: ../src/storage-manager.c:224
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Fel vid skapande av chiffersammanhang: %s"
 
-#: ../src/storage-manager.c:254
+#: ../src/storage-manager.c:253
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Fel vid öppnade av krypterade databasfilen \"%s\": %s"
 
-#: ../src/storage-manager.c:274
+#: ../src/storage-manager.c:273
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Fel vid öppnade av vanliga databasfilen \"%s\": %s"
 
-#: ../src/storage-manager.c:319
-#: ../src/storage-manager.c:417
+#: ../src/storage-manager.c:318
+#: ../src/storage-manager.c:416
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Fel vid kryptering av databas: %s"
 
-#: ../src/storage-manager.c:320
+#: ../src/storage-manager.c:319
 msgid "The encrypted database is empty. The plain database file has been left undeleted as backup."
 msgstr "Krypterade databasen är tom. Den vanliga databasfilen har lämnats kvar som säkerhetskopia."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:323
+#: ../src/storage-manager.c:322
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Kunde inte ta bort vanliga databasfilen \"%s\"."
 
-#: ../src/storage-manager.c:362
+#: ../src/storage-manager.c:361
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Fel vid dekryptering av databas: %s"
 
-#: ../src/storage-manager.c:396
+#: ../src/storage-manager.c:395
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Fel vid hämtning av krypteringsnyckel: %s"
 
-#: ../src/storage-manager.c:522
+#: ../src/storage-manager.c:521
 #, c-format
 msgid "Could not open database \"%s\". SQLite provided the following error message: %s"
 msgstr "Kunde inte öppna databasen \"%s\". SQLite gav följande felmeddelande: %s"
 
-#: ../src/storage-manager.c:553
+#: ../src/storage-manager.c:552
 #, c-format
 msgid "Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary will not be encrypted; please install Seahorse and set up a default key, or ignore this message."
 msgstr "Fel vid hämtning av krypteringnyckel: GConf-nyckeln \"%s\" är ogiltig eller tom. Din dagbok kommer inte att vara krypterad; installera Seahorse och ange en standardnyckel eller ignorera detta meddelande."
 
-#: ../src/storage-manager.c:598
-#: ../src/storage-manager.c:632
+#: ../src/storage-manager.c:597
+#: ../src/storage-manager.c:631
 #, c-format
 msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr "Kunde inte köra frågan \"%s\". SQLite gav följande felmeddelande: %s"
 
-#: ../src/storage-manager.c:867
+#: ../src/storage-manager.c:866
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Fel vid deserialisering av post i buffert under sökning."
 
