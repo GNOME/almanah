@@ -308,8 +308,10 @@ database_idle_cb (CipherOperation *operation)
 	AlmanahStorageManager *self = operation->storage_manager;
 	gpgme_error_t gpgme_error;
 
-	if (!(gpgme_wait (operation->context, &gpgme_error, FALSE) == NULL && gpgme_error == 0)) {
+	if (gpgme_wait (operation->context, &gpgme_error, FALSE) != NULL || gpgme_error != GPG_ERR_NO_ERROR) {
 		struct stat db_stat;
+
+		g_warning (_("Error encrypting database: %s"), gpgme_strerror (gpgme_error));
 
 		/* Check to see if the encrypted file is 0B in size, which isn't good.
 		 * Not much we can do about it except quit without deleting the plaintext database. */
