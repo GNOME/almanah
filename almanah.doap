@@ -9,7 +9,7 @@
 	<maintainer>
 		<foaf:Person>
 			<foaf:name>Philip Withnall</foaf:name>
-			<foaf:mbox rdf:resource="philip@tecnocode.co.uk" />
+			<foaf:mbox rdf:resource="mailto:philip@tecnocode.co.uk" />
 			<gnome:userid>pwithnall</gnome:userid>
 		</foaf:Person>
 	</maintainer>
