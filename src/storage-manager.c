@@ -545,19 +545,15 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 	sqlite3_close (self->priv->connection);
 
 #ifdef ENABLE_ENCRYPTION
-	/* If the database wasn't encrypted before we opened it, we won't encrypt it when closing */
-	if (self->priv->decrypted == FALSE) {
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
-		return TRUE;
-	}
+	/* If the database wasn't encrypted before we opened it, we won't encrypt it when closing.
+	 * In fact, we'll go so far as to delete the old encrypted database file. */
+	if (self->priv->decrypted == FALSE) 
+		goto delete_encrypted_db;
 
 	/* Get the encryption key */
 	encryption_key = get_encryption_key ();
-	if (encryption_key == NULL) {
-		/* The preferences are set to not encrypt the diary */
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
-		return TRUE;
-	}
+	if (encryption_key == NULL)
+		goto delete_encrypted_db;
 
 	/* Encrypt the plain DB file */
 	if (encrypt_database (self, encryption_key, &child_error) != TRUE) {
@@ -577,6 +573,12 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 	g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 #endif /* !ENABLE_ENCRYPTION */
 
+	return TRUE;
+
+delete_encrypted_db:
+	/* Delete the old encrypted database and return */
+	g_unlink (self->priv->filename);
+	g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 	return TRUE;
 }
 
