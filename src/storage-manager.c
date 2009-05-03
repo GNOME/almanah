@@ -52,6 +52,7 @@ enum {
 enum {
 	SIGNAL_DISCONNECTED,
 	SIGNAL_DEFINITION_ADDED,
+	SIGNAL_DEFINITION_MODIFIED,
 	SIGNAL_DEFINITION_REMOVED,
 	LAST_SIGNAL
 };
@@ -91,6 +92,12 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 				almanah_marshal_VOID__STRING_STRING,
 				G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
 	storage_manager_signals[SIGNAL_DEFINITION_ADDED] = g_signal_new ("definition-added",
+				G_TYPE_FROM_CLASS (klass),
+				G_SIGNAL_RUN_LAST,
+				0, NULL, NULL,
+				g_cclosure_marshal_VOID__OBJECT,
+				G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
+	storage_manager_signals[SIGNAL_DEFINITION_MODIFIED] = g_signal_new ("definition-modified",
 				G_TYPE_FROM_CLASS (klass),
 				G_SIGNAL_RUN_LAST,
 				0, NULL, NULL,
@@ -965,13 +972,15 @@ almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 	return definitions;
 }
 
+/* Note: this function is case-insensitive, unless the definition text contains Unicode characters
+ * beyond the ASCII range. This is an SQLite bug: http://sqlite.org/lang_expr.html#like */
 AlmanahDefinition *
 almanah_storage_manager_get_definition (AlmanahStorageManager *self, const gchar *definition_text)
 {
 	AlmanahQueryResults *results;
 	AlmanahDefinition *definition;
 
-	results = almanah_storage_manager_query (self, "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions WHERE definition_text = '%q' LIMIT 1", NULL,
+	results = almanah_storage_manager_query (self, "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions WHERE definition_text LIKE '%q' LIMIT 1", NULL,
 						 definition_text);
 
 	if (results == NULL || results->rows == 0) {
@@ -996,12 +1005,22 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 	gboolean return_value;
 	const gchar *value, *value2, *text;
 	AlmanahDefinitionType type_id;
+	AlmanahDefinition *real_definition;
 
 	type_id = almanah_definition_get_type_id (definition);
 	value = almanah_definition_get_value (definition);
 	value2 = almanah_definition_get_value2 (definition);
 	text = almanah_definition_get_text (definition);
 
+	/* Check to see if there's already a definition for this text (case-insensitively), and
+	 * use its (correctly-cased) definition text instead of ours */
+	real_definition = almanah_storage_manager_get_definition (self, text);
+	if (real_definition != NULL) {
+		text = almanah_definition_get_text (real_definition);
+		almanah_definition_set_text (definition, text);
+	}
+
+	/* Update/Insert the definition */
 	if (value2 == NULL) {
 		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO definitions (definition_type, definition_value, definition_text) VALUES (%u, '%q', '%q')", NULL, NULL, NULL,
 								    type_id,
@@ -1015,7 +1034,12 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 								    text);
 	}
 
-	if (return_value == TRUE)
+	if (real_definition != NULL)
+		g_object_unref (real_definition);
+
+	if (return_value == TRUE && real_definition != NULL)
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_MODIFIED], 0, definition);
+	else if (return_value == TRUE)
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_ADDED], 0, definition);
 
 	return return_value;

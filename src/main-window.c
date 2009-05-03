@@ -580,7 +580,7 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 		} else if (action != NULL) {
 			/* Force the toggle status on the action */
 			gtk_toggle_action_set_active (action, TRUE);
-		} else {
+		} else if (strcmp (tag_name, "gtkspell-misspelled") != 0) {
 			/* Print a warning about the unknown tag */
 			g_warning (_("Unknown or duplicate text tag \"%s\" in entry. Ignoring."), tag_name);
 		}

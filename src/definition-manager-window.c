@@ -32,6 +32,7 @@
 static void almanah_definition_manager_window_dispose (GObject *object);
 static void definition_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahDefinitionManagerWindow *self);
 static void definition_added_cb (AlmanahStorageManager *storage_manager, AlmanahDefinition *definition, AlmanahDefinitionManagerWindow *self);
+static void definition_modified_cb (AlmanahStorageManager *storage_manager, AlmanahDefinition *definition, AlmanahDefinitionManagerWindow *self);
 static void definition_removed_cb (AlmanahStorageManager *storage_manager, const gchar *definition_text, AlmanahDefinitionManagerWindow *self);
 static void populate_definition_store (AlmanahDefinitionManagerWindow *self);
 
@@ -162,8 +163,9 @@ almanah_definition_manager_window_new (void)
 	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_dmw_name_label_label")));
 	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_dmw_description_label_label")));
 
-	/* Get notifications about added/removed definitions from the storage manager */
+	/* Get notifications about added/modified/removed definitions from the storage manager */
 	g_signal_connect (almanah->storage_manager, "definition-added", G_CALLBACK (definition_added_cb), definition_manager_window);
+	g_signal_connect (almanah->storage_manager, "definition-modified", G_CALLBACK (definition_modified_cb), definition_manager_window);
 	g_signal_connect (almanah->storage_manager, "definition-removed", G_CALLBACK (definition_removed_cb), definition_manager_window);
 
 	/* Set up the treeview */
@@ -271,6 +273,55 @@ definition_added_cb (AlmanahStorageManager *storage_manager, AlmanahDefinition *
 	g_object_ref (definition);
 
 	gtk_list_store_append (priv->definition_store, &iter);
+	gtk_list_store_set (priv->definition_store, &iter,
+			    0, definition,
+			    1, almanah_definition_get_text (definition),
+			    -1);
+}
+
+static gboolean
+definition_modified_foreach_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer *user_data)
+{
+	gchar *definition_text;
+
+	/* As we haven't yet found the right row, *user_data will be the definition text to find. We need
+	 * to set *user_data to the correct iter once we've found the right row. */
+	gtk_tree_model_get (model, iter, 1, &definition_text, -1);
+	if (strcmp (definition_text, *user_data) == 0) {
+		*user_data = iter;
+		g_free (definition_text);
+		return TRUE;
+	}
+
+	g_free (definition_text);
+	return FALSE;
+}
+
+static void
+definition_modified_cb (AlmanahStorageManager *storage_manager, AlmanahDefinition *definition, AlmanahDefinitionManagerWindow *self)
+{
+	AlmanahDefinitionManagerWindowPrivate *priv = self->priv;
+	GtkTreeIter iter;
+	gpointer user_data;
+	AlmanahDefinition *original_definition;
+
+	/* Find the old definition */
+	user_data = (gpointer) almanah_definition_get_text (definition);
+	gtk_tree_model_foreach (GTK_TREE_MODEL (priv->definition_store), (GtkTreeModelForeachFunc) definition_modified_foreach_cb, &user_data);
+
+	if (user_data == almanah_definition_get_text (definition)) {
+		g_warning ("Couldn't find definition row in tree to modify it.");
+		return;
+	}
+
+	iter = *((GtkTreeIter*) user_data);
+
+	/* Make sure we get a reference to the new definition and drop the reference to the old one */
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->definition_store), &iter, 0, &original_definition, -1);
+	g_object_ref (definition);
+	g_object_unref (original_definition);
+
+	/* Update the definition */
 	gtk_list_store_set (priv->definition_store, &iter,
 			    0, definition,
 			    1, almanah_definition_get_text (definition),
