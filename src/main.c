@@ -31,8 +31,23 @@
 Almanah *almanah;
 
 static G_GNUC_NORETURN void
-storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data)
+storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme_error_message, const gchar *warning_message, gpointer user_data)
 {
+	if (gpgme_error_message != NULL || warning_message != NULL) {
+		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+							    _("Error encrypting database"));
+
+		if (gpgme_error_message != NULL && warning_message != NULL)
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s %s", warning_message, gpgme_error_message);
+		else if (gpgme_error_message != NULL)
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", gpgme_error_message);
+		else
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", warning_message);
+
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+	}
+
 	g_object_unref (almanah->storage_manager);
 	g_object_unref (almanah->gconf_client);
 	g_object_unref (almanah->page_setup);
@@ -49,17 +64,8 @@ storage_manager_disconnected_cb (AlmanahStorageManager *self, gpointer user_data
 void
 almanah_quit (void)
 {
-	GError *error = NULL;
-
 	g_signal_connect (almanah->storage_manager, "disconnected", G_CALLBACK (storage_manager_disconnected_cb), NULL);
-	if (almanah_storage_manager_disconnect (almanah->storage_manager, &error) == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
-							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-							    _("Error closing database"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-	}
+	almanah_storage_manager_disconnect (almanah->storage_manager, NULL);
 
 	if (almanah->add_definition_dialog != NULL)
 		gtk_widget_destroy (almanah->add_definition_dialog);
@@ -76,12 +82,7 @@ almanah_quit (void)
 	g_object_unref (almanah->event_manager);
 
 	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once
-	 * the storage manager has encrypted the DB and disconnected from it.
-	 * Unless, that is, disconnection failed. */
-	if (error != NULL) {
-		g_error_free (error);
-		storage_manager_disconnected_cb (almanah->storage_manager, NULL);
-	}
+	 * the storage manager has encrypted the DB and disconnected from it. */
 }
 
 int

@@ -22,6 +22,7 @@ endif
 bin_PROGRAMS = almanah
 
 almanah_SOURCES = \
+	$(ALMANAH_MARSHAL_FILES)	\
 	definition-builtins.c	\
 	definition-builtins.h	\
 	event-factory-builtins.c	\
@@ -88,6 +89,19 @@ almanah_LDADD = \
 	$(ENCRYPTION_LIBS)	\
 	$(SPELL_CHECKING_LIBS)
 
+# Marshalling
+ALMANAH_MARSHAL_FILES = \
+	almanah-marshal.c	\
+	almanah-marshal.h
+
+GLIB_GENMARSHAL = `pkg-config --variable=glib_genmarshal glib-2.0`
+
+almanah-marshal.h: almanah-marshal.list Makefile
+	( $(GLIB_GENMARSHAL) --prefix=almanah_marshal $(srcdir)/almanah-marshal.list --header > almanah-marshal.h )
+almanah-marshal.c: almanah-marshal.h Makefile
+	( $(GLIB_GENMARSHAL) --prefix=almanah_marshal $(srcdir)/almanah-marshal.list --header --body > almanah-marshal.c )
+
+# Enums
 definition-builtins.h: stamp-definition-builtins.h
 	@true
 
@@ -137,11 +151,14 @@ event-factory-builtins.c: event-factory.h Makefile event-factory-builtins.h
 	&& rm -f xgen-gtbc
 
 CLEANFILES = \
+	$(ALMANAH_MARSHAL_FILES)	\
 	definition-builtins.h		\
 	definition-builtins.c		\
 	stamp-definition-builtins.h	\
 	event-factory-builtins.h		\
 	event-factory-builtins.c		\
 	stamp-event-factory-builtins.h
+
+EXTRA_DIST = almanah-marshal.list
 
 -include $(top_srcdir)/git.mk

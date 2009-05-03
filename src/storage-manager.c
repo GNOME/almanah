@@ -33,6 +33,7 @@
 #include "entry.h"
 #include "definition.h"
 #include "storage-manager.h"
+#include "almanah-marshal.h"
 
 static void almanah_storage_manager_finalize (GObject *object);
 static void almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
@@ -87,8 +88,8 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 				G_TYPE_FROM_CLASS (klass),
 				G_SIGNAL_RUN_LAST,
 				0, NULL, NULL,
-				g_cclosure_marshal_VOID__OBJECT,
-				G_TYPE_NONE, 1, ALMANAH_TYPE_STORAGE_MANAGER);
+				almanah_marshal_VOID__STRING_STRING,
+				G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
 	storage_manager_signals[SIGNAL_DEFINITION_ADDED] = g_signal_new ("definition-added",
 				G_TYPE_FROM_CLASS (klass),
 				G_SIGNAL_RUN_LAST,
@@ -310,23 +311,24 @@ database_idle_cb (CipherOperation *operation)
 
 	if (gpgme_wait (operation->context, &error_gpgme, FALSE) != NULL || error_gpgme != GPG_ERR_NO_ERROR) {
 		struct stat db_stat;
-
-		g_warning (_("Error encrypting database: %s"), gpgme_strerror (error_gpgme));
+		gchar *warning_message = NULL;
 
 		/* Check to see if the encrypted file is 0B in size, which isn't good.
 		 * Not much we can do about it except quit without deleting the plaintext database. */
 		g_stat (self->priv->filename, &db_stat);
 		if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == FALSE || db_stat.st_size == 0) {
-			g_warning (_("Error encrypting database: %s"),
-				   _("The encrypted database is empty. The plain database file has been left undeleted as backup."));
+			warning_message = g_strdup (_("The encrypted database is empty. The plain database file has been left undeleted as backup."));
 		} else if (g_unlink (self->priv->plain_filename) != 0) {
 			/* Delete the plain file */
-			g_warning (_("Could not delete plain database file \"%s\"."), self->priv->plain_filename);
+			warning_message = g_strdup_printf (_("Could not delete plain database file \"%s\"."), self->priv->plain_filename);
 		}
 
 		/* A slight assumption that we're disconnecting at this point (we're technically
 		 * only encrypting), but a valid one. */
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0,
+			       (error_gpgme == GPG_ERR_NO_ERROR) ? NULL: gpgme_strerror (error_gpgme),
+			       warning_message);
+		g_free (warning_message);
 
 		/* Finished! */
 		cipher_operation_free (operation);
@@ -513,7 +515,6 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 #else
 	/* Make a backup of the plaintext database file */
 	back_up_file (self->priv->plain_filename);
-
 	self->priv->decrypted = FALSE;
 #endif /* ENABLE_ENCRYPTION */
 
@@ -543,37 +544,38 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 	/* Close the DB connection */
 	sqlite3_close (self->priv->connection);
 
+#ifdef ENABLE_ENCRYPTION
+	/* If the database wasn't encrypted before we opened it, we won't encrypt it when closing */
 	if (self->priv->decrypted == FALSE) {
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 		return TRUE;
 	}
 
-#ifdef ENABLE_ENCRYPTION
+	/* Get the encryption key */
 	encryption_key = get_encryption_key ();
 	if (encryption_key == NULL) {
-		g_message (_("Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary will not be encrypted; please install Seahorse and set up a default key, or ignore this message."), ENCRYPTION_KEY_GCONF_PATH);
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
+		/* The preferences are set to not encrypt the diary */
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 		return TRUE;
 	}
 
 	/* Encrypt the plain DB file */
 	if (encrypt_database (self, encryption_key, &child_error) != TRUE) {
-		if (child_error->code != ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY) {
-			/* Propagate the error */
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, child_error->message);
+
+		if (g_error_matches (child_error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY) == TRUE)
 			g_propagate_error (error, child_error);
-			return FALSE;
-		}
+		else
+			g_error_free (child_error);
 
-		/* Log an error about being unable to get the key
-		 * then continue without encrypting. */
-		g_warning ("%s", child_error->message);
-		g_error_free (child_error);
-
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, self);
+		g_free (encryption_key);
+		return FALSE;
 	}
 
 	g_free (encryption_key);
-#endif /* ENABLE_ENCRYPTION */
+#else /* ENABLE_ENCRYPTION */
+	g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
+#endif /* !ENABLE_ENCRYPTION */
 
 	return TRUE;
 }
