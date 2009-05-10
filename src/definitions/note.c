@@ -94,6 +94,7 @@ note_build_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox)
 					     GTK_SHADOW_IN);
 	priv->text_view = gtk_text_view_new ();
 	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (priv->text_view), GTK_WRAP_WORD_CHAR);
+	gtk_widget_set_size_request (priv->text_view, 300, 300);
 	gtk_container_add (GTK_CONTAINER (scrolled_window), priv->text_view);
 
 	/* Initialise the dialogue with the definition's current values */
