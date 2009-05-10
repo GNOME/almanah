@@ -33,6 +33,7 @@
 #include "add-definition-dialog.h"
 #include "preferences-dialog.h"
 #include "search-dialog.h"
+#include "date-entry-dialog.h"
 #include "printing.h"
 #include "entry.h"
 #include "storage-manager.h"
@@ -69,6 +70,7 @@ void mw_paste_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_delete_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_insert_time_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_select_date_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
@@ -765,6 +767,22 @@ void
 mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	almanah_entry_set_is_important (main_window->priv->current_entry, gtk_toggle_action_get_active(GTK_TOGGLE_ACTION (action)));
+}
+
+void
+mw_select_date_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+{
+	if (almanah->date_entry_dialog == NULL)
+		almanah->date_entry_dialog = GTK_WIDGET (almanah_date_entry_dialog_new ());
+
+	gtk_widget_show_all (almanah->date_entry_dialog);
+	if (almanah_date_entry_dialog_run (ALMANAH_DATE_ENTRY_DIALOG (almanah->date_entry_dialog)) == TRUE) {
+		GDate new_date;
+
+		/* Switch to the specified date */
+		almanah_date_entry_dialog_get_date (ALMANAH_DATE_ENTRY_DIALOG (almanah->date_entry_dialog), &new_date);
+		almanah_main_window_select_date (main_window, &new_date);
+	}
 }
 
 void

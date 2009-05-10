@@ -53,6 +53,8 @@ almanah_SOURCES = \
 	event-manager.h		\
 	definition.c		\
 	definition.h		\
+	date-entry-dialog.c	\
+	date-entry-dialog.h	\
 	definitions/contact.c		\
 	definitions/contact.h		\
 	definitions/file.c		\

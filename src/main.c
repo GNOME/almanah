@@ -71,6 +71,8 @@ almanah_quit (void)
 		gtk_widget_destroy (almanah->add_definition_dialog);
 	if (almanah->search_dialog != NULL)
 		gtk_widget_destroy (almanah->search_dialog);
+	if (almanah->date_entry_dialog != NULL)
+		gtk_widget_destroy (almanah->date_entry_dialog);
 #ifdef ENABLE_ENCRYPTION
 	if (almanah->preferences_dialog != NULL)
 		gtk_widget_destroy (almanah->preferences_dialog);

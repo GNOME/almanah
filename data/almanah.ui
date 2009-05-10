@@ -78,9 +78,17 @@
 					</object>
 				</child>
 				<child>
+					<object class="GtkAction" id="almanah_ui_select_date">
+						<property name="stock-id">gtk-index</property>
+						<property name="label" translatable="yes">Select Date…</property>
+						<property name="name">edit-select-date</property>
+						<signal name="activate" handler="mw_select_date_activate_cb"/>
+					</object>
+				</child>
+				<child>
 					<object class="GtkAction" id="almanah_ui_search">
 						<property name="stock-id">gtk-find</property>
-						<property name="label" translatable="yes">_Search</property>
+						<property name="label" translatable="yes">_Search…</property>
 						<property name="name">edit-search</property>
 						<signal name="activate" handler="mw_search_activate_cb"/>
 					</object>
@@ -207,6 +215,7 @@
 					<menuitem action="almanah_ui_paste"/>
 					<menuitem action="almanah_ui_delete"/>
 					<separator/>
+					<menuitem action="almanah_ui_select_date"/>
 					<menuitem action="almanah_ui_search"/>
 					<separator/>
 					<menuitem action="almanah_ui_preferences"/>
@@ -830,5 +839,68 @@
 				</child>
 			</object>
 		</child>
+	</object>
+
+	<object class="AlmanahDateEntryDialog" id="almanah_date_entry_dialog">
+		<child internal-child="vbox">
+			<object class="GtkVBox" id="vbox1">
+				<child>
+					<object class="GtkVBox" id="almanah_ded_vbox">
+						<property name="spacing">5</property>
+						<child>
+							<object class="GtkEntry" id="almanah_ded_date_entry">
+								<property name="activates-default">True</property>
+								<signal name="notify::text" handler="ded_date_entry_notify_text_cb"/>
+								<accessibility>
+									<relation target="almanah_ded_description_label" type="described-by"/>
+								</accessibility>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkLabel" id="almanah_ded_description_label">
+								<property name="xalign">0</property>
+								<!-- Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function --> 
+								<property name="label" translatable="yes">e.g. "14/03/2009" or "14th March 2009".</property>
+								<accessibility>
+									<relation target="almanah_ded_date_entry" type="description-for"/>
+								</accessibility>
+								<attributes>
+									<attribute name="scale" value="0.8"/>
+								</attributes>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+					</object>
+				</child>
+				<child internal-child="action_area">
+					<object class="GtkHButtonBox" id="almanah_ded_hbuttonbox">
+						<child>
+							<object class="GtkButton" id="almanah_ded_cancel_button">
+								<property name="use-stock">True</property>
+								<property name="label">gtk-cancel</property>
+							</object>
+						</child>
+						<child>
+							<object class="GtkButton" id="almanah_ded_ok_button">
+								<property name="use-stock">True</property>
+								<property name="label">gtk-ok</property>
+								<property name="can-default">True</property>
+								<property name="has-default">True</property>
+								<property name="sensitive">False</property>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+		<action-widgets>
+			<action-widget response="-6">almanah_ded_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
+			<action-widget response="-5">almanah_ded_ok_button</action-widget><!-- GTK_RESPONSE_OK -->
+		</action-widgets>
 	</object>
 </interface>
