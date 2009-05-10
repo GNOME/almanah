@@ -445,6 +445,7 @@ add_definition_to_current_entry (AlmanahMainWindow *self)
 	AlmanahMainWindowPrivate *priv = self->priv;
 	GtkTextIter start_iter, end_iter;
 	gchar *text;
+	AlmanahDefinition *definition;
 
 	g_assert (priv->entry_buffer != NULL);
 	g_assert (gtk_text_buffer_get_char_count (priv->entry_buffer) != 0);
@@ -453,6 +454,19 @@ add_definition_to_current_entry (AlmanahMainWindow *self)
 		return;
 
 	text = gtk_text_buffer_get_text (priv->entry_buffer, &start_iter, &end_iter, FALSE);
+
+	/* If the definition already exists, don't display the dialogue */
+	definition = almanah_storage_manager_get_definition (almanah->storage_manager, text);
+	if (definition != NULL) {
+		g_object_unref (definition);
+
+		/* Add a GtkTextTag to the GtkTextBuffer to mark the definition */
+		gtk_text_buffer_apply_tag_by_name (priv->entry_buffer, "definition", &start_iter, &end_iter);
+		gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
+
+		g_free (text);
+		return;
+	}
 
 	/* Create the Add Definition dialogue if it doesn't already exist */
 	if (almanah->add_definition_dialog == NULL)
@@ -464,8 +478,6 @@ add_definition_to_current_entry (AlmanahMainWindow *self)
 	gtk_widget_show_all (almanah->add_definition_dialog);
 
 	if (gtk_dialog_run (GTK_DIALOG (almanah->add_definition_dialog)) == GTK_RESPONSE_OK) {
-		AlmanahDefinition *definition;
-
 		definition = almanah_add_definition_dialog_get_definition (ALMANAH_ADD_DEFINITION_DIALOG (almanah->add_definition_dialog));
 		if (definition == NULL)
 			return;
