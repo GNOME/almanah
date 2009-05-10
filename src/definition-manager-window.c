@@ -159,10 +159,6 @@ almanah_definition_manager_window_new (void)
 	priv->view_button = GTK_BUTTON (gtk_builder_get_object (builder, "almanah_dmw_view_button"));
 	priv->remove_button = GTK_BUTTON (gtk_builder_get_object (builder, "almanah_dmw_remove_button"));
 
-	/* Prettify some labels */
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_dmw_name_label_label")));
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_dmw_description_label_label")));
-
 	/* Get notifications about added/modified/removed definitions from the storage manager */
 	g_signal_connect (almanah->storage_manager, "definition-added", G_CALLBACK (definition_added_cb), definition_manager_window);
 	g_signal_connect (almanah->storage_manager, "definition-modified", G_CALLBACK (definition_modified_cb), definition_manager_window);

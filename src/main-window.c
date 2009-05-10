@@ -252,10 +252,6 @@ almanah_main_window_new (void)
 	g_signal_connect (priv->events_selection, "changed", G_CALLBACK (mw_events_selection_changed_cb), main_window);
 	gtk_tree_view_column_set_cell_data_func (priv->event_value_column, GTK_CELL_RENDERER (priv->event_value_renderer), mw_events_value_data_cb, NULL, NULL);
 
-	/* Prettify the UI */
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_calendar_label")));
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_events_label")));
-
 #ifndef ENABLE_ENCRYPTION
 #ifndef ENABLE_SPELL_CHECKING
 	/* Remove the "Preferences" entry from the menu */

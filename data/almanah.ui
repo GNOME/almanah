@@ -329,6 +329,9 @@
 										<accessibility>
 											<relation target="almanah_mw_calendar" type="label-for"/>
 										</accessibility>
+										<attributes>
+											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+										</attributes>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -359,6 +362,9 @@
 										<accessibility>
 											<relation target="almanah_mw_events_tree_view" type="label-for"/>
 										</accessibility>
+										<attributes>
+											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+										</attributes>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -593,6 +599,9 @@
 						<accessibility>
 							<relation target="almanah_sd_results_tree_view" type="label-for"/>
 						</accessibility>
+						<attributes>
+							<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+						</attributes>
 					</object>
 					<packing>
 						<property name="expand">False</property>
@@ -743,6 +752,9 @@
 								<accessibility>
 									<relation target="almanah_dmw_name_label" type="label-for"/>
 								</accessibility>
+								<attributes>
+									<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+								</attributes>
 							</object>
 							<packing>
 								<property name="left-attach">1</property>
@@ -777,6 +789,9 @@
 								<accessibility>
 									<relation target="almanah_dmw_description_label" type="label-for"/>
 								</accessibility>
+								<attributes>
+									<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+								</attributes>
 							</object>
 							<packing>
 								<property name="left-attach">1</property>

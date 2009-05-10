@@ -116,9 +116,6 @@ almanah_search_dialog_new (void)
 
 	gtk_widget_grab_default (GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_search_button")));
 
-	/* Prettify the UI */
-	almanah_interface_embolden_label (GTK_LABEL (gtk_builder_get_object (builder, "almanah_sd_results_label")));
-
 	g_object_unref (builder);
 
 	return search_dialog;
