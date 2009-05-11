@@ -6,17 +6,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah - master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=almanah&component=general\n"
-"POT-Creation-Date: 2009-05-04 08:11+0000\n"
-"PO-Revision-Date: 2009-05-07 13:01+0000\n"
-"Last-Translator: Vasilis Kontogiannis <vasilisk@ics.forth.gr>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&component=general\n"
+"POT-Creation-Date: 2009-05-10 17:55+0000\n"
+"PO-Revision-Date: 2009-05-11 12:08+0200\n"
+"Last-Translator: Βασίλης Κοντογιάνης vasilisk@ics.forth.gr <vasilisk@ics.forth.gr>\n"
 "Language-Team: Greek-Team <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:127 ../src/main.c:110
+#: ../data/almanah.desktop.in.h:1
+#: ../src/main-window.c:129
+#: ../src/main.c:112
 msgid "Almanah Diary"
 msgstr "Ημερολόγιο Almanah"
 
@@ -61,15 +62,8 @@ msgid "Spell checking language"
 msgstr "Γλώσσα ελέγχου συλλαβισμού"
 
 #: ../data/almanah.schemas.in.h:9
-msgid ""
-"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
-"been built with encryption support. Leave blank to disable database "
-"encryption."
-msgstr ""
-"To αναγνωριστικό του κλειδιού προς χρήση για κρυπτογράφηση και "
-"αποκρυπτογράφηση της βάσης δεδομένων, σε περίπτωση που το Almanah έχει "
-"χτιστεί με υποστήριξη κρυπτογράφησης. Αφήστε κενό για απενεργοποίηση "
-"κρυπτογράφησης της βάσης δεδομένων."
+msgid "The ID of the key to use to encrypt and decrypt the database, if Almanah has been built with encryption support. Leave blank to disable database encryption."
+msgstr "To αναγνωριστικό του κλειδιού προς χρήση για κρυπτογράφηση και αποκρυπτογράφηση της βάσης δεδομένων, σε περίπτωση που το Almanah έχει χτιστεί με υποστήριξη κρυπτογράφησης. Αφήστε κενό για απενεργοποίηση κρυπτογράφησης της βάσης δεδομένων."
 
 #: ../data/almanah.schemas.in.h:10
 msgid "The X position of the main window."
@@ -85,9 +79,7 @@ msgstr "Το Ύψος του κεντρικού παραθύρου."
 
 #: ../data/almanah.schemas.in.h:13
 msgid "The locale specifier of the language in which to check entry spellings."
-msgstr ""
-"Ο τοπικός προσδιορισμός της γλώσσας στην οποία ελέγχεται η ορθογραφία "
-"εισαγωγής."
+msgstr "Ο τοπικός προσδιορισμός της γλώσσας στην οποία ελέγχεται η ορθογραφία εισαγωγής."
 
 #: ../data/almanah.schemas.in.h:14
 msgid "The width of the main window."
@@ -137,7 +129,8 @@ msgstr "Σ_ημαντικό"
 msgid "Insert _Time"
 msgstr "Εισαγωγή _ώρας"
 
-#: ../data/almanah.ui.h:10 ../src/definition-manager-window.c:250
+#: ../data/almanah.ui.h:10
+#: ../src/definition-manager-window.c:250
 msgid "Nothing selected"
 msgstr "Δεν έχει επιλεχτεί τίποτα"
 
@@ -157,7 +150,8 @@ msgstr "Κατάλογος αποτελέσματος"
 msgid "Results"
 msgstr "Αποτελέσματα"
 
-#: ../data/almanah.ui.h:15 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:15
+#: ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Αναζήτηση"
 
@@ -166,59 +160,73 @@ msgid "Search entry"
 msgstr "Αναζήτηση εισαγωγής"
 
 #: ../data/almanah.ui.h:17
+#, fuzzy
+#| msgid "Select Contact"
+msgid "Select Date…"
+msgstr "Επιλογή επαφής"
+
+#: ../data/almanah.ui.h:18
 msgid "Type"
 msgstr "Τύπος"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "View"
 msgstr "Προβολή"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:20
 msgid "View Entry"
 msgstr "Προβολή εισαγωγής"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:21
 msgid "View Event"
 msgstr "Προβολή γεγονότος"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:22
 msgid "_Add Definition"
 msgstr "_Προσθήκη ορισμού"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:23
 msgid "_Definitions"
 msgstr "_Ορισμοί"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:24
 msgid "_Edit"
 msgstr "_Επεξεργασία"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "_File"
 msgstr "_Αρχείο"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:26
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:27
 msgid "_Remove Definition"
 msgstr "_Διαγραφή ορισμού"
 
-#: ../data/almanah.ui.h:27
-msgid "_Search"
+#: ../data/almanah.ui.h:28
+#, fuzzy
+#| msgid "_Search"
+msgid "_Search…"
 msgstr "_Αναζήτηση"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:29
 msgid "_View Definitions"
 msgstr "_Προβολή ορισμών"
+
+#: ../data/almanah.ui.h:30
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "π.χ. \"14/03/2009\" ή \"14 Μαρτίου 2009\"."
 
 #: ../src/add-definition-dialog.c:82
 msgid "Add Definition"
 msgstr "Προσθήκη ορισμού"
 
-#: ../src/add-definition-dialog.c:164 ../src/definition-manager-window.c:132
-#: ../src/main-window.c:168 ../src/preferences-dialog.c:135
+#: ../src/add-definition-dialog.c:164
+#: ../src/definition-manager-window.c:132
+#: ../src/main-window.c:170
+#: ../src/preferences-dialog.c:135
 #: ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -232,7 +240,8 @@ msgstr "Ημερολογιακή συνάντηση"
 msgid "An appointment on an Evolution calendar."
 msgstr "Μία συνάντηση σε ημερολόγιο εξέλιξης."
 
-#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
+#: ../src/events/calendar-appointment.c:120
+#: ../src/events/calendar-task.c:109
 msgid "Error launching Evolution"
 msgstr "Σφάλμα εκκίνησης εξέλιξης"
 
@@ -277,7 +286,8 @@ msgstr "Μία επαφή εξέλιξης."
 msgid "Select Contact"
 msgstr "Επιλογή επαφής"
 
-#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
+#: ../src/definitions/contact.c:103
+#: ../src/definitions/contact.c:224
 msgid "Error opening contact"
 msgstr "Σφάλμα ανοίγματος επαφής"
 
@@ -309,7 +319,8 @@ msgstr "Σημείωμα"
 msgid "A note about an important event."
 msgstr "Μία σημείωση για ένα σοβαρό γεγονός."
 
-#: ../src/definitions/uri.c:50 ../src/definitions/uri.c:99
+#: ../src/definitions/uri.c:50
+#: ../src/definitions/uri.c:99
 msgid "URI"
 msgstr "URI"
 
@@ -326,69 +337,53 @@ msgstr "Σφάλμα ανοίγματος Ενιαίου Εντοπιστή Πό
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:371 ../src/main-window.c:396 ../src/main-window.c:992
-#: ../src/printing.c:257 ../src/search-dialog.c:160
+#: ../src/main-window.c:373
+#: ../src/main-window.c:398
+#: ../src/main-window.c:1022
+#: ../src/printing.c:257
+#: ../src/search-dialog.c:160
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/main-window.c:375
+#: ../src/main-window.c:377
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
-msgstr ""
-"Είστε σίγουρος ότι θέλετε να επεξεργαστείτε αυτή την εισαγωγή του "
-"ημερολογίου για for %s?"
+msgstr "Είστε σίγουρος ότι θέλετε να επεξεργαστείτε αυτή την εισαγωγή του ημερολογίου για %s;"
 
-#: ../src/main-window.c:400
+#: ../src/main-window.c:402
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
-msgstr ""
-"Είστε σίγουρος ότι θέλετε να σβήσετε αυτή την εισαγωγή του ημερολογίου για "
-"for %s?"
+msgstr "Είστε σίγουρος ότι θέλετε να σβήσετε αυτή την εισαγωγή του ημερολογίου για %s;"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:585
+#: ../src/main-window.c:599
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Άγνωστο ή διπλότυπο πινακίδιο κειμένου \"%s\" στην εισαγωγή. Αγνόηση"
 
-#: ../src/main-window.c:748
+#: ../src/main-window.c:762
 #, c-format
 msgid "%X"
 msgstr "%X"
 
-#: ../src/main-window.c:829
-msgid ""
-"Almanah is free software: you can redistribute it and/or modify it under the "
-"terms of the GNU General Public License as published by the Free Software "
-"Foundation, either version 3 of the License, or (at your option) any later "
-"version."
-msgstr ""
-"Το Almanah είναι ένα ελεύθερο λογισμικό: μπορείτε να το επαναδιανέμεται και/ή να το τροποποιήσετε σύμφωνα "
-"με τους όρους GNU General Public License όπως δημοσιοποιήθηκαν από Ίδρυμα Ελεύθερου "
-"Λογισμικού, είτε η έκδοση 3 της άδειας, ή (κατά επιλογή σας) αποιαδήποτε μεταγενέστερη "
-"έκδοση."
+#: ../src/main-window.c:859
+msgid "Almanah is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
+msgstr "Το Almanah είναι ένα ελεύθερο λογισμικό: μπορείτε να το επαναδιανέμεται και/ή να το τροποποιήσετε σύμφωνα με τους όρους GNU General Public License όπως δημοσιοποιήθηκαν από Ίδρυμα Ελεύθερου Λογισμικού, είτε η έκδοση 3 της άδειας, ή (κατά επιλογή σας) αποιαδήποτε μεταγενέστερη έκδοση."
 
-#: ../src/main-window.c:833
-msgid ""
-"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
-"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-"details."
-msgstr ""
+#: ../src/main-window.c:863
+msgid "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
+msgstr "Το Almanah διανέμεται με την ελπίδα ότι θα είναι χρήσιμο, αλλά ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ, χωρίς καν την συνεπαγόμενη εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΙΔΙΚΟ ΣΚΟΠΟ. Δείτε τη GNU  Geneal Public License για περισσότερες λεπτομέρειες."
 
-#: ../src/main-window.c:837
-msgid ""
-"You should have received a copy of the GNU General Public License along with "
-"Almanah.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
+#: ../src/main-window.c:867
+msgid "You should have received a copy of the GNU General Public License along with Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr "Πρέπει να έχετε λάβει ένα αντίγραφο της  GNU General Public License σύμφωνα με το Almanah. Αν όχι , δείτε <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:848
+#: ../src/main-window.c:878
 #, c-format
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
-msgstr ""
-"Ένας βοηθητικός φύλακας ημερολογίου, διατηρεί %u εισαγωγές και %u ορισμούς."
+msgstr "Ένας βοηθητικός φύλακας ημερολογίου, διατηρεί %u εισαγωγές και %u ορισμούς."
 
-#: ../src/main-window.c:854
+#: ../src/main-window.c:884
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Πνευματικά δικαιώματα © 2008-2009 Philip Withnall"
 
@@ -397,7 +392,7 @@ msgstr "Πνευματικά δικαιώματα © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:862
+#: ../src/main-window.c:892
 msgid "translator-credits"
 msgstr ""
 "Ελληνική μεταφραστική ομάδα GNOME\n"
@@ -405,11 +400,11 @@ msgstr ""
 "\n"
 "Για περισσότερες πληροφορίες, επισκεφθείτε την σελίδα http://www.gnome.gr/"
 
-#: ../src/main-window.c:866
+#: ../src/main-window.c:896
 msgid "Almanah Website"
 msgstr "Ιστοσελίδα Almanah"
 
-#: ../src/main-window.c:1021
+#: ../src/main-window.c:1051
 msgid "Entry content could not be loaded"
 msgstr "Το περιεχόμενο εισαγωγής δε μπορεί να φορτωθεί"
 
@@ -417,24 +412,24 @@ msgstr "Το περιεχόμενο εισαγωγής δε μπορεί να φ
 msgid "Error encrypting database"
 msgstr "Σφάλμα κρυπτογράφησης βάσης δεδομένων"
 
-#: ../src/main.c:97
+#: ../src/main.c:99
 msgid "Enable debug mode"
 msgstr "Ενεργοποίηση κατάστασης εκσφαλμάτωσης"
 
-#: ../src/main.c:98
+#: ../src/main.c:100
 msgid "Enable import mode"
 msgstr "Ενεργοποίηση κατάστασης εισαγωγής"
 
 #. Options
-#: ../src/main.c:114
+#: ../src/main.c:116
 msgid "- Manage your diary"
 msgstr "- Διαχείριση του ημερολογίου σου"
 
-#: ../src/main.c:124
+#: ../src/main.c:126
 msgid "Command-line options could not be parsed"
 msgstr "Επιλογές γραμμής εντολών δεν μπορούν να αναλυθούν"
 
-#: ../src/main.c:156
+#: ../src/main.c:158
 msgid "Error opening database"
 msgstr "Σφάλμα ανοίγματος βάσης δεδομένων"
 
@@ -505,12 +500,8 @@ msgid "Error opening plain database file \"%s\": %s"
 msgstr "Σφάλμα ανοίγματος απλού αρχείου βάσης δεδομένων \"%s\": %s"
 
 #: ../src/storage-manager.c:327
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"Η κρυπτογραφημένη βάση δεδομένων είναι άδεια. Το απλό αρχείο βάσης δεδομένων "
-"παραμένει για χρήση ως αντιγράφου ασφαλείας."
+msgid "The encrypted database is empty. The plain database file has been left undeleted as backup."
+msgstr "Η κρυπτογραφημένη βάση δεδομένων είναι άδεια. Το απλό αρχείο βάσης δεδομένων παραμένει για χρήση ως αντιγράφου ασφαλείας."
 
 #. Delete the plain file
 #: ../src/storage-manager.c:330
@@ -535,21 +526,16 @@ msgstr "Σφάλμα κρυπτογράφησης βάσης δεδομένων:
 
 #: ../src/storage-manager.c:531
 #, c-format
-msgid ""
-"Could not open database \"%s\". SQLite provided the following error message: "
-"%s"
-msgstr ""
-"Δεν μπορεί να ανοίξει την βάση δεδομένων \"%s\". Το SQLite παρήγαγε το "
-"παρακάτω μήνυμα σφάλματος: %s"
+msgid "Could not open database \"%s\". SQLite provided the following error message: %s"
+msgstr "Δεν μπορεί να ανοίξει την βάση δεδομένων \"%s\". Το SQLite παρήγαγε το παρακάτω μήνυμα σφάλματος: %s"
 
-#: ../src/storage-manager.c:610 ../src/storage-manager.c:644
+#: ../src/storage-manager.c:610
+#: ../src/storage-manager.c:644
 #, c-format
-msgid ""
-"Could not run query \"%s\". SQLite provided the following error message: %s"
-msgstr ""
-"Δεν μπορεί να εκτελέσει το ερώτημα \"%s\". To SQLite παρήγαγε το παρακάτω "
-"μήνυμα σφάλματος: %s"
+msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr "Δεν μπορεί να εκτελέσει το ερώτημα \"%s\". To SQLite παρήγαγε το παρακάτω μήνυμα σφάλματος: %s"
 
 #: ../src/storage-manager.c:879
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Σφάλμα αποσειριοποίησης εισαγωγής στην ενδιάμεση μνήμη κατά την αναζήτηση."
+
