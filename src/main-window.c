@@ -183,14 +183,15 @@ almanah_main_window_new (void)
 	priv->copy_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_copy"));
 	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_delete"));
 
-	/* Set up text formatting */
-	almanah_interface_create_text_tags (priv->entry_buffer, TRUE);
-
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
 	if (gconf_client_get_bool (almanah->gconf_client, "/apps/almanah/spell_checking_enabled", NULL) == TRUE)
 		almanah_main_window_enable_spell_checking (main_window, NULL);
 #endif /* ENABLE_SPELL_CHECKING */
+
+	/* Set up text formatting. It's important this is done after setting up GtkSpell, so that we know whether to
+	 * create a dummy gtkspell-misspelled text tag. */
+	almanah_interface_create_text_tags (priv->entry_buffer, TRUE);
 
 	/* Make sure we're notified if the cursor moves position so we can check the tag stack */
 	g_signal_connect (priv->entry_buffer, "notify::cursor-position", G_CALLBACK (mw_entry_buffer_cursor_position_cb), main_window);
@@ -1084,7 +1085,20 @@ almanah_main_window_enable_spell_checking (AlmanahMainWindow *self, GError **err
 {
 	GtkSpell *gtkspell;
 	gchar *spelling_language;
+	GtkTextTagTable *table;
+	GtkTextTag *tag;
 
+	/* Bail out if spell checking's already enabled */
+	if (gtkspell_get_from_text_view (self->priv->entry_view) != NULL)
+		return TRUE;
+
+	/* If spell checking wasn't already enabled, we have a dummy gtkspell-misspelled text tag to destroy */
+	table = gtk_text_buffer_get_tag_table (self->priv->entry_buffer);
+	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
+	if (tag != NULL)
+		gtk_text_tag_table_remove (table, tag);
+
+	/* Get the spell checking language */
 	spelling_language = gconf_client_get_string (almanah->gconf_client, "/apps/almanah/spelling_language", NULL);
 
 	/* Make sure it's either NULL or a proper locale specifier */
@@ -1105,11 +1119,20 @@ void
 almanah_main_window_disable_spell_checking (AlmanahMainWindow *self)
 {
 	GtkSpell *gtkspell;
+	GtkTextTagTable *table;
+	GtkTextTag *tag;
 
 	gtkspell = gtkspell_get_from_text_view (self->priv->entry_view);
-	if (gtkspell != NULL) {
+	if (gtkspell != NULL)
 		gtkspell_detach (gtkspell);
-		g_object_unref (gtkspell);
-	}
+
+	/* Remove the old gtkspell-misspelling text tag */
+	table = gtk_text_buffer_get_tag_table (self->priv->entry_buffer);
+	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
+	if (tag != NULL)
+		gtk_text_tag_table_remove (table, tag);
+
+	/* Create a dummy gtkspell-misspelling text tag */
+	gtk_text_buffer_create_tag (self->priv->entry_buffer, "gtkspell-misspelled", NULL);
 }
 #endif /* ENABLE_SPELL_CHECKING */

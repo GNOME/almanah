@@ -1,3 +1,12 @@
+2009-04-10  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* src/interface.c (almanah_interface_create_text_tags):
+	* src/main-window.c (almanah_main_window_new),
+	(almanah_main_window_enable_spell_checking),
+	(almanah_main_window_disable_spell_checking): Ensure we only enable
+	spell checking once, and tidy up handling of spelling errors once
+	spell checking has been disabled. (Closes: #578559)
+
 2009-03-01  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/main-window.c: Added some missing #includes.

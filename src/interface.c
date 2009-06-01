@@ -90,6 +90,14 @@ void
 almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)
 {
 	GtkTextTag *tag;
+	GtkTextTagTable *table;
+
+	table = gtk_text_buffer_get_tag_table (text_buffer);
+	if (gtk_text_tag_table_lookup (table, "gtkspell-misspelled") == NULL) {
+		/* Create a dummy gtkspell-misspelled tag to stop errors about an unknown tag appearing
+		 * when deserialising content which has misspellings highlighted, but without GtkSpell enabled */
+		gtk_text_buffer_create_tag (text_buffer, "gtkspell-misspelled", NULL);
+	}
 
 	gtk_text_buffer_create_tag (text_buffer, "bold", 
 				    "weight", PANGO_WEIGHT_BOLD, 
