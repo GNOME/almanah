@@ -1,5 +1,8 @@
 Major new features in version...
 
+0.6.1:
+* Backport some fixes for data loss and crasher bugs from master
+
 0.6:
 Note that 0.6 removes the old concept of "links", and all stored links will no longer be accessible. They will,
 however, remain in the database, and can be accessed using the following commands while Almanah's running:

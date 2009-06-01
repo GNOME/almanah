@@ -272,6 +272,7 @@ msgstr ""
 
 #: ../src/main-window.c:757
 #, c-format
+#, fuzzy
 msgid "A helpful diary keeper, storing %u entries and %u links."
 msgstr ""
 "Ein hilfreicher Tagebuchführer, der %u Einträge mit %u Links und insgesamt %u "

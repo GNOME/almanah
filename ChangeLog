@@ -1,3 +1,12 @@
+============ Version 0.6.1
+
+2009-06-01  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* INSTALL:
+	* po/Makefile.in.in:
+	* NEWS:
+	* configure.ac: Bump to version 0.6.1.
+
 2009-04-23  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* src/storage-manager.c (database_idle_cb): Add more debugging on
