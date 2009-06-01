@@ -454,6 +454,24 @@ get_encryption_key (void)
 }
 #endif /* ENABLE_ENCRYPTION */
 
+static void
+back_up_file (const gchar *filename)
+{
+	GFile *original_file, *backup_file;
+	gchar *backup_filename;
+
+	/* Make a backup of the encrypted database file */
+	original_file = g_file_new_for_path (filename);
+	backup_filename = g_strdup_printf ("%s~", filename);
+	backup_file = g_file_new_for_path (backup_filename);
+	g_free (backup_filename);
+
+	g_file_copy_async (original_file, backup_file, G_FILE_COPY_OVERWRITE, G_PRIORITY_DEFAULT, NULL, NULL, NULL, NULL, NULL);
+
+	g_object_unref (original_file);
+	g_object_unref (backup_file);
+}
+
 gboolean
 almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 {
@@ -466,6 +484,9 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 	 * (i.e. the database hasn't yet been created), or is empty (i.e. corrupt). */
 	if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
 		GError *child_error = NULL;
+
+		/* Make a backup of the encrypted database file */
+		back_up_file (self->priv->filename);
 
 		g_stat (self->priv->plain_filename, &plaintext_db_stat);
 
@@ -484,12 +505,13 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 				g_error_free (child_error);
 			}
 		}
-
-		
 	}
 
 	self->priv->decrypted = TRUE;
 #else
+	/* Make a backup of the plaintext database file */
+	back_up_file (self->priv->plain_filename);
+
 	self->priv->decrypted = FALSE;
 #endif /* ENABLE_ENCRYPTION */
 
