@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-20 17:36+0200\n"
-"PO-Revision-Date: 2009-04-20 17:37+0100\n"
+"POT-Creation-Date: 2009-06-13 10:48+0200\n"
+"PO-Revision-Date: 2009-06-13 10:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/almanah.desktop.in.h:1
-#: ../src/main-window.c:127
-#: ../src/main.c:109
+#: ../src/main-window.c:129
+#: ../src/main.c:112
 msgid "Almanah Diary"
 msgstr "Dagboksprogrammet Almanah"
 
@@ -130,7 +130,7 @@ msgid "Insert _Time"
 msgstr "Infoga _tid"
 
 #: ../data/almanah.ui.h:10
-#: ../src/definition-manager-window.c:248
+#: ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Ingenting markerat"
 
@@ -160,60 +160,68 @@ msgid "Search entry"
 msgstr "Sök post"
 
 #: ../data/almanah.ui.h:17
+msgid "Select Date…"
+msgstr "Välj datum..."
+
+#: ../data/almanah.ui.h:18
 msgid "Type"
 msgstr "Typ"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "View"
 msgstr "Visa"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:20
 msgid "View Entry"
 msgstr "Visa post"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:21
 msgid "View Event"
 msgstr "Visa händelse"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:22
 msgid "_Add Definition"
 msgstr "_Lägg till definition"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:23
 msgid "_Definitions"
 msgstr "_Definitioner"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:24
 msgid "_Edit"
 msgstr "R_edigera"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "_File"
 msgstr "_Arkiv"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:26
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:27
 msgid "_Remove Definition"
 msgstr "_Ta bort definition"
 
-#: ../data/almanah.ui.h:27
-msgid "_Search"
-msgstr "_Sök"
-
 #: ../data/almanah.ui.h:28
+msgid "_Search…"
+msgstr "_Sök..."
+
+#: ../data/almanah.ui.h:29
 msgid "_View Definitions"
 msgstr "_Visa definitioner"
+
+#: ../data/almanah.ui.h:30
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "t.ex. \"14/03/2009\" eller \"14 mars 2009\"."
 
 #: ../src/add-definition-dialog.c:82
 msgid "Add Definition"
 msgstr "Lägg till definition"
 
 #: ../src/add-definition-dialog.c:164
-#: ../src/definition-manager-window.c:131
-#: ../src/main-window.c:168
+#: ../src/definition-manager-window.c:132
+#: ../src/main-window.c:170
 #: ../src/preferences-dialog.c:135
 #: ../src/search-dialog.c:87
 #, c-format
@@ -253,11 +261,11 @@ msgstr "Ett foto lagrat i F-Spot."
 msgid "Error launching F-Spot"
 msgstr "Fel vid start av F-Spot"
 
-#: ../src/definition-manager-window.c:71
+#: ../src/definition-manager-window.c:72
 msgid "Definition Manager"
 msgstr "Definitionshanterare"
 
-#: ../src/definition-manager-window.c:205
+#: ../src/definition-manager-window.c:203
 #, c-format
 msgid "Are you sure you want to delete the definition for \"%s\"?"
 msgstr "Är du säker på att du vill ta bort definitionen för \"%s\"?"
@@ -325,53 +333,53 @@ msgstr "Fel vid öppnande av URI"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:371
-#: ../src/main-window.c:396
-#: ../src/main-window.c:992
+#: ../src/main-window.c:369
+#: ../src/main-window.c:394
+#: ../src/main-window.c:1018
 #: ../src/printing.c:257
-#: ../src/search-dialog.c:160
+#: ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/main-window.c:375
+#: ../src/main-window.c:373
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Är du säker på att du vill redigera denna dagbokspost för %s?"
 
-#: ../src/main-window.c:400
+#: ../src/main-window.c:398
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Är du säker på att du vill ta bort denna dagbokspost för %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:585
+#: ../src/main-window.c:595
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Okänd eller dubblett texttagg \"%s\" i post. Ignorerar."
 
-#: ../src/main-window.c:748
+#: ../src/main-window.c:758
 #, c-format
 msgid "%X"
 msgstr "%X"
 
-#: ../src/main-window.c:829
+#: ../src/main-window.c:855
 msgid "Almanah is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
 msgstr "Almanah är fri programvara. Du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 3 eller (om du så vill) någon senare version."
 
-#: ../src/main-window.c:833
+#: ../src/main-window.c:859
 msgid "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
 msgstr "Almanah distribueras i hopp om att det ska vara användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för ytterligare information."
 
-#: ../src/main-window.c:837
+#: ../src/main-window.c:863
 msgid "You should have received a copy of the GNU General Public License along with Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr "Du bör ha fått en kopia av GNU General Public License tillsammans med Almanah. Om inte, se <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:848
+#: ../src/main-window.c:874
 #, c-format
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgstr "Ett behjälpligt dagboksprogram, lagrar %u poster och %u definitioner."
 
-#: ../src/main-window.c:854
+#: ../src/main-window.c:880
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -380,7 +388,7 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:862
+#: ../src/main-window.c:888
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander <po@danielnylander.se>\n"
@@ -388,36 +396,36 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "tp-sv@listor.tp-sv.se"
 
-#: ../src/main-window.c:866
+#: ../src/main-window.c:892
 msgid "Almanah Website"
 msgstr "Webbplats för Almanah"
 
-#: ../src/main-window.c:1021
+#: ../src/main-window.c:1047
 msgid "Entry content could not be loaded"
 msgstr "Postens innehåll kunde inte läsas in"
 
-#: ../src/main.c:58
-msgid "Error closing database"
-msgstr "Fel vid stängning av databasen"
+#: ../src/main.c:38
+msgid "Error encrypting database"
+msgstr "Fel vid kryptering av databasen"
 
-#: ../src/main.c:96
+#: ../src/main.c:99
 msgid "Enable debug mode"
 msgstr "Aktivera felsökningsläge"
 
-#: ../src/main.c:97
+#: ../src/main.c:100
 msgid "Enable import mode"
 msgstr "Aktivera importeringsläge"
 
 #. Options
-#: ../src/main.c:113
+#: ../src/main.c:116
 msgid "- Manage your diary"
 msgstr "- Hantera din dagbok"
 
-#: ../src/main.c:123
+#: ../src/main.c:126
 msgid "Command-line options could not be parsed"
 msgstr "Kommandoradsflaggor kunde inte tolkas"
 
-#: ../src/main.c:155
+#: ../src/main.c:158
 msgid "Error opening database"
 msgstr "Fel vid öppnande av databasen"
 
@@ -467,72 +475,76 @@ msgstr "Startdatum"
 msgid "End Date"
 msgstr "Slutdatum"
 
-#: ../src/storage-manager.c:215
+#: ../src/storage-manager.c:223
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME har inte stöd för OpenPGP: %s"
 
-#: ../src/storage-manager.c:224
+#: ../src/storage-manager.c:232
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Fel vid skapande av chiffersammanhang: %s"
 
-#: ../src/storage-manager.c:253
+#: ../src/storage-manager.c:261
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Fel vid öppnade av krypterade databasfilen \"%s\": %s"
 
-#: ../src/storage-manager.c:273
+#: ../src/storage-manager.c:281
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Fel vid öppnade av vanliga databasfilen \"%s\": %s"
 
-#: ../src/storage-manager.c:318
-#: ../src/storage-manager.c:416
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Fel vid kryptering av databas: %s"
-
-#: ../src/storage-manager.c:319
+#: ../src/storage-manager.c:327
 msgid "The encrypted database is empty. The plain database file has been left undeleted as backup."
 msgstr "Krypterade databasen är tom. Den vanliga databasfilen har lämnats kvar som säkerhetskopia."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:322
+#: ../src/storage-manager.c:330
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Kunde inte ta bort vanliga databasfilen \"%s\"."
 
-#: ../src/storage-manager.c:361
+#: ../src/storage-manager.c:372
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Fel vid dekryptering av databas: %s"
 
-#: ../src/storage-manager.c:395
+#: ../src/storage-manager.c:406
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Fel vid hämtning av krypteringsnyckel: %s"
 
-#: ../src/storage-manager.c:521
+#: ../src/storage-manager.c:427
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Fel vid kryptering av databas: %s"
+
+#: ../src/storage-manager.c:531
 #, c-format
 msgid "Could not open database \"%s\". SQLite provided the following error message: %s"
 msgstr "Kunde inte öppna databasen \"%s\". SQLite gav följande felmeddelande: %s"
 
-#: ../src/storage-manager.c:552
-#, c-format
-msgid "Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary will not be encrypted; please install Seahorse and set up a default key, or ignore this message."
-msgstr "Fel vid hämtning av krypteringnyckel: GConf-nyckeln \"%s\" är ogiltig eller tom. Din dagbok kommer inte att vara krypterad; installera Seahorse och ange en standardnyckel eller ignorera detta meddelande."
-
-#: ../src/storage-manager.c:597
-#: ../src/storage-manager.c:631
+#: ../src/storage-manager.c:610
+#: ../src/storage-manager.c:644
 #, c-format
 msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr "Kunde inte köra frågan \"%s\". SQLite gav följande felmeddelande: %s"
 
-#: ../src/storage-manager.c:866
+#: ../src/storage-manager.c:879
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Fel vid deserialisering av post i buffert under sökning."
 
+#~ msgid "Error closing database"
+#~ msgstr "Fel vid stängning av databasen"
+#~ msgid ""
+#~ "Error getting encryption key: GConf key \"%s\" invalid or empty. Your "
+#~ "diary will not be encrypted; please install Seahorse and set up a default "
+#~ "key, or ignore this message."
+#~ msgstr ""
+#~ "Fel vid hämtning av krypteringnyckel: GConf-nyckeln \"%s\" är ogiltig "
+#~ "eller tom. Din dagbok kommer inte att vara krypterad; installera Seahorse "
+#~ "och ange en standardnyckel eller ignorera detta meddelande."
 #~ msgid "Add Link"
 #~ msgstr "Lägg till länk"
 #~ msgid "Attached Links"
