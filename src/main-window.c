@@ -753,9 +753,8 @@ mw_insert_time_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 	gchar time_string[100];
 	time_t time_struct;
 
-	/* Translators: This is a strftime()-format string for the time to insert into an entry when using Edit->Insert Time. */
 	time_struct = time (NULL);
-	strftime (time_string, sizeof (time_string), _("%X"), localtime (&time_struct));
+	strftime (time_string, sizeof (time_string), "%X", localtime (&time_struct));
 	gtk_text_buffer_insert_at_cursor (main_window->priv->entry_buffer, time_string, -1);
 }
 
