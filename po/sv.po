@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-13 10:48+0200\n"
+"POT-Creation-Date: 2009-07-07 12:09+0200\n"
 "PO-Revision-Date: 2009-06-13 10:48+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -15,9 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../data/almanah.desktop.in.h:1
-#: ../src/main-window.c:129
-#: ../src/main.c:112
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:129 ../src/main.c:112
 msgid "Almanah Diary"
 msgstr "Dagboksprogrammet Almanah"
 
@@ -62,8 +60,14 @@ msgid "Spell checking language"
 msgstr "Språk för stavningskontroll"
 
 #: ../data/almanah.schemas.in.h:9
-msgid "The ID of the key to use to encrypt and decrypt the database, if Almanah has been built with encryption support. Leave blank to disable database encryption."
-msgstr "Id för nyckeln som ska användas för att kryptera och dekryptera databasen, om Almanah har byggts med krypteringsstöd. Lämna tom för att inaktivera databaskryptering."
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Id för nyckeln som ska användas för att kryptera och dekryptera databasen, "
+"om Almanah har byggts med krypteringsstöd. Lämna tom för att inaktivera "
+"databaskryptering."
 
 #: ../data/almanah.schemas.in.h:10
 msgid "The X position of the main window."
@@ -79,7 +83,8 @@ msgstr "Höjden på huvudfönstret."
 
 #: ../data/almanah.schemas.in.h:13
 msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "Lokalangivaren för språket i vilket posterna ska stavningskontrolleras."
+msgstr ""
+"Lokalangivaren för språket i vilket posterna ska stavningskontrolleras."
 
 #: ../data/almanah.schemas.in.h:14
 msgid "The width of the main window."
@@ -129,8 +134,7 @@ msgstr "_Viktigt"
 msgid "Insert _Time"
 msgstr "Infoga _tid"
 
-#: ../data/almanah.ui.h:10
-#: ../src/definition-manager-window.c:246
+#: ../data/almanah.ui.h:10 ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Ingenting markerat"
 
@@ -150,8 +154,7 @@ msgstr "Resultatlista"
 msgid "Results"
 msgstr "Resultat"
 
-#: ../data/almanah.ui.h:15
-#: ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:15 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Sök"
 
@@ -219,10 +222,8 @@ msgstr "t.ex. \"14/03/2009\" eller \"14 mars 2009\"."
 msgid "Add Definition"
 msgstr "Lägg till definition"
 
-#: ../src/add-definition-dialog.c:164
-#: ../src/definition-manager-window.c:132
-#: ../src/main-window.c:170
-#: ../src/preferences-dialog.c:135
+#: ../src/add-definition-dialog.c:164 ../src/definition-manager-window.c:132
+#: ../src/main-window.c:170 ../src/preferences-dialog.c:135
 #: ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -236,8 +237,7 @@ msgstr "Kalendermöte"
 msgid "An appointment on an Evolution calendar."
 msgstr "Ett möte i en Evolution-kalender."
 
-#: ../src/events/calendar-appointment.c:120
-#: ../src/events/calendar-task.c:109
+#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
 msgid "Error launching Evolution"
 msgstr "Fel vid start av Evolution"
 
@@ -282,8 +282,7 @@ msgstr "En Evolution-kontakt."
 msgid "Select Contact"
 msgstr "Välj kontakt"
 
-#: ../src/definitions/contact.c:103
-#: ../src/definitions/contact.c:224
+#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
 msgid "Error opening contact"
 msgstr "Fel vid öppnande av kontakten"
 
@@ -315,8 +314,7 @@ msgstr "Anteckning"
 msgid "A note about an important event."
 msgstr "En anteckning om en viktig händelse."
 
-#: ../src/definitions/uri.c:50
-#: ../src/definitions/uri.c:99
+#: ../src/definitions/uri.c:50 ../src/definitions/uri.c:99
 msgid "URI"
 msgstr "URI"
 
@@ -333,11 +331,8 @@ msgstr "Fel vid öppnande av URI"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:369
-#: ../src/main-window.c:394
-#: ../src/main-window.c:1018
-#: ../src/printing.c:257
-#: ../src/search-dialog.c:157
+#: ../src/main-window.c:369 ../src/main-window.c:394 ../src/main-window.c:1018
+#: ../src/printing.c:257 ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -363,16 +358,35 @@ msgid "%X"
 msgstr "%X"
 
 #: ../src/main-window.c:855
-msgid "Almanah is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
-msgstr "Almanah är fri programvara. Du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 3 eller (om du så vill) någon senare version."
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah är fri programvara. Du kan distribuera det och/eller modifiera det "
+"under villkoren i GNU General Public License, publicerad av Free Software "
+"Foundation, antingen version 3 eller (om du så vill) någon senare version."
 
 #: ../src/main-window.c:859
-msgid "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
-msgstr "Almanah distribueras i hopp om att det ska vara användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för ytterligare information."
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah distribueras i hopp om att det ska vara användbart, men UTAN NÅGON "
+"SOM HELST GARANTI, även utan underförstådd garanti om SÄLJBARHET eller "
+"LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för "
+"ytterligare information."
 
 #: ../src/main-window.c:863
-msgid "You should have received a copy of the GNU General Public License along with Almanah.  If not, see <http://www.gnu.org/licenses/>."
-msgstr "Du bör ha fått en kopia av GNU General Public License tillsammans med Almanah. Om inte, se <http://www.gnu.org/licenses/>."
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Du bör ha fått en kopia av GNU General Public License tillsammans med "
+"Almanah. Om inte, se <http://www.gnu.org/licenses/>."
 
 #: ../src/main-window.c:874
 #, c-format
@@ -496,8 +510,12 @@ msgid "Error opening plain database file \"%s\": %s"
 msgstr "Fel vid öppnade av vanliga databasfilen \"%s\": %s"
 
 #: ../src/storage-manager.c:327
-msgid "The encrypted database is empty. The plain database file has been left undeleted as backup."
-msgstr "Krypterade databasen är tom. Den vanliga databasfilen har lämnats kvar som säkerhetskopia."
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Krypterade databasen är tom. Den vanliga databasfilen har lämnats kvar som "
+"säkerhetskopia."
 
 #. Delete the plain file
 #: ../src/storage-manager.c:330
@@ -522,13 +540,16 @@ msgstr "Fel vid kryptering av databas: %s"
 
 #: ../src/storage-manager.c:531
 #, c-format
-msgid "Could not open database \"%s\". SQLite provided the following error message: %s"
-msgstr "Kunde inte öppna databasen \"%s\". SQLite gav följande felmeddelande: %s"
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Kunde inte öppna databasen \"%s\". SQLite gav följande felmeddelande: %s"
 
-#: ../src/storage-manager.c:610
-#: ../src/storage-manager.c:644
+#: ../src/storage-manager.c:610 ../src/storage-manager.c:644
 #, c-format
-msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr "Kunde inte köra frågan \"%s\". SQLite gav följande felmeddelande: %s"
 
 #: ../src/storage-manager.c:879
@@ -537,6 +558,7 @@ msgstr "Fel vid deserialisering av post i buffert under sökning."
 
 #~ msgid "Error closing database"
 #~ msgstr "Fel vid stängning av databasen"
+
 #~ msgid ""
 #~ "Error getting encryption key: GConf key \"%s\" invalid or empty. Your "
 #~ "diary will not be encrypted; please install Seahorse and set up a default "
@@ -545,20 +567,26 @@ msgstr "Fel vid deserialisering av post i buffert under sökning."
 #~ "Fel vid hämtning av krypteringnyckel: GConf-nyckeln \"%s\" är ogiltig "
 #~ "eller tom. Din dagbok kommer inte att vara krypterad; installera Seahorse "
 #~ "och ange en standardnyckel eller ignorera detta meddelande."
+
 #~ msgid "Add Link"
 #~ msgstr "Lägg till länk"
+
 #~ msgid "Attached Links"
 #~ msgstr "Bifogade länkar"
 
 #, fuzzy
 #~ msgid "View Link"
 #~ msgstr "Visa post"
+
 #~ msgid "Due to an unknown error the file cannot be opened."
 #~ msgstr "På grund av ett okänt fel kunde filen inte öppnas."
+
 #~ msgid "Due to an unknown error the URI cannot be opened."
 #~ msgstr "På grund av ett okänt fel kunde URI:n inte öppnas."
+
 #~ msgid "Diary Website"
 #~ msgstr "Webbplatsen för Dagbok"
+
 #~ msgid ""
 #~ "Both an encrypted and plaintext version of the database exist as \"%s\" "
 #~ "and \"%s\", and one is likely corrupt. Please delete the corrupt one (i."
@@ -571,6 +599,6 @@ msgstr "Fel vid deserialisering av post i buffert under sökning."
 #~ "som är 0 KiB stor) innan du fortsätter. Om ingen av filerna är 0 KiB kan "
 #~ "problemet sannolikt ha orsakats av att Dagbok inte kan kryptera "
 #~ "databasen. I så fall bör du flytta den första filen."
+
 #~ msgid "<b>%A, %e %B %Y</b>"
 #~ msgstr "<b>%A, %e %B %Y</b>"
-
