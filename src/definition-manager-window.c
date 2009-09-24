@@ -359,20 +359,20 @@ static void
 populate_definition_store (AlmanahDefinitionManagerWindow *self)
 {
 	AlmanahDefinitionManagerWindowPrivate *priv = self->priv;
-	AlmanahDefinition **definitions;
-	guint i = 0;
+	GSList *definitions, *i;
 
 	definitions = almanah_storage_manager_get_definitions (almanah->storage_manager);
-	while (definitions[i] != NULL) {
+	for (i = definitions; i != NULL; i = i->next) {
 		GtkTreeIter iter;
+		AlmanahDefinition *definition = ALMANAH_DEFINITION (i->data);
 
 		gtk_list_store_append (priv->definition_store, &iter);
 		gtk_list_store_set (priv->definition_store, &iter,
-				    0, definitions[i],
-				    1, almanah_definition_get_text (definitions[i]),
+				    0, definition,
+				    1, almanah_definition_get_text (definition),
 				    -1);
 
-		i++;
+		g_object_unref (definition);
 	}
-	g_free (definitions);
+	g_slist_free (definitions);
 }

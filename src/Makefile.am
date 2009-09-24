@@ -55,6 +55,8 @@ almanah_SOURCES = \
 	definition.h		\
 	date-entry-dialog.c	\
 	date-entry-dialog.h	\
+	import-dialog.c		\
+	import-dialog.h		\
 	definitions/contact.c		\
 	definitions/contact.h		\
 	definitions/file.c		\

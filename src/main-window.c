@@ -2,7 +2,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -40,6 +40,7 @@
 #include "event.h"
 #include "definition.h"
 #include "definition-manager-window.h"
+#include "import-dialog.h"
 
 static void almanah_main_window_dispose (GObject *object);
 static void save_window_state (AlmanahMainWindow *self);
@@ -60,6 +61,7 @@ static void mw_definition_removed_cb (AlmanahStorageManager *storage_manager, co
 
 /* GtkBuilder callbacks */
 void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
+void mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_page_setup_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_print_preview_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_print_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
@@ -522,7 +524,7 @@ remove_definition_from_current_entry (AlmanahMainWindow *self)
 		end_iter = start_iter;
 		gtk_text_iter_forward_to_tag_toggle (&end_iter, tag);
 	}
-		
+
 	/* Remove the tag */
 	gtk_text_buffer_remove_tag (priv->entry_buffer, tag, &start_iter, &end_iter);
 	gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
@@ -693,6 +695,16 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 	almanah_quit ();
 
 	return TRUE;
+}
+
+void
+mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+{
+	if (almanah->import_dialog == NULL)
+		almanah->import_dialog = GTK_WIDGET (almanah_import_dialog_new ());
+
+	gtk_widget_show_all (almanah->import_dialog);
+	gtk_dialog_run (GTK_DIALOG (almanah->import_dialog));
 }
 
 void

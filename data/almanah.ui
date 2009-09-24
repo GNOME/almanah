@@ -10,6 +10,13 @@
 					</object>
 				</child>
 				<child>
+					<object class="GtkAction" id="almanah_ui_import">
+						<property name="name">file-import</property>
+						<property name="label" translatable="yes">_Import…</property>
+						<signal name="activate" handler="mw_import_activate_cb"/>
+					</object>
+				</child>
+				<child>
 					<object class="GtkAction" id="almanah_ui_page_setup">
 						<property name="stock-id">gtk-page-setup</property>
 						<property name="name">file-page-setup</property>
@@ -201,6 +208,8 @@
 		<ui>
 			<menubar name="almanah_mw_menu_bar">
 				<menu action="almanah_ui_file">
+					<menuitem action="almanah_ui_import"/>
+					<separator/>
 					<menuitem action="almanah_ui_page_setup"/>
 					<menuitem action="almanah_ui_print_preview"/>
 					<menuitem action="almanah_ui_print"/>
@@ -916,6 +925,232 @@
 		<action-widgets>
 			<action-widget response="-6">almanah_ded_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
 			<action-widget response="-5">almanah_ded_ok_button</action-widget><!-- GTK_RESPONSE_OK -->
+		</action-widgets>
+	</object>
+
+	<object class="GtkListStore" id="almanah_id_mode_store">
+		<columns>
+			<column type="gchararray"/><!-- Name -->
+			<column type="guint"/><!-- Type -->
+		</columns>
+	</object>
+
+	<object class="AlmanahImportDialog" id="almanah_import_dialog">
+		<child internal-child="vbox">
+			<object class="GtkVBox" id="almanah_id_internal_vbox">
+				<property name="spacing">5</property>
+				<child>
+					<object class="GtkVBox" id="almanah_id_vbox">
+						<property name="border-width">5</property>
+						<property name="spacing">5</property>
+						<child>
+							<object class="GtkHBox" id="almanah_id_hbox">
+								<property name="spacing">5</property>
+								<child>
+									<object class="GtkLabel" id="almanah_id_mode_label">
+										<property name="xalign">0</property>
+										<property name="label" translatable="yes">Import Mode</property>
+										<accessibility>
+											<relation target="almanah_id_mode_combo_box" type="label-for"/>
+										</accessibility>
+										<attributes>
+											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+										</attributes>
+									</object>
+									<packing>
+										<property name="expand">False</property>
+									</packing>
+								</child>
+								<child>
+									<object class="GtkComboBox" id="almanah_id_mode_combo_box">
+										<signal name="changed" handler="id_mode_combo_box_changed_cb"/>
+										<property name="model">almanah_id_mode_store</property>
+										<accessibility>
+											<relation target="almanah_id_mode_label" type="labelled-by"/>
+										</accessibility>
+										<child>
+											<object class="GtkCellRendererText" id="almanah_id_mode_renderer"/>
+											<attributes>
+												<attribute name="text">0</attribute>
+											</attributes>
+										</child>
+									</object>
+								</child>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkLabel" id="almanah_id_description_label">
+								<property name="wrap">True</property>
+								<attributes>
+									<attribute name="scale" value="0.83"/><!-- PANGO_SCALE_SMALL -->
+								</attributes>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkFileChooserWidget" id="almanah_id_file_chooser">
+								<signal name="selection-changed" handler="id_file_chooser_selection_changed_cb"/>
+								<signal name="file-activated" handler="id_file_chooser_file_activated_cb"/>
+								<property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+								<property name="select-multiple">False</property>
+							</object>
+						</child>
+					</object>
+				</child>
+				<child internal-child="action_area">
+					<object class="GtkHButtonBox" id="almanah_id_button_box">
+						<child>
+							<object class="GtkButton" id="almanah_id_cancel_button">
+								<property name="use-stock">True</property>
+								<property name="label">gtk-cancel</property>
+							</object>
+						</child>
+						<child>
+							<object class="GtkButton" id="almanah_id_import_button">
+								<property name="use-underline">True</property>
+								<property name="label" translatable="yes">_Import</property>
+								<property name="can-default">True</property>
+								<property name="has-default">True</property>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+		<action-widgets>
+			<action-widget response="-6">almanah_id_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
+			<action-widget response="-5">almanah_id_import_button</action-widget><!-- GTK_RESPONSE_OK -->
+		</action-widgets>
+	</object>
+
+	<object class="GtkListStore" id="almanah_ird_view_store">
+		<columns>
+			<column type="gchararray"/><!-- View name -->
+		</columns>
+		<data>
+			<row>
+				<col id="0" translatable="yes">Successful Entries</col>
+			</row>
+			<row>
+				<col id="0" translatable="yes">Merged Entries</col>
+			</row>
+			<row>
+				<col id="0" translatable="yes">Failed Entries</col>
+			</row>
+		</data>
+	</object>
+
+	<object class="GtkListStore" id="almanah_ird_results_store">
+		<columns>
+			<column type="guint"/><!-- Day -->
+			<column type="guint"/><!-- Month -->
+			<column type="guint"/><!-- Year -->
+			<column type="gchararray"/><!-- Formatted date -->
+			<column type="guint"/><!-- Status -->
+			<column type="gchararray"/><!-- Message -->
+		</columns>
+	</object>
+
+	<object class="GtkTreeModelFilter" id="almanah_ird_filtered_results_store">
+		<property name="child-model">almanah_ird_results_store</property>
+	</object>
+
+	<object class="AlmanahImportResultsDialog" id="almanah_import_results_dialog">
+		<child internal-child="vbox">
+			<object class="GtkVBox" id="almanah_ird_internal_vbox">
+				<property name="spacing">5</property>
+				<child>
+					<object class="GtkVBox" id="almanah_id_vbox">
+						<property name="border-width">5</property>
+						<property name="spacing">5</property>
+						<child>
+							<object class="GtkComboBox" id="almanah_ird_view_combo_box">
+								<signal name="changed" handler="ird_view_combo_box_changed_cb"/>
+								<property name="model">almanah_ird_view_store</property>
+								<accessibility>
+									<relation target="almanah_ird_results_tree_view" type="label-for"/>
+								</accessibility>
+								<child>
+									<object class="GtkCellRendererText" id="almanah_ird_view_renderer"/>
+									<attributes>
+										<attribute name="text">0</attribute>
+									</attributes>
+								</child>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkScrolledWindow" id="almanah_ird_results_scrolled_window">
+								<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+								<property name="shadow-type">GTK_SHADOW_IN</property>
+								<child>
+									<object class="GtkTreeView" id="almanah_ird_results_tree_view">
+										<property name="model">almanah_ird_filtered_results_store</property>
+										<property name="headers-visible">False</property>
+										<signal name="row-activated" handler="ird_results_tree_view_row_activated_cb"/>
+										<accessibility>
+											<relation target="almanah_ird_view_combo_box" type="labelled-by"/>
+										</accessibility>
+										<child internal-child="accessible">
+											<object class="AtkObject" id="a11y-almanah_ird_results_tree_view">
+												<property name="AtkObject::accessible-name" translatable="yes">Import Results List</property>
+											</object>
+										</child>
+										<child>
+											<object class="GtkTreeViewColumn" id="almanah_ird_results_column">
+												<child>
+													<object class="GtkCellRendererText" id="almanah_ird_results_renderer"/>
+													<attributes>
+														<attribute name="text">3</attribute>
+													</attributes>
+												</child>
+											</object>
+										</child>
+										<child>
+											<object class="GtkTreeViewColumn" id="almanah_ird_results_message_column">
+												<child>
+													<object class="GtkCellRendererText" id="almanah_ird_results_message_renderer"/>
+													<attributes>
+														<attribute name="text">5</attribute>
+													</attributes>
+												</child>
+											</object>
+										</child>
+									</object>
+								</child>
+							</object>
+						</child>
+					</object>
+				</child>
+				<child internal-child="action_area">
+					<object class="GtkHButtonBox" id="almanah_ird_button_box">
+						<child>
+							<object class="GtkButton" id="almanah_ird_view_button">
+								<property name="label" translatable="yes">View Entry</property>
+								<property name="sensitive">False</property>
+								<signal name="clicked" handler="ird_view_button_clicked_cb"/>
+							</object>
+						</child>
+						<child>
+							<object class="GtkButton" id="almanah_ird_close_button">
+								<property name="use-stock">True</property>
+								<property name="label">gtk-close</property>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+		<action-widgets>
+			<action-widget response="-7">almanah_ird_close_button</action-widget><!-- GTK_RESPONSE_CLOSE -->
 		</action-widgets>
 	</object>
 </interface>

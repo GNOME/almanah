@@ -35,6 +35,8 @@
 #include "storage-manager.h"
 #include "almanah-marshal.h"
 
+#define ENCRYPTED_SUFFIX ".encrypted"
+
 static void almanah_storage_manager_finalize (GObject *object);
 static void almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
@@ -126,12 +128,25 @@ almanah_storage_manager_init (AlmanahStorageManager *self)
  *
  * Creates a new #AlmanahStorageManager, connected to the given database @filename.
  *
+ * If @filename is for an encrypted database, it will automatically be changed to the canonical filename for the
+ * unencrypted database, even if that file doesn't exist, and even if Almanah was compiled without encryption support.
+ * Database filenames are always passed as the unencrypted filename.
+ *
  * Return value: the new #AlmanahStorageManager
  **/
 AlmanahStorageManager *
 almanah_storage_manager_new (const gchar *filename)
 {
-	return g_object_new (ALMANAH_TYPE_STORAGE_MANAGER, "filename", filename, NULL);
+	gchar *new_filename = NULL;
+	AlmanahStorageManager *sm;
+
+	if (g_str_has_suffix (filename, ENCRYPTED_SUFFIX) == TRUE)
+		filename = new_filename = g_strndup (filename, strlen (filename) - strlen (ENCRYPTED_SUFFIX));
+
+	sm = g_object_new (ALMANAH_TYPE_STORAGE_MANAGER, "filename", filename, NULL);
+	g_free (new_filename);
+
+	return sm;
 }
 
 static void
@@ -170,7 +185,7 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 	switch (property_id) {
 		case PROP_FILENAME:
 			priv->plain_filename = g_strdup (g_value_get_string (value));
-			priv->filename = g_strjoin (NULL, priv->plain_filename, ".encrypted", NULL);
+			priv->filename = g_strjoin (NULL, priv->plain_filename, ENCRYPTED_SUFFIX, NULL);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -898,6 +913,61 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	return result_count - 1;
 }
 
+/**
+ * almanah_storage_manager_get_entries:
+ * @self: an #AlmanahStorageManager
+ *
+ * Returns a list of all #AlmanahEntry<!-- -->s in the database.
+ *
+ * Return value: a #GSList of #AlmanahEntry<!-- -->s, or %NULL; unref elements with g_object_unref(); free list with g_slist_free()
+ **/
+GSList *
+almanah_storage_manager_get_entries (AlmanahStorageManager *self)
+{
+	GSList *entries = NULL;
+	int result;
+	sqlite3_stmt *statement;
+
+	/* Just as with almanah_storage_manager_get_entry(), it's necessary to avoid our nice SQLite interface
+	 * here. It's probably more efficient to avoid it anyway. */
+
+	/* Prepare the statement */
+	if (sqlite3_prepare_v2 (self->priv->connection,
+				"SELECT content, is_important, day, month, year FROM entries", -1,
+				&statement, NULL) != SQLITE_OK) {
+		return NULL;
+	}
+
+	/* Execute the statement */
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
+		GDate date;
+		AlmanahEntry *entry;
+
+		g_date_set_dmy (&date,
+				sqlite3_column_int (statement, 2),
+				sqlite3_column_int (statement, 3),
+				sqlite3_column_int (statement, 4));
+
+		/* Get the data */
+		entry = almanah_entry_new (&date);
+		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+		almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
+
+		entries = g_slist_prepend (entries, entry);
+	}
+
+	sqlite3_finalize (statement);
+
+	/* Check for errors */
+	if (result != SQLITE_DONE) {
+		g_slist_foreach (entries, (GFunc) g_object_unref, NULL);
+		g_slist_free (entries);
+		return NULL;
+	}
+
+	return g_slist_reverse (entries);
+}
+
 /* NOTE: Free results with g_free. Return value is 0-based. */
 gboolean *
 almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
@@ -930,46 +1000,46 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
  * almanah_storage_manager_get_definitions:
  * @self: an #AlmanahStorageManager
  *
- * Returns a %NULL-terminated array of all the #AlmanahDefinitions in the
- * database. Each #AlmanahDefinition should be unreffed, and the array should
- * be freed with g_free().
+ * Returns a list of all #AlmanahDefinition<!-- -->s in the database.
  *
- * On error, an array with a single %NULL element will be returned. The array
- * should still be freed with g_free().
- *
- * Return value: a %NULL-terminated array of #AlmanahDefinitions
+ * Return value: a #GSList of #AlmanahDefinition<!-- -->s, or %NULL; unref elements with g_object_unref(); free list with g_slist_free()
  **/
-AlmanahDefinition **
+GSList *
 almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 {
-	AlmanahQueryResults *results;
-	AlmanahDefinition **definitions;
-	gint i;
+	GSList *definitions = NULL;
+	int result;
+	sqlite3_stmt *statement;
 
-	results = almanah_storage_manager_query (self, "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions", NULL);
+	/* It's more efficient to avoid our nice SQLite interface and do things manually. */
 
-	if (results == NULL || results->rows == 0) {
-		if (results != NULL)
-			almanah_storage_manager_free_results (results);
-
-		/* Return empty array */
-		definitions = (AlmanahDefinition**) g_new (AlmanahDefinition*, 1);
-		definitions[0] = NULL;
-		return definitions;
+	/* Prepare the statement */
+	if (sqlite3_prepare_v2 (self->priv->connection,
+				"SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions", -1,
+				&statement, NULL) != SQLITE_OK) {
+		return NULL;
 	}
 
-	definitions = (AlmanahDefinition**) g_new (AlmanahDefinition*, results->rows + 1);
-	for (i = 0; i < results->rows; i++) {
-		definitions[i] = almanah_definition_new (atoi (results->data[(i + 1) * results->columns]));
-		almanah_definition_set_value (definitions[i], results->data[(i + 1) * results->columns + 1]);
-		almanah_definition_set_value2 (definitions[i], results->data[(i + 1) * results->columns + 2]);
-		almanah_definition_set_text (definitions[i], results->data[(i + 1) * results->columns + 3]);
+	/* Execute the statement */
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
+		AlmanahDefinition *definition = almanah_definition_new (sqlite3_column_int (statement, 0));
+		almanah_definition_set_value (definition, (gchar*) sqlite3_column_text (statement, 1));
+		almanah_definition_set_value2 (definition, (gchar*) sqlite3_column_text (statement, 2));
+		almanah_definition_set_text (definition, (gchar*) sqlite3_column_text (statement, 3));
+
+		definitions = g_slist_prepend (definitions, definition);
 	}
-	definitions[i] = NULL;
 
-	almanah_storage_manager_free_results (results);
+	sqlite3_finalize (statement);
 
-	return definitions;
+	/* Check for errors */
+	if (result != SQLITE_DONE) {
+		g_slist_foreach (definitions, (GFunc) g_object_unref, NULL);
+		g_slist_free (definitions);
+		return NULL;
+	}
+
+	return g_slist_reverse (definitions);
 }
 
 /* Note: this function is case-insensitive, unless the definition text contains Unicode characters

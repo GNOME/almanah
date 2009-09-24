@@ -46,6 +46,7 @@ typedef struct {
 	GtkWidget *search_dialog;
 	GtkWidget *date_entry_dialog;
 	GtkWidget *definition_manager_window;
+	GtkWidget *import_dialog;
 #ifdef ENABLE_ENCRYPTION
 	GtkWidget *preferences_dialog;
 #endif /* ENABLE_ENCRYPTION */
