@@ -39,16 +39,6 @@ almanah_get_interface_filename (void)
 		return PACKAGE_DATA_DIR"/almanah/almanah.ui";
 }
 
-void
-almanah_interface_embolden_label (GtkLabel *label)
-{
-	gchar *markup;
-
-	markup = g_strdup_printf ("<b>%s</b>", gtk_label_get_label (label));
-	gtk_label_set_markup_with_mnemonic (label, markup);
-	g_free (markup);
-}
-
 static gboolean
 definition_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkTextIter *iter, gpointer user_data)
 {

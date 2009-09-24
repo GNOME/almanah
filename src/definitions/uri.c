@@ -94,9 +94,9 @@ uri_build_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox)
 	AlmanahURIDefinitionPrivate *priv = ALMANAH_URI_DEFINITION (definition)->priv;
 	const gchar *value = almanah_definition_get_value (definition);
 
-	hbox = gtk_hbox_new (FALSE, 5);
+	hbox = gtk_hbox_new (FALSE, 6);
 
-	label = gtk_label_new (_("URI"));
+	label = gtk_label_new (_("URI: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, TRUE, 0);
 

@@ -157,8 +157,7 @@ almanah_preferences_dialog_new (void)
 
 #ifdef ENABLE_ENCRYPTION
 	/* Grab our child widgets */
-	label = gtk_label_new (_("Encryption Key"));
-	almanah_interface_embolden_label (GTK_LABEL (label));
+	label = gtk_label_new (_("Encryption key: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_table_attach (table, label, 1, 2, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
 

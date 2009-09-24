@@ -117,6 +117,7 @@
 					<object class="GtkToggleAction" id="almanah_ui_bold">
 						<property name="stock-id">gtk-bold</property>
 						<property name="name">format-bold</property>
+						<property name="tooltip" translatable="yes">Toggle whether the currently selected text is bold.</property>
 					</object>
 					<accelerator key="B" modifiers="GDK_CONTROL_MASK"/>
 				</child>
@@ -124,6 +125,7 @@
 					<object class="GtkToggleAction" id="almanah_ui_italic">
 						<property name="stock-id">gtk-italic</property>
 						<property name="name">format-italic</property>
+						<property name="tooltip" translatable="yes">Toggle whether the currently selected text is italic.</property>
 					</object>
 					<accelerator key="I" modifiers="GDK_CONTROL_MASK"/>
 				</child>
@@ -131,6 +133,7 @@
 					<object class="GtkToggleAction" id="almanah_ui_underline">
 						<property name="stock-id">gtk-underline</property>
 						<property name="name">format-underline</property>
+						<property name="tooltip" translatable="yes">Toggle whether the currently selected text is underlined.</property>
 					</object>
 					<accelerator key="U" modifiers="GDK_CONTROL_MASK"/>
 				</child>
@@ -146,7 +149,9 @@
 					<object class="GtkToggleAction" id="almanah_ui_important">
 						<property name="name">format-important</property>
 						<property name="label" translatable="yes">I_mportant</property>
+						<property name="tooltip" translatable="yes">Toggle whether the current entry is marked as important.</property>
 						<property name="icon-name">gtk-info</property>
+						<property name="is-important">True</property>
 						<signal name="activate" handler="mw_important_activate_cb"/>
 					</object>
 					<accelerator key="M" modifiers="GDK_CONTROL_MASK"/>
@@ -169,6 +174,8 @@
 						<property name="stock-id">gtk-jump-to</property>
 						<property name="name">jump-to-today</property>
 						<property name="label" translatable="yes">Go to _Today</property>
+						<property name="tooltip" translatable="yes">Jump to the current date in the diary.</property>
+						<property name="is-important">True</property>
 						<signal name="activate" handler="mw_jump_to_today_activate_cb"/>
 					</object>
 				</child>
@@ -183,6 +190,8 @@
 						<property name="stock-id">gtk-add</property>
 						<property name="name">add-definition</property>
 						<property name="label" translatable="yes">_Add Definition</property>
+						<property name="tooltip" translatable="yes">Add a definition for the currently selected text.</property>
+						<property name="is-important">True</property>
 						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
 						<signal name="activate" handler="mw_add_definition_activate_cb"/>
 					</object>
@@ -192,6 +201,7 @@
 						<property name="stock-id">gtk-remove</property>
 						<property name="name">remove-definition</property>
 						<property name="label" translatable="yes">_Remove Definition</property>
+						<property name="tooltip" translatable="yes">Remove the definition from the currently selected text.</property>
 						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
 						<signal name="activate" handler="mw_remove_definition_activate_cb"/>
 					</object>
@@ -289,161 +299,171 @@
 					</packing>
 				</child>
 				<child>
-					<object class="GtkHPaned" id="hpaned1">
-						<property name="can-focus">True</property>
+					<object class="GtkAlignment" id="mw_alignment">
+						<property name="top-padding">6</property>
 						<child>
-							<object class="GtkVBox" id="vbox3">
+							<object class="GtkHPaned" id="hpaned1">
+								<property name="can-focus">True</property>
 								<child>
-									<object class="GtkLabel" id="almanah_mw_date_label">
-										<property name="use-markup">True</property>
-									</object>
-									<packing>
-										<property name="expand">False</property>
-									</packing>
-								</child>
-								<child>
-									<object class="GtkScrolledWindow" id="scrolledwindow1">
-										<property name="can-focus">True</property>
-										<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-										<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-										<property name="shadow-type">GTK_SHADOW_IN</property>
+									<object class="GtkVBox" id="vbox3">
+										<property name="spacing">6</property>
 										<child>
-											<object class="GtkTextView" id="almanah_mw_entry_view">
-												<property name="width-request">300</property>
-												<property name="height-request">300</property>
+											<object class="GtkLabel" id="almanah_mw_date_label">
+												<property name="use-markup">True</property>
+												<attributes>
+													<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+												</attributes>
+											</object>
+											<packing>
+												<property name="expand">False</property>
+											</packing>
+										</child>
+										<child>
+											<object class="GtkScrolledWindow" id="scrolledwindow1">
 												<property name="can-focus">True</property>
-												<property name="has-focus">True</property>
-												<property name="wrap-mode">GTK_WRAP_WORD</property>
-												<signal name="focus-out-event" handler="mw_entry_view_focus_out_event_cb"/>
-												<child internal-child="accessible">
-													<object class="AtkObject" id="a11y-almanah_mw_entry_view">
-														<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>
+												<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+												<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+												<property name="shadow-type">GTK_SHADOW_IN</property>
+												<child>
+													<object class="GtkTextView" id="almanah_mw_entry_view">
+														<property name="width-request">300</property>
+														<property name="height-request">300</property>
+														<property name="can-focus">True</property>
+														<property name="has-focus">True</property>
+														<property name="wrap-mode">GTK_WRAP_WORD</property>
+														<signal name="focus-out-event" handler="mw_entry_view_focus_out_event_cb"/>
+														<child internal-child="accessible">
+															<object class="AtkObject" id="a11y-almanah_mw_entry_view">
+																<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>
+															</object>
+														</child>
 													</object>
 												</child>
 											</object>
 										</child>
 									</object>
-								</child>
-							</object>
-							<packing>
-								<property name="resize">True</property>
-								<property name="shrink">False</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkVBox" id="vbox2">
-								<child>
-									<object class="GtkLabel" id="almanah_mw_calendar_label">
-										<property name="label" translatable="yes">Calendar</property>
-										<accessibility>
-											<relation target="almanah_mw_calendar" type="label-for"/>
-										</accessibility>
-										<attributes>
-											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-										</attributes>
-									</object>
 									<packing>
-										<property name="expand">False</property>
+										<property name="resize">True</property>
+										<property name="shrink">False</property>
 									</packing>
 								</child>
 								<child>
-									<object class="GtkCalendar" id="almanah_mw_calendar">
-										<property name="width-request">200</property>
-										<property name="can-focus">True</property>
-										<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
-										<signal name="month-changed" handler="almanah_calendar_month_changed_cb"/>
-										<accessibility>
-											<relation target="almanah_mw_calendar_label" type="labelled-by"/>
-										</accessibility>
-										<child internal-child="accessible">
-											<object class="AtkObject" id="a11y-almanah_mw_calendar">
-												<property name="AtkObject::accessible-name" translatable="yes">Calendar</property>
-											</object>
-										</child>
-									</object>
-									<packing>
-										<property name="expand">False</property>
-									</packing>
-								</child>
-								<child>
-									<object class="GtkLabel" id="almanah_mw_events_label">
-										<property name="label" translatable="yes">Past Events</property>
-										<accessibility>
-											<relation target="almanah_mw_events_tree_view" type="label-for"/>
-										</accessibility>
-										<attributes>
-											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-										</attributes>
-									</object>
-									<packing>
-										<property name="expand">False</property>
-									</packing>
-								</child>
-								<child>
-									<object class="GtkScrolledWindow" id="scrolledwindow2">
-										<property name="can-focus">True</property>
-										<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-										<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-										<property name="shadow-type">GTK_SHADOW_IN</property>
+									<object class="GtkVBox" id="vbox2">
+										<property name="spacing">6</property>
 										<child>
-											<object class="GtkTreeView" id="almanah_mw_events_tree_view">
-												<property name="model">almanah_mw_event_store</property>
-												<property name="can-focus">True</property>
-												<property name="headers-visible">False</property>
-												<signal name="row-activated" handler="mw_events_tree_view_row_activated_cb"/>
+											<object class="GtkLabel" id="almanah_mw_calendar_label">
+												<property name="label" translatable="yes">Calendar</property>
 												<accessibility>
-													<relation target="almanah_mw_events_label" type="labelled-by"/>
+													<relation target="almanah_mw_calendar" type="label-for"/>
+												</accessibility>
+												<attributes>
+													<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+												</attributes>
+											</object>
+											<packing>
+												<property name="expand">False</property>
+											</packing>
+										</child>
+										<child>
+											<object class="GtkCalendar" id="almanah_mw_calendar">
+												<property name="width-request">200</property>
+												<property name="can-focus">True</property>
+												<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
+												<signal name="month-changed" handler="almanah_calendar_month_changed_cb"/>
+												<accessibility>
+													<relation target="almanah_mw_calendar_label" type="labelled-by"/>
 												</accessibility>
 												<child internal-child="accessible">
-													<object class="AtkObject" id="a11y-almanah_mw_events_tree_view">
-														<property name="AtkObject::accessible-name" translatable="yes">Past Event List</property>
+													<object class="AtkObject" id="a11y-almanah_mw_calendar">
+														<property name="AtkObject::accessible-name" translatable="yes">Calendar</property>
 													</object>
 												</child>
+											</object>
+											<packing>
+												<property name="expand">False</property>
+											</packing>
+										</child>
+										<child>
+											<object class="GtkLabel" id="almanah_mw_events_label">
+												<property name="label" translatable="yes">Past Events</property>
+												<accessibility>
+													<relation target="almanah_mw_events_tree_view" type="label-for"/>
+												</accessibility>
+												<attributes>
+													<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+												</attributes>
+											</object>
+											<packing>
+												<property name="expand">False</property>
+											</packing>
+										</child>
+										<child>
+											<object class="GtkScrolledWindow" id="scrolledwindow2">
+												<property name="can-focus">True</property>
+												<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+												<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+												<property name="shadow-type">GTK_SHADOW_IN</property>
 												<child>
-													<object class="GtkTreeViewColumn" id="column3">
-														<child>
-															<object class="GtkCellRendererPixbuf" id="renderer3"/>
-															<attributes>
-																<attribute name="icon-name">1</attribute>
-															</attributes>
+													<object class="GtkTreeView" id="almanah_mw_events_tree_view">
+														<property name="model">almanah_mw_event_store</property>
+														<property name="can-focus">True</property>
+														<property name="headers-visible">False</property>
+														<signal name="row-activated" handler="mw_events_tree_view_row_activated_cb"/>
+														<accessibility>
+															<relation target="almanah_mw_events_label" type="labelled-by"/>
+														</accessibility>
+														<child internal-child="accessible">
+															<object class="AtkObject" id="a11y-almanah_mw_events_tree_view">
+																<property name="AtkObject::accessible-name" translatable="yes">Past Event List</property>
+															</object>
 														</child>
-													</object>
-												</child>
-												<child>
-													<object class="GtkTreeViewColumn" id="almanah_mw_event_value_column">
 														<child>
-															<object class="GtkCellRendererText" id="almanah_mw_event_value_renderer"/>
+															<object class="GtkTreeViewColumn" id="column3">
+																<child>
+																	<object class="GtkCellRendererPixbuf" id="renderer3"/>
+																	<attributes>
+																		<attribute name="icon-name">1</attribute>
+																	</attributes>
+																</child>
+															</object>
+														</child>
+														<child>
+															<object class="GtkTreeViewColumn" id="almanah_mw_event_value_column">
+																<child>
+																	<object class="GtkCellRendererText" id="almanah_mw_event_value_renderer"/>
+																</child>
+															</object>
 														</child>
 													</object>
 												</child>
 											</object>
 										</child>
-									</object>
-								</child>
-								<child>
-									<object class="GtkHButtonBox" id="buttonbox1">
 										<child>
-											<object class="GtkButton" id="almanah_mw_view_button">
-												<property name="image">almanah_mw_view_button_image</property>
-												<property name="label" translatable="yes">View</property>
-												<signal name="clicked" handler="mw_view_button_clicked_cb"/>
-												<child internal-child="accessible">
-													<object class="AtkObject" id="a11y-almanah_mw_view_button">
-														<property name="AtkObject::accessible-name" translatable="yes">View Event</property>
+											<object class="GtkHButtonBox" id="buttonbox1">
+												<child>
+													<object class="GtkButton" id="almanah_mw_view_button">
+														<property name="image">almanah_mw_view_button_image</property>
+														<property name="label" translatable="yes">View</property>
+														<signal name="clicked" handler="mw_view_button_clicked_cb"/>
+														<child internal-child="accessible">
+															<object class="AtkObject" id="a11y-almanah_mw_view_button">
+																<property name="AtkObject::accessible-name" translatable="yes">View Event</property>
+															</object>
+														</child>
 													</object>
 												</child>
 											</object>
+											<packing>
+												<property name="expand">False</property>
+											</packing>
 										</child>
 									</object>
 									<packing>
-										<property name="expand">False</property>
+										<property name="resize">False</property>
+										<property name="shrink">False</property>
 									</packing>
 								</child>
 							</object>
-							<packing>
-								<property name="resize">False</property>
-								<property name="shrink">False</property>
-							</packing>
 						</child>
 					</object>
 				</child>
@@ -461,67 +481,57 @@
 
 	<!-- TODO: Use the description of definition types somewhere -->
 	<object class="AlmanahAddDefinitionDialog" id="almanah_add_definition_dialog">
+		<property name="border-width">5</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox1">
+				<property name="spacing">6</property>
 				<child>
-					<object class="GtkTable" id="almanah_add_table">
-						<property name="n-rows">2</property>
-						<property name="n-columns">2</property>
-						<property name="column-spacing">5</property>
-						<property name="row-spacing">5</property>
+					<object class="GtkVBox" id="almanah_add_main_vbox">
+						<property name="spacing">18</property>
 						<property name="border-width">5</property>
 						<child>
-							<object class="GtkLabel" id="almanah_add_type_label">
-								<property name="xalign">0</property>
-								<property name="label" translatable="yes">Definition Type</property>
-								<accessibility>
-									<relation target="almanah_add_type_combo_box" type="label-for"/>
-								</accessibility>
-							</object>
-							<packing>
-								<property name="left-attach">1</property>
-								<property name="right-attach">2</property>
-								<property name="top-attach">1</property>
-								<property name="bottom-attach">2</property>
-								<property name="y-options">GTK_FILL</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkComboBox" id="almanah_add_type_combo_box">
-								<property name="model">almanah_add_type_store</property>
-								<signal name="changed" handler="add_type_combo_box_changed_cb"/>
-								<accessibility>
-									<relation target="almanah_add_type_label" type="labelled-by"/>
-								</accessibility>
+							<object class="GtkHBox" id="almanah_add_hbox">
+								<property name="spacing">6</property>
 								<child>
-									<object class="GtkCellRendererPixbuf" id="renderer5"/>
-									<attributes>
-										<attribute name="icon-name">2</attribute>
-									</attributes>
+									<object class="GtkLabel" id="almanah_add_type_label">
+										<property name="xalign">0</property>
+										<property name="label" translatable="yes">Definition type:</property>
+										<accessibility>
+											<relation target="almanah_add_type_combo_box" type="label-for"/>
+										</accessibility>
+									</object>
+									<packing>
+										<property name="expand">False</property>
+									</packing>
 								</child>
 								<child>
-									<object class="GtkCellRendererText" id="renderer4"/>
-									<attributes>
-										<attribute name="text">0</attribute>
-									</attributes>
+									<object class="GtkComboBox" id="almanah_add_type_combo_box">
+										<property name="model">almanah_add_type_store</property>
+										<signal name="changed" handler="add_type_combo_box_changed_cb"/>
+										<accessibility>
+											<relation target="almanah_add_type_label" type="labelled-by"/>
+										</accessibility>
+										<child>
+											<object class="GtkCellRendererPixbuf" id="renderer5"/>
+											<attributes>
+												<attribute name="icon-name">2</attribute>
+											</attributes>
+										</child>
+										<child>
+											<object class="GtkCellRendererText" id="renderer4"/>
+											<attributes>
+												<attribute name="text">0</attribute>
+											</attributes>
+										</child>
+									</object>
 								</child>
 							</object>
 							<packing>
-								<property name="left-attach">2</property>
-								<property name="right-attach">3</property>
-								<property name="top-attach">1</property>
-								<property name="bottom-attach">2</property>
-								<property name="y-options">GTK_FILL</property>
+								<property name="expand">False</property>
 							</packing>
 						</child>
 						<child>
 							<object class="GtkVBox" id="almanah_add_vbox"/>
-							<packing>
-								<property name="left-attach">1</property>
-								<property name="right-attach">3</property>
-								<property name="top-attach">2</property>
-								<property name="bottom-attach">3</property>
-							</packing>
 						</child>
 					</object>
 				</child>
@@ -565,82 +575,94 @@
 	</object>
 
 	<object class="AlmanahSearchDialog" id="almanah_search_dialog">
+		<property name="border-width">5</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox2">
+				<property name="spacing">6</property>
 				<child>
-					<object class="GtkHBox" id="hbox0">
+					<object class="GtkVBox" id="almanah_search_dialog_vbox">
+						<property name="spacing">6</property>
+						<property name="border-width">5</property>
 						<child>
-							<object class="GtkEntry" id="almanah_sd_search_entry">
-								<property name="activates-default">True</property>
-								<accessibility>
-									<relation target="almanah_sd_search_button" type="labelled-by"/>
-								</accessibility>
-								<child internal-child="accessible">
-									<object class="AtkObject" id="a11y-almanah_sd_search_entry">
-										<property name="AtkObject::accessible-name" translatable="yes">Search entry</property>
+							<object class="GtkAlignment" id="alignment0">
+								<property name="bottom-padding">12</property>
+								<child>
+									<object class="GtkHBox" id="hbox0">
+										<property name="spacing">6</property>
+										<child>
+											<object class="GtkEntry" id="almanah_sd_search_entry">
+												<property name="activates-default">True</property>
+												<accessibility>
+													<relation target="almanah_sd_search_button" type="labelled-by"/>
+												</accessibility>
+												<child internal-child="accessible">
+													<object class="AtkObject" id="a11y-almanah_sd_search_entry">
+														<property name="AtkObject::accessible-name" translatable="yes">Search entry</property>
+													</object>
+												</child>
+											</object>
+										</child>
+										<child>
+											<object class="GtkButton" id="almanah_sd_search_button">
+												<property name="image">almanah_sd_search_button_image</property>
+												<property name="label" translatable="yes">Search</property>
+												<property name="can-default">True</property>
+												<property name="has-default">True</property>
+												<signal name="clicked" handler="sd_search_button_clicked_cb"/>
+												<accessibility>
+													<relation target="almanah_sd_search_entry" type="label-for"/>
+												</accessibility>
+											</object>
+											<packing>
+												<property name="expand">False</property>
+											</packing>
+										</child>
 									</object>
 								</child>
 							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
 						</child>
 						<child>
-							<object class="GtkButton" id="almanah_sd_search_button">
-								<property name="image">almanah_sd_search_button_image</property>
-								<property name="label" translatable="yes">Search</property>
-								<property name="can-default">True</property>
-								<property name="has-default">True</property>
-								<signal name="clicked" handler="sd_search_button_clicked_cb"/>
+							<object class="GtkLabel" id="almanah_sd_results_label">
+								<property name="label" translatable="yes">Results:</property>
+								<property name="xalign">0</property>
 								<accessibility>
-									<relation target="almanah_sd_search_entry" type="label-for"/>
+									<relation target="almanah_sd_results_tree_view" type="label-for"/>
 								</accessibility>
 							</object>
 							<packing>
 								<property name="expand">False</property>
 							</packing>
 						</child>
-					</object>
-					<packing>
-						<property name="expand">False</property>
-					</packing>
-				</child>
-				<child>
-					<object class="GtkLabel" id="almanah_sd_results_label">
-						<property name="label" translatable="yes">Results</property>
-						<accessibility>
-							<relation target="almanah_sd_results_tree_view" type="label-for"/>
-						</accessibility>
-						<attributes>
-							<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-						</attributes>
-					</object>
-					<packing>
-						<property name="expand">False</property>
-					</packing>
-				</child>
-				<child>
-					<object class="GtkScrolledWindow" id="scrolledwindow2">
-						<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-						<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-						<property name="shadow-type">GTK_SHADOW_IN</property>
 						<child>
-							<object class="GtkTreeView" id="almanah_sd_results_tree_view">
-								<property name="model">almanah_sd_results_store</property>
-								<property name="headers-visible">False</property>
-								<signal name="row-activated" handler="sd_results_tree_view_row_activated_cb"/>
-								<accessibility>
-									<relation target="almanah_sd_results_label" type="labelled-by"/>
-								</accessibility>
-								<child internal-child="accessible">
-									<object class="AtkObject" id="a11y-almanah_sd_results_tree_view">
-										<property name="AtkObject::accessible-name" translatable="yes">Result List</property>
-									</object>
-								</child>
+							<object class="GtkScrolledWindow" id="scrolledwindow2">
+								<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+								<property name="shadow-type">GTK_SHADOW_IN</property>
 								<child>
-									<object class="GtkTreeViewColumn" id="column0">
+									<object class="GtkTreeView" id="almanah_sd_results_tree_view">
+										<property name="model">almanah_sd_results_store</property>
+										<property name="headers-visible">False</property>
+										<signal name="row-activated" handler="sd_results_tree_view_row_activated_cb"/>
+										<accessibility>
+											<relation target="almanah_sd_results_label" type="labelled-by"/>
+										</accessibility>
+										<child internal-child="accessible">
+											<object class="AtkObject" id="a11y-almanah_sd_results_tree_view">
+												<property name="AtkObject::accessible-name" translatable="yes">Result List</property>
+											</object>
+										</child>
 										<child>
-											<object class="GtkCellRendererText" id="renderer0"/>
-											<attributes>
-												<attribute name="text">3</attribute>
-											</attributes>
+											<object class="GtkTreeViewColumn" id="column0">
+												<child>
+													<object class="GtkCellRendererText" id="renderer0"/>
+													<attributes>
+														<attribute name="text">3</attribute>
+													</attributes>
+												</child>
+											</object>
 										</child>
 									</object>
 								</child>
@@ -673,14 +695,16 @@
 	</object>
 
 	<object class="AlmanahPreferencesDialog" id="almanah_preferences_dialog">
+		<property name="border-width">5</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox4">
+				<property name="spacing">6</property>
 				<child>
 					<object class="GtkTable" id="almanah_pd_table">
 						<property name="n-rows">1</property>
 						<property name="n-columns">3</property>
-						<property name="column-spacing">5</property>
-						<property name="row-spacing">5</property>
+						<property name="column-spacing">6</property>
+						<property name="row-spacing">6</property>
 						<property name="border-width">5</property>
 						<!-- Encryption key chooser and label go here, programmatically -->
 					</object>
@@ -712,8 +736,10 @@
 	</object>
 
 	<object class="AlmanahDefinitionManagerWindow" id="almanah_definition_manager_window">
+		<property name="border-width">12</property>
 		<child>
 			<object class="GtkHBox" id="hbox1">
+				<property name="spacing">6</property>
 				<child>
 					<object class="GtkScrolledWindow" id="scrolledwindow3">
 						<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
@@ -748,84 +774,87 @@
 					</packing>
 				</child>
 				<child>
-					<object class="GtkTable" id="almanah_dmw_table">
-						<property name="n-rows">3</property>
-						<property name="n-columns">2</property>
-						<property name="column-spacing">5</property>
-						<property name="row-spacing">5</property>
-						<property name="border-width">5</property>
+					<object class="GtkVBox" id="almanah_dmw_vbox">
 						<child>
-							<object class="GtkLabel" id="almanah_dmw_name_label_label">
-								<property name="label" translatable="yes">Type</property>
-								<property name="xalign">1</property>
-								<accessibility>
-									<relation target="almanah_dmw_name_label" type="label-for"/>
-								</accessibility>
-								<attributes>
-									<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-								</attributes>
+							<object class="GtkTable" id="almanah_dmw_table">
+								<property name="n-rows">3</property>
+								<property name="n-columns">2</property>
+								<property name="column-spacing">6</property>
+								<property name="row-spacing">6</property>
+								<child>
+									<object class="GtkLabel" id="almanah_dmw_name_label_label">
+										<property name="label" translatable="yes">Type: </property>
+										<property name="xalign">1</property>
+										<accessibility>
+											<relation target="almanah_dmw_name_label" type="label-for"/>
+										</accessibility>
+										<!--<attributes>
+											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+										</attributes>-->
+									</object>
+									<packing>
+										<property name="left-attach">1</property>
+										<property name="right-attach">2</property>
+										<property name="top-attach">1</property>
+										<property name="bottom-attach">2</property>
+										<property name="x-options">GTK_FILL</property>
+										<property name="y-options">GTK_FILL</property>
+									</packing>
+								</child>
+								<child>
+									<object class="GtkLabel" id="almanah_dmw_name_label">
+										<property name="label" translatable="yes">Nothing selected</property>
+										<property name="xalign">0</property>
+										<accessibility>
+											<relation target="almanah_dmw_name_label_label" type="labelled-by"/>
+										</accessibility>
+									</object>
+									<packing>
+										<property name="left-attach">2</property>
+										<property name="right-attach">3</property>
+										<property name="top-attach">1</property>
+										<property name="bottom-attach">2</property>
+										<property name="y-options">GTK_FILL</property>
+									</packing>
+								</child>
+								<child>
+									<object class="GtkLabel" id="almanah_dmw_description_label_label">
+										<property name="label" translatable="yes">Description: </property>
+										<property name="xalign">1</property>
+										<property name="yalign">0</property>
+										<accessibility>
+											<relation target="almanah_dmw_description_label" type="label-for"/>
+										</accessibility>
+										<!--<attributes>
+											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+										</attributes>-->
+									</object>
+									<packing>
+										<property name="left-attach">1</property>
+										<property name="right-attach">2</property>
+										<property name="top-attach">2</property>
+										<property name="bottom-attach">3</property>
+										<property name="x-options">GTK_FILL</property>
+										<property name="y-options">GTK_FILL</property>
+									</packing>
+								</child>
+								<child>
+									<object class="GtkLabel" id="almanah_dmw_description_label">
+										<property name="wrap">True</property>
+										<property name="xalign">0</property>
+										<property name="yalign">0</property>
+										<accessibility>
+											<relation target="almanah_dmw_description_label_label" type="labelled-by"/>
+										</accessibility>
+									</object>
+									<packing>
+										<property name="left-attach">2</property>
+										<property name="right-attach">3</property>
+										<property name="top-attach">2</property>
+										<property name="bottom-attach">3</property>
+									</packing>
+								</child>
 							</object>
-							<packing>
-								<property name="left-attach">1</property>
-								<property name="right-attach">2</property>
-								<property name="top-attach">1</property>
-								<property name="bottom-attach">2</property>
-								<property name="x-options">GTK_FILL</property>
-								<property name="y-options">GTK_FILL</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkLabel" id="almanah_dmw_name_label">
-								<property name="label" translatable="yes">Nothing selected</property>
-								<property name="xalign">0</property>
-								<accessibility>
-									<relation target="almanah_dmw_name_label_label" type="labelled-by"/>
-								</accessibility>
-							</object>
-							<packing>
-								<property name="left-attach">2</property>
-								<property name="right-attach">3</property>
-								<property name="top-attach">1</property>
-								<property name="bottom-attach">2</property>
-								<property name="y-options">GTK_FILL</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkLabel" id="almanah_dmw_description_label_label">
-								<property name="label" translatable="yes">Description</property>
-								<property name="xalign">1</property>
-								<property name="yalign">0</property>
-								<accessibility>
-									<relation target="almanah_dmw_description_label" type="label-for"/>
-								</accessibility>
-								<attributes>
-									<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-								</attributes>
-							</object>
-							<packing>
-								<property name="left-attach">1</property>
-								<property name="right-attach">2</property>
-								<property name="top-attach">2</property>
-								<property name="bottom-attach">3</property>
-								<property name="x-options">GTK_FILL</property>
-								<property name="y-options">GTK_FILL</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkLabel" id="almanah_dmw_description_label">
-								<property name="wrap">True</property>
-								<property name="xalign">0</property>
-								<property name="yalign">0</property>
-								<accessibility>
-									<relation target="almanah_dmw_description_label_label" type="labelled-by"/>
-								</accessibility>
-							</object>
-							<packing>
-								<property name="left-attach">2</property>
-								<property name="right-attach">3</property>
-								<property name="top-attach">2</property>
-								<property name="bottom-attach">3</property>
-							</packing>
 						</child>
 						<child>
 							<object class="GtkHButtonBox" id="almanah_dmw_button_box">
@@ -852,11 +881,7 @@
 								</child>
 							</object>
 							<packing>
-								<property name="left-attach">1</property>
-								<property name="right-attach">3</property>
-								<property name="top-attach">3</property>
-								<property name="bottom-attach">4</property>
-								<property name="y-options">GTK_FILL</property>
+								<property name="expand">False</property>
 							</packing>
 						</child>
 					</object>
@@ -866,11 +891,14 @@
 	</object>
 
 	<object class="AlmanahDateEntryDialog" id="almanah_date_entry_dialog">
+		<property name="border-width">5</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox1">
+				<property name="spacing">6</property>
 				<child>
 					<object class="GtkVBox" id="almanah_ded_vbox">
-						<property name="spacing">5</property>
+						<property name="spacing">6</property>
+						<property name="border-width">5</property>
 						<child>
 							<object class="GtkEntry" id="almanah_ded_date_entry">
 								<property name="activates-default">True</property>
@@ -936,26 +964,27 @@
 	</object>
 
 	<object class="AlmanahImportDialog" id="almanah_import_dialog">
+		<property name="border-width">5</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="almanah_id_internal_vbox">
-				<property name="spacing">5</property>
+				<property name="spacing">6</property>
 				<child>
 					<object class="GtkVBox" id="almanah_id_vbox">
 						<property name="border-width">5</property>
-						<property name="spacing">5</property>
+						<property name="spacing">6</property>
 						<child>
 							<object class="GtkHBox" id="almanah_id_hbox">
-								<property name="spacing">5</property>
+								<property name="spacing">6</property>
 								<child>
 									<object class="GtkLabel" id="almanah_id_mode_label">
 										<property name="xalign">0</property>
-										<property name="label" translatable="yes">Import Mode</property>
+										<property name="label" translatable="yes">Import mode: </property>
 										<accessibility>
 											<relation target="almanah_id_mode_combo_box" type="label-for"/>
 										</accessibility>
-										<attributes>
+										<!--<attributes>
 											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-										</attributes>
+										</attributes>-->
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -993,11 +1022,16 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkFileChooserWidget" id="almanah_id_file_chooser">
-								<signal name="selection-changed" handler="id_file_chooser_selection_changed_cb"/>
-								<signal name="file-activated" handler="id_file_chooser_file_activated_cb"/>
-								<property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-								<property name="select-multiple">False</property>
+							<object class="GtkAlignment" id="almanah_id_alignment">
+								<property name="top-padding">12</property>
+								<child>
+									<object class="GtkFileChooserWidget" id="almanah_id_file_chooser">
+										<signal name="selection-changed" handler="id_file_chooser_selection_changed_cb"/>
+										<signal name="file-activated" handler="id_file_chooser_file_activated_cb"/>
+										<property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+										<property name="select-multiple">False</property>
+									</object>
+								</child>
 							</object>
 						</child>
 					</object>
@@ -1061,13 +1095,14 @@
 	</object>
 
 	<object class="AlmanahImportResultsDialog" id="almanah_import_results_dialog">
+		<property name="border-width">5</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="almanah_ird_internal_vbox">
-				<property name="spacing">5</property>
+				<property name="spacing">6</property>
 				<child>
 					<object class="GtkVBox" id="almanah_id_vbox">
 						<property name="border-width">5</property>
-						<property name="spacing">5</property>
+						<property name="spacing">6</property>
 						<child>
 							<object class="GtkComboBox" id="almanah_ird_view_combo_box">
 								<signal name="changed" handler="ird_view_combo_box_changed_cb"/>

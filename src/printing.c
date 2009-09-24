@@ -410,18 +410,19 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	end_calendar = gtk_calendar_new ();
 	g_signal_connect (end_calendar, "month-changed", G_CALLBACK (almanah_calendar_month_changed_cb), NULL);
 
-	start_label = GTK_LABEL (gtk_label_new (NULL));
-	gtk_label_set_markup (start_label, _("Start Date"));
-	almanah_interface_embolden_label (start_label);
-	end_label = GTK_LABEL (gtk_label_new (NULL));
-	gtk_label_set_markup (end_label, _("End Date"));
-	almanah_interface_embolden_label (end_label);
+	start_label = GTK_LABEL (gtk_label_new (_("Start date:")));
+	gtk_misc_set_alignment (GTK_MISC (start_label), 0.0, 0.5);
+	end_label = GTK_LABEL (gtk_label_new (_("End date:")));
+	gtk_misc_set_alignment (GTK_MISC (end_label), 0.0, 0.5);
 
 	table = GTK_TABLE (gtk_table_new (2, 2, FALSE));
-	gtk_table_attach (table, start_calendar, 0, 1, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
-	gtk_table_attach (table, end_calendar, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
-	gtk_table_attach (table, GTK_WIDGET (start_label), 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
-	gtk_table_attach (table, GTK_WIDGET (end_label), 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 5, 5);
+	gtk_table_set_row_spacings (table, 6);
+	gtk_table_set_col_spacings (table, 6);
+	gtk_container_set_border_width (GTK_CONTAINER (table), 6);
+	gtk_table_attach (table, start_calendar, 0, 1, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach (table, end_calendar, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
+	gtk_table_attach (table, GTK_WIDGET (start_label), 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+	gtk_table_attach (table, GTK_WIDGET (end_label), 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 
 	almanah_operation->start_calendar = GTK_CALENDAR (start_calendar);
 	almanah_operation->end_calendar = GTK_CALENDAR (end_calendar);

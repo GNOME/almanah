@@ -1028,7 +1028,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
 	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
 	gtk_label_set_markup (priv->date_label, calendar_string);
-	almanah_interface_embolden_label (priv->date_label);
 
 	/* Update the entry */
 	if (priv->current_entry != NULL)
