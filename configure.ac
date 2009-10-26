@@ -111,6 +111,8 @@ if test $encryption = "true"; then
 		fi
 	fi
 
+	AC_DEFINE_UNQUOTED([MIN_GPGME_VERSION],"${min_gpgme_version}",[The minimum required version of GPGME])
+
 	if test $ok = "yes"; then
 		ENCRYPTION_CFLAGS="$ENCRYPTION_CFLAGS `$GPGME_CONFIG --cflags`"
 		ENCRYPTION_LIBS="$ENCRYPTION_LIBS `$GPGME_CONFIG --libs`"

@@ -231,6 +231,14 @@ prepare_gpgme (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 {
 	gpgme_error_t error_gpgme;
 
+	/* Check for a minimum GPGME version (bgo#599598) */
+	if (gpgme_check_version (MIN_GPGME_VERSION) == NULL) {
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_BAD_VERSION,
+			     _("GPGME is not at least version %s"),
+			     MIN_GPGME_VERSION);
+		return FALSE;
+	}
+
 	/* Check OpenPGP's supported */
 	error_gpgme = gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP);
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
@@ -318,8 +326,11 @@ cipher_operation_free (CipherOperation *operation)
 		g_io_channel_unref (operation->plain_io_channel);
 	}
 
-	gpgme_signers_clear (operation->context);
-	gpgme_release (operation->context);
+	/* We could free the operation before the context is even created (bgo#599598) */
+	if (operation->context != NULL) {
+		gpgme_signers_clear (operation->context);
+		gpgme_release (operation->context);
+	}
 
 	g_object_unref (operation->storage_manager);
 	g_free (operation);
