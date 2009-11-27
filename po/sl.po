@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Dates\n"
-"Report-Msgid-Bugs-To: http://bugzilla.openedhand.com/enter_bug.cgi?product=Dates&component=General\n"
-"POT-Creation-Date: 2009-09-28 11:47+0000\n"
-"PO-Revision-Date: 2009-10-27 18:37+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&component=general\n"
+"POT-Creation-Date: 2009-11-10 00:29+0000\n"
+"PO-Revision-Date: 2009-11-27 11:13+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 #: ../src/main-window.c:131
 #: ../src/main.c:114
 msgid "Almanah Diary"
-msgstr "Dnevnik Almanah"
+msgstr "Almanah dnevnik"
 
 #: ../data/almanah.desktop.in.h:2
 msgid "Diary"
@@ -31,11 +31,11 @@ msgstr "Dnevnik"
 
 #: ../data/almanah.desktop.in.h:3
 msgid "Keep a personal diary"
-msgstr "Pišite si osebni dnevnik"
+msgstr "Pišite osebni dnevnik"
 
 #: ../data/almanah.schemas.in.h:1
 msgid "Database encryption key ID"
-msgstr "ID šifrirnega ključa podatkovne zbirke "
+msgstr "ID šifrirnega ključa podatkovne zbirke"
 
 #: ../data/almanah.schemas.in.h:2
 msgid "Main window X position"
@@ -63,11 +63,11 @@ msgstr "Ali naj bo preverjanje črkovanja vklopljeno?"
 
 #: ../data/almanah.schemas.in.h:8
 msgid "Spell checking language"
-msgstr "Preverjanje črkovanja jezika"
+msgstr "Črkovanja jezika"
 
 #: ../data/almanah.schemas.in.h:9
 msgid "The ID of the key to use to encrypt and decrypt the database, if Almanah has been built with encryption support. Leave blank to disable database encryption."
-msgstr "ID ključa za šifriranje in dešifriranje zbirke podatkov, v primeru da je bil Almanah preveden s podporo za šifriranje. Pustite prazno za onemogočenje šifriranja zbirke podatkov."
+msgstr "ID ključa za šifriranje in dešifriranje zbirke podatkov programa Almanah v primeru, da je bil program preveden s podporo za šifriranje. Prazno polje pomeni, da podatki ne bodo šifrirani."
 
 #: ../data/almanah.schemas.in.h:10
 msgid "The X position of the main window."
@@ -99,7 +99,7 @@ msgstr "Ali naj bo glavno okno zagnano razpeto."
 
 #: ../data/almanah.ui.h:1
 msgid "Add a definition for the currently selected text."
-msgstr "Dodajanje povezave za trenutno izbrano besedilo. "
+msgstr "Dodajanje povezave za trenutno izbrano besedilo."
 
 #: ../data/almanah.ui.h:2
 msgid "Calendar"
@@ -115,7 +115,7 @@ msgstr "Vrsta povezave:"
 
 #: ../data/almanah.ui.h:5
 msgid "Description: "
-msgstr "Opis:"
+msgstr "Opis: "
 
 #: ../data/almanah.ui.h:6
 msgid "Entry editing area"
@@ -131,7 +131,7 @@ msgstr "Spodleteli vnosi"
 
 #: ../data/almanah.ui.h:9
 msgid "Go to _Today"
-msgstr "Pojdi na _danes"
+msgstr "Pojdi na _današnji dan"
 
 #: ../data/almanah.ui.h:10
 msgid "I_mportant"
@@ -143,7 +143,7 @@ msgstr "Seznam rezultatov uvoza"
 
 #: ../data/almanah.ui.h:12
 msgid "Import mode: "
-msgstr "Način uvoza:"
+msgstr "Način uvoza: "
 
 #: ../data/almanah.ui.h:13
 msgid "Insert _Time"
@@ -151,7 +151,7 @@ msgstr "Vstavi _čas"
 
 #: ../data/almanah.ui.h:14
 msgid "Jump to the current date in the diary."
-msgstr "Skoči na trenutni datum v dnevniku. "
+msgstr "Skoči na trenutni datum v dnevniku."
 
 #: ../data/almanah.ui.h:15
 msgid "Merged Entries"
@@ -201,23 +201,23 @@ msgstr "Uspešni vnosi"
 
 #: ../data/almanah.ui.h:26
 msgid "Toggle whether the current entry is marked as important."
-msgstr "Preklopi ali naj bo trenuten vnos označen kot pomemben. "
+msgstr "Preklopi oznako trenutnega vnosa kot pomembno."
 
 #: ../data/almanah.ui.h:27
 msgid "Toggle whether the currently selected text is bold."
-msgstr "Preklopi ali naj bo trenutno izbrano besedilo krepko."
+msgstr "Preklopi izpis trenutno izbranega besedila kot krepko."
 
 #: ../data/almanah.ui.h:28
 msgid "Toggle whether the currently selected text is italic."
-msgstr "Preklopi ali naj bo trenutno izbrano besedilo poševno."
+msgstr "Preklopi izpis trenutno izbranega besedila kot ležeče."
 
 #: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is underlined."
-msgstr "Preklopi ali naj bo trenutno izbrano besedilo podčrtano."
+msgstr "Preklopi izpis trenutno izbranega besedila kot podčrtano."
 
 #: ../data/almanah.ui.h:30
 msgid "Type: "
-msgstr "Vrsta:"
+msgstr "Vrsta: "
 
 #: ../data/almanah.ui.h:31
 msgid "View"
@@ -233,11 +233,11 @@ msgstr "Ogled dogodka"
 
 #: ../data/almanah.ui.h:34
 msgid "_Add Definition"
-msgstr "_Dodaj določilo"
+msgstr "_Dodaj povezavo"
 
 #: ../data/almanah.ui.h:35
 msgid "_Definitions"
-msgstr "_Določila"
+msgstr "_Povezave"
 
 #: ../data/almanah.ui.h:36
 msgid "_Edit"
@@ -261,7 +261,7 @@ msgstr "_Uvozi ..."
 
 #: ../data/almanah.ui.h:41
 msgid "_Remove Definition"
-msgstr "_Odstrani določilo"
+msgstr "_Odstrani povezavo"
 
 #: ../data/almanah.ui.h:42
 msgid "_Search…"
@@ -269,15 +269,15 @@ msgstr "_Iskanje ..."
 
 #: ../data/almanah.ui.h:43
 msgid "_View Definitions"
-msgstr "Po_gled določil"
+msgstr "Po_gled povezav"
 
 #: ../data/almanah.ui.h:44
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "Na primer: \"14. marec 2009\" ali \"14. 3. 2009\"."
+msgstr "na primer: \"14. marec 2009\" ali \"14.3.2009\"."
 
 #: ../src/add-definition-dialog.c:82
 msgid "Add Definition"
-msgstr "Dodaj doličilo"
+msgstr "Dodaj povezavo"
 
 #: ../src/add-definition-dialog.c:164
 #: ../src/import-dialog.c:116
@@ -288,7 +288,7 @@ msgstr "Dodaj doličilo"
 #: ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
-msgstr "UI datoteke \"%s\" ni mogoče naložiti"
+msgstr "Uporabniškega vmesnika datoteke \"%s\" ni mogoče naložiti"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -301,7 +301,7 @@ msgstr "Sestanek v Evolution koledarju."
 #: ../src/events/calendar-appointment.c:120
 #: ../src/events/calendar-task.c:109
 msgid "Error launching Evolution"
-msgstr "Napaka med zaganjanjem Evolution"
+msgstr "Napaka med zaganjanjem programa Evolution"
 
 #: ../src/events/calendar-task.c:49
 msgid "Calendar Task"
@@ -325,7 +325,7 @@ msgstr "Napaka med zaganjanjem F-Spot"
 
 #: ../src/import-dialog.c:36
 msgid "Text Files"
-msgstr "Besedilne datoteke:"
+msgstr "Besedilne datoteke"
 
 #: ../src/import-dialog.c:37
 msgid "Database"
@@ -365,7 +365,7 @@ msgstr "Uvažanje je spodletelo"
 
 #: ../src/import-dialog.c:467
 msgid "Select a folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. Any and all such files will be imported."
-msgstr "Izbor mape z besedilnimi datotekami, ena na vnos z imeni v obliki 'yyyy-mm-dd' in brez pripone. Katerakoli in vse take datoteke bodo uvožene."
+msgstr "Izbor mape z besedilnimi datotekami, ena na vnos z imeni v obliki 'yyyy-mm-dd' in brez pripon. Katerakoli in vse take datoteke bodo uvožene."
 
 #: ../src/import-dialog.c:473
 msgid "Select a database file created by Almanah Diary to import."
@@ -405,7 +405,7 @@ msgstr "Stik"
 
 #: ../src/definitions/contact.c:54
 msgid "An Evolution contact."
-msgstr "Evolution stik"
+msgstr "Evolution stik."
 
 #: ../src/definitions/contact.c:73
 msgid "Select Contact"
@@ -418,7 +418,7 @@ msgstr "Napaka med odpiranjem stika"
 
 #: ../src/definitions/contact.c:136
 msgid "Error opening Evolution"
-msgstr "Napaka med odpiranjem Evolution"
+msgstr "Napaka med odpiranjem programa Evolution"
 
 #: ../src/definitions/file.c:48
 msgid "File"
@@ -450,7 +450,7 @@ msgstr "URI"
 
 #: ../src/definitions/uri.c:51
 msgid "A URI of a file or web page."
-msgstr "URI datoteke ali spletne strani"
+msgstr "URI datoteke ali spletne strani."
 
 #: ../src/definitions/uri.c:76
 msgid "Error opening URI"
@@ -474,7 +474,7 @@ msgstr "Ali ste prepričani, da želite izbrisati dnevniški vnos za %s?"
 #: ../src/main-window.c:597
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
-msgstr "Neznana ali podvojena oznaka \"%s\" v vnosu. Prezrtje"
+msgstr "Neznana ali podvojena oznaka \"%s\" v vnosu. Oznaka je prezrta."
 
 #: ../src/main-window.c:866
 msgid "Almanah is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
@@ -546,11 +546,11 @@ msgstr "Nastavitve Almanah"
 #. Grab our child widgets
 #: ../src/preferences-dialog.c:160
 msgid "Encryption key: "
-msgstr "Šifrirni ključ:"
+msgstr "Šifrirni ključ: "
 
 #: ../src/preferences-dialog.c:165
 msgid "None (don't encrypt)"
-msgstr "Brez (Ne šifriraj)"
+msgstr "Brez (brez šifriranja)"
 
 #: ../src/preferences-dialog.c:188
 msgid "New _Key"
@@ -559,7 +559,7 @@ msgstr "Nov _ključ"
 #. Set up the "Enable spell checking" check button
 #: ../src/preferences-dialog.c:195
 msgid "Enable _spell checking"
-msgstr "Omogoči preverjanje _črkovalnja"
+msgstr "Omogoči _črkovanje"
 
 #: ../src/preferences-dialog.c:225
 msgid "Error saving the encryption key"
@@ -585,64 +585,68 @@ msgstr "Začetni datum:"
 msgid "End date:"
 msgstr "Končni datum:"
 
-#: ../src/storage-manager.c:238
+#: ../src/storage-manager.c:237
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME ni najnovejša različica %s"
+
+#: ../src/storage-manager.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME ne podpira OpenPGP: %s"
 
-#: ../src/storage-manager.c:247
-#, fuzzy, c-format
+#: ../src/storage-manager.c:255
+#, c-format
 msgid "Error creating cipher context: %s"
-msgstr "Napaka ustvarjanja vsebine ČIPERJA: %s"
+msgstr "Napaka ustvarjanja vsebine cifre: %s"
 
-#: ../src/storage-manager.c:276
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Napaka odpiranja šifrirane datoteke podatkovne zbirke \"%s\": %s"
 
-#: ../src/storage-manager.c:296
-#, fuzzy, c-format
+#: ../src/storage-manager.c:304
+#, c-format
 msgid "Error opening plain database file \"%s\": %s"
-msgstr "Napaka odpiranja xxx datoteke podatkovne zbirke \"%s\": %s"
+msgstr "Napaka odpiranja besedilne podatkovne zbirke \"%s\": %s"
 
-#: ../src/storage-manager.c:342
-#, fuzzy
+#: ../src/storage-manager.c:353
 msgid "The encrypted database is empty. The plain database file has been left undeleted as backup."
-msgstr "Šifrirana podatkovna zbirka je prazna. XXX datoteka podatkovne zbirke ni bila zbrisana kot varnostna kopija."
+msgstr "Šifrirana podatkovna zbirka je prazna. Besedilna podatkovne zbirke je ohranjena kot varnostna kopija."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:345
-#, fuzzy, c-format
+#: ../src/storage-manager.c:356
+#, c-format
 msgid "Could not delete plain database file \"%s\"."
-msgstr "XXX Datoteke podatkovne zbirke \"%s\" ni mogoče izbrisati."
+msgstr "Besedilne podatkovne zbirke \"%s\" ni mogoče izbrisati."
 
-#: ../src/storage-manager.c:387
+#: ../src/storage-manager.c:398
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Napaka dešifriranja podatkovne zbirke: %s"
 
-#: ../src/storage-manager.c:421
+#: ../src/storage-manager.c:432
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Napaka pridobivanja šifrirnega ključa: %s"
 
-#: ../src/storage-manager.c:442
+#: ../src/storage-manager.c:453
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Napaka med šifriranjem podatkovne zbirke: %s"
 
-#: ../src/storage-manager.c:546
+#: ../src/storage-manager.c:557
 #, c-format
 msgid "Could not open database \"%s\". SQLite provided the following error message: %s"
 msgstr "Podatkovne zbirke \"%s\" ni mogoče odpreti. SQLite poroča sledeče poročilo o napaki: %s"
 
-#: ../src/storage-manager.c:625
-#: ../src/storage-manager.c:659
+#: ../src/storage-manager.c:636
+#: ../src/storage-manager.c:670
 #, c-format
 msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
-msgstr "Poizvedbe \"%s\" ni mogoče pognati. SQLite poroča sledeče poročilo o napaki: %s"
+msgstr "Poizvedbe \"%s\" ni mogoče zagnati. SQLite poroča sledeče poročilo o napaki: %s"
 
-#: ../src/storage-manager.c:894
+#: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Napaka med ločitvijo vnosa iz zaporedja v pomnilnik med iskanjem."
 
