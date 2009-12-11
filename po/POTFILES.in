@@ -4,6 +4,7 @@ data/almanah.desktop.in
 data/almanah.schemas.in
 [type: gettext/glade]data/almanah.ui
 src/add-definition-dialog.c
+src/date-entry-dialog.c
 src/events/calendar-appointment.c
 src/events/calendar-task.c
 src/events/f-spot-photo.c
