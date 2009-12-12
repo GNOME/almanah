@@ -8,12 +8,12 @@
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: almanah 0.4\n"
+"Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&component=general\n"
-"POT-Creation-Date: 2009-10-03 10:04+0000\n"
-"PO-Revision-Date: 2009-10-04 19:16+0200\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"POT-Creation-Date: 2009-12-11 17:34+0000\n"
+"PO-Revision-Date: 2009-12-12 11:46+0100\n"
+"Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,9 +73,9 @@ msgid ""
 "encryption."
 msgstr ""
 "Die Kennung des Schlüssels, der zum Verschlüsseln und Entschlüsseln der "
-"Datenbank benutzt wird, falls Almanah mit Unterstützung für "
-"Verschlüsselungen erstellt wurde. Bitte leer lassen, wenn die "
-"Verschlüsselung der Datenbank deaktiviert sein soll."
+"Datenbank benutzt wird, falls Almanah mit Unterstützung für Verschlüsselungen "
+"erstellt wurde. Bitte leer lassen, wenn die Verschlüsselung der Datenbank "
+"deaktiviert sein soll."
 
 #: ../data/almanah.schemas.in.h:10
 msgid "The X position of the main window."
@@ -207,8 +207,7 @@ msgstr "Erfolgreiche Einträge"
 
 #: ../data/almanah.ui.h:26
 msgid "Toggle whether the current entry is marked as important."
-msgstr ""
-"Wichtig-Markierung für den gegenwärtigen Eintrag ein- oder ausschalten."
+msgstr "Wichtig-Markierung für den gegenwärtigen Eintrag ein- oder ausschalten."
 
 #: ../data/almanah.ui.h:27
 msgid "Toggle whether the currently selected text is bold."
@@ -289,13 +288,18 @@ msgstr "z.B. »14.03.2009« oder »14. März 2009«."
 msgid "Add Definition"
 msgstr "Definition hinzufügen"
 
-#: ../src/add-definition-dialog.c:164 ../src/import-dialog.c:116
-#: ../src/import-dialog.c:566 ../src/definition-manager-window.c:132
-#: ../src/main-window.c:172 ../src/preferences-dialog.c:135
-#: ../src/search-dialog.c:87
+#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:566
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:172
+#: ../src/preferences-dialog.c:135 ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Benutzerschnittstellen-Datei »%s« konnte nicht geladen werden."
+
+#: ../src/date-entry-dialog.c:74
+#| msgid "Select Date…"
+msgid "Select Date"
+msgstr "Datum auswählen"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -344,8 +348,7 @@ msgstr "Einträge importieren"
 #: ../src/import-dialog.c:196
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
-msgstr ""
-"Fehler beim Deserialisieren des importierten Eintrags in den Puffer: %s"
+msgstr "Fehler beim Deserialisieren des importierten Eintrags in den Puffer: %s"
 
 #: ../src/import-dialog.c:211
 #, c-format
@@ -380,15 +383,15 @@ msgid ""
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
 "imported."
 msgstr ""
-"Wählen Sie einen Ordner, der Textdateien enthält, und zwar einen pro "
-"Eintrag. Die Namen müssen dem Format »jjjj-mm-tt« entsprechen und dürfen "
-"keine Dateiendung haben. Jede solcher Dateien wird importiert."
+"Wählen Sie einen Ordner, der Textdateien enthält, und zwar einen pro Eintrag. "
+"Die Namen müssen dem Format »jjjj-mm-tt« entsprechen und dürfen keine "
+"Dateiendung haben. Jede solcher Dateien wird importiert."
 
 #: ../src/import-dialog.c:473
 msgid "Select a database file created by Almanah Diary to import."
 msgstr ""
-"Wählen Sie eine vom Almanah Tagebuch angelegte Datenbankdatei zum "
-"Importieren aus."
+"Wählen Sie eine vom Almanah Tagebuch angelegte Datenbankdatei zum Importieren "
+"aus."
 
 #: ../src/import-dialog.c:537
 msgid "Import Results"
@@ -400,9 +403,8 @@ msgstr "Ergebnisse des Imports"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:632 ../src/main-window.c:371
-#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:257
-#: ../src/search-dialog.c:157
+#: ../src/import-dialog.c:632 ../src/main-window.c:371 ../src/main-window.c:396
+#: ../src/main-window.c:1029 ../src/printing.c:257 ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -507,9 +509,8 @@ msgstr ""
 #: ../src/main-window.c:870
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
-"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-"details."
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR "
+"A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
 msgstr ""
 "Almanah wird in der Hoffnung verbreitet, dass es hilfreich ist, aber OHNE "
 "JEDE GARANTIE; sogar ohne Mängelgewährleistung oder Zusicherung allgemeiner "
@@ -522,8 +523,7 @@ msgid ""
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 "Sie sollten eine Kopie der GNU General Public Licence zusammen mit Almanah "
-"erhalten haben. Falls nicht, schauen Sie unter <http://www.gnu.org/licences/"
-">."
+"erhalten haben. Falls nicht, schauen Sie unter <http://www.gnu.org/licences/>."
 
 #: ../src/main-window.c:885
 #, c-format
@@ -624,27 +624,32 @@ msgstr "Startdatum:"
 msgid "End date:"
 msgstr "Enddatum:"
 
-#: ../src/storage-manager.c:238
+#: ../src/storage-manager.c:237
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME liegt nicht in der Mindestversion %s vor"
+
+#: ../src/storage-manager.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME unterstützt kein OpenPGP: %s"
 
-#: ../src/storage-manager.c:247
+#: ../src/storage-manager.c:255
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Fehler beim Erzeugen des Verschlüsselungskontextes: %s"
 
-#: ../src/storage-manager.c:276
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Fehler beim Öffnen der verschlüsselten Datenbankdatei »%s«: %s"
 
-#: ../src/storage-manager.c:296
+#: ../src/storage-manager.c:304
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Fehler beim Öffnen der unverschlüsselten Datenbankdatei »%s«: %s"
 
-#: ../src/storage-manager.c:342
+#: ../src/storage-manager.c:353
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -653,36 +658,36 @@ msgstr ""
 "Sicherungsdatei erhalten."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:345
+#: ../src/storage-manager.c:356
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Die einfache Datenbankdatei »%s« konnte nicht gelöscht werden."
 
-#: ../src/storage-manager.c:387
+#: ../src/storage-manager.c:398
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Fehler beim Entschlüsseln der Datenbank: %s"
 
-#: ../src/storage-manager.c:421
+#: ../src/storage-manager.c:432
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Fehler beim Holen des OpenPGP-Schlüssels: %s"
 
-#: ../src/storage-manager.c:442
+#: ../src/storage-manager.c:453
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Fehler beim Verschlüsseln der Datenbank: %s"
 
-#: ../src/storage-manager.c:546
+#: ../src/storage-manager.c:557
 #, c-format
 msgid ""
-"Could not open database \"%s\". SQLite provided the following error message: "
-"%s"
+"Could not open database \"%s\". SQLite provided the following error message: %"
+"s"
 msgstr ""
 "Die Datenbank »%s« konnte nicht geöffnet werden. SQLite gab die folgende "
 "Fehlermeldung zurück: %s"
 
-#: ../src/storage-manager.c:625 ../src/storage-manager.c:659
+#: ../src/storage-manager.c:636 ../src/storage-manager.c:670
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -690,23 +695,8 @@ msgstr ""
 "Die Abfrage »%s« konnte nicht ausgeführt werden. SQLite gab die folgende "
 "Fehlermeldung zurück: %s"
 
-#: ../src/storage-manager.c:894
+#: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
 msgstr ""
 "Fehler beim Deserialisieren des Eintrags in den Puffer während der Suche."
 
-#~ msgid "%X"
-#~ msgstr "%X"
-
-#~ msgid "Error closing database"
-#~ msgstr "Fehler beim Schließen der Datenbank"
-
-#~ msgid ""
-#~ "Error getting encryption key: GConf key \"%s\" invalid or empty. Your "
-#~ "diary will not be encrypted; please install Seahorse and set up a default "
-#~ "key, or ignore this message."
-#~ msgstr ""
-#~ "Fehler beim Öffnen des OpenPGP-Schlüssels: GConf-Schlüssel »%s« ist "
-#~ "ungültig oder leer. Ihr Tagebuch wird nicht verschlüsselt. Bitte "
-#~ "installieren Sie Seahorse und stellen Sie einen Vorgabeschlüssel ein oder "
-#~ "ignorieren Sie diese Nachricht."
