@@ -1,0 +1,701 @@
+# Danish translation for almanah.
+# Copyright (C) 2009 almanah's COPYRIGHT HOLDER
+# This file is distributed under the same license as the almanah package.
+# Joe Hansen (joedalton2@yahoo.dk), 2009.
+#
+# entry -> post
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: almanah master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-12-18 00:05+0100\n"
+"PO-Revision-Date: 2009-12-12 12:42+0000\n"
+"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:131 ../src/main.c:114
+msgid "Almanah Diary"
+msgstr "Almanah - dagbog"
+
+#: ../data/almanah.desktop.in.h:2
+msgid "Diary"
+msgstr "Dagbog"
+
+#: ../data/almanah.desktop.in.h:3
+msgid "Keep a personal diary"
+msgstr "Hold en personlig dagbog"
+
+#: ../data/almanah.schemas.in.h:1
+msgid "Database encryption key ID"
+msgstr "Nøgle-id til kryptering af database"
+
+#: ../data/almanah.schemas.in.h:2
+msgid "Main window X position"
+msgstr "Hovedvindues x-position"
+
+#: ../data/almanah.schemas.in.h:3
+msgid "Main window Y position"
+msgstr "Hovedvindues y-position"
+
+#: ../data/almanah.schemas.in.h:4
+msgid "Main window height"
+msgstr "Hovedvindues højde"
+
+#: ../data/almanah.schemas.in.h:5
+msgid "Main window maximization"
+msgstr "Hovedvindues maksimering"
+
+#: ../data/almanah.schemas.in.h:6
+msgid "Main window width"
+msgstr "Hovedvinduets bredde"
+
+#: ../data/almanah.schemas.in.h:7
+msgid "Spell checking enabled?"
+msgstr "Stavekontrol slået til?"
+
+#: ../data/almanah.schemas.in.h:8
+msgid "Spell checking language"
+msgstr "Stavekontrollens sprog"
+
+#: ../data/almanah.schemas.in.h:9
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Id på nøglen der bruges til at kryptere og afkryptere databasen, hvis "
+"Almanah er blevet bygget med krypteringsunderstøttelse. Efterlad uudfyldt "
+"for at slå datakryptering fra."
+
+#: ../data/almanah.schemas.in.h:10
+msgid "The X position of the main window."
+msgstr "X-positionen på hovedvinduet."
+
+#: ../data/almanah.schemas.in.h:11
+msgid "The Y position of the main window."
+msgstr "Y-positionen på hovedvinduet."
+
+#: ../data/almanah.schemas.in.h:12
+msgid "The height of the main window."
+msgstr "Højden på hovedvinduet."
+
+#: ../data/almanah.schemas.in.h:13
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr ""
+"Sprogangivelsen på det sprog som skal bruges til at tjekke stavningen med."
+
+#: ../data/almanah.schemas.in.h:14
+msgid "The width of the main window."
+msgstr "Bredden på hovedvinduet."
+
+#: ../data/almanah.schemas.in.h:15
+msgid "Whether spell checking of entries is enabled."
+msgstr "Hvorvidt stavekontrol er slået til."
+
+#: ../data/almanah.schemas.in.h:16
+msgid "Whether the main window should start maximized."
+msgstr "Om hovedvinduet bør være maksimeret ved start."
+
+#: ../data/almanah.ui.h:1
+msgid "Add a definition for the currently selected text."
+msgstr ""
+
+#: ../data/almanah.ui.h:2
+msgid "Calendar"
+msgstr "Kalender"
+
+#: ../data/almanah.ui.h:3
+msgid "Definition List"
+msgstr "Definitionsliste"
+
+#: ../data/almanah.ui.h:4
+#, fuzzy
+msgid "Definition type:"
+msgstr "Definitionstype"
+
+#: ../data/almanah.ui.h:5
+#, fuzzy
+msgid "Description: "
+msgstr "Beskrivelse"
+
+#: ../data/almanah.ui.h:6
+msgid "Entry editing area"
+msgstr "Postredigeringsområde"
+
+#: ../data/almanah.ui.h:7
+msgid "F_ormat"
+msgstr "F_ormat"
+
+#: ../data/almanah.ui.h:8
+msgid "Failed Entries"
+msgstr ""
+
+#: ../data/almanah.ui.h:9
+msgid "Go to _Today"
+msgstr "Gå _til I dag"
+
+#: ../data/almanah.ui.h:10
+msgid "I_mportant"
+msgstr "Vi_gtigt"
+
+#: ../data/almanah.ui.h:11
+#, fuzzy
+msgid "Import Results List"
+msgstr "Resultatliste"
+
+#: ../data/almanah.ui.h:12
+#, fuzzy
+msgid "Import mode: "
+msgstr "Slå importtilstand til"
+
+#: ../data/almanah.ui.h:13
+msgid "Insert _Time"
+msgstr "Indsæt _tid"
+
+#: ../data/almanah.ui.h:14
+msgid "Jump to the current date in the diary."
+msgstr ""
+
+#: ../data/almanah.ui.h:15
+msgid "Merged Entries"
+msgstr ""
+
+#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
+msgid "Nothing selected"
+msgstr "Intet valgt"
+
+#: ../data/almanah.ui.h:17
+msgid "Past Event List"
+msgstr "Tidligere begivenhedsliste"
+
+#: ../data/almanah.ui.h:18
+msgid "Past Events"
+msgstr "Tidligere begivenheder"
+
+#: ../data/almanah.ui.h:19
+msgid "Remove the definition from the currently selected text."
+msgstr ""
+
+#: ../data/almanah.ui.h:20
+msgid "Result List"
+msgstr "Resultatliste"
+
+#: ../data/almanah.ui.h:21
+#, fuzzy
+msgid "Results:"
+msgstr "Resultater"
+
+#: ../data/almanah.ui.h:22 ../src/search-dialog.c:61
+msgid "Search"
+msgstr "Søg"
+
+#: ../data/almanah.ui.h:23
+msgid "Search entry"
+msgstr "Søgetekst"
+
+#: ../data/almanah.ui.h:24
+msgid "Select Date…"
+msgstr "Vælg dato…"
+
+#: ../data/almanah.ui.h:25
+msgid "Successful Entries"
+msgstr ""
+
+#: ../data/almanah.ui.h:26
+msgid "Toggle whether the current entry is marked as important."
+msgstr ""
+
+#: ../data/almanah.ui.h:27
+msgid "Toggle whether the currently selected text is bold."
+msgstr ""
+
+#: ../data/almanah.ui.h:28
+msgid "Toggle whether the currently selected text is italic."
+msgstr ""
+
+#: ../data/almanah.ui.h:29
+msgid "Toggle whether the currently selected text is underlined."
+msgstr ""
+
+#: ../data/almanah.ui.h:30
+#, fuzzy
+msgid "Type: "
+msgstr "Type"
+
+#: ../data/almanah.ui.h:31
+msgid "View"
+msgstr "Vis"
+
+#: ../data/almanah.ui.h:32
+msgid "View Entry"
+msgstr "Vis post"
+
+#: ../data/almanah.ui.h:33
+msgid "View Event"
+msgstr "Vis begivenhed"
+
+#: ../data/almanah.ui.h:34
+msgid "_Add Definition"
+msgstr "_Tilføj definition"
+
+#: ../data/almanah.ui.h:35
+msgid "_Definitions"
+msgstr "_Definitioner"
+
+#: ../data/almanah.ui.h:36
+msgid "_Edit"
+msgstr "R_ediger"
+
+#: ../data/almanah.ui.h:37
+msgid "_File"
+msgstr "_Fil"
+
+#: ../data/almanah.ui.h:38
+msgid "_Help"
+msgstr "_Hjælp"
+
+#: ../data/almanah.ui.h:39
+#, fuzzy
+msgid "_Import"
+msgstr "Vi_gtigt"
+
+#: ../data/almanah.ui.h:40
+#, fuzzy
+msgid "_Import…"
+msgstr "Vi_gtigt"
+
+#: ../data/almanah.ui.h:41
+msgid "_Remove Definition"
+msgstr "Fje_rn definition"
+
+#: ../data/almanah.ui.h:42
+msgid "_Search…"
+msgstr "_Søg…"
+
+#: ../data/almanah.ui.h:43
+msgid "_View Definitions"
+msgstr "_Vis definitioner"
+
+#: ../data/almanah.ui.h:44
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "f.eks. \"14/03/2009\" eller \"14. marts 2009\"."
+
+#: ../src/add-definition-dialog.c:82
+msgid "Add Definition"
+msgstr "Tilføj definition"
+
+#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:566
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:172
+#: ../src/preferences-dialog.c:135 ../src/search-dialog.c:87
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "UI-fil \"%s\" kunne ikke indlæses"
+
+#: ../src/date-entry-dialog.c:74
+#, fuzzy
+msgid "Select Date"
+msgstr "Vælg dato…"
+
+#: ../src/events/calendar-appointment.c:49
+msgid "Calendar Appointment"
+msgstr "Kalenderaftale"
+
+#: ../src/events/calendar-appointment.c:50
+msgid "An appointment on an Evolution calendar."
+msgstr "En aftale i en Evolutionkalender."
+
+#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
+msgid "Error launching Evolution"
+msgstr "Fejl under opstart af Evolution"
+
+#: ../src/events/calendar-task.c:49
+msgid "Calendar Task"
+msgstr "Kalenderopgave"
+
+#: ../src/events/calendar-task.c:50
+msgid "A task on an Evolution calendar."
+msgstr "En opgave i en Evolutionkalender."
+
+# hvis det er selve programmet er det F-Spot - fotohåndtering
+# uafklaret da ikke fundet i selve programmet.
+#: ../src/events/f-spot-photo.c:49
+msgid "F-Spot Photo"
+msgstr "F-Spot-billede"
+
+#: ../src/events/f-spot-photo.c:50
+msgid "A photo stored in F-Spot."
+msgstr "Et billede gemt i F-Spot."
+
+#: ../src/events/f-spot-photo.c:109
+msgid "Error launching F-Spot"
+msgstr "Fejl under opstart af F-Spot"
+
+#: ../src/import-dialog.c:36
+#, fuzzy
+msgid "Text Files"
+msgstr "Vælg fil"
+
+#: ../src/import-dialog.c:37
+msgid "Database"
+msgstr ""
+
+#: ../src/import-dialog.c:75
+#, fuzzy
+msgid "Import Entries"
+msgstr "Vi_gtigt"
+
+#: ../src/import-dialog.c:196
+#, fuzzy, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "Fejl under afserialisering af post til mellemlager under søgning."
+
+#: ../src/import-dialog.c:211
+#, fuzzy, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr "Fejl under afserialisering af post til mellemlager under søgning."
+
+#. Append some header text for the imported entry
+#: ../src/import-dialog.c:223
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+
+#: ../src/import-dialog.c:433
+#, fuzzy
+msgid "Import failed"
+msgstr "Vi_gtigt"
+
+#: ../src/import-dialog.c:467
+msgid ""
+"Select a folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+
+#: ../src/import-dialog.c:473
+msgid "Select a database file created by Almanah Diary to import."
+msgstr ""
+
+#: ../src/import-dialog.c:537
+#, fuzzy
+msgid "Import Results"
+msgstr "Resultater"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-dialog.c:632 ../src/main-window.c:371
+#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:257
+#: ../src/search-dialog.c:157
+msgid "%A, %e %B %Y"
+msgstr "%A, %e. %B %Y"
+
+#: ../src/definition-manager-window.c:72
+msgid "Definition Manager"
+msgstr "Definitionshåndtering"
+
+#: ../src/definition-manager-window.c:203
+#, c-format
+msgid "Are you sure you want to delete the definition for \"%s\"?"
+msgstr "Er du sikker på, at du ønsker at slette definitionen for \"%s\"?"
+
+#: ../src/definitions/contact.c:53
+msgid "Contact"
+msgstr "Kontakt"
+
+#: ../src/definitions/contact.c:54
+msgid "An Evolution contact."
+msgstr "En Evolutionkontakt."
+
+#: ../src/definitions/contact.c:73
+msgid "Select Contact"
+msgstr "Vælg kontakt"
+
+#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
+msgid "Error opening contact"
+msgstr "Fejl under åbning af kontakt"
+
+#: ../src/definitions/contact.c:136
+msgid "Error opening Evolution"
+msgstr "Fejl under åbning af Evolution"
+
+#: ../src/definitions/file.c:48
+msgid "File"
+msgstr "Fil"
+
+#: ../src/definitions/file.c:49
+msgid "An attached file."
+msgstr "En vedhæftet fil."
+
+#: ../src/definitions/file.c:74
+msgid "Error opening file"
+msgstr "Fejl under åbning af fil"
+
+#: ../src/definitions/file.c:93
+msgid "Select File"
+msgstr "Vælg fil"
+
+#: ../src/definitions/note.c:49
+msgid "Note"
+msgstr "Note"
+
+#: ../src/definitions/note.c:50
+msgid "A note about an important event."
+msgstr "En note om en vigtig begivenhed."
+
+#: ../src/definitions/uri.c:50
+msgid "URI"
+msgstr "URI"
+
+#: ../src/definitions/uri.c:51
+msgid "A URI of a file or web page."
+msgstr "En URI af en fil eller internetside."
+
+#: ../src/definitions/uri.c:76
+msgid "Error opening URI"
+msgstr "Fejl under åbning af URI"
+
+#: ../src/definitions/uri.c:99
+#, fuzzy
+msgid "URI: "
+msgstr "URI"
+
+#: ../src/main-window.c:375
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "Er du sikker på, at du ønsker at redigere denne dagbogspost for %s?"
+
+#: ../src/main-window.c:400
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Er du sikker på, at du ønsker at slette denne dagbogspost for %s?"
+
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:597
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "Ukendt eller duplikeret tekstmærke \"%s\" i post. Ignorerer."
+
+#: ../src/main-window.c:866
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah er frit software: Du kan distribuere den og/eller ændre den under "
+"betingelserne i GNU General Public License som udgivet af the Free Software "
+"Foundation, enten version 3 af denne licens, eller (ved dit valg) enhver "
+"senere version."
+
+#: ../src/main-window.c:870
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah distribueres i håbet om at programmet vil være brugbart, men UDEN "
+"NOGEN GARANTI; også uden den underforståede garanti om SALGBARHED eller "
+"EGNETHED TIL ET SPECIFIKT FORMÅL.  Se GNU General Public License for "
+"yderligere detaljer."
+
+#: ../src/main-window.c:874
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Du bør have modtaget en kopi af GNU General Public License sammen med "
+"Almanah.  Hvis ikke, så se <http://www.gnu.org/licenses/>."
+
+#: ../src/main-window.c:885
+#, c-format
+msgid "A helpful diary keeper, storing %u entries and %u definitions."
+msgstr "En nyttig dagbog, der gemmer %u poster og %u definitioner."
+
+#: ../src/main-window.c:891
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Ophavsret © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:899
+msgid "translator-credits"
+msgstr ""
+"Joe Hansen <joedalton2@yahoo.dk>, 2009.\n"
+"\n"
+"Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
+"Mere info: http://www.dansk-gruppen.dk"
+
+#: ../src/main-window.c:903
+msgid "Almanah Website"
+msgstr "Almanahs internetside"
+
+#: ../src/main-window.c:1057
+msgid "Entry content could not be loaded"
+msgstr "Postindhold kunne ikke indlæses"
+
+#: ../src/main.c:38
+msgid "Error encrypting database"
+msgstr "Fejl under kryptering af database"
+
+#: ../src/main.c:101
+msgid "Enable debug mode"
+msgstr "Slå fejlsøgningstilstand til"
+
+#: ../src/main.c:102
+msgid "Enable import mode"
+msgstr "Slå importtilstand til"
+
+#. Options
+#: ../src/main.c:118
+msgid "- Manage your diary"
+msgstr "- Håndter din dagbog"
+
+#: ../src/main.c:128
+msgid "Command-line options could not be parsed"
+msgstr "Kommandolinjetilvalg kunne ikke fortolkes"
+
+#: ../src/main.c:160
+msgid "Error opening database"
+msgstr "Fejl under åbning af database"
+
+#: ../src/preferences-dialog.c:79
+msgid "Almanah Preferences"
+msgstr "Indstillinger for Almanah"
+
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:160
+#, fuzzy
+msgid "Encryption key: "
+msgstr "Krypteringsnøgle"
+
+#: ../src/preferences-dialog.c:165
+msgid "None (don't encrypt)"
+msgstr "Ingen (krypter ikke)"
+
+#: ../src/preferences-dialog.c:188
+msgid "New _Key"
+msgstr "Ny _nøgle"
+
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:195
+msgid "Enable _spell checking"
+msgstr "Slå _stavekontrol til"
+
+#: ../src/preferences-dialog.c:225
+msgid "Error saving the encryption key"
+msgstr "Fejl under gemning af krypteringsnøgle"
+
+#: ../src/preferences-dialog.c:244
+msgid "Error opening Seahorse"
+msgstr "Fejl under åbning af Seahorse"
+
+#: ../src/preferences-dialog.c:282
+msgid "Spelling checker could not be initialized"
+msgstr "Stavekontrol kunne ikke startes"
+
+#: ../src/printing.c:275
+msgid "No entry for this date."
+msgstr "Ingen post på denne dato."
+
+#: ../src/printing.c:413
+#, fuzzy
+msgid "Start date:"
+msgstr "Startdato"
+
+#: ../src/printing.c:415
+#, fuzzy
+msgid "End date:"
+msgstr "Slutdato"
+
+#: ../src/storage-manager.c:237
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr ""
+
+#: ../src/storage-manager.c:246
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME understøtter ikke OpenPGP: %s"
+
+#: ../src/storage-manager.c:255
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Fejl under oprettelse af chifferkontekst: %s"
+
+#: ../src/storage-manager.c:284
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Fejl under åbning af krypteret databasefil \"%s\": %s"
+
+#: ../src/storage-manager.c:304
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Fejl under åbning af ukrypteret databasefil \"%s\": %s"
+
+#: ../src/storage-manager.c:353
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Den krypterede database er tom. Den ukrypterede databasefil er blevet "
+"efterladt som sikkerhedskopi."
+
+#. Delete the plain file
+#: ../src/storage-manager.c:356
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Kunne ikke slette den ukrypterede databasefil \"%s\"."
+
+#: ../src/storage-manager.c:398
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Fejl under afkryptering af database: %s"
+
+#: ../src/storage-manager.c:432
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Fejl under indlæsning af krypteringsnøgle: %s"
+
+#: ../src/storage-manager.c:453
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Fejl under kryptering af database: %s"
+
+#: ../src/storage-manager.c:557
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Kunne ikke åbne database \"%s\". SQLite kom med den følgende fejlbesked: %s"
+
+#: ../src/storage-manager.c:636 ../src/storage-manager.c:670
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"Kunne ikke køre forespørgslen \"%s\". SQLite kom med følgende fejlbesked: %s"
+
+#: ../src/storage-manager.c:905
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Fejl under afserialisering af post til mellemlager under søgning."
