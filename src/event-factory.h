@@ -20,6 +20,7 @@
 #ifndef ALMANAH_EVENT_FACTORY_H
 #define ALMANAH_EVENT_FACTORY_H
 
+#include <config.h>
 #include <glib.h>
 #include <glib-object.h>
 
@@ -27,7 +28,9 @@ G_BEGIN_DECLS
 
 typedef enum {
 	ALMANAH_EVENT_FACTORY_UNKNOWN = 0,
+#ifdef HAVE_EVO
 	ALMANAH_EVENT_FACTORY_CALENDAR,
+#endif /* HAVE_EVO */
 	ALMANAH_EVENT_FACTORY_F_SPOT
 } AlmanahEventFactoryType;
 

@@ -6,15 +6,12 @@ INCLUDES = \
 	-I$(srcdir)/events						\
 	-I$(srcdir)/event-factories					\
 	$(STANDARD_CFLAGS)						\
+	$(EVO_CFLAGS)							\
 	$(ENCRYPTION_CFLAGS)						\
 	$(SPELL_CHECKING_CFLAGS)
 
-AM_CFLAGS = \
-	-Wall		\
-	-g
-
 if DEBUG
-AM_CFLAGS += \
+AM_CFLAGS = \
 	-fprofile-arcs	\
 	-ftest-coverage
 endif
@@ -57,20 +54,19 @@ almanah_SOURCES = \
 	date-entry-dialog.h	\
 	import-dialog.c		\
 	import-dialog.h		\
-	definitions/contact.c		\
-	definitions/contact.h		\
 	definitions/file.c		\
 	definitions/file.h		\
 	definitions/note.c		\
 	definitions/note.h		\
 	definitions/uri.c		\
 	definitions/uri.h		\
-	events/calendar-appointment.c	\
-	events/calendar-appointment.h	\
-	events/calendar-task.c		\
-	events/calendar-task.h		\
 	events/f-spot-photo.c		\
 	events/f-spot-photo.h		\
+	event-factories/f-spot.c	\
+	event-factories/f-spot.h
+
+if HAVE_EVO
+almanah_SOURCES += \
 	event-factories/calendar.c	\
 	event-factories/calendar.h	\
 	event-factories/calendar-client.c	\
@@ -78,8 +74,13 @@ almanah_SOURCES = \
 	event-factories/calendar-debug.h	\
 	event-factories/calendar-sources.c	\
 	event-factories/calendar-sources.h	\
-	event-factories/f-spot.c		\
-	event-factories/f-spot.h
+	events/calendar-appointment.c	\
+	events/calendar-appointment.h	\
+	events/calendar-task.c		\
+	events/calendar-task.h		\
+	definitions/contact.c		\
+	definitions/contact.h
+endif
 
 if ENCRYPTION
 almanah_SOURCES += \
@@ -90,6 +91,7 @@ endif
 almanah_LDFLAGS = 
 almanah_LDADD = \
 	$(STANDARD_LIBS)	\
+	$(EVO_LIBS)		\
 	$(ENCRYPTION_LIBS)	\
 	$(SPELL_CHECKING_LIBS)
 
