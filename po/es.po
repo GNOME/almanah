@@ -376,7 +376,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Entrada importada desde \"%s\"\n"
+"Entrada importada desde \"%s\":\n"
 "\n"
 
 #: ../src/import-dialog.c:433
@@ -390,7 +390,7 @@ msgid ""
 "imported."
 msgstr ""
 "Seleccione el directorio que contiene los archivos de texto, uno por "
-"entrada, con nombres en formato «aaaa-mm-dd», y sin extención. Cualquiera y "
+"entrada, con nombres en formato «aaaa-mm-dd», y sin extensión. Cualquiera y "
 "todos los archivos parecidos serán importados."
 
 #: ../src/import-dialog.c:473
@@ -605,7 +605,7 @@ msgstr "Preferencias de Almanah"
 #: ../src/preferences-dialog.c:160
 #| msgid "Encryption Key"
 msgid "Encryption key: "
-msgstr "Clave de cifrado:"
+msgstr "Clave de cifrado: "
 
 #: ../src/preferences-dialog.c:165
 msgid "None (don't encrypt)"
