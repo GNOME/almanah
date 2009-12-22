@@ -1,18 +1,34 @@
 AC_INIT(almanah, 0.6.0)
 
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
-AM_CONFIG_HEADER(config.h)
-AM_MAINTAINER_MODE
+AC_CONFIG_SRCDIR([src/main.h])
+AC_CONFIG_HEADERS([config.h])
+AC_GNU_SOURCE
 
-AC_ISC_POSIX
-AC_PROG_CC
-AM_PROG_CC_STDC
-AC_HEADER_STDC
+AM_INIT_AUTOMAKE([1.9 dist-bzip2 no-dist-gzip check-news])
+
+# Enable silent build when available (Automake 1.11)
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+
+GETTEXT_PACKAGE=almanah
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"], [Define to the Gettext package name])
+AC_SUBST(GETTEXT_PACKAGE)
+AM_GLIB_GNU_GETTEXT
+IT_PROG_INTLTOOL([0.35.0])
+
+AC_PROG_CXX
+AM_PROG_CC_C_O
+AC_PROG_LIBTOOL()
+PKG_PROG_PKG_CONFIG
+AM_GCONF_SOURCE_2
+
+AC_PATH_PROG([GLIB_GENMARSHAL],[glib-genmarshal])
+AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 
 dnl ***************************************************************************
 dnl Options
 dnl ***************************************************************************
 
+dnl Debugging
 AC_ARG_ENABLE([debug],
 	AC_HELP_STRING([--enable-debug], [turn on debugging]),
 	[case "${enableval}" in
@@ -27,6 +43,7 @@ fi
 
 AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
 
+dnl Encryption support
 AC_ARG_ENABLE([encryption],
 	AC_HELP_STRING([--enable-encryption], [enable database encryption support]),
 	[case "${enableval}" in
@@ -41,6 +58,7 @@ fi
 
 AM_CONDITIONAL([ENCRYPTION], [test x$encryption = xtrue])
 
+dnl Spell checking
 AC_ARG_ENABLE([spell-checking],
 	AC_HELP_STRING([--enable-spell-checking], [enable spell checking support]),
 	[case "${enableval}" in
@@ -59,20 +77,12 @@ dnl ***************************************************************************
 dnl Dependencies
 dnl ***************************************************************************
 
-GETTEXT_PACKAGE=almanah
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
-AM_GLIB_GNU_GETTEXT
-IT_PROG_INTLTOOL([0.35.0])
-
-AM_PROG_LIBTOOL
-AM_GCONF_SOURCE_2
-AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
-
+dnl Required dependencies
 PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.14 gmodule-2.0 gio-2.0 sqlite3 cairo gconf-2.0 atk dbus-glib-1)
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
+dnl Evolution
 PKG_CHECK_MODULES(EVO, libecal-1.2 libedataserver-1.2 libedataserverui-1.2, have_evo=yes, have_evo=no)
 if test "x$have_evo" = "xyes"; then
 	AC_DEFINE(HAVE_EVO, 1, [Defined if libecal-1.2 is installed])
@@ -82,12 +92,14 @@ AM_CONDITIONAL([HAVE_EVO], [test x$have_evo = xyes])
 AC_SUBST(EVO_CFLAGS)
 AC_SUBST(EVO_LIBS)
 
+dnl Spell checking
 if test $spell_checking = "true"; then
 	PKG_CHECK_MODULES(SPELL_CHECKING, gtkspell-2.0)
 	AC_SUBST(SPELL_CHECKING_CFLAGS)
 	AC_SUBST(SPELL_CHECKING_LIBS)
 fi
 
+dnl Encryption support
 if test $encryption = "true"; then
 	PKG_CHECK_MODULES(ENCRYPTION, cryptui-0.0)
 
