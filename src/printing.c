@@ -38,6 +38,8 @@ typedef struct {
 	GDate *current_date;
 	GtkCalendar *start_calendar;
 	GtkCalendar *end_calendar;
+	GtkSpinButton *line_spacing_spin_button;
+	gdouble line_spacing;
 	guint current_line;
 	gboolean paginated;
 	gdouble y;
@@ -243,7 +245,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	PangoLayout *title_layout = NULL, *entry_layout;
 	PangoLayoutLine *entry_line;
 	PangoRectangle logical_extents;
-	gint height;
+	gint height, line_height;
 	guint i;
 	gdouble title_y = 0, entry_y;
 	cairo_t *cr = NULL;
@@ -272,7 +274,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	entry = almanah_storage_manager_get_entry (almanah->storage_manager, almanah_operation->current_date);
 
 	if (entry == NULL || almanah_entry_is_empty (entry)) {
-		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
+		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date."));
 		pango_layout_set_markup (entry_layout, entry_text, -1);
 	} else {
 		GtkTextIter start, end;
@@ -288,10 +290,11 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 		g_object_unref (entry);
 
 	/* Check we're not orphaning things */
-	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout), almanah_operation->current_line + MAX_ORPHANS) - 1);
+	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout) - 1, almanah_operation->current_line + MAX_ORPHANS));
 	pango_layout_line_get_pixel_extents (entry_line, NULL, &logical_extents);
+	line_height = pango_layout_get_spacing (entry_layout) / PANGO_SCALE + (gint) (almanah_operation->line_spacing * ((gdouble) logical_extents.height));
 
-	if (almanah_operation->y + (MIN (pango_layout_get_line_count (entry_layout), MAX_ORPHANS) * logical_extents.height) > gtk_print_context_get_height (context)) {
+	if (almanah_operation->y + (MIN (pango_layout_get_line_count (entry_layout), MAX_ORPHANS) * line_height) - pango_layout_get_spacing (entry_layout) / PANGO_SCALE + (gint) ((almanah_operation->line_spacing - 1.0) * ((gdouble) logical_extents.height)) > gtk_print_context_get_height (context)) {
 		/* Not enough space on the page to contain the title and orphaned lines */
 		if (title_layout != NULL)
 			g_object_unref (title_layout);
@@ -318,8 +321,10 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	for (i = almanah_operation->current_line; (gint) i < pango_layout_get_line_count (entry_layout); i++) {
 		entry_line = pango_layout_get_line_readonly (entry_layout, i);
 		pango_layout_line_get_pixel_extents (entry_line, NULL, &logical_extents);
+		line_height = pango_layout_get_spacing (entry_layout) / PANGO_SCALE + (gint) (almanah_operation->line_spacing * ((gdouble) logical_extents.height));
 
-		/* Check we're not going to overflow the page */
+		/* Check we're not going to overflow the page. We don't use the line_height here, as we can ignore any double spacing under the
+		 * bottom line on a page. */
 		if (entry_y + logical_extents.height > gtk_print_context_get_height (context)) {
 			/* Paint the rest on the next page */
 			if (title_layout != NULL)
@@ -337,11 +342,10 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 			pango_cairo_show_layout_line (cr, entry_line);
 		}
 
-		entry_y += logical_extents.height;
+		entry_y += line_height;
 	}
 
-	/* Add the entry's height to the amount printed for this page */
-	pango_layout_get_pixel_size (entry_layout, NULL, &height);
+	/* Finish off the entry with a bottom margin */
 	almanah_operation->y = entry_y + ENTRY_MARGIN_BOTTOM;
 
 	if (title_layout != NULL)
@@ -401,10 +405,12 @@ draw_page_cb (GtkPrintOperation *operation, GtkPrintContext *context, gint page_
 static GtkWidget *
 create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *almanah_operation)
 {
-	GtkWidget *start_calendar, *end_calendar;
-	GtkLabel *start_label, *end_label;
+	GtkWidget *start_calendar, *end_calendar, *line_spacing_spin_button;
+	GtkLabel *start_label, *end_label, *line_spacing_label;
 	GtkTable *table;
+	GtkBox *vbox, *hbox;
 
+	/* Start and end calendars */
 	start_calendar = gtk_calendar_new ();
 	g_signal_connect (start_calendar, "month-changed", G_CALLBACK (almanah_calendar_month_changed_cb), NULL);
 	end_calendar = gtk_calendar_new ();
@@ -427,13 +433,27 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	almanah_operation->start_calendar = GTK_CALENDAR (start_calendar);
 	almanah_operation->end_calendar = GTK_CALENDAR (end_calendar);
 
-	gtk_widget_show_all (GTK_WIDGET (table));
+	/* Line spacing */
+	line_spacing_label = GTK_LABEL (gtk_label_new (_("Line spacing:")));
+	line_spacing_spin_button = gtk_spin_button_new_with_range (1.0, 3.0, 0.5);
+
+	almanah_operation->line_spacing_spin_button = GTK_SPIN_BUTTON (line_spacing_spin_button);
+
+	hbox = GTK_BOX (gtk_hbox_new (FALSE, 6));
+	gtk_box_pack_start (hbox, GTK_WIDGET (line_spacing_label), FALSE, TRUE, 6);
+	gtk_box_pack_start (hbox, line_spacing_spin_button, TRUE, TRUE, 6);
+
+	vbox = GTK_BOX (gtk_vbox_new (FALSE, 12));
+	gtk_box_pack_start (vbox, GTK_WIDGET (table), TRUE, TRUE, 6);
+	gtk_box_pack_start (vbox, GTK_WIDGET (hbox), FALSE, TRUE, 6);
+
+	gtk_widget_show_all (GTK_WIDGET (vbox));
 
 	/* Make sure they have the dates with entries marked */
 	almanah_calendar_month_changed_cb (GTK_CALENDAR (start_calendar), NULL);
 	almanah_calendar_month_changed_cb (GTK_CALENDAR (end_calendar), NULL);
 
-	return GTK_WIDGET (table);
+	return GTK_WIDGET (vbox);
 }
 
 static void
@@ -457,6 +477,9 @@ custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, Almanah
 		almanah_operation->start_date = almanah_operation->end_date;
 		almanah_operation->end_date = temp;
 	}
+
+	/* Line spacing */
+	almanah_operation->line_spacing = gtk_spin_button_get_value (almanah_operation->line_spacing_spin_button);
 }
 
 void

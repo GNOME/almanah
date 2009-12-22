@@ -35,6 +35,7 @@
 					<object class="GtkAction" id="almanah_ui_print">
 						<property name="stock-id">gtk-print</property>
 						<property name="name">file-print</property>
+						<property name="label" translatable="yes">_Print…</property>
 						<signal name="activate" handler="mw_print_activate_cb"/>
 					</object>
 					<accelerator key="P" modifiers="GDK_CONTROL_MASK"/>
