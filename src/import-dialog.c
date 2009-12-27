@@ -175,7 +175,7 @@ set_entry (AlmanahImportDialog *self, AlmanahEntry *imported_entry, const gchar 
 	GDate entry_date;
 	AlmanahEntry *existing_entry;
 	GtkTextBuffer *existing_buffer, *imported_buffer;
-	GtkTextIter existing_end, imported_start, imported_end;
+	GtkTextIter existing_start, existing_end, imported_start, imported_end;
 	gchar *header_string;
 	GError *error = NULL;
 
@@ -219,14 +219,40 @@ set_entry (AlmanahImportDialog *self, AlmanahEntry *imported_entry, const gchar 
 		return ALMANAH_IMPORT_STATUS_IMPORTED;
 	}
 
+	/* Get the bounds for later use */
+	gtk_text_buffer_get_bounds (existing_buffer, &existing_start, &existing_end);
+	gtk_text_buffer_get_bounds (imported_buffer, &imported_start, &imported_end);
+
+	/* Compare the two buffers --- if they're identical, leave the current entry alone and mark the entries as merged.
+	 * Compare the character counts first so that the comparison is less expensive in the case they aren't identical .*/
+	if (gtk_text_buffer_get_char_count (existing_buffer) == gtk_text_buffer_get_char_count (imported_buffer)) {
+		gchar *existing_text, *imported_text;
+
+		existing_text = gtk_text_buffer_get_text (existing_buffer, &existing_start, &existing_end, FALSE);
+		imported_text = gtk_text_buffer_get_text (imported_buffer, &imported_start, &imported_end, FALSE);
+
+		/* If they're the same, no modifications are required */
+		if (strcmp (existing_text, imported_text) == 0) {
+			g_free (existing_text);
+			g_free (imported_text);
+			g_object_unref (imported_buffer);
+			g_object_unref (existing_buffer);
+			g_object_unref (existing_entry);
+			return ALMANAH_IMPORT_STATUS_MERGED;
+		}
+
+		g_free (existing_text);
+		g_free (imported_text);
+	}
+
 	/* Append some header text for the imported entry */
+	/* Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+	 * The imported entry is appended to this text. */
 	header_string = g_strdup_printf (_("\n\nEntry imported from \"%s\":\n\n"), import_source);
-	gtk_text_buffer_get_end_iter (existing_buffer, &existing_end);
 	gtk_text_buffer_insert (existing_buffer, &existing_end, header_string, -1);
 	g_free (header_string);
 
 	/* Append the imported entry to the end of the existing one */
-	gtk_text_buffer_get_bounds (imported_buffer, &imported_start, &imported_end);
 	gtk_text_buffer_insert_range (existing_buffer, &existing_end, &imported_start, &imported_end);
 	g_object_unref (imported_buffer);
 
