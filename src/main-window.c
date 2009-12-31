@@ -901,7 +901,7 @@ mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 				"license", license,
 				"wrap-license", TRUE,
 				"website-label", _("Almanah Website"),
-				"website", "http://tecnocode.co.uk/projects/almanah",
+				"website", "http://live.gnome.org/Almanah_Diary",
 				NULL);
 
 	g_free (license);
