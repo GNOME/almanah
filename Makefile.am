@@ -30,7 +30,6 @@ MAINTAINERCLEANFILES = \
 	ltmain.sh	\
 	missing		\
 	mkinstalldirs	\
-	ChangeLog	\
 	`find "$(srcdir)" -type f -name Makefile.in -print`
 
 # Copy all the spec files. Of course, only one is actually used.
@@ -42,10 +41,11 @@ dist-hook:
 	done
 
 # ChangeLog
-ChangeLog:
-	@echo Creating $@
-	@if test -d "$(srcdir)/.git"; then \
-	  (GIT_DIR=$(top_srcdir)/.git ./missing --run git log d8d3d82934d1627da5e49c8784b5297e27550e69.. --stat) | fmt --split-only > $@.tmp \
+ChangeLog: $(srcdir)/ChangeLog
+$(srcdir)/ChangeLog:
+	$(AM_V_GEN)(if test -d "$(srcdir)/.git"; then \
+	  (GIT_DIR=$(top_srcdir)/.git ./missing --run \
+	   git log d8d3d82934d1627da5e49c8784b5297e27550e69.. --stat) | fmt --split-only > $@.tmp \
 	  && mv -f $@.tmp $@ \
 	  || ($(RM) $@.tmp; \
 	      echo Failed to generate ChangeLog, your ChangeLog may be outdated >&2; \
@@ -54,7 +54,9 @@ ChangeLog:
 	  test -f $@ || \
 	  (echo A git checkout and git-log is required to generate ChangeLog >&2 && \
 	  echo A git checkout and git-log is required to generate this file >> $@); \
-	fi
-.PHONY: ChangeLog
+	fi)
+.PHONY: $(srcdir)/ChangeLog
+
+MAINTAINERCLEANFILES += ChangeLog
 
 -include $(top_srcdir)/git.mk

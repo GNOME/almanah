@@ -1,5 +1,17 @@
 Major new features in version...
 
+0.7.0:
+* Add a new "Contact" definition type for Evolution contacts
+* Several data loss and crasher fixes
+* Add an "Insert Time" function
+* Add the ability to mark entries as important
+* Add a new "F-Spot Photo" event type, to allow listing of a day's photos
+* Allow manual date entry to navigate the diary
+* Add import support for text files and other Almanah Diary databases
+* Lots of UI cleanup and tweaking
+* Add line spacing option when printing
+* Change website from http://tecnocode.co.uk/projects/almanah to http://live.gnome.org/Almanah_Diary
+
 0.6:
 Note that 0.6 removes the old concept of "links", and all stored links will no longer be accessible. They will,
 however, remain in the database, and can be accessed using the following commands while Almanah's running:

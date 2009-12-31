@@ -109,38 +109,38 @@ ALMANAH_ENUM_FILES = \
 	event-factory-builtins.c
 
 definition-builtins.h: definition.h Makefile
-	$(AM_V_GEN)($(GLIB_MKENUMS) \
+	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
 			--fhead "#ifndef __ALMANAH_DEFINITION_BUILTINS_H__\n#define __ALMANAH_DEFINITION_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 			--fprod "/* enumerations from \"@filename@\" */\n" \
 			--vhead "GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define ALMANAH_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
 			--ftail "G_END_DECLS\n\n#endif /* __ALMANAH_DEFINITION_BUILTINS_H__ */" \
-		definition.h > $(@F))
+		definition.h) > $(@F)
 
 definition-builtins.c: definition.h Makefile definition-builtins.h
-	$(AM_V_GEN)($(GLIB_MKENUMS) \
+	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
 			--fhead "#include \"definition.h\"\n#include \"definition-builtins.h\"" \
 			--fprod "\n/* enumerations from \"@filename@\" */" \
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
 			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		definition.h > $(@F))
+		definition.h) > $(@F)
 
 event-factory-builtins.h: event-factory.h Makefile
-	$(AM_V_GEN)($(GLIB_MKENUMS) \
+	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
 			--fhead "#ifndef __ALMANAH_EVENT_FACTORY_BUILTINS_H__\n#define __ALMANAH_EVENT_FACTORY_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 			--fprod "/* enumerations from \"@filename@\" */\n" \
 			--vhead "GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define ALMANAH_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
 			--ftail "G_END_DECLS\n\n#endif /* __ALMANAH_EVENT_FACTORY_BUILTINS_H__ */" \
-		event-factory.h > $(@F))
+		event-factory.h) > $(@F)
 
 event-factory-builtins.c: event-factory.h Makefile event-factory-builtins.h
-	$(AM_V_GEN)($(GLIB_MKENUMS) \
+	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
 			--fhead "#include \"event-factory.h\"\n#include \"event-factory-builtins.h\"" \
 			--fprod "\n/* enumerations from \"@filename@\" */" \
 			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
 			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		event-factory.h > $(@F))
+		event-factory.h) > $(@F)
 
 CLEANFILES = \
 	$(ALMANAH_MARSHAL_FILES)	\
