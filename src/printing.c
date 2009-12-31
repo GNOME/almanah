@@ -274,7 +274,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	entry = almanah_storage_manager_get_entry (almanah->storage_manager, almanah_operation->current_date);
 
 	if (entry == NULL || almanah_entry_is_empty (entry)) {
-		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date."));
+		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
 		pango_layout_set_markup (entry_layout, entry_text, -1);
 	} else {
 		GtkTextIter start, end;
