@@ -71,7 +71,7 @@ uri_view (AlmanahDefinition *definition)
 	const gchar *value = almanah_definition_get_value (definition);
 
 	if (gtk_show_uri (gtk_widget_get_screen (almanah->main_window), value, GDK_CURRENT_TIME, &error) == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error opening URI"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);

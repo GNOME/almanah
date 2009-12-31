@@ -98,7 +98,7 @@ contact_view (AlmanahDefinition *definition)
 	/* Get the UID of the source containing the contact from Evolution */
 	if ((book = e_book_new_default_addressbook (&error)) == NULL ||
 	    e_book_open (book, TRUE, &error) == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error opening contact"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
@@ -131,7 +131,7 @@ contact_view (AlmanahDefinition *definition)
 
 	/* Run Evolution */
 	if (g_spawn_command_line_async (command_line, &error) == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error opening Evolution"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
@@ -219,7 +219,7 @@ contact_get_blurb (AlmanahDefinition *definition)
 	if ((book = e_book_new_default_addressbook (&error)) == NULL ||
 	    e_book_open (book, TRUE, &error) == FALSE ||
 	    e_book_get_contact (book, almanah_definition_get_value (definition), &contact, &error) == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error opening contact"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
