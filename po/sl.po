@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dates\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&component=general\n"
-"POT-Creation-Date: 2009-11-10 00:29+0000\n"
-"PO-Revision-Date: 2009-11-27 11:13+0100\n"
+"POT-Creation-Date: 2009-12-27 18:21+0000\n"
+"PO-Revision-Date: 2009-12-28 09:51+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -71,11 +71,11 @@ msgstr "ID ključa za šifriranje in dešifriranje zbirke podatkov programa Alma
 
 #: ../data/almanah.schemas.in.h:10
 msgid "The X position of the main window."
-msgstr "Položaj X glavnega okna."
+msgstr "X položaj glavnega okna"
 
 #: ../data/almanah.schemas.in.h:11
 msgid "The Y position of the main window."
-msgstr "Položaj Y glavnega okna."
+msgstr "Y položaj glavnega okna."
 
 #: ../data/almanah.schemas.in.h:12
 msgid "The height of the main window."
@@ -95,7 +95,7 @@ msgstr "Ali naj bo preverjanje črkovanja omogočeno."
 
 #: ../data/almanah.schemas.in.h:16
 msgid "Whether the main window should start maximized."
-msgstr "Ali naj bo glavno okno zagnano razpeto."
+msgstr "Ali naj bo glavno okno ob zagonu razpeto."
 
 #: ../data/almanah.ui.h:1
 msgid "Add a definition for the currently selected text."
@@ -107,7 +107,7 @@ msgstr "Koledar"
 
 #: ../data/almanah.ui.h:3
 msgid "Definition List"
-msgstr "Seznam povezav"
+msgstr "Seznam definicij"
 
 #: ../data/almanah.ui.h:4
 msgid "Definition type:"
@@ -260,18 +260,22 @@ msgid "_Import…"
 msgstr "_Uvozi ..."
 
 #: ../data/almanah.ui.h:41
+msgid "_Print…"
+msgstr "_Natisni ..."
+
+#: ../data/almanah.ui.h:42
 msgid "_Remove Definition"
 msgstr "_Odstrani povezavo"
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:43
 msgid "_Search…"
 msgstr "_Iskanje ..."
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:44
 msgid "_View Definitions"
 msgstr "Po_gled povezav"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:45
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "na primer: \"14. marec 2009\" ali \"14.3.2009\"."
 
@@ -280,8 +284,9 @@ msgid "Add Definition"
 msgstr "Dodaj povezavo"
 
 #: ../src/add-definition-dialog.c:164
+#: ../src/date-entry-dialog.c:131
 #: ../src/import-dialog.c:116
-#: ../src/import-dialog.c:566
+#: ../src/import-dialog.c:592
 #: ../src/definition-manager-window.c:132
 #: ../src/main-window.c:172
 #: ../src/preferences-dialog.c:135
@@ -289,6 +294,10 @@ msgstr "Dodaj povezavo"
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Uporabniškega vmesnika datoteke \"%s\" ni mogoče naložiti"
+
+#: ../src/date-entry-dialog.c:74
+msgid "Select Date"
+msgstr "Izberi datum"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -346,7 +355,9 @@ msgid "Error deserializing existing entry into buffer; overwriting with imported
 msgstr "Napaka med ločitvijo obstoječega vnosa iz zaporedja v pomnilnik; prepis z uvoženim vnosom: %s"
 
 #. Append some header text for the imported entry
-#: ../src/import-dialog.c:223
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
 #, c-format
 msgid ""
 "\n"
@@ -359,19 +370,19 @@ msgstr ""
 "Vnos uvožen iz \"%s\":\n"
 "\n"
 
-#: ../src/import-dialog.c:433
+#: ../src/import-dialog.c:459
 msgid "Import failed"
-msgstr "Uvažanje je spodletelo"
+msgstr "Uvoz ni uspel"
 
-#: ../src/import-dialog.c:467
+#: ../src/import-dialog.c:493
 msgid "Select a folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. Any and all such files will be imported."
 msgstr "Izbor mape z besedilnimi datotekami, ena na vnos z imeni v obliki 'yyyy-mm-dd' in brez pripon. Katerakoli in vse take datoteke bodo uvožene."
 
-#: ../src/import-dialog.c:473
+#: ../src/import-dialog.c:499
 msgid "Select a database file created by Almanah Diary to import."
 msgstr "Izbor podatkovne zbirke Almanah dnevnika za uvoz."
 
-#: ../src/import-dialog.c:537
+#: ../src/import-dialog.c:563
 msgid "Import Results"
 msgstr "Rezultati uvoza"
 
@@ -381,11 +392,11 @@ msgstr "Rezultati uvoza"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:632
+#: ../src/import-dialog.c:658
 #: ../src/main-window.c:371
 #: ../src/main-window.c:396
 #: ../src/main-window.c:1029
-#: ../src/printing.c:257
+#: ../src/printing.c:259
 #: ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %m. %Y"
@@ -438,7 +449,7 @@ msgstr "Izbor datoteke"
 
 #: ../src/definitions/note.c:49
 msgid "Note"
-msgstr "Sporočilce"
+msgstr "Opomba"
 
 #: ../src/definitions/note.c:50
 msgid "A note about an important event."
@@ -541,7 +552,7 @@ msgstr "Napaka med odpiranjem podatkovne zbirke"
 
 #: ../src/preferences-dialog.c:79
 msgid "Almanah Preferences"
-msgstr "Nastavitve Almanah"
+msgstr "Možnosti Almanah"
 
 #. Grab our child widgets
 #: ../src/preferences-dialog.c:160
@@ -573,17 +584,22 @@ msgstr "Napaka med odpiranjem Seahorse"
 msgid "Spelling checker could not be initialized"
 msgstr "Preverjanja črkovanja ni mogoče zagnati"
 
-#: ../src/printing.c:275
-msgid "No entry for this date."
-msgstr "Ni vnosov za ta datum."
+#: ../src/printing.c:277
+msgid "No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date."
+msgstr "Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum."
 
-#: ../src/printing.c:413
+#: ../src/printing.c:419
 msgid "Start date:"
 msgstr "Začetni datum:"
 
-#: ../src/printing.c:415
+#: ../src/printing.c:421
 msgid "End date:"
 msgstr "Končni datum:"
+
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr "Razmik med vrsticami:"
 
 #: ../src/storage-manager.c:237
 #, c-format
@@ -649,4 +665,7 @@ msgstr "Poizvedbe \"%s\" ni mogoče zagnati. SQLite poroča sledeče poročilo o
 #: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Napaka med ločitvijo vnosa iz zaporedja v pomnilnik med iskanjem."
+
+#~ msgid "No entry for this date."
+#~ msgstr "Ni vnosov za ta datum."
 
