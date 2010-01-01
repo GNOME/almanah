@@ -1,4 +1,4 @@
-AC_INIT(almanah, 0.7.0)
+AC_INIT(almanah, 0.7.1)
 
 AC_CONFIG_SRCDIR([src/main.h])
 AC_CONFIG_HEADERS([config.h])

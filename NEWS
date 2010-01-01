@@ -1,5 +1,8 @@
 Major new features in version...
 
+0.7.1:
+* Fix non-Evolution build
+
 0.7.0:
 * Add a new "Contact" definition type for Evolution contacts
 * Several data loss and crasher fixes
