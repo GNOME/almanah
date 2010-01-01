@@ -35,13 +35,17 @@ typedef struct {
 #include "file.h"
 #include "note.h"
 #include "uri.h"
+#ifdef HAVE_EVO
 #include "contact.h"
+#endif /* HAVE_EVO */
 
 const DefinitionType definition_types[] = {
 	{ ALMANAH_DEFINITION_FILE, almanah_file_definition_get_type },
 	{ ALMANAH_DEFINITION_NOTE, almanah_note_definition_get_type },
 	{ ALMANAH_DEFINITION_URI, almanah_uri_definition_get_type },
+#ifdef HAVE_EVO
 	{ ALMANAH_DEFINITION_CONTACT, almanah_contact_definition_get_type }
+#endif /* HAVE_EVO */
 };
 
 static void almanah_definition_finalize (GObject *object);
