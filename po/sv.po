@@ -1,14 +1,14 @@
 # Swedish translation for almanah.
-# Copyright (C) 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 2008, 2009, 2010 Free Software Foundation, Inc.
 # This file is distributed under the same license as the diary package.
-# Daniel Nylander <po@danielnylander.se>, 2008, 2009.
+# Daniel Nylander <po@danielnylander.se>, 2008, 2009, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-08 21:25+0100\n"
-"PO-Revision-Date: 2009-11-10 01:29+0100\n"
+"POT-Creation-Date: 2010-01-10 15:04+0100\n"
+"PO-Revision-Date: 2010-01-10 15:05+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -102,118 +102,118 @@ msgid "Calendar"
 msgstr "Kalender"
 
 #: ../data/almanah.ui.h:3
+msgid "Definition Description"
+msgstr "Definitionsbeskrivning"
+
+#: ../data/almanah.ui.h:4
 msgid "Definition List"
 msgstr "Definitionslista"
 
-#: ../data/almanah.ui.h:4
+#: ../data/almanah.ui.h:5
+msgid "Definition Type"
+msgstr "Definitionstyp"
+
+#: ../data/almanah.ui.h:6
 msgid "Definition type:"
 msgstr "Definitionstyp:"
 
-#: ../data/almanah.ui.h:5
-msgid "Description: "
-msgstr "Beskrivning:"
-
-#: ../data/almanah.ui.h:6
+#: ../data/almanah.ui.h:7
 msgid "Entry editing area"
 msgstr "Postredigeringsyta"
 
-#: ../data/almanah.ui.h:7
+#: ../data/almanah.ui.h:8
 msgid "F_ormat"
 msgstr "F_ormat"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:9
 msgid "Failed Entries"
 msgstr "Misslyckade poster"
 
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:10
 msgid "Go to _Today"
 msgstr "Gå till _idag"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:11
 msgid "I_mportant"
 msgstr "_Viktigt"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:12
 msgid "Import Results List"
 msgstr "Importera resultatlista"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:13
 msgid "Import mode: "
 msgstr "Importeringsläge:"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "Infoga _tid"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Hoppa till aktuellt datum i dagboken."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:16
 msgid "Merged Entries"
 msgstr "Sammanfogade poster"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:17
 #: ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Ingenting markerat"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:18
 msgid "Past Event List"
 msgstr "Lista över tidigare händelser"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "Past Events"
 msgstr "Tidigare händelser"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:20
 msgid "Remove the definition from the currently selected text."
 msgstr "Ta bort definitionen från den markerade texten."
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:21
 msgid "Result List"
 msgstr "Resultatlista"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:22
 msgid "Results:"
 msgstr "Resultat:"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:23
 #: ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Sök"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:24
 msgid "Search entry"
 msgstr "Sök post"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "Select Date…"
 msgstr "Välj datum..."
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Lyckade poster"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:27
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Växla huruvida den aktuella posten är markerad som viktig."
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:28
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Växla huruvida den markerade texten är med fet stil."
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Växla huruvida den markerade texten är med kursiv stil."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:30
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Växla huruvida den markerade texten är understruken."
-
-#: ../data/almanah.ui.h:30
-msgid "Type: "
-msgstr "Typ:"
 
 #: ../data/almanah.ui.h:31
 msgid "View"
@@ -256,18 +256,22 @@ msgid "_Import…"
 msgstr "_Importera…"
 
 #: ../data/almanah.ui.h:41
+msgid "_Print…"
+msgstr "Skriv _ut…"
+
+#: ../data/almanah.ui.h:42
 msgid "_Remove Definition"
 msgstr "_Ta bort definition"
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:43
 msgid "_Search…"
 msgstr "_Sök..."
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:44
 msgid "_View Definitions"
 msgstr "_Visa definitioner"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:45
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "t.ex. \"14/03/2009\" eller \"14 mars 2009\"."
 
@@ -276,8 +280,9 @@ msgid "Add Definition"
 msgstr "Lägg till definition"
 
 #: ../src/add-definition-dialog.c:164
+#: ../src/date-entry-dialog.c:131
 #: ../src/import-dialog.c:116
-#: ../src/import-dialog.c:566
+#: ../src/import-dialog.c:592
 #: ../src/definition-manager-window.c:132
 #: ../src/main-window.c:172
 #: ../src/preferences-dialog.c:135
@@ -285,6 +290,10 @@ msgstr "Lägg till definition"
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Användargränssnittsfilen \"%s\" kunde inte läsas in"
+
+#: ../src/date-entry-dialog.c:74
+msgid "Select Date"
+msgstr "Välj datum"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -342,7 +351,9 @@ msgid "Error deserializing existing entry into buffer; overwriting with imported
 msgstr "Fel vid deserialisering av befintlig post i buffert, skriver över med importerad post: %s"
 
 #. Append some header text for the imported entry
-#: ../src/import-dialog.c:223
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
 #, c-format
 msgid ""
 "\n"
@@ -355,19 +366,19 @@ msgstr ""
 "Post importerad från \"%s\":\n"
 "\n"
 
-#: ../src/import-dialog.c:433
+#: ../src/import-dialog.c:459
 msgid "Import failed"
 msgstr "Importen misslyckades"
 
-#: ../src/import-dialog.c:467
+#: ../src/import-dialog.c:493
 msgid "Select a folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. Any and all such files will be imported."
 msgstr "Välj en mapp som innehåller textfiler, en per post, med namn i formatet \"åååå-mm-dd\" och utan filändelse. Var och en av dessa filer kommer att importeras."
 
-#: ../src/import-dialog.c:473
+#: ../src/import-dialog.c:499
 msgid "Select a database file created by Almanah Diary to import."
 msgstr "Välj en databasfil att importera som skapats av dagboksprogrammet Almanah."
 
-#: ../src/import-dialog.c:537
+#: ../src/import-dialog.c:563
 msgid "Import Results"
 msgstr "Resultat av import"
 
@@ -377,11 +388,11 @@ msgstr "Resultat av import"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:632
+#: ../src/import-dialog.c:658
 #: ../src/main-window.c:371
 #: ../src/main-window.c:396
 #: ../src/main-window.c:1029
-#: ../src/printing.c:257
+#: ../src/printing.c:259
 #: ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
@@ -573,17 +584,22 @@ msgstr "Fel vid öppnande av Seahorse"
 msgid "Spelling checker could not be initialized"
 msgstr "Stavningskontrollen kunde inte initieras"
 
-#: ../src/printing.c:275
+#: ../src/printing.c:277
 msgid "No entry for this date."
 msgstr "Ingen post för detta datum."
 
-#: ../src/printing.c:413
+#: ../src/printing.c:419
 msgid "Start date:"
 msgstr "Startdatum:"
 
-#: ../src/printing.c:415
+#: ../src/printing.c:421
 msgid "End date:"
 msgstr "Slutdatum:"
+
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr "Radutrymme:"
 
 #: ../src/storage-manager.c:237
 #, c-format
@@ -650,6 +666,10 @@ msgstr "Kunde inte köra frågan \"%s\". SQLite gav följande felmeddelande: %s"
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Fel vid deserialisering av post i buffert under sökning."
 
+#~ msgid "Description: "
+#~ msgstr "Beskrivning:"
+#~ msgid "Type: "
+#~ msgstr "Typ:"
 #~ msgid "%X"
 #~ msgstr "%X"
 #~ msgid "Error closing database"
