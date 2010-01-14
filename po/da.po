@@ -1,7 +1,8 @@
 # Danish translation for almanah.
 # Copyright (C) 2009 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
-# Joe Hansen (joedalton2@yahoo.dk), 2009.
+# Joe Hansen (joedalton2@yahoo.dk), 2009, 2010.
+# Korrekturlæst Torben Grøn Helligsø, 2010.
 #
 # entry -> post
 #
@@ -9,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-18 00:05+0100\n"
-"PO-Revision-Date: 2009-12-12 12:42+0000\n"
+"POT-Creation-Date: 2010-01-14 19:10+0100\n"
+"PO-Revision-Date: 2009-01-08 12:42+0000\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -103,129 +104,127 @@ msgstr "Om hovedvinduet bør være maksimeret ved start."
 
 #: ../data/almanah.ui.h:1
 msgid "Add a definition for the currently selected text."
-msgstr ""
+msgstr "Tilføj en definition for den aktuelt markerede tekst."
 
 #: ../data/almanah.ui.h:2
 msgid "Calendar"
 msgstr "Kalender"
 
 #: ../data/almanah.ui.h:3
-msgid "Definition List"
+#, fuzzy
+msgid "Definition Description"
 msgstr "Definitionsliste"
 
 #: ../data/almanah.ui.h:4
-#, fuzzy
-msgid "Definition type:"
-msgstr "Definitionstype"
+msgid "Definition List"
+msgstr "Definitionsliste"
 
 #: ../data/almanah.ui.h:5
 #, fuzzy
-msgid "Description: "
-msgstr "Beskrivelse"
+msgid "Definition Type"
+msgstr "Definitionstype:"
 
 #: ../data/almanah.ui.h:6
+msgid "Definition type:"
+msgstr "Definitionstype:"
+
+#: ../data/almanah.ui.h:7
 msgid "Entry editing area"
 msgstr "Postredigeringsområde"
 
-#: ../data/almanah.ui.h:7
+#: ../data/almanah.ui.h:8
 msgid "F_ormat"
 msgstr "F_ormat"
 
-#: ../data/almanah.ui.h:8
-msgid "Failed Entries"
-msgstr ""
-
+# mislykkede poster
 #: ../data/almanah.ui.h:9
+msgid "Failed Entries"
+msgstr "Poster der mislykkedes"
+
+#: ../data/almanah.ui.h:10
 msgid "Go to _Today"
 msgstr "Gå _til I dag"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:11
 msgid "I_mportant"
 msgstr "Vi_gtigt"
 
-#: ../data/almanah.ui.h:11
-#, fuzzy
-msgid "Import Results List"
-msgstr "Resultatliste"
-
 #: ../data/almanah.ui.h:12
-#, fuzzy
-msgid "Import mode: "
-msgstr "Slå importtilstand til"
+msgid "Import Results List"
+msgstr "Importer resultatliste"
 
 #: ../data/almanah.ui.h:13
+msgid "Import mode: "
+msgstr "Importtilstand: "
+
+#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "Indsæt _tid"
 
-#: ../data/almanah.ui.h:14
-msgid "Jump to the current date in the diary."
-msgstr ""
-
 #: ../data/almanah.ui.h:15
-msgid "Merged Entries"
-msgstr ""
+msgid "Jump to the current date in the diary."
+msgstr "Gå til den aktuelle dato i dagbogen."
 
-#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
+#: ../data/almanah.ui.h:16
+msgid "Merged Entries"
+msgstr "Flettede poster"
+
+#: ../data/almanah.ui.h:17 ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Intet valgt"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:18
 msgid "Past Event List"
 msgstr "Tidligere begivenhedsliste"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "Past Events"
 msgstr "Tidligere begivenheder"
 
-#: ../data/almanah.ui.h:19
-msgid "Remove the definition from the currently selected text."
-msgstr ""
-
 #: ../data/almanah.ui.h:20
+msgid "Remove the definition from the currently selected text."
+msgstr "Fjern definitionen fra den aktuelt valgte tekst."
+
+#: ../data/almanah.ui.h:21
 msgid "Result List"
 msgstr "Resultatliste"
 
-#: ../data/almanah.ui.h:21
-#, fuzzy
+#: ../data/almanah.ui.h:22
 msgid "Results:"
-msgstr "Resultater"
+msgstr "Resultater:"
 
-#: ../data/almanah.ui.h:22 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:23 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Søg"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:24
 msgid "Search entry"
 msgstr "Søgetekst"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "Select Date…"
 msgstr "Vælg dato…"
 
-#: ../data/almanah.ui.h:25
-msgid "Successful Entries"
-msgstr ""
-
+# Succesfulde poster, poster med succes, vellykkede poster
 #: ../data/almanah.ui.h:26
-msgid "Toggle whether the current entry is marked as important."
-msgstr ""
+msgid "Successful Entries"
+msgstr "Vellykkede poster"
 
 #: ../data/almanah.ui.h:27
-msgid "Toggle whether the currently selected text is bold."
-msgstr ""
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Skifter mellem om den aktuelle post er markeret som vigtig eller ej."
 
 #: ../data/almanah.ui.h:28
-msgid "Toggle whether the currently selected text is italic."
-msgstr ""
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Skifter mellem om den aktuelt markeret tekst er fed eller ej."
 
 #: ../data/almanah.ui.h:29
-msgid "Toggle whether the currently selected text is underlined."
-msgstr ""
+msgid "Toggle whether the currently selected text is italic."
+msgstr "Skifter mellem om den aktuelt markeret tekst er kursiv eller ej."
 
 #: ../data/almanah.ui.h:30
-#, fuzzy
-msgid "Type: "
-msgstr "Type"
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "Skifter mellem om den aktuelt markeret tekst er understreget eller ej."
 
 #: ../data/almanah.ui.h:31
 msgid "View"
@@ -260,28 +259,31 @@ msgid "_Help"
 msgstr "_Hjælp"
 
 #: ../data/almanah.ui.h:39
-#, fuzzy
 msgid "_Import"
-msgstr "Vi_gtigt"
+msgstr "_Importer"
 
 #: ../data/almanah.ui.h:40
-#, fuzzy
 msgid "_Import…"
-msgstr "Vi_gtigt"
+msgstr "_Importer…"
 
 #: ../data/almanah.ui.h:41
+#, fuzzy
+msgid "_Print…"
+msgstr "_Importer…"
+
+#: ../data/almanah.ui.h:42
 msgid "_Remove Definition"
 msgstr "Fje_rn definition"
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:43
 msgid "_Search…"
 msgstr "_Søg…"
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:44
 msgid "_View Definitions"
 msgstr "_Vis definitioner"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:45
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "f.eks. \"14/03/2009\" eller \"14. marts 2009\"."
 
@@ -290,7 +292,7 @@ msgid "Add Definition"
 msgstr "Tilføj definition"
 
 #: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
-#: ../src/import-dialog.c:116 ../src/import-dialog.c:566
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:592
 #: ../src/definition-manager-window.c:132 ../src/main-window.c:172
 #: ../src/preferences-dialog.c:135 ../src/search-dialog.c:87
 #, c-format
@@ -298,9 +300,8 @@ msgid "UI file \"%s\" could not be loaded"
 msgstr "UI-fil \"%s\" kunne ikke indlæses"
 
 #: ../src/date-entry-dialog.c:74
-#, fuzzy
 msgid "Select Date"
-msgstr "Vælg dato…"
+msgstr "Vælg dato"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -337,33 +338,39 @@ msgid "Error launching F-Spot"
 msgstr "Fejl under opstart af F-Spot"
 
 #: ../src/import-dialog.c:36
-#, fuzzy
 msgid "Text Files"
-msgstr "Vælg fil"
+msgstr "Tekstfiler"
 
 #: ../src/import-dialog.c:37
 msgid "Database"
-msgstr ""
+msgstr "Database"
 
 #: ../src/import-dialog.c:75
-#, fuzzy
 msgid "Import Entries"
-msgstr "Vi_gtigt"
+msgstr "Importer poster"
 
+# ingen træffere overhovede på open-trans for deserializing.
+# Menes der ikke bare (ind)læsning? I hvert fald i nogle sammenhænge
+# bruges termen /serialisering/ om at gemme ~ gøre permanent ~ skrive til
+# disk.
 #: ../src/import-dialog.c:196
-#, fuzzy, c-format
+#, c-format
 msgid "Error deserializing imported entry into buffer: %s"
-msgstr "Fejl under afserialisering af post til mellemlager under søgning."
+msgstr "Fejl under indlæsning af importeret post til mellemlager: %s"
 
 #: ../src/import-dialog.c:211
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
 "entry: %s"
-msgstr "Fejl under afserialisering af post til mellemlager under søgning."
+msgstr ""
+"Fejl under indlæsning af eksisterende post til mellemlager; overskrevet med "
+"importeret post: %s"
 
 #. Append some header text for the imported entry
-#: ../src/import-dialog.c:223
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
 #, c-format
 msgid ""
 "\n"
@@ -371,27 +378,31 @@ msgid ""
 "Entry imported from \"%s\":\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"Post importeret fra \"%s\":\n"
+"\n"
 
-#: ../src/import-dialog.c:433
-#, fuzzy
+#: ../src/import-dialog.c:459
 msgid "Import failed"
-msgstr "Vi_gtigt"
+msgstr "Import mislykkedes"
 
-#: ../src/import-dialog.c:467
+#: ../src/import-dialog.c:493
 msgid ""
 "Select a folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
 "imported."
 msgstr ""
+"Vælg en mappe indeholdende tekstfiler, en per post, med navne i formatet "
+"'åååå-mm-dd', og ingen filendelser. Alle sådanne filer vil blive importeret."
 
-#: ../src/import-dialog.c:473
+#: ../src/import-dialog.c:499
 msgid "Select a database file created by Almanah Diary to import."
-msgstr ""
+msgstr "Vælg en databasefil oprettet af Almanah der skal importeres."
 
-#: ../src/import-dialog.c:537
-#, fuzzy
+#: ../src/import-dialog.c:563
 msgid "Import Results"
-msgstr "Resultater"
+msgstr "Importresultater"
 
 #. Translators: This is a strftime()-format string for the dates displayed in import results.
 #. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
@@ -399,8 +410,8 @@ msgstr "Resultater"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:632 ../src/main-window.c:371
-#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:257
+#: ../src/import-dialog.c:658 ../src/main-window.c:371
+#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:259
 #: ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %B %Y"
@@ -471,9 +482,8 @@ msgid "Error opening URI"
 msgstr "Fejl under åbning af URI"
 
 #: ../src/definitions/uri.c:99
-#, fuzzy
 msgid "URI: "
-msgstr "URI"
+msgstr "URI: "
 
 #: ../src/main-window.c:375
 #, c-format
@@ -584,9 +594,8 @@ msgstr "Indstillinger for Almanah"
 
 #. Grab our child widgets
 #: ../src/preferences-dialog.c:160
-#, fuzzy
 msgid "Encryption key: "
-msgstr "Krypteringsnøgle"
+msgstr "Krypteringsnøgle: "
 
 #: ../src/preferences-dialog.c:165
 msgid "None (don't encrypt)"
@@ -613,24 +622,28 @@ msgstr "Fejl under åbning af Seahorse"
 msgid "Spelling checker could not be initialized"
 msgstr "Stavekontrol kunne ikke startes"
 
-#: ../src/printing.c:275
+#: ../src/printing.c:277
 msgid "No entry for this date."
 msgstr "Ingen post på denne dato."
 
-#: ../src/printing.c:413
-#, fuzzy
+#: ../src/printing.c:419
 msgid "Start date:"
-msgstr "Startdato"
+msgstr "Startdato:"
 
-#: ../src/printing.c:415
-#, fuzzy
+#: ../src/printing.c:421
 msgid "End date:"
-msgstr "Slutdato"
+msgstr "Slutdato:"
 
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr ""
+
+# GPGME er ikke en højere version end %s
 #: ../src/storage-manager.c:237
 #, c-format
 msgid "GPGME is not at least version %s"
-msgstr ""
+msgstr "GPGME er ikke mindst version %s"
 
 #: ../src/storage-manager.c:246
 #, c-format
@@ -699,3 +712,9 @@ msgstr ""
 #: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Fejl under afserialisering af post til mellemlager under søgning."
+
+#~ msgid "Description: "
+#~ msgstr "Beskrivelse: "
+
+#~ msgid "Type: "
+#~ msgstr "Type: "
