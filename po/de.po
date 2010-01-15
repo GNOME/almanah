@@ -4,15 +4,16 @@
 #
 # Philip Withnall <philip@tecnocode.co.uk>, 2008.
 # Christoph Wickert <christoph.wickert@googlemail.de>, 2008.
-# Mario Blättermann <mariobl@gnome.org>, 2008, 2009.
+# Mario Blättermann <mariobl@gnome.org>, 2008-2010.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&component=general\n"
-"POT-Creation-Date: 2009-12-11 17:34+0000\n"
-"PO-Revision-Date: 2009-12-12 11:46+0100\n"
+"POT-Creation-Date: 2009-12-31 11:03+0000\n"
+"PO-Revision-Date: 2010-01-15 16:19+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -114,119 +115,121 @@ msgid "Calendar"
 msgstr "Kalender"
 
 #: ../data/almanah.ui.h:3
+#| msgid "Definition List"
+msgid "Definition Description"
+msgstr "Definitionsbeschreibung"
+
+#: ../data/almanah.ui.h:4
 msgid "Definition List"
 msgstr "Definitionsliste"
 
-#: ../data/almanah.ui.h:4
+#: ../data/almanah.ui.h:5
+#| msgid "Definition type:"
+msgid "Definition Type"
+msgstr "Definitionstyp"
+
+#: ../data/almanah.ui.h:6
 msgid "Definition type:"
 msgstr "Definitionstyp:"
 
-#: ../data/almanah.ui.h:5
-msgid "Description: "
-msgstr "Beschreibung:"
-
-#: ../data/almanah.ui.h:6
+#: ../data/almanah.ui.h:7
 msgid "Entry editing area"
 msgstr "Editierbereich für Einträge"
 
-#: ../data/almanah.ui.h:7
+#: ../data/almanah.ui.h:8
 msgid "F_ormat"
 msgstr "F_ormat"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:9
 msgid "Failed Entries"
 msgstr "Fehlgeschlagene Einträge"
 
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:10
 msgid "Go to _Today"
 msgstr "Zum _heutigen Tag gehen"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:11
 msgid "I_mportant"
 msgstr "_Wichtig"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:12
 msgid "Import Results List"
 msgstr "Ergebnisliste importieren"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:13
 msgid "Import mode: "
 msgstr "Import-Modus: "
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "Zei_t einfügen"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Zum aktuellen Datum im Tagebuch springen."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:16
 msgid "Merged Entries"
 msgstr "Zusammengeführte Einträge"
 
-#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
+#: ../data/almanah.ui.h:17 ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Nichts ausgewählt"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:18
 msgid "Past Event List"
 msgstr "Liste der letzten Ereignisse"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "Past Events"
 msgstr "Letzte Ereignisse"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:20
 msgid "Remove the definition from the currently selected text."
 msgstr "Die Definition aus dem gegenwärtig ausgewählten Text entfernen."
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:21
 msgid "Result List"
 msgstr "Ergebnisliste"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:22
 msgid "Results:"
 msgstr "Ergebnisse:"
 
-#: ../data/almanah.ui.h:22 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:23 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Suchen"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:24
 msgid "Search entry"
 msgstr "Eintrag suchen"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "Select Date…"
 msgstr "Datum auswählen …"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Erfolgreiche Einträge"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:27
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Wichtig-Markierung für den gegenwärtigen Eintrag ein- oder ausschalten."
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:28
 msgid "Toggle whether the currently selected text is bold."
 msgstr ""
 "Fettschrift für den gegenwärtig ausgewählten Text ein- oder ausschalten."
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is italic."
 msgstr ""
 "Kursivschrift für den gegenwärtig ausgewählten Text ein- oder ausschalten."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:30
 msgid "Toggle whether the currently selected text is underlined."
 msgstr ""
 "Unterstreichung für den gegenwärtig ausgewählten Text ein- oder ausschalten."
-
-#: ../data/almanah.ui.h:30
-msgid "Type: "
-msgstr "Art: "
 
 #: ../data/almanah.ui.h:31
 msgid "View"
@@ -269,18 +272,23 @@ msgid "_Import…"
 msgstr "_Importieren läuft …"
 
 #: ../data/almanah.ui.h:41
+#| msgid "_Import…"
+msgid "_Print…"
+msgstr "_Drucken …"
+
+#: ../data/almanah.ui.h:42
 msgid "_Remove Definition"
 msgstr "Definition entfe_rnen"
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:43
 msgid "_Search…"
 msgstr "_Suchen …"
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:44
 msgid "_View Definitions"
 msgstr "Definitionen _anzeigen"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:45
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "z.B. »14.03.2009« oder »14. März 2009«."
 
@@ -289,7 +297,7 @@ msgid "Add Definition"
 msgstr "Definition hinzufügen"
 
 #: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
-#: ../src/import-dialog.c:116 ../src/import-dialog.c:566
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:592
 #: ../src/definition-manager-window.c:132 ../src/main-window.c:172
 #: ../src/preferences-dialog.c:135 ../src/search-dialog.c:87
 #, c-format
@@ -297,7 +305,6 @@ msgid "UI file \"%s\" could not be loaded"
 msgstr "Benutzerschnittstellen-Datei »%s« konnte nicht geladen werden."
 
 #: ../src/date-entry-dialog.c:74
-#| msgid "Select Date…"
 msgid "Select Date"
 msgstr "Datum auswählen"
 
@@ -360,7 +367,9 @@ msgstr ""
 "dem importierten Eintrag überschrieben: %s"
 
 #. Append some header text for the imported entry
-#: ../src/import-dialog.c:223
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
 #, c-format
 msgid ""
 "\n"
@@ -373,11 +382,11 @@ msgstr ""
 "Eintrag importiert aus »%s«:\n"
 "\n"
 
-#: ../src/import-dialog.c:433
+#: ../src/import-dialog.c:459
 msgid "Import failed"
 msgstr "Importieren fehlgeschlagen"
 
-#: ../src/import-dialog.c:467
+#: ../src/import-dialog.c:493
 msgid ""
 "Select a folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
@@ -387,13 +396,13 @@ msgstr ""
 "Die Namen müssen dem Format »jjjj-mm-tt« entsprechen und dürfen keine "
 "Dateiendung haben. Jede solcher Dateien wird importiert."
 
-#: ../src/import-dialog.c:473
+#: ../src/import-dialog.c:499
 msgid "Select a database file created by Almanah Diary to import."
 msgstr ""
 "Wählen Sie eine vom Almanah Tagebuch angelegte Datenbankdatei zum Importieren "
 "aus."
 
-#: ../src/import-dialog.c:537
+#: ../src/import-dialog.c:563
 msgid "Import Results"
 msgstr "Ergebnisse des Imports"
 
@@ -403,8 +412,8 @@ msgstr "Ergebnisse des Imports"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:632 ../src/main-window.c:371 ../src/main-window.c:396
-#: ../src/main-window.c:1029 ../src/printing.c:257 ../src/search-dialog.c:157
+#: ../src/import-dialog.c:658 ../src/main-window.c:371 ../src/main-window.c:396
+#: ../src/main-window.c:1029 ../src/printing.c:259 ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -612,17 +621,22 @@ msgstr "Fehler beim Öffnen von Seahorse"
 msgid "Spelling checker could not be initialized"
 msgstr "Die Rechtschreibprüfung konnte nicht gestartet werden"
 
-#: ../src/printing.c:275
+#: ../src/printing.c:277
 msgid "No entry for this date."
 msgstr "Kein Eintrag für dieses Datum."
 
-#: ../src/printing.c:413
+#: ../src/printing.c:419
 msgid "Start date:"
 msgstr "Startdatum:"
 
-#: ../src/printing.c:415
+#: ../src/printing.c:421
 msgid "End date:"
 msgstr "Enddatum:"
+
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr "Zeilenabstand:"
 
 #: ../src/storage-manager.c:237
 #, c-format
