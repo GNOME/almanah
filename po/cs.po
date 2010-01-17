@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-12 01:10+0100\n"
-"PO-Revision-Date: 2009-11-16 20:53+0100\n"
+"POT-Creation-Date: 2010-01-17 21:48+0100\n"
+"PO-Revision-Date: 2010-01-13 10:00+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -110,18 +110,16 @@ msgid "Calendar"
 msgstr "Kalendář"
 
 #: ../data/almanah.ui.h:3
-#, fuzzy
 msgid "Definition Description"
-msgstr "Seznam definic"
+msgstr "Popis definice"
 
 #: ../data/almanah.ui.h:4
 msgid "Definition List"
 msgstr "Seznam definic"
 
 #: ../data/almanah.ui.h:5
-#, fuzzy
 msgid "Definition Type"
-msgstr "Typ definice:"
+msgstr "Typ definice"
 
 #: ../data/almanah.ui.h:6
 msgid "Definition type:"
@@ -264,9 +262,8 @@ msgid "_Import…"
 msgstr "_Importovat…"
 
 #: ../data/almanah.ui.h:41
-#, fuzzy
 msgid "_Print…"
-msgstr "_Importovat…"
+msgstr "_Tisk…"
 
 #: ../data/almanah.ui.h:42
 msgid "_Remove Definition"
@@ -297,9 +294,8 @@ msgid "UI file \"%s\" could not be loaded"
 msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
 
 #: ../src/date-entry-dialog.c:74
-#, fuzzy
 msgid "Select Date"
-msgstr "Vybrat datum…"
+msgstr "Výběr data"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -631,7 +627,7 @@ msgstr "Konečné datum:"
 #. Line spacing
 #: ../src/printing.c:437
 msgid "Line spacing:"
-msgstr ""
+msgstr "Řádkování:"
 
 #: ../src/storage-manager.c:237
 #, c-format
