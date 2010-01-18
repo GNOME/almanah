@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dates\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&component=general\n"
-"POT-Creation-Date: 2009-12-27 18:21+0000\n"
-"PO-Revision-Date: 2009-12-28 09:51+0100\n"
+"POT-Creation-Date: 2010-01-17 20:49+0000\n"
+"PO-Revision-Date: 2010-01-18 09:03+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -106,118 +106,118 @@ msgid "Calendar"
 msgstr "Koledar"
 
 #: ../data/almanah.ui.h:3
-msgid "Definition List"
-msgstr "Seznam definicij"
+msgid "Definition Description"
+msgstr "Opis povezave"
 
 #: ../data/almanah.ui.h:4
+msgid "Definition List"
+msgstr "Seznam povezav"
+
+#: ../data/almanah.ui.h:5
+msgid "Definition Type"
+msgstr "Vrsta povezave"
+
+#: ../data/almanah.ui.h:6
 msgid "Definition type:"
 msgstr "Vrsta povezave:"
 
-#: ../data/almanah.ui.h:5
-msgid "Description: "
-msgstr "Opis: "
-
-#: ../data/almanah.ui.h:6
+#: ../data/almanah.ui.h:7
 msgid "Entry editing area"
 msgstr "Območje urejanje vnosa"
 
-#: ../data/almanah.ui.h:7
+#: ../data/almanah.ui.h:8
 msgid "F_ormat"
 msgstr "_Oblika"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:9
 msgid "Failed Entries"
 msgstr "Spodleteli vnosi"
 
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:10
 msgid "Go to _Today"
 msgstr "Pojdi na _današnji dan"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:11
 msgid "I_mportant"
 msgstr "P_omembno"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:12
 msgid "Import Results List"
 msgstr "Seznam rezultatov uvoza"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:13
 msgid "Import mode: "
 msgstr "Način uvoza: "
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "Vstavi _čas"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Skoči na trenutni datum v dnevniku."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:16
 msgid "Merged Entries"
 msgstr "Združeni vnosi"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:17
 #: ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Nič ni izbrano"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:18
 msgid "Past Event List"
 msgstr "Seznam preteklih dogodkov"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "Past Events"
 msgstr "Pretekli dogodki"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:20
 msgid "Remove the definition from the currently selected text."
 msgstr "Odstrani povezavo iz trenutno izbranega besedila."
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:21
 msgid "Result List"
 msgstr "Seznam rezultatov"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:22
 msgid "Results:"
 msgstr "Rezultati:"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:23
 #: ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Iskanje"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:24
 msgid "Search entry"
 msgstr "Iskanje vnosa"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "Select Date…"
 msgstr "Izbor datuma ..."
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Uspešni vnosi"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:27
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Preklopi oznako trenutnega vnosa kot pomembno."
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:28
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Preklopi izpis trenutno izbranega besedila kot krepko."
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Preklopi izpis trenutno izbranega besedila kot ležeče."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:30
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Preklopi izpis trenutno izbranega besedila kot podčrtano."
-
-#: ../data/almanah.ui.h:30
-msgid "Type: "
-msgstr "Vrsta: "
 
 #: ../data/almanah.ui.h:31
 msgid "View"
@@ -347,12 +347,12 @@ msgstr "Uvozi vnose"
 #: ../src/import-dialog.c:196
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
-msgstr "Napaka med ločitvijo obstoječega vnosa iz zaporedja v pomnilnik: %s"
+msgstr "Napaka med ločitvijo obstoječega vnosa iz zaporedja v medpomnilnik: %s"
 
 #: ../src/import-dialog.c:211
 #, c-format
 msgid "Error deserializing existing entry into buffer; overwriting with imported entry: %s"
-msgstr "Napaka med ločitvijo obstoječega vnosa iz zaporedja v pomnilnik; prepis z uvoženim vnosom: %s"
+msgstr "Napaka med ločitvijo obstoječega vnosa iz zaporedja v medpomnilnik; prepis z uvoženim vnosom: %s"
 
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
@@ -585,8 +585,8 @@ msgid "Spelling checker could not be initialized"
 msgstr "Preverjanja črkovanja ni mogoče zagnati"
 
 #: ../src/printing.c:277
-msgid "No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date. No entry for this date."
-msgstr "Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum."
+msgid "No entry for this date."
+msgstr "Ni vnosov za ta datum."
 
 #: ../src/printing.c:419
 msgid "Start date:"
@@ -664,8 +664,20 @@ msgstr "Poizvedbe \"%s\" ni mogoče zagnati. SQLite poroča sledeče poročilo o
 
 #: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
-msgstr "Napaka med ločitvijo vnosa iz zaporedja v pomnilnik med iskanjem."
+msgstr "Napaka med ločitvijo vnosa iz zaporedja v medpomnilnik med iskanjem."
 
-#~ msgid "No entry for this date."
-#~ msgstr "Ni vnosov za ta datum."
+#~ msgid "Description: "
+#~ msgstr "Opis: "
+#~ msgid "Type: "
+#~ msgstr "Vrsta: "
+#~ msgid ""
+#~ "No entry for this date. No entry for this date. No entry for this date. "
+#~ "No entry for this date. No entry for this date. No entry for this date. "
+#~ "No entry for this date. No entry for this date. No entry for this date. "
+#~ "No entry for this date."
+#~ msgstr ""
+#~ "Ni vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni "
+#~ "vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni "
+#~ "vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni "
+#~ "vnosov za ta datum."
 
