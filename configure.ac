@@ -1,8 +1,9 @@
-AC_INIT(almanah, 0.7.1)
+AC_PREREQ(2.63)
+AC_INIT([almanah],[0.7.1],[https://bugzilla.gnome.org/enter_bug.cgi?product=almanah],[almanah],[http://live.gnome.org/Almanah_Diary])
 
 AC_CONFIG_SRCDIR([src/main.h])
 AC_CONFIG_HEADERS([config.h])
-AC_GNU_SOURCE
+AC_USE_SYSTEM_EXTENSIONS
 
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 no-dist-gzip check-news subdir-objects])
 
@@ -17,7 +18,7 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AC_PROG_CXX
 AM_PROG_CC_C_O
-AC_PROG_LIBTOOL()
+LT_INIT([])
 PKG_PROG_PKG_CONFIG
 AM_GCONF_SOURCE_2
 
@@ -30,7 +31,7 @@ dnl ***************************************************************************
 
 dnl Debugging
 AC_ARG_ENABLE([debug],
-	AC_HELP_STRING([--enable-debug], [turn on debugging]),
+	AS_HELP_STRING([--enable-debug],[turn on debugging]),
 	[case "${enableval}" in
 		yes) debug=true ;;
 		no)  debug=false ;;
@@ -45,7 +46,7 @@ AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
 
 dnl Encryption support
 AC_ARG_ENABLE([encryption],
-	AC_HELP_STRING([--enable-encryption], [enable database encryption support]),
+	AS_HELP_STRING([--enable-encryption],[enable database encryption support]),
 	[case "${enableval}" in
 		yes) encryption=true ;;
 		no)  encryption=false ;;
@@ -60,7 +61,7 @@ AM_CONDITIONAL([ENCRYPTION], [test x$encryption = xtrue])
 
 dnl Spell checking
 AC_ARG_ENABLE([spell-checking],
-	AC_HELP_STRING([--enable-spell-checking], [enable spell checking support]),
+	AS_HELP_STRING([--enable-spell-checking],[enable spell checking support]),
 	[case "${enableval}" in
 		yes) spell_checking=true ;;
 		no)  spell_checking=false ;;
@@ -149,7 +150,7 @@ fi
 AC_SUBST(ENCRYPTION_CFLAGS)
 AC_SUBST(ENCRYPTION_LIBS)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 src/Makefile
 po/Makefile.in
@@ -160,3 +161,4 @@ data/icons/22x22/Makefile
 data/icons/32x32/Makefile
 data/icons/48x48/Makefile
 ])
+AC_OUTPUT
