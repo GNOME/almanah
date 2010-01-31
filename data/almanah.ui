@@ -104,6 +104,7 @@
 				<child>
 					<object class="GtkAction" id="almanah_ui_preferences">
 						<property name="stock-id">gtk-preferences</property>
+						<property name="label" translatable="yes">Pr_eferences</property>
 						<property name="name">edit-preferences</property>
 						<signal name="activate" handler="mw_preferences_activate_cb"/>
 					</object>
@@ -709,6 +710,9 @@
 						<property name="border-width">5</property>
 						<!-- Encryption key chooser and label go here, programmatically -->
 					</object>
+					<packing>
+						<property name="expand">False</property>
+					</packing>
 				</child>
 				<child internal-child="action_area">
 					<object class="GtkHButtonBox" id="hbuttonbox2">

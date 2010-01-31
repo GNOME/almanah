@@ -78,7 +78,7 @@ almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Preferences"));
 	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
-	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
+	gtk_window_set_resizable (GTK_WINDOW (self), TRUE); /* needs to be resizeable so long keys can be made visible in the list */
 }
 
 static void
@@ -103,6 +103,14 @@ almanah_preferences_dialog_dispose (GObject *object)
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_preferences_dialog_parent_class)->dispose (object);
+}
+
+/* Filter the key list so it's not pages and pages long */
+static gboolean
+key_store_filter_cb (CryptUIKeyset *keyset, const gchar *key, gpointer user_data)
+{
+	guint flags = cryptui_keyset_key_flags (keyset, key);
+	return flags & CRYPTUI_FLAG_CAN_SIGN; /* if the key can sign, we have the private key part and can decrypt the database */
 }
 
 AlmanahPreferencesDialog *
@@ -163,6 +171,7 @@ almanah_preferences_dialog_new (void)
 
 	priv->keyset = cryptui_keyset_new ("openpgp", FALSE);
 	priv->key_store = cryptui_key_store_new (priv->keyset, FALSE, _("None (don't encrypt)"));
+	cryptui_key_store_set_filter (priv->key_store, key_store_filter_cb, NULL);
 	priv->key_combo = cryptui_key_combo_new (priv->key_store);
 
 	gtk_table_attach_defaults (table, GTK_WIDGET (priv->key_combo), 2, 3, 1, 2);
