@@ -1,14 +1,14 @@
 # English (British) translation.
 # Copyright (C) 2008 Philip Withnall <philip@tecnocode.co.uk>
 # This file is distributed under the same license as the diary package.
-# Philip Withnall <philip@tecnocode.co.uk>, 2009.
+# Philip Withnall <philip@tecnocode.co.uk>, 2009–2010.
 # Jen Ockwell <jenfraggleubuntu@gmail.com>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-31 11:02+0000\n"
+"POT-Creation-Date: 2010-01-31 14:49+0000\n"
 "PO-Revision-Date: 2009-03-20 19:02+0000\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: British English <en@li.org>\n"
@@ -176,106 +176,110 @@ msgid "Past Events"
 msgstr "Past Events"
 
 #: ../data/almanah.ui.h:20
+msgid "Pr_eferences"
+msgstr "Pr_eferences"
+
+#: ../data/almanah.ui.h:21
 msgid "Remove the definition from the currently selected text."
 msgstr "Remove the definition from the currently selected text."
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Result List"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:23
 msgid "Results:"
 msgstr "Results:"
 
-#: ../data/almanah.ui.h:23 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:24 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Search"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "Search entry"
 msgstr "Search entry"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:26
 msgid "Select Date…"
 msgstr "Select Date…"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:27
 msgid "Successful Entries"
 msgstr "Successful Entries"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:28
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Toggle whether the current entry is marked as important."
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Toggle whether the currently selected text is bold."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:30
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Toggle whether the currently selected text is italic."
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:31
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Toggle whether the currently selected text is underlined."
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:32
 msgid "View"
 msgstr "View"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:33
 msgid "View Entry"
 msgstr "View Entry"
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:34
 msgid "View Event"
 msgstr "View Event"
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:35
 msgid "_Add Definition"
 msgstr "_Add Definition"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:36
 msgid "_Definitions"
 msgstr "_Definitions"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:37
 msgid "_Edit"
 msgstr "_Edit"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:38
 msgid "_File"
 msgstr "_File"
 
-#: ../data/almanah.ui.h:38
+#: ../data/almanah.ui.h:39
 msgid "_Help"
 msgstr "_Help"
 
-#: ../data/almanah.ui.h:39
+#: ../data/almanah.ui.h:40
 msgid "_Import"
 msgstr "_Import"
 
-#: ../data/almanah.ui.h:40
+#: ../data/almanah.ui.h:41
 msgid "_Import…"
 msgstr "_Import…"
 
-#: ../data/almanah.ui.h:41
+#: ../data/almanah.ui.h:42
 msgid "_Print…"
 msgstr "_Print…"
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:43
 msgid "_Remove Definition"
 msgstr "_Remove Definition"
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:44
 msgid "_Search…"
 msgstr "_Search…"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:45
 msgid "_View Definitions"
 msgstr "_View Definitions"
 
-#: ../data/almanah.ui.h:45
+#: ../data/almanah.ui.h:46
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "e.g. \"14/03/2009\" or \"14th March 2009\"."
 
@@ -286,7 +290,7 @@ msgstr "Add Definition"
 #: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
 #: ../src/import-dialog.c:116 ../src/import-dialog.c:592
 #: ../src/definition-manager-window.c:132 ../src/main-window.c:172
-#: ../src/preferences-dialog.c:135 ../src/search-dialog.c:87
+#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "UI file \"%s\" could not be loaded"
@@ -576,32 +580,32 @@ msgid "Almanah Preferences"
 msgstr "Almanah Preferences"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:160
+#: ../src/preferences-dialog.c:168
 msgid "Encryption key: "
 msgstr "Encryption key: "
 
-#: ../src/preferences-dialog.c:165
+#: ../src/preferences-dialog.c:173
 msgid "None (don't encrypt)"
 msgstr "None (don't encrypt)"
 
-#: ../src/preferences-dialog.c:188
+#: ../src/preferences-dialog.c:197
 msgid "New _Key"
 msgstr "New _Key"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:195
+#: ../src/preferences-dialog.c:204
 msgid "Enable _spell checking"
 msgstr "Enable _spell checking"
 
-#: ../src/preferences-dialog.c:225
+#: ../src/preferences-dialog.c:234
 msgid "Error saving the encryption key"
 msgstr "Error saving the encryption key"
 
-#: ../src/preferences-dialog.c:244
+#: ../src/preferences-dialog.c:253
 msgid "Error opening Seahorse"
 msgstr "Error opening Seahorse"
 
-#: ../src/preferences-dialog.c:282
+#: ../src/preferences-dialog.c:291
 msgid "Spelling checker could not be initialized"
 msgstr "Spelling checker could not be initialised"
 
