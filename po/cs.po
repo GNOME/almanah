@@ -6,9 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-17 21:48+0100\n"
-"PO-Revision-Date: 2010-01-13 10:00+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=almanah&component=general\n"
+"POT-Creation-Date: 2010-01-31 15:26+0000\n"
+"PO-Revision-Date: 2010-02-01 19:51+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -178,106 +179,110 @@ msgid "Past Events"
 msgstr "Poslední události"
 
 #: ../data/almanah.ui.h:20
+msgid "Pr_eferences"
+msgstr "Př_edvolby"
+
+#: ../data/almanah.ui.h:21
 msgid "Remove the definition from the currently selected text."
 msgstr "Odstranit definici z aktuálně vybraného textu."
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Seznam výsledků"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:23
 msgid "Results:"
 msgstr "Výsledky:"
 
-#: ../data/almanah.ui.h:23 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:24 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Hledat"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:25
 msgid "Search entry"
 msgstr "Hledat záznam"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:26
 msgid "Select Date…"
 msgstr "Vybrat datum…"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:27
 msgid "Successful Entries"
 msgstr "Úspěšné záznamy"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:28
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Přepíná, zda je současný záznam označený jako důležitý."
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Přepíná, zda je aktuálně vybraný text tučný."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:30
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Přepíná, zda je aktuálně vybraný text kurzívou."
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:31
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Přepíná, zda je aktuálně vybraný text podtržený."
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:32
 msgid "View"
 msgstr "Zobrazit"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:33
 msgid "View Entry"
 msgstr "Zobrazit záznam"
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:34
 msgid "View Event"
 msgstr "Zobrazit událost"
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:35
 msgid "_Add Definition"
 msgstr "Přid_at definici"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:36
 msgid "_Definitions"
 msgstr "_Definice"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:37
 msgid "_Edit"
 msgstr "_Upravit"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:38
 msgid "_File"
 msgstr "_Soubor"
 
-#: ../data/almanah.ui.h:38
+#: ../data/almanah.ui.h:39
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: ../data/almanah.ui.h:39
+#: ../data/almanah.ui.h:40
 msgid "_Import"
 msgstr "_Importovat"
 
-#: ../data/almanah.ui.h:40
+#: ../data/almanah.ui.h:41
 msgid "_Import…"
 msgstr "_Importovat…"
 
-#: ../data/almanah.ui.h:41
+#: ../data/almanah.ui.h:42
 msgid "_Print…"
 msgstr "_Tisk…"
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:43
 msgid "_Remove Definition"
 msgstr "Odst_ranit definici"
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:44
 msgid "_Search…"
 msgstr "_Hledat…"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:45
 msgid "_View Definitions"
 msgstr "_Zobrazit definice"
 
-#: ../data/almanah.ui.h:45
+#: ../data/almanah.ui.h:46
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "např. „14/03/2009“ nebo „14th March 2009“."
 
@@ -288,7 +293,7 @@ msgstr "Přidání definice"
 #: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
 #: ../src/import-dialog.c:116 ../src/import-dialog.c:592
 #: ../src/definition-manager-window.c:132 ../src/main-window.c:172
-#: ../src/preferences-dialog.c:135 ../src/search-dialog.c:87
+#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
@@ -583,32 +588,32 @@ msgid "Almanah Preferences"
 msgstr "Předvolby Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:160
+#: ../src/preferences-dialog.c:168
 msgid "Encryption key: "
 msgstr "Šifrovací klíč:"
 
-#: ../src/preferences-dialog.c:165
+#: ../src/preferences-dialog.c:173
 msgid "None (don't encrypt)"
 msgstr "Žádný (nešifrovat)"
 
-#: ../src/preferences-dialog.c:188
+#: ../src/preferences-dialog.c:197
 msgid "New _Key"
 msgstr "Nový _klíč"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:195
+#: ../src/preferences-dialog.c:204
 msgid "Enable _spell checking"
 msgstr "Zapnout kontrolu pravopi_su"
 
-#: ../src/preferences-dialog.c:225
+#: ../src/preferences-dialog.c:234
 msgid "Error saving the encryption key"
 msgstr "Chyba při ukládání šifrovacího klíče"
 
-#: ../src/preferences-dialog.c:244
+#: ../src/preferences-dialog.c:253
 msgid "Error opening Seahorse"
 msgstr "Chyba při otevírání aplikace Seahorse"
 
-#: ../src/preferences-dialog.c:282
+#: ../src/preferences-dialog.c:291
 msgid "Spelling checker could not be initialized"
 msgstr "Nelze inicializovat kontrolu pravopisu"
 
@@ -704,8 +709,3 @@ msgstr ""
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledání."
 
-#~ msgid "Description: "
-#~ msgstr "Popis:"
-
-#~ msgid "Type: "
-#~ msgstr "Typ:"
