@@ -1,16 +1,16 @@
 # Simplified Chinese translation of doc almanah.
 # Copyright (C) 2009 Free Software Foundation, Inc.
 # Zhang Miao <mymzhang@gmail.com>, 2009.
-#   QA by Aron Xu <aronmalache@163.com>, 2009.
-#
+#   QA by Aron Xu <happyaron.xu@gmail.com>, 2009.
+# YunQiang Su <wzssyqa@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&component=general\n"
-"POT-Creation-Date: 2009-05-10 18:28+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Zhang Miao <mymzhang@gmail.com>\n"
+"POT-Creation-Date: 2010-02-05 18:53+0000\n"
+"PO-Revision-Date: 2010-02-14 23:41+0800\n"
+"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
 "Language-Team: Simplified Chinese <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-Country: CHINA\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:129 ../src/main.c:112
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:131 ../src/main.c:114
 msgid "Almanah Diary"
 msgstr "Almanah 日记"
 
@@ -33,7 +33,7 @@ msgstr "记录个人的日记"
 
 #: ../data/almanah.schemas.in.h:1
 msgid "Database encryption key ID"
-msgstr "数据库密钥 ID"
+msgstr "数据库加密密钥 ID"
 
 #: ../data/almanah.schemas.in.h:2
 msgid "Main window X position"
@@ -69,6 +69,8 @@ msgid ""
 "been built with encryption support. Leave blank to disable database "
 "encryption."
 msgstr ""
+"用于加密和解密数据库的密钥 ID，如果 Almanah 带有加密支持的构建。留空可以禁用"
+"数据库加密。"
 
 #: ../data/almanah.schemas.in.h:10
 msgid "The X position of the main window."
@@ -84,7 +86,7 @@ msgstr "主窗口的高度"
 
 #: ../data/almanah.schemas.in.h:13
 msgid "The locale specifier of the language in which to check entry spellings."
-msgstr ""
+msgstr "指定拼写检查语言的区域指定器。"
 
 #: ../data/almanah.schemas.in.h:14
 msgid "The width of the main window."
@@ -99,143 +101,212 @@ msgid "Whether the main window should start maximized."
 msgstr "主窗口是否以最大化启动。"
 
 #: ../data/almanah.ui.h:1
+msgid "Add a definition for the currently selected text."
+msgstr "为当前选中的文本条件一个定义。"
+
+#: ../data/almanah.ui.h:2
 msgid "Calendar"
 msgstr "日历"
 
-#: ../data/almanah.ui.h:2
+#: ../data/almanah.ui.h:3
+msgid "Definition Description"
+msgstr "定义描述"
+
+#: ../data/almanah.ui.h:4
 msgid "Definition List"
 msgstr "定义列表"
 
-#: ../data/almanah.ui.h:3
+#: ../data/almanah.ui.h:5
 msgid "Definition Type"
 msgstr "定义类型"
 
-#: ../data/almanah.ui.h:4
-msgid "Description"
-msgstr "描述"
-
-#: ../data/almanah.ui.h:5
-msgid "Entry editing area"
-msgstr ""
-
 #: ../data/almanah.ui.h:6
+msgid "Definition type:"
+msgstr "定义类型："
+
+#: ../data/almanah.ui.h:7
+msgid "Entry editing area"
+msgstr "条目编辑区域"
+
+#: ../data/almanah.ui.h:8
 msgid "F_ormat"
 msgstr "格式(_O)"
 
-#: ../data/almanah.ui.h:7
+#: ../data/almanah.ui.h:9
+msgid "Failed Entries"
+msgstr "失败的条目"
+
+#: ../data/almanah.ui.h:10
 msgid "Go to _Today"
 msgstr "转到今天(_T)"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:11
 msgid "I_mportant"
 msgstr "重要(_M)"
 
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:12
+msgid "Import Results List"
+msgstr "导入结果列表"
+
+#: ../data/almanah.ui.h:13
+msgid "Import mode: "
+msgstr "导入模式："
+
+#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "插入时间(_T)"
 
-#: ../data/almanah.ui.h:10 ../src/definition-manager-window.c:246
+#: ../data/almanah.ui.h:15
+msgid "Jump to the current date in the diary."
+msgstr "在日记中跳到当前日期。"
+
+#: ../data/almanah.ui.h:16
+msgid "Merged Entries"
+msgstr "合并了的条目"
+
+#: ../data/almanah.ui.h:17 ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "未选定"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:18
 msgid "Past Event List"
 msgstr "过去事件列表"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:19
 msgid "Past Events"
 msgstr "过去事件"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:20
+msgid "Pr_eferences"
+msgstr "首选项(_E)"
+
+#: ../data/almanah.ui.h:21
+msgid "Remove the definition from the currently selected text."
+msgstr "从当前选中的文本中删除定义。"
+
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "结果列表"
 
-#: ../data/almanah.ui.h:14
-msgid "Results"
-msgstr "结果"
+#: ../data/almanah.ui.h:23
+msgid "Results:"
+msgstr "结果："
 
-#: ../data/almanah.ui.h:15 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:24 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "搜索"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:25
 msgid "Search entry"
 msgstr "搜索项"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:26
 msgid "Select Date…"
 msgstr "选择日期..."
 
-#: ../data/almanah.ui.h:18
-msgid "Type"
-msgstr "类型"
+#: ../data/almanah.ui.h:27
+msgid "Successful Entries"
+msgstr "成功的条目"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:28
+msgid "Toggle whether the current entry is marked as important."
+msgstr "切换当前条目是否标记为重要。"
+
+#: ../data/almanah.ui.h:29
+msgid "Toggle whether the currently selected text is bold."
+msgstr "切换当前选中文本是否宽体。"
+
+#: ../data/almanah.ui.h:30
+msgid "Toggle whether the currently selected text is italic."
+msgstr "切换当前选中文本是否斜体。"
+
+#: ../data/almanah.ui.h:31
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "切换当前选中文本是否下划线。"
+
+#: ../data/almanah.ui.h:32
 msgid "View"
 msgstr "查看"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:33
 msgid "View Entry"
-msgstr ""
+msgstr "视图条目"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:34
 msgid "View Event"
 msgstr "查看事件"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:35
 msgid "_Add Definition"
 msgstr "添加定义(_A)"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:36
 msgid "_Definitions"
 msgstr "定义(_D)"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:37
 msgid "_Edit"
 msgstr "编辑(_E)"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:38
 msgid "_File"
 msgstr "文件(_F)"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:39
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: ../data/almanah.ui.h:27
-msgid "_Remove Definition"
-msgstr ""
+#: ../data/almanah.ui.h:40
+msgid "_Import"
+msgstr "导入(_I)"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:41
+msgid "_Import…"
+msgstr "导入(_I)..."
+
+#: ../data/almanah.ui.h:42
+msgid "_Print…"
+msgstr "打印(_P)"
+
+#: ../data/almanah.ui.h:43
+msgid "_Remove Definition"
+msgstr "删除定义(_R)"
+
+#: ../data/almanah.ui.h:44
 msgid "_Search…"
 msgstr "搜索(_S)..."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:45
 msgid "_View Definitions"
 msgstr "查看定义(_V)"
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:46
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr ""
+msgstr "例如 \"14/03/2009\" 或 “2009年3月14日”"
 
 #: ../src/add-definition-dialog.c:82
 msgid "Add Definition"
 msgstr "添加定义"
 
-#: ../src/add-definition-dialog.c:164 ../src/definition-manager-window.c:132
-#: ../src/main-window.c:170 ../src/preferences-dialog.c:135
-#: ../src/search-dialog.c:87
+#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:592
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:172
+#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "UI 文件“%s”无法载入"
 
+#: ../src/date-entry-dialog.c:74
+msgid "Select Date"
+msgstr "选择日期"
+
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
-msgstr ""
+msgstr "日历上的约会"
 
 #: ../src/events/calendar-appointment.c:50
 msgid "An appointment on an Evolution calendar."
-msgstr ""
+msgstr "Evolution 日历上的一个约会。"
 
 #: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
 msgid "Error launching Evolution"
@@ -247,7 +318,7 @@ msgstr "日程安排"
 
 #: ../src/events/calendar-task.c:50
 msgid "A task on an Evolution calendar."
-msgstr ""
+msgstr "Evolution 日历上的一个任务。"
 
 #: ../src/events/f-spot-photo.c:49
 msgid "F-Spot Photo"
@@ -261,14 +332,87 @@ msgstr "存储在 F-Spot 的相片。"
 msgid "Error launching F-Spot"
 msgstr "启动 F-Spot 时发生错误"
 
+#: ../src/import-dialog.c:36
+msgid "Text Files"
+msgstr "文本文件"
+
+#: ../src/import-dialog.c:37
+msgid "Database"
+msgstr "数据库"
+
+#: ../src/import-dialog.c:75
+msgid "Import Entries"
+msgstr "导入条目"
+
+#: ../src/import-dialog.c:196
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "反序列化导入的条目到缓冲时出错：%s"
+
+#: ../src/import-dialog.c:211
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr "反序列化现有的条目到缓冲时出错；使用导入的条目覆盖：%s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"从 \"%s\" 导入的条目：\n"
+"\n"
+
+#: ../src/import-dialog.c:459
+msgid "Import failed"
+msgstr "导入失败"
+
+#: ../src/import-dialog.c:493
+msgid ""
+"Select a folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"选择一个包含文本文件的文件夹，一个条目一个，使用格式为 'yyyy-mm-dd' 的名称，"
+"并且没有扩展名。所有的此类文件都将被导入。"
+
+#: ../src/import-dialog.c:499
+msgid "Select a database file created by Almanah Diary to import."
+msgstr "选择一个 Almanah 日记创建的数据库文件以导入。"
+
+#: ../src/import-dialog.c:563
+msgid "Import Results"
+msgstr "导入结果"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-dialog.c:658 ../src/main-window.c:371
+#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:259
+#: ../src/search-dialog.c:157
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
 #: ../src/definition-manager-window.c:72
 msgid "Definition Manager"
 msgstr "定义管理器"
 
 #: ../src/definition-manager-window.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you want to delete the definition for \"%s\"?"
-msgstr "您确定要删除定义“%s”？"
+msgstr "您确定要删除 “%s” 的定义？"
 
 #: ../src/definitions/contact.c:53
 msgid "Contact"
@@ -314,7 +458,7 @@ msgstr "备忘录"
 msgid "A note about an important event."
 msgstr "重要事件的备忘录。"
 
-#: ../src/definitions/uri.c:50 ../src/definitions/uri.c:99
+#: ../src/definitions/uri.c:50
 msgid "URI"
 msgstr "URI"
 
@@ -326,38 +470,27 @@ msgstr "一个文件或网页的 URI"
 msgid "Error opening URI"
 msgstr "打开 URI 时发生错误"
 
-#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
-#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
-#. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:369 ../src/main-window.c:394 ../src/main-window.c:1018
-#: ../src/printing.c:257 ../src/search-dialog.c:157
-msgid "%A, %e %B %Y"
-msgstr "%A, %e %B %Y"
+#: ../src/definitions/uri.c:99
+msgid "URI: "
+msgstr "URI："
 
-#: ../src/main-window.c:373
+#: ../src/main-window.c:375
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
-msgstr ""
+msgstr "您确定想要为 %s 编辑此日记条目？"
 
-#: ../src/main-window.c:398
-#, fuzzy, c-format
+#: ../src/main-window.c:400
+#, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
-msgstr "您确定要删除该日记项 %s？"
+msgstr "您确定想要为 %s 删除此日记条目？"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:595
+#: ../src/main-window.c:597
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
-msgstr ""
+msgstr "条目中未知或重复的文本标记 \"%s\"。忽略。"
 
-#: ../src/main-window.c:758
-#, c-format
-msgid "%X"
-msgstr "%X"
-
-#: ../src/main-window.c:855
+#: ../src/main-window.c:866
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -367,7 +500,7 @@ msgstr ""
 "Almanah 是自由软件：您可以按照自由软件基金会所发表的 GNU GPL 协议自由发放和/"
 "或修改它；GPL 协议应该采用第 3 版或以后的任何版本(您可以自行选择)。"
 
-#: ../src/main-window.c:859
+#: ../src/main-window.c:870
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -377,7 +510,7 @@ msgstr ""
 "Almanah 发表的目的是希望它能够对您有用，但我们没有任何保证；对于以任何用途使"
 "用它所造成的任何直接或间接后果都不承担任何责任。请参看 GNU GPL 协议中的细节。"
 
-#: ../src/main-window.c:863
+#: ../src/main-window.c:874
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -385,12 +518,12 @@ msgstr ""
 "您应该在收到 Almanah 的同时收到了 GNU GPL 协议的副本。如果没有，参见 <http://"
 "www.gnu.org/licenses/>。"
 
-#: ../src/main-window.c:874
+#: ../src/main-window.c:885
 #, c-format
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
-msgstr ""
+msgstr "一个有帮助的日记记录器，存储了 %u 个条目和 %u 个定义。"
 
-#: ../src/main-window.c:880
+#: ../src/main-window.c:891
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -399,42 +532,43 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:888
+#: ../src/main-window.c:899
 msgid "translator-credits"
 msgstr ""
-"Zhang Miao <mymzhang@gmail.com>, 2009."
-"Aron Xu <aronmalache@163.com>, 2009."
+"Zhang Miao <mymzhang@gmail.com>\\n\n"
+"Aron Xu <aronmalache@163.com>\\n\n"
+"YunQiang Su <wzssyqa@gmail.com>"
 
-#: ../src/main-window.c:892
+#: ../src/main-window.c:903
 msgid "Almanah Website"
 msgstr "Almanah 网站"
 
-#: ../src/main-window.c:1047
+#: ../src/main-window.c:1057
 msgid "Entry content could not be loaded"
-msgstr ""
+msgstr "无法加载条目内容"
 
 #: ../src/main.c:38
 msgid "Error encrypting database"
 msgstr "加密数据库时发生错误"
 
-#: ../src/main.c:99
+#: ../src/main.c:101
 msgid "Enable debug mode"
 msgstr "启用调试模式"
 
-#: ../src/main.c:100
+#: ../src/main.c:102
 msgid "Enable import mode"
 msgstr "启用导入模式"
 
 #. Options
-#: ../src/main.c:116
+#: ../src/main.c:118
 msgid "- Manage your diary"
 msgstr "- 管理您的日记"
 
-#: ../src/main.c:126
+#: ../src/main.c:128
 msgid "Command-line options could not be parsed"
 msgstr "命令行选项无法被解析"
 
-#: ../src/main.c:158
+#: ../src/main.c:160
 msgid "Error opening database"
 msgstr "打开数据库时发生错误"
 
@@ -443,110 +577,129 @@ msgid "Almanah Preferences"
 msgstr "Almanah 首选项"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:160
-msgid "Encryption Key"
-msgstr "加密密钥"
+#: ../src/preferences-dialog.c:168
+msgid "Encryption key: "
+msgstr "加密密钥："
 
-#: ../src/preferences-dialog.c:166
+#: ../src/preferences-dialog.c:173
 msgid "None (don't encrypt)"
 msgstr "无(不加密)"
 
-#: ../src/preferences-dialog.c:189
+#: ../src/preferences-dialog.c:197
 msgid "New _Key"
 msgstr "新密钥(_K)"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:196
+#: ../src/preferences-dialog.c:204
 msgid "Enable _spell checking"
 msgstr "启用拼写检查(_S)"
 
-#: ../src/preferences-dialog.c:226
+#: ../src/preferences-dialog.c:234
 msgid "Error saving the encryption key"
 msgstr "保存加密密钥时发生错误"
 
-#: ../src/preferences-dialog.c:245
+#: ../src/preferences-dialog.c:253
 msgid "Error opening Seahorse"
 msgstr "打开 Seahorse 时发生错误"
 
-#: ../src/preferences-dialog.c:283
+#: ../src/preferences-dialog.c:291
 msgid "Spelling checker could not be initialized"
 msgstr "拼写检查工具无法被初始化"
 
-#: ../src/printing.c:275
+#: ../src/printing.c:277
 msgid "No entry for this date."
 msgstr "没有该日期下的项。"
 
-#: ../src/printing.c:414
-msgid "Start Date"
-msgstr "开始日期"
+#: ../src/printing.c:419
+msgid "Start date:"
+msgstr "开始日期："
 
-#: ../src/printing.c:417
-msgid "End Date"
-msgstr "结束日期"
+#: ../src/printing.c:421
+msgid "End date:"
+msgstr "结束日期："
 
-#: ../src/storage-manager.c:223
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr "行间距："
+
+#: ../src/storage-manager.c:237
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME 不是最新版本 %s"
+
+#: ../src/storage-manager.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME 不支持 OpenPGP：%s"
 
-#: ../src/storage-manager.c:232
+#: ../src/storage-manager.c:255
 #, c-format
 msgid "Error creating cipher context: %s"
-msgstr ""
+msgstr "创建密码上下文出错：%s"
 
-#: ../src/storage-manager.c:261
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "打开已加密的数据库文件“%s”时发生错误：%s"
 
-#: ../src/storage-manager.c:281
+#: ../src/storage-manager.c:304
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "打开普通数据库文件“%s”时发生错误：%s"
 
-#: ../src/storage-manager.c:327
+#: ../src/storage-manager.c:353
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
-msgstr ""
+msgstr "加密的数据库为空。没有删除纯文本数据库文件以作为备份。"
 
 #. Delete the plain file
-#: ../src/storage-manager.c:330
+#: ../src/storage-manager.c:356
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "无法删除普通数据库文件“%s”。"
 
-#: ../src/storage-manager.c:372
+#: ../src/storage-manager.c:398
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "解密数据库时发生错误：%s"
 
-#: ../src/storage-manager.c:406
+#: ../src/storage-manager.c:432
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "获取加密密钥时发生错误：%s"
 
-#: ../src/storage-manager.c:427
+#: ../src/storage-manager.c:453
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "加密数据库时发生错误：%s"
 
-#: ../src/storage-manager.c:531
+#: ../src/storage-manager.c:557
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr "无法打开数据库“%s”。SQLite 给出以下错误信息：%s"
 
-#: ../src/storage-manager.c:610 ../src/storage-manager.c:644
+#: ../src/storage-manager.c:636 ../src/storage-manager.c:670
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr "无法运行查询“%s”。SQLite 给出以下错误信息：%s"
 
-#: ../src/storage-manager.c:879
+#: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
-msgstr ""
+msgstr "搜索时，反序列化跳不到缓冲出错。"
+
+#~ msgid "Description"
+#~ msgstr "描述"
+
+#~ msgid "Type"
+#~ msgstr "类型"
+
+#~ msgid "%X"
+#~ msgstr "%X"
 
 #~ msgid "Error closing database"
 #~ msgstr "关闭数据库时发生错误"
