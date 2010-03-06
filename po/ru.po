@@ -1,0 +1,703 @@
+# translation of ru.po to Russian
+# Russian translation for almanah.
+# Copyright (C) 2010 almanah's COPYRIGHT HOLDER
+# This file is distributed under the same license as the almanah package.
+#
+# Diana Kuzachenko <dianadea@rambler.ru>, 2010.
+# Leonid Kanter <leon@asplinux.ru>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: ru\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-06 19:44+0200\n"
+"PO-Revision-Date: 2010-03-06 19:43+0200\n"
+"Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:131 ../src/main.c:114
+msgid "Almanah Diary"
+msgstr "Дневник Almanah"
+
+#: ../data/almanah.desktop.in.h:2
+msgid "Diary"
+msgstr "Дневник"
+
+#: ../data/almanah.desktop.in.h:3
+msgid "Keep a personal diary"
+msgstr "Вести личный дневник"
+
+#: ../data/almanah.schemas.in.h:1
+msgid "Database encryption key ID"
+msgstr "Идентификатор ключа шифрования базы данных"
+
+#: ../data/almanah.schemas.in.h:2
+msgid "Main window X position"
+msgstr "Положение X главного окна"
+
+#: ../data/almanah.schemas.in.h:3
+msgid "Main window Y position"
+msgstr "Положение Y главного окна"
+
+#: ../data/almanah.schemas.in.h:4
+msgid "Main window height"
+msgstr "Высота главного окна"
+
+#: ../data/almanah.schemas.in.h:5
+msgid "Main window maximization"
+msgstr "Развернуть главное окно"
+
+#: ../data/almanah.schemas.in.h:6
+msgid "Main window width"
+msgstr "Ширина главного окна"
+
+#: ../data/almanah.schemas.in.h:7
+msgid "Spell checking enabled?"
+msgstr "Включить проверку орфографии?"
+
+#: ../data/almanah.schemas.in.h:8
+msgid "Spell checking language"
+msgstr "Язык проверки орфографии"
+
+#: ../data/almanah.schemas.in.h:9
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Идентификатор ключа, используемого для шифрования и расшифровывания базы "
+"данных,если Almanah был создан с поддержкой шифрования. Оставьте "
+"поляпустыми, чтобы выключить шифрование."
+
+#: ../data/almanah.schemas.in.h:10
+msgid "The X position of the main window."
+msgstr "Положение X главного окна."
+
+#: ../data/almanah.schemas.in.h:11
+msgid "The Y position of the main window."
+msgstr "Положение Y главного окна."
+
+#: ../data/almanah.schemas.in.h:12
+msgid "The height of the main window."
+msgstr "Высота главного окна."
+
+#: ../data/almanah.schemas.in.h:13
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Определение языка для проверки орфографии записи."
+
+#: ../data/almanah.schemas.in.h:14
+msgid "The width of the main window."
+msgstr "Ширина главного окна."
+
+#: ../data/almanah.schemas.in.h:15
+msgid "Whether spell checking of entries is enabled."
+msgstr "Проверка орфографии включена."
+
+#: ../data/almanah.schemas.in.h:16
+msgid "Whether the main window should start maximized."
+msgstr "Разворачивать главное окно при запуске."
+
+#: ../data/almanah.ui.h:1
+msgid "Add a definition for the currently selected text."
+msgstr "Добавить определение к выбранному тексту."
+
+#: ../data/almanah.ui.h:2
+msgid "Calendar"
+msgstr "Календарь"
+
+#: ../data/almanah.ui.h:3
+msgid "Definition Description"
+msgstr "Описание определения"
+
+#: ../data/almanah.ui.h:4
+msgid "Definition List"
+msgstr "Список определений"
+
+#: ../data/almanah.ui.h:5
+msgid "Definition Type"
+msgstr "Тип определения"
+
+#: ../data/almanah.ui.h:6
+msgid "Definition type:"
+msgstr "Тип опредления:"
+
+#: ../data/almanah.ui.h:7
+msgid "Entry editing area"
+msgstr "Поле редактирования записи"
+
+#: ../data/almanah.ui.h:8
+msgid "F_ormat"
+msgstr "Ф_ормат"
+
+#: ../data/almanah.ui.h:9
+msgid "Failed Entries"
+msgstr "Неудачные записи"
+
+#: ../data/almanah.ui.h:10
+msgid "Go to _Today"
+msgstr "Перейти к _сегодняшней дате"
+
+#: ../data/almanah.ui.h:11
+msgid "I_mportant"
+msgstr "В_ажное"
+
+#: ../data/almanah.ui.h:12
+msgid "Import Results List"
+msgstr "Импортировать список результатов"
+
+#: ../data/almanah.ui.h:13
+msgid "Import mode: "
+msgstr "Метод ввода: "
+
+#: ../data/almanah.ui.h:14
+msgid "Insert _Time"
+msgstr "Вставить _время"
+
+#: ../data/almanah.ui.h:15
+msgid "Jump to the current date in the diary."
+msgstr "Перейти к текущей дате в дневнике."
+
+#: ../data/almanah.ui.h:16
+msgid "Merged Entries"
+msgstr "Объединить записи"
+
+#: ../data/almanah.ui.h:17 ../src/definition-manager-window.c:246
+msgid "Nothing selected"
+msgstr "Ничего не выбрано"
+
+#: ../data/almanah.ui.h:18
+msgid "Past Event List"
+msgstr "Список прошедших событий"
+
+#: ../data/almanah.ui.h:19
+msgid "Past Events"
+msgstr "Прошедшие события"
+
+#: ../data/almanah.ui.h:20
+msgid "Pr_eferences"
+msgstr "На_стройка"
+
+#: ../data/almanah.ui.h:21
+msgid "Remove the definition from the currently selected text."
+msgstr "Удалить определение к выбранному тексту."
+
+#: ../data/almanah.ui.h:22
+msgid "Result List"
+msgstr "Список результатов"
+
+#: ../data/almanah.ui.h:23
+msgid "Results:"
+msgstr "Результаты:"
+
+#: ../data/almanah.ui.h:24 ../src/search-dialog.c:61
+msgid "Search"
+msgstr "Искать"
+
+#: ../data/almanah.ui.h:25
+msgid "Search entry"
+msgstr "Искать запись"
+
+#: ../data/almanah.ui.h:26
+msgid "Select Date…"
+msgstr "Выберите дату..."
+
+#: ../data/almanah.ui.h:27
+msgid "Successful Entries"
+msgstr "Успешные записи"
+
+#: ../data/almanah.ui.h:28
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Пометить эту запись как важную."
+
+#: ../data/almanah.ui.h:29
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Жирный"
+
+#: ../data/almanah.ui.h:30
+msgid "Toggle whether the currently selected text is italic."
+msgstr "Курсив"
+
+#: ../data/almanah.ui.h:31
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "Подчёркнутый"
+
+#: ../data/almanah.ui.h:32
+msgid "View"
+msgstr "Просмотр"
+
+#: ../data/almanah.ui.h:33
+msgid "View Entry"
+msgstr "Просмотр записи"
+
+#: ../data/almanah.ui.h:34
+msgid "View Event"
+msgstr "Просмотр события"
+
+#: ../data/almanah.ui.h:35
+msgid "_Add Definition"
+msgstr "_Добавить определение"
+
+#: ../data/almanah.ui.h:36
+msgid "_Definitions"
+msgstr "_Определения"
+
+#: ../data/almanah.ui.h:37
+msgid "_Edit"
+msgstr "_Редактировать"
+
+#: ../data/almanah.ui.h:38
+msgid "_File"
+msgstr "_Файл"
+
+#: ../data/almanah.ui.h:39
+msgid "_Help"
+msgstr "_Помощь"
+
+#: ../data/almanah.ui.h:40
+msgid "_Import"
+msgstr "_Импорт"
+
+#: ../data/almanah.ui.h:41
+msgid "_Import…"
+msgstr "_Импорт..."
+
+#: ../data/almanah.ui.h:42
+msgid "_Print…"
+msgstr "_Печать..."
+
+#: ../data/almanah.ui.h:43
+msgid "_Remove Definition"
+msgstr "_Удалить определение"
+
+#: ../data/almanah.ui.h:44
+msgid "_Search…"
+msgstr "_Искать..."
+
+#: ../data/almanah.ui.h:45
+msgid "_View Definitions"
+msgstr "_Просмотреть определения"
+
+#: ../data/almanah.ui.h:46
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "например \"14/03/2009\" или \"14 марта 2009\"."
+
+#: ../src/add-definition-dialog.c:82
+msgid "Add Definition"
+msgstr "Добавить определение"
+
+#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:592
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:172
+#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "UI файл «%s» не удалось загрузить"
+
+#: ../src/date-entry-dialog.c:74
+msgid "Select Date"
+msgstr "Выбрать дату"
+
+#: ../src/events/calendar-appointment.c:49
+msgid "Calendar Appointment"
+msgstr "Календарная встреча"
+
+#: ../src/events/calendar-appointment.c:50
+msgid "An appointment on an Evolution calendar."
+msgstr "Встреча из календаря Evolution."
+
+#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
+msgid "Error launching Evolution"
+msgstr "Ошибка при запуске Evolution"
+
+#: ../src/events/calendar-task.c:49
+msgid "Calendar Task"
+msgstr "Календарная задача"
+
+#: ../src/events/calendar-task.c:50
+msgid "A task on an Evolution calendar."
+msgstr "Задача из календаря Evolution."
+
+#: ../src/events/f-spot-photo.c:49
+msgid "F-Spot Photo"
+msgstr "Фото F-Spot"
+
+#: ../src/events/f-spot-photo.c:50
+msgid "A photo stored in F-Spot."
+msgstr "Фото, сохранённое в F-Spot."
+
+#: ../src/events/f-spot-photo.c:109
+msgid "Error launching F-Spot"
+msgstr "Ошибка при загрузке F-Spot"
+
+#: ../src/import-dialog.c:36
+msgid "Text Files"
+msgstr "Текстовые файлы"
+
+#: ../src/import-dialog.c:37
+msgid "Database"
+msgstr "База данных"
+
+#: ../src/import-dialog.c:75
+msgid "Import Entries"
+msgstr "Импорт записей"
+
+#: ../src/import-dialog.c:196
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "Ошибка при десериализации импортируемых записей в буфер: %s"
+
+#: ../src/import-dialog.c:211
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"Ошибка при десериализации существующих записей в буфер; перезаписывание "
+"импортированными записями: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Запись импортирована из «%s»:\n"
+"\n"
+
+#: ../src/import-dialog.c:459
+msgid "Import failed"
+msgstr "Импортирование не удалось"
+
+#: ../src/import-dialog.c:493
+msgid ""
+"Select a folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Выберите папку, содержащую текстовые файлы,один на запись,с названиями в "
+"формате «гггг—мм—дд», и без расширения. Все такие файлы будут импортированны."
+
+#: ../src/import-dialog.c:499
+msgid "Select a database file created by Almanah Diary to import."
+msgstr ""
+"Выберите файл из базы данных, созданный дневником Almanah, для "
+"импортирования."
+
+#: ../src/import-dialog.c:563
+msgid "Import Results"
+msgstr "Импорт результов"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-dialog.c:658 ../src/main-window.c:371
+#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:259
+#: ../src/search-dialog.c:157
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: ../src/definition-manager-window.c:72
+msgid "Definition Manager"
+msgstr "Управление определениями"
+
+#: ../src/definition-manager-window.c:203
+#, c-format
+msgid "Are you sure you want to delete the definition for \"%s\"?"
+msgstr "Удалить определение для «%s»?"
+
+#: ../src/definitions/contact.c:53
+msgid "Contact"
+msgstr "Контакты"
+
+#: ../src/definitions/contact.c:54
+msgid "An Evolution contact."
+msgstr "Контакт Evolution."
+
+#: ../src/definitions/contact.c:73
+msgid "Select Contact"
+msgstr "Выбор контакта"
+
+#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
+msgid "Error opening contact"
+msgstr "Ошибка при открытии контакта"
+
+#: ../src/definitions/contact.c:136
+msgid "Error opening Evolution"
+msgstr "Ошибка при открытии Evolution"
+
+#: ../src/definitions/file.c:48
+msgid "File"
+msgstr "Файл"
+
+#: ../src/definitions/file.c:49
+msgid "An attached file."
+msgstr "Прикреплённый файл."
+
+#: ../src/definitions/file.c:74
+msgid "Error opening file"
+msgstr "Ошибка при открытии файла"
+
+#: ../src/definitions/file.c:93
+msgid "Select File"
+msgstr "Выбор файла"
+
+#: ../src/definitions/note.c:49
+msgid "Note"
+msgstr "Заметка"
+
+#: ../src/definitions/note.c:50
+msgid "A note about an important event."
+msgstr "Записать важные события."
+
+#: ../src/definitions/uri.c:50
+msgid "URI"
+msgstr "URI"
+
+#: ../src/definitions/uri.c:51
+msgid "A URI of a file or web page."
+msgstr "URI файла или веб-страницы."
+
+#: ../src/definitions/uri.c:76
+msgid "Error opening URI"
+msgstr "Ошибка при открытии URI"
+
+#: ../src/definitions/uri.c:99
+msgid "URI: "
+msgstr "URI: "
+
+#: ../src/main-window.c:375
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "Действительно хотите изменить эту запись в дневнике для %s?"
+
+#: ../src/main-window.c:400
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Действительно хотите удалить эту запись в дневнике для %s?"
+
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:597
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr ""
+"Неизвестный или дублированный текстовый тег \"%s\" в записи.Игнорирование."
+
+#: ../src/main-window.c:866
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah — свободное программное обеспечение; вы можете распространять его и/"
+"или изменять на условиях 3-й или более поздней (на ваше усмотрение) версии "
+"лицензии GNU General Public License, опубликованной Фондом Свободного "
+"Программного Обеспечения (Free Software Foundation)."
+
+#: ../src/main-window.c:870
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah распространяется с надеждой, что он будет полезен, но БЕЗ КАКОЙ ЛИБО "
+"ГАРАНТИИ, даже без подразумеваемой гарантии ГОДНОСТИ или СООТВЕТСТВИИ "
+"КОНКРЕТНОЙ ЦЕЛИ. Смотрите лицензию GNU General Public License для деталей."
+
+#: ../src/main-window.c:874
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Вы должны были получить копию лицензии GNU General Public License вместе с "
+"Almanah. Если это не так, то смотрите <http://www.gnu.org/licenses/>."
+
+#: ../src/main-window.c:885
+#, c-format
+msgid "A helpful diary keeper, storing %u entries and %u definitions."
+msgstr "Полезный дневник, содержащий %u записей и %u определений."
+
+#: ../src/main-window.c:891
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Copyright В© 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:899
+msgid "translator-credits"
+msgstr "Кузаченко Диана Юсуповна <dianadea@rambler.ru>"
+
+#: ../src/main-window.c:903
+msgid "Almanah Website"
+msgstr "Вебсайт Almanah"
+
+#: ../src/main-window.c:1057
+msgid "Entry content could not be loaded"
+msgstr "Содержание записи не удалось загрузить"
+
+#: ../src/main.c:38
+msgid "Error encrypting database"
+msgstr "Ошибка при шифровании базы данных"
+
+#: ../src/main.c:101
+msgid "Enable debug mode"
+msgstr "Включить режим отладки"
+
+#: ../src/main.c:102
+msgid "Enable import mode"
+msgstr "Включить метод ввода"
+
+#. Options
+#: ../src/main.c:118
+msgid "- Manage your diary"
+msgstr "- Управление вашим дневником"
+
+#: ../src/main.c:128
+msgid "Command-line options could not be parsed"
+msgstr "Параметры командной строки не удалось проанализировать"
+
+#: ../src/main.c:160
+msgid "Error opening database"
+msgstr "Ошибка при открытии базы данных"
+
+#: ../src/preferences-dialog.c:79
+msgid "Almanah Preferences"
+msgstr "Настройка Almanah"
+
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:168
+msgid "Encryption key: "
+msgstr "Ключ шифрования: "
+
+#: ../src/preferences-dialog.c:173
+msgid "None (don't encrypt)"
+msgstr "Нет (не шифровать)"
+
+#: ../src/preferences-dialog.c:197
+msgid "New _Key"
+msgstr "Новый _ключ"
+
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:204
+msgid "Enable _spell checking"
+msgstr "Включить _проверку орфографии"
+
+#: ../src/preferences-dialog.c:234
+msgid "Error saving the encryption key"
+msgstr "Ошибка при сохранении ключа шифрования"
+
+#: ../src/preferences-dialog.c:253
+msgid "Error opening Seahorse"
+msgstr "Ошибка при открытии Seahorse"
+
+#: ../src/preferences-dialog.c:291
+msgid "Spelling checker could not be initialized"
+msgstr "Проверка орфографии не может быть инициализирована"
+
+#: ../src/printing.c:277
+msgid "No entry for this date."
+msgstr "Нет записей на эту дату."
+
+#: ../src/printing.c:419
+msgid "Start date:"
+msgstr "Начальная дата:"
+
+#: ../src/printing.c:421
+msgid "End date:"
+msgstr "Последняя дата:"
+
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr "Межстрочный интервал:"
+
+#: ../src/storage-manager.c:237
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME версии не %s"
+
+#: ../src/storage-manager.c:246
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME не поддерживает OpenPGP: %s"
+
+#: ../src/storage-manager.c:255
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Ошибка при создании контекста шифра: %s"
+
+#: ../src/storage-manager.c:284
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Ошибка при открытии файла шифрованной базы данных «%s»: %s"
+
+#: ../src/storage-manager.c:304
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Ошибка при открытии файла незашифрованной базы данных «%s»: %s"
+
+#: ../src/storage-manager.c:353
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Зашифрованная база данных пуста. Файл незашифрованной базы данных останется "
+"резервной копией."
+
+#. Delete the plain file
+#: ../src/storage-manager.c:356
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Не удалось удалить файл незашифрованной базы данных «%s»."
+
+#: ../src/storage-manager.c:398
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Ошибка при расшифровке базы данных: %s"
+
+#: ../src/storage-manager.c:432
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Ошибка при получении ключа шифрования: %s"
+
+#: ../src/storage-manager.c:453
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Ошибка при шифровании базы данных: %s"
+
+#: ../src/storage-manager.c:557
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Не удалось открыть базу данных \"%s\". SQLite выдало следующую ошибку: %s"
+
+#: ../src/storage-manager.c:636 ../src/storage-manager.c:670
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr "Не удалось сделать запрос «%s». SQLite выдал следующую ошибку: %s"
+
+#: ../src/storage-manager.c:905
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Ошибка при десериализации записи в буфер во время поиска."
