@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: almanah HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&component=general\n"
-"POT-Creation-Date: 2009-09-24 17:01+0000\n"
+"POT-Creation-Date: 2010-03-06 21:21+0000\n"
 "PO-Revision-Date: 2009-10-03 12:04+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -110,177 +110,185 @@ msgstr "Indique si la fenêtre principale doit commencer par être agrandie."
 
 #: ../data/almanah.ui.h:1
 msgid "Add a definition for the currently selected text."
-msgstr "Ajoute une définition pour le texte actuellement sélectionné"
+msgstr "Ajoute une définition pour le texte actuellement sélectionné."
 
 #: ../data/almanah.ui.h:2
 msgid "Calendar"
 msgstr "Calendrier"
 
 #: ../data/almanah.ui.h:3
+msgid "Definition Description"
+msgstr "Description de définitions"
+
+#: ../data/almanah.ui.h:4
 msgid "Definition List"
 msgstr "Liste de définitions"
 
-#: ../data/almanah.ui.h:4
+#: ../data/almanah.ui.h:5
+msgid "Definition Type"
+msgstr "Type de définition"
+
+#: ../data/almanah.ui.h:6
 msgid "Definition type:"
 msgstr "Type de définition :"
 
-#: ../data/almanah.ui.h:5
-msgid "Description: "
-msgstr "Description : "
-
-#: ../data/almanah.ui.h:6
+#: ../data/almanah.ui.h:7
 msgid "Entry editing area"
 msgstr "Zone de saisie des entrées"
 
-#: ../data/almanah.ui.h:7
+#: ../data/almanah.ui.h:8
 msgid "F_ormat"
 msgstr "F_ormat"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:9
 msgid "Failed Entries"
 msgstr "Éléments non importés"
 
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:10
 msgid "Go to _Today"
 msgstr "Aller à _aujourd'hui"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:11
 msgid "I_mportant"
 msgstr "I_mportant"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:12
 msgid "Import Results List"
 msgstr "Liste des résultats de l'importation"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:13
 msgid "Import mode: "
 msgstr "Mode d'importation : "
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "Insérer l'_heure"
 
-#: ../data/almanah.ui.h:14
-msgid "Jump to the current date in the diary."
-msgstr "Saute à la date actuelle de l'agenda"
-
 #: ../data/almanah.ui.h:15
+msgid "Jump to the current date in the diary."
+msgstr "Saute à la date actuelle de l'agenda."
+
+#: ../data/almanah.ui.h:16
 msgid "Merged Entries"
 msgstr "Éléments fusionnés"
 
-#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
+#: ../data/almanah.ui.h:17 ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Aucune sélection"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:18
 msgid "Past Event List"
 msgstr "Liste des événements passés"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "Past Events"
 msgstr "Événements passés"
 
-#: ../data/almanah.ui.h:19
-msgid "Remove the definition from the currently selected text."
-msgstr "Enlève la définition du texte actuellement sélectionné"
-
 #: ../data/almanah.ui.h:20
+msgid "Pr_eferences"
+msgstr "_Préférences"
+
+#: ../data/almanah.ui.h:21
+msgid "Remove the definition from the currently selected text."
+msgstr "Enlève la définition du texte actuellement sélectionné."
+
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Liste des résultats"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:23
 msgid "Results:"
 msgstr "Résultats :"
 
-#: ../data/almanah.ui.h:22 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:24 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:25
 msgid "Search entry"
 msgstr "Zone de saisie de la recherche"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:26
 msgid "Select Date…"
 msgstr "Sélectionner la date..."
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Successful Entries"
 msgstr "Éléments corrects"
 
-#: ../data/almanah.ui.h:26
-msgid "Toggle whether the current entry is marked as important."
-msgstr "Indique si l'élément actuel est marqué comme important"
-
-#: ../data/almanah.ui.h:27
-msgid "Toggle whether the currently selected text is bold."
-msgstr "Indique si le texte actuellement sélectionné est en gras"
-
 #: ../data/almanah.ui.h:28
-msgid "Toggle whether the currently selected text is italic."
-msgstr "Indique si le texte actuellement sélectionné est en italique"
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Indique si l'élément actuel est marqué comme important."
 
 #: ../data/almanah.ui.h:29
-msgid "Toggle whether the currently selected text is underlined."
-msgstr "Indique si le texte actuellement sélectionné est souligné"
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Indique si le texte actuellement sélectionné est en gras."
 
 #: ../data/almanah.ui.h:30
-msgid "Type: "
-msgstr "Type : "
+msgid "Toggle whether the currently selected text is italic."
+msgstr "Indique si le texte actuellement sélectionné est en italique."
 
 #: ../data/almanah.ui.h:31
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "Indique si le texte actuellement sélectionné est souligné."
+
+#: ../data/almanah.ui.h:32
 msgid "View"
 msgstr "Afficher"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:33
 msgid "View Entry"
 msgstr "Afficher l'élément"
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:34
 msgid "View Event"
 msgstr "Afficher l'événement"
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:35
 msgid "_Add Definition"
 msgstr "_Ajouter une définition"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:36
 msgid "_Definitions"
 msgstr "_Définitions"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:37
 msgid "_Edit"
 msgstr "É_dition"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:38
 msgid "_File"
 msgstr "_Fichier"
 
-#: ../data/almanah.ui.h:38
+#: ../data/almanah.ui.h:39
 msgid "_Help"
 msgstr "Aid_e"
 
-#: ../data/almanah.ui.h:39
+#: ../data/almanah.ui.h:40
 msgid "_Import"
 msgstr "_Importer"
 
-#: ../data/almanah.ui.h:40
+#: ../data/almanah.ui.h:41
 msgid "_Import…"
 msgstr "_Importer…"
 
-#: ../data/almanah.ui.h:41
+#: ../data/almanah.ui.h:42
+msgid "_Print…"
+msgstr "_Imprimer…"
+
+#: ../data/almanah.ui.h:43
 msgid "_Remove Definition"
 msgstr "_Supprimer la définition"
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:44
 msgid "_Search…"
 msgstr "_Rechercher..."
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:45
 msgid "_View Definitions"
 msgstr "_Afficher les définitions"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:46
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "par ex. « 14/03/2009 » ou « 14 mars 2009 »."
 
@@ -288,13 +296,17 @@ msgstr "par ex. « 14/03/2009 » ou « 14 mars 2009 »."
 msgid "Add Definition"
 msgstr "Ajout d'une définition"
 
-#: ../src/add-definition-dialog.c:164 ../src/import-dialog.c:116
-#: ../src/import-dialog.c:566 ../src/definition-manager-window.c:132
-#: ../src/main-window.c:172 ../src/preferences-dialog.c:135
-#: ../src/search-dialog.c:87
+#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:592
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:172
+#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Le fichier d'interface « %s » n'a pas pu être chargé"
+
+#: ../src/date-entry-dialog.c:74
+msgid "Select Date"
+msgstr "Sélectionner la date"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -356,7 +368,9 @@ msgstr ""
 "écrasement par l'élément importé : %s"
 
 #. Append some header text for the imported entry
-#: ../src/import-dialog.c:223
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
 #, c-format
 msgid ""
 "\n"
@@ -369,27 +383,27 @@ msgstr ""
 "Élément importé de « %s » :\n"
 "\n"
 
-#: ../src/import-dialog.c:433
+#: ../src/import-dialog.c:459
 msgid "Import failed"
 msgstr "L'importation a échoué"
 
-#: ../src/import-dialog.c:467
+#: ../src/import-dialog.c:493
 msgid ""
 "Select a folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
 "imported."
 msgstr ""
-"Choisissez un dossier contenant des fichiers texte, un par élément, dont "
-"le format du nom correspond à « aaaa-mm-jj » et sans extension. Tous les "
+"Choisissez un dossier contenant des fichiers texte, un par élément, dont le "
+"format du nom correspond à « aaaa-mm-jj » et sans extension. Tous les "
 "fichiers correspondants seront importés."
 
-#: ../src/import-dialog.c:473
+#: ../src/import-dialog.c:499
 msgid "Select a database file created by Almanah Diary to import."
 msgstr ""
 "Choisissez un fichier de base de données créé par Journal Almanah afin de "
 "l'importer."
 
-#: ../src/import-dialog.c:537
+#: ../src/import-dialog.c:563
 msgid "Import Results"
 msgstr "Résultats d'importation"
 
@@ -399,8 +413,8 @@ msgstr "Résultats d'importation"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:632 ../src/main-window.c:371
-#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:257
+#: ../src/import-dialog.c:658 ../src/main-window.c:371
+#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:259
 #: ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A %e %B %Y"
@@ -586,75 +600,85 @@ msgstr "Erreur lors de l'ouverture de la base de données"
 
 #: ../src/preferences-dialog.c:79
 msgid "Almanah Preferences"
-msgstr "Preferences pour Almanah"
+msgstr "Préférences d'Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:160
+#: ../src/preferences-dialog.c:168
 msgid "Encryption key: "
 msgstr "Clé de chiffrement : "
 
-#: ../src/preferences-dialog.c:165
+#: ../src/preferences-dialog.c:173
 msgid "None (don't encrypt)"
 msgstr "Aucune (ne pas chiffrer)"
 
-#: ../src/preferences-dialog.c:188
+#: ../src/preferences-dialog.c:197
 msgid "New _Key"
 msgstr "Nouvelle _clé"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:195
+#: ../src/preferences-dialog.c:204
 msgid "Enable _spell checking"
 msgstr "Activer la _vérification orthographique"
 
-#: ../src/preferences-dialog.c:225
+#: ../src/preferences-dialog.c:234
 msgid "Error saving the encryption key"
 msgstr "Erreur lors de l'enregistrement de la clé de chiffrement"
 
-#: ../src/preferences-dialog.c:244
+#: ../src/preferences-dialog.c:253
 msgid "Error opening Seahorse"
 msgstr "Erreur lors de l'ouverture de Seahorse"
 
-#: ../src/preferences-dialog.c:282
+#: ../src/preferences-dialog.c:291
 msgid "Spelling checker could not be initialized"
 msgstr "Le correcteur orthographique n'a pas pu être initialisé"
 
-#: ../src/printing.c:275
+#: ../src/printing.c:277
 msgid "No entry for this date."
 msgstr "Aucune entrée pour cette date."
 
-#: ../src/printing.c:413
+#: ../src/printing.c:419
 msgid "Start date:"
 msgstr "Date de début :"
 
-#: ../src/printing.c:415
+#: ../src/printing.c:421
 msgid "End date:"
 msgstr "Date de fin :"
 
-#: ../src/storage-manager.c:238
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr "Interligne :"
+
+#: ../src/storage-manager.c:237
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME n'est pas au moins à la version %s"
+
+#: ../src/storage-manager.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME ne prend pas en charge OpenPGP : %s"
 
-#: ../src/storage-manager.c:247
+#: ../src/storage-manager.c:255
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Erreur lors de la création du contexte de chiffrement : %s"
 
-#: ../src/storage-manager.c:276
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr ""
 "Erreur lors de l'ouverture du fichier chiffré de la base de données « %s » : %"
 "s"
 
-#: ../src/storage-manager.c:296
+#: ../src/storage-manager.c:304
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr ""
 "Erreur lors de l'ouverture du fichier en clair de la base de données « %s » : "
 "%s"
 
-#: ../src/storage-manager.c:342
+#: ../src/storage-manager.c:353
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -663,28 +687,28 @@ msgstr ""
 "n'a pas été supprimé et est disponible comme sauvegarde."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:345
+#: ../src/storage-manager.c:356
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr ""
 "Impossible de supprimer le fichier en clair de la base de données « %s »."
 
-#: ../src/storage-manager.c:387
+#: ../src/storage-manager.c:398
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Erreur lors du déchiffrement de la base de données : %s"
 
-#: ../src/storage-manager.c:421
+#: ../src/storage-manager.c:432
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Erreur lors de l'obtention de la clé de chiffrement : %s"
 
-#: ../src/storage-manager.c:442
+#: ../src/storage-manager.c:453
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Erreur lors du chiffrement de la base de données : %s"
 
-#: ../src/storage-manager.c:546
+#: ../src/storage-manager.c:557
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -693,7 +717,7 @@ msgstr ""
 "Impossible d'ouvrir la base de données « %s ». SQLite a fourni le message "
 "d'erreur suivant : %s"
 
-#: ../src/storage-manager.c:625 ../src/storage-manager.c:659
+#: ../src/storage-manager.c:636 ../src/storage-manager.c:670
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -701,8 +725,14 @@ msgstr ""
 "Impossible de lancer la requête « %s ». SQLite a fourni le message d'erreur "
 "suivant : %s"
 
-#: ../src/storage-manager.c:894
+#: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
 msgstr ""
 "Erreur lors de la désérialisation de l'entrée dans le tampon pendant la "
 "recherche."
+
+#~ msgid "Description: "
+#~ msgstr "Description : "
+
+#~ msgid "Type: "
+#~ msgstr "Type : "
