@@ -2,22 +2,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Jorge González <jorgegonz@svn.gnome.org>, 2008, 2009.
 # Carlos Albornoz <carlos@debianchile.cl>, 2009.
+# Jorge González <jorgegonz@svn.gnome.org>, 2008, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&component=general\n"
-"POT-Creation-Date: 2009-10-26 19:47+0000\n"
-"PO-Revision-Date: 2009-12-06 15:40-0300\n"
-"Last-Translator: Carlos Albornoz <carlos@debianchile.cl>\n"
+"POT-Creation-Date: 2010-01-31 14:38+0000\n"
+"PO-Revision-Date: 2010-03-16 18:16+0100\n"
+"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/almanah.desktop.in.h:1 ../src/main-window.c:131 ../src/main.c:114
 msgid "Almanah Diary"
@@ -112,178 +112,182 @@ msgid "Calendar"
 msgstr "Calendario"
 
 #: ../data/almanah.ui.h:3
+#| msgid "Definition List"
+msgid "Definition Description"
+msgstr "Descripción de la definición"
+
+#: ../data/almanah.ui.h:4
 msgid "Definition List"
 msgstr "Lista de definición"
 
-#: ../data/almanah.ui.h:4
+#: ../data/almanah.ui.h:5
+#| msgid "Definition type:"
+msgid "Definition Type"
+msgstr "Tipo de definición"
+
+#: ../data/almanah.ui.h:6
 msgid "Definition type:"
 msgstr "Tipo de definición:"
 
-#: ../data/almanah.ui.h:5
-msgid "Description: "
-msgstr "Descripción:"
-
-#: ../data/almanah.ui.h:6
+#: ../data/almanah.ui.h:7
 msgid "Entry editing area"
 msgstr "Área de edición de entrada"
 
-#: ../data/almanah.ui.h:7
+#: ../data/almanah.ui.h:8
 msgid "F_ormat"
 msgstr "F_ormato"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:9
 msgid "Failed Entries"
 msgstr "Entradas fallidas"
 
-#: ../data/almanah.ui.h:9
-#| msgid "Go To Today"
+#: ../data/almanah.ui.h:10
 msgid "Go to _Today"
 msgstr "Ir a _hoy"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:11
 msgid "I_mportant"
 msgstr "I_mportante"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:12
 msgid "Import Results List"
 msgstr "Importar lista de resultados"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:13
 msgid "Import mode: "
 msgstr "Modo importar:"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "Insertar _hora"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Saltar a la fecha actual en el diario."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:16
 msgid "Merged Entries"
 msgstr "Entradas combinadas"
 
-#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
+#: ../data/almanah.ui.h:17 ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Nada seleccionado"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:18
 msgid "Past Event List"
 msgstr "Lista de eventos pasados"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:19
 msgid "Past Events"
 msgstr "Eventos pasados"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:20
+#| msgid "Almanah Preferences"
+msgid "Pr_eferences"
+msgstr "Prefere_ncias"
+
+#: ../data/almanah.ui.h:21
 msgid "Remove the definition from the currently selected text."
 msgstr "Quitar la definición desde el texto actualmente seleccionado."
 
-#: ../data/almanah.ui.h:20
-#| msgid "Results"
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Lista de resultados"
 
-#: ../data/almanah.ui.h:21
-#| msgid "Results"
+#: ../data/almanah.ui.h:23
 msgid "Results:"
 msgstr "Resultados:"
 
-#: ../data/almanah.ui.h:22 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:24 ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Buscar"
 
-#: ../data/almanah.ui.h:23
-#| msgid "Search"
+#: ../data/almanah.ui.h:25
 msgid "Search entry"
 msgstr "Buscar"
 
-#: ../data/almanah.ui.h:24
-#| msgid "Select File"
+#: ../data/almanah.ui.h:26
 msgid "Select Date…"
 msgstr "Seleccionar fecha…"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Successful Entries"
 msgstr "Entradas exitosas"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:28
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Cambiar si la entrada actual es marcada como importante."
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Cambiar si el texto seleccionado actualmente está en negrita."
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:30
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Cambiar si el texto seleccionado actualmente está en cursiva."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:31
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Cambiar si el texto seleccionado actualmente está subrayado."
 
-#: ../data/almanah.ui.h:30
-msgid "Type: "
-msgstr "Tipo:"
-
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:32
 msgid "View"
 msgstr "Ver"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:33
 msgid "View Entry"
 msgstr "Ver entrada"
 
-#: ../data/almanah.ui.h:33
-#| msgid "View Entry"
+#: ../data/almanah.ui.h:34
 msgid "View Event"
 msgstr "Ver evento"
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:35
 msgid "_Add Definition"
 msgstr "_Añadir definición"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:36
 msgid "_Definitions"
 msgstr "_Definiciones"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:37
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:38
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../data/almanah.ui.h:38
+#: ../data/almanah.ui.h:39
 msgid "_Help"
 msgstr "Ay_uda"
 
-#: ../data/almanah.ui.h:39
+#: ../data/almanah.ui.h:40
 msgid "_Import"
 msgstr "_Importar"
 
-#: ../data/almanah.ui.h:40
+#: ../data/almanah.ui.h:41
 msgid "_Import…"
 msgstr "_Importar…"
 
-#: ../data/almanah.ui.h:41
-#| msgid "Remove Link"
+#: ../data/almanah.ui.h:42
+#| msgid "_Import…"
+msgid "_Print…"
+msgstr "_Imprimir…"
+
+#: ../data/almanah.ui.h:43
 msgid "_Remove Definition"
 msgstr "_Quitar definición"
 
-#: ../data/almanah.ui.h:42
-#| msgid "_Search"
+#: ../data/almanah.ui.h:44
 msgid "_Search…"
 msgstr "_Buscar…"
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:45
 msgid "_View Definitions"
 msgstr "_Ver definiciones"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:46
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "e.g. \"14/03/2009\" o \"14 de marzo 2009\"."
 
@@ -292,16 +296,14 @@ msgid "Add Definition"
 msgstr "Añadir definición"
 
 #: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
-#: ../src/import-dialog.c:116 ../src/import-dialog.c:566
+#: ../src/import-dialog.c:116 ../src/import-dialog.c:592
 #: ../src/definition-manager-window.c:132 ../src/main-window.c:172
-#: ../src/preferences-dialog.c:135 ../src/search-dialog.c:87
+#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
 #, c-format
-#| msgid "UI file \"%s\" could not be loaded."
 msgid "UI file \"%s\" could not be loaded"
 msgstr "No se pudo cargar el archivo de interfaz de usuario «%s»"
 
 #: ../src/date-entry-dialog.c:74
-#| msgid "Select File"
 msgid "Select Date"
 msgstr "Seleccionar fecha"
 
@@ -318,7 +320,6 @@ msgid "Error launching Evolution"
 msgstr "Error lanzando Evolution"
 
 #: ../src/events/calendar-task.c:49
-#| msgid "Calendar"
 msgid "Calendar Task"
 msgstr "Calendario de tareas"
 
@@ -339,7 +340,6 @@ msgid "Error launching F-Spot"
 msgstr "Error lanzando F-Spot"
 
 #: ../src/import-dialog.c:36
-#| msgid "Select File"
 msgid "Text Files"
 msgstr "Archivos de texto"
 
@@ -366,7 +366,9 @@ msgstr ""
 "la entrada importada: %s"
 
 #. Append some header text for the imported entry
-#: ../src/import-dialog.c:223
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-dialog.c:251
 #, c-format
 msgid ""
 "\n"
@@ -379,11 +381,11 @@ msgstr ""
 "Entrada importada desde \"%s\":\n"
 "\n"
 
-#: ../src/import-dialog.c:433
+#: ../src/import-dialog.c:459
 msgid "Import failed"
 msgstr "Falló la importación"
 
-#: ../src/import-dialog.c:467
+#: ../src/import-dialog.c:493
 msgid ""
 "Select a folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
@@ -393,14 +395,13 @@ msgstr ""
 "entrada, con nombres en formato «aaaa-mm-dd», y sin extensión. Cualquiera y "
 "todos los archivos parecidos serán importados."
 
-#: ../src/import-dialog.c:473
+#: ../src/import-dialog.c:499
 msgid "Select a database file created by Almanah Diary to import."
 msgstr ""
 "Seleccionar el archivo de base de datos creado por el Diario Almanah para "
 "importar."
 
-#: ../src/import-dialog.c:537
-#| msgid "Results"
+#: ../src/import-dialog.c:563
 msgid "Import Results"
 msgstr "Importar resultados"
 
@@ -410,8 +411,8 @@ msgstr "Importar resultados"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:632 ../src/main-window.c:371
-#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:257
+#: ../src/import-dialog.c:658 ../src/main-window.c:371
+#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:259
 #: ../src/search-dialog.c:157
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
@@ -422,7 +423,6 @@ msgstr "Administrador de definiciones"
 
 #: ../src/definition-manager-window.c:203
 #, c-format
-#| msgid "Are you sure you want to delete this diary entry for %s?"
 msgid "Are you sure you want to delete the definition for \"%s\"?"
 msgstr "¿Está seguro de que quiere eliminar la definición para %s?"
 
@@ -455,7 +455,6 @@ msgid "An attached file."
 msgstr "Un archivo adjunto."
 
 #: ../src/definitions/file.c:74
-#| msgid "Error opening plain database file \"%s\": %s"
 msgid "Error opening file"
 msgstr "Error al abrir el archivo"
 
@@ -484,7 +483,6 @@ msgid "Error opening URI"
 msgstr "Error abriendo URI"
 
 #: ../src/definitions/uri.c:99
-#| msgid "URI"
 msgid "URI: "
 msgstr "URI:"
 
@@ -539,12 +537,10 @@ msgstr ""
 
 #: ../src/main-window.c:885
 #, c-format
-#| msgid "A helpful diary keeper, storing %u entries and %u links."
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgstr "Un diario útil, almacenando %u entradas con %u enlaces."
 
 #: ../src/main-window.c:891
-#| msgid "Copyright © 2008 Philip Withnall"
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -556,7 +552,7 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #: ../src/main-window.c:899
 msgid "translator-credits"
 msgstr ""
-"Jorge González <jorgegonz@svn.gnome.org>, 2008\n"
+"Jorge González <jorgegonz@svn.gnome.org>, 2008, 2010\n"
 "Carlos Albornoz <carlos@debianchile.cl>, 2009"
 
 #: ../src/main-window.c:903
@@ -564,12 +560,10 @@ msgid "Almanah Website"
 msgstr "Página web de Almanah"
 
 #: ../src/main-window.c:1057
-#| msgid "The entry content could not be loaded: %s"
 msgid "Entry content could not be loaded"
 msgstr "No se pudo cargar el contenido de la entrada: %s"
 
 #: ../src/main.c:38
-#| msgid "Error encrypting database: %s"
 msgid "Error encrypting database"
 msgstr "Error al cifrar la base de datos: %s"
 
@@ -578,7 +572,6 @@ msgid "Enable debug mode"
 msgstr "Activar modo de depuración"
 
 #: ../src/main.c:102
-#| msgid "Enable debug mode"
 msgid "Enable import mode"
 msgstr "Activar modo de importación"
 
@@ -588,12 +581,10 @@ msgid "- Manage your diary"
 msgstr "- Gestione su diario"
 
 #: ../src/main.c:128
-#| msgid "Command-line options could not be parsed. Error: %s"
 msgid "Command-line options could not be parsed"
 msgstr "No se pudieron analizar las opciones de la línea de comandos"
 
 #: ../src/main.c:160
-#| msgid "Error encrypting database: %s"
 msgid "Error opening database"
 msgstr "Error al abrir la base de datos"
 
@@ -602,52 +593,51 @@ msgid "Almanah Preferences"
 msgstr "Preferencias de Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:160
-#| msgid "Encryption Key"
+#: ../src/preferences-dialog.c:168
 msgid "Encryption key: "
 msgstr "Clave de cifrado: "
 
-#: ../src/preferences-dialog.c:165
+#: ../src/preferences-dialog.c:173
 msgid "None (don't encrypt)"
 msgstr "Ninguna (no cifrar)"
 
-#: ../src/preferences-dialog.c:188
+#: ../src/preferences-dialog.c:197
 msgid "New _Key"
 msgstr "_Clave nueva"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:195
+#: ../src/preferences-dialog.c:204
 msgid "Enable _spell checking"
 msgstr "Activar la corrección ortográfica"
 
-#: ../src/preferences-dialog.c:225
-#| msgid "Error getting encryption key: %s"
+#: ../src/preferences-dialog.c:234
 msgid "Error saving the encryption key"
 msgstr "Error al guardar la clave de cifrado: %s"
 
-#: ../src/preferences-dialog.c:244
-#| msgid "There was an error opening Seahorse: %s"
+#: ../src/preferences-dialog.c:253
 msgid "Error opening Seahorse"
 msgstr "Error al abrir Seahorse: %s"
 
-#: ../src/preferences-dialog.c:282
-#| msgid "The spelling checker could not be initialized: %s"
+#: ../src/preferences-dialog.c:291
 msgid "Spelling checker could not be initialized"
 msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
-#: ../src/printing.c:275
+#: ../src/printing.c:277
 msgid "No entry for this date."
 msgstr "No hay entradas para esta fecha."
 
-#: ../src/printing.c:413
-#| msgid "Start Date"
+#: ../src/printing.c:419
 msgid "Start date:"
 msgstr "Fecha de inicio:"
 
-#: ../src/printing.c:415
-#| msgid "End Date"
+#: ../src/printing.c:421
 msgid "End date:"
 msgstr "Fecha de finalización:"
+
+#. Line spacing
+#: ../src/printing.c:437
+msgid "Line spacing:"
+msgstr "Espaciado de líneas:"
 
 #: ../src/storage-manager.c:237
 #, c-format
@@ -679,8 +669,8 @@ msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
 msgstr ""
-"El base de datos cifrada está vacía. El archivo plano de la base de "
-"datos se ha dejado como copia de seguridad."
+"El base de datos cifrada está vacía. El archivo plano de la base de datos se "
+"ha dejado como copia de seguridad."
 
 #. Delete the plain file
 #: ../src/storage-manager.c:356
@@ -723,6 +713,12 @@ msgstr ""
 #: ../src/storage-manager.c:905
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Error al deserializar la entrada en el búfer mientras se buscaba."
+
+#~ msgid "Description: "
+#~ msgstr "Descripción:"
+
+#~ msgid "Type: "
+#~ msgstr "Tipo:"
 
 #~ msgid "Add Link"
 #~ msgstr "Añadir enlace"
