@@ -879,7 +879,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT content, day, month, year, is_important FROM entries", -1,
+				"SELECT content, day, month, year, is_important FROM entries ORDER BY year DESC, month DESC, day DESC", -1,
 				&statement, NULL) != SQLITE_OK) {
 		return -1;
 	}
