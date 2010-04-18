@@ -301,7 +301,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 		GtkTextIter start, end;
 
 		gtk_text_buffer_set_text (almanah_operation->buffer, "", 0);
-		if (almanah_entry_get_content (entry, almanah_operation->buffer, TRUE, NULL) == TRUE) {
+		if (almanah_entry_get_content (entry, almanah_operation->buffer, FALSE, NULL) == TRUE) {
 			gtk_text_buffer_get_bounds (almanah_operation->buffer, &start, &end);
 			lay_out_entry (entry_layout, &start, &end);
 		}
