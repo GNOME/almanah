@@ -152,7 +152,7 @@
 						<property name="name">format-important</property>
 						<property name="label" translatable="yes">I_mportant</property>
 						<property name="tooltip" translatable="yes">Toggle whether the current entry is marked as important.</property>
-						<property name="icon-name">gtk-info</property>
+						<property name="icon-name">emblem-important</property>
 						<property name="is-important">True</property>
 						<signal name="activate" handler="mw_important_activate_cb"/>
 					</object>
@@ -575,6 +575,7 @@
 			<column type="guint"/><!-- Month -->
 			<column type="guint"/><!-- Year -->
 			<column type="gchararray"/><!-- Formatted date -->
+			<column type="gchararray"/><!-- Icon stock ID (for important entries) -->
 		</columns>
 	</object>
 
@@ -659,9 +660,19 @@
 											</object>
 										</child>
 										<child>
-											<object class="GtkTreeViewColumn" id="column0">
+											<object class="GtkTreeViewColumn" id="almanah_sd_results_column_icon">
 												<child>
-													<object class="GtkCellRendererText" id="renderer0"/>
+													<object class="GtkCellRendererPixbuf" id="almanah_sd_results_column_icon_renderer"/>
+													<attributes>
+														<attribute name="icon-name">4</attribute>
+													</attributes>
+												</child>
+											</object>
+										</child>
+										<child>
+											<object class="GtkTreeViewColumn" id="almanah_sd_results_column_date">
+												<child>
+													<object class="GtkCellRendererText" id="almanah_sd_results_column_date_renderer"/>
 													<attributes>
 														<attribute name="text">3</attribute>
 													</attributes>

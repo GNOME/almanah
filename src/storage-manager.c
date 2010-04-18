@@ -859,42 +859,38 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
  * almanah_storage_manager_search_entries:
  * @self: an #AlmanahStorageManager
  * @search_string: string for which to search in entry content
- * @matches: return location for the results
  *
- * Searches for @search_string in the content in entries in the
- * database, and returns a the number of results. The results
- * themselves are returned in @matches as an array of #GDates.
+ * Searches for @search_string in the content in entries in the database, and returns the results. If there are no results, %NULL will be returned.
  *
- * If there are no results, @matches will be set to %NULL. It
- * must otherwise be freed with g_free().
+ * The results are returned in descending date order.
  *
- * Return value: number of results, or -1 on failure
+ * Return value: a #GSList of #AlmanahEntry<!-- -->s, or %NULL; unref elements with g_object_unref(); free list with g_slist_free()
  **/
-gint
-almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, GDate *matches[])
+GSList *
+almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string)
 {
 	sqlite3_stmt *statement;
 	GtkTextBuffer *text_buffer;
-	guint result_count = 1; /* initialise to 1 to account for the working array element */
+	GSList *matches = NULL;
 
-	/* Prepare the statement */
+	/* Prepare the statement. Query in ascending date order, and then reverse the results by prepending them to the list as we build it,
+	 * rather than appending them. */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT content, day, month, year, is_important FROM entries ORDER BY year DESC, month DESC, day DESC", -1,
+				"SELECT content, day, month, year, is_important FROM entries ORDER BY year ASC, month ASC, day ASC", -1,
 				&statement, NULL) != SQLITE_OK) {
-		return -1;
+		return NULL;
 	}
 
 	text_buffer = gtk_text_buffer_new (NULL);
-	*matches = g_malloc (sizeof (GDate));
 
 	/* Execute the statement */
 	while (sqlite3_step (statement) == SQLITE_ROW) {
 		AlmanahEntry *entry;
-		GDate *date = &((*matches)[result_count - 1]);
+		GDate date;
 		GtkTextIter iter;
 
-		g_date_set_dmy (date, sqlite3_column_int (statement, 1), sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3));
-		entry = almanah_entry_new (date);
+		g_date_set_dmy (&date, sqlite3_column_int (statement, 1), sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3));
+		entry = almanah_entry_new (&date);
 		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
 		almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 4) == 1) ? TRUE : FALSE);
 
@@ -908,10 +904,10 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 		/* Perform the search */
 		gtk_text_buffer_get_start_iter (text_buffer, &iter);
-		if (gtk_text_iter_forward_search (&iter, search_string, GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY, NULL, NULL, NULL) == TRUE) {
-			/* A match was found, so move to the next working array element
-			 * (effectively add the date to the results list, by preventing it being overwritten). */
-			*matches = g_realloc (*matches, ++result_count * sizeof (GDate));
+		if (gtk_text_iter_forward_search (&iter, search_string, GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY,
+		                                  NULL, NULL, NULL) == TRUE) {
+			/* A match was found */
+			matches = g_slist_prepend (matches, g_object_ref (entry));
 		}
 
 		/* Free stuff up and continue */
@@ -921,7 +917,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	sqlite3_finalize (statement);
 	g_object_unref (text_buffer);
 
-	return result_count - 1;
+	return matches;
 }
 
 /**

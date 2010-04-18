@@ -82,8 +82,8 @@ gboolean almanah_storage_manager_get_statistics (AlmanahStorageManager *self, gu
 gboolean almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date);
 AlmanahEntry *almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date);
 gboolean almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *entry);
-gint almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, GDate *matches[]);
-GSList *almanah_storage_manager_get_entries (AlmanahStorageManager *self) G_GNUC_WARN_UNUSED_RESULT;
+GSList *almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+GSList *almanah_storage_manager_get_entries (AlmanahStorageManager *self) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 
 gboolean *almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
 gboolean *almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
