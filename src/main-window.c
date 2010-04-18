@@ -1063,8 +1063,10 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 #ifdef ENABLE_SPELL_CHECKING
 	/* Ensure the spell-checking is updated */
 	gtkspell = gtkspell_get_from_text_view (priv->entry_view);
-	if (gtkspell)
+	if (gtkspell != NULL) {
 		gtkspell_recheck_all (gtkspell);
+		gtk_widget_queue_draw (GTK_WIDGET (priv->entry_view));
+	}
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* List the entry's events */
