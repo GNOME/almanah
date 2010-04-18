@@ -28,6 +28,7 @@
 #include "widgets/calendar.h"
 
 #define TITLE_MARGIN_BOTTOM 15 /* margin under the title, in pixels */
+#define IMPORTANT_MARGIN_TOP 3 /* margin above the "important" paragraph (and below the title), in pixels */
 #define ENTRY_MARGIN_BOTTOM 10 /* margin under the entry, in pixels */
 #define MAX_ORPHANS 3 /* maximum number of orphan lines to be forced to the next page */
 #define PAGE_MARGIN 20 /* left- and right-hand page margin size, in pixels */
@@ -242,14 +243,16 @@ static gboolean
 print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrintOperation *almanah_operation)
 {
 	AlmanahEntry *entry;
-	gchar title[100], *title_markup;
-	PangoLayout *title_layout = NULL, *entry_layout;
+	gchar title[100], *markup;
+	PangoLayout *title_layout = NULL, *important_layout = NULL, *entry_layout;
 	PangoLayoutLine *entry_line;
 	PangoRectangle logical_extents;
 	gint height, line_height;
 	guint i;
-	gdouble title_y = 0, entry_y;
+	gdouble title_y = 0, important_y = 0, entry_y;
 	cairo_t *cr = NULL;
+
+	entry = almanah_storage_manager_get_entry (almanah->storage_manager, almanah_operation->current_date);
 
 	if (almanah_operation->current_line == 0) {
 		/* Set up the title layout */
@@ -258,21 +261,38 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 		/* Translators: This is a strftime()-format string for the date displayed above each printed entry. */
 		g_date_strftime (title, sizeof (title), _("%A, %e %B %Y"), almanah_operation->current_date);
-		title_markup = g_strdup_printf ("<b>%s</b>", title);
-		pango_layout_set_markup (title_layout, title_markup, -1);
-		g_free (title_markup);
+		markup = g_strdup_printf ("<b>%s</b>", title);
+		pango_layout_set_markup (title_layout, markup, -1);
+		g_free (markup);
 
 		title_y = almanah_operation->y;
 		pango_layout_get_pixel_size (title_layout, NULL, &height);
-		almanah_operation->y += height + TITLE_MARGIN_BOTTOM;
+		almanah_operation->y += height;
+
+		if (entry != NULL && almanah_entry_is_important (entry) == TRUE) {
+			/* State that it's an important entry */
+			important_layout = gtk_print_context_create_pango_layout (context);
+			pango_layout_set_width (title_layout, (gtk_print_context_get_width (context) - 2 * PAGE_MARGIN) * PANGO_SCALE);
+
+			markup = g_strdup_printf ("<i>%s</i>", _("This entry is marked as important."));
+			pango_layout_set_markup (important_layout, markup, -1);
+			g_free (markup);
+
+			/* If the important paragraph is displayed, it's displayed IMPORTANT_MARGIN_TOP pixels below the bottom of the title
+			 * paragraph, and then the entry content is displayed TITLE_MARGIN_BOTTOM pixels below the bottom of the important paragraph. */
+			almanah_operation->y += IMPORTANT_MARGIN_TOP;
+			important_y = almanah_operation->y;
+			pango_layout_get_pixel_size (important_layout, NULL, &height);
+			almanah_operation->y += height;
+		}
+
+		almanah_operation->y += TITLE_MARGIN_BOTTOM;
 	}
 
 	/* Set up the entry layout */
 	entry_layout = gtk_print_context_create_pango_layout (context);
 	pango_layout_set_width (entry_layout, (gtk_print_context_get_width (context) - 2 * PAGE_MARGIN) * PANGO_SCALE);
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
-
-	entry = almanah_storage_manager_get_entry (almanah->storage_manager, almanah_operation->current_date);
 
 	if (entry == NULL || almanah_entry_is_empty (entry)) {
 		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
@@ -299,6 +319,8 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 		/* Not enough space on the page to contain the title and orphaned lines */
 		if (title_layout != NULL)
 			g_object_unref (title_layout);
+		if (important_layout != NULL)
+			g_object_unref (important_layout);
 		g_object_unref (entry_layout);
 
 		almanah_operation->current_line = 0;
@@ -313,6 +335,12 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 			/* Draw the title */
 			cairo_move_to (cr, PAGE_MARGIN, title_y);
 			pango_cairo_show_layout (cr, title_layout);
+
+			if (important_layout != NULL) {
+				/* Draw the important paragraph */
+				cairo_move_to (cr, PAGE_MARGIN, important_y);
+				pango_cairo_show_layout (cr, important_layout);
+			}
 		}
 	}
 
@@ -330,6 +358,8 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 			/* Paint the rest on the next page */
 			if (title_layout != NULL)
 				g_object_unref (title_layout);
+			if (important_layout != NULL)
+				g_object_unref (important_layout);
 			g_object_unref (entry_layout);
 
 			almanah_operation->current_line = i;
@@ -351,6 +381,8 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 	if (title_layout != NULL)
 		g_object_unref (title_layout);
+	if (important_layout != NULL)
+		g_object_unref (important_layout);
 	g_object_unref (entry_layout);
 
 	almanah_operation->current_line = 0;
@@ -414,6 +446,9 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	/* Start and end calendars */
 	start_calendar = almanah_calendar_new ();
 	end_calendar = almanah_calendar_new ();
+
+	g_object_set (G_OBJECT (start_calendar), "show-details", FALSE, NULL);
+	g_object_set (G_OBJECT (end_calendar), "show-details", FALSE, NULL);
 
 	start_label = GTK_LABEL (gtk_label_new (_("Start date:")));
 	gtk_misc_set_alignment (GTK_MISC (start_label), 0.0, 0.5);
