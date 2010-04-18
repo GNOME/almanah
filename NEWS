@@ -1,3 +1,26 @@
+Overview of changes from Almanah 0.7.2 to Almanah 0.7.3
+=======================================================
+
+Major changes:
+* Improve the UI appearance a little by adding some padding
+
+Updated translations:
+* cs (Marek Černocký)
+* da (Joe Hansen)
+* de (Mario Blättermann)
+* el (Μάριος Ζηντίλης)
+* es (Jorge González)
+* fr (Bruno Brouard)
+* gl (Fran Diéguez)
+* id (Andika Triwidada)
+* pt_BR (Antonio Fernandes C. Neto)
+* ru (Diana Kuzachenko, Leonid Kanter)
+* sl (Andrej Žnidaršič)
+* zh_CN (YunQiang Su)
+
+Bugs fixed:
+* Bug 611889 — A little padding in the textaera would be nice
+
 Overview of changes from Almanah 0.7.1 to Almanah 0.7.2
 =======================================================
 
