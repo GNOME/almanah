@@ -106,27 +106,3 @@ almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect
 	if (connect_events == TRUE)
 		g_signal_connect (tag, "event", G_CALLBACK (definition_tag_event_cb), NULL);
 }
-
-/* TODO: This exists so that different calendars can be highlighted according to which days have entries
- * (i.e. the ones on the print dialogue). This should eventually be replaced by a custom calendar widget. */
-void
-almanah_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data)
-{
-	/* Mark the days on the calendar which have diary entries */
-	guint i, year, month, num_days;
-	gboolean *days;
-
-	gtk_calendar_get_date (calendar, &year, &month, NULL);
-	month++;
-	days = almanah_storage_manager_get_month_marked_days (almanah->storage_manager, year, month, &num_days);
-
-	gtk_calendar_clear_marks (calendar);
-	for (i = 0; i < num_days; i++) {
-		if (days[i] == TRUE)
-			gtk_calendar_mark_day (calendar, i + 1);
-		else
-			gtk_calendar_unmark_day (calendar, i + 1);
-	}
-
-	g_free (days);
-}

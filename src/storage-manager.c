@@ -1007,6 +1007,34 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 	return days;
 }
 
+/* NOTE: Free results with g_free. Return value is 0-based. */
+gboolean *
+almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
+{
+	AlmanahQueryResults *results;
+	gint i;
+	gboolean *days;
+
+	i = g_date_get_days_in_month (month, year);
+	if (num_days != NULL)
+		*num_days = i;
+	days = g_malloc0 (sizeof (gboolean) * i);
+
+	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND is_important = 1", NULL,
+	                                         year,
+	                                         month);
+
+	if (results == NULL)
+		return days;
+
+	for (i = 1; i <= results->rows; i++)
+		days[atoi (results->data[i]) - 1] = TRUE;
+
+	almanah_storage_manager_free_results (results);
+
+	return days;
+}
+
 /**
  * almanah_storage_manager_get_definitions:
  * @self: an #AlmanahStorageManager

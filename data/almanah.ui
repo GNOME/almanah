@@ -369,11 +369,11 @@
 											</packing>
 										</child>
 										<child>
-											<object class="GtkCalendar" id="almanah_mw_calendar">
+											<object class="AlmanahCalendar" id="almanah_mw_calendar">
 												<property name="width-request">200</property>
 												<property name="can-focus">True</property>
+												<property name="show-details">False</property>
 												<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
-												<signal name="month-changed" handler="almanah_calendar_month_changed_cb"/>
 												<accessibility>
 													<relation target="almanah_mw_calendar_label" type="labelled-by"/>
 												</accessibility>

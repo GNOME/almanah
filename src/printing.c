@@ -25,6 +25,7 @@
 #include "interface.h"
 #include "main.h"
 #include "printing.h"
+#include "widgets/calendar.h"
 
 #define TITLE_MARGIN_BOTTOM 15 /* margin under the title, in pixels */
 #define ENTRY_MARGIN_BOTTOM 10 /* margin under the entry, in pixels */
@@ -36,8 +37,8 @@ typedef struct {
 	GDate *start_date;
 	GDate *end_date;
 	GDate *current_date;
-	GtkCalendar *start_calendar;
-	GtkCalendar *end_calendar;
+	AlmanahCalendar *start_calendar;
+	AlmanahCalendar *end_calendar;
 	GtkSpinButton *line_spacing_spin_button;
 	gdouble line_spacing;
 	guint current_line;
@@ -411,10 +412,8 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	GtkBox *vbox, *hbox;
 
 	/* Start and end calendars */
-	start_calendar = gtk_calendar_new ();
-	g_signal_connect (start_calendar, "month-changed", G_CALLBACK (almanah_calendar_month_changed_cb), NULL);
-	end_calendar = gtk_calendar_new ();
-	g_signal_connect (end_calendar, "month-changed", G_CALLBACK (almanah_calendar_month_changed_cb), NULL);
+	start_calendar = almanah_calendar_new ();
+	end_calendar = almanah_calendar_new ();
 
 	start_label = GTK_LABEL (gtk_label_new (_("Start date:")));
 	gtk_misc_set_alignment (GTK_MISC (start_label), 0.0, 0.5);
@@ -430,8 +429,8 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	gtk_table_attach (table, GTK_WIDGET (start_label), 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 	gtk_table_attach (table, GTK_WIDGET (end_label), 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 
-	almanah_operation->start_calendar = GTK_CALENDAR (start_calendar);
-	almanah_operation->end_calendar = GTK_CALENDAR (end_calendar);
+	almanah_operation->start_calendar = ALMANAH_CALENDAR (start_calendar);
+	almanah_operation->end_calendar = ALMANAH_CALENDAR (end_calendar);
 
 	/* Line spacing */
 	line_spacing_label = GTK_LABEL (gtk_label_new (_("Line spacing:")));
@@ -450,8 +449,8 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	gtk_widget_show_all (GTK_WIDGET (vbox));
 
 	/* Make sure they have the dates with entries marked */
-	almanah_calendar_month_changed_cb (GTK_CALENDAR (start_calendar), NULL);
-	almanah_calendar_month_changed_cb (GTK_CALENDAR (end_calendar), NULL);
+	almanah_calendar_select_today (almanah_operation->start_calendar);
+	almanah_calendar_select_today (almanah_operation->end_calendar);
 
 	return GTK_WIDGET (vbox);
 }
@@ -459,16 +458,12 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 static void
 custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, AlmanahPrintOperation *almanah_operation)
 {
-	guint year, month, day;
-
 	/* Start date */
-	gtk_calendar_get_date (almanah_operation->start_calendar, &year, &month, &day);
-	g_date_set_dmy (almanah_operation->start_date, day, month + 1, year);
-	g_date_set_dmy (almanah_operation->current_date, day, month + 1, year);
+	almanah_calendar_get_date (almanah_operation->start_calendar, almanah_operation->start_date);
+	almanah_calendar_get_date (almanah_operation->start_calendar, almanah_operation->current_date);
 
 	/* End date */
-	gtk_calendar_get_date (almanah_operation->end_calendar, &year, &month, &day);
-	g_date_set_dmy (almanah_operation->end_date, day, month + 1, year);
+	almanah_calendar_get_date (almanah_operation->end_calendar, almanah_operation->end_date);
 
 	/* Ensure they're in order */
 	if (g_date_compare (almanah_operation->start_date, almanah_operation->end_date) > 0) {

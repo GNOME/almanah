@@ -42,7 +42,9 @@ almanah_SOURCES = \
 	events/f-spot-photo.c		\
 	events/f-spot-photo.h		\
 	event-factories/f-spot.c	\
-	event-factories/f-spot.h
+	event-factories/f-spot.h	\
+	widgets/calendar.c		\
+	widgets/calendar.h
 
 if HAVE_EVO
 almanah_SOURCES += \
