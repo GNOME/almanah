@@ -4,13 +4,14 @@
 #
 # Carlos Albornoz <carlos@debianchile.cl>, 2009.
 # Jorge González <jorgegonz@svn.gnome.org>, 2008, 2009, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&component=general\n"
-"POT-Creation-Date: 2010-01-31 14:38+0000\n"
-"PO-Revision-Date: 2010-03-16 18:16+0100\n"
+"POT-Creation-Date: 2010-04-18 15:06+0000\n"
+"PO-Revision-Date: 2010-04-19 07:22+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +20,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:131 ../src/main.c:114
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:132 ../src/main.c:114
 msgid "Almanah Diary"
 msgstr "Diario Almanah"
 
@@ -112,7 +113,6 @@ msgid "Calendar"
 msgstr "Calendario"
 
 #: ../data/almanah.ui.h:3
-#| msgid "Definition List"
 msgid "Definition Description"
 msgstr "Descripción de la definición"
 
@@ -121,7 +121,6 @@ msgid "Definition List"
 msgstr "Lista de definición"
 
 #: ../data/almanah.ui.h:5
-#| msgid "Definition type:"
 msgid "Definition Type"
 msgstr "Tipo de definición"
 
@@ -182,7 +181,6 @@ msgid "Past Events"
 msgstr "Eventos pasados"
 
 #: ../data/almanah.ui.h:20
-#| msgid "Almanah Preferences"
 msgid "Pr_eferences"
 msgstr "Prefere_ncias"
 
@@ -271,7 +269,6 @@ msgid "_Import…"
 msgstr "_Importar…"
 
 #: ../data/almanah.ui.h:42
-#| msgid "_Import…"
 msgid "_Print…"
 msgstr "_Imprimir…"
 
@@ -297,7 +294,7 @@ msgstr "Añadir definición"
 
 #: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
 #: ../src/import-dialog.c:116 ../src/import-dialog.c:592
-#: ../src/definition-manager-window.c:132 ../src/main-window.c:172
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:173
 #: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -412,8 +409,8 @@ msgstr "Importar resultados"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #: ../src/import-dialog.c:658 ../src/main-window.c:371
-#: ../src/main-window.c:396 ../src/main-window.c:1029 ../src/printing.c:259
-#: ../src/search-dialog.c:157
+#: ../src/main-window.c:396 ../src/main-window.c:1018 ../src/printing.c:263
+#: ../src/search-dialog.c:159
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
 
@@ -497,13 +494,13 @@ msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "¿Está seguro de que quiere borrar esta entrada del diario para %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:597
+#: ../src/main-window.c:586
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Etiqueta de texto «%s» desconocida o duplicada en la entrada. Ignorando."
 
-#: ../src/main-window.c:866
+#: ../src/main-window.c:855
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -515,7 +512,7 @@ msgstr ""
 "Software Foundation; tanto en la versión 3 de la Licencia como (a su "
 "elección) cualquier versión posterior."
 
-#: ../src/main-window.c:870
+#: ../src/main-window.c:859
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -527,7 +524,7 @@ msgstr ""
 "PARA UN PROPÓSITO PARTICULAR. Vea la Licencia Publica General para más "
 "detalles."
 
-#: ../src/main-window.c:874
+#: ../src/main-window.c:863
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -535,12 +532,12 @@ msgstr ""
 "Debería haber recibido una copia de la Licencia Pública General GNU junto "
 "con Almanah. Si no la recibió, consulte <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:885
+#: ../src/main-window.c:874
 #, c-format
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgstr "Un diario útil, almacenando %u entradas con %u enlaces."
 
-#: ../src/main-window.c:891
+#: ../src/main-window.c:880
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -549,17 +546,17 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:899
+#: ../src/main-window.c:888
 msgid "translator-credits"
 msgstr ""
 "Jorge González <jorgegonz@svn.gnome.org>, 2008, 2010\n"
 "Carlos Albornoz <carlos@debianchile.cl>, 2009"
 
-#: ../src/main-window.c:903
+#: ../src/main-window.c:892
 msgid "Almanah Website"
 msgstr "Página web de Almanah"
 
-#: ../src/main-window.c:1057
+#: ../src/main-window.c:1046
 msgid "Entry content could not be loaded"
 msgstr "No se pudo cargar el contenido de la entrada: %s"
 
@@ -623,19 +620,24 @@ msgid "Spelling checker could not be initialized"
 msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
 #: ../src/printing.c:277
+#| msgid "Toggle whether the current entry is marked as important."
+msgid "This entry is marked as important."
+msgstr "Esta entrada está marcada como importante."
+
+#: ../src/printing.c:298
 msgid "No entry for this date."
 msgstr "No hay entradas para esta fecha."
 
-#: ../src/printing.c:419
+#: ../src/printing.c:453
 msgid "Start date:"
 msgstr "Fecha de inicio:"
 
-#: ../src/printing.c:421
+#: ../src/printing.c:455
 msgid "End date:"
 msgstr "Fecha de finalización:"
 
 #. Line spacing
-#: ../src/printing.c:437
+#: ../src/printing.c:471
 msgid "Line spacing:"
 msgstr "Espaciado de líneas:"
 
@@ -710,7 +712,7 @@ msgstr ""
 "No se pudo ejecutar la consulta «%s». SQLite proporcionó el siguiente mensaje "
 "de error: %s"
 
-#: ../src/storage-manager.c:905
+#: ../src/storage-manager.c:901
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Error al deserializar la entrada en el búfer mientras se buscaba."
 
