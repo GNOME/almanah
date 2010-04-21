@@ -311,7 +311,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 		g_object_unref (entry);
 
 	/* Check we're not orphaning things */
-	entry_line = pango_layout_get_line_readonly (entry_layout, MIN (pango_layout_get_line_count (entry_layout) - 1, almanah_operation->current_line + MAX_ORPHANS));
+	entry_line = pango_layout_get_line_readonly (entry_layout, MIN ((guint) pango_layout_get_line_count (entry_layout) - 1, almanah_operation->current_line + MAX_ORPHANS));
 	pango_layout_line_get_pixel_extents (entry_line, NULL, &logical_extents);
 	line_height = pango_layout_get_spacing (entry_layout) / PANGO_SCALE + (gint) (almanah_operation->line_spacing * ((gdouble) logical_extents.height));
 
