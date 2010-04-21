@@ -22,3 +22,4 @@ src/preferences-dialog.c
 src/printing.c
 src/search-dialog.c
 src/storage-manager.c
+src/widgets/calendar.c
