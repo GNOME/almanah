@@ -928,49 +928,46 @@
 		</action-widgets>
 	</object>
 
-	<object class="GtkListStore" id="almanah_id_mode_store">
+	<object class="GtkListStore" id="almanah_ied_mode_store">
 		<columns>
 			<column type="gchararray"/><!-- Name -->
 			<column type="guint"/><!-- Type -->
 		</columns>
 	</object>
 
-	<object class="AlmanahImportDialog" id="almanah_import_dialog">
+	<object class="AlmanahImportExportDialog" id="almanah_import_export_dialog">
 		<property name="border-width">5</property>
 		<child internal-child="vbox">
-			<object class="GtkVBox" id="almanah_id_internal_vbox">
+			<object class="GtkVBox" id="almanah_ied_internal_vbox">
 				<property name="spacing">6</property>
 				<child>
-					<object class="GtkVBox" id="almanah_id_vbox">
+					<object class="GtkVBox" id="almanah_ied_vbox">
 						<property name="border-width">5</property>
 						<property name="spacing">6</property>
 						<child>
-							<object class="GtkHBox" id="almanah_id_hbox">
+							<object class="GtkHBox" id="almanah_ied_hbox">
 								<property name="spacing">6</property>
 								<child>
-									<object class="GtkLabel" id="almanah_id_mode_label">
+									<object class="GtkLabel" id="almanah_ied_mode_label">
 										<property name="xalign">0</property>
-										<property name="label" translatable="yes">Import mode: </property>
+										<property name="label"></property><!-- Set in import-export-dialog.c -->
 										<accessibility>
-											<relation target="almanah_id_mode_combo_box" type="label-for"/>
+											<relation target="almanah_ied_mode_combo_box" type="label-for"/>
 										</accessibility>
-										<!--<attributes>
-											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-										</attributes>-->
 									</object>
 									<packing>
 										<property name="expand">False</property>
 									</packing>
 								</child>
 								<child>
-									<object class="GtkComboBox" id="almanah_id_mode_combo_box">
-										<signal name="changed" handler="id_mode_combo_box_changed_cb"/>
-										<property name="model">almanah_id_mode_store</property>
+									<object class="GtkComboBox" id="almanah_ied_mode_combo_box">
+										<signal name="changed" handler="ied_mode_combo_box_changed_cb"/>
+										<property name="model">almanah_ied_mode_store</property>
 										<accessibility>
-											<relation target="almanah_id_mode_label" type="labelled-by"/>
+											<relation target="almanah_ied_mode_label" type="labelled-by"/>
 										</accessibility>
 										<child>
-											<object class="GtkCellRendererText" id="almanah_id_mode_renderer"/>
+											<object class="GtkCellRendererText" id="almanah_ied_mode_renderer"/>
 											<attributes>
 												<attribute name="text">0</attribute>
 											</attributes>
@@ -983,7 +980,7 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkLabel" id="almanah_id_description_label">
+							<object class="GtkLabel" id="almanah_ied_description_label">
 								<property name="wrap">True</property>
 								<attributes>
 									<attribute name="scale" value="0.83"/><!-- PANGO_SCALE_SMALL -->
@@ -994,12 +991,12 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkAlignment" id="almanah_id_alignment">
+							<object class="GtkAlignment" id="almanah_ied_alignment">
 								<property name="top-padding">12</property>
 								<child>
-									<object class="GtkFileChooserWidget" id="almanah_id_file_chooser">
-										<signal name="selection-changed" handler="id_file_chooser_selection_changed_cb"/>
-										<signal name="file-activated" handler="id_file_chooser_file_activated_cb"/>
+									<object class="GtkFileChooserWidget" id="almanah_ied_file_chooser">
+										<signal name="selection-changed" handler="ied_file_chooser_selection_changed_cb"/>
+										<signal name="file-activated" handler="ied_file_chooser_file_activated_cb"/>
 										<property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
 										<property name="select-multiple">False</property>
 									</object>
@@ -1009,17 +1006,17 @@
 					</object>
 				</child>
 				<child internal-child="action_area">
-					<object class="GtkHButtonBox" id="almanah_id_button_box">
+					<object class="GtkHButtonBox" id="almanah_ied_button_box">
 						<child>
-							<object class="GtkButton" id="almanah_id_cancel_button">
+							<object class="GtkButton" id="almanah_ied_cancel_button">
 								<property name="use-stock">True</property>
 								<property name="label">gtk-cancel</property>
 							</object>
 						</child>
 						<child>
-							<object class="GtkButton" id="almanah_id_import_button">
+							<object class="GtkButton" id="almanah_ied_import_export_button">
 								<property name="use-underline">True</property>
-								<property name="label" translatable="yes">_Import</property>
+								<property name="label"></property><!-- Set in import-export-dialog.c -->
 								<property name="can-default">True</property>
 								<property name="has-default">True</property>
 							</object>
@@ -1029,8 +1026,8 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-6">almanah_id_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
-			<action-widget response="-5">almanah_id_import_button</action-widget><!-- GTK_RESPONSE_OK -->
+			<action-widget response="-6">almanah_ied_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
+			<action-widget response="-5">almanah_ied_import_export_button</action-widget><!-- GTK_RESPONSE_OK -->
 		</action-widgets>
 	</object>
 
@@ -1072,7 +1069,7 @@
 			<object class="GtkVBox" id="almanah_ird_internal_vbox">
 				<property name="spacing">6</property>
 				<child>
-					<object class="GtkVBox" id="almanah_id_vbox">
+					<object class="GtkVBox" id="almanah_ird_vbox">
 						<property name="border-width">5</property>
 						<property name="spacing">6</property>
 						<child>

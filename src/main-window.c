@@ -40,7 +40,7 @@
 #include "event.h"
 #include "definition.h"
 #include "definition-manager-window.h"
-#include "import-dialog.h"
+#include "import-export-dialog.h"
 #include "widgets/calendar.h"
 
 static void almanah_main_window_dispose (GObject *object);
@@ -690,7 +690,7 @@ void
 mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	if (almanah->import_dialog == NULL)
-		almanah->import_dialog = GTK_WIDGET (almanah_import_dialog_new ());
+		almanah->import_dialog = GTK_WIDGET (almanah_import_export_dialog_new (TRUE));
 
 	gtk_widget_show_all (almanah->import_dialog);
 	gtk_dialog_run (GTK_DIALOG (almanah->import_dialog));
