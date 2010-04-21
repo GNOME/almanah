@@ -17,6 +17,13 @@
 					</object>
 				</child>
 				<child>
+					<object class="GtkAction" id="almanah_ui_export">
+						<property name="name">file-export</property>
+						<property name="label" translatable="yes">_Export…</property>
+						<signal name="activate" handler="mw_export_activate_cb"/>
+					</object>
+				</child>
+				<child>
 					<object class="GtkAction" id="almanah_ui_page_setup">
 						<property name="stock-id">gtk-page-setup</property>
 						<property name="name">file-page-setup</property>
@@ -221,6 +228,7 @@
 			<menubar name="almanah_mw_menu_bar">
 				<menu action="almanah_ui_file">
 					<menuitem action="almanah_ui_import"/>
+					<menuitem action="almanah_ui_export"/>
 					<separator/>
 					<menuitem action="almanah_ui_page_setup"/>
 					<menuitem action="almanah_ui_print_preview"/>

@@ -1160,3 +1160,9 @@ almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gc
 
 	return FALSE;
 }
+
+const gchar *
+almanah_storage_manager_get_filename (AlmanahStorageManager *self, gboolean plain)
+{
+	return (plain == TRUE) ? self->priv->plain_filename : self->priv->filename;
+}

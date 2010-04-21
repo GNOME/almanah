@@ -93,6 +93,8 @@ AlmanahDefinition *almanah_storage_manager_get_definition (AlmanahStorageManager
 gboolean almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefinition *definition);
 gboolean almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text);
 
+const gchar *almanah_storage_manager_get_filename (AlmanahStorageManager *self, gboolean plain);
+
 G_END_DECLS
 
 #endif /* !ALMANAH_STORAGE_MANAGER_H */

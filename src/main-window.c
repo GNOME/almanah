@@ -63,6 +63,7 @@ static void mw_definition_removed_cb (AlmanahStorageManager *storage_manager, co
 /* GtkBuilder callbacks */
 void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
 void mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_export_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_page_setup_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_print_preview_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_print_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
@@ -694,6 +695,16 @@ mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 
 	gtk_widget_show_all (almanah->import_dialog);
 	gtk_dialog_run (GTK_DIALOG (almanah->import_dialog));
+}
+
+void
+mw_export_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+{
+	if (almanah->export_dialog == NULL)
+		almanah->export_dialog = GTK_WIDGET (almanah_import_export_dialog_new (FALSE));
+
+	gtk_widget_show_all (almanah->export_dialog);
+	gtk_dialog_run (GTK_DIALOG (almanah->export_dialog));
 }
 
 void
