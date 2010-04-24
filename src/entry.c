@@ -139,7 +139,7 @@ almanah_entry_set_property (GObject *object, guint property_id, const GValue *va
 			g_date_set_year (&(priv->date), g_value_get_uint (value));
 			break;
 		case PROP_IS_IMPORTANT:
-			priv->is_important = g_value_get_boolean (value);
+			almanah_entry_set_is_important (ALMANAH_ENTRY (object), g_value_get_boolean (value));
 			break;
 		default:
 			/* We don't have any other property... */
@@ -284,6 +284,9 @@ almanah_entry_is_important (AlmanahEntry *self)
 void
 almanah_entry_set_is_important (AlmanahEntry *self, gboolean is_important)
 {
-	self->priv->is_important = is_important;
-	g_object_notify (G_OBJECT (self), "is-important");
+	/* Make sure we only notify if the property value really has changed */
+	if (self->priv->is_important != is_important) {
+		self->priv->is_important = is_important;
+		g_object_notify (G_OBJECT (self), "is-important");
+	}
 }

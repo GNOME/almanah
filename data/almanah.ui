@@ -343,7 +343,6 @@
 														<property name="wrap-mode">GTK_WRAP_WORD</property>
 														<property name="left-margin">3</property>
 														<property name="right-margin">3</property>
-														<signal name="focus-out-event" handler="mw_entry_view_focus_out_event_cb"/>
 														<child internal-child="accessible">
 															<object class="AtkObject" id="a11y-almanah_mw_entry_view">
 																<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>

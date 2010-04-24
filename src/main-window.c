@@ -44,6 +44,7 @@
 #include "widgets/calendar.h"
 
 static void almanah_main_window_dispose (GObject *object);
+static void set_current_entry (AlmanahMainWindow *self, AlmanahEntry *entry);
 static void save_window_state (AlmanahMainWindow *self);
 static void restore_window_state (AlmanahMainWindow *self);
 static gboolean mw_delete_event_cb (GtkWindow *window, gpointer user_data);
@@ -83,7 +84,6 @@ void mw_add_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_w
 void mw_remove_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_view_definitions_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
-gboolean mw_entry_view_focus_out_event_cb (GtkWidget *entry_view, GdkEventFocus *event, AlmanahMainWindow *main_window);
 void mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window);
 
 struct _AlmanahMainWindowPrivate {
@@ -111,7 +111,8 @@ struct _AlmanahMainWindowPrivate {
 	gboolean pending_italic_active;
 	gboolean pending_underline_active;
 
-	AlmanahEntry *current_entry;
+	AlmanahEntry *current_entry; /* whether it's been modified is stored as gtk_text_buffer_get_modified (priv->entry_buffer) */
+	gulong current_entry_notify_id; /* signal handler for current_entry::notify */
 };
 
 G_DEFINE_TYPE (AlmanahMainWindow, almanah_main_window, GTK_TYPE_WINDOW)
@@ -137,11 +138,7 @@ almanah_main_window_init (AlmanahMainWindow *self)
 static void
 almanah_main_window_dispose (GObject *object)
 {
-	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW (object)->priv;
-
-	if (priv->current_entry != NULL)
-		g_object_unref (priv->current_entry);
-	priv->current_entry = NULL;
+	set_current_entry (ALMANAH_MAIN_WINDOW (object), NULL);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_main_window_parent_class)->dispose (object);
@@ -267,6 +264,34 @@ almanah_main_window_new (void)
 	restore_window_state (main_window);
 
 	return main_window;
+}
+
+static void
+current_entry_notify_cb (AlmanahEntry *entry, GParamSpec *pspec, AlmanahMainWindow *self)
+{
+	/* As the entry's been changed, mark it as edited so that it has to be saved */
+	gtk_text_buffer_set_modified (self->priv->entry_buffer, TRUE);
+}
+
+static void
+set_current_entry (AlmanahMainWindow *self, AlmanahEntry *entry)
+{
+	AlmanahMainWindowPrivate *priv = self->priv;
+
+	/* Disconnect from and unref the old entry */
+	if (priv->current_entry != NULL) {
+		g_signal_handler_disconnect (priv->current_entry, priv->current_entry_notify_id);
+		g_object_unref (priv->current_entry);
+	}
+
+	priv->current_entry = NULL;
+	priv->current_entry_notify_id = 0;
+
+	/* Ref and connect to the new entry */
+	if (entry != NULL) {
+		priv->current_entry = g_object_ref (entry);
+		priv->current_entry_notify_id = g_signal_connect (entry, "notify", (GCallback) current_entry_notify_cb, self);
+	}
 }
 
 static void
@@ -773,7 +798,7 @@ mw_insert_time_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	almanah_entry_set_is_important (main_window->priv->current_entry, gtk_toggle_action_get_active(GTK_TOGGLE_ACTION (action)));
+	almanah_entry_set_is_important (main_window->priv->current_entry, gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)));
 }
 
 void
@@ -1021,6 +1046,10 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	GtkSpell *gtkspell;
 #endif /* ENABLE_SPELL_CHECKING */
 	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahEntry *entry;
+
+	/* Save the previous entry */
+	save_current_entry (main_window);
 
 	/* Update the date label */
 	almanah_calendar_get_date (main_window->priv->calendar, &calendar_date);
@@ -1030,11 +1059,11 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	gtk_label_set_markup (priv->date_label, calendar_string);
 
 	/* Update the entry */
-	if (priv->current_entry != NULL)
-		g_object_unref (priv->current_entry);
-	priv->current_entry = almanah_storage_manager_get_entry (almanah->storage_manager, &calendar_date);
-	if (priv->current_entry == NULL)
-		priv->current_entry = almanah_entry_new (&calendar_date);
+	entry = almanah_storage_manager_get_entry (almanah->storage_manager, &calendar_date);
+	if (entry == NULL)
+		entry = almanah_entry_new (&calendar_date);
+	set_current_entry (main_window, entry);
+	g_object_unref (entry);
 
 	gtk_text_view_set_editable (priv->entry_view, almanah_entry_get_editability (priv->current_entry) != ALMANAH_ENTRY_FUTURE ? TRUE : FALSE);
 	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
@@ -1120,13 +1149,6 @@ mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path,
 
 	/* NOTE: event types should display their own errors, so one won't be displayed here. */
 	almanah_event_view (event);
-}
-
-gboolean
-mw_entry_view_focus_out_event_cb (GtkWidget *entry_view, GdkEventFocus *event, AlmanahMainWindow *main_window)
-{
-	save_current_entry (main_window);
-	return FALSE;
 }
 
 void
