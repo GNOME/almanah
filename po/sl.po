@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&component=general\n"
-"POT-Creation-Date: 2010-04-18 15:21+0000\n"
-"PO-Revision-Date: 2010-04-18 19:41+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"POT-Creation-Date: 2010-04-22 21:45+0000\n"
+"PO-Revision-Date: 2010-04-25 10:45+0100\n"
+"Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,8 +21,8 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: ../data/almanah.desktop.in.h:1
-#: ../src/main-window.c:132
-#: ../src/main.c:114
+#: ../src/main-window.c:133
+#: ../src/main.c:116
 msgid "Almanah Diary"
 msgstr "Almanah dnevnik"
 
@@ -147,106 +147,106 @@ msgid "Import Results List"
 msgstr "Seznam rezultatov uvoza"
 
 #: ../data/almanah.ui.h:13
-msgid "Import mode: "
-msgstr "Način uvoza: "
-
-#: ../data/almanah.ui.h:14
 msgid "Insert _Time"
 msgstr "Vstavi _čas"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:14
 msgid "Jump to the current date in the diary."
 msgstr "Skoči na trenutni datum v dnevniku."
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:15
 msgid "Merged Entries"
 msgstr "Združeni vnosi"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:16
 #: ../src/definition-manager-window.c:246
 msgid "Nothing selected"
 msgstr "Ni izbranih predmetov"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:17
 msgid "Past Event List"
 msgstr "Seznam preteklih dogodkov"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:18
 msgid "Past Events"
 msgstr "Pretekli dogodki"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:19
 msgid "Pr_eferences"
 msgstr "_Možnosti"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:20
 msgid "Remove the definition from the currently selected text."
 msgstr "Odstrani povezavo iz trenutno izbranega besedila."
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:21
 msgid "Result List"
 msgstr "Seznam rezultatov"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:22
 msgid "Results:"
 msgstr "Rezultati:"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:23
 #: ../src/search-dialog.c:61
 msgid "Search"
 msgstr "Iskanje"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:24
 msgid "Search entry"
 msgstr "Iskanje vnosa"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:25
 msgid "Select Date…"
 msgstr "Izbor datuma ..."
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Uspešni vnosi"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:27
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Preklopi oznako trenutnega vnosa kot pomembno."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:28
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Preklopi izpis trenutno izbranega besedila kot krepko."
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:29
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Preklopi izpis trenutno izbranega besedila kot ležeče."
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:30
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Preklopi izpis trenutno izbranega besedila kot podčrtano."
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:31
 msgid "View"
 msgstr "Pogled"
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:32
 msgid "View Entry"
 msgstr "Ogled vnosa"
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:33
 msgid "View Event"
 msgstr "Ogled dogodka"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:34
 msgid "_Add Definition"
 msgstr "_Dodaj povezavo"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:35
 msgid "_Definitions"
 msgstr "_Povezave"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:36
 msgid "_Edit"
 msgstr "_Uredi"
+
+#: ../data/almanah.ui.h:37
+msgid "_Export…"
+msgstr "_Izvozi ..."
 
 #: ../data/almanah.ui.h:38
 msgid "_File"
@@ -257,30 +257,26 @@ msgid "_Help"
 msgstr "Pomo_č"
 
 #: ../data/almanah.ui.h:40
-msgid "_Import"
-msgstr "_Uvozi"
-
-#: ../data/almanah.ui.h:41
 msgid "_Import…"
 msgstr "_Uvozi ..."
 
-#: ../data/almanah.ui.h:42
+#: ../data/almanah.ui.h:41
 msgid "_Print…"
 msgstr "_Natisni ..."
 
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:42
 msgid "_Remove Definition"
 msgstr "_Odstrani povezavo"
 
-#: ../data/almanah.ui.h:44
+#: ../data/almanah.ui.h:43
 msgid "_Search…"
 msgstr "_Iskanje ..."
 
-#: ../data/almanah.ui.h:45
+#: ../data/almanah.ui.h:44
 msgid "_View Definitions"
 msgstr "Po_gled povezav"
 
-#: ../data/almanah.ui.h:46
+#: ../data/almanah.ui.h:45
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "na primer: \"14. marec 2009\" ali \"14.3.2009\"."
 
@@ -290,10 +286,10 @@ msgstr "Dodaj povezavo"
 
 #: ../src/add-definition-dialog.c:164
 #: ../src/date-entry-dialog.c:131
-#: ../src/import-dialog.c:116
-#: ../src/import-dialog.c:592
+#: ../src/import-export-dialog.c:147
+#: ../src/import-export-dialog.c:730
 #: ../src/definition-manager-window.c:132
-#: ../src/main-window.c:173
+#: ../src/main-window.c:174
 #: ../src/preferences-dialog.c:143
 #: ../src/search-dialog.c:87
 #, c-format
@@ -337,24 +333,62 @@ msgstr "Fotografija shranjena v F-Spot."
 msgid "Error launching F-Spot"
 msgstr "Napaka med zaganjanjem F-Spot"
 
-#: ../src/import-dialog.c:36
+#: ../src/import-export-dialog.c:49
 msgid "Text Files"
 msgstr "Besedilne datoteke"
 
-#: ../src/import-dialog.c:37
+#: ../src/import-export-dialog.c:50
+msgid "Select a folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. Any and all such files will be imported."
+msgstr "Izbor mape z besedilnimi datotekami, ena na vnos z imeni v obliki 'yyyy-mm-dd' in brez pripon. Katerakoli in vse take datoteke bodo uvožene."
+
+#: ../src/import-export-dialog.c:52
+msgid "Select a folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. All entries will be exported, unencrypted in plain text format."
+msgstr "Izbor mape za izvoz vnosov kot besedilne datoteke, ena na vnos, z imeni v obliki 'yyyy-mm-dd' in brez pripon. Vsi vnosi bodo izvoženi v obliki običajnega besedila."
+
+#: ../src/import-export-dialog.c:57
 msgid "Database"
 msgstr "Podatkovna zbirka"
 
-#: ../src/import-dialog.c:75
+#: ../src/import-export-dialog.c:58
+msgid "Select a database file created by Almanah Diary to import."
+msgstr "Izbor podatkovne zbirke Almanah dnevnika za uvoz."
+
+#: ../src/import-export-dialog.c:59
+msgid "Select a filename for a complete copy of the unencrypted Almanah Diary database to be given."
+msgstr "Izberite ime datoteke za celotno kopijo nešifrirane podatkovne zbirke dnevnika Almanah."
+
+#: ../src/import-export-dialog.c:179
+msgid "Import mode: "
+msgstr "Način uvoza: "
+
+#: ../src/import-export-dialog.c:179
+msgid "Export mode: "
+msgstr "Način izvoza:"
+
+#. Set the window title
+#: ../src/import-export-dialog.c:182
 msgid "Import Entries"
 msgstr "Uvozi vnose"
 
-#: ../src/import-dialog.c:196
+#: ../src/import-export-dialog.c:182
+msgid "Export Entries"
+msgstr "Vnosi izvoza"
+
+#. Set the button label
+#: ../src/import-export-dialog.c:185
+msgid "_Import"
+msgstr "_Uvozi"
+
+#: ../src/import-export-dialog.c:185
+msgid "_Export"
+msgstr "_Izvozi"
+
+#: ../src/import-export-dialog.c:239
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
 msgstr "Napaka med odločevanjem obstoječega vnosa iz zaporedja v medpomnilnik: %s"
 
-#: ../src/import-dialog.c:211
+#: ../src/import-export-dialog.c:255
 #, c-format
 msgid "Error deserializing existing entry into buffer; overwriting with imported entry: %s"
 msgstr "Napaka med odločevanjem obstoječega vnosa iz zaporedja v medpomnilnik; prepis z uvoženim vnosom: %s"
@@ -362,7 +396,7 @@ msgstr "Napaka med odločevanjem obstoječega vnosa iz zaporedja v medpomnilnik;
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 #. * The imported entry is appended to this text.
-#: ../src/import-dialog.c:251
+#: ../src/import-export-dialog.c:296
 #, c-format
 msgid ""
 "\n"
@@ -375,19 +409,23 @@ msgstr ""
 "Vnos uvožen iz \"%s\":\n"
 "\n"
 
-#: ../src/import-dialog.c:459
+#: ../src/import-export-dialog.c:597
 msgid "Import failed"
 msgstr "Uvoz ni uspel"
 
-#: ../src/import-dialog.c:493
-msgid "Select a folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. Any and all such files will be imported."
-msgstr "Izbor mape z besedilnimi datotekami, ena na vnos z imeni v obliki 'yyyy-mm-dd' in brez pripon. Katerakoli in vse take datoteke bodo uvožene."
+#: ../src/import-export-dialog.c:597
+msgid "Export failed"
+msgstr "Izvoz je spodletel"
 
-#: ../src/import-dialog.c:499
-msgid "Select a database file created by Almanah Diary to import."
-msgstr "Izbor podatkovne zbirke Almanah dnevnika za uvoz."
+#: ../src/import-export-dialog.c:617
+msgid "Export successful"
+msgstr "Izvoz je bil uspešeno"
 
-#: ../src/import-dialog.c:563
+#: ../src/import-export-dialog.c:618
+msgid "The diary was successfully exported."
+msgstr "Dnevnik je bil uspešno izvožen."
+
+#: ../src/import-export-dialog.c:704
 msgid "Import Results"
 msgstr "Rezultati uvoza"
 
@@ -397,10 +435,10 @@ msgstr "Rezultati uvoza"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-dialog.c:658
-#: ../src/main-window.c:371
-#: ../src/main-window.c:396
-#: ../src/main-window.c:1018
+#: ../src/import-export-dialog.c:797
+#: ../src/main-window.c:372
+#: ../src/main-window.c:397
+#: ../src/main-window.c:1029
 #: ../src/printing.c:263
 #: ../src/search-dialog.c:159
 msgid "%A, %e %B %Y"
@@ -476,40 +514,40 @@ msgstr "Napaka med odpiranjem URI"
 msgid "URI: "
 msgstr "URI: "
 
-#: ../src/main-window.c:375
+#: ../src/main-window.c:376
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Ali ste prepričani, da želite urejati dnevniški vnos za %s?"
 
-#: ../src/main-window.c:400
+#: ../src/main-window.c:401
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Ali ste prepričani, da želite izbrisati dnevniški vnos za %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:586
+#: ../src/main-window.c:587
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Neznana ali podvojena oznaka \"%s\" v vnosu. Oznaka je prezrta."
 
-#: ../src/main-window.c:855
+#: ../src/main-window.c:866
 msgid "Almanah is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
 msgstr "Almanah je prosta programska oprema; program lahko razširjate in/ali spreminjate pod pogoji Splošnega dovoljenja GNU (GNU General PublicLicense), kot ga je objavila ustanova Free Software Foundation; bodisi različice 2 ali (po vaši izbiri) katerekoli poznejše različice."
 
-#: ../src/main-window.c:859
+#: ../src/main-window.c:870
 msgid "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
 msgstr "Almanah se razširja v upanju, da bo uporaben, vendar BREZ VSAKRŠNEGA JAMSTVA; tudi brez posredne zagotovitve CENOVNE VREDNOSTI ali PRIMERNOSTI ZA DOLOČEN NAMEN.  Za podrobnosti glejte besedilo GNU General Public License."
 
-#: ../src/main-window.c:863
+#: ../src/main-window.c:874
 msgid "You should have received a copy of the GNU General Public License along with Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr "Skupaj s programom bi morali dobiti tudi kopijo GNU splošne javne licence. V primeru, da je niste, si oglejte <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:874
+#: ../src/main-window.c:885
 #, c-format
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgstr "Priročen dnevnik, shranjuje %u vnosov in %u povezav."
 
-#: ../src/main-window.c:880
+#: ../src/main-window.c:891
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Zasluge © 2008-2009 Philip Withnall"
 
@@ -518,15 +556,15 @@ msgstr "Zasluge © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:888
+#: ../src/main-window.c:899
 msgid "translator-credits"
 msgstr "Andrej Žnidaršič <andrej.znidarsic@gmail.com>"
 
-#: ../src/main-window.c:892
+#: ../src/main-window.c:903
 msgid "Almanah Website"
 msgstr "Spletna stran Almanah"
 
-#: ../src/main-window.c:1046
+#: ../src/main-window.c:1057
 msgid "Entry content could not be loaded"
 msgstr "Vsebine vnosa ni mogoče naložiti"
 
@@ -534,24 +572,24 @@ msgstr "Vsebine vnosa ni mogoče naložiti"
 msgid "Error encrypting database"
 msgstr "Napaka med šifriranjem podatkovne zbirke"
 
-#: ../src/main.c:101
+#: ../src/main.c:103
 msgid "Enable debug mode"
 msgstr "Omogoči razhroščevalni način"
 
-#: ../src/main.c:102
+#: ../src/main.c:104
 msgid "Enable import mode"
 msgstr "Omogoči uvozni način"
 
 #. Options
-#: ../src/main.c:118
+#: ../src/main.c:120
 msgid "- Manage your diary"
 msgstr "- upravljanje vašega dnevnika"
 
-#: ../src/main.c:128
+#: ../src/main.c:130
 msgid "Command-line options could not be parsed"
 msgstr "Možnosti ukazne vrstice ni mogoče razčleniti"
 
-#: ../src/main.c:160
+#: ../src/main.c:162
 msgid "Error opening database"
 msgstr "Napaka med odpiranjem podatkovne zbirke"
 
@@ -675,6 +713,11 @@ msgstr "Poizvedbe \"%s\" ni mogoče zagnati. SQLite poroča naslednje poročilo 
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Napaka med ločitvijo vnosa iz zaporedja v medpomnilnik med iskanjem."
 
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:110
+msgid "Important!"
+msgstr "Pomembno!"
+
 #~ msgid "Description: "
 #~ msgstr "Opis: "
 #~ msgid "Type: "
@@ -689,3 +732,4 @@ msgstr "Napaka med ločitvijo vnosa iz zaporedja v medpomnilnik med iskanjem."
 #~ "vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni "
 #~ "vnosov za ta datum. Ni vnosov za ta datum. Ni vnosov za ta datum. Ni "
 #~ "vnosov za ta datum."
+
