@@ -342,6 +342,7 @@ load_calendars (CalendarClient    *client,
       case CALENDAR_EVENT_TASK:
         clients = client->priv->task_sources;
         break;
+      case CALENDAR_EVENT_ALL:
       default:
         g_assert_not_reached ();
     }
@@ -559,7 +560,7 @@ get_time_from_property (icalcomponent         *ical,
   icalproperty        *prop;
   struct icaltimetype  ical_time;
   icalparameter       *param;
-  icaltimezone        *timezone = NULL;
+  icaltimezone        *time_zone = NULL;
   
   prop = icalcomponent_get_first_property (ical, prop_kind);
   if (!prop)
@@ -569,13 +570,13 @@ get_time_from_property (icalcomponent         *ical,
 
   param = icalproperty_get_first_parameter (prop, ICAL_TZID_PARAMETER);
   if (param)
-    timezone = icaltimezone_get_builtin_timezone_from_tzid (icalparameter_get_tzid (param));
+    time_zone = icaltimezone_get_builtin_timezone_from_tzid (icalparameter_get_tzid (param));
   else if (icaltime_is_utc (ical_time))
-    timezone = icaltimezone_get_utc_timezone ();
+    time_zone = icaltimezone_get_utc_timezone ();
   else 
-    timezone = default_zone;
+    time_zone = default_zone;
 
-  return icaltime_as_timet_with_zone (ical_time, timezone);
+  return icaltime_as_timet_with_zone (ical_time, time_zone);
 }
 
 static char *
@@ -1033,6 +1034,7 @@ calendar_event_free (CalendarEvent *event)
     case CALENDAR_EVENT_TASK:
       calendar_task_finalize (CALENDAR_TASK (event));
       break;
+    case CALENDAR_EVENT_ALL:
     default:
       g_assert_not_reached ();
       break;
@@ -1066,6 +1068,30 @@ calendar_event_new (icalcomponent        *ical,
                           source,
                           default_zone);
       break;
+    case ICAL_NO_COMPONENT:
+    case ICAL_ANY_COMPONENT:
+    case ICAL_XROOT_COMPONENT:
+    case ICAL_XATTACH_COMPONENT:
+    case ICAL_VJOURNAL_COMPONENT:
+    case ICAL_VCALENDAR_COMPONENT:
+    case ICAL_VAGENDA_COMPONENT:
+    case ICAL_VFREEBUSY_COMPONENT:
+    case ICAL_VALARM_COMPONENT:
+    case ICAL_XAUDIOALARM_COMPONENT:
+    case ICAL_XDISPLAYALARM_COMPONENT:
+    case ICAL_XEMAILALARM_COMPONENT:
+    case ICAL_XPROCEDUREALARM_COMPONENT:
+    case ICAL_VTIMEZONE_COMPONENT:
+    case ICAL_XSTANDARD_COMPONENT:
+    case ICAL_XDAYLIGHT_COMPONENT:
+    case ICAL_X_COMPONENT:
+    case ICAL_VSCHEDULE_COMPONENT:
+    case ICAL_VQUERY_COMPONENT:
+    case ICAL_VREPLY_COMPONENT:
+    case ICAL_VCAR_COMPONENT:
+    case ICAL_VCOMMAND_COMPONENT:
+    case ICAL_XLICINVALID_COMPONENT:
+    case ICAL_XLICMIMEPART_COMPONENT:
     default:
       g_warning ("Unknown calendar component type: %d\n",
                  icalcomponent_isa (ical));
@@ -1098,6 +1124,7 @@ calendar_event_copy (CalendarEvent *event)
       calendar_task_copy (CALENDAR_TASK (event),
 			  CALENDAR_TASK (retval));
       break;
+    case CALENDAR_EVENT_ALL:
     default:
       g_assert_not_reached ();
       break;
@@ -1117,6 +1144,7 @@ calendar_event_get_uid (CalendarEvent *event)
     case CALENDAR_EVENT_TASK:
       return g_strdup (CALENDAR_TASK (event)->uid);
       break;
+    case CALENDAR_EVENT_ALL:
     default:
       g_assert_not_reached ();
       break;
@@ -1146,6 +1174,7 @@ calendar_event_equal (CalendarEvent *a,
     case CALENDAR_EVENT_TASK:
       return calendar_task_equal (CALENDAR_TASK (a),
 				  CALENDAR_TASK (b));
+    case CALENDAR_EVENT_ALL:
     default:
       break;
     }
@@ -1400,7 +1429,7 @@ check_object_remove (gpointer key,
                      gpointer data)
 {
   char             *uid = data;
-  ssize_t           len;
+  size_t           len;
 
   len = strlen (uid);
   
@@ -1437,7 +1466,7 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
 
       if (!id->rid || !(*id->rid))
 	{
-	  int size = g_hash_table_size (query->events);
+	  unsigned int size = g_hash_table_size (query->events);
 
 	  g_hash_table_foreach_remove (query->events, check_object_remove, id->uid);
 
