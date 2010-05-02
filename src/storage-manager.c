@@ -1,8 +1,8 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ * Copyright (C) Philip Withnall 2008–2010 <philip@tecnocode.co.uk>
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -82,35 +82,35 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	gobject_class->finalize = almanah_storage_manager_finalize;
 
 	g_object_class_install_property (gobject_class, PROP_FILENAME,
-				g_param_spec_string ("filename",
-					"Database filename", "The path and filename for the unencrypted SQLite database.",
-					NULL,
-					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_string ("filename",
+	                                                      "Database filename", "The path and filename for the unencrypted SQLite database.",
+	                                                      NULL,
+	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 	storage_manager_signals[SIGNAL_DISCONNECTED] = g_signal_new ("disconnected",
-				G_TYPE_FROM_CLASS (klass),
-				G_SIGNAL_RUN_LAST,
-				0, NULL, NULL,
-				almanah_marshal_VOID__STRING_STRING,
-				G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
+	                                                             G_TYPE_FROM_CLASS (klass),
+	                                                             G_SIGNAL_RUN_LAST,
+	                                                             0, NULL, NULL,
+	                                                             almanah_marshal_VOID__STRING_STRING,
+	                                                             G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
 	storage_manager_signals[SIGNAL_DEFINITION_ADDED] = g_signal_new ("definition-added",
-				G_TYPE_FROM_CLASS (klass),
-				G_SIGNAL_RUN_LAST,
-				0, NULL, NULL,
-				g_cclosure_marshal_VOID__OBJECT,
-				G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
+	                                                                 G_TYPE_FROM_CLASS (klass),
+	                                                                 G_SIGNAL_RUN_LAST,
+	                                                                 0, NULL, NULL,
+	                                                                 g_cclosure_marshal_VOID__OBJECT,
+	                                                                 G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
 	storage_manager_signals[SIGNAL_DEFINITION_MODIFIED] = g_signal_new ("definition-modified",
-				G_TYPE_FROM_CLASS (klass),
-				G_SIGNAL_RUN_LAST,
-				0, NULL, NULL,
-				g_cclosure_marshal_VOID__OBJECT,
-				G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
+	                                                                    G_TYPE_FROM_CLASS (klass),
+	                                                                    G_SIGNAL_RUN_LAST,
+	                                                                    0, NULL, NULL,
+	                                                                    g_cclosure_marshal_VOID__OBJECT,
+	                                                                    G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
 	storage_manager_signals[SIGNAL_DEFINITION_REMOVED] = g_signal_new ("definition-removed",
-				G_TYPE_FROM_CLASS (klass),
-				G_SIGNAL_RUN_LAST,
-				0, NULL, NULL,
-				g_cclosure_marshal_VOID__STRING,
-				G_TYPE_NONE, 1, G_TYPE_STRING);
+	                                                                   G_TYPE_FROM_CLASS (klass),
+	                                                                   G_SIGNAL_RUN_LAST,
+	                                                                   0, NULL, NULL,
+	                                                                   g_cclosure_marshal_VOID__STRING,
+	                                                                   G_TYPE_NONE, 1, G_TYPE_STRING);
 }
 
 static void
@@ -128,9 +128,8 @@ almanah_storage_manager_init (AlmanahStorageManager *self)
  *
  * Creates a new #AlmanahStorageManager, connected to the given database @filename.
  *
- * If @filename is for an encrypted database, it will automatically be changed to the canonical filename for the
- * unencrypted database, even if that file doesn't exist, and even if Almanah was compiled without encryption support.
- * Database filenames are always passed as the unencrypted filename.
+ * If @filename is for an encrypted database, it will automatically be changed to the canonical filename for the unencrypted database, even if that
+ * file doesn't exist, and even if Almanah was compiled without encryption support. Database filenames are always passed as the unencrypted filename.
  *
  * Return value: the new #AlmanahStorageManager
  **/
@@ -167,9 +166,9 @@ almanah_storage_manager_get_property (GObject *object, guint property_id, GValue
 	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
 
 	switch (property_id) {
-	  	case PROP_FILENAME:
-	  		g_value_set_string (value, g_strdup (priv->filename));
-	  		break;
+		case PROP_FILENAME:
+			g_value_set_string (value, g_strdup (priv->filename));
+			break;
 		default:
 			/* We don't have any other property... */
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -197,16 +196,12 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 static void
 create_tables (AlmanahStorageManager *self)
 {
-	/* Old queries:
-		"CREATE TABLE IF NOT EXISTS entry_links (year INTEGER, month INTEGER, day INTEGER, link_type TEXT, link_value TEXT, link_value2 TEXT, PRIMARY KEY (year, month, day, link_type, link_value, link_value2))"
-		"CREATE TABLE IF NOT EXISTS entry_attachments (year INTEGER, month INTEGER, day INTEGER, attachment_type TEXT, attachment_data BLOB, PRIMARY KEY (year, month, day, attachment_type))"
-	 */
-
-	/* Dates are stored in ISO 8601 format...sort of */
+	/* Dates are stored in ISO 8601 format…sort of */
 	guint i;
 	const gchar *queries[] = {
 		"CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day))",
-		"CREATE TABLE IF NOT EXISTS definitions (definition_text TEXT, definition_type INTEGER, definition_value TEXT, definition_value2 TEXT, PRIMARY KEY (definition_text))",
+		"CREATE TABLE IF NOT EXISTS definitions (definition_text TEXT, definition_type INTEGER, definition_value TEXT, "
+		                                        "definition_value2 TEXT, PRIMARY KEY (definition_text))",
 		"ALTER TABLE entries ADD COLUMN is_important INTEGER", /* added in 0.7.0 */
 		NULL
 	};
@@ -234,8 +229,8 @@ prepare_gpgme (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 	/* Check for a minimum GPGME version (bgo#599598) */
 	if (gpgme_check_version (MIN_GPGME_VERSION) == NULL) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_BAD_VERSION,
-			     _("GPGME is not at least version %s"),
-			     MIN_GPGME_VERSION);
+		             _("GPGME is not at least version %s"),
+		             MIN_GPGME_VERSION);
 		return FALSE;
 	}
 
@@ -243,8 +238,8 @@ prepare_gpgme (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 	error_gpgme = gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP);
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_UNSUPPORTED,
-			     _("GPGME doesn't support OpenPGP: %s"),
-			     gpgme_strerror (error_gpgme));
+		             _("GPGME doesn't support OpenPGP: %s"),
+		             gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -252,8 +247,8 @@ prepare_gpgme (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 	error_gpgme = gpgme_new (&(operation->context));
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
-			     _("Error creating cipher context: %s"),
-			     gpgme_strerror (error_gpgme));
+		             _("Error creating cipher context: %s"),
+		             gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -281,9 +276,8 @@ open_db_files (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_cipher), g_io_channel_unix_get_fd (operation->cipher_io_channel));
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
-			     _("Error opening encrypted database file \"%s\": %s"),
-			     self->priv->filename,
-			     gpgme_strerror (error_gpgme));
+		             _("Error opening encrypted database file \"%s\": %s"),
+		             self->priv->filename, gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -301,9 +295,8 @@ open_db_files (AlmanahStorageManager *self, gboolean encrypting, CipherOperation
 	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
-			     _("Error opening plain database file \"%s\": %s"),
-			     self->priv->plain_filename,
-			     gpgme_strerror (error_gpgme));
+		             _("Error opening plain database file \"%s\": %s"),
+		             self->priv->plain_filename, gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -346,8 +339,8 @@ database_idle_cb (CipherOperation *operation)
 		struct stat db_stat;
 		gchar *warning_message = NULL;
 
-		/* Check to see if the encrypted file is 0B in size, which isn't good.
-		 * Not much we can do about it except quit without deleting the plaintext database. */
+		/* Check to see if the encrypted file is 0B in size, which isn't good. Not much we can do about it except quit without deleting the
+		 * plaintext database. */
 		g_stat (self->priv->filename, &db_stat);
 		if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == FALSE || db_stat.st_size == 0) {
 			warning_message = g_strdup (_("The encrypted database is empty. The plain database file has been left undeleted as backup."));
@@ -356,11 +349,10 @@ database_idle_cb (CipherOperation *operation)
 			warning_message = g_strdup_printf (_("Could not delete plain database file \"%s\"."), self->priv->plain_filename);
 		}
 
-		/* A slight assumption that we're disconnecting at this point (we're technically
-		 * only encrypting), but a valid one. */
+		/* A slight assumption that we're disconnecting at this point (we're technically only encrypting), but a valid one. */
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0,
-			       (error_gpgme == GPG_ERR_NO_ERROR) ? NULL: gpgme_strerror (error_gpgme),
-			       warning_message);
+		               (error_gpgme == GPG_ERR_NO_ERROR) ? NULL: gpgme_strerror (error_gpgme),
+		               warning_message);
 		g_free (warning_message);
 
 		/* Finished! */
@@ -395,8 +387,8 @@ decrypt_database (AlmanahStorageManager *self, GError **error)
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		cipher_operation_free (operation);
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_DECRYPTING,
-			     _("Error decrypting database: %s"),
-			     gpgme_strerror (error_gpgme));
+		             _("Error decrypting database: %s"),
+		             gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -429,8 +421,8 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 	if (error_gpgme != GPG_ERR_NO_ERROR || gpgme_keys[0] == NULL) {
 		cipher_operation_free (operation);
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY,
-			     _("Error getting encryption key: %s"),
-			     gpgme_strerror (error_gpgme));
+		             _("Error getting encryption key: %s"),
+		             gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -450,8 +442,8 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 		cipher_operation_free (operation);
 
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_ENCRYPTING,
-			     _("Error encrypting database: %s"),
-			     gpgme_strerror (error_gpgme));
+		             _("Error encrypting database: %s"),
+		             gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -474,8 +466,7 @@ get_encryption_key (void)
 		return NULL;
 	}
 
-	/* Key is generally in the form openpgp:FOOBARKEY, and GPGME doesn't
-	 * like the openpgp: prefix, so it must be removed. */
+	/* Key is generally in the form openpgp:FOOBARKEY, and GPGME doesn't like the openpgp: prefix, so it must be removed. */
 	key_parts = g_strsplit (encryption_key, ":", 2);
 	g_free (encryption_key);
 
@@ -517,8 +508,8 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 
 	g_stat (self->priv->filename, &encrypted_db_stat);
 
-	/* If we're decrypting, don't bother if the cipher file doesn't exist
-	 * (i.e. the database hasn't yet been created), or is empty (i.e. corrupt). */
+	/* If we're decrypting, don't bother if the cipher file doesn't exist (i.e. the database hasn't yet been created), or is empty
+	 * (i.e. corrupt). */
 	if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
 		GError *child_error = NULL;
 
@@ -527,12 +518,11 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 
 		g_stat (self->priv->plain_filename, &plaintext_db_stat);
 
-		/* Only decrypt the database if the plaintext database doesn't exist or is empty. If the plaintext
-		 * database exists and is non-empty, don't decrypt --- just use that database. */
+		/* Only decrypt the database if the plaintext database doesn't exist or is empty. If the plaintext database exists and is non-empty,
+		 * don't decrypt — just use that database. */
 		if (g_file_test (self->priv->plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
-			/* Decrypt the database, or display an error if that fails (but not if it
-			 * fails due to a missing encrypted DB file --- just fall through and
-			 * try to open the plain DB file in that case). */
+			/* Decrypt the database, or display an error if that fails (but not if it fails due to a missing encrypted DB file — just
+			 * fall through and try to open the plain DB file in that case). */
 			if (decrypt_database (self, &child_error) != TRUE) {
 				if (child_error->code != G_FILE_ERROR_NOENT) {
 					g_propagate_error (error, child_error);
@@ -554,9 +544,8 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 	/* Open the plain database */
 	if (sqlite3_open (self->priv->plain_filename, &(self->priv->connection)) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
-			     _("Could not open database \"%s\". SQLite provided the following error message: %s"),
-			     self->priv->filename, 
-			     sqlite3_errmsg (self->priv->connection));
+		             _("Could not open database \"%s\". SQLite provided the following error message: %s"),
+		             self->priv->filename, sqlite3_errmsg (self->priv->connection));
 		return FALSE;
 	}
 
@@ -578,9 +567,9 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 	sqlite3_close (self->priv->connection);
 
 #ifdef ENABLE_ENCRYPTION
-	/* If the database wasn't encrypted before we opened it, we won't encrypt it when closing.
-	 * In fact, we'll go so far as to delete the old encrypted database file. */
-	if (self->priv->decrypted == FALSE) 
+	/* If the database wasn't encrypted before we opened it, we won't encrypt it when closing. In fact, we'll go so far as to delete the old
+	 * encrypted database file. */
+	if (self->priv->decrypted == FALSE)
 		goto delete_encrypted_db;
 
 	/* Get the encryption key */
@@ -633,9 +622,8 @@ almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, 
 		g_debug ("Database query: %s", new_query);
 	if (sqlite3_get_table (priv->connection, new_query, &(results->data), &(results->rows), &(results->columns), NULL) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
-			     _("Could not run query \"%s\". SQLite provided the following error message: %s"),
-			     new_query,
-			     sqlite3_errmsg (priv->connection));
+		             _("Could not run query \"%s\". SQLite provided the following error message: %s"),
+		             new_query, sqlite3_errmsg (priv->connection));
 		sqlite3_free (new_query);
 		return NULL;
 	}
@@ -653,7 +641,8 @@ almanah_storage_manager_free_results (AlmanahQueryResults *results)
 }
 
 gboolean
-almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data, GError **error, ...)
+almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data,
+                                     GError **error, ...)
 {
 	AlmanahStorageManagerPrivate *priv = self->priv;
 	gchar *new_query;
@@ -667,9 +656,8 @@ almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *q
 		g_debug ("Database query: %s", new_query);
 	if (sqlite3_exec (priv->connection, new_query, callback, user_data, NULL) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
-			     _("Could not run query \"%s\". SQLite provided the following error message: %s"),
-			     new_query,
-			     sqlite3_errmsg (priv->connection));
+		             _("Could not run query \"%s\". SQLite provided the following error message: %s"),
+		             new_query, sqlite3_errmsg (priv->connection));
 		sqlite3_free (new_query);
 		return FALSE;
 	}
@@ -727,9 +715,9 @@ almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 	gboolean exists = FALSE;
 
 	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND day = %u LIMIT 1", NULL,
-						 g_date_get_year (date),
-						 g_date_get_month (date),
-						 g_date_get_day (date));
+	                                         g_date_get_year (date),
+	                                         g_date_get_month (date),
+	                                         g_date_get_day (date));
 
 	if (results == NULL)
 		return FALSE;
@@ -746,8 +734,7 @@ almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
  * @self: an #AlmanahStorageManager
  * @date: the date of the entry
  *
- * Gets the entry for the specified day from the database.
- * If an entry can't be found it will return %NULL.
+ * Gets the entry for the specified day from the database. If an entry can't be found it will return %NULL.
  *
  * Return value: an #AlmanahEntry or %NULL
  **/
@@ -757,15 +744,13 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 	AlmanahEntry *entry;
 	sqlite3_stmt *statement;
 
-	/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here
-	 * as we can't otherwise reliably bind the data blob to the query --- if we pass it in as
-	 * a string, it gets cut off at the first nul character, which could occur anywhere in
-	 * the blob. */
+	/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here as we can't otherwise reliably bind the data blob
+	 * to the query — if we pass it in as a string, it gets cut off at the first nul character, which could occur anywhere in the blob. */
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT content, is_important FROM entries WHERE year = ? AND month = ? AND day = ?", -1,
-				&statement, NULL) != SQLITE_OK) {
+	                        "SELECT content, is_important FROM entries WHERE year = ? AND month = ? AND day = ?", -1,
+	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
 
@@ -795,9 +780,8 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
  * @self: an #AlmanahStorageManager
  * @entry: an #AlmanahEntry
  *
- * Saves the specified @entry in the database synchronously.
- * If the @entry's content is empty, it will delete @entry's rows
- * in the database (as well as its definitions' rows).
+ * Saves the specified @entry in the database synchronously. If the @entry's content is empty, it will delete @entry's rows in the database (as well
+ * as its definitions' rows).
  *
  * Return value: %TRUE on success, %FALSE otherwise
  **/
@@ -811,9 +795,9 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 	if (almanah_entry_is_empty (entry) == TRUE) {
 		/* Delete the entry */
 		almanah_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, NULL,
-						     g_date_get_year (&date),
-						     g_date_get_month (&date),
-						     g_date_get_day (&date));
+		                                     g_date_get_year (&date),
+		                                     g_date_get_month (&date),
+		                                     g_date_get_day (&date));
 
 		return TRUE;
 	} else {
@@ -821,15 +805,14 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		gsize length;
 		sqlite3_stmt *statement;
 
-		/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here
-		 * as we can't otherwise reliably bind the data blob to the query --- if we pass it in as
-		 * a string, it gets cut off at the first nul character, which could occur anywhere in
+		/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here as we can't otherwise reliably bind the
+		 * data blob to the query — if we pass it in as a string, it gets cut off at the first nul character, which could occur anywhere in
 		 * the blob. */
 
 		/* Prepare the statement */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-					"REPLACE INTO entries (year, month, day, content, is_important) VALUES (?, ?, ?, ?, ?)", -1,
-					&statement, NULL) != SQLITE_OK) {
+		                        "REPLACE INTO entries (year, month, day, content, is_important) VALUES (?, ?, ?, ?, ?)", -1,
+		                        &statement, NULL) != SQLITE_OK) {
 			return FALSE;
 		}
 
@@ -876,8 +859,8 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	/* Prepare the statement. Query in ascending date order, and then reverse the results by prepending them to the list as we build it,
 	 * rather than appending them. */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT content, day, month, year, is_important FROM entries ORDER BY year ASC, month ASC, day ASC", -1,
-				&statement, NULL) != SQLITE_OK) {
+	                        "SELECT content, day, month, year, is_important FROM entries ORDER BY year ASC, month ASC, day ASC", -1,
+	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
 
@@ -935,13 +918,13 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self)
 	int result;
 	sqlite3_stmt *statement;
 
-	/* Just as with almanah_storage_manager_get_entry(), it's necessary to avoid our nice SQLite interface
-	 * here. It's probably more efficient to avoid it anyway. */
+	/* Just as with almanah_storage_manager_get_entry(), it's necessary to avoid our nice SQLite interface here. It's probably more efficient to
+	 * avoid it anyway. */
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT content, is_important, day, month, year FROM entries", -1,
-				&statement, NULL) != SQLITE_OK) {
+	                        "SELECT content, is_important, day, month, year FROM entries", -1,
+	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
 
@@ -951,9 +934,9 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self)
 		AlmanahEntry *entry;
 
 		g_date_set_dmy (&date,
-				sqlite3_column_int (statement, 2),
-				sqlite3_column_int (statement, 3),
-				sqlite3_column_int (statement, 4));
+		                sqlite3_column_int (statement, 2),
+		                sqlite3_column_int (statement, 3),
+		                sqlite3_column_int (statement, 4));
 
 		/* Get the data */
 		entry = almanah_entry_new (&date);
@@ -988,9 +971,7 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 		*num_days = i;
 	days = g_malloc0 (sizeof (gboolean) * i);
 
-	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", NULL,
-						 year,
-						 month);
+	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", NULL, year, month);
 
 	if (results == NULL)
 		return days;
@@ -1050,8 +1031,8 @@ almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-				"SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions", -1,
-				&statement, NULL) != SQLITE_OK) {
+	                        "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions", -1,
+	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
 
@@ -1077,16 +1058,18 @@ almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 	return g_slist_reverse (definitions);
 }
 
-/* Note: this function is case-insensitive, unless the definition text contains Unicode characters
- * beyond the ASCII range. This is an SQLite bug: http://sqlite.org/lang_expr.html#like */
+/* Note: this function is case-insensitive, unless the definition text contains Unicode characters beyond the ASCII range.
+ * This is an SQLite bug: http://sqlite.org/lang_expr.html#like */
 AlmanahDefinition *
 almanah_storage_manager_get_definition (AlmanahStorageManager *self, const gchar *definition_text)
 {
 	AlmanahQueryResults *results;
 	AlmanahDefinition *definition;
 
-	results = almanah_storage_manager_query (self, "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions WHERE definition_text LIKE '%q' LIMIT 1", NULL,
-						 definition_text);
+	results = almanah_storage_manager_query (self,
+	                                         "SELECT definition_type, definition_value, definition_value2, definition_text "
+	                                         "FROM definitions WHERE definition_text LIKE '%q' LIMIT 1", NULL,
+	                                         definition_text);
 
 	if (results == NULL || results->rows == 0) {
 		if (results != NULL)
@@ -1117,8 +1100,8 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 	value2 = almanah_definition_get_value2 (definition);
 	text = almanah_definition_get_text (definition);
 
-	/* Check to see if there's already a definition for this text (case-insensitively), and
-	 * use its (correctly-cased) definition text instead of ours */
+	/* Check to see if there's already a definition for this text (case-insensitively), and use its (correctly-cased) definition text instead of
+	 * ours */
 	real_definition = almanah_storage_manager_get_definition (self, text);
 	if (real_definition != NULL) {
 		text = almanah_definition_get_text (real_definition);
@@ -1127,16 +1110,16 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 
 	/* Update/Insert the definition */
 	if (value2 == NULL) {
-		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO definitions (definition_type, definition_value, definition_text) VALUES (%u, '%q', '%q')", NULL, NULL, NULL,
-								    type_id,
-								    value,
-								    text);
+		return_value = almanah_storage_manager_query_async (self,
+		                                                    "REPLACE INTO definitions (definition_type, definition_value, definition_text) "
+		                                                    "VALUES (%u, '%q', '%q')", NULL, NULL, NULL,
+		                                                    type_id, value, text);
 	} else {
-		return_value = almanah_storage_manager_query_async (self, "REPLACE INTO definitions (definition_type, definition_value, definition_value2, definition_text) VALUES (%u, '%q', '%q', '%q')", NULL, NULL, NULL,
-								    type_id,
-								    value,
-								    value2,
-								    text);
+		return_value = almanah_storage_manager_query_async (self,
+		                                                    "REPLACE INTO definitions (definition_type, definition_value, "
+		                                                                              "definition_value2, definition_text) "
+		                                                    "VALUES (%u, '%q', '%q', '%q')", NULL, NULL, NULL,
+		                                                    type_id, value, value2, text);
 	}
 
 	if (real_definition != NULL)
@@ -1153,7 +1136,8 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 gboolean
 almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text)
 {
-	if (almanah_storage_manager_query_async (self, "DELETE FROM definitions WHERE definition_text = '%q'", NULL, NULL, NULL, definition_text) == TRUE) {
+	if (almanah_storage_manager_query_async (self, "DELETE FROM definitions WHERE definition_text = '%q'",
+	                                         NULL, NULL, NULL, definition_text) == TRUE) {
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_REMOVED], 0, definition_text);
 		return TRUE;
 	}
