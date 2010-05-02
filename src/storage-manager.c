@@ -203,6 +203,9 @@ create_tables (AlmanahStorageManager *self)
 		"CREATE TABLE IF NOT EXISTS definitions (definition_text TEXT, definition_type INTEGER, definition_value TEXT, "
 		                                        "definition_value2 TEXT, PRIMARY KEY (definition_text))",
 		"ALTER TABLE entries ADD COLUMN is_important INTEGER", /* added in 0.7.0 */
+		"ALTER TABLE entries ADD COLUMN edited_year INTEGER", /* added in 0.8.0 */
+		"ALTER TABLE entries ADD COLUMN edited_month INTEGER", /* added in 0.8.0 */
+		"ALTER TABLE entries ADD COLUMN edited_day INTEGER", /* added in 0.8.0 */
 		NULL
 	};
 
@@ -743,13 +746,15 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 {
 	AlmanahEntry *entry;
 	sqlite3_stmt *statement;
+	GDate last_edited;
 
 	/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here as we can't otherwise reliably bind the data blob
 	 * to the query — if we pass it in as a string, it gets cut off at the first nul character, which could occur anywhere in the blob. */
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT content, is_important FROM entries WHERE year = ? AND month = ? AND day = ?", -1,
+	                        "SELECT content, is_important, edited_day, edited_month, edited_year FROM entries "
+	                        "WHERE year = ? AND month = ? AND day = ?", -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
@@ -770,6 +775,14 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 	almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
 	almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
 
+	if (g_date_valid_dmy (sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3), sqlite3_column_int (statement, 4)) == TRUE) {
+		g_date_set_dmy (&last_edited,
+			        sqlite3_column_int (statement, 2),
+			        sqlite3_column_int (statement, 3),
+			        sqlite3_column_int (statement, 4));
+		almanah_entry_set_last_edited (entry, &last_edited);
+	}
+
 	sqlite3_finalize (statement);
 
 	return entry;
@@ -782,6 +795,8 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
  *
  * Saves the specified @entry in the database synchronously. If the @entry's content is empty, it will delete @entry's rows in the database (as well
  * as its definitions' rows).
+ *
+ * The entry's last-edited date should be manually updated before storing it in the database, if desired.
  *
  * Return value: %TRUE on success, %FALSE otherwise
  **/
@@ -804,6 +819,7 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		const guint8 *data;
 		gsize length;
 		sqlite3_stmt *statement;
+		GDate last_edited;
 
 		/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here as we can't otherwise reliably bind the
 		 * data blob to the query — if we pass it in as a string, it gets cut off at the first nul character, which could occur anywhere in
@@ -811,7 +827,8 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 		/* Prepare the statement */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-		                        "REPLACE INTO entries (year, month, day, content, is_important) VALUES (?, ?, ?, ?, ?)", -1,
+		                        "REPLACE INTO entries (year, month, day, content, is_important, edited_day, edited_month, edited_year) "
+		                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", -1,
 		                        &statement, NULL) != SQLITE_OK) {
 			return FALSE;
 		}
@@ -825,6 +842,11 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		sqlite3_bind_blob (statement, 4, data, length, SQLITE_TRANSIENT);
 
 		sqlite3_bind_int (statement, 5, almanah_entry_is_important (entry));
+
+		almanah_entry_get_last_edited (entry, &last_edited);
+		sqlite3_bind_int (statement, 6, g_date_get_day (&last_edited));
+		sqlite3_bind_int (statement, 7, g_date_get_month (&last_edited));
+		sqlite3_bind_int (statement, 8, g_date_get_year (&last_edited));
 
 		/* Execute the statement */
 		if (sqlite3_step (statement) != SQLITE_DONE) {
@@ -859,7 +881,8 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	/* Prepare the statement. Query in ascending date order, and then reverse the results by prepending them to the list as we build it,
 	 * rather than appending them. */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT content, day, month, year, is_important FROM entries ORDER BY year ASC, month ASC, day ASC", -1,
+	                        "SELECT content, day, month, year, is_important, edited_day, edited_month, edited_year FROM entries "
+	                        "ORDER BY year ASC, month ASC, day ASC", -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
@@ -869,13 +892,23 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	/* Execute the statement */
 	while (sqlite3_step (statement) == SQLITE_ROW) {
 		AlmanahEntry *entry;
-		GDate date;
+		GDate date, last_edited;
 		GtkTextIter iter;
 
 		g_date_set_dmy (&date, sqlite3_column_int (statement, 1), sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3));
 		entry = almanah_entry_new (&date);
 		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
 		almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 4) == 1) ? TRUE : FALSE);
+
+		if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
+		                      sqlite3_column_int (statement, 3),
+		                      sqlite3_column_int (statement, 4)) == TRUE) {
+			g_date_set_dmy (&last_edited,
+				        sqlite3_column_int (statement, 5),
+				        sqlite3_column_int (statement, 6),
+				        sqlite3_column_int (statement, 7));
+			almanah_entry_set_last_edited (entry, &last_edited);
+		}
 
 		/* Deserialise the entry into our buffer */
 		gtk_text_buffer_set_text (text_buffer, "", 0);
@@ -923,14 +956,14 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self)
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT content, is_important, day, month, year FROM entries", -1,
+	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries", -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
 
 	/* Execute the statement */
 	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		GDate date;
+		GDate date, last_edited;
 		AlmanahEntry *entry;
 
 		g_date_set_dmy (&date,
@@ -942,6 +975,16 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self)
 		entry = almanah_entry_new (&date);
 		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
 		almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
+
+		if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
+		                      sqlite3_column_int (statement, 3),
+		                      sqlite3_column_int (statement, 4)) == TRUE) {
+			g_date_set_dmy (&last_edited,
+				        sqlite3_column_int (statement, 5),
+				        sqlite3_column_int (statement, 6),
+				        sqlite3_column_int (statement, 7));
+			almanah_entry_set_last_edited (entry, &last_edited);
+		}
 
 		entries = g_slist_prepend (entries, entry);
 	}

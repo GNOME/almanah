@@ -67,6 +67,9 @@ gboolean almanah_entry_is_empty (AlmanahEntry *self);
 gboolean almanah_entry_is_important (AlmanahEntry *self);
 void almanah_entry_set_is_important (AlmanahEntry *self, gboolean is_important);
 
+void almanah_entry_get_last_edited (AlmanahEntry *self, GDate *last_edited);
+void almanah_entry_set_last_edited (AlmanahEntry *self, GDate *last_edited);
+
 G_END_DECLS
 
 #endif /* !ALMANAH_ENTRY_H */

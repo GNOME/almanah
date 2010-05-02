@@ -34,13 +34,17 @@ struct _AlmanahEntryPrivate {
 	gsize length;
 	gboolean is_empty;
 	gboolean is_important;
+	GDate last_edited; /* date the entry was last edited *in the database*; e.g. this isn't updated when almanah_entry_set_content() is called */
 };
 
 enum {
 	PROP_DAY = 1,
 	PROP_MONTH,
 	PROP_YEAR,
-	PROP_IS_IMPORTANT
+	PROP_IS_IMPORTANT,
+	PROP_LAST_EDITED_DAY,
+	PROP_LAST_EDITED_MONTH,
+	PROP_LAST_EDITED_YEAR
 };
 
 G_DEFINE_TYPE (AlmanahEntry, almanah_entry, G_TYPE_OBJECT)
@@ -76,6 +80,21 @@ almanah_entry_class_init (AlmanahEntryClass *klass)
 				g_param_spec_boolean ("is-important",
 					"Important?", "Whether the entry is particularly important to the user.",
 					FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_LAST_EDITED_DAY,
+				g_param_spec_uint ("last-edited-day",
+					"Last Edited Day", "The day when this entry was last edited.",
+					1, 31, 1,
+					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_LAST_EDITED_MONTH,
+				g_param_spec_uint ("last-edited-month",
+					"Last Edited Month", "The month when this entry was last edited.",
+					1, 12, 1,
+					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_LAST_EDITED_YEAR,
+				g_param_spec_uint ("last-edited-year",
+					"Last Edited Year", "The year when this entry was last edited.",
+					1, (1 << 16) - 1, 1,
+					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -85,6 +104,7 @@ almanah_entry_init (AlmanahEntry *self)
 	self->priv->data = NULL;
 	self->priv->length = 0;
 	g_date_clear (&(self->priv->date), 1);
+	g_date_clear (&(self->priv->last_edited), 1);
 }
 
 static void
@@ -116,6 +136,15 @@ almanah_entry_get_property (GObject *object, guint property_id, GValue *value, G
 		case PROP_IS_IMPORTANT:
 			g_value_set_boolean (value, priv->is_important);
 			break;
+		case PROP_LAST_EDITED_DAY:
+			g_value_set_uint (value, g_date_get_day (&(priv->last_edited)));
+			break;
+		case PROP_LAST_EDITED_MONTH:
+			g_value_set_uint (value, g_date_get_month (&(priv->last_edited)));
+			break;
+		case PROP_LAST_EDITED_YEAR:
+			g_value_set_uint (value, g_date_get_year (&(priv->last_edited)));
+			break;
 		default:
 			/* We don't have any other property... */
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -140,6 +169,15 @@ almanah_entry_set_property (GObject *object, guint property_id, const GValue *va
 			break;
 		case PROP_IS_IMPORTANT:
 			almanah_entry_set_is_important (ALMANAH_ENTRY (object), g_value_get_boolean (value));
+			break;
+		case PROP_LAST_EDITED_DAY:
+			g_date_set_day (&(priv->last_edited), g_value_get_uint (value));
+			break;
+		case PROP_LAST_EDITED_MONTH:
+			g_date_set_month (&(priv->last_edited), g_value_get_uint (value));
+			break;
+		case PROP_LAST_EDITED_YEAR:
+			g_date_set_year (&(priv->last_edited), g_value_get_uint (value));
 			break;
 		default:
 			/* We don't have any other property... */
@@ -289,4 +327,24 @@ almanah_entry_set_is_important (AlmanahEntry *self, gboolean is_important)
 		self->priv->is_important = is_important;
 		g_object_notify (G_OBJECT (self), "is-important");
 	}
+}
+
+/* NOTE: Designed for use on the stack */
+void
+almanah_entry_get_last_edited (AlmanahEntry *self, GDate *last_edited)
+{
+	g_return_if_fail (ALMANAH_IS_ENTRY (self));
+	g_return_if_fail (last_edited != NULL);
+
+	*last_edited = self->priv->last_edited;
+}
+
+/* NOTE: Designed for use on the stack */
+void
+almanah_entry_set_last_edited (AlmanahEntry *self, GDate *last_edited)
+{
+	g_return_if_fail (ALMANAH_IS_ENTRY (self));
+	g_return_if_fail (last_edited != NULL && g_date_valid (last_edited) == TRUE);
+
+	self->priv->last_edited = *last_edited;
 }

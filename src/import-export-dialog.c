@@ -214,7 +214,7 @@ almanah_import_export_dialog_new (gboolean import)
 static AlmanahImportStatus
 set_entry (AlmanahImportExportDialog *self, AlmanahEntry *imported_entry, const gchar *import_source, gchar **message)
 {
-	GDate entry_date;
+	GDate entry_date, existing_last_edited, imported_last_edited;
 	AlmanahEntry *existing_entry;
 	GtkTextBuffer *existing_buffer, *imported_buffer;
 	GtkTextIter existing_start, existing_end, imported_start, imported_end;
@@ -305,6 +305,13 @@ set_entry (AlmanahImportExportDialog *self, AlmanahEntry *imported_entry, const 
 	almanah_entry_set_content (existing_entry, existing_buffer);
 	g_object_unref (existing_buffer);
 
+	/* Update the last-edited time for the merged entry to be the more recent of the last-edited times for the existing and imported entries */
+	almanah_entry_get_last_edited (existing_entry, &existing_last_edited);
+	almanah_entry_get_last_edited (imported_entry, &imported_last_edited);
+
+	if (g_date_valid (&existing_last_edited) == FALSE || g_date_compare (&existing_last_edited, &imported_last_edited) < 0)
+		almanah_entry_set_last_edited (existing_entry, &imported_last_edited);
+
 	almanah_storage_manager_set_entry (almanah->storage_manager, existing_entry);
 	g_object_unref (existing_entry);
 
@@ -326,8 +333,8 @@ import_text_files (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *
 	folder = gtk_file_chooser_get_file (priv->file_chooser);
 	g_assert (folder != NULL);
 
-	enumerator = g_file_enumerate_children (folder, "standard::name,standard::display-name,standard::is-hidden", G_FILE_QUERY_INFO_NONE,
-	                                        NULL, error);
+	enumerator = g_file_enumerate_children (folder, "standard::name,standard::display-name,standard::is-hidden,time::modified",
+	                                        G_FILE_QUERY_INFO_NONE, NULL, error);
 	g_object_unref (folder);
 	if (enumerator == NULL)
 		return FALSE;
@@ -338,7 +345,8 @@ import_text_files (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *
 	/* Enumerate all the children of the folder */
 	while ((file_info = g_file_enumerator_next_file (enumerator, NULL, &child_error)) != NULL) {
 		AlmanahEntry *entry;
-		GDate parsed_date;
+		GDate parsed_date, last_edited;
+		GTimeVal modification_time;
 		GFile *file;
 		gchar *contents, *message = NULL;
 		gsize length;
@@ -378,6 +386,11 @@ import_text_files (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *
 		gtk_text_buffer_set_text (buffer, contents, length);
 		almanah_entry_set_content (entry, buffer);
 		g_free (contents);
+
+		/* Set the entry's last-edited date */
+		g_file_info_get_modification_time (file_info, &modification_time);
+		g_date_set_time_val (&last_edited, &modification_time);
+		almanah_entry_set_last_edited (entry, &last_edited);
 
 		/* Store the entry */
 		status = set_entry (self, entry, display_name, &message);

@@ -361,7 +361,7 @@ static void
 save_current_entry (AlmanahMainWindow *self)
 {
 	gboolean entry_exists, entry_is_empty;
-	GDate date;
+	GDate date, last_edited;
 	AlmanahMainWindowPrivate *priv = self->priv;
 	AlmanahEntryEditability editability;
 
@@ -372,10 +372,6 @@ save_current_entry (AlmanahMainWindow *self)
 	    gtk_text_view_get_editable (priv->entry_view) == FALSE ||
 	    gtk_text_buffer_get_modified (priv->entry_buffer) == FALSE)
 		return;
-
-	/* Save the entry */
-	almanah_entry_set_content (priv->current_entry, priv->entry_buffer);
-	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
 
 	almanah_entry_get_date (priv->current_entry, &date);
 	editability = almanah_entry_get_editability (priv->current_entry);
@@ -439,6 +435,13 @@ save_current_entry (AlmanahMainWindow *self)
 
 		gtk_widget_destroy (dialog);
 	}
+
+	/* Save the entry */
+	almanah_entry_set_content (priv->current_entry, priv->entry_buffer);
+	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
+
+	g_date_set_time_t (&last_edited, time (NULL));
+	almanah_entry_set_last_edited (priv->current_entry, &last_edited);
 
 	/* Store the entry! */
 	almanah_storage_manager_set_entry (almanah->storage_manager, priv->current_entry);
