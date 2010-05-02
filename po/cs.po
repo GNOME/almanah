@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-22 23:44+0200\n"
-"PO-Revision-Date: 2010-04-21 06:50+0200\n"
+"POT-Creation-Date: 2010-05-02 18:04+0200\n"
+"PO-Revision-Date: 2010-04-25 09:48+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -245,9 +245,8 @@ msgid "_Edit"
 msgstr "_Upravit"
 
 #: ../data/almanah.ui.h:37
-#, fuzzy
 msgid "_Export…"
-msgstr "_Importovat…"
+msgstr "_Exportovat…"
 
 #: ../data/almanah.ui.h:38
 msgid "_File"
@@ -340,19 +339,19 @@ msgid ""
 "imported."
 msgstr ""
 "Vyberte složku obsahující textový soubory, pro každý záznam jeden, s názvy "
-"ve formátu „yyyy-mm-dd“ a bez přípony. Všechny takovéto soubory budou "
+"ve formátu „rrrr-mm-dd“ a bez přípony. Všechny takovéto soubory budou "
 "naimportovány."
 
 #: ../src/import-export-dialog.c:52
-#, fuzzy
 msgid ""
 "Select a folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
 "exported, unencrypted in plain text format."
 msgstr ""
-"Vyberte složku obsahující textový soubory, pro každý záznam jeden, s názvy "
-"ve formátu „yyyy-mm-dd“ a bez přípony. Všechny takovéto soubory budou "
-"naimportovány."
+"Vyberte složku, do které se mají exportovat záznamy jako textové soubory, "
+"pro každý záznam jeden, s názvy ve formátu „rrrr-mm-dd“ a bez přípony. "
+"Exportovány budou všechny záznamy a to nezašifrovaném, v čistě textovém "
+"formátu."
 
 #: ../src/import-export-dialog.c:57
 msgid "Database"
@@ -369,15 +368,16 @@ msgid ""
 "Select a filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
+"Vyberte název souboru, do kterého se má dát úplná kopie nezašifrované "
+"databáze Diáře Almanah"
 
 #: ../src/import-export-dialog.c:179
 msgid "Import mode: "
 msgstr "Režim importu: "
 
 #: ../src/import-export-dialog.c:179
-#, fuzzy
 msgid "Export mode: "
-msgstr "Režim importu: "
+msgstr "Režim exportu: "
 
 #. Set the window title
 #: ../src/import-export-dialog.c:182
@@ -385,9 +385,8 @@ msgid "Import Entries"
 msgstr "Import záznamů"
 
 #: ../src/import-export-dialog.c:182
-#, fuzzy
 msgid "Export Entries"
-msgstr "Import záznamů"
+msgstr "Export záznamů"
 
 #. Set the button label
 #: ../src/import-export-dialog.c:185
@@ -395,9 +394,8 @@ msgid "_Import"
 msgstr "_Importovat"
 
 #: ../src/import-export-dialog.c:185
-#, fuzzy
 msgid "_Export"
-msgstr "_Importovat"
+msgstr "_Exportovat"
 
 #: ../src/import-export-dialog.c:239
 #, c-format
@@ -435,17 +433,16 @@ msgid "Import failed"
 msgstr "Import selhal"
 
 #: ../src/import-export-dialog.c:597
-#, fuzzy
 msgid "Export failed"
-msgstr "Import selhal"
+msgstr "Export selhal"
 
 #: ../src/import-export-dialog.c:617
 msgid "Export successful"
-msgstr ""
+msgstr "Export úspěšný"
 
 #: ../src/import-export-dialog.c:618
 msgid "The diary was successfully exported."
-msgstr ""
+msgstr "Diář byl úspěšně vyexportován."
 
 #: ../src/import-export-dialog.c:704
 msgid "Import Results"
@@ -765,6 +762,5 @@ msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledá
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: ../src/widgets/calendar.c:110
-#, fuzzy
 msgid "Important!"
-msgstr "Dů_ležité"
+msgstr "Důležité!"
