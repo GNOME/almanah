@@ -40,6 +40,7 @@
 static void almanah_storage_manager_finalize (GObject *object);
 static void almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
+static gboolean simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...);
 
 struct _AlmanahStorageManagerPrivate {
 	gchar *filename, *plain_filename;
@@ -211,7 +212,7 @@ create_tables (AlmanahStorageManager *self)
 
 	i = 0;
 	while (queries[i] != NULL)
-		almanah_storage_manager_query_async (self, queries[i++], NULL, NULL, NULL);
+		simple_query (self, queries[i++], NULL);
 }
 
 #ifdef ENABLE_ENCRYPTION
@@ -607,45 +608,8 @@ delete_encrypted_db:
 	return TRUE;
 }
 
-AlmanahQueryResults *
-almanah_storage_manager_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...)
-{
-	AlmanahStorageManagerPrivate *priv = self->priv;
-	gchar *new_query;
-	va_list params;
-	AlmanahQueryResults *results;
-
-	va_start (params, error);
-	new_query = sqlite3_vmprintf (query, params);
-	va_end (params);
-
-	results = g_new (AlmanahQueryResults, 1);
-
-	if (almanah->debug)
-		g_debug ("Database query: %s", new_query);
-	if (sqlite3_get_table (priv->connection, new_query, &(results->data), &(results->rows), &(results->columns), NULL) != SQLITE_OK) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
-		             _("Could not run query \"%s\". SQLite provided the following error message: %s"),
-		             new_query, sqlite3_errmsg (priv->connection));
-		sqlite3_free (new_query);
-		return NULL;
-	}
-
-	sqlite3_free (new_query);
-
-	return results;
-}
-
-void
-almanah_storage_manager_free_results (AlmanahQueryResults *results)
-{
-	sqlite3_free_table (results->data);
-	g_free (results);
-}
-
-gboolean
-almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *query, const AlmanahQueryCallback callback, gpointer user_data,
-                                     GError **error, ...)
+static gboolean
+simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...)
 {
 	AlmanahStorageManagerPrivate *priv = self->priv;
 	gchar *new_query;
@@ -657,7 +621,7 @@ almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *q
 
 	if (almanah->debug)
 		g_debug ("Database query: %s", new_query);
-	if (sqlite3_exec (priv->connection, new_query, callback, user_data, NULL) != SQLITE_OK) {
+	if (sqlite3_exec (priv->connection, new_query, NULL, NULL, NULL) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
 		             _("Could not run query \"%s\". SQLite provided the following error message: %s"),
 		             new_query, sqlite3_errmsg (priv->connection));
@@ -673,40 +637,37 @@ almanah_storage_manager_query_async (AlmanahStorageManager *self, const gchar *q
 gboolean
 almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *definition_count)
 {
-	AlmanahQueryResults *results;
+	sqlite3_stmt *statement;
 
 	*entry_count = 0;
 	*definition_count = 0;
 
 	/* Get the number of entries and the number of letters */
-	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM entries", NULL);
-	if (results == NULL) {
+	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT COUNT (year) FROM entries", -1, &statement, NULL) != SQLITE_OK)
 		return FALSE;
-	} else if (results->rows != 1) {
-		almanah_storage_manager_free_results (results);
+
+	if (sqlite3_step (statement) != SQLITE_ROW) {
+		sqlite3_finalize (statement);
 		return FALSE;
-	} else {
-		*entry_count = atoi (results->data[1]);
-		if (*entry_count == 0) {
-			*definition_count = 0;
-			almanah_storage_manager_free_results (results);
-			return TRUE;
-		}
 	}
-	almanah_storage_manager_free_results (results);
+
+	*entry_count = sqlite3_column_int (statement, 0);
+	sqlite3_finalize (statement);
+
+	if (*entry_count == 0)
+		return TRUE;
 
 	/* Get the number of definitions */
-	results = almanah_storage_manager_query (self, "SELECT COUNT (year) FROM definitions", NULL);
-	if (results == NULL) {
+	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT COUNT (year) FROM definitions", -1, &statement, NULL) != SQLITE_OK)
 		return FALSE;
-	} else if (results->rows != 1) {
-		*definition_count = 0;
-		almanah_storage_manager_free_results (results);
+
+	if (sqlite3_step (statement) != SQLITE_ROW) {
+		sqlite3_finalize (statement);
 		return FALSE;
-	} else {
-		*definition_count = atoi (results->data[1]);
 	}
-	almanah_storage_manager_free_results (results);
+
+	*definition_count = sqlite3_column_int (statement, 0);
+	sqlite3_finalize (statement);
 
 	return TRUE;
 }
@@ -714,22 +675,59 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 gboolean
 almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 {
-	AlmanahQueryResults *results;
+	sqlite3_stmt *statement;
 	gboolean exists = FALSE;
 
-	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND day = %u LIMIT 1", NULL,
-	                                         g_date_get_year (date),
-	                                         g_date_get_month (date),
-	                                         g_date_get_day (date));
-
-	if (results == NULL)
+	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ? AND day = ? LIMIT 1", -1,
+	                        &statement, NULL) != SQLITE_OK) {
 		return FALSE;
-	if (results->rows == 1)
+	}
+
+	sqlite3_bind_int (statement, 1, g_date_get_year (date));
+	sqlite3_bind_int (statement, 2, g_date_get_month (date));
+	sqlite3_bind_int (statement, 3, g_date_get_day (date));
+
+	/* If there's a result, this'll return SQLITE_ROW; it'll return SQLITE_DONE otherwise */
+	if (sqlite3_step (statement) == SQLITE_ROW)
 		exists = TRUE;
 
-	almanah_storage_manager_free_results (results);
+	sqlite3_finalize (statement);
 
 	return exists;
+}
+
+static AlmanahEntry *
+build_entry_from_statement (sqlite3_stmt *statement)
+{
+	GDate date, last_edited;
+	AlmanahEntry *entry;
+
+	/* Assumes query for SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, ... FROM entries ... */
+
+	/* Get the date */
+	g_date_set_dmy (&date,
+	                sqlite3_column_int (statement, 2),
+	                sqlite3_column_int (statement, 3),
+	                sqlite3_column_int (statement, 4));
+
+	/* Get the content */
+	entry = almanah_entry_new (&date);
+	almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+	almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
+
+	/* Set the last-edited date if possible (for backwards-compatibility, we have to assume that not all entries have valid last-edited dates set,
+	 * since last-edited support was only added in 0.8.0). */
+	if (g_date_valid_dmy (sqlite3_column_int (statement, 5),
+	                      sqlite3_column_int (statement, 6),
+	                      sqlite3_column_int (statement, 7)) == TRUE) {
+		g_date_set_dmy (&last_edited,
+		                sqlite3_column_int (statement, 5),
+		                sqlite3_column_int (statement, 6),
+		                sqlite3_column_int (statement, 7));
+		almanah_entry_set_last_edited (entry, &last_edited);
+	}
+
+	return entry;
 }
 
 /**
@@ -746,14 +744,13 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 {
 	AlmanahEntry *entry;
 	sqlite3_stmt *statement;
-	GDate last_edited;
 
 	/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here as we can't otherwise reliably bind the data blob
 	 * to the query — if we pass it in as a string, it gets cut off at the first nul character, which could occur anywhere in the blob. */
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT content, is_important, edited_day, edited_month, edited_year FROM entries "
+	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries "
 	                        "WHERE year = ? AND month = ? AND day = ?", -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
@@ -771,18 +768,7 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 	}
 
 	/* Get the data */
-	entry = almanah_entry_new (date);
-	almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
-	almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
-
-	if (g_date_valid_dmy (sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3), sqlite3_column_int (statement, 4)) == TRUE) {
-		g_date_set_dmy (&last_edited,
-			        sqlite3_column_int (statement, 2),
-			        sqlite3_column_int (statement, 3),
-			        sqlite3_column_int (statement, 4));
-		almanah_entry_set_last_edited (entry, &last_edited);
-	}
-
+	entry = build_entry_from_statement (statement);
 	sqlite3_finalize (statement);
 
 	return entry;
@@ -809,12 +795,10 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 	if (almanah_entry_is_empty (entry) == TRUE) {
 		/* Delete the entry */
-		almanah_storage_manager_query_async (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL, NULL, NULL,
-		                                     g_date_get_year (&date),
-		                                     g_date_get_month (&date),
-		                                     g_date_get_day (&date));
-
-		return TRUE;
+		return simple_query (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL,
+		                         g_date_get_year (&date),
+		                         g_date_get_month (&date),
+		                         g_date_get_day (&date));
 	} else {
 		const guint8 *data;
 		gsize length;
@@ -888,12 +872,19 @@ typedef struct {
  * almanah_storage_manager_search_entries:
  * @self: an #AlmanahStorageManager
  * @search_string: string for which to search in entry content
- * TODO
- * Searches for @search_string in the content in entries in the database, and returns the results. If there are no results, %NULL will be returned.
+ * @iter: an #AlmanahStorageManagerIter to keep track of the query
+ *
+ * Searches for @search_string in the content in entries in the database, and returns the results iteratively. @iter should be initialised with
+ * almanah_storage_manager_iter_init() and passed to almanah_storage_manager_search_entries(). This will then return a matching #AlmanahEntry every
+ * time it's called with the same @iter until it reaches the end of the result set, when it will return %NULL. It will also finish and return %NULL on
+ * error or if there are no results.
  *
  * The results are returned in descending date order.
  *
- * Return value: a #GSList of #AlmanahEntry<!-- -->s, or %NULL; unref elements with g_object_unref(); free list with g_slist_free()
+ * Calling functions must get every result from the result set (i.e. not stop calling almanah_storage_manager_search_entries() until it returns
+ * %NULL).
+ *
+ * Return value: an #AlmanahEntry, or %NULL; unref with g_object_unref()
  **/
 AlmanahEntry *
 almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, AlmanahStorageManagerIter *iter)
@@ -914,9 +905,9 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 		/* Prepare the statement. */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-			                "SELECT content, day, month, year, is_important, edited_day, edited_month, edited_year FROM entries "
-			                "ORDER BY year DESC, month DESC, day DESC", -1,
-			                (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
+		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries "
+		                        "ORDER BY year DESC, month DESC, day DESC", -1,
+		                        (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
 			return NULL;
 		}
 
@@ -934,28 +925,8 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	/* Execute the statement */
 	switch (sqlite3_step (statement)) {
 		case SQLITE_ROW: {
-			AlmanahEntry *entry;
-			GDate date, last_edited;
 			GtkTextIter text_iter;
-
-			g_date_set_dmy (&date,
-			                sqlite3_column_int (statement, 1),
-			                sqlite3_column_int (statement, 2),
-			                sqlite3_column_int (statement, 3));
-
-			entry = almanah_entry_new (&date);
-			almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
-			almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 4) == 1) ? TRUE : FALSE);
-
-			if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
-			                      sqlite3_column_int (statement, 3),
-			                      sqlite3_column_int (statement, 4)) == TRUE) {
-				g_date_set_dmy (&last_edited,
-				                sqlite3_column_int (statement, 5),
-				                sqlite3_column_int (statement, 6),
-				                sqlite3_column_int (statement, 7));
-				almanah_entry_set_last_edited (entry, &last_edited);
-			}
+			AlmanahEntry *entry = build_entry_from_statement (statement);
 
 			/* Deserialise the entry into our buffer */
 			gtk_text_buffer_set_text (text_buffer, "", 0);
@@ -1042,33 +1013,8 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 
 	/* Execute the statement */
 	switch (sqlite3_step (statement)) {
-		case SQLITE_ROW: {
-			GDate date, last_edited;
-			AlmanahEntry *entry;
-
-			/* Process the row */
-			g_date_set_dmy (&date,
-			                sqlite3_column_int (statement, 2),
-			                sqlite3_column_int (statement, 3),
-			                sqlite3_column_int (statement, 4));
-
-			/* Get the data */
-			entry = almanah_entry_new (&date);
-			almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
-			almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
-
-			if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
-			                      sqlite3_column_int (statement, 3),
-			                      sqlite3_column_int (statement, 4)) == TRUE) {
-				g_date_set_dmy (&last_edited,
-				                sqlite3_column_int (statement, 5),
-				                sqlite3_column_int (statement, 6),
-				                sqlite3_column_int (statement, 7));
-				almanah_entry_set_last_edited (entry, &last_edited);
-			}
-
-			return entry;
-		}
+		case SQLITE_ROW:
+			return build_entry_from_statement (statement);
 		case SQLITE_DONE:
 		case SQLITE_ERROR:
 		case SQLITE_BUSY:
@@ -1093,24 +1039,36 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 gboolean *
 almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
 {
-	AlmanahQueryResults *results;
-	gint i;
+	sqlite3_stmt *statement;
+	gint i, result;
 	gboolean *days;
 
+	/* Build the result array */
 	i = g_date_get_days_in_month (month, year);
 	if (num_days != NULL)
 		*num_days = i;
 	days = g_malloc0 (sizeof (gboolean) * i);
 
-	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u", NULL, year, month);
+	/* Prepare and run the query */
+	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ?", -1, &statement, NULL) != SQLITE_OK) {
+		g_free (days);
+		return NULL;
+	}
 
-	if (results == NULL)
-		return days;
+	sqlite3_bind_int (statement, 1, year);
+	sqlite3_bind_int (statement, 2, month);
 
-	for (i = 1; i <= results->rows; i++)
-		days[atoi (results->data[i]) - 1] = TRUE;
+	/* For each day which is returned, mark it in the array of days */
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW)
+		days[sqlite3_column_int (statement, 0) - 1] = TRUE;
 
-	almanah_storage_manager_free_results (results);
+	sqlite3_finalize (statement);
+
+	if (result != SQLITE_DONE) {
+		/* Error */
+		g_free (days);
+		return NULL;
+	}
 
 	return days;
 }
@@ -1119,28 +1077,55 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 gboolean *
 almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
 {
-	AlmanahQueryResults *results;
-	gint i;
+	sqlite3_stmt *statement;
+	gint i, result;
 	gboolean *days;
 
+	/* Build the result array */
 	i = g_date_get_days_in_month (month, year);
 	if (num_days != NULL)
 		*num_days = i;
 	days = g_malloc0 (sizeof (gboolean) * i);
 
-	results = almanah_storage_manager_query (self, "SELECT day FROM entries WHERE year = %u AND month = %u AND is_important = 1", NULL,
-	                                         year,
-	                                         month);
+	/* Prepare and run the query */
+	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ? AND is_important = 1", -1,
+	                        &statement, NULL) != SQLITE_OK) {
+		g_free (days);
+		return NULL;
+	}
 
-	if (results == NULL)
-		return days;
+	sqlite3_bind_int (statement, 1, year);
+	sqlite3_bind_int (statement, 2, month);
 
-	for (i = 1; i <= results->rows; i++)
-		days[atoi (results->data[i]) - 1] = TRUE;
+	/* For each day which is returned, mark it in the array of days */
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW)
+		days[sqlite3_column_int (statement, 0) - 1] = TRUE;
 
-	almanah_storage_manager_free_results (results);
+	sqlite3_finalize (statement);
+
+	if (result != SQLITE_DONE) {
+		/* Error */
+		g_free (days);
+		return NULL;
+	}
 
 	return days;
+}
+
+static AlmanahDefinition *
+build_definition_from_statement (sqlite3_stmt *statement)
+{
+	/* Assumes query for SELECT definition_type, definition_value, definition_value2, definition_text, ... FROM definitions ... */
+	AlmanahDefinition *definition = almanah_definition_new (sqlite3_column_int (statement, 0));
+
+	if (definition == NULL)
+		return NULL;
+
+	almanah_definition_set_value (definition, (const gchar*) sqlite3_column_text (statement, 1));
+	almanah_definition_set_value2 (definition, (const gchar*) sqlite3_column_text (statement, 2));
+	almanah_definition_set_text (definition, (const gchar*) sqlite3_column_text (statement, 3));
+
+	return definition;
 }
 
 /**
@@ -1169,12 +1154,9 @@ almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 
 	/* Execute the statement */
 	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		AlmanahDefinition *definition = almanah_definition_new (sqlite3_column_int (statement, 0));
-		almanah_definition_set_value (definition, (gchar*) sqlite3_column_text (statement, 1));
-		almanah_definition_set_value2 (definition, (gchar*) sqlite3_column_text (statement, 2));
-		almanah_definition_set_text (definition, (gchar*) sqlite3_column_text (statement, 3));
-
-		definitions = g_slist_prepend (definitions, definition);
+		AlmanahDefinition *definition = build_definition_from_statement (statement);
+		if (definition != NULL)
+			definitions = g_slist_prepend (definitions, definition);
 	}
 
 	sqlite3_finalize (statement);
@@ -1194,26 +1176,27 @@ almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 AlmanahDefinition *
 almanah_storage_manager_get_definition (AlmanahStorageManager *self, const gchar *definition_text)
 {
-	AlmanahQueryResults *results;
+	sqlite3_stmt *statement;
 	AlmanahDefinition *definition;
 
-	results = almanah_storage_manager_query (self,
-	                                         "SELECT definition_type, definition_value, definition_value2, definition_text "
-	                                         "FROM definitions WHERE definition_text LIKE '%q' LIMIT 1", NULL,
-	                                         definition_text);
-
-	if (results == NULL || results->rows == 0) {
-		if (results != NULL)
-			almanah_storage_manager_free_results (results);
+	/* Prepare and run the query */
+	if (sqlite3_prepare_v2 (self->priv->connection,
+	                        "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions "
+	                        "WHERE definition_text LIKE '?' LIMIT 1", -1, &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
 
-	definition = almanah_definition_new (atoi (results->data[results->columns]));
-	almanah_definition_set_value (definition, results->data[results->columns + 1]);
-	almanah_definition_set_value2 (definition, results->data[results->columns + 2]);
-	almanah_definition_set_text (definition, results->data[results->columns + 3]);
+	sqlite3_bind_text (statement, 1, definition_text, -1, SQLITE_STATIC);
 
-	almanah_storage_manager_free_results (results);
+	if (sqlite3_step (statement) != SQLITE_ROW) {
+		/* Error or empty result set */
+		sqlite3_finalize (statement);
+		return NULL;
+	}
+
+	/* Grab the data and run */
+	definition = build_definition_from_statement (statement);
+	sqlite3_finalize (statement);
 
 	return definition;
 }
@@ -1241,16 +1224,13 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 
 	/* Update/Insert the definition */
 	if (value2 == NULL) {
-		return_value = almanah_storage_manager_query_async (self,
-		                                                    "REPLACE INTO definitions (definition_type, definition_value, definition_text) "
-		                                                    "VALUES (%u, '%q', '%q')", NULL, NULL, NULL,
-		                                                    type_id, value, text);
+		return_value = simple_query (self,
+		                                 "REPLACE INTO definitions (definition_type, definition_value, definition_text) "
+		                                 "VALUES (%u, '%q', '%q')", NULL, type_id, value, text);
 	} else {
-		return_value = almanah_storage_manager_query_async (self,
-		                                                    "REPLACE INTO definitions (definition_type, definition_value, "
-		                                                                              "definition_value2, definition_text) "
-		                                                    "VALUES (%u, '%q', '%q', '%q')", NULL, NULL, NULL,
-		                                                    type_id, value, value2, text);
+		return_value = simple_query (self,
+		                                 "REPLACE INTO definitions (definition_type, definition_value, definition_value2, definition_text) "
+		                                 "VALUES (%u, '%q', '%q', '%q')", NULL, type_id, value, value2, text);
 	}
 
 	if (real_definition != NULL)
@@ -1267,8 +1247,7 @@ almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefi
 gboolean
 almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text)
 {
-	if (almanah_storage_manager_query_async (self, "DELETE FROM definitions WHERE definition_text = '%q'",
-	                                         NULL, NULL, NULL, definition_text) == TRUE) {
+	if (simple_query (self, "DELETE FROM definitions WHERE definition_text = '%q'", NULL, definition_text) == TRUE) {
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_REMOVED], 0, definition_text);
 		return TRUE;
 	}

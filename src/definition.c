@@ -198,6 +198,10 @@ almanah_definition_new (AlmanahDefinitionType type_id)
 			return g_object_new (definition_types[i].type_function (), NULL);
 	}
 
+	/* This can happen if, for example, the user creates a contact definition with one version of Almanah, then upgrades to a version without
+	 * Evolution support compiled in. The contact definition now won't be recognised. */
+	g_warning ("Could not create definition of type %u: type unrecognized.", type_id);
+
 	return NULL;
 }
 
