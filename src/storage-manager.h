@@ -58,6 +58,13 @@ typedef enum {
 	ALMANAH_STORAGE_MANAGER_ERROR_BAD_VERSION
 } AlmanahStorageManagerError;
 
+typedef struct {
+	/*< private >*/
+	gpointer /*sqlite3_stmt **/ statement;
+	gboolean finished; /* TRUE if the query is finished and the iter has been cleaned up */
+	gpointer user_data; /* to be used by #AlmanahStorageManager functions which need to associate data with a statement */
+} AlmanahStorageManagerIter;
+
 typedef gint (*AlmanahQueryCallback) (gpointer user_data, gint columns, gchar **data, gchar **column_names);
 
 typedef struct {
@@ -82,8 +89,12 @@ gboolean almanah_storage_manager_get_statistics (AlmanahStorageManager *self, gu
 gboolean almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date);
 AlmanahEntry *almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date);
 gboolean almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *entry);
-GSList *almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
-GSList *almanah_storage_manager_get_entries (AlmanahStorageManager *self) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+
+void almanah_storage_manager_iter_init (AlmanahStorageManagerIter *iter);
+AlmanahEntry *almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string,
+                                                      AlmanahStorageManagerIter *iter) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+AlmanahEntry *almanah_storage_manager_get_entries (AlmanahStorageManager *self,
+                                                   AlmanahStorageManagerIter *iter) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 
 gboolean *almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
 gboolean *almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);

@@ -422,8 +422,9 @@ static gboolean
 export_text_files (AlmanahImportExportDialog *self, GError **error)
 {
 	AlmanahImportExportDialogPrivate *priv = self->priv;
+	AlmanahStorageManagerIter iter;
 	GFile *folder;
-	GSList *entries;
+	AlmanahEntry *entry;
 	GtkTextBuffer *buffer;
 	gboolean success = FALSE;
 	GError *child_error = NULL;
@@ -435,11 +436,9 @@ export_text_files (AlmanahImportExportDialog *self, GError **error)
 	/* Build a text buffer to use when getting all the entries */
 	buffer = gtk_text_buffer_new (NULL);
 
-	/* Get the list of entries */
-	entries = almanah_storage_manager_get_entries (almanah->storage_manager);
-
-	for (; entries != NULL; entries = g_slist_delete_link (entries, entries)) {
-		AlmanahEntry *entry = ALMANAH_ENTRY (entries->data);
+	/* Iterate through the entries */
+	almanah_storage_manager_iter_init (&iter);
+	while ((entry = almanah_storage_manager_get_entries (almanah->storage_manager, &iter)) != NULL) {
 		GDate date;
 		gchar *filename, *content;
 		GFile *file;
@@ -499,8 +498,10 @@ import_database (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *re
 	GFileInfo *file_info;
 	gchar *path;
 	const gchar *display_name;
-	GSList *entries, *i, *definitions;
+	GSList *i, *definitions;
+	AlmanahEntry *entry;
 	AlmanahStorageManager *database;
+	AlmanahStorageManagerIter iter;
 	AlmanahImportExportDialogPrivate *priv = self->priv;
 
 	/* Get the database file to import */
@@ -523,13 +524,12 @@ import_database (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *re
 		return FALSE;
 	}
 
-	/* Query for every entry */
-	entries = almanah_storage_manager_get_entries (database);
-	for (i = entries; i != NULL; i = i->next) {
+	/* Iterate through every entry */
+	almanah_storage_manager_iter_init (&iter);
+	while ((entry = almanah_storage_manager_get_entries (database, &iter)) != NULL) {
 		GDate date;
 		gchar *message = NULL;
 		AlmanahImportStatus status;
-		AlmanahEntry *entry = ALMANAH_ENTRY (i->data);
 
 		almanah_entry_get_date (entry, &date);
 
@@ -539,7 +539,6 @@ import_database (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *re
 
 		g_object_unref (entry);
 	}
-	g_slist_free (entries);
 
 	/* Query for every definition */
 	definitions = almanah_storage_manager_get_definitions (database);

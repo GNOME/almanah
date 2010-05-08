@@ -140,26 +140,28 @@ sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search
 void
 sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
-	GSList *results, *i;
-	GtkTreeIter iter;
+	AlmanahEntry *entry;
+	AlmanahStorageManagerIter iter;
 	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
+	const gchar *search_string = gtk_entry_get_text (priv->sd_search_entry);
 
+	/* Clear the results store of previous search results first */
 	gtk_list_store_clear (search_dialog->priv->sd_results_store);
-	results = almanah_storage_manager_search_entries (almanah->storage_manager, gtk_entry_get_text (priv->sd_search_entry));
 
-	for (i = results; i != NULL; i = i->next) {
-		AlmanahEntry *entry;
+	/* Search over all entries */
+	almanah_storage_manager_iter_init (&iter);
+	while ((entry = almanah_storage_manager_search_entries (almanah->storage_manager, search_string, &iter)) != NULL) {
 		GDate date;
 		gchar formatted_date[100];
+		GtkTreeIter tree_iter;
 
-		entry = ALMANAH_ENTRY (i->data);
 		almanah_entry_get_date (entry, &date);
 
 		/* Translators: This is a strftime()-format string for the dates displayed in search results. */
 		g_date_strftime (formatted_date, sizeof (formatted_date), _("%A, %e %B %Y"), &date);
 
-		gtk_list_store_append (priv->sd_results_store, &iter);
-		gtk_list_store_set (priv->sd_results_store, &iter,
+		gtk_list_store_append (priv->sd_results_store, &tree_iter);
+		gtk_list_store_set (priv->sd_results_store, &tree_iter,
 		                    0, g_date_get_day (&date),
 		                    1, g_date_get_month (&date),
 		                    2, g_date_get_year (&date),
@@ -169,8 +171,6 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 
 		g_object_unref (entry);
 	}
-
-	g_slist_free (results);
 }
 
 static void

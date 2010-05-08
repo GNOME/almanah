@@ -861,144 +861,232 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 }
 
 /**
+ * almanah_storage_manager_iter_init:
+ * @iter: an #AlmanahStorageManagerIter to initialise
+ *
+ * Initialises the given iterator so it can be used by #AlmanahStorageManager functions. Typically, initialisers are allocated on the stack, so need
+ * explicitly initialising before being passed to functions such as almanah_storage_manager_get_entries().
+ *
+ * Since: 0.8.0
+ **/
+void
+almanah_storage_manager_iter_init (AlmanahStorageManagerIter *iter)
+{
+	g_return_if_fail (iter != NULL);
+
+	iter->statement = NULL;
+	iter->user_data = NULL;
+	iter->finished = FALSE;
+}
+
+typedef struct {
+	GtkTextBuffer *text_buffer;
+	gchar *search_string;
+} SearchData;
+
+/**
  * almanah_storage_manager_search_entries:
  * @self: an #AlmanahStorageManager
  * @search_string: string for which to search in entry content
- *
+ * TODO
  * Searches for @search_string in the content in entries in the database, and returns the results. If there are no results, %NULL will be returned.
  *
  * The results are returned in descending date order.
  *
  * Return value: a #GSList of #AlmanahEntry<!-- -->s, or %NULL; unref elements with g_object_unref(); free list with g_slist_free()
  **/
-GSList *
-almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string)
+AlmanahEntry *
+almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, AlmanahStorageManagerIter *iter)
 {
 	sqlite3_stmt *statement;
 	GtkTextBuffer *text_buffer;
-	GSList *matches = NULL;
 
-	/* Prepare the statement. Query in ascending date order, and then reverse the results by prepending them to the list as we build it,
-	 * rather than appending them. */
-	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT content, day, month, year, is_important, edited_day, edited_month, edited_year FROM entries "
-	                        "ORDER BY year ASC, month ASC, day ASC", -1,
-	                        &statement, NULL) != SQLITE_OK) {
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), NULL);
+	g_return_val_if_fail (iter != NULL, NULL);
+	g_return_val_if_fail (iter->statement != NULL || search_string != NULL, NULL);
+	g_return_val_if_fail (iter->statement == NULL || iter->user_data != NULL, NULL);
+
+	if (iter->finished == TRUE)
 		return NULL;
+
+	if (iter->statement == NULL) {
+		SearchData *data;
+
+		/* Prepare the statement. */
+		if (sqlite3_prepare_v2 (self->priv->connection,
+			                "SELECT content, day, month, year, is_important, edited_day, edited_month, edited_year FROM entries "
+			                "ORDER BY year DESC, month DESC, day DESC", -1,
+			                (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
+			return NULL;
+		}
+
+		/* Set up persistent data for the operation */
+		data = g_slice_new (SearchData);
+		data->text_buffer = gtk_text_buffer_new (NULL);
+		data->search_string = g_strdup (search_string);
+		iter->user_data = data;
 	}
 
-	text_buffer = gtk_text_buffer_new (NULL);
+	statement = iter->statement;
+	text_buffer = ((SearchData*) iter->user_data)->text_buffer;
+	search_string = ((SearchData*) iter->user_data)->search_string;
 
 	/* Execute the statement */
-	while (sqlite3_step (statement) == SQLITE_ROW) {
-		AlmanahEntry *entry;
-		GDate date, last_edited;
-		GtkTextIter iter;
+	switch (sqlite3_step (statement)) {
+		case SQLITE_ROW: {
+			AlmanahEntry *entry;
+			GDate date, last_edited;
+			GtkTextIter text_iter;
 
-		g_date_set_dmy (&date, sqlite3_column_int (statement, 1), sqlite3_column_int (statement, 2), sqlite3_column_int (statement, 3));
-		entry = almanah_entry_new (&date);
-		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
-		almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 4) == 1) ? TRUE : FALSE);
+			g_date_set_dmy (&date,
+			                sqlite3_column_int (statement, 1),
+			                sqlite3_column_int (statement, 2),
+			                sqlite3_column_int (statement, 3));
 
-		if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
-		                      sqlite3_column_int (statement, 3),
-		                      sqlite3_column_int (statement, 4)) == TRUE) {
-			g_date_set_dmy (&last_edited,
-				        sqlite3_column_int (statement, 5),
-				        sqlite3_column_int (statement, 6),
-				        sqlite3_column_int (statement, 7));
-			almanah_entry_set_last_edited (entry, &last_edited);
-		}
+			entry = almanah_entry_new (&date);
+			almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+			almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 4) == 1) ? TRUE : FALSE);
 
-		/* Deserialise the entry into our buffer */
-		gtk_text_buffer_set_text (text_buffer, "", 0);
-		if (almanah_entry_get_content (entry, text_buffer, TRUE, NULL) == FALSE) {
+			if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
+			                      sqlite3_column_int (statement, 3),
+			                      sqlite3_column_int (statement, 4)) == TRUE) {
+				g_date_set_dmy (&last_edited,
+				                sqlite3_column_int (statement, 5),
+				                sqlite3_column_int (statement, 6),
+				                sqlite3_column_int (statement, 7));
+				almanah_entry_set_last_edited (entry, &last_edited);
+			}
+
+			/* Deserialise the entry into our buffer */
+			gtk_text_buffer_set_text (text_buffer, "", 0);
+			if (almanah_entry_get_content (entry, text_buffer, TRUE, NULL) == FALSE) {
+				/* Error: return the next entry instead */
+				g_object_unref (entry);
+				g_warning (_("Error deserializing entry into buffer while searching."));
+				return almanah_storage_manager_search_entries (self, NULL, iter);
+			}
+
+			/* Perform the search */
+			gtk_text_buffer_get_start_iter (text_buffer, &text_iter);
+			if (gtk_text_iter_forward_search (&text_iter, search_string, GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY,
+			                                  NULL, NULL, NULL) == TRUE) {
+				/* A match was found! */
+				return entry;
+			}
+
+			/* Free stuff up and return the next match instead */
 			g_object_unref (entry);
-			g_warning (_("Error deserializing entry into buffer while searching."));
-			continue;
+			return almanah_storage_manager_search_entries (self, NULL, iter);
 		}
+		case SQLITE_DONE:
+		case SQLITE_ERROR:
+		case SQLITE_BUSY:
+		case SQLITE_LOCKED:
+		case SQLITE_NOMEM:
+		case SQLITE_IOERR:
+		case SQLITE_CORRUPT:
+		default: {
+			/* Clean up the iter and return */
+			sqlite3_finalize (statement);
+			iter->statement = NULL;
+			g_object_unref (((SearchData*) iter->user_data)->text_buffer);
+			g_free (((SearchData*) iter->user_data)->search_string);
+			g_slice_free (SearchData, iter->user_data);
+			iter->user_data = NULL;
+			iter->finished = TRUE;
 
-		/* Perform the search */
-		gtk_text_buffer_get_start_iter (text_buffer, &iter);
-		if (gtk_text_iter_forward_search (&iter, search_string, GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY,
-		                                  NULL, NULL, NULL) == TRUE) {
-			/* A match was found */
-			matches = g_slist_prepend (matches, g_object_ref (entry));
+			return NULL;
 		}
-
-		/* Free stuff up and continue */
-		g_object_unref (entry);
 	}
 
-	sqlite3_finalize (statement);
-	g_object_unref (text_buffer);
-
-	return matches;
+	g_assert_not_reached ();
 }
 
 /**
  * almanah_storage_manager_get_entries:
  * @self: an #AlmanahStorageManager
+ * @iter: an #AlmanahStorageManagerIter to keep track of the query
  *
- * Returns a list of all #AlmanahEntry<!-- -->s in the database.
+ * Iterates through every single #AlmanahEntry in the database using the given #AlmanahStorageManagerIter. @iter should be initialised with
+ * almanah_storage_manager_iter_init() and passed to almanah_storage_manager_get_entries(). This will then return an #AlmanahEntry every time it's
+ * called with the same @iter until it reaches the end of the result set, when it will return %NULL. It will also finish and return %NULL on error.
  *
- * Return value: a #GSList of #AlmanahEntry<!-- -->s, or %NULL; unref elements with g_object_unref(); free list with g_slist_free()
+ * Calling functions must get every result from the result set (i.e. not stop calling almanah_storage_manager_get_entries() until it returns %NULL).
+ *
+ * Return value: an #AlmanahEntry, or %NULL; unref with g_object_unref()
  **/
-GSList *
-almanah_storage_manager_get_entries (AlmanahStorageManager *self)
+AlmanahEntry *
+almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorageManagerIter *iter)
 {
-	GSList *entries = NULL;
-	int result;
 	sqlite3_stmt *statement;
+
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), NULL);
+	g_return_val_if_fail (iter != NULL, NULL);
 
 	/* Just as with almanah_storage_manager_get_entry(), it's necessary to avoid our nice SQLite interface here. It's probably more efficient to
 	 * avoid it anyway. */
 
-	/* Prepare the statement */
-	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries", -1,
-	                        &statement, NULL) != SQLITE_OK) {
+	if (iter->finished == TRUE)
 		return NULL;
+
+	if (iter->statement == NULL) {
+		/* Prepare the statement */
+		if (sqlite3_prepare_v2 (self->priv->connection,
+		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries", -1,
+		                        (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
+			return NULL;
+		}
 	}
+
+	statement = iter->statement;
 
 	/* Execute the statement */
-	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		GDate date, last_edited;
-		AlmanahEntry *entry;
+	switch (sqlite3_step (statement)) {
+		case SQLITE_ROW: {
+			GDate date, last_edited;
+			AlmanahEntry *entry;
 
-		g_date_set_dmy (&date,
-		                sqlite3_column_int (statement, 2),
-		                sqlite3_column_int (statement, 3),
-		                sqlite3_column_int (statement, 4));
+			/* Process the row */
+			g_date_set_dmy (&date,
+			                sqlite3_column_int (statement, 2),
+			                sqlite3_column_int (statement, 3),
+			                sqlite3_column_int (statement, 4));
 
-		/* Get the data */
-		entry = almanah_entry_new (&date);
-		almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
-		almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
+			/* Get the data */
+			entry = almanah_entry_new (&date);
+			almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+			almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
 
-		if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
-		                      sqlite3_column_int (statement, 3),
-		                      sqlite3_column_int (statement, 4)) == TRUE) {
-			g_date_set_dmy (&last_edited,
-				        sqlite3_column_int (statement, 5),
-				        sqlite3_column_int (statement, 6),
-				        sqlite3_column_int (statement, 7));
-			almanah_entry_set_last_edited (entry, &last_edited);
+			if (g_date_valid_dmy (sqlite3_column_int (statement, 2),
+			                      sqlite3_column_int (statement, 3),
+			                      sqlite3_column_int (statement, 4)) == TRUE) {
+				g_date_set_dmy (&last_edited,
+				                sqlite3_column_int (statement, 5),
+				                sqlite3_column_int (statement, 6),
+				                sqlite3_column_int (statement, 7));
+				almanah_entry_set_last_edited (entry, &last_edited);
+			}
+
+			return entry;
 		}
+		case SQLITE_DONE:
+		case SQLITE_ERROR:
+		case SQLITE_BUSY:
+		case SQLITE_LOCKED:
+		case SQLITE_NOMEM:
+		case SQLITE_IOERR:
+		case SQLITE_CORRUPT:
+		default: {
+			/* Clean up the iter and return */
+			sqlite3_finalize (statement);
+			iter->statement = NULL;
+			iter->finished = TRUE;
 
-		entries = g_slist_prepend (entries, entry);
+			return NULL;
+		}
 	}
 
-	sqlite3_finalize (statement);
-
-	/* Check for errors */
-	if (result != SQLITE_DONE) {
-		g_slist_foreach (entries, (GFunc) g_object_unref, NULL);
-		g_slist_free (entries);
-		return NULL;
-	}
-
-	return g_slist_reverse (entries);
+	g_assert_not_reached ();
 }
 
 /* NOTE: Free results with g_free. Return value is 0-based. */
