@@ -27,6 +27,8 @@
 static void almanah_calendar_finalize (GObject *object);
 static void almanah_calendar_month_changed (GtkCalendar *calendar);
 static gchar *almanah_calendar_detail_func (GtkCalendar *calendar, guint year, guint month, guint day, gpointer user_data);
+static void entry_added_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahCalendar *calendar);
+static void entry_removed_cb (AlmanahStorageManager *storage_manager, GDate *date, AlmanahCalendar *calendar);
 
 struct _AlmanahCalendarPrivate {
 	gboolean *important_days;
@@ -52,6 +54,10 @@ almanah_calendar_init (AlmanahCalendar *self)
 {
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_CALENDAR, AlmanahCalendarPrivate);
 	gtk_calendar_set_detail_func (GTK_CALENDAR (self), almanah_calendar_detail_func, NULL, NULL);
+
+	/* Connect to signals from the storage manager so we can mark/unmark days as appropriate */
+	g_signal_connect (almanah->storage_manager, "entry-added", G_CALLBACK (entry_added_cb), self);
+	g_signal_connect (almanah->storage_manager, "entry-removed", G_CALLBACK (entry_removed_cb), self);
 }
 
 static void
@@ -110,6 +116,34 @@ almanah_calendar_detail_func (GtkCalendar *calendar, guint year, guint month, gu
 		return g_strdup (_("Important!"));
 	}
 	return NULL;
+}
+
+static void
+entry_added_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahCalendar *calendar)
+{
+	GDate date;
+	guint month;
+
+	almanah_entry_get_date (entry, &date);
+	gtk_calendar_get_date (GTK_CALENDAR (calendar), NULL, &month, NULL);
+
+	if (g_date_get_month (&date) == month + 1) {
+		/* Mark the entry on the calendar, since it's guaranteed to be non-empty */
+		gtk_calendar_mark_day (GTK_CALENDAR (calendar), g_date_get_day (&date));
+	}
+}
+
+static void
+entry_removed_cb (AlmanahStorageManager *storage_manager, GDate *date, AlmanahCalendar *calendar)
+{
+	guint month;
+
+	gtk_calendar_get_date (GTK_CALENDAR (calendar), NULL, &month, NULL);
+
+	if (g_date_get_month (date) == month + 1) {
+		/* Unmark the entry on the calendar */
+		gtk_calendar_unmark_day (GTK_CALENDAR (calendar), g_date_get_day (date));
+	}
 }
 
 GtkWidget *

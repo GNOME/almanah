@@ -54,6 +54,9 @@ enum {
 
 enum {
 	SIGNAL_DISCONNECTED,
+	SIGNAL_ENTRY_ADDED,
+	SIGNAL_ENTRY_MODIFIED,
+	SIGNAL_ENTRY_REMOVED,
 	SIGNAL_DEFINITION_ADDED,
 	SIGNAL_DEFINITION_MODIFIED,
 	SIGNAL_DEFINITION_REMOVED,
@@ -94,6 +97,24 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                             0, NULL, NULL,
 	                                                             almanah_marshal_VOID__STRING_STRING,
 	                                                             G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
+	storage_manager_signals[SIGNAL_ENTRY_ADDED] = g_signal_new ("entry-added",
+	                                                            G_TYPE_FROM_CLASS (klass),
+	                                                            G_SIGNAL_RUN_LAST,
+	                                                            0, NULL, NULL,
+	                                                            g_cclosure_marshal_VOID__OBJECT,
+	                                                            G_TYPE_NONE, 1, ALMANAH_TYPE_ENTRY);
+	storage_manager_signals[SIGNAL_ENTRY_MODIFIED] = g_signal_new ("entry-modified",
+	                                                               G_TYPE_FROM_CLASS (klass),
+	                                                               G_SIGNAL_RUN_LAST,
+	                                                               0, NULL, NULL,
+	                                                               g_cclosure_marshal_VOID__OBJECT,
+	                                                               G_TYPE_NONE, 1, ALMANAH_TYPE_ENTRY);
+	storage_manager_signals[SIGNAL_ENTRY_REMOVED] = g_signal_new ("entry-removed",
+	                                                              G_TYPE_FROM_CLASS (klass),
+	                                                              G_SIGNAL_RUN_LAST,
+	                                                              0, NULL, NULL,
+	                                                              g_cclosure_marshal_VOID__BOXED,
+	                                                              G_TYPE_NONE, 1, G_TYPE_DATE);
 	storage_manager_signals[SIGNAL_DEFINITION_ADDED] = g_signal_new ("definition-added",
 	                                                                 G_TYPE_FROM_CLASS (klass),
 	                                                                 G_SIGNAL_RUN_LAST,
@@ -745,9 +766,6 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 	AlmanahEntry *entry;
 	sqlite3_stmt *statement;
 
-	/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here as we can't otherwise reliably bind the data blob
-	 * to the query — if we pass it in as a string, it gets cut off at the first nul character, which could occur anywhere in the blob. */
-
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
 	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries "
@@ -795,19 +813,23 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 	if (almanah_entry_is_empty (entry) == TRUE) {
 		/* Delete the entry */
-		return simple_query (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL,
-		                         g_date_get_year (&date),
-		                         g_date_get_month (&date),
-		                         g_date_get_day (&date));
+		gboolean success = simple_query (self, "DELETE FROM entries WHERE year = %u AND month = %u AND day = %u", NULL,
+		                                 g_date_get_year (&date),
+		                                 g_date_get_month (&date),
+		                                 g_date_get_day (&date));
+
+		/* Signal of the operation */
+		g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_REMOVED], 0, &date);
+
+		return success;
 	} else {
 		const guint8 *data;
 		gsize length;
 		sqlite3_stmt *statement;
 		GDate last_edited;
+		gboolean existed_before;
 
-		/* It's necessary to avoid our nice SQLite interface and use the sqlite3 API directly here as we can't otherwise reliably bind the
-		 * data blob to the query — if we pass it in as a string, it gets cut off at the first nul character, which could occur anywhere in
-		 * the blob. */
+		existed_before = almanah_storage_manager_entry_exists (self, &date);
 
 		/* Prepare the statement */
 		if (sqlite3_prepare_v2 (self->priv->connection,
@@ -839,6 +861,12 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		}
 
 		sqlite3_finalize (statement);
+
+		/* Signal of the operation */
+		if (existed_before == TRUE)
+			g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_MODIFIED], 0, entry);
+		else
+			g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_ADDED], 0, entry);
 
 		return TRUE;
 	}
@@ -994,9 +1022,6 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), NULL);
 	g_return_val_if_fail (iter != NULL, NULL);
 
-	/* Just as with almanah_storage_manager_get_entry(), it's necessary to avoid our nice SQLite interface here. It's probably more efficient to
-	 * avoid it anyway. */
-
 	if (iter->finished == TRUE)
 		return NULL;
 
@@ -1142,8 +1167,6 @@ almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
 	GSList *definitions = NULL;
 	int result;
 	sqlite3_stmt *statement;
-
-	/* It's more efficient to avoid our nice SQLite interface and do things manually. */
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,

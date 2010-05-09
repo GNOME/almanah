@@ -446,15 +446,9 @@ save_current_entry (AlmanahMainWindow *self)
 	/* Store the entry! */
 	almanah_storage_manager_set_entry (almanah->storage_manager, priv->current_entry);
 
-	/* Mark the day on the calendar if the entry was non-empty (and deleted)
-	 * and update the state of the add definition action. */
 	if (entry_is_empty == TRUE) {
-		gtk_calendar_unmark_day (GTK_CALENDAR (priv->calendar), g_date_get_day (&date));
-
 		/* Since the entry is empty, remove all the events from the treeview */
 		gtk_list_store_clear (priv->event_store);
-	} else {
-		gtk_calendar_mark_day (GTK_CALENDAR (priv->calendar), g_date_get_day (&date));
 	}
 }
 
