@@ -360,7 +360,7 @@ restore_window_state (AlmanahMainWindow *self)
 static void
 save_current_entry (AlmanahMainWindow *self)
 {
-	gboolean entry_exists, entry_is_empty;
+	gboolean entry_exists, existing_entry_is_empty, entry_is_empty;
 	GDate date, last_edited;
 	AlmanahMainWindowPrivate *priv = self->priv;
 	AlmanahEntryEditability editability;
@@ -376,7 +376,8 @@ save_current_entry (AlmanahMainWindow *self)
 	almanah_entry_get_date (priv->current_entry, &date);
 	editability = almanah_entry_get_editability (priv->current_entry);
 	entry_exists = almanah_storage_manager_entry_exists (almanah->storage_manager, &date);
-	entry_is_empty = almanah_entry_is_empty (priv->current_entry);
+	existing_entry_is_empty = almanah_entry_is_empty (priv->current_entry);
+	entry_is_empty = (gtk_text_buffer_get_char_count (priv->entry_buffer) == 0) ? TRUE : FALSE;
 
 	/* Make sure they're editable: don't allow entries in the future to be edited,
 	 * but allow entries in the past to be added or edited, as long as permission is given.
@@ -384,7 +385,7 @@ save_current_entry (AlmanahMainWindow *self)
 	if (editability == ALMANAH_ENTRY_FUTURE) {
 		/* Can't edit entries for dates in the future */
 		return;
-	} else if (editability == ALMANAH_ENTRY_PAST && entry_is_empty == FALSE) {
+	} else if (editability == ALMANAH_ENTRY_PAST && (existing_entry_is_empty == FALSE || entry_is_empty == FALSE)) {
 		/* Attempting to edit an existing entry in the past */
 		gchar date_string[100];
 		GtkWidget *dialog;
@@ -409,7 +410,7 @@ save_current_entry (AlmanahMainWindow *self)
 		}
 
 		gtk_widget_destroy (dialog);
-	} else if (entry_exists == TRUE && entry_is_empty == TRUE) {
+	} else if (entry_exists == TRUE && existing_entry_is_empty == FALSE && entry_is_empty == TRUE) {
 		/* Deleting an existing entry */
 		gchar date_string[100];
 		GtkWidget *dialog;
@@ -1063,7 +1064,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	g_object_unref (entry);
 
 	gtk_text_view_set_editable (priv->entry_view, almanah_entry_get_editability (priv->current_entry) != ALMANAH_ENTRY_FUTURE ? TRUE : FALSE);
-	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
 	gtk_action_set_sensitive (priv->important_action, almanah_entry_get_editability (priv->current_entry) != ALMANAH_ENTRY_FUTURE ? TRUE : FALSE);
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (priv->important_action), almanah_entry_is_important (priv->current_entry));
 
@@ -1105,6 +1105,9 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 		gtk_widget_queue_draw (GTK_WIDGET (priv->entry_view));
 	}
 #endif /* ENABLE_SPELL_CHECKING */
+
+	/* Unset the modification bit on the text buffer last, so that we can be sure it's unset */
+	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
 
 	/* List the entry's events */
 	almanah_event_manager_query_events (almanah->event_manager, ALMANAH_EVENT_FACTORY_UNKNOWN, &calendar_date);
