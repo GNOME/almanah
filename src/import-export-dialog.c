@@ -35,6 +35,7 @@ typedef struct {
 	const gchar *import_description; /* translatable */
 	const gchar *export_description; /* translatable */
 	GtkFileChooserAction action;
+	const gchar *file_chooser_title; /* translatable */
 	ImportFunc import_func;
 	ExportFunc export_func;
 } ImportExportModeDetails;
@@ -47,17 +48,19 @@ static gboolean export_database (AlmanahImportExportDialog *self, GError **error
 
 static const ImportExportModeDetails import_export_modes[] = {
 	{ N_("Text Files"),
-	  N_("Select a folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
+	  N_("Select a _folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
 	     "Any and all such files will be imported."),
-	  N_("Select a folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
+	  N_("Select a _folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
 	     "All entries will be exported, unencrypted in plain text format."),
 	  GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+	  N_("Select a Folder"),
 	  import_text_files,
 	  export_text_files },
 	{ N_("Database"),
-	  N_("Select a database file created by Almanah Diary to import."),
-	  N_("Select a filename for a complete copy of the unencrypted Almanah Diary database to be given."),
+	  N_("Select a database _file created by Almanah Diary to import."),
+	  N_("Select a _filename for a complete copy of the unencrypted Almanah Diary database to be given."),
 	  GTK_FILE_CHOOSER_ACTION_OPEN,
+	  N_("Select a File"),
 	  import_database,
 	  export_database }
 };
@@ -98,9 +101,7 @@ almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
 	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
-	gtk_window_set_resizable (GTK_WINDOW (self), TRUE);
 	gtk_window_set_transient_for (GTK_WINDOW (self), GTK_WINDOW (almanah->main_window));
-	gtk_window_set_default_size (GTK_WINDOW (self), 600, 400);
 }
 
 static void
@@ -175,8 +176,8 @@ almanah_import_export_dialog_new (gboolean import)
 	priv->description_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_description_label"));
 
 	/* Set the mode label */
-	gtk_label_set_text (GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_mode_label")),
-	                    (import == TRUE) ? _("Import mode: ") : _("Export mode: "));
+	gtk_label_set_text_with_mnemonic (GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_mode_label")),
+	                                  (import == TRUE) ? _("Import _mode: ") : _("Export _mode: "));
 
 	/* Set the window title */
 	gtk_window_set_title (GTK_WINDOW (import_export_dialog), (import == TRUE) ? _("Import Entries") : _("Export Entries"));
@@ -651,9 +652,11 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 
 	/* Change the dialogue */
 	gtk_file_chooser_set_action (priv->file_chooser, import_export_modes[priv->current_mode].action);
-	gtk_label_set_text (priv->description_label,
-	                    (priv->import == TRUE) ? _(import_export_modes[priv->current_mode].import_description)
-	                                           : _(import_export_modes[priv->current_mode].export_description));
+	gtk_file_chooser_button_set_title (GTK_FILE_CHOOSER_BUTTON (priv->file_chooser),
+	                                   _(import_export_modes[priv->current_mode].file_chooser_title));
+	gtk_label_set_text_with_mnemonic (priv->description_label,
+	                                  (priv->import == TRUE) ? _(import_export_modes[priv->current_mode].import_description)
+	                                                         : _(import_export_modes[priv->current_mode].export_description));
 }
 
 void

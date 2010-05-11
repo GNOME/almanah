@@ -958,6 +958,8 @@
 									<object class="GtkLabel" id="almanah_ied_mode_label">
 										<property name="xalign">0</property>
 										<property name="label"></property><!-- Set in import-export-dialog.c -->
+										<property name="mnemonic-widget">almanah_ied_mode_combo_box</property>
+										<property name="use-underline">True</property>
 										<accessibility>
 											<relation target="almanah_ied_mode_combo_box" type="label-for"/>
 										</accessibility>
@@ -987,28 +989,29 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkLabel" id="almanah_ied_description_label">
-								<property name="wrap">True</property>
-								<attributes>
-									<attribute name="scale" value="0.83"/><!-- PANGO_SCALE_SMALL -->
-								</attributes>
+							<object class="GtkAlignment" id="almanah_ied_alignment">
+								<property name="top-padding">12</property>
+								<child>
+									<object class="GtkLabel" id="almanah_ied_description_label">
+										<property name="wrap">True</property>
+										<property name="mnemonic-widget">almanah_ied_file_chooser</property>
+										<property name="use-underline">True</property>
+									</object>
+								</child>
 							</object>
 							<packing>
 								<property name="expand">False</property>
 							</packing>
 						</child>
 						<child>
-							<object class="GtkAlignment" id="almanah_ied_alignment">
-								<property name="top-padding">12</property>
-								<child>
-									<object class="GtkFileChooserWidget" id="almanah_ied_file_chooser">
-										<signal name="selection-changed" handler="ied_file_chooser_selection_changed_cb"/>
-										<signal name="file-activated" handler="ied_file_chooser_file_activated_cb"/>
-										<property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-										<property name="select-multiple">False</property>
-									</object>
-								</child>
+							<object class="GtkFileChooserButton" id="almanah_ied_file_chooser">
+								<signal name="selection-changed" handler="ied_file_chooser_selection_changed_cb"/>
+								<signal name="file-activated" handler="ied_file_chooser_file_activated_cb"/>
+								<property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
 							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
 						</child>
 					</object>
 				</child>
