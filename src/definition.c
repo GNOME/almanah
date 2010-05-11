@@ -130,6 +130,7 @@ almanah_definition_finalize (GObject *object)
 {
 	AlmanahDefinitionPrivate *priv = ALMANAH_DEFINITION (object)->priv;
 
+	g_free (priv->text);
 	g_free (priv->value);
 	g_free (priv->value2);
 
