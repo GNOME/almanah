@@ -1,0 +1,60 @@
+/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
+/*
+ * Almanah
+ * Copyright (C) Philip Withnall 2010 <philip@tecnocode.co.uk>
+ *
+ * Almanah is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Almanah is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef ALMANAH_EXPORT_OPERATION_H
+#define ALMANAH_EXPORT_OPERATION_H
+
+#include <glib.h>
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+
+typedef guint AlmanahExportOperationType;
+
+#define ALMANAH_TYPE_EXPORT_OPERATION		(almanah_export_operation_get_type ())
+#define ALMANAH_EXPORT_OPERATION(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperation))
+#define ALMANAH_EXPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationClass))
+#define ALMANAH_IS_EXPORT_OPERATION(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_EXPORT_OPERATION))
+#define ALMANAH_IS_EXPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_EXPORT_OPERATION))
+#define ALMANAH_EXPORT_OPERATION_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationClass))
+
+typedef struct _AlmanahExportOperationPrivate	AlmanahExportOperationPrivate;
+
+typedef struct {
+	GObject parent;
+	AlmanahExportOperationPrivate *priv;
+} AlmanahExportOperation;
+
+typedef struct {
+	GObjectClass parent;
+} AlmanahExportOperationClass;
+
+GType almanah_export_operation_get_type (void) G_GNUC_CONST;
+
+AlmanahExportOperation *almanah_export_operation_new (AlmanahExportOperationType type_id, GFile *destination) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
+
+void almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+gboolean almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncResult *async_result, GError **error);
+
+void almanah_export_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column,
+                                              guint action_column, guint file_chooser_title_column);
+
+G_END_DECLS
+
+#endif /* !ALMANAH_EXPORT_OPERATION_H */

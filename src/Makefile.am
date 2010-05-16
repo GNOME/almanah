@@ -33,6 +33,10 @@ almanah_SOURCES = \
 	date-entry-dialog.h		\
 	import-export-dialog.c		\
 	import-export-dialog.h		\
+	import-operation.c		\
+	import-operation.h		\
+	export-operation.c		\
+	export-operation.h		\
 	definitions/file.c		\
 	definitions/file.h		\
 	definitions/note.c		\

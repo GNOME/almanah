@@ -111,6 +111,7 @@ main (int argc, char *argv[])
 	textdomain (GETTEXT_PACKAGE);
 #endif
 
+	g_thread_init (NULL);
 	gtk_set_locale ();
 	gtk_init (&argc, &argv);
 	g_set_application_name (_("Almanah Diary"));

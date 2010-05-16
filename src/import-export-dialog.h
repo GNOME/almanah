@@ -24,14 +24,9 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
+#include "import-operation.h"
 
-/* These must be kept in synchrony with the rows in almanah_ird_view_store in almanah.ui */
-typedef enum {
-	ALMANAH_IMPORT_STATUS_IMPORTED = 0,
-	ALMANAH_IMPORT_STATUS_MERGED = 1,
-	ALMANAH_IMPORT_STATUS_FAILED = 2
-} AlmanahImportStatus;
+G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_IMPORT_EXPORT_DIALOG		(almanah_import_export_dialog_get_type ())
 #define ALMANAH_IMPORT_EXPORT_DIALOG(o)			(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG, AlmanahImportExportDialog))
@@ -76,7 +71,7 @@ typedef struct {
 GType almanah_import_results_dialog_get_type (void) G_GNUC_CONST;
 
 AlmanahImportResultsDialog *almanah_import_results_dialog_new (void) G_GNUC_WARN_UNUSED_RESULT;
-void almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, GDate *date, AlmanahImportStatus status, const gchar *message);
+void almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, const GDate *date, AlmanahImportStatus status, const gchar *message);
 
 G_END_DECLS
 

@@ -1,0 +1,257 @@
+/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
+/*
+ * Almanah
+ * Copyright (C) Philip Withnall 2010 <philip@tecnocode.co.uk>
+ *
+ * Almanah is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Almanah is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <config.h>
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
+
+#include "export-operation.h"
+#include "entry.h"
+#include "storage-manager.h"
+#include "main.h"
+
+typedef gboolean (*ExportFunc) (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error);
+
+typedef struct {
+	const gchar *name; /* translatable */
+	const gchar *description; /* translatable */
+	GtkFileChooserAction action;
+	const gchar *file_chooser_title; /* translatable */
+	ExportFunc export_func;
+} ExportModeDetails;
+
+static gboolean export_text_files (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error);
+static gboolean export_database (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error);
+
+static const ExportModeDetails export_modes[] = {
+	{ N_("Text Files"),
+	  N_("Select a _folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
+	     "All entries will be exported, unencrypted in plain text format."),
+	  GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+	  N_("Select a Folder"),
+	  export_text_files },
+	{ N_("Database"),
+	  N_("Select a _filename for a complete copy of the unencrypted Almanah Diary database to be given."),
+	  GTK_FILE_CHOOSER_ACTION_SAVE, /* TODO: Need to change the file chooser for this */
+	  N_("Select a File"),
+	  export_database }
+};
+
+static void almanah_export_operation_dispose (GObject *object);
+
+struct _AlmanahExportOperationPrivate {
+	gint current_mode; /* index into export_modes */
+	GFile *destination;
+};
+
+G_DEFINE_TYPE (AlmanahExportOperation, almanah_export_operation, G_TYPE_OBJECT)
+#define ALMANAH_EXPORT_OPERATION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationPrivate))
+
+static void
+almanah_export_operation_class_init (AlmanahExportOperationClass *klass)
+{
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+	g_type_class_add_private (klass, sizeof (AlmanahExportOperationPrivate));
+
+	gobject_class->dispose = almanah_export_operation_dispose;
+}
+
+static void
+almanah_export_operation_init (AlmanahExportOperation *self)
+{
+	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationPrivate);
+	self->priv->current_mode = -1; /* no mode selected */
+}
+
+static void
+almanah_export_operation_dispose (GObject *object)
+{
+	AlmanahExportOperationPrivate *priv = ALMANAH_EXPORT_OPERATION (object)->priv;
+
+	if (priv->destination != NULL)
+		g_object_unref (priv->destination);
+	priv->destination = NULL;
+
+	/* Chain up to the parent class */
+	G_OBJECT_CLASS (almanah_export_operation_parent_class)->dispose (object);
+}
+
+AlmanahExportOperation *
+almanah_export_operation_new (AlmanahExportOperationType type_id, GFile *destination)
+{
+	AlmanahExportOperation *export_operation = g_object_new (ALMANAH_TYPE_EXPORT_OPERATION, NULL);
+	export_operation->priv->current_mode = type_id;
+	export_operation->priv->destination = g_object_ref (destination);
+
+	return export_operation;
+}
+
+static gboolean
+export_text_files (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error)
+{
+	AlmanahStorageManagerIter iter;
+	AlmanahEntry *entry;
+	GtkTextBuffer *buffer;
+	gboolean success = FALSE;
+	GError *child_error = NULL;
+
+	/* Build a text buffer to use when getting all the entries */
+	buffer = gtk_text_buffer_new (NULL);
+
+	/* Iterate through the entries */
+	almanah_storage_manager_iter_init (&iter);
+	while ((entry = almanah_storage_manager_get_entries (almanah->storage_manager, &iter)) != NULL) {
+		GDate date;
+		gchar *filename, *content;
+		GFile *file;
+		GtkTextIter start_iter, end_iter;
+
+		/* Get the filename */
+		almanah_entry_get_date (entry, &date);
+		filename = g_strdup_printf ("%04u-%02u-%02u", g_date_get_year (&date), g_date_get_month (&date), g_date_get_day (&date));
+		file = g_file_get_child (destination, filename);
+		g_free (filename);
+
+		/* Get the entry contents */
+		if (almanah_entry_get_content (entry, buffer, TRUE, &child_error) == FALSE) {
+			/* Error */
+			g_object_unref (file);
+			g_object_unref (entry);
+			break;
+		}
+
+		g_object_unref (entry);
+
+		gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
+		content = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, FALSE);
+
+		/* Create the file */
+		if (g_file_replace_contents (file, content, strlen (content), NULL, FALSE,
+		                             G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION, NULL, NULL, &child_error) == FALSE) {
+			/* Error */
+			g_object_unref (file);
+			g_free (content);
+			break;
+		}
+
+		g_object_unref (file);
+		g_free (content);
+	}
+
+	/* Check if the loop was broken due to an error */
+	if (child_error != NULL) {
+		g_propagate_error (error, child_error);
+		goto finish;
+	}
+
+	success = TRUE;
+
+finish:
+	g_object_unref (buffer);
+
+	return success;
+}
+
+static gboolean
+export_database (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error)
+{
+	GFile *source;
+	gboolean success;
+
+	/* Get the input file (current unencrypted database) */
+	source = g_file_new_for_path (almanah_storage_manager_get_filename (almanah->storage_manager, TRUE));
+
+	/* Copy the current database to that location */
+	success = g_file_copy (source, destination, G_FILE_COPY_OVERWRITE, cancellable, NULL, NULL, error);
+
+	g_object_unref (source);
+
+	return success;
+}
+
+static void
+export_thread (GSimpleAsyncResult *result, AlmanahExportOperation *operation, GCancellable *cancellable)
+{
+	GError *error = NULL;
+
+	/* Check to see if the operation's been cancelled already */
+	if (g_cancellable_set_error_if_cancelled (cancellable, &error) == TRUE) {
+		g_simple_async_result_set_from_error (result, error);
+		g_error_free (error);
+		return;
+	}
+
+	/* Export and return */
+	if (export_modes[operation->priv->current_mode].export_func (operation, operation->priv->destination, cancellable, &error) == FALSE) {
+		g_simple_async_result_set_from_error (result, error);
+		g_error_free (error);
+	}
+}
+
+void
+almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
+{
+	GSimpleAsyncResult *result;
+
+	g_return_if_fail (ALMANAH_IS_EXPORT_OPERATION (self));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+	result = g_simple_async_result_new (G_OBJECT (self), callback, user_data, almanah_export_operation_run);
+	g_simple_async_result_run_in_thread (result, (GSimpleAsyncThreadFunc) export_thread, G_PRIORITY_DEFAULT, cancellable);
+	g_object_unref (result);
+}
+
+gboolean
+almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncResult *async_result, GError **error)
+{
+	GSimpleAsyncResult *result = G_SIMPLE_ASYNC_RESULT (async_result);
+
+	g_return_val_if_fail (ALMANAH_IS_EXPORT_OPERATION (self), FALSE);
+	g_return_val_if_fail (G_IS_ASYNC_RESULT (async_result), FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+	g_warn_if_fail (g_simple_async_result_get_source_tag (result) == almanah_export_operation_run);
+
+	if (g_simple_async_result_propagate_error (result, error) == TRUE)
+		return FALSE;
+
+	return TRUE;
+}
+
+void
+almanah_export_operation_populate_model (GtkListStore *store, guint type_id_column, guint name_column, guint description_column, guint action_column,
+                                         guint file_chooser_title_column)
+{
+	guint i;
+
+	for (i = 0; i < G_N_ELEMENTS (export_modes); i++) {
+		GtkTreeIter iter;
+
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter,
+		                    type_id_column, i,
+		                    name_column, _(export_modes[i].name),
+		                    description_column, _(export_modes[i].description),
+		                    action_column, export_modes[i].action,
+		                    file_chooser_title_column, _(export_modes[i].file_chooser_title),
+		                    -1);
+	}
+}

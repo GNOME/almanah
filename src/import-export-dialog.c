@@ -23,47 +23,11 @@
 #include <gtk/gtk.h>
 
 #include "import-export-dialog.h"
+#include "import-operation.h"
+#include "export-operation.h"
 #include "interface.h"
 #include "main.h"
 #include "main-window.h"
-
-typedef gboolean (*ImportFunc) (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *results_dialog, GError **error);
-typedef gboolean (*ExportFunc) (AlmanahImportExportDialog *self, GError **error);
-
-typedef struct {
-	const gchar *name; /* translatable */
-	const gchar *import_description; /* translatable */
-	const gchar *export_description; /* translatable */
-	GtkFileChooserAction action;
-	const gchar *file_chooser_title; /* translatable */
-	ImportFunc import_func;
-	ExportFunc export_func;
-} ImportExportModeDetails;
-
-static gboolean import_text_files (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *results_dialog, GError **error);
-static gboolean export_text_files (AlmanahImportExportDialog *self, GError **error);
-
-static gboolean import_database (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *results_dialog, GError **error);
-static gboolean export_database (AlmanahImportExportDialog *self, GError **error);
-
-static const ImportExportModeDetails import_export_modes[] = {
-	{ N_("Text Files"),
-	  N_("Select a _folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
-	     "Any and all such files will be imported."),
-	  N_("Select a _folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
-	     "All entries will be exported, unencrypted in plain text format."),
-	  GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-	  N_("Select a Folder"),
-	  import_text_files,
-	  export_text_files },
-	{ N_("Database"),
-	  N_("Select a database _file created by Almanah Diary to import."),
-	  N_("Select a _filename for a complete copy of the unencrypted Almanah Diary database to be given."),
-	  GTK_FILE_CHOOSER_ACTION_OPEN,
-	  N_("Select a File"),
-	  import_database,
-	  export_database }
-};
 
 static void response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self);
 
@@ -76,7 +40,7 @@ struct _AlmanahImportExportDialogPrivate {
 	gboolean import; /* TRUE if we're in import mode, FALSE otherwise */
 	GtkComboBox *mode_combo_box;
 	GtkListStore *mode_store;
-	guint current_mode; /* index into import_export_modes */
+	gint current_mode;
 	GtkFileChooser *file_chooser;
 	GtkWidget *import_export_button;
 	GtkLabel *description_label;
@@ -102,20 +66,6 @@ almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
 	gtk_window_set_transient_for (GTK_WINDOW (self), GTK_WINDOW (almanah->main_window));
-}
-
-static void
-populate_mode_store (GtkListStore *store)
-{
-	guint i;
-
-	/* Add all the available import/export modes to the combo box */
-	for (i = 0; i < G_N_ELEMENTS (import_export_modes); i++) {
-		GtkTreeIter iter;
-
-		gtk_list_store_append (store, &iter);
-		gtk_list_store_set (store, &iter, 0, _(import_export_modes[i].name), 1, i, -1);
-	}
 }
 
 /**
@@ -186,7 +136,10 @@ almanah_import_export_dialog_new (gboolean import)
 	gtk_button_set_label (GTK_BUTTON (priv->import_export_button), (import == TRUE) ? _("_Import") : _("_Export"));
 
 	/* Populate the mode combo box */
-	populate_mode_store (priv->mode_store);
+	if (import == TRUE)
+		almanah_import_operation_populate_model (priv->mode_store, 0, 1, 2, 3, 4);
+	else
+		almanah_export_operation_populate_model (priv->mode_store, 0, 1, 2, 3, 4);
 	gtk_combo_box_set_active (priv->mode_combo_box, 0);
 
 	g_object_unref (builder);
@@ -194,420 +147,25 @@ almanah_import_export_dialog_new (gboolean import)
 	return import_export_dialog;
 }
 
-/**
- * set_entry:
- * @self: an #AlmanahImportExportDialog
- * @imported_entry: an #AlmanahEntry created for an entry being imported
- * @import_source: a string representing the source of the imported entry
- * @message: return location for an error or informational message, or %NULL; free with g_free()
- *
- * Stores the given entry in the database, merging it with any existing one where appropriate.
- *
- * @import_source should represent where the imported entry came from, so it could be the filename of a text file which held the entry, or of
- * the entry's previous database.
- *
- * If @message is non-%NULL, error or informational messages can be allocated and returned in it. They will be returned irrespective of the return
- * value of the function, as some errors can be overcome to result in a successful import. The message should be freed with g_free() by the caller.
- *
- * Return value: %ALMANAH_IMPORT_STATUS_MERGED if the entry was merged with an existing one, %ALMANAH_IMPORT_STATUS_IMPORTED if it was imported
- * without merging, %ALMANAH_IMPORT_STATUS_FAILED otherwise
- **/
-static AlmanahImportStatus
-set_entry (AlmanahImportExportDialog *self, AlmanahEntry *imported_entry, const gchar *import_source, gchar **message)
+static void
+import_progress_cb (const GDate *date, AlmanahImportStatus status, const gchar *message, AlmanahImportResultsDialog *results_dialog)
 {
-	GDate entry_date, existing_last_edited, imported_last_edited;
-	AlmanahEntry *existing_entry;
-	GtkTextBuffer *existing_buffer, *imported_buffer;
-	GtkTextIter existing_start, existing_end, imported_start, imported_end;
-	gchar *header_string;
-	GError *error = NULL;
-
-	/* Check to see if there's a conflict first */
-	almanah_entry_get_date (imported_entry, &entry_date);
-	existing_entry = almanah_storage_manager_get_entry (almanah->storage_manager, &entry_date);
-
-	if (existing_entry == NULL) {
-		/* Add the entry to the proper database and return, ignoring failure */
-		almanah_storage_manager_set_entry (almanah->storage_manager, imported_entry);
-
-		return ALMANAH_IMPORT_STATUS_IMPORTED;
-	}
-
-	/* Load both entries into buffers */
-	imported_buffer = gtk_text_buffer_new (NULL);
-	if (almanah_entry_get_content (imported_entry, imported_buffer, TRUE, &error) == FALSE) {
-		if (message != NULL)
-			*message = g_strdup_printf (_("Error deserializing imported entry into buffer: %s"), (error != NULL) ? error->message : NULL);
-
-		g_error_free (error);
-		g_object_unref (imported_buffer);
-		g_object_unref (existing_entry);
-
-		return ALMANAH_IMPORT_STATUS_FAILED;
-	}
-
-	/* The two buffers have to use the same tag table for gtk_text_buffer_insert_range() to work */
-	existing_buffer = gtk_text_buffer_new (gtk_text_buffer_get_tag_table (imported_buffer));
-	if (almanah_entry_get_content (existing_entry, existing_buffer, FALSE, NULL) == FALSE) {
-		/* Deserialising the existing entry failed; use the imported entry instead */
-		almanah_storage_manager_set_entry (almanah->storage_manager, imported_entry);
-
-		if (message != NULL) {
-			*message = g_strdup_printf (_("Error deserializing existing entry into buffer; overwriting with imported entry: %s"),
-			                            (error != NULL) ? error->message : NULL);
-		}
-
-		g_error_free (error);
-		g_object_unref (imported_buffer);
-		g_object_unref (existing_buffer);
-		g_object_unref (existing_entry);
-
-		return ALMANAH_IMPORT_STATUS_IMPORTED;
-	}
-
-	/* Get the bounds for later use */
-	gtk_text_buffer_get_bounds (existing_buffer, &existing_start, &existing_end);
-	gtk_text_buffer_get_bounds (imported_buffer, &imported_start, &imported_end);
-
-	/* Compare the two buffers --- if they're identical, leave the current entry alone and mark the entries as merged.
-	 * Compare the character counts first so that the comparison is less expensive in the case they aren't identical .*/
-	if (gtk_text_buffer_get_char_count (existing_buffer) == gtk_text_buffer_get_char_count (imported_buffer)) {
-		gchar *existing_text, *imported_text;
-
-		existing_text = gtk_text_buffer_get_text (existing_buffer, &existing_start, &existing_end, FALSE);
-		imported_text = gtk_text_buffer_get_text (imported_buffer, &imported_start, &imported_end, FALSE);
-
-		/* If they're the same, no modifications are required */
-		if (strcmp (existing_text, imported_text) == 0) {
-			g_free (existing_text);
-			g_free (imported_text);
-			g_object_unref (imported_buffer);
-			g_object_unref (existing_buffer);
-			g_object_unref (existing_entry);
-			return ALMANAH_IMPORT_STATUS_MERGED;
-		}
-
-		g_free (existing_text);
-		g_free (imported_text);
-	}
-
-	/* Append some header text for the imported entry */
-	/* Translators: This text is appended to an existing entry when an entry is being imported to the same date.
-	 * The imported entry is appended to this text. */
-	header_string = g_strdup_printf (_("\n\nEntry imported from \"%s\":\n\n"), import_source);
-	gtk_text_buffer_insert (existing_buffer, &existing_end, header_string, -1);
-	g_free (header_string);
-
-	/* Append the imported entry to the end of the existing one */
-	gtk_text_buffer_insert_range (existing_buffer, &existing_end, &imported_start, &imported_end);
-	g_object_unref (imported_buffer);
-
-	/* Store the buffer back in the existing entry and save the entry */
-	almanah_entry_set_content (existing_entry, existing_buffer);
-	g_object_unref (existing_buffer);
-
-	/* Update the last-edited time for the merged entry to be the more recent of the last-edited times for the existing and imported entries */
-	almanah_entry_get_last_edited (existing_entry, &existing_last_edited);
-	almanah_entry_get_last_edited (imported_entry, &imported_last_edited);
-
-	if (g_date_valid (&existing_last_edited) == FALSE || g_date_compare (&existing_last_edited, &imported_last_edited) < 0)
-		almanah_entry_set_last_edited (existing_entry, &imported_last_edited);
-
-	almanah_storage_manager_set_entry (almanah->storage_manager, existing_entry);
-	g_object_unref (existing_entry);
-
-	return ALMANAH_IMPORT_STATUS_MERGED;
-}
-
-static gboolean
-import_text_files (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *results_dialog, GError **error)
-{
-	gboolean retval = FALSE;
-	GFile *folder;
-	GFileInfo *file_info;
-	GFileEnumerator *enumerator;
-	GtkTextBuffer *buffer;
-	GError *child_error = NULL;
-	AlmanahImportExportDialogPrivate *priv = self->priv;
-
-	/* Get the folder containing all the files to import */
-	folder = gtk_file_chooser_get_file (priv->file_chooser);
-	g_assert (folder != NULL);
-
-	enumerator = g_file_enumerate_children (folder, "standard::name,standard::display-name,standard::is-hidden,time::modified",
-	                                        G_FILE_QUERY_INFO_NONE, NULL, error);
-	g_object_unref (folder);
-	if (enumerator == NULL)
-		return FALSE;
-
-	/* Build a text buffer to use when setting all the entries */
-	buffer = gtk_text_buffer_new (NULL);
-
-	/* Enumerate all the children of the folder */
-	while ((file_info = g_file_enumerator_next_file (enumerator, NULL, &child_error)) != NULL) {
-		AlmanahEntry *entry;
-		GDate parsed_date, last_edited;
-		GTimeVal modification_time;
-		GFile *file;
-		gchar *contents, *message = NULL;
-		gsize length;
-		AlmanahImportStatus status;
-		const gchar *file_name = g_file_info_get_name (file_info);
-		const gchar *display_name = g_file_info_get_display_name (file_info);
-
-		/* Skip the file if it's hidden */
-		if (g_file_info_get_is_hidden (file_info) == TRUE || file_name[strlen (file_name) - 1] == '~') {
-			g_object_unref (file_info);
-			continue;
-		}
-
-		/* Heuristically parse the date, though we recommend using the format: yyyy-mm-dd */
-		g_date_set_parse (&parsed_date, file_name);
-		if (g_date_valid (&parsed_date) == FALSE) {
-			g_object_unref (file_info);
-			continue;
-		}
-
-		/* Get the file */
-		file = g_file_get_child (folder, file_name);
-		g_assert (file != NULL);
-
-		/* Load the content */
-		if (g_file_load_contents (file, NULL, &contents, &length, NULL, &child_error) == FALSE) {
-			g_object_unref (file);
-			g_object_unref (file_info);
-			break; /* let the error get handled by the code just after the loop */
-		}
-		g_object_unref (file);
-
-		/* Create the relevant entry */
-		entry = almanah_entry_new (&parsed_date);
-
-		/* Set the content on the entry */
-		gtk_text_buffer_set_text (buffer, contents, length);
-		almanah_entry_set_content (entry, buffer);
-		g_free (contents);
-
-		/* Set the entry's last-edited date */
-		g_file_info_get_modification_time (file_info, &modification_time);
-		g_date_set_time_val (&last_edited, &modification_time);
-		almanah_entry_set_last_edited (entry, &last_edited);
-
-		/* Store the entry */
-		status = set_entry (self, entry, display_name, &message);
-		almanah_import_results_dialog_add_result (results_dialog, &parsed_date, status, message);
-		g_free (message);
-
-		g_object_unref (entry);
-		g_object_unref (file_info);
-	}
-
-	/* Check if the loop was broken due to an error */
-	if (child_error != NULL) {
-		g_propagate_error (error, child_error);
-		goto finish;
-	}
-
-	/* Success! */
-	retval = TRUE;
-
-finish:
-	g_object_unref (folder);
-	g_object_unref (enumerator);
-	g_object_unref (buffer);
-
-	return retval;
-}
-
-static gboolean
-export_text_files (AlmanahImportExportDialog *self, GError **error)
-{
-	AlmanahImportExportDialogPrivate *priv = self->priv;
-	AlmanahStorageManagerIter iter;
-	GFile *folder;
-	AlmanahEntry *entry;
-	GtkTextBuffer *buffer;
-	gboolean success = FALSE;
-	GError *child_error = NULL;
-
-	/* Get the output folder */
-	folder = gtk_file_chooser_get_file (priv->file_chooser);
-	g_assert (folder != NULL);
-
-	/* Build a text buffer to use when getting all the entries */
-	buffer = gtk_text_buffer_new (NULL);
-
-	/* Iterate through the entries */
-	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_get_entries (almanah->storage_manager, &iter)) != NULL) {
-		GDate date;
-		gchar *filename, *content;
-		GFile *file;
-		GtkTextIter start_iter, end_iter;
-
-		/* Get the filename */
-		almanah_entry_get_date (entry, &date);
-		filename = g_strdup_printf ("%04u-%02u-%02u", g_date_get_year (&date), g_date_get_month (&date), g_date_get_day (&date));
-		file = g_file_get_child (folder, filename);
-		g_free (filename);
-
-		/* Get the entry contents */
-		if (almanah_entry_get_content (entry, buffer, TRUE, &child_error) == FALSE) {
-			/* Error */
-			g_object_unref (file);
-			g_object_unref (entry);
-			break;
-		}
-
-		g_object_unref (entry);
-
-		gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
-		content = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, FALSE);
-
-		/* Create the file */
-		if (g_file_replace_contents (file, content, strlen (content), NULL, FALSE,
-		                             G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION, NULL, NULL, &child_error) == FALSE) {
-			/* Error */
-			g_object_unref (file);
-			g_free (content);
-			break;
-		}
-
-		g_object_unref (file);
-		g_free (content);
-	}
-
-	/* Check if the loop was broken due to an error */
-	if (child_error != NULL) {
-		g_propagate_error (error, child_error);
-		goto finish;
-	}
-
-	success = TRUE;
-
-finish:
-	g_object_unref (folder);
-	g_object_unref (buffer);
-
-	return success;
-}
-
-static gboolean
-import_database (AlmanahImportExportDialog *self, AlmanahImportResultsDialog *results_dialog, GError **error)
-{
-	GFile *file;
-	GFileInfo *file_info;
-	gchar *path;
-	const gchar *display_name;
-	GSList *i, *definitions;
-	AlmanahEntry *entry;
-	AlmanahStorageManager *database;
-	AlmanahStorageManagerIter iter;
-	AlmanahImportExportDialogPrivate *priv = self->priv;
-
-	/* Get the database file to import */
-	file = gtk_file_chooser_get_file (priv->file_chooser);
-	g_assert (file != NULL);
-
-	/* Get the display name for use with set_entry(), below */
-	file_info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NONE, NULL, NULL);
-	display_name = g_file_info_get_display_name (file_info);
-
-	/* Open the database */
-	path = g_file_get_path (file);
-	database = almanah_storage_manager_new (path);
-	g_free (path);
-	g_object_unref (file);
-
-	/* Connect to the database */
-	if (almanah_storage_manager_connect (database, error) == FALSE) {
-		g_object_unref (database);
-		return FALSE;
-	}
-
-	/* Iterate through every entry */
-	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_get_entries (database, &iter)) != NULL) {
-		GDate date;
-		gchar *message = NULL;
-		AlmanahImportStatus status;
-
-		almanah_entry_get_date (entry, &date);
-
-		status = set_entry (self, entry, display_name, &message);
-		almanah_import_results_dialog_add_result (results_dialog, &date, status, message);
-		g_free (message);
-
-		g_object_unref (entry);
-	}
-
-	/* Query for every definition */
-	definitions = almanah_storage_manager_get_definitions (database);
-	for (i = definitions; i != NULL; i = i->next) {
-		/* Add the definition to the proper database, ignoring failure */
-		almanah_storage_manager_add_definition (almanah->storage_manager, ALMANAH_DEFINITION (i->data));
-		g_object_unref (i->data);
-	}
-	g_slist_free (definitions);
-
-	almanah_storage_manager_disconnect (database, NULL);
-	g_object_unref (database);
-	g_object_unref (file_info);
-
-	return TRUE;
-}
-
-static gboolean
-export_database (AlmanahImportExportDialog *self, GError **error)
-{
-	AlmanahImportExportDialogPrivate *priv = self->priv;
-	GFile *source, *destination;
-	gboolean success;
-
-	/* Get the output file */
-	destination = gtk_file_chooser_get_file (priv->file_chooser);
-	g_assert (destination != NULL);
-
-	/* Get the input file (current unencrypted database) */
-	source = g_file_new_for_path (almanah_storage_manager_get_filename (almanah->storage_manager, TRUE));
-
-	/* Copy the current database to that location */
-	success = g_file_copy (source, destination, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, error);
-
-	g_object_unref (source);
-	g_object_unref (destination);
-
-	return success;
+	almanah_import_results_dialog_add_result (results_dialog, date, status, message);
 }
 
 static void
-response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self)
+import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, AlmanahImportResultsDialog *results_dialog)
 {
+	AlmanahImportExportDialog *self;
 	GError *error = NULL;
-	AlmanahImportExportDialogPrivate *priv = self->priv;
-	AlmanahImportResultsDialog *results_dialog = NULL; /* shut up, gcc */
 
-	/* Just return if the user pressed Cancel */
-	if (response_id != GTK_RESPONSE_OK) {
-		gtk_widget_hide (GTK_WIDGET (self));
-		return;
-	}
-
-	if (priv->import == TRUE) {
-		/* Import the entries according to the selected method.
-		 * It's OK if we block, since the dialogue should be running in its own main loop. */
-		results_dialog = almanah_import_results_dialog_new ();
-		import_export_modes[priv->current_mode].import_func (self, results_dialog, &error);
-	} else {
-		/* Export the entries according to the selected method. */
-		import_export_modes[priv->current_mode].export_func (self, &error);
-	}
+	self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
-	if (error != NULL) {
+	if (almanah_import_operation_finish (operation, async_result, &error) == FALSE) {
 		/* Show an error */
 		GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
-		                                                  GTK_BUTTONS_OK, (priv->import == TRUE) ? _("Import failed") : _("Export failed"));
+		                                                  GTK_BUTTONS_OK, _("Import failed"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (error_dialog));
 		gtk_widget_destroy (error_dialog);
@@ -616,26 +174,80 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 
 		gtk_widget_hide (GTK_WIDGET (self));
 	} else {
-		if (priv->import == TRUE) {
-			/* Show the results dialogue */
-			gtk_widget_hide (GTK_WIDGET (self));
-			gtk_widget_show_all (GTK_WIDGET (results_dialog));
-			gtk_dialog_run (GTK_DIALOG (results_dialog));
-		} else {
-			/* Show a success message */
-			GtkWidget *message_dialog;
-
-			gtk_widget_hide (GTK_WIDGET (self));
-			message_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO,
-			                                         GTK_BUTTONS_OK, _("Export successful"));
-			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (message_dialog), _("The diary was successfully exported."));
-			gtk_dialog_run (GTK_DIALOG (message_dialog));
-			gtk_widget_destroy (message_dialog);
-		}
+		/* Show the results dialogue */
+		gtk_widget_hide (GTK_WIDGET (self));
+		gtk_widget_show_all (GTK_WIDGET (results_dialog));
+		gtk_dialog_run (GTK_DIALOG (results_dialog));
 	}
 
-	if (priv->import == TRUE)
-		gtk_widget_destroy (GTK_WIDGET (results_dialog));
+	gtk_widget_destroy (GTK_WIDGET (results_dialog));
+}
+
+static void
+export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, AlmanahImportExportDialog *self)
+{
+	GError *error = NULL;
+
+	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
+	if (almanah_export_operation_finish (operation, async_result, &error) == FALSE) {
+		/* Show an error */
+		GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
+		                                                  GTK_BUTTONS_OK, _("Export failed"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (error_dialog));
+		gtk_widget_destroy (error_dialog);
+
+		g_error_free (error);
+
+		gtk_widget_hide (GTK_WIDGET (self));
+	} else {
+		/* Show a success message */
+		GtkWidget *message_dialog;
+
+		gtk_widget_hide (GTK_WIDGET (self));
+		message_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO,
+		                                         GTK_BUTTONS_OK, _("Export successful"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (message_dialog), _("The diary was successfully exported."));
+		gtk_dialog_run (GTK_DIALOG (message_dialog));
+		gtk_widget_destroy (message_dialog);
+	}
+}
+
+static void
+response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self)
+{
+	AlmanahImportExportDialogPrivate *priv = self->priv;
+	GFile *file;
+
+	/* Just return if the user pressed Cancel */
+	if (response_id != GTK_RESPONSE_OK) {
+		gtk_widget_hide (GTK_WIDGET (self));
+		return;
+	}
+
+	file = gtk_file_chooser_get_file (priv->file_chooser);
+	g_assert (file != NULL);
+
+	if (priv->import == TRUE) {
+		/* Import the entries according to the selected method.*/
+		AlmanahImportOperation *operation;
+		AlmanahImportResultsDialog *results_dialog = almanah_import_results_dialog_new ();
+		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), GTK_WINDOW (self)); /* this is required in import_cb() */
+
+		operation = almanah_import_operation_new (priv->current_mode, file);
+		almanah_import_operation_run (operation, NULL, (AlmanahImportProgressCallback) import_progress_cb, results_dialog,
+		                              (GAsyncReadyCallback) import_cb, results_dialog);
+		g_object_unref (operation);
+	} else {
+		/* Export the entries according to the selected method. */
+		AlmanahExportOperation *operation;
+
+		operation = almanah_export_operation_new (priv->current_mode, file);
+		almanah_export_operation_run (operation, NULL, (GAsyncReadyCallback) export_cb, self);
+		g_object_unref (operation);
+	}
+
+	g_object_unref (file);
 }
 
 void
@@ -643,20 +255,32 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 {
 	AlmanahImportExportDialogPrivate *priv = self->priv;
 	gint new_mode;
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+	gchar *description, *title;
+	GtkFileChooserAction action;
 
 	new_mode = gtk_combo_box_get_active (combo_box);
-	if (new_mode == -1 || new_mode == (gint) priv->current_mode)
+	if (new_mode == -1 || new_mode == priv->current_mode)
 		return;
 
 	priv->current_mode = new_mode;
 
 	/* Change the dialogue */
-	gtk_file_chooser_set_action (priv->file_chooser, import_export_modes[priv->current_mode].action);
-	gtk_file_chooser_button_set_title (GTK_FILE_CHOOSER_BUTTON (priv->file_chooser),
-	                                   _(import_export_modes[priv->current_mode].file_chooser_title));
-	gtk_label_set_text_with_mnemonic (priv->description_label,
-	                                  (priv->import == TRUE) ? _(import_export_modes[priv->current_mode].import_description)
-	                                                         : _(import_export_modes[priv->current_mode].export_description));
+	gtk_combo_box_get_active_iter (combo_box, &iter);
+	model = gtk_combo_box_get_model (combo_box);
+	gtk_tree_model_get (model, &iter,
+	                    2, &description,
+	                    3, &action,
+	                    4, &title,
+	                    -1);
+
+	gtk_file_chooser_set_action (priv->file_chooser, action);
+	gtk_file_chooser_button_set_title (GTK_FILE_CHOOSER_BUTTON (priv->file_chooser), title);
+	gtk_label_set_text_with_mnemonic (priv->description_label, description);
+
+	g_free (title);
+	g_free (description);
 }
 
 void
@@ -803,7 +427,7 @@ results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkWidget *butto
 }
 
 void
-almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, GDate *date, AlmanahImportStatus status, const gchar *message)
+almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, const GDate *date, AlmanahImportStatus status, const gchar *message)
 {
 	GtkTreeIter iter;
 	gchar formatted_date[100];
