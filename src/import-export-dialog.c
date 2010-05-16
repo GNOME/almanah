@@ -44,15 +44,21 @@ struct _AlmanahImportExportDialogPrivate {
 	GtkFileChooser *file_chooser;
 	GtkWidget *import_export_button;
 	GtkLabel *description_label;
+	GtkProgressBar *progress_bar;
+	GCancellable *cancellable; /* non-NULL iff an operation is underway */
 };
 
 G_DEFINE_TYPE (AlmanahImportExportDialog, almanah_import_export_dialog, GTK_TYPE_DIALOG)
 #define ALMANAH_IMPORT_EXPORT_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG,\
                                                        AlmanahImportExportDialogPrivate))
 
+static void almanah_import_export_dialog_dispose (GObject *object);
+
 static void
 almanah_import_export_dialog_class_init (AlmanahImportExportDialogClass *klass)
 {
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	gobject_class->dispose = almanah_import_export_dialog_dispose;
 	g_type_class_add_private (klass, sizeof (AlmanahImportExportDialogPrivate));
 }
 
@@ -63,9 +69,17 @@ almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 	self->priv->current_mode = -1; /* no mode selected */
 
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
-	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
-	gtk_window_set_transient_for (GTK_WINDOW (self), GTK_WINDOW (almanah->main_window));
+	gtk_window_set_default_size (GTK_WINDOW (self), 500, 400);
+}
+
+static void
+almanah_import_export_dialog_dispose (GObject *object)
+{
+	g_message ("almanah_import_export_dialog_dispose");
+
+	/* Chain up to the parent class */
+	G_OBJECT_CLASS (almanah_import_export_dialog_parent_class)->dispose (object);
 }
 
 /**
@@ -124,6 +138,7 @@ almanah_import_export_dialog_new (gboolean import)
 	priv->import_export_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_ied_import_export_button"));
 	priv->mode_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_ied_mode_store"));
 	priv->description_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_description_label"));
+	priv->progress_bar = GTK_PROGRESS_BAR (gtk_builder_get_object (builder, "almanah_ied_progress_bar"));
 
 	/* Set the mode label */
 	gtk_label_set_text_with_mnemonic (GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_mode_label")),
@@ -137,9 +152,9 @@ almanah_import_export_dialog_new (gboolean import)
 
 	/* Populate the mode combo box */
 	if (import == TRUE)
-		almanah_import_operation_populate_model (priv->mode_store, 0, 1, 2, 3, 4);
+		almanah_import_operation_populate_model (priv->mode_store, 0, 1, 2, 3);
 	else
-		almanah_export_operation_populate_model (priv->mode_store, 0, 1, 2, 3, 4);
+		almanah_export_operation_populate_model (priv->mode_store, 0, 1, 2, 3);
 	gtk_combo_box_set_active (priv->mode_combo_box, 0);
 
 	g_object_unref (builder);
@@ -150,7 +165,11 @@ almanah_import_export_dialog_new (gboolean import)
 static void
 import_progress_cb (const GDate *date, AlmanahImportStatus status, const gchar *message, AlmanahImportResultsDialog *results_dialog)
 {
+	AlmanahImportExportDialog *self;
+g_message ("import_progress_cb");
+	self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
 	almanah_import_results_dialog_add_result (results_dialog, date, status, message);
+	gtk_progress_bar_pulse (self->priv->progress_bar);
 }
 
 static void
@@ -158,21 +177,21 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 {
 	AlmanahImportExportDialog *self;
 	GError *error = NULL;
-
+g_message ("import_cb");
 	self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
 	if (almanah_import_operation_finish (operation, async_result, &error) == FALSE) {
-		/* Show an error */
-		GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
-		                                                  GTK_BUTTONS_OK, _("Import failed"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (error_dialog));
-		gtk_widget_destroy (error_dialog);
+		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == FALSE) {
+			/* Show an error if the operation wasn't cancelled */
+			GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
+			                                                  GTK_BUTTONS_OK, _("Import failed"));
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
+			gtk_dialog_run (GTK_DIALOG (error_dialog));
+			gtk_widget_destroy (error_dialog);
+		}
 
 		g_error_free (error);
-
-		gtk_widget_hide (GTK_WIDGET (self));
 	} else {
 		/* Show the results dialogue */
 		gtk_widget_hide (GTK_WIDGET (self));
@@ -181,6 +200,17 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (results_dialog));
+
+	g_object_unref (self->priv->cancellable);
+	self->priv->cancellable = NULL;
+
+	gtk_widget_destroy (GTK_WIDGET (self));
+}
+
+static void
+export_progress_cb (const GDate *date, AlmanahImportExportDialog *self)
+{
+	gtk_progress_bar_pulse (self->priv->progress_bar);
 }
 
 static void
@@ -190,16 +220,16 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
 	if (almanah_export_operation_finish (operation, async_result, &error) == FALSE) {
-		/* Show an error */
-		GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
-		                                                  GTK_BUTTONS_OK, _("Export failed"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (error_dialog));
-		gtk_widget_destroy (error_dialog);
+		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == FALSE) {
+			/* Show an error if the operation wasn't cancelled */
+			GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
+				                                          GTK_BUTTONS_OK, _("Export failed"));
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
+			gtk_dialog_run (GTK_DIALOG (error_dialog));
+			gtk_widget_destroy (error_dialog);
+		}
 
 		g_error_free (error);
-
-		gtk_widget_hide (GTK_WIDGET (self));
 	} else {
 		/* Show a success message */
 		GtkWidget *message_dialog;
@@ -211,6 +241,11 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 		gtk_dialog_run (GTK_DIALOG (message_dialog));
 		gtk_widget_destroy (message_dialog);
 	}
+
+	g_object_unref (self->priv->cancellable);
+	self->priv->cancellable = NULL;
+
+	gtk_widget_destroy (GTK_WIDGET (self));
 }
 
 static void
@@ -218,24 +253,37 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 {
 	AlmanahImportExportDialogPrivate *priv = self->priv;
 	GFile *file;
-
-	/* Just return if the user pressed Cancel */
+g_message ("response_cb");
+	/* If the user pressed Cancel, cancel the operation if we've started, and return otherwise */
 	if (response_id != GTK_RESPONSE_OK) {
-		gtk_widget_hide (GTK_WIDGET (self));
+		if (priv->cancellable == NULL)
+			gtk_widget_destroy (GTK_WIDGET (self));
+		else
+			g_cancellable_cancel (priv->cancellable);
 		return;
 	}
 
+	/* Disable the widgets */
+	gtk_widget_set_sensitive (self->priv->import_export_button, FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (self->priv->file_chooser), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (self->priv->mode_combo_box), FALSE);
+
+	/* Get the input/output file or folder */
 	file = gtk_file_chooser_get_file (priv->file_chooser);
 	g_assert (file != NULL);
+
+	/* Set up for cancellation */
+	g_assert (priv->cancellable == NULL);
+	priv->cancellable = g_cancellable_new ();
 
 	if (priv->import == TRUE) {
 		/* Import the entries according to the selected method.*/
 		AlmanahImportOperation *operation;
-		AlmanahImportResultsDialog *results_dialog = almanah_import_results_dialog_new ();
+		AlmanahImportResultsDialog *results_dialog = almanah_import_results_dialog_new (); /* destroyed in import_cb() */
 		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), GTK_WINDOW (self)); /* this is required in import_cb() */
 
 		operation = almanah_import_operation_new (priv->current_mode, file);
-		almanah_import_operation_run (operation, NULL, (AlmanahImportProgressCallback) import_progress_cb, results_dialog,
+		almanah_import_operation_run (operation, priv->cancellable, (AlmanahImportProgressCallback) import_progress_cb, results_dialog,
 		                              (GAsyncReadyCallback) import_cb, results_dialog);
 		g_object_unref (operation);
 	} else {
@@ -243,7 +291,8 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 		AlmanahExportOperation *operation;
 
 		operation = almanah_export_operation_new (priv->current_mode, file);
-		almanah_export_operation_run (operation, NULL, (GAsyncReadyCallback) export_cb, self);
+		almanah_export_operation_run (operation, priv->cancellable, (AlmanahExportProgressCallback) export_progress_cb, self,
+		                              (GAsyncReadyCallback) export_cb, self);
 		g_object_unref (operation);
 	}
 
@@ -257,7 +306,7 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 	gint new_mode;
 	GtkTreeIter iter;
 	GtkTreeModel *model;
-	gchar *description, *title;
+	gchar *description;
 	GtkFileChooserAction action;
 
 	new_mode = gtk_combo_box_get_active (combo_box);
@@ -272,14 +321,11 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 	gtk_tree_model_get (model, &iter,
 	                    2, &description,
 	                    3, &action,
-	                    4, &title,
 	                    -1);
 
 	gtk_file_chooser_set_action (priv->file_chooser, action);
-	gtk_file_chooser_button_set_title (GTK_FILE_CHOOSER_BUTTON (priv->file_chooser), title);
 	gtk_label_set_text_with_mnemonic (priv->description_label, description);
 
-	g_free (title);
 	g_free (description);
 }
 

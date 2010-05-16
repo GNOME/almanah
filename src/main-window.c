@@ -713,21 +713,23 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 void
 mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	if (almanah->import_dialog == NULL)
-		almanah->import_dialog = GTK_WIDGET (almanah_import_export_dialog_new (TRUE));
+	GtkWidget *dialog = GTK_WIDGET (almanah_import_export_dialog_new (TRUE));
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 
-	gtk_widget_show_all (almanah->import_dialog);
-	gtk_dialog_run (GTK_DIALOG (almanah->import_dialog));
+	/* The dialog destroys itself once done */
+	gtk_widget_show_all (dialog);
 }
 
 void
 mw_export_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	if (almanah->export_dialog == NULL)
-		almanah->export_dialog = GTK_WIDGET (almanah_import_export_dialog_new (FALSE));
+	GtkWidget *dialog = GTK_WIDGET (almanah_import_export_dialog_new (FALSE));
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 
-	gtk_widget_show_all (almanah->export_dialog);
-	gtk_dialog_run (GTK_DIALOG (almanah->export_dialog));
+	/* The dialog destroys itself once done */
+	gtk_widget_show_all (dialog);
 }
 
 void

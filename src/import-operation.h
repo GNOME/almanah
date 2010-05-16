@@ -65,7 +65,7 @@ void almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *c
 gboolean almanah_import_operation_finish (AlmanahImportOperation *self, GAsyncResult *async_result, GError **error);
 
 void almanah_import_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column,
-                                              guint action_column, guint file_chooser_title_column);
+                                              guint action_column);
 
 G_END_DECLS
 

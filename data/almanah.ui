@@ -941,7 +941,6 @@
 			<column type="gchararray"/><!-- Name -->
 			<column type="gchararray"/><!-- Description -->
 			<column type="guint"/><!-- Action -->
-			<column type="gchararray"/><!-- Title -->
 		</columns>
 	</object>
 
@@ -993,7 +992,7 @@
 						</child>
 						<child>
 							<object class="GtkAlignment" id="almanah_ied_alignment">
-								<property name="top-padding">12</property>
+								<property name="bottom-padding">12</property>
 								<child>
 									<object class="GtkLabel" id="almanah_ied_description_label">
 										<property name="wrap">True</property>
@@ -1007,10 +1006,19 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkFileChooserButton" id="almanah_ied_file_chooser">
+							<object class="GtkFileChooserWidget" id="almanah_ied_file_chooser">
 								<signal name="selection-changed" handler="ied_file_chooser_selection_changed_cb"/>
 								<signal name="file-activated" handler="ied_file_chooser_file_activated_cb"/>
 								<property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+								<property name="do-overwrite-confirmation">True</property>
+							</object>
+						</child>
+						<child>
+							<object class="GtkAlignment" id="almanah_ied_alignment2">
+								<property name="top-padding">12</property>
+								<child>
+									<object class="GtkProgressBar" id="almanah_ied_progress_bar"/>
+								</child>
 							</object>
 							<packing>
 								<property name="expand">False</property>

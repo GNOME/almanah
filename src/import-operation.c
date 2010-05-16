@@ -34,7 +34,6 @@ typedef struct {
 	const gchar *name; /* translatable */
 	const gchar *description; /* translatable */
 	GtkFileChooserAction action;
-	const gchar *file_chooser_title; /* translatable */
 	ImportFunc import_func;
 } ImportModeDetails;
 
@@ -48,12 +47,10 @@ static const ImportModeDetails import_modes[] = {
 	  N_("Select a _folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
 	     "Any and all such files will be imported."),
 	  GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-	  N_("Select a Folder"),
 	  import_text_files },
 	{ N_("Database"),
 	  N_("Select a database _file created by Almanah Diary to import."),
 	  GTK_FILE_CHOOSER_ACTION_OPEN,
-	  N_("Select a File"),
 	  import_database }
 };
 
@@ -120,7 +117,7 @@ progress_idle_callback_cb (ProgressData *data)
 {
 	g_assert (data->callback != NULL);
 	data->callback (data->date, data->status, data->message, data->user_data);
-
+g_message ("progress_idle_callback_cb");
 	/* Free the data */
 	g_free (data->message);
 	g_date_free (data->date);
@@ -133,14 +130,27 @@ static void
 progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_data, const GDate *date, AlmanahImportStatus status,
                         const gchar *message)
 {
-	ProgressData *data = g_slice_new (ProgressData);
+	GSource *source;
+	ProgressData *data;
+
+	data = g_slice_new (ProgressData);
 	data->callback = callback;
 	data->user_data = user_data;
 	data->date = g_date_new_dmy (g_date_get_day (date), g_date_get_month (date), g_date_get_year (date));
 	data->status = status;
 	data->message = g_strdup (message);
-	
-	g_idle_add ((GSourceFunc) progress_idle_callback_cb, data);
+g_message ("progress_idle_callback");
+
+	/* We can't just use g_idle_add() here, since GSimpleAsyncResult uses default priority, so the finished callback will skip any outstanding
+	 * progress callbacks in the main loop's priority queue, causing Bad Things to happen. We need to guarantee that no more progress callbacks
+	 * will occur after the finished callback has been called; this is one hacky way of achieving that. */
+	source = g_idle_source_new ();
+	g_source_set_priority (source, G_PRIORITY_DEFAULT);
+
+	g_source_set_callback (source, (GSourceFunc) progress_idle_callback_cb, data, NULL);
+	g_source_attach (source, NULL);
+
+	g_source_unref (source);
 }
 
 /**
@@ -170,7 +180,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	GtkTextIter existing_start, existing_end, imported_start, imported_end;
 	gchar *header_string;
 	GError *error = NULL;
-
+g_message ("set_entry");
 	/* Check to see if there's a conflict first */
 	almanah_entry_get_date (imported_entry, &entry_date);
 	existing_entry = almanah_storage_manager_get_entry (almanah->storage_manager, &entry_date);
@@ -197,7 +207,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 
 	/* The two buffers have to use the same tag table for gtk_text_buffer_insert_range() to work */
 	existing_buffer = gtk_text_buffer_new (gtk_text_buffer_get_tag_table (imported_buffer));
-	if (almanah_entry_get_content (existing_entry, existing_buffer, FALSE, NULL) == FALSE) {
+	if (almanah_entry_get_content (existing_entry, existing_buffer, FALSE, &error) == FALSE) {
 		/* Deserialising the existing entry failed; use the imported entry instead */
 		almanah_storage_manager_set_entry (almanah->storage_manager, imported_entry);
 
@@ -277,7 +287,7 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 	GFileEnumerator *enumerator;
 	GtkTextBuffer *buffer;
 	GError *child_error = NULL;
-
+g_message ("import_text_files");
 	enumerator = g_file_enumerate_children (source, "standard::name,standard::display-name,standard::is-hidden,time::modified",
 	                                        G_FILE_QUERY_INFO_NONE, NULL, error);
 	if (enumerator == NULL)
@@ -343,6 +353,10 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 
 		g_object_unref (entry);
 		g_object_unref (file_info);
+
+		/* Check for cancellation */
+		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
+			break;
 	}
 
 	/* Check if the loop was broken due to an error */
@@ -368,14 +382,19 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 	GFileInfo *file_info;
 	gchar *path;
 	const gchar *display_name;
-	GSList *i, *definitions;
+	GSList *i, *definitions = NULL;
 	AlmanahEntry *entry;
 	AlmanahStorageManager *database;
 	AlmanahStorageManagerIter iter;
+	gboolean success = FALSE;
 
 	/* Get the display name for use with set_entry(), below */
-	file_info = g_file_query_info (source, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+	file_info = g_file_query_info (source, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NONE, cancellable, error);
+	if (file_info == NULL)
+		return FALSE;
+
 	display_name = g_file_info_get_display_name (file_info);
+	g_object_unref (file_info);
 
 	/* Open the database */
 	path = g_file_get_path (source);
@@ -402,6 +421,10 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 		g_free (message);
 
 		g_object_unref (entry);
+
+		/* Check for cancellation */
+		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, error) == TRUE)
+			goto finish;
 	}
 
 	/* Query for every definition */
@@ -410,14 +433,22 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 		/* Add the definition to the proper database, ignoring failure */
 		almanah_storage_manager_add_definition (almanah->storage_manager, ALMANAH_DEFINITION (i->data));
 		g_object_unref (i->data);
+
+		/* Check for cancellation */
+		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, error) == TRUE)
+			goto finish;
 	}
+
+	/* Success! */
+	success = TRUE;
+
+finish:
 	g_slist_free (definitions);
 
 	almanah_storage_manager_disconnect (database, NULL);
 	g_object_unref (database);
-	g_object_unref (file_info);
 
-	return TRUE;
+	return success;
 }
 
 typedef struct {
@@ -436,7 +467,7 @@ import_thread (GSimpleAsyncResult *result, AlmanahImportOperation *operation, GC
 {
 	GError *error = NULL;
 	ImportData *data = g_simple_async_result_get_op_res_gpointer (result);
-
+g_message ("import_thread");
 	/* Check to see if the operation's been cancelled already */
 	if (g_cancellable_set_error_if_cancelled (cancellable, &error) == TRUE) {
 		g_simple_async_result_set_from_error (result, error);
@@ -458,7 +489,7 @@ almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancel
 {
 	GSimpleAsyncResult *result;
 	ImportData *data;
-
+g_message ("almanah_import_operation_run");
 	g_return_if_fail (ALMANAH_IS_IMPORT_OPERATION (self));
 	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
@@ -476,7 +507,7 @@ gboolean
 almanah_import_operation_finish (AlmanahImportOperation *self, GAsyncResult *async_result, GError **error)
 {
 	GSimpleAsyncResult *result = G_SIMPLE_ASYNC_RESULT (async_result);
-
+g_message ("almanah_import_operation_finish");
 	g_return_val_if_fail (ALMANAH_IS_IMPORT_OPERATION (self), FALSE);
 	g_return_val_if_fail (G_IS_ASYNC_RESULT (async_result), FALSE);
 	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -490,8 +521,7 @@ almanah_import_operation_finish (AlmanahImportOperation *self, GAsyncResult *asy
 }
 
 void
-almanah_import_operation_populate_model (GtkListStore *store, guint type_id_column, guint name_column, guint description_column, guint action_column,
-                                         guint file_chooser_title_column)
+almanah_import_operation_populate_model (GtkListStore *store, guint type_id_column, guint name_column, guint description_column, guint action_column)
 {
 	guint i;
 
@@ -504,7 +534,6 @@ almanah_import_operation_populate_model (GtkListStore *store, guint type_id_colu
 		                    name_column, _(import_modes[i].name),
 		                    description_column, _(import_modes[i].description),
 		                    action_column, import_modes[i].action,
-		                    file_chooser_title_column, _(import_modes[i].file_chooser_title),
 		                    -1);
 	}
 }

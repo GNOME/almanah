@@ -27,30 +27,30 @@
 #include "storage-manager.h"
 #include "main.h"
 
-typedef gboolean (*ExportFunc) (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error);
+typedef gboolean (*ExportFunc) (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback,
+                                gpointer progress_user_data, GCancellable *cancellable, GError **error);
 
 typedef struct {
 	const gchar *name; /* translatable */
 	const gchar *description; /* translatable */
 	GtkFileChooserAction action;
-	const gchar *file_chooser_title; /* translatable */
 	ExportFunc export_func;
 } ExportModeDetails;
 
-static gboolean export_text_files (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error);
-static gboolean export_database (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error);
+static gboolean export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback,
+                                   gpointer progress_user_data, GCancellable *cancellable, GError **error);
+static gboolean export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback,
+                                 gpointer progress_user_data, GCancellable *cancellable, GError **error);
 
 static const ExportModeDetails export_modes[] = {
 	{ N_("Text Files"),
 	  N_("Select a _folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
 	     "All entries will be exported, unencrypted in plain text format."),
 	  GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-	  N_("Select a Folder"),
 	  export_text_files },
 	{ N_("Database"),
 	  N_("Select a _filename for a complete copy of the unencrypted Almanah Diary database to be given."),
-	  GTK_FILE_CHOOSER_ACTION_SAVE, /* TODO: Need to change the file chooser for this */
-	  N_("Select a File"),
+	  GTK_FILE_CHOOSER_ACTION_SAVE,
 	  export_database }
 };
 
@@ -104,8 +104,51 @@ almanah_export_operation_new (AlmanahExportOperationType type_id, GFile *destina
 	return export_operation;
 }
 
+typedef struct {
+	AlmanahExportProgressCallback callback;
+	gpointer user_data;
+	GDate *date;
+} ProgressData;
+
 static gboolean
-export_text_files (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error)
+progress_idle_callback_cb (ProgressData *data)
+{
+	g_assert (data->callback != NULL);
+	data->callback (data->date, data->user_data);
+
+	/* Free the data */
+	g_date_free (data->date);
+	g_slice_free (ProgressData, data);
+
+	return FALSE;
+}
+
+static void
+progress_idle_callback (AlmanahExportProgressCallback callback, gpointer user_data, const GDate *date)
+{
+	GSource *source;
+	ProgressData *data;
+
+	data = g_slice_new (ProgressData);
+	data->callback = callback;
+	data->user_data = user_data;
+	data->date = g_date_new_dmy (g_date_get_day (date), g_date_get_month (date), g_date_get_year (date));
+
+	/* We can't just use g_idle_add() here, since GSimpleAsyncResult uses default priority, so the finished callback will skip any outstanding
+	 * progress callbacks in the main loop's priority queue, causing Bad Things to happen. We need to guarantee that no more progress callbacks
+	 * will occur after the finished callback has been called; this is one hacky way of achieving that. */
+	source = g_idle_source_new ();
+	g_source_set_priority (source, G_PRIORITY_DEFAULT);
+
+	g_source_set_callback (source, (GSourceFunc) progress_idle_callback_cb, data, NULL);
+	g_source_attach (source, NULL);
+
+	g_source_unref (source);
+}
+
+static gboolean
+export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
+                   GCancellable *cancellable, GError **error)
 {
 	AlmanahStorageManagerIter iter;
 	AlmanahEntry *entry;
@@ -152,8 +195,15 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, GCancellabl
 			break;
 		}
 
+		/* Progress callback */
+		progress_idle_callback (progress_callback, progress_user_data, &date);
+
 		g_object_unref (file);
 		g_free (content);
+
+		/* Check for cancellation */
+		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
+			break;
 	}
 
 	/* Check if the loop was broken due to an error */
@@ -171,10 +221,13 @@ finish:
 }
 
 static gboolean
-export_database (AlmanahExportOperation *self, GFile *destination, GCancellable *cancellable, GError **error)
+export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
+                 GCancellable *cancellable, GError **error)
 {
 	GFile *source;
 	gboolean success;
+
+	/* We ignore the progress callbacks, since this is a fairly fast operation, and it exports all the entries at once. */
 
 	/* Get the input file (current unencrypted database) */
 	source = g_file_new_for_path (almanah_storage_manager_get_filename (almanah->storage_manager, TRUE));
@@ -187,10 +240,22 @@ export_database (AlmanahExportOperation *self, GFile *destination, GCancellable 
 	return success;
 }
 
+typedef struct {
+	AlmanahExportProgressCallback progress_callback;
+	gpointer progress_user_data;
+} ExportData;
+
+static void
+export_data_free (ExportData *data)
+{
+	g_slice_free (ExportData, data);
+}
+
 static void
 export_thread (GSimpleAsyncResult *result, AlmanahExportOperation *operation, GCancellable *cancellable)
 {
 	GError *error = NULL;
+	ExportData *data = g_simple_async_result_get_op_res_gpointer (result);
 
 	/* Check to see if the operation's been cancelled already */
 	if (g_cancellable_set_error_if_cancelled (cancellable, &error) == TRUE) {
@@ -200,21 +265,29 @@ export_thread (GSimpleAsyncResult *result, AlmanahExportOperation *operation, GC
 	}
 
 	/* Export and return */
-	if (export_modes[operation->priv->current_mode].export_func (operation, operation->priv->destination, cancellable, &error) == FALSE) {
+	if (export_modes[operation->priv->current_mode].export_func (operation, operation->priv->destination, data->progress_callback,
+	    data->progress_user_data, cancellable, &error) == FALSE) {
 		g_simple_async_result_set_from_error (result, error);
 		g_error_free (error);
 	}
 }
 
 void
-almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
+almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, AlmanahExportProgressCallback progress_callback,
+                              gpointer progress_user_data,GAsyncReadyCallback callback, gpointer user_data)
 {
 	GSimpleAsyncResult *result;
+	ExportData *data;
 
 	g_return_if_fail (ALMANAH_IS_EXPORT_OPERATION (self));
 	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
+	data = g_slice_new (ExportData);
+	data->progress_callback = progress_callback;
+	data->progress_user_data = progress_user_data;
+
 	result = g_simple_async_result_new (G_OBJECT (self), callback, user_data, almanah_export_operation_run);
+	g_simple_async_result_set_op_res_gpointer (result, data, (GDestroyNotify) export_data_free);
 	g_simple_async_result_run_in_thread (result, (GSimpleAsyncThreadFunc) export_thread, G_PRIORITY_DEFAULT, cancellable);
 	g_object_unref (result);
 }
@@ -237,8 +310,7 @@ almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncResult *asy
 }
 
 void
-almanah_export_operation_populate_model (GtkListStore *store, guint type_id_column, guint name_column, guint description_column, guint action_column,
-                                         guint file_chooser_title_column)
+almanah_export_operation_populate_model (GtkListStore *store, guint type_id_column, guint name_column, guint description_column, guint action_column)
 {
 	guint i;
 
@@ -251,7 +323,6 @@ almanah_export_operation_populate_model (GtkListStore *store, guint type_id_colu
 		                    name_column, _(export_modes[i].name),
 		                    description_column, _(export_modes[i].description),
 		                    action_column, export_modes[i].action,
-		                    file_chooser_title_column, _(export_modes[i].file_chooser_title),
 		                    -1);
 	}
 }

@@ -27,6 +27,8 @@ G_BEGIN_DECLS
 
 typedef guint AlmanahExportOperationType;
 
+typedef void (*AlmanahExportProgressCallback) (const GDate *date, gpointer user_data);
+
 #define ALMANAH_TYPE_EXPORT_OPERATION		(almanah_export_operation_get_type ())
 #define ALMANAH_EXPORT_OPERATION(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperation))
 #define ALMANAH_EXPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationClass))
@@ -49,11 +51,13 @@ GType almanah_export_operation_get_type (void) G_GNUC_CONST;
 
 AlmanahExportOperation *almanah_export_operation_new (AlmanahExportOperationType type_id, GFile *destination) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
-void almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
+void almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable,
+                                   AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
+                                   GAsyncReadyCallback callback, gpointer user_data);
 gboolean almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncResult *async_result, GError **error);
 
 void almanah_export_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column,
-                                              guint action_column, guint file_chooser_title_column);
+                                              guint action_column);
 
 G_END_DECLS
 
