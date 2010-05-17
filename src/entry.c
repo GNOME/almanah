@@ -287,10 +287,6 @@ almanah_entry_get_editability (AlmanahEntry *self)
 	GDate current_date;
 	gint days_between;
 
-	/* Entries are always editable if we have import mode on */
-	if (almanah->import_mode == TRUE)
-		return ALMANAH_ENTRY_EDITABLE;
-
 	g_date_set_time_t (&current_date, time (NULL));
 
 	/* Entries can't be edited before they've happened */

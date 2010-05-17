@@ -51,7 +51,6 @@ typedef struct {
 #endif /* ENABLE_ENCRYPTION */
 
 	gboolean debug;
-	gboolean import_mode;
 } Almanah;
 
 extern Almanah *almanah;
