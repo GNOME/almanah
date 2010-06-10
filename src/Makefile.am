@@ -102,10 +102,10 @@ ALMANAH_MARSHAL_FILES = \
 	almanah-marshal.c	\
 	almanah-marshal.h
 
-almanah-marshal.h: almanah-marshal.list Makefile
-	$(AM_V_GEN)($(GLIB_GENMARSHAL) --prefix=almanah_marshal $(srcdir)/almanah-marshal.list --header > $(@F))
-almanah-marshal.c: almanah-marshal.h Makefile
-	$(AM_V_GEN)($(GLIB_GENMARSHAL) --prefix=almanah_marshal $(srcdir)/almanah-marshal.list --header --body > $(@F))
+almanah-marshal.h: almanah-marshal.list
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=almanah_marshal --header $< > $@
+almanah-marshal.c: almanah-marshal.list
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=almanah_marshal --header --body $< > $@
 
 # Enums
 ALMANAH_ENUM_FILES = \
