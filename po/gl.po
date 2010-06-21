@@ -2,18 +2,19 @@
 # Copyright (C) 2009 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
 # Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-24 11:48+0200\n"
-"PO-Revision-Date: 2010-03-03 11:03+0100\n"
+"POT-Creation-Date: 2010-06-21 11:11+0200\n"
+"PO-Revision-Date: 2010-06-21 11:12+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
-"Language-Team: Galician <proxecto@trasno.net>\n"
+"Language-Team: Galician <gnome@g11.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\\n"
 
 #: ../data/almanah.desktop.in.h:1 ../src/main-window.c:134 ../src/main.c:112
 msgid "Almanah Diary"
@@ -243,9 +244,8 @@ msgid "_Edit"
 msgstr "_Editar"
 
 #: ../data/almanah.ui.h:37
-#, fuzzy
 msgid "_Export…"
-msgstr "I_mportar..."
+msgstr "_Exportar…"
 
 #: ../data/almanah.ui.h:38
 msgid "_File"
@@ -328,14 +328,12 @@ msgid "Error launching F-Spot"
 msgstr "Produciuse un erro ao abrir F-Spot."
 
 #: ../src/import-export-dialog.c:145
-#, fuzzy
 msgid "Import _mode: "
-msgstr "Modo de importación:"
+msgstr "_Modo importar: "
 
 #: ../src/import-export-dialog.c:145
-#, fuzzy
 msgid "Export _mode: "
-msgstr "Modo de importación:"
+msgstr "_Modo exportar: "
 
 #. Set the window title
 #: ../src/import-export-dialog.c:148
@@ -343,9 +341,8 @@ msgid "Import Entries"
 msgstr "Importar entradas"
 
 #: ../src/import-export-dialog.c:148
-#, fuzzy
 msgid "Export Entries"
-msgstr "Importar entradas"
+msgstr "Exportar entradas"
 
 #. Set the button label
 #: ../src/import-export-dialog.c:151
@@ -353,26 +350,24 @@ msgid "_Import"
 msgstr "I_mportante"
 
 #: ../src/import-export-dialog.c:151
-#, fuzzy
 msgid "_Export"
-msgstr "I_mportante"
+msgstr "_Exportar"
 
 #: ../src/import-export-dialog.c:188
 msgid "Import failed"
 msgstr "A importación fallou"
 
 #: ../src/import-export-dialog.c:226
-#, fuzzy
 msgid "Export failed"
-msgstr "A importación fallou"
+msgstr "A exportación fallou"
 
 #: ../src/import-export-dialog.c:239
 msgid "Export successful"
-msgstr ""
+msgstr "Exportación rematada con éxito"
 
 #: ../src/import-export-dialog.c:240
 msgid "The diary was successfully exported."
-msgstr ""
+msgstr "O diario exportouse de forma satisfactoria."
 
 #: ../src/import-export-dialog.c:389
 msgid "Import Results"
@@ -591,9 +586,8 @@ msgid "Spelling checker could not be initialized"
 msgstr "No se puido inicializar a comprobación ortográfica"
 
 #: ../src/printing.c:277
-#, fuzzy
 msgid "This entry is marked as important."
-msgstr "Troca se a entrada actual está marcada como importante."
+msgstr "Esta entrada está marcada como importante."
 
 #: ../src/printing.c:298
 msgid "No entry for this date."
@@ -692,9 +686,8 @@ msgstr "Produciuse un erro deserializando a entrada no búfer ao buscar."
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: ../src/widgets/calendar.c:116
-#, fuzzy
 msgid "Important!"
-msgstr "I_mportante"
+msgstr "Importante"
 
 #~ msgid "Text Files"
 #~ msgstr "Ficheiros de texto"
