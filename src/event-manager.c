@@ -34,13 +34,11 @@ typedef struct {
 #include "calendar.h"
 #endif /* HAVE_EVO */
 #include "main.h"
-#include "f-spot.h"
 
 const EventFactoryType event_factory_types[] = {
 #ifdef HAVE_EVO
 	{ ALMANAH_EVENT_FACTORY_CALENDAR, almanah_calendar_event_factory_get_type },
 #endif /* HAVE_EVO */
-	{ ALMANAH_EVENT_FACTORY_F_SPOT, almanah_f_spot_event_factory_get_type }
 };
 
 static void almanah_event_manager_dispose (GObject *object);

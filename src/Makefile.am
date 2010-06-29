@@ -43,10 +43,6 @@ almanah_SOURCES = \
 	definitions/note.h		\
 	definitions/uri.c		\
 	definitions/uri.h		\
-	events/f-spot-photo.c		\
-	events/f-spot-photo.h		\
-	event-factories/f-spot.c	\
-	event-factories/f-spot.h	\
 	widgets/calendar.c		\
 	widgets/calendar.h
 

@@ -7,7 +7,6 @@ src/add-definition-dialog.c
 src/date-entry-dialog.c
 src/events/calendar-appointment.c
 src/events/calendar-task.c
-src/events/f-spot-photo.c
 src/import-export-dialog.c
 src/interface.c
 src/definition-manager-window.c
