@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <gconf/gconf.h>
+#include <gio/gio.h>
 
 #include "main.h"
 #include "storage-manager.h"
@@ -49,7 +49,7 @@ storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme
 	}
 
 	g_object_unref (almanah->storage_manager);
-	g_object_unref (almanah->gconf_client);
+	g_object_unref (almanah->settings);
 	g_object_unref (almanah->page_setup);
 	g_object_unref (almanah->print_settings);
 
@@ -163,9 +163,8 @@ main (int argc, char *argv[])
 	almanah = g_new0 (Almanah, 1);
 	almanah->debug = debug;
 
-	/* Open GConf */
-	almanah->gconf_client = gconf_client_get_default ();
-	gconf_client_add_dir (almanah->gconf_client, "/apps/almanah", GCONF_CLIENT_PRELOAD_ONELEVEL, NULL);
+	/* Open GSettings */
+	almanah->settings = g_settings_new ("org.gnome.almanah");
 
 	/* Ensure the DB directory exists */
 	if (g_file_test (g_get_user_data_dir (), G_FILE_TEST_IS_DIR) == FALSE)

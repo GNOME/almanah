@@ -48,10 +48,6 @@ GType almanah_main_window_get_type (void);
 AlmanahMainWindow *almanah_main_window_new (void);
 
 void almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date);
-#ifdef ENABLE_SPELL_CHECKING
-gboolean almanah_main_window_enable_spell_checking (AlmanahMainWindow *self, GError **error);
-void almanah_main_window_disable_spell_checking (AlmanahMainWindow *self);
-#endif /* ENABLE_SPELL_CHECKING */
 
 G_END_DECLS
 

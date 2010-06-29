@@ -30,30 +30,22 @@ ui_DATA = almanah.ui
 
 @INTLTOOL_DESKTOP_RULE@
 
-desktop_in_files = almanah.desktop.in
 desktopdir = $(datadir)/applications
+desktop_in_files = almanah.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 
 ###############################################################################
-# GConf schemas
+# GSettings schemas
 ###############################################################################
 
-@INTLTOOL_SCHEMAS_RULE@
+gsettings_SCHEMAS = org.gnome.almanah.gschema.xml
 
-schemasdir = $(GCONF_SCHEMA_FILE_DIR)
-schemas_in_files = almanah.schemas.in
-schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
+@GSETTINGS_RULES@
+@INTLTOOL_XML_NOMERGE_RULE@
 
-install-data-local:
-if GCONF_SCHEMAS_INSTALL
-	@GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 \
-		--makefile-install-rule $(schemas_DATA) || \
-		(echo ;\
-		echo "*****************************************************"; \
-		echo "Installation of schemas failed: install them manually"; \
-		echo "*****************************************************";)
-	@true
-endif
+# Data migration tool
+convertdir = $(datadir)/GConf/gsettings
+convert_DATA = almanah.convert
 
 ###############################################################################
 # General
@@ -62,9 +54,10 @@ endif
 EXTRA_DIST = \
 	$(ui_DATA)		\
 	$(desktop_in_files)	\
-	$(schemas_in_files)
+	$(schemas_in_files)	\
+	$(convert_DATA)
 CLEANFILES = \
 	$(desktop_DATA)		\
-	$(schemas_DATA)
+	$(gsettings_SCHEMAS)
 
 -include $(top_srcdir)/git.mk

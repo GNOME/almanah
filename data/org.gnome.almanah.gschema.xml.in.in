@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+	<schema id="org.gnome.almanah" path="/org/gnome/Almanah/" gettext-domain="@GETTEXT_PACKAGE@">
+		<key name="encryption-key" type="s">
+			<default>''</default>
+			<_summary>Database encryption key ID</_summary>
+			<_description>The ID of the key to use to encrypt and decrypt the database, if Almanah has been built with encryption support. Leave blank to disable database encryption.</_description>
+		</key>
+		<key name="spelling-language" type="s">
+			<default>''</default>
+			<_summary>Spell checking language</_summary>
+			<_description>The locale specifier of the language in which to check entry spellings.</_description>
+		</key>
+		<key name="spell-checking-enabled" type="b">
+			<default>true</default>
+			<_summary>Spell checking enabled?</_summary>
+			<_description>Whether spell checking of entries is enabled.</_description>
+		</key>
+	</schema>
+</schemalist>

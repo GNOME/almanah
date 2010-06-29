@@ -22,7 +22,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
-#include <gconf/gconf.h>
+#include <gio/gio.h>
 #ifdef ENABLE_SPELL_CHECKING
 #include <gtkspell/gtkspell.h>
 #endif /* ENABLE_SPELL_CHECKING */
@@ -44,6 +44,9 @@
 #include "widgets/calendar.h"
 
 static void almanah_main_window_dispose (GObject *object);
+#ifdef ENABLE_SPELL_CHECKING
+static void almanah_main_window_finalize (GObject *object);
+#endif /* ENABLE_SPELL_CHECKING */
 static void set_current_entry (AlmanahMainWindow *self, AlmanahEntry *entry);
 static void save_window_state (AlmanahMainWindow *self);
 static void restore_window_state (AlmanahMainWindow *self);
@@ -113,6 +116,10 @@ struct _AlmanahMainWindowPrivate {
 
 	AlmanahEntry *current_entry; /* whether it's been modified is stored as gtk_text_buffer_get_modified (priv->entry_buffer) */
 	gulong current_entry_notify_id; /* signal handler for current_entry::notify */
+
+#ifdef ENABLE_SPELL_CHECKING
+	gulong spell_checking_enabled_changed_id; /* signal handler for almanah->settings::changed::spell-checking-enabled */
+#endif /* ENABLE_SPELL_CHECKING */
 };
 
 G_DEFINE_TYPE (AlmanahMainWindow, almanah_main_window, GTK_TYPE_WINDOW)
@@ -124,6 +131,9 @@ almanah_main_window_class_init (AlmanahMainWindowClass *klass)
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	g_type_class_add_private (klass, sizeof (AlmanahMainWindowPrivate));
 	gobject_class->dispose = almanah_main_window_dispose;
+#ifdef ENABLE_SPELL_CHECKING
+	gobject_class->finalize = almanah_main_window_finalize;
+#endif /* ENABLE_SPELL_CHECKING */
 }
 
 static void
@@ -133,6 +143,12 @@ almanah_main_window_init (AlmanahMainWindow *self)
 
 	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Diary"));
 	g_signal_connect (self, "delete-event", G_CALLBACK (mw_delete_event_cb), NULL);
+
+#ifdef ENABLE_SPELL_CHECKING
+	/* We don't use g_settings_bind() because enabling spell checking could fail, and we need to show an error dialogue */
+	self->priv->spell_checking_enabled_changed_id = g_signal_connect (almanah->settings, "changed::spell-checking-enabled",
+	                                                                  (GCallback) spell_checking_enabled_changed_cb, self);
+#endif /* ENABLE_SPELL_CHECKING */
 }
 
 static void
@@ -143,6 +159,19 @@ almanah_main_window_dispose (GObject *object)
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_main_window_parent_class)->dispose (object);
 }
+
+#ifdef ENABLE_SPELL_CHECKING
+static void
+almanah_main_window_finalize (GObject *object)
+{
+	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW (object)->priv;
+
+	g_signal_handler_disconnect (object, priv->spell_checking_enabled_changed_id);
+
+	/* Chain up to the parent class */
+	G_OBJECT_CLASS (almanah_main_window_parent_class)->finalize (object);
+}
+#endif /* ENABLE_SPELL_CHECKING */
 
 AlmanahMainWindow *
 almanah_main_window_new (void)
@@ -212,8 +241,8 @@ almanah_main_window_new (void)
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
-	if (gconf_client_get_bool (almanah->gconf_client, "/apps/almanah/spell_checking_enabled", NULL) == TRUE)
-		almanah_main_window_enable_spell_checking (main_window, NULL);
+	if (g_settings_get_boolean (almanah->settings, "spell-checking-enabled") == TRUE)
+		enable_spell_checking (main_window, NULL);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Set up text formatting. It's important this is done after setting up GtkSpell, so that we know whether to
@@ -1324,8 +1353,36 @@ mw_definition_removed_cb (AlmanahStorageManager *storage_manager, const gchar *d
 }
 
 #ifdef ENABLE_SPELL_CHECKING
-gboolean
-almanah_main_window_enable_spell_checking (AlmanahMainWindow *self, GError **error)
+static void
+spell_checking_enabled_changed_cb (GSettings *settings, gchar *key, AlmanahMainWindow *self)
+{
+	gboolean enabled = g_settings_get_boolean (settings, "spell-checking-enabled");
+
+	if (almanah->debug)
+		g_debug ("spell_checking_enabled_changed_cb called with %u.", enabled);
+
+	if (enabled == TRUE) {
+		GError *error = NULL;
+
+		enable_spell_checking (self, &error);
+
+		if (error != NULL) {
+			GtkWidget *dialog = gtk_message_dialog_new (NULL,
+			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+			                                            _("Spelling checker could not be initialized"));
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+			gtk_dialog_run (GTK_DIALOG (dialog));
+			gtk_widget_destroy (dialog);
+
+			g_error_free (error);
+		}
+	} else {
+		disable_spell_checking (self);
+	}
+}
+
+static gboolean
+enable_spell_checking (AlmanahMainWindow *self, GError **error)
 {
 	GtkSpell *gtkspell;
 	gchar *spelling_language;
@@ -1343,7 +1400,7 @@ almanah_main_window_enable_spell_checking (AlmanahMainWindow *self, GError **err
 		gtk_text_tag_table_remove (table, tag);
 
 	/* Get the spell checking language */
-	spelling_language = gconf_client_get_string (almanah->gconf_client, "/apps/almanah/spelling_language", NULL);
+	spelling_language = g_settings_get_string (almanah->settings, "spelling-language");
 
 	/* Make sure it's either NULL or a proper locale specifier */
 	if (spelling_language != NULL && spelling_language[0] == '\0') {
@@ -1359,8 +1416,8 @@ almanah_main_window_enable_spell_checking (AlmanahMainWindow *self, GError **err
 	return TRUE;
 }
 
-void
-almanah_main_window_disable_spell_checking (AlmanahMainWindow *self)
+static void
+disable_spell_checking (AlmanahMainWindow *self)
 {
 	GtkSpell *gtkspell;
 	GtkTextTagTable *table;

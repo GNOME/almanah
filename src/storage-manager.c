@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
+#include <gio/gio.h>
 #include <sqlite3.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -485,7 +486,7 @@ get_encryption_key (void)
 	guint i;
 	gchar *encryption_key;
 
-	encryption_key = gconf_client_get_string (almanah->gconf_client, ENCRYPTION_KEY_GCONF_PATH, NULL);
+	encryption_key = g_settings_get_string (almanah->settings, "encryption-key");
 	if (encryption_key == NULL || encryption_key[0] == '\0') {
 		g_free (encryption_key);
 		return NULL;

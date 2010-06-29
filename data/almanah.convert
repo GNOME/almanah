@@ -1,0 +1,4 @@
+[org.gnome.almanah]
+encryption-key = /apps/almanah/encryption_key
+spelling-language = /apps/almanah/spelling_language
+spell-checking-enabled = /apps/almanah/spell_checking_enabled

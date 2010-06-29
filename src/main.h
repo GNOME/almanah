@@ -20,7 +20,7 @@
 #include <config.h>
 #include <gtk/gtk.h>
 #include <glib.h>
-#include <gconf/gconf-client.h>
+#include <gio/gio.h>
 
 #include "storage-manager.h"
 #include "event-manager.h"
@@ -28,16 +28,12 @@
 #ifndef ALMANAH_MAIN_H
 #define ALMANAH_MAIN_H
 
-#ifdef ENABLE_ENCRYPTION
-#define ENCRYPTION_KEY_GCONF_PATH "/apps/almanah/encryption_key"
-#endif /* ENABLE_ENCRYPTION */
-
 G_BEGIN_DECLS
 
 typedef struct {
 	AlmanahStorageManager *storage_manager;
 	AlmanahEventManager *event_manager;
-	GConfClient *gconf_client;
+	GSettings *settings;
 	GtkPrintSettings *print_settings;
 	GtkPageSetup *page_setup;
 
