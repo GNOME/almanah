@@ -1,0 +1,754 @@
+# Dutch translation.
+# This file is distributed under the same license as the diary package.
+#
+# Heimen <vistausss@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: nl\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-21 21:50+0100\n"
+"PO-Revision-Date: 2010-06-30 20:52+0200\n"
+"Last-Translator: Heimen <vistausss@gmail.com>\n"
+"Language-Team:  <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:133 ../src/main.c:116
+msgid "Almanah Diary"
+msgstr "Almanah Diary"
+
+#: ../data/almanah.desktop.in.h:2
+msgid "Diary"
+msgstr "Dagboek"
+
+#: ../data/almanah.desktop.in.h:3
+msgid "Keep a personal diary"
+msgstr "Houdt een persoonlijk dagboek bij"
+
+#: ../data/almanah.schemas.in.h:1
+msgid "Database encryption key ID"
+msgstr "Database versleutelings-ID"
+
+#: ../data/almanah.schemas.in.h:2
+msgid "Main window X position"
+msgstr "Algemeen venster X-positie"
+
+#: ../data/almanah.schemas.in.h:3
+msgid "Main window Y position"
+msgstr "Algemeen venster Y-positie"
+
+#: ../data/almanah.schemas.in.h:4
+msgid "Main window height"
+msgstr "Algemene vensterhoogte"
+
+#: ../data/almanah.schemas.in.h:5
+msgid "Main window maximization"
+msgstr "Algemene venstermaximalisatie"
+
+#: ../data/almanah.schemas.in.h:6
+msgid "Main window width"
+msgstr "Algemene vensterbreedte"
+
+#: ../data/almanah.schemas.in.h:7
+msgid "Spell checking enabled?"
+msgstr "Spellingcontrole geactiveerd?"
+
+#: ../data/almanah.schemas.in.h:8
+msgid "Spell checking language"
+msgstr "Taal voor spellingscontrole"
+
+#: ../data/almanah.schemas.in.h:9
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"De ID van de sleutel om te gebruiken om de database te versleutelen en te deversleutelen, "
+" indien Almanah gebouwd is met ondersteuning hiervoor. Laat leeg om versleuteling te deactiveren."
+
+#: ../data/almanah.schemas.in.h:10
+msgid "The X position of the main window."
+msgstr "De X-positie van het algemene venster."
+
+#: ../data/almanah.schemas.in.h:11
+msgid "The Y position of the main window."
+msgstr "De Y-positie van het algemene venster."
+
+#: ../data/almanah.schemas.in.h:12
+msgid "The height of the main window."
+msgstr "De hoogte van het algemene venster."
+
+#: ../data/almanah.schemas.in.h:13
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "De taal-aangever van de taal waarin de spelling gecontroleerd moet worden."
+
+#: ../data/almanah.schemas.in.h:14
+msgid "The width of the main window."
+msgstr "De breedte van het algemene venster."
+
+#: ../data/almanah.schemas.in.h:15
+msgid "Whether spell checking of entries is enabled."
+msgstr "Of spellingcontrole is geactiveerd."
+
+#: ../data/almanah.schemas.in.h:16
+msgid "Whether the main window should start maximized."
+msgstr "Of het algemene venster gemaximaliseerd moet starten."
+
+#: ../data/almanah.ui.h:1
+msgid "Add a definition for the currently selected text."
+msgstr "Voeg een definitie toe voor de huigde geselecteerde tekst."
+
+#: ../data/almanah.ui.h:2
+msgid "Calendar"
+msgstr "Kalender"
+
+#: ../data/almanah.ui.h:3
+msgid "Definition Description"
+msgstr "Definitie-beschrijving"
+
+#: ../data/almanah.ui.h:4
+msgid "Definition List"
+msgstr "Definitie-lijst"
+
+#: ../data/almanah.ui.h:5
+msgid "Definition Type"
+msgstr "Definitie-type"
+
+#: ../data/almanah.ui.h:6
+msgid "Definition type:"
+msgstr "Definitie-type:"
+
+#: ../data/almanah.ui.h:7
+msgid "Entry editing area"
+msgstr "Invoer-bewerkingsveld"
+
+#: ../data/almanah.ui.h:8
+msgid "F_ormat"
+msgstr "Op_maak"
+
+#: ../data/almanah.ui.h:9
+msgid "Failed Entries"
+msgstr "Mislukte invoeren"
+
+#: ../data/almanah.ui.h:10
+msgid "Go to _Today"
+msgstr "Ga naar _Vandaag"
+
+#: ../data/almanah.ui.h:11
+msgid "I_mportant"
+msgstr "Be_langrijk"
+
+#: ../data/almanah.ui.h:12
+msgid "Import Results List"
+msgstr "Importeer Resultatenlijst"
+
+#: ../data/almanah.ui.h:13
+msgid "Insert _Time"
+msgstr "Voeg _tijd in"
+
+#: ../data/almanah.ui.h:14
+msgid "Jump to the current date in the diary."
+msgstr "Spring naar de huidige datum in het dagboek."
+
+#: ../data/almanah.ui.h:15
+msgid "Merged Entries"
+msgstr "Samengevoegde invoeren"
+
+#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
+msgid "Nothing selected"
+msgstr "Niets geselecteerd"
+
+#: ../data/almanah.ui.h:17
+msgid "Past Event List"
+msgstr "Lijst met gebeurtenissen uit het verleden"
+
+#: ../data/almanah.ui.h:18
+msgid "Past Events"
+msgstr "Verleden gebeurtenissen"
+
+#: ../data/almanah.ui.h:19
+msgid "Pr_eferences"
+msgstr "In_stellingen"
+
+#: ../data/almanah.ui.h:20
+msgid "Remove the definition from the currently selected text."
+msgstr "Verwijder de definitie van de hudige geselecteerde tekst."
+
+#: ../data/almanah.ui.h:21
+msgid "Result List"
+msgstr "Resultatenlijst"
+
+#: ../data/almanah.ui.h:22
+msgid "Results:"
+msgstr "Resultaten:"
+
+#: ../data/almanah.ui.h:23 ../src/search-dialog.c:61
+msgid "Search"
+msgstr "Zoek"
+
+#: ../data/almanah.ui.h:24
+msgid "Search entry"
+msgstr "Zoek invoer"
+
+#: ../data/almanah.ui.h:25
+msgid "Select Date…"
+msgstr "Selecteer datum…"
+
+#: ../data/almanah.ui.h:26
+msgid "Successful Entries"
+msgstr "Succesvolle gebeurtenissen"
+
+#: ../data/almanah.ui.h:27
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Schakelt of de huidige invoer gemarkeerd moet worden als belangrijk of niet."
+
+#: ../data/almanah.ui.h:28
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Schakelt of de huidige geselecteerde tekst dikgedrukt moet zijn of niet."
+
+#: ../data/almanah.ui.h:29
+msgid "Toggle whether the currently selected text is italic."
+msgstr "Schakelt of de huidige geselecteerde tekst schuingedrukt moet zijn of niet."
+
+#: ../data/almanah.ui.h:30
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "Schakelt of de huidige geselecteerde tekst onderstreept moet zijn of niet."
+
+#: ../data/almanah.ui.h:31
+msgid "View"
+msgstr "Bekijk"
+
+#: ../data/almanah.ui.h:32
+msgid "View Entry"
+msgstr "Bekijk invoer"
+
+#: ../data/almanah.ui.h:33
+msgid "View Event"
+msgstr "Bekijk gebeurtenis"
+
+#: ../data/almanah.ui.h:34
+msgid "_Add Definition"
+msgstr "_Voeg definitie toe"
+
+#: ../data/almanah.ui.h:35
+msgid "_Definitions"
+msgstr "_Definities"
+
+#: ../data/almanah.ui.h:36
+msgid "_Edit"
+msgstr "_Bewerk"
+
+#: ../data/almanah.ui.h:37
+msgid "_Export…"
+msgstr "_Exporteer…"
+
+#: ../data/almanah.ui.h:38
+msgid "_File"
+msgstr "_Bestand"
+
+#: ../data/almanah.ui.h:39
+msgid "_Help"
+msgstr "_Help"
+
+#: ../data/almanah.ui.h:40
+msgid "_Import…"
+msgstr "_Importeer…"
+
+#: ../data/almanah.ui.h:41
+msgid "_Print…"
+msgstr "_Druk af…"
+
+#: ../data/almanah.ui.h:42
+msgid "_Remove Definition"
+msgstr "_Verwijder definitie"
+
+#: ../data/almanah.ui.h:43
+msgid "_Search…"
+msgstr "_Zoek…"
+
+#: ../data/almanah.ui.h:44
+msgid "_View Definitions"
+msgstr "_Bekijk definities"
+
+#: ../data/almanah.ui.h:45
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "bijv. \"14/03/2009\" of \"14 maart 2009\"."
+
+#: ../src/add-definition-dialog.c:82
+msgid "Add Definition"
+msgstr "Voeg definitie toe"
+
+#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
+#: ../src/import-export-dialog.c:147 ../src/import-export-dialog.c:730
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:174
+#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "UI-bestand \"%s\" kon niet worden geladen"
+
+#: ../src/date-entry-dialog.c:74
+msgid "Select Date"
+msgstr "Selecteer datum"
+
+#: ../src/events/calendar-appointment.c:49
+msgid "Calendar Appointment"
+msgstr "Kalender-afspraak"
+
+#: ../src/events/calendar-appointment.c:50
+msgid "An appointment on an Evolution calendar."
+msgstr "Een afspraak op een Evolution-kalender."
+
+#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
+msgid "Error launching Evolution"
+msgstr "Fout bij het laden van Evolution"
+
+#: ../src/events/calendar-task.c:49
+msgid "Calendar Task"
+msgstr "Kalender-taak"
+
+#: ../src/events/calendar-task.c:50
+msgid "A task on an Evolution calendar."
+msgstr "Een taak op een Evolution-kalender."
+
+#: ../src/events/f-spot-photo.c:49
+msgid "F-Spot Photo"
+msgstr "F-Spot Foto"
+
+#: ../src/events/f-spot-photo.c:50
+msgid "A photo stored in F-Spot."
+msgstr "Een foto opgeslagen in F-Spot."
+
+#: ../src/events/f-spot-photo.c:109
+msgid "Error launching F-Spot"
+msgstr "Fout bij het laden van F-Spot"
+
+#: ../src/import-export-dialog.c:49
+msgid "Text Files"
+msgstr "Tekstbestanden"
+
+#: ../src/import-export-dialog.c:50
+msgid ""
+"Select a folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Selecteer een map welke tekstbestanden bevat, ;één per invoer, met namen in "
+"het formaat 'yyyy-mm-dd', en geen extensie. Elke en alle van deze bestanden zullen "
+"geïmporteerd worden."
+
+#: ../src/import-export-dialog.c:52
+msgid ""
+"Select a folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"Selecteer een map voor het exporteren van de invoeren als tekstbestanden, "
+"één per invoer, met namen in het formaat 'yyyy-mm-dd', en geen extensie. Alle invoeren"
+"zullen worden geexporteerd, onversleuteld in het kale tekst-formaat."
+
+#: ../src/import-export-dialog.c:57
+msgid "Database"
+msgstr "Database"
+
+#: ../src/import-export-dialog.c:58
+msgid "Select a database file created by Almanah Diary to import."
+msgstr "Selecteer een database-bestand gemaakt door Almanah Diary om te importeren."
+
+#: ../src/import-export-dialog.c:59
+msgid ""
+"Select a filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"Selecteer een bestandsnaam voor een complete kopie van de onversleutelde Almanah Diary "
+"database."
+
+#: ../src/import-export-dialog.c:179
+msgid "Import mode: "
+msgstr "Importeer-modus: "
+
+#: ../src/import-export-dialog.c:179
+msgid "Export mode: "
+msgstr "Exporteer-modus: "
+
+#. Set the window title
+#: ../src/import-export-dialog.c:182
+msgid "Import Entries"
+msgstr "Importeer invoeren"
+
+#: ../src/import-export-dialog.c:182
+msgid "Export Entries"
+msgstr "Exporteer invoeren"
+
+#. Set the button label
+#: ../src/import-export-dialog.c:185
+msgid "_Import"
+msgstr "_Importeer"
+
+#: ../src/import-export-dialog.c:185
+msgid "_Export"
+msgstr "_Exporteer"
+
+#: ../src/import-export-dialog.c:239
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "Fout deserialising geïmporteerde invoer in de buffer: %s"
+
+#: ../src/import-export-dialog.c:255
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"Fout deserialising bestaande invoer in de buffer; overschrijven met geimporteerde "
+"invoer: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-export-dialog.c:296
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Invoer geïmporteerd uit \"%s\":\n"
+"\n"
+
+#: ../src/import-export-dialog.c:597
+msgid "Import failed"
+msgstr "Importeren mislukt"
+
+#: ../src/import-export-dialog.c:597
+msgid "Export failed"
+msgstr "Exporteren mislukt"
+
+#: ../src/import-export-dialog.c:617
+msgid "Export successful"
+msgstr "Exporteren succesvol"
+
+#: ../src/import-export-dialog.c:618
+msgid "The diary was successfully exported."
+msgstr "Het dagboek is succesvol geëxporteerd."
+
+#: ../src/import-export-dialog.c:704
+msgid "Import Results"
+msgstr "Importeer resultaten"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-export-dialog.c:797 ../src/main-window.c:372
+#: ../src/main-window.c:397 ../src/main-window.c:1029 ../src/printing.c:263
+#: ../src/search-dialog.c:159
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: ../src/definition-manager-window.c:72
+msgid "Definition Manager"
+msgstr "Definitie-beheerder"
+
+#: ../src/definition-manager-window.c:203
+#, c-format
+msgid "Are you sure you want to delete the definition for \"%s\"?"
+msgstr "Weet u zeker dat u de definitie wilt verwijderen voor \"%s\"?"
+
+#: ../src/definitions/contact.c:53
+msgid "Contact"
+msgstr "Contactpersoon"
+
+#: ../src/definitions/contact.c:54
+msgid "An Evolution contact."
+msgstr "Een Evolution-contactpersoon."
+
+#: ../src/definitions/contact.c:73
+msgid "Select Contact"
+msgstr "Selecteer contactpersoon"
+
+#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
+msgid "Error opening contact"
+msgstr "Fout bij het openen van contactpersoon"
+
+#: ../src/definitions/contact.c:136
+msgid "Error opening Evolution"
+msgstr "Fout bij het laden van Evolution"
+
+#: ../src/definitions/file.c:48
+msgid "File"
+msgstr "Bestand"
+
+#: ../src/definitions/file.c:49
+msgid "An attached file."
+msgstr "Een bijlage."
+
+#: ../src/definitions/file.c:74
+msgid "Error opening file"
+msgstr "Fout bij openen van bestand"
+
+#: ../src/definitions/file.c:93
+msgid "Select File"
+msgstr "Selecteer bestand"
+
+#: ../src/definitions/note.c:49
+msgid "Note"
+msgstr "Noot"
+
+#: ../src/definitions/note.c:50
+msgid "A note about an important event."
+msgstr "Een notitie over een belangrijke gebeurtenis."
+
+#: ../src/definitions/uri.c:50
+msgid "URI"
+msgstr "URI"
+
+#: ../src/definitions/uri.c:51
+msgid "A URI of a file or web page."
+msgstr "Een URI van een bestand of webpagina."
+
+#: ../src/definitions/uri.c:76
+msgid "Error opening URI"
+msgstr "Fout bij het openen van een URI"
+
+#: ../src/definitions/uri.c:99
+msgid "URI: "
+msgstr "URI: "
+
+#: ../src/main-window.c:376
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "Weet u zeker dat u deze dagboek-invoer wilt bewerken voor %s?"
+
+#: ../src/main-window.c:401
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Weet u zeker dat u deze dagboek-invoer wilt verwijderen voor %s?"
+
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:587
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "Onbekende of dubble tekst tag \"%s\" in invoer. Negeren."
+
+#: ../src/main-window.c:866
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah is vrije software: u kunt het heruitgeven en/of aanpassen onder de "
+"voorwaarden van de GNU General Public Licence zoals gepubliceerd door de Free Software "
+"Foundation, danwel versie 3 van de Licence, of (indien u dit wilt) elke latere "
+"versie."
+
+#: ../src/main-window.c:870
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah is verspreid in de hoop dat het nuttig zal zijn, maar ZONDER ENIGE "
+"GARANTIE; zelfs zonder de garantie MERCHANTABILITY of FITNESS "
+"VOOR EEN PARTICULAR PURPOSE.  Zie de GNU General Public Licence voor meer "
+"details."
+
+#: ../src/main-window.c:874
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"U zou een kopie ontvangen moeten hebben van de GNU General Public Licence tezamen met "
+"Almanah.  Indien dit niet het geval is, zie <http://www.gnu.org/licences/>."
+
+#: ../src/main-window.c:885
+#, c-format
+msgid "A helpful diary keeper, storing %u entries and %u definitions."
+msgstr "Een hulpvol dagboek-programma, opslaan van %u invoeren en %u definities."
+
+#: ../src/main-window.c:891
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Copyright © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:899
+msgid "translator-credits"
+msgstr "Heimen <vistausss@gmail.com>"
+
+#: ../src/main-window.c:903
+msgid "Almanah Website"
+msgstr "Almanah-website"
+
+#: ../src/main-window.c:1057
+msgid "Entry content could not be loaded"
+msgstr "Invoer-inhoud kon niet worden geladen"
+
+#: ../src/main.c:38
+msgid "Error encrypting database"
+msgstr "Fout bij het versleutelen van de database"
+
+#: ../src/main.c:103
+msgid "Enable debug mode"
+msgstr "Debug-modus inschakelen"
+
+#: ../src/main.c:104
+msgid "Enable import mode"
+msgstr "Activeer import-modus"
+
+#. Options
+#: ../src/main.c:120
+msgid "- Manage your diary"
+msgstr "- Beheer uw dagboek"
+
+#: ../src/main.c:130
+msgid "Command-line options could not be parsed"
+msgstr "Commando-regel opties konden niet worden geparseerd"
+
+#: ../src/main.c:162
+msgid "Error opening database"
+msgstr "Fout bij het openen van de atabase"
+
+#: ../src/preferences-dialog.c:79
+msgid "Almanah Preferences"
+msgstr "Almanah-instellingen"
+
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:168
+msgid "Encryption key: "
+msgstr "Versleutingssleutel: "
+
+#: ../src/preferences-dialog.c:173
+msgid "None (don't encrypt)"
+msgstr "Geen (niet versleutelen)"
+
+#: ../src/preferences-dialog.c:197
+msgid "New _Key"
+msgstr "Nieuwe _Sleutel"
+
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:204
+msgid "Enable _spell checking"
+msgstr "Schakel _spellingcontrole in"
+
+#: ../src/preferences-dialog.c:234
+msgid "Error saving the encryption key"
+msgstr "Fout bij het opslaan van de versleutelingssleutel"
+
+#: ../src/preferences-dialog.c:253
+msgid "Error opening Seahorse"
+msgstr "Fout bij het openen van Seahorse"
+
+#: ../src/preferences-dialog.c:291
+msgid "Spelling checker could not be initialized"
+msgstr "Spellingcontroleerder kon niet worden geïnitialiseerd"
+
+#: ../src/printing.c:277
+msgid "This entry is marked as important."
+msgstr "Deze invoer is gemarkeerd als belangrijk."
+
+#: ../src/printing.c:298
+msgid "No entry for this date."
+msgstr "Geen invoer voor deze datum."
+
+#: ../src/printing.c:453
+msgid "Start date:"
+msgstr "Start-datum:"
+
+#: ../src/printing.c:455
+msgid "End date:"
+msgstr "Eind-datum:"
+
+#. Line spacing
+#: ../src/printing.c:471
+msgid "Line spacing:"
+msgstr "Regelafstand:"
+
+#: ../src/storage-manager.c:237
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME is niet minimaal versie %s"
+
+#: ../src/storage-manager.c:246
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME ondersteunt geen OpenPGP: %s"
+
+#: ../src/storage-manager.c:255
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Fout bij het maken van cipher context: %s"
+
+#: ../src/storage-manager.c:284
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Fout bij openen van versleuteld database-bestand \"%s\": %s"
+
+#: ../src/storage-manager.c:304
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Fout bij openen van kaal database-bestand \"%s\": %s"
+
+#: ../src/storage-manager.c:353
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"De versleutelde database is leeg. Het kale database-bestand is achtergelaten als "
+"niet-verwijderd ter backup."
+
+#. Delete the plain file
+#: ../src/storage-manager.c:356
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Kon kaal database-bestand niet verwijderen \"%s\"."
+
+#: ../src/storage-manager.c:398
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Fout bij het onstleutelen van database: %s"
+
+#: ../src/storage-manager.c:432
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Fout bij het verkrijgen van versleutelingssleutel: %s"
+
+#: ../src/storage-manager.c:453
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Fout bij het versleutelen van database: %s"
+
+#: ../src/storage-manager.c:557
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Kon database niet openen \"%s\". SQLite gaf de volgende foutmelding: "
+"%s"
+
+#: ../src/storage-manager.c:636 ../src/storage-manager.c:670
+#, c-format
+msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr "Kon query niet draaien \"%s\". SQLite gaf de volgende foutmeldingen: %s"
+
+#: ../src/storage-manager.c:901
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Fout bij het deserialising invoer in de buffer tijdens het zoeken."
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:110
+msgid "Important!"
+msgstr "Belangrijk!"
+
