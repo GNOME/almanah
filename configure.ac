@@ -150,6 +150,12 @@ fi
 AC_SUBST(ENCRYPTION_CFLAGS)
 AC_SUBST(ENCRYPTION_LIBS)
 
+# Various required functions and headers
+AC_CHECK_HEADERS([libintl.h])
+AC_C_INLINE
+AC_FUNC_MKTIME
+AC_TYPE_SIZE_T
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
