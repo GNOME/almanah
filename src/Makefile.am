@@ -9,12 +9,8 @@ almanah_SOURCES = \
 	interface.h			\
 	main-window.c			\
 	main-window.h			\
-	definition-manager-window.c	\
-	definition-manager-window.h	\
 	storage-manager.c		\
 	storage-manager.h		\
-	add-definition-dialog.c		\
-	add-definition-dialog.h		\
 	search-dialog.c			\
 	search-dialog.h			\
 	printing.c			\
@@ -27,8 +23,6 @@ almanah_SOURCES = \
 	event-factory.h			\
 	event-manager.c			\
 	event-manager.h			\
-	definition.c			\
-	definition.h			\
 	date-entry-dialog.c		\
 	date-entry-dialog.h		\
 	import-export-dialog.c		\
@@ -37,12 +31,6 @@ almanah_SOURCES = \
 	import-operation.h		\
 	export-operation.c		\
 	export-operation.h		\
-	definitions/file.c		\
-	definitions/file.h		\
-	definitions/note.c		\
-	definitions/note.h		\
-	definitions/uri.c		\
-	definitions/uri.h		\
 	widgets/calendar.c		\
 	widgets/calendar.h
 
@@ -58,9 +46,7 @@ almanah_SOURCES += \
 	events/calendar-appointment.c		\
 	events/calendar-appointment.h		\
 	events/calendar-task.c			\
-	events/calendar-task.h			\
-	definitions/contact.c			\
-	definitions/contact.h
+	events/calendar-task.h
 endif
 
 if ENCRYPTION
@@ -72,7 +58,6 @@ endif
 almanah_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(datadir)/locale"\"	\
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"		\
-	-I$(srcdir)/definitions				\
 	-I$(srcdir)/events				\
 	-I$(srcdir)/event-factories			\
 	$(DISABLE_DEPRECATED)				\
@@ -105,27 +90,8 @@ almanah-marshal.c: almanah-marshal.list almanah-marshal.h
 
 # Enums
 ALMANAH_ENUM_FILES = \
-	definition-builtins.h		\
-	definition-builtins.c		\
 	event-factory-builtins.h	\
 	event-factory-builtins.c
-
-definition-builtins.h: definition.h Makefile
-	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
-			--fhead "#ifndef __ALMANAH_DEFINITION_BUILTINS_H__\n#define __ALMANAH_DEFINITION_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
-			--fprod "/* enumerations from \"@filename@\" */\n" \
-			--vhead "GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define ALMANAH_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
-			--ftail "G_END_DECLS\n\n#endif /* __ALMANAH_DEFINITION_BUILTINS_H__ */" \
-		definition.h) > $(@F)
-
-definition-builtins.c: definition.h Makefile definition-builtins.h
-	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
-			--fhead "#include \"definition.h\"\n#include \"definition-builtins.h\"" \
-			--fprod "\n/* enumerations from \"@filename@\" */" \
-			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
-			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
-			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		definition.h) > $(@F)
 
 event-factory-builtins.h: event-factory.h Makefile
 	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \

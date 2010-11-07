@@ -23,7 +23,6 @@
 
 #include "main.h"
 #include "main-window.h"
-#include "add-definition-dialog.h"
 #include "search-dialog.h"
 #ifdef ENABLE_ENCRYPTION
 #include "preferences-dialog.h"
@@ -39,47 +38,9 @@ almanah_get_interface_filename (void)
 		return PACKAGE_DATA_DIR"/almanah/almanah.ui";
 }
 
-static gboolean
-definition_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkTextIter *iter, gpointer user_data)
-{
-	AlmanahDefinition *definition;
-	gchar *text;
-	GtkTextIter start_iter, end_iter;
-
-	/* TODO: Display a popup menu on right-clicking? Display a list of definitions, or allow this one to be edited, when Ctrl clicking? */
-	/* Handle only double- or control-click events on any definition tags, so they can act like hyperlinks */
-	if ((event->type != GDK_BUTTON_RELEASE && event->type != GDK_2BUTTON_PRESS) ||
-	    (event->type == GDK_BUTTON_RELEASE && !(event->button.state & GDK_CONTROL_MASK))) {
-		return FALSE;
-	}
-
-	/* Get the start and end iters for this tag instance */
-	start_iter = *iter;
-	if (gtk_text_iter_backward_to_tag_toggle (&start_iter, tag) == FALSE)
-		start_iter = *iter;
-
-	end_iter = start_iter;
-	if (gtk_text_iter_forward_to_tag_toggle (&end_iter, tag) == FALSE)
-		end_iter = *iter;
-
-	/* Get the tag's text */
-	text = gtk_text_iter_get_text (&start_iter, &end_iter);
-	definition = almanah_storage_manager_get_definition (almanah->storage_manager, text);
-	g_free (text);
-
-	if (definition == NULL) {
-		/* If the definition no longer exists, remove the tag */
-		gtk_text_buffer_remove_tag (gtk_text_iter_get_buffer (iter), tag, &start_iter, &end_iter);
-		return FALSE;
-	}
-
-	return almanah_definition_view (definition);
-}
-
 void
 almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)
 {
-	GtkTextTag *tag;
 	GtkTextTagTable *table;
 
 	table = gtk_text_buffer_get_tag_table (text_buffer);
@@ -87,6 +48,11 @@ almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect
 		/* Create a dummy gtkspell-misspelled tag to stop errors about an unknown tag appearing
 		 * when deserialising content which has misspellings highlighted, but without GtkSpell enabled */
 		gtk_text_buffer_create_tag (text_buffer, "gtkspell-misspelled", NULL);
+	}
+
+	if (gtk_text_tag_table_lookup (table, "definition") == NULL) {
+		/* Same for definitions (which have been removed from Almanah) */
+		gtk_text_buffer_create_tag (text_buffer, "definition", NULL);
 	}
 
 	gtk_text_buffer_create_tag (text_buffer, "bold", 
@@ -98,11 +64,4 @@ almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect
 	gtk_text_buffer_create_tag (text_buffer, "underline",
 				    "underline", PANGO_UNDERLINE_SINGLE,
 				    NULL);
-	tag = gtk_text_buffer_create_tag (text_buffer, "definition",
-					  "foreground", "blue",
-					  "underline", PANGO_UNDERLINE_SINGLE,
-					  NULL);
-
-	if (connect_events == TRUE)
-		g_signal_connect (tag, "event", G_CALLBACK (definition_tag_event_cb), NULL);
 }

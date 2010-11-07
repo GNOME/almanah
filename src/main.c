@@ -93,8 +93,6 @@ almanah_quit (void)
 	g_signal_connect (almanah->storage_manager, "disconnected", G_CALLBACK (storage_manager_disconnected_cb), NULL);
 	almanah_storage_manager_disconnect (almanah->storage_manager, NULL);
 
-	if (almanah->add_definition_dialog != NULL)
-		gtk_widget_destroy (almanah->add_definition_dialog);
 	if (almanah->search_dialog != NULL)
 		gtk_widget_destroy (almanah->search_dialog);
 	if (almanah->date_entry_dialog != NULL)
@@ -103,8 +101,6 @@ almanah_quit (void)
 	if (almanah->preferences_dialog != NULL)
 		gtk_widget_destroy (almanah->preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
-	if (almanah->definition_manager_window != NULL)
-		gtk_widget_destroy (almanah->definition_manager_window);
 	gtk_widget_destroy (almanah->main_window);
 
 	g_object_unref (almanah->event_manager);

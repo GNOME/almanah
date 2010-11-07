@@ -30,7 +30,6 @@
 #include "main-window.h"
 #include "main.h"
 #include "interface.h"
-#include "add-definition-dialog.h"
 #include "preferences-dialog.h"
 #include "search-dialog.h"
 #include "date-entry-dialog.h"
@@ -38,8 +37,6 @@
 #include "entry.h"
 #include "storage-manager.h"
 #include "event.h"
-#include "definition.h"
-#include "definition-manager-window.h"
 #include "import-export-dialog.h"
 #include "widgets/calendar.h"
 
@@ -55,14 +52,12 @@ static void mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *psp
 static void mw_entry_buffer_insert_text_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
 static void mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
 static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
-static void mw_entry_buffer_apply_tag_cb (GtkTextBuffer *buffer, GtkTextTag *tag, GtkTextIter *start_iter, GtkTextIter *end_iter, AlmanahMainWindow *main_window);
 static void mw_bold_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static void mw_events_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window);
 static void mw_events_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
-static void mw_definition_removed_cb (AlmanahStorageManager *storage_manager, const gchar *definition_text, AlmanahMainWindow *main_window);
 
 /* GtkBuilder callbacks */
 void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
@@ -83,9 +78,6 @@ void mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
-void mw_add_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
-void mw_remove_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
-void mw_view_definitions_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
 void mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window);
 
@@ -95,8 +87,6 @@ struct _AlmanahMainWindowPrivate {
 	AlmanahCalendar *calendar;
 	GtkLabel *date_label;
 	GtkButton *view_button;
-	GtkAction *add_action;
-	GtkAction *remove_action;
 	GtkListStore *event_store;
 	GtkTreeSelection *events_selection;
 	GtkTreeViewColumn *event_value_column;
@@ -225,8 +215,6 @@ almanah_main_window_new (void)
 	priv->calendar = ALMANAH_CALENDAR (gtk_builder_get_object (builder, "almanah_mw_calendar"));
 	priv->date_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_date_label"));
 	priv->view_button = GTK_BUTTON (gtk_builder_get_object (builder, "almanah_mw_view_button"));
-	priv->add_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_add_definition"));
-	priv->remove_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_remove_definition"));
 	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
 	priv->events_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_mw_events_tree_view")));
 	priv->event_value_column = GTK_TREE_VIEW_COLUMN (gtk_builder_get_object (builder, "almanah_mw_event_value_column"));
@@ -260,9 +248,6 @@ almanah_main_window_new (void)
 	/* Similarly, make sure we're notified when there's a selection so we can change the status of cut/copy/paste actions */
 	g_signal_connect (priv->entry_buffer, "notify::has-selection", G_CALLBACK (mw_entry_buffer_has_selection_cb), main_window);
 
-	/* Get notified of applied tags so we can check if referenced definitions still exist */
-	g_signal_connect_after (priv->entry_buffer, "apply-tag", G_CALLBACK (mw_entry_buffer_apply_tag_cb), main_window);
-
 	/* Connect up the formatting actions */
 	g_signal_connect (priv->bold_action, "toggled", G_CALLBACK (mw_bold_toggled_cb), main_window);
 	g_signal_connect (priv->italic_action, "toggled", G_CALLBACK (mw_italic_toggled_cb), main_window);
@@ -270,9 +255,6 @@ almanah_main_window_new (void)
 
 	/* Notification for event changes */
 	g_signal_connect (almanah->event_manager, "events-updated", G_CALLBACK (mw_events_updated_cb), main_window);
-
-	/* Notification for changes to definitions in the database */
-	g_signal_connect (almanah->storage_manager, "definition-removed", G_CALLBACK (mw_definition_removed_cb), main_window);
 
 	/* Select the current day and month */
 	mw_jump_to_today_activate_cb (NULL, main_window);
@@ -617,97 +599,6 @@ save_current_entry (AlmanahMainWindow *self)
 	}
 }
 
-static void
-add_definition_to_current_entry (AlmanahMainWindow *self)
-{
-	AlmanahMainWindowPrivate *priv = self->priv;
-	GtkTextIter start_iter, end_iter;
-	gchar *text;
-	AlmanahDefinition *definition;
-
-	g_assert (priv->entry_buffer != NULL);
-	g_assert (gtk_text_buffer_get_char_count (priv->entry_buffer) != 0);
-
-	if (gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start_iter, &end_iter) == FALSE)
-		return;
-
-	text = gtk_text_buffer_get_text (priv->entry_buffer, &start_iter, &end_iter, FALSE);
-
-	/* If the definition already exists, don't display the dialogue */
-	definition = almanah_storage_manager_get_definition (almanah->storage_manager, text);
-	if (definition != NULL) {
-		g_object_unref (definition);
-
-		/* Add a GtkTextTag to the GtkTextBuffer to mark the definition */
-		gtk_text_buffer_apply_tag_by_name (priv->entry_buffer, "definition", &start_iter, &end_iter);
-		gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
-
-		g_free (text);
-		return;
-	}
-
-	/* Create the Add Definition dialogue if it doesn't already exist */
-	if (almanah->add_definition_dialog == NULL)
-		almanah->add_definition_dialog = GTK_WIDGET (almanah_add_definition_dialog_new ());
-
-	/* Ensure that something is selected and its widget's displayed */
-	almanah_add_definition_dialog_set_text (ALMANAH_ADD_DEFINITION_DIALOG (almanah->add_definition_dialog), text);
-	g_free (text);
-	gtk_widget_show_all (almanah->add_definition_dialog);
-
-	if (gtk_dialog_run (GTK_DIALOG (almanah->add_definition_dialog)) == GTK_RESPONSE_OK) {
-		definition = almanah_add_definition_dialog_get_definition (ALMANAH_ADD_DEFINITION_DIALOG (almanah->add_definition_dialog));
-		if (definition == NULL)
-			return;
-
-		/* Add to the DB */
-		almanah_storage_manager_add_definition (almanah->storage_manager, definition);
-
-		/* Add a GtkTextTag to the GtkTextBuffer to mark the definition */
-		gtk_text_buffer_apply_tag_by_name (priv->entry_buffer, "definition", &start_iter, &end_iter);
-		gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
-	}
-}
-
-static void
-remove_definition_from_current_entry (AlmanahMainWindow *self)
-{
-	/* We don't actually remove the definition from the database, since other entries may use it;
-	 * we simply remove the formatting. */
-	AlmanahMainWindowPrivate *priv = self->priv;
-	GtkTextIter start_iter, end_iter;
-	GtkTextTag *tag;
-	GtkTextTagTable *tag_table;
-
-	/* Find the tag in the tag table */
-	tag_table = gtk_text_buffer_get_tag_table (priv->entry_buffer);
-	tag = gtk_text_tag_table_lookup (tag_table, "definition");
-	g_assert (tag != NULL);
-
-	/* Find the boundaries of the tag (ignoring everything except the position
-	 * of the start iter of any selection the user's made). */
-	gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start_iter, NULL);
-	end_iter = start_iter;
-
-	if (gtk_text_iter_begins_tag (&start_iter, tag) == TRUE) {
-		/* We're at the start of the tag */
-		gtk_text_iter_forward_to_tag_toggle (&end_iter, tag);
-	} else if (gtk_text_iter_ends_tag (&start_iter, tag) == TRUE) {
-		/* We're at the end of the tag */
-		end_iter = start_iter;
-		gtk_text_iter_backward_to_tag_toggle (&start_iter, tag);
-	} else {
-		/* We're somewhere in the middle of the tag */
-		gtk_text_iter_backward_to_tag_toggle (&start_iter, tag);
-		end_iter = start_iter;
-		gtk_text_iter_forward_to_tag_toggle (&end_iter, tag);
-	}
-
-	/* Remove the tag */
-	gtk_text_buffer_remove_tag (priv->entry_buffer, tag, &start_iter, &end_iter);
-	gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
-}
-
 void
 almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date)
 {
@@ -721,7 +612,7 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 	GSList *_tag_list = NULL, *tag_list = NULL;
 	gboolean range_selected = FALSE;
-	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE, remove_definition_toggled = FALSE;
+	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE;
 
 	/* Ensure we don't overwrite current formatting options when characters are being typed.
 	 * (Execution of this function will be sandwiched between:
@@ -735,9 +626,6 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 	range_selected = gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &iter, NULL);
 	if (range_selected == FALSE)
 		_tag_list = gtk_text_iter_get_tags (&iter);
-
-	/* We can only have the "add definition" action sensitive if there's a range selected */
-	gtk_action_set_sensitive (priv->add_action, (range_selected == TRUE) ? TRUE : FALSE);
 
 	/* Block signal handlers for the formatting actions while we're executing,
 	 * so formatting doesn't get unwittingly changed. */
@@ -762,11 +650,7 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 			underline_toggled = TRUE;
 		}
 
-		if (strcmp (tag_name, "definition") == 0) {
-			/* Deal with definition tags slightly differently --- just toggle the sensitivity of the "remove definition" action */
-			gtk_action_set_sensitive (priv->remove_action, TRUE);
-			remove_definition_toggled = TRUE;
-		} else if (action != NULL) {
+		if (action != NULL) {
 			/* Force the toggle status on the action */
 			gtk_toggle_action_set_active (action, TRUE);
 		} else if (strcmp (tag_name, "gtkspell-misspelled") != 0) {
@@ -788,8 +672,6 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 			gtk_toggle_action_set_active (priv->italic_action, FALSE);
 		if (underline_toggled == FALSE)
 			gtk_toggle_action_set_active (priv->underline_action, FALSE);
-		if (remove_definition_toggled == FALSE)
-			gtk_action_set_sensitive (priv->remove_action, FALSE);
 	}
 
 	/* Unblock signals */
@@ -835,33 +717,6 @@ mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMai
 	gtk_action_set_sensitive (main_window->priv->cut_action, has_selection);
 	gtk_action_set_sensitive (main_window->priv->copy_action, has_selection);
 	gtk_action_set_sensitive (main_window->priv->delete_action, has_selection);
-}
-
-static void
-mw_entry_buffer_apply_tag_cb (GtkTextBuffer *buffer, GtkTextTag *tag, GtkTextIter *start_iter, GtkTextIter *end_iter, AlmanahMainWindow *main_window)
-{
-	gchar *name;
-
-	g_object_get (G_OBJECT (tag), "name", &name, NULL);
-	if (strcmp (name, "definition") == 0) {
-		AlmanahDefinition *definition;
-		gchar *definition_text;
-
-		/* Check to see if the definition still exists in the DB */
-		definition_text = gtk_text_buffer_get_text (buffer, start_iter, end_iter, FALSE);
-		definition = almanah_storage_manager_get_definition (almanah->storage_manager, definition_text);
-		g_free (definition_text);
-
-		/* If the definition doesn't exist, remove the tag */
-		if (definition == NULL) {
-			gtk_text_buffer_remove_tag (buffer, tag, start_iter, end_iter);
-			gtk_text_buffer_set_modified (buffer, TRUE);
-		} else {
-			g_object_unref (definition);
-		}
-	}
-
-	g_free (name);
 }
 
 static gboolean
@@ -1045,7 +900,7 @@ void
 mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	gchar *license, *description;
-	guint entry_count, definition_count;
+	guint entry_count;
 
 	const gchar *authors[] =
 	{
@@ -1071,10 +926,8 @@ mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 			  _(license_parts[2]),
 			  NULL);
 
-	almanah_storage_manager_get_statistics (almanah->storage_manager, &entry_count, &definition_count);
-	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries and %u definitions."),
-				      entry_count,
-				      definition_count);
+	almanah_storage_manager_get_statistics (almanah->storage_manager, &entry_count);
+	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries."), entry_count);
 
 	gtk_show_about_dialog (GTK_WINDOW (main_window),
 				"version", VERSION,
@@ -1104,27 +957,6 @@ mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 	GDate current_date;
 	g_date_set_time_t (&current_date, time (NULL));
 	almanah_main_window_select_date (main_window, &current_date);
-}
-
-void
-mw_add_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
-{
-	add_definition_to_current_entry (main_window);
-}
-
-void
-mw_remove_definition_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
-{
-	remove_definition_from_current_entry (main_window);
-}
-
-void
-mw_view_definitions_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
-{
-	if (almanah->definition_manager_window == NULL)
-		almanah->definition_manager_window = GTK_WIDGET (almanah_definition_manager_window_new ());
-
-	gtk_widget_show_all (almanah->definition_manager_window);
 }
 
 static void
@@ -1236,8 +1068,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 	/* Prepare for the possibility of failure --- do as much of the general interface changes as possible first */
 	gtk_list_store_clear (priv->event_store);
-	gtk_action_set_sensitive (priv->add_action, FALSE);
-	gtk_action_set_sensitive (priv->remove_action, FALSE); /* Only sensitive if something's selected */
 	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
 
 	if (almanah_entry_is_empty (priv->current_entry) == FALSE) {
@@ -1342,14 +1172,6 @@ mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window)
 	}
 
 	g_list_free (events);
-}
-
-static void
-mw_definition_removed_cb (AlmanahStorageManager *storage_manager, const gchar *definition_text, AlmanahMainWindow *main_window)
-{
-	/* We need to remove any definition tags in the current entry which match @definition_text. It's
-	 * probably easier to just reload the current entry, though. */
-	mw_calendar_day_selected_cb (GTK_CALENDAR (main_window->priv->calendar), main_window);
 }
 
 #ifdef ENABLE_SPELL_CHECKING

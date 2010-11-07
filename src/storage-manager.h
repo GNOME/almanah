@@ -24,7 +24,6 @@
 #include <glib-object.h>
 
 #include "entry.h"
-#include "definition.h"
 
 G_BEGIN_DECLS
 
@@ -72,7 +71,7 @@ AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename);
 gboolean almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error);
 gboolean almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error);
 
-gboolean almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *definition_count);
+gboolean almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count);
 
 gboolean almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date);
 AlmanahEntry *almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date);
@@ -86,11 +85,6 @@ AlmanahEntry *almanah_storage_manager_get_entries (AlmanahStorageManager *self,
 
 gboolean *almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
 gboolean *almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
-
-GSList *almanah_storage_manager_get_definitions (AlmanahStorageManager *self);
-AlmanahDefinition *almanah_storage_manager_get_definition (AlmanahStorageManager *self, const gchar *definition_text);
-gboolean almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefinition *definition);
-gboolean almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text);
 
 const gchar *almanah_storage_manager_get_filename (AlmanahStorageManager *self, gboolean plain);
 

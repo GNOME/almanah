@@ -32,7 +32,6 @@
 
 #include "main.h"
 #include "entry.h"
-#include "definition.h"
 #include "storage-manager.h"
 #include "almanah-marshal.h"
 
@@ -58,9 +57,6 @@ enum {
 	SIGNAL_ENTRY_ADDED,
 	SIGNAL_ENTRY_MODIFIED,
 	SIGNAL_ENTRY_REMOVED,
-	SIGNAL_DEFINITION_ADDED,
-	SIGNAL_DEFINITION_MODIFIED,
-	SIGNAL_DEFINITION_REMOVED,
 	LAST_SIGNAL
 };
 
@@ -116,24 +112,6 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                              0, NULL, NULL,
 	                                                              g_cclosure_marshal_VOID__BOXED,
 	                                                              G_TYPE_NONE, 1, G_TYPE_DATE);
-	storage_manager_signals[SIGNAL_DEFINITION_ADDED] = g_signal_new ("definition-added",
-	                                                                 G_TYPE_FROM_CLASS (klass),
-	                                                                 G_SIGNAL_RUN_LAST,
-	                                                                 0, NULL, NULL,
-	                                                                 g_cclosure_marshal_VOID__OBJECT,
-	                                                                 G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
-	storage_manager_signals[SIGNAL_DEFINITION_MODIFIED] = g_signal_new ("definition-modified",
-	                                                                    G_TYPE_FROM_CLASS (klass),
-	                                                                    G_SIGNAL_RUN_LAST,
-	                                                                    0, NULL, NULL,
-	                                                                    g_cclosure_marshal_VOID__OBJECT,
-	                                                                    G_TYPE_NONE, 1, ALMANAH_TYPE_DEFINITION);
-	storage_manager_signals[SIGNAL_DEFINITION_REMOVED] = g_signal_new ("definition-removed",
-	                                                                   G_TYPE_FROM_CLASS (klass),
-	                                                                   G_SIGNAL_RUN_LAST,
-	                                                                   0, NULL, NULL,
-	                                                                   g_cclosure_marshal_VOID__STRING,
-	                                                                   G_TYPE_NONE, 1, G_TYPE_STRING);
 }
 
 static void
@@ -223,8 +201,6 @@ create_tables (AlmanahStorageManager *self)
 	guint i;
 	const gchar *queries[] = {
 		"CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day))",
-		"CREATE TABLE IF NOT EXISTS definitions (definition_text TEXT, definition_type INTEGER, definition_value TEXT, "
-		                                        "definition_value2 TEXT, PRIMARY KEY (definition_text))",
 		"ALTER TABLE entries ADD COLUMN is_important INTEGER", /* added in 0.7.0 */
 		"ALTER TABLE entries ADD COLUMN edited_year INTEGER", /* added in 0.8.0 */
 		"ALTER TABLE entries ADD COLUMN edited_month INTEGER", /* added in 0.8.0 */
@@ -660,12 +636,11 @@ simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, .
 }
 
 gboolean
-almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count, guint *definition_count)
+almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count)
 {
 	sqlite3_stmt *statement;
 
 	*entry_count = 0;
-	*definition_count = 0;
 
 	/* Get the number of entries and the number of letters */
 	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT COUNT (year) FROM entries", -1, &statement, NULL) != SQLITE_OK)
@@ -677,21 +652,6 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 	}
 
 	*entry_count = sqlite3_column_int (statement, 0);
-	sqlite3_finalize (statement);
-
-	if (*entry_count == 0)
-		return TRUE;
-
-	/* Get the number of definitions */
-	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT COUNT (year) FROM definitions", -1, &statement, NULL) != SQLITE_OK)
-		return FALSE;
-
-	if (sqlite3_step (statement) != SQLITE_ROW) {
-		sqlite3_finalize (statement);
-		return FALSE;
-	}
-
-	*definition_count = sqlite3_column_int (statement, 0);
 	sqlite3_finalize (statement);
 
 	return TRUE;
@@ -801,8 +761,7 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
  * @self: an #AlmanahStorageManager
  * @entry: an #AlmanahEntry
  *
- * Saves the specified @entry in the database synchronously. If the @entry's content is empty, it will delete @entry's rows in the database (as well
- * as its definitions' rows).
+ * Saves the specified @entry in the database synchronously. If the @entry's content is empty, it will delete @entry's rows in the database.
  *
  * The entry's last-edited date should be manually updated before storing it in the database, if desired.
  *
@@ -1143,147 +1102,6 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 	}
 
 	return days;
-}
-
-static AlmanahDefinition *
-build_definition_from_statement (sqlite3_stmt *statement)
-{
-	/* Assumes query for SELECT definition_type, definition_value, definition_value2, definition_text, ... FROM definitions ... */
-	AlmanahDefinition *definition = almanah_definition_new (sqlite3_column_int (statement, 0));
-
-	if (definition == NULL)
-		return NULL;
-
-	almanah_definition_set_value (definition, (const gchar*) sqlite3_column_text (statement, 1));
-	almanah_definition_set_value2 (definition, (const gchar*) sqlite3_column_text (statement, 2));
-	almanah_definition_set_text (definition, (const gchar*) sqlite3_column_text (statement, 3));
-
-	return definition;
-}
-
-/**
- * almanah_storage_manager_get_definitions:
- * @self: an #AlmanahStorageManager
- *
- * Returns a list of all #AlmanahDefinition<!-- -->s in the database.
- *
- * Return value: a #GSList of #AlmanahDefinition<!-- -->s, or %NULL; unref elements with g_object_unref(); free list with g_slist_free()
- **/
-GSList *
-almanah_storage_manager_get_definitions (AlmanahStorageManager *self)
-{
-	GSList *definitions = NULL;
-	int result;
-	sqlite3_stmt *statement;
-
-	/* Prepare the statement */
-	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions", -1,
-	                        &statement, NULL) != SQLITE_OK) {
-		return NULL;
-	}
-
-	/* Execute the statement */
-	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		AlmanahDefinition *definition = build_definition_from_statement (statement);
-		if (definition != NULL)
-			definitions = g_slist_prepend (definitions, definition);
-	}
-
-	sqlite3_finalize (statement);
-
-	/* Check for errors */
-	if (result != SQLITE_DONE) {
-		g_slist_foreach (definitions, (GFunc) g_object_unref, NULL);
-		g_slist_free (definitions);
-		return NULL;
-	}
-
-	return g_slist_reverse (definitions);
-}
-
-/* Note: this function is case-insensitive, unless the definition text contains Unicode characters beyond the ASCII range.
- * This is an SQLite bug: http://sqlite.org/lang_expr.html#like */
-AlmanahDefinition *
-almanah_storage_manager_get_definition (AlmanahStorageManager *self, const gchar *definition_text)
-{
-	sqlite3_stmt *statement;
-	AlmanahDefinition *definition;
-
-	/* Prepare and run the query */
-	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT definition_type, definition_value, definition_value2, definition_text FROM definitions "
-	                        "WHERE definition_text LIKE '?' LIMIT 1", -1, &statement, NULL) != SQLITE_OK) {
-		return NULL;
-	}
-
-	sqlite3_bind_text (statement, 1, definition_text, -1, SQLITE_STATIC);
-
-	if (sqlite3_step (statement) != SQLITE_ROW) {
-		/* Error or empty result set */
-		sqlite3_finalize (statement);
-		return NULL;
-	}
-
-	/* Grab the data and run */
-	definition = build_definition_from_statement (statement);
-	sqlite3_finalize (statement);
-
-	return definition;
-}
-
-gboolean
-almanah_storage_manager_add_definition (AlmanahStorageManager *self, AlmanahDefinition *definition)
-{
-	gboolean return_value;
-	const gchar *value, *value2, *text;
-	AlmanahDefinitionType type_id;
-	AlmanahDefinition *real_definition;
-
-	type_id = almanah_definition_get_type_id (definition);
-	value = almanah_definition_get_value (definition);
-	value2 = almanah_definition_get_value2 (definition);
-	text = almanah_definition_get_text (definition);
-
-	/* Check to see if there's already a definition for this text (case-insensitively), and use its (correctly-cased) definition text instead of
-	 * ours */
-	real_definition = almanah_storage_manager_get_definition (self, text);
-	if (real_definition != NULL) {
-		text = almanah_definition_get_text (real_definition);
-		almanah_definition_set_text (definition, text);
-	}
-
-	/* Update/Insert the definition */
-	if (value2 == NULL) {
-		return_value = simple_query (self,
-		                                 "REPLACE INTO definitions (definition_type, definition_value, definition_text) "
-		                                 "VALUES (%u, '%q', '%q')", NULL, type_id, value, text);
-	} else {
-		return_value = simple_query (self,
-		                                 "REPLACE INTO definitions (definition_type, definition_value, definition_value2, definition_text) "
-		                                 "VALUES (%u, '%q', '%q', '%q')", NULL, type_id, value, value2, text);
-	}
-
-	if (real_definition != NULL)
-		g_object_unref (real_definition);
-
-	if (return_value == TRUE && real_definition != NULL)
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_MODIFIED], 0, definition);
-	else if (return_value == TRUE)
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_ADDED], 0, definition);
-
-	return return_value;
-}
-
-gboolean
-almanah_storage_manager_remove_definition (AlmanahStorageManager *self, const gchar *definition_text)
-{
-	if (simple_query (self, "DELETE FROM definitions WHERE definition_text = '%q'", NULL, definition_text) == TRUE) {
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DEFINITION_REMOVED], 0, definition_text);
-		return TRUE;
-	}
-
-	return FALSE;
 }
 
 const gchar *

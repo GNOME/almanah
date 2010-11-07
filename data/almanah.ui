@@ -188,40 +188,6 @@
 						<signal name="activate" handler="mw_jump_to_today_activate_cb"/>
 					</object>
 				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_definitions">
-						<property name="name">definitions</property>
-						<property name="label" translatable="yes">_Definitions</property>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_add_definition">
-						<property name="stock-id">gtk-add</property>
-						<property name="name">add-definition</property>
-						<property name="label" translatable="yes">_Add Definition</property>
-						<property name="tooltip" translatable="yes">Add a definition for the currently selected text.</property>
-						<property name="is-important">True</property>
-						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
-						<signal name="activate" handler="mw_add_definition_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_remove_definition">
-						<property name="stock-id">gtk-remove</property>
-						<property name="name">remove-definition</property>
-						<property name="label" translatable="yes">_Remove Definition</property>
-						<property name="tooltip" translatable="yes">Remove the definition from the currently selected text.</property>
-						<property name="sensitive">False</property><!-- Disabled until a selection range is made -->
-						<signal name="activate" handler="mw_remove_definition_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_view_definitions">
-						<property name="name">view-definitions</property>
-						<property name="label" translatable="yes">_View Definitions</property>
-						<signal name="activate" handler="mw_view_definitions_activate_cb"/>
-					</object>
-				</child>
 			</object>
 		</child>
 		<ui>
@@ -257,12 +223,6 @@
 					<menuitem action="almanah_ui_insert_time"/>
 					<menuitem action="almanah_ui_important"/>
 				</menu>
-				<menu action="almanah_ui_definitions">
-					<menuitem action="almanah_ui_add_definition"/>
-					<menuitem action="almanah_ui_remove_definition"/>
-					<separator/>
-					<menuitem action="almanah_ui_view_definitions"/>
-				</menu>
 				<menu action="almanah_ui_help">
 					<menuitem action="almanah_ui_about"/>
 				</menu>
@@ -274,9 +234,6 @@
 				<toolitem action="almanah_ui_bold"/>
 				<toolitem action="almanah_ui_italic"/>
 				<toolitem action="almanah_ui_underline"/>
-				<separator/>
-				<toolitem action="almanah_ui_add_definition"/>
-				<toolitem action="almanah_ui_remove_definition"/>
 			</toolbar>
 		</ui>
 	</object>
@@ -490,88 +447,6 @@
 		</columns>
 	</object>
 
-	<!-- TODO: Use the description of definition types somewhere -->
-	<object class="AlmanahAddDefinitionDialog" id="almanah_add_definition_dialog">
-		<property name="border-width">5</property>
-		<child internal-child="vbox">
-			<object class="GtkVBox" id="vbox1">
-				<property name="spacing">6</property>
-				<child>
-					<object class="GtkVBox" id="almanah_add_main_vbox">
-						<property name="spacing">18</property>
-						<property name="border-width">5</property>
-						<child>
-							<object class="GtkHBox" id="almanah_add_hbox">
-								<property name="spacing">6</property>
-								<child>
-									<object class="GtkLabel" id="almanah_add_type_label">
-										<property name="xalign">0</property>
-										<property name="label" translatable="yes">Definition type:</property>
-										<accessibility>
-											<relation target="almanah_add_type_combo_box" type="label-for"/>
-										</accessibility>
-									</object>
-									<packing>
-										<property name="expand">False</property>
-									</packing>
-								</child>
-								<child>
-									<object class="GtkComboBox" id="almanah_add_type_combo_box">
-										<property name="model">almanah_add_type_store</property>
-										<signal name="changed" handler="add_type_combo_box_changed_cb"/>
-										<accessibility>
-											<relation target="almanah_add_type_label" type="labelled-by"/>
-										</accessibility>
-										<child>
-											<object class="GtkCellRendererPixbuf" id="renderer5"/>
-											<attributes>
-												<attribute name="icon-name">2</attribute>
-											</attributes>
-										</child>
-										<child>
-											<object class="GtkCellRendererText" id="renderer4"/>
-											<attributes>
-												<attribute name="text">0</attribute>
-											</attributes>
-										</child>
-									</object>
-								</child>
-							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkVBox" id="almanah_add_vbox"/>
-						</child>
-					</object>
-				</child>
-				<child internal-child="action_area">
-					<object class="GtkHButtonBox" id="hbuttonbox1">
-						<child>
-							<object class="GtkButton" id="almanah_add_cancel_button">
-								<property name="use-stock">True</property>
-								<property name="label">gtk-cancel</property>
-							</object>
-						</child>
-						<child>
-							<object class="GtkButton" id="almanah_add_add_button">
-								<property name="use-stock">True</property>
-								<property name="label">gtk-add</property>
-								<property name="can-default">True</property>
-								<property name="has-default">True</property>
-							</object>
-						</child>
-					</object>
-				</child>
-			</object>
-		</child>
-		<action-widgets>
-			<action-widget response="-6">almanah_add_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
-			<action-widget response="-5">almanah_add_add_button</action-widget><!-- GTK_RESPONSE_OK -->
-		</action-widgets>
-	</object>
-
 	<object class="GtkImage" id="almanah_sd_search_button_image">
 		<property name="stock">gtk-find</property>
 	</object>
@@ -751,122 +626,6 @@
 		<action-widgets>
 			<action-widget response="-7">almanah_pd_close_button</action-widget><!-- GTK_RESPONSE_CLOSE -->
 		</action-widgets>
-	</object>
-
-	<object class="GtkListStore" id="almanah_dmw_definition_store">
-		<columns>
-			<column type="AlmanahDefinition"/><!-- Definition object -->
-			<column type="gchararray"/><!-- Definition text -->
-		</columns>
-	</object>
-
-	<object class="AlmanahDefinitionManagerWindow" id="almanah_definition_manager_window">
-		<property name="border-width">12</property>
-		<child>
-			<object class="GtkHBox" id="hbox1">
-				<property name="spacing">6</property>
-				<child>
-					<object class="GtkScrolledWindow" id="scrolledwindow3">
-						<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-						<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-						<property name="shadow-type">GTK_SHADOW_IN</property>
-						<property name="width-request">200</property>
-						<child>
-							<object class="GtkTreeView" id="almanah_dmw_definition_tree_view">
-								<property name="model">almanah_dmw_definition_store</property>
-								<property name="headers-visible">False</property>
-								<signal name="row-activated" handler="dmw_definition_tree_view_row_activated_cb"/>
-								<child internal-child="accessible">
-									<object class="AtkObject" id="a11y-almanah_dmw_definition_tree_view">
-										<property name="AtkObject::accessible-name" translatable="yes">Definition List</property>
-									</object>
-								</child>
-								<child>
-									<object class="GtkTreeViewColumn" id="column1">
-										<child>
-											<object class="GtkCellRendererText" id="renderer1"/>
-											<attributes>
-												<attribute name="text">1</attribute>
-											</attributes>
-										</child>
-									</object>
-								</child>
-							</object>
-						</child>
-					</object>
-					<packing>
-						<property name="expand">False</property>
-					</packing>
-				</child>
-				<child>
-					<object class="GtkVBox" id="almanah_dmw_vbox">
-						<property name="spacing">6</property>
-						<child>
-							<object class="GtkLabel" id="almanah_dmw_name_label">
-								<property name="label" translatable="yes">Nothing selected</property>
-								<property name="xalign">0</property>
-								<child internal-child="accessible">
-									<object class="AtkObject" id="a11y-almanah_dmw_name_label">
-										<property name="AtkObject::accessible-name" translatable="yes">Definition Type</property>
-									</object>
-								</child>
-								<attributes>
-									<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-								</attributes>
-							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkAlignment" id="almanah_dmw_description_alignment">
-								<property name="left-padding">6</property>
-								<child>
-									<object class="GtkLabel" id="almanah_dmw_description_label">
-										<property name="wrap">True</property>
-										<property name="xalign">0</property>
-										<property name="yalign">0</property>
-										<child internal-child="accessible">
-											<object class="AtkObject" id="a11y-almanah_dmw_description_label">
-												<property name="AtkObject::accessible-name" translatable="yes">Definition Description</property>
-											</object>
-										</child>
-									</object>
-								</child>
-							</object>
-						</child>
-						<child>
-							<object class="GtkHButtonBox" id="almanah_dmw_button_box">
-								<child>
-									<object class="GtkButton" id="almanah_dmw_remove_button">
-										<property name="use-stock">True</property>
-										<property name="label">gtk-remove</property>
-										<property name="sensitive">False</property>
-										<signal name="clicked" handler="dmw_remove_button_clicked_cb"/>
-									</object>
-								</child>
-								<child>
-									<object class="GtkButton" id="almanah_dmw_view_button">
-										<property name="image">almanah_mw_view_button_image</property>
-										<property name="label" translatable="yes">View</property>
-										<property name="sensitive">False</property>
-										<signal name="clicked" handler="dmw_view_button_clicked_cb"/>
-										<child internal-child="accessible">
-											<object class="AtkObject" id="a11y-almanah_dmw_view_button">
-												<property name="AtkObject::accessible-name" translatable="yes">View Event</property>
-											</object>
-										</child>
-									</object>
-								</child>
-							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
-						</child>
-					</object>
-				</child>
-			</object>
-		</child>
 	</object>
 
 	<object class="AlmanahDateEntryDialog" id="almanah_date_entry_dialog">

@@ -381,7 +381,6 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 	GFileInfo *file_info;
 	gchar *path;
 	const gchar *display_name;
-	GSList *i, *definitions = NULL;
 	AlmanahEntry *entry;
 	AlmanahStorageManager *database;
 	AlmanahStorageManagerIter iter;
@@ -426,24 +425,10 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 			goto finish;
 	}
 
-	/* Query for every definition */
-	definitions = almanah_storage_manager_get_definitions (database);
-	for (i = definitions; i != NULL; i = i->next) {
-		/* Add the definition to the proper database, ignoring failure */
-		almanah_storage_manager_add_definition (almanah->storage_manager, ALMANAH_DEFINITION (i->data));
-		g_object_unref (i->data);
-
-		/* Check for cancellation */
-		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, error) == TRUE)
-			goto finish;
-	}
-
 	/* Success! */
 	success = TRUE;
 
 finish:
-	g_slist_free (definitions);
-
 	almanah_storage_manager_disconnect (database, NULL);
 	g_object_unref (database);
 
