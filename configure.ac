@@ -78,12 +78,12 @@ dnl Dependencies
 dnl ***************************************************************************
 
 dnl Required dependencies
-PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-2.0 >= 2.14 gmodule-2.0 gthread-2.0 gio-2.0 sqlite3 cairo gconf-2.0 atk)
+PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-3.0 >= 2.14 gmodule-2.0 gthread-2.0 gio-2.0 sqlite3 cairo gconf-2.0 atk)
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
 dnl Evolution
-PKG_CHECK_MODULES(EVO, libecal-1.2 libedataserver-1.2 libedataserverui-1.2, have_evo=yes, have_evo=no)
+PKG_CHECK_MODULES(EVO, libecal-1.2 libedataserver-1.2 libedataserverui-3.0, have_evo=yes, have_evo=no)
 if test "x$have_evo" = "xyes"; then
 	AC_DEFINE(HAVE_EVO, 1, [Defined if libecal-1.2 is installed])
 fi

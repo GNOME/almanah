@@ -68,8 +68,7 @@ almanah_date_entry_dialog_init (AlmanahDateEntryDialog *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_DATE_ENTRY_DIALOG, AlmanahDateEntryDialogPrivate);
 
 	g_date_clear (&(self->priv->date), 1);
-	g_signal_connect (self, "response", G_CALLBACK (gtk_widget_hide_all), self);
-	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
+	g_signal_connect (self, "response", G_CALLBACK (gtk_widget_hide), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Select Date"));
 	gtk_window_set_transient_for (GTK_WINDOW (self), GTK_WINDOW (almanah->main_window));

@@ -56,7 +56,6 @@ almanah_search_dialog_init (AlmanahSearchDialog *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_SEARCH_DIALOG, AlmanahSearchDialogPrivate);
 
 	g_signal_connect (self, "response", G_CALLBACK (sd_response_cb), self);
-	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Search"));
 }
@@ -134,7 +133,7 @@ sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search
 	gtk_list_store_clear (search_dialog->priv->sd_results_store);
 	gtk_entry_set_text (search_dialog->priv->sd_search_entry, "");
 
-	gtk_widget_hide_all (GTK_WIDGET (dialog));
+	gtk_widget_hide (GTK_WIDGET (dialog));
 }
 
 void

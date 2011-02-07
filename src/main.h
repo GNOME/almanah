@@ -55,6 +55,7 @@ typedef struct {
 
 extern Almanah *almanah;
 
+gboolean almanah_run_on_screen (GdkScreen *screen, const gchar *commandline, GError **error);
 void almanah_quit (void);
 
 G_END_DECLS

@@ -100,7 +100,7 @@ almanah_calendar_task_event_view (AlmanahEvent *event)
 	if (almanah->debug == TRUE)
 		g_debug ("Executing \"%s\".", command_line);
 
-	retval = gdk_spawn_command_line_on_screen (gtk_widget_get_screen (almanah->main_window), command_line, &error);
+	retval = almanah_run_on_screen (gtk_widget_get_screen (almanah->main_window), command_line, &error);
 	g_free (command_line);
 
 	if (retval == FALSE) {

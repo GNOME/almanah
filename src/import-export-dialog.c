@@ -69,7 +69,6 @@ almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 	self->priv->current_mode = -1; /* no mode selected */
 
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
-	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
 	gtk_window_set_default_size (GTK_WINDOW (self), 500, 400);
 }
 
@@ -384,7 +383,6 @@ almanah_import_results_dialog_init (AlmanahImportResultsDialog *self)
 
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
 	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
-	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
 	gtk_window_set_resizable (GTK_WINDOW (self), TRUE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Import Results"));
 	gtk_window_set_default_size (GTK_WINDOW (self), 600, 400);

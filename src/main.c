@@ -61,6 +61,32 @@ storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme
 	exit (0);
 }
 
+gboolean
+almanah_run_on_screen (GdkScreen *screen, const gchar *commandline, GError **error)
+{
+	gboolean retval;
+	GAppInfo *appinfo;
+	GdkAppLaunchContext *context;
+
+	appinfo = g_app_info_create_from_commandline (commandline,
+                                                "Almanah Execute",
+                                                G_APP_INFO_CREATE_NONE,
+                                                error);
+
+	if (!appinfo)
+		return FALSE;
+
+	context = gdk_display_get_app_launch_context (gdk_screen_get_display (screen));
+	gdk_app_launch_context_set_screen (context, screen);
+
+	retval = g_app_info_launch (appinfo, NULL, G_APP_LAUNCH_CONTEXT (context), error);
+
+	g_object_unref (context);
+	g_object_unref (appinfo);
+
+	return retval;
+}
+
 void
 almanah_quit (void)
 {
@@ -107,7 +133,6 @@ main (int argc, char *argv[])
 #endif
 
 	g_thread_init (NULL);
-	gtk_set_locale ();
 	gtk_init (&argc, &argv);
 	g_set_application_name (_("Almanah Diary"));
 	gtk_window_set_default_icon_name ("almanah");

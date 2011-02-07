@@ -23,9 +23,9 @@
 #include <gtk/gtk.h>
 #ifdef ENABLE_ENCRYPTION
 #define LIBCRYPTUI_API_SUBJECT_TO_CHANGE
-#include <libcryptui/cryptui-key-combo.h>
-#include <libcryptui/cryptui-keyset.h>
-#include <libcryptui/cryptui.h>
+#include <cryptui-key-combo.h>
+#include <cryptui-keyset.h>
+#include <cryptui.h>
 #include <atk/atk.h>
 #endif /* ENABLE_ENCRYPTION */
 
@@ -73,8 +73,9 @@ almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 {
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogPrivate);
 
+#ifdef ENABLE_SPELL_CHECKING
 	g_signal_connect (self, "response", G_CALLBACK (pd_response_cb), self);
-	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
+#endif /* ENABLE_SPELL_CHECKING */
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Preferences"));
 	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
@@ -260,10 +261,11 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 }
 #endif /* ENABLE_ENCRYPTION */
 
+#ifdef ENABLE_SPELL_CHECKING
 static void
 pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog)
 {
-	gtk_widget_hide_all (GTK_WIDGET (dialog));
+	gtk_widget_hide (GTK_WIDGET (dialog));
 }
 
 static void
@@ -306,3 +308,5 @@ pd_spell_checking_enabled_check_button_toggled_cb (GtkToggleButton *toggle_butto
 	gconf_client_set_bool (almanah->gconf_client, "/apps/almanah/spell_checking_enabled",
 			       gtk_toggle_button_get_active (toggle_button), NULL);
 }
+
+#endif /* ENABLE_SPELL_CHECKING */

@@ -77,7 +77,6 @@ almanah_add_definition_dialog_init (AlmanahAddDefinitionDialog *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_ADD_DEFINITION_DIALOG, AlmanahAddDefinitionDialogPrivate);
 
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
-	gtk_dialog_set_has_separator (GTK_DIALOG (self), FALSE);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Add Definition"));
 	gtk_window_set_transient_for (GTK_WINDOW (self), GTK_WINDOW (almanah->main_window));
@@ -212,7 +211,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahAddDefinitionDialog *se
 	almanah_definition_close_dialog (priv->definition, priv->vbox);
 
 	/* Make sure to remove all the custom widgets for the currently-selected definition type */
-	gtk_widget_hide_all (GTK_WIDGET (dialog));
+	gtk_widget_hide (GTK_WIDGET (dialog));
 	destroy_extra_widgets (self);
 }
 
