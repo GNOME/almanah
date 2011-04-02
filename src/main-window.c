@@ -294,43 +294,157 @@ set_current_entry (AlmanahMainWindow *self, AlmanahEntry *entry)
 	}
 }
 
+static GFile *
+get_window_state_file (void)
+{
+	GFile *key_file_path;
+	gchar *filename;
+
+	filename = g_build_filename (g_get_user_config_dir (), PACKAGE_NAME, "state.ini", NULL);
+	key_file_path = g_file_new_for_path (filename);
+	g_free (filename);
+
+	return key_file_path;
+}
+
 static void
 save_window_state (AlmanahMainWindow *self)
 {
+	GKeyFile *key_file;
+	GFile *key_file_path = NULL, *key_file_directory;
+	gchar *key_file_data;
+	gsize key_file_length;
 	GdkWindow *window;
 	GdkWindowState state;
 	gint width, height, x, y;
+	GError *error = NULL;
+
+	/* Overwrite the existing state file with a new one */
+	key_file = g_key_file_new ();
 
 	window = gtk_widget_get_window (GTK_WIDGET (self));
 	state = gdk_window_get_state (window);
-	gconf_client_set_bool (almanah->gconf_client, "/apps/almanah/state/main_window_maximized", state & GDK_WINDOW_STATE_MAXIMIZED ? TRUE : FALSE, NULL);
 
-	/* If we're maximised, don't bother saving size/position */
-	if (state & GDK_WINDOW_STATE_MAXIMIZED)
-		return;
+	/* Maximisation state */
+	g_key_file_set_boolean (key_file, "main-window", "maximized", state & GDK_WINDOW_STATE_MAXIMIZED ? TRUE : FALSE);
 
 	/* Save the window dimensions */
 	gtk_window_get_size (GTK_WINDOW (self), &width, &height);
 
-	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_width", width, NULL);
-	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_height", height, NULL);
+	g_key_file_set_integer (key_file, "main-window", "width", width);
+	g_key_file_set_integer (key_file, "main-window", "height", height);
 
 	/* Save the window position */
 	gtk_window_get_position (GTK_WINDOW (self), &x, &y);
 
-	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_x_position", x, NULL);
-	gconf_client_set_int (almanah->gconf_client, "/apps/almanah/state/main_window_y_position", y, NULL);
+	g_key_file_set_integer (key_file, "main-window", "x-position", x);
+	g_key_file_set_integer (key_file, "main-window", "y-position", y);
+
+	/* Serialise the key file data */
+	key_file_data = g_key_file_to_data (key_file, &key_file_length, &error);
+	g_key_file_free (key_file);
+
+	if (error != NULL) {
+		g_warning ("Error generating window state data: %s", error->message);
+		g_error_free (error);
+		goto done;
+	}
+
+	/* Ensure that the correct directories exist */
+	key_file_path = get_window_state_file ();
+
+	key_file_directory = g_file_get_parent (key_file_path);
+	g_file_make_directory_with_parents (key_file_directory, NULL, &error);
+	g_object_unref (key_file_directory);
+
+	if (error != NULL) {
+		if (error->code != G_IO_ERROR_EXISTS) {
+			gchar *parse_name = g_file_get_parse_name (key_file_path);
+			g_warning ("Error creating directory for window state data file “%s”: %s", parse_name, error->message);
+			g_free (parse_name);
+		}
+
+		g_clear_error (&error);
+
+		/* Continue to attempt to write the file anyway */
+	}
+
+	/* Save the new key file (synchronously, since we want it to complete before we finish quitting the program) */
+	g_file_replace_contents (key_file_path, key_file_data, key_file_length, NULL, FALSE, G_FILE_CREATE_PRIVATE, NULL, NULL, &error);
+
+	if (error != NULL) {
+		gchar *parse_name = g_file_get_parse_name (key_file_path);
+		g_warning ("Error saving window state data to “%s”: %s", parse_name, error->message);
+		g_free (parse_name);
+
+		g_error_free (error);
+		goto done;
+	}
+
+done:
+	if (key_file_path != NULL) {
+		g_object_unref (key_file_path);
+	}
+
+	g_free (key_file_data);
 }
 
 static void
-restore_window_state (AlmanahMainWindow *self)
+restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMainWindow *self)
 {
-	gint width, height, x, y;
+	GKeyFile *key_file = NULL;
+	gchar *key_file_data = NULL;
+	gsize key_file_length;
+	gint width = -1, height = -1, x = -1, y = -1;
+	GError *error = NULL;
 
-	width = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_width", NULL);
-	height = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_height", NULL);
-	x = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_x_position", NULL);
-	y = gconf_client_get_int (almanah->gconf_client, "/apps/almanah/state/main_window_y_position", NULL);
+	g_file_load_contents_finish (key_file_path, result, &key_file_data, &key_file_length, NULL, &error);
+
+	if (error != NULL) {
+		if (error->code != G_IO_ERROR_NOT_FOUND) {
+			gchar *parse_name = g_file_get_parse_name (key_file_path);
+			g_warning ("Error loading window state data from “%s”: %s", parse_name, error->message);
+			g_free (parse_name);
+		}
+
+		g_error_free (error);
+		goto done;
+	}
+
+	/* Skip loading the key file if it has zero length */
+	if (key_file_length == 0) {
+		goto done;
+	}
+
+	/* Load the key file's data into the GKeyFile */
+	key_file = g_key_file_new ();
+	g_key_file_load_from_data (key_file, key_file_data, key_file_length, G_KEY_FILE_NONE, &error);
+
+	if (error != NULL) {
+		gchar *parse_name = g_file_get_parse_name (key_file_path);
+		g_warning ("Error loading window state data from “%s”: %s", parse_name, error->message);
+		g_free (parse_name);
+
+		g_error_free (error);
+		goto done;
+	}
+
+	/* Load the appropriate keys from the file, ignoring errors */
+	width = g_key_file_get_integer (key_file, "main-window", "width", NULL);
+	height = g_key_file_get_integer (key_file, "main-window", "height", NULL);
+	x = g_key_file_get_integer (key_file, "main-window", "x-position", &error);
+
+	if (error != NULL) {
+		x = -1;
+		g_clear_error (&error);
+	}
+
+	y = g_key_file_get_integer (key_file, "main-window", "y-position", &error);
+
+	if (error != NULL) {
+		x = -1;
+		g_clear_error (&error);
+	}
 
 	/* Make sure the dimensions and position are sane */
 	if (width > 1 && height > 1) {
@@ -347,14 +461,35 @@ restore_window_state (AlmanahMainWindow *self)
 		x = CLAMP (x, 0, max_width - width);
 		y = CLAMP (y, 0, max_height - height);
 
-		gtk_window_set_default_size (GTK_WINDOW (self), width, height);
+		gtk_window_resize (GTK_WINDOW (self), width, height);
 	}
 
-	gtk_window_move (GTK_WINDOW (self), x, y);
+	if (x >= 0 && y >= 0) {
+		gtk_window_move (GTK_WINDOW (self), x, y);
+	}
 
 	/* Maximised? */
-	if (gconf_client_get_bool (almanah->gconf_client, "/apps/almanah/state/main_window_maximized", NULL) == TRUE)
+	if (g_key_file_get_boolean (key_file, "main-window", "maximized", NULL) == TRUE) {
 		gtk_window_maximize (GTK_WINDOW (self));
+	}
+
+done:
+	g_free (key_file_data);
+
+	if (key_file != NULL) {
+		g_key_file_free (key_file);
+	}
+}
+
+static void
+restore_window_state (AlmanahMainWindow *self)
+{
+	GFile *key_file_path;
+
+	/* Asynchronously load up the state key file */
+	key_file_path = get_window_state_file ();
+	g_file_load_contents_async (key_file_path, NULL, (GAsyncReadyCallback) restore_window_state_cb, self);
+	g_object_unref (key_file_path);
 }
 
 static void
@@ -705,6 +840,7 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 {
 	save_current_entry (ALMANAH_MAIN_WINDOW (window));
 	save_window_state (ALMANAH_MAIN_WINDOW (window));
+
 	almanah_quit ();
 
 	return TRUE;
