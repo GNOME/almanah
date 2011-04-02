@@ -38,7 +38,9 @@
 #include "storage-manager.h"
 #include "event.h"
 #include "import-export-dialog.h"
+#include "uri-entry-dialog.h"
 #include "widgets/calendar.h"
+#include "widgets/hyperlink-tag.h"
 
 static void almanah_main_window_dispose (GObject *object);
 #ifdef ENABLE_SPELL_CHECKING
@@ -55,6 +57,7 @@ static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec
 static void mw_bold_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
+static void mw_hyperlink_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static void mw_events_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window);
 static void mw_events_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
@@ -94,6 +97,7 @@ struct _AlmanahMainWindowPrivate {
 	GtkToggleAction *bold_action;
 	GtkToggleAction *italic_action;
 	GtkToggleAction *underline_action;
+	GtkToggleAction *hyperlink_action;
 	GtkAction *cut_action;
 	GtkAction *copy_action;
 	GtkAction *delete_action;
@@ -222,6 +226,7 @@ almanah_main_window_new (void)
 	priv->bold_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_bold"));;
 	priv->italic_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_italic"));
 	priv->underline_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_underline"));
+	priv->hyperlink_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_hyperlink"));
 	priv->cut_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_cut"));
 	priv->copy_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_copy"));
 	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_delete"));
@@ -252,6 +257,7 @@ almanah_main_window_new (void)
 	g_signal_connect (priv->bold_action, "toggled", G_CALLBACK (mw_bold_toggled_cb), main_window);
 	g_signal_connect (priv->italic_action, "toggled", G_CALLBACK (mw_italic_toggled_cb), main_window);
 	g_signal_connect (priv->underline_action, "toggled", G_CALLBACK (mw_underline_toggled_cb), main_window);
+	g_signal_connect (priv->hyperlink_action, "toggled", (GCallback) mw_hyperlink_toggled_cb, main_window);
 
 	/* Notification for event changes */
 	g_signal_connect (almanah->event_manager, "events-updated", G_CALLBACK (mw_events_updated_cb), main_window);
@@ -612,7 +618,7 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 	GSList *_tag_list = NULL, *tag_list = NULL;
 	gboolean range_selected = FALSE;
-	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE;
+	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE, hyperlink_toggled = FALSE;
 
 	/* Ensure we don't overwrite current formatting options when characters are being typed.
 	 * (Execution of this function will be sandwiched between:
@@ -633,27 +639,37 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 
 	tag_list = _tag_list;
 	while (tag_list != NULL) {
+		GtkTextTag *tag;
 		gchar *tag_name;
 		GtkToggleAction *action = NULL;
 
-		g_object_get (tag_list->data, "name", &tag_name, NULL);
+		tag = GTK_TEXT_TAG (tag_list->data);
+		g_object_get (tag, "name", &tag_name, NULL);
 
 		/* See if we can do anything with the tag */
-		if (strcmp (tag_name, "bold") == 0) {
-			action = priv->bold_action;
-			bold_toggled = TRUE;
-		} else if (strcmp (tag_name, "italic") == 0) {
-			action = priv->italic_action;
-			italic_toggled = TRUE;
-		} else if (strcmp (tag_name, "underline") == 0) {
-			action = priv->underline_action;
-			underline_toggled = TRUE;
+		if (tag_name != NULL) {
+			if (strcmp (tag_name, "bold") == 0) {
+				action = priv->bold_action;
+				bold_toggled = TRUE;
+			} else if (strcmp (tag_name, "italic") == 0) {
+				action = priv->italic_action;
+				italic_toggled = TRUE;
+			} else if (strcmp (tag_name, "underline") == 0) {
+				action = priv->underline_action;
+				underline_toggled = TRUE;
+			}
+		}
+
+		/* Hyperlink? */
+		if (ALMANAH_IS_HYPERLINK_TAG (tag)) {
+			action = priv->hyperlink_action;
+			hyperlink_toggled = TRUE;
 		}
 
 		if (action != NULL) {
 			/* Force the toggle status on the action */
 			gtk_toggle_action_set_active (action, TRUE);
-		} else if (strcmp (tag_name, "gtkspell-misspelled") != 0) {
+		} else if (tag_name == NULL || strcmp (tag_name, "gtkspell-misspelled") != 0) {
 			/* Print a warning about the unknown tag */
 			g_warning (_("Unknown or duplicate text tag \"%s\" in entry. Ignoring."), tag_name);
 		}
@@ -672,6 +688,10 @@ mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahM
 			gtk_toggle_action_set_active (priv->italic_action, FALSE);
 		if (underline_toggled == FALSE)
 			gtk_toggle_action_set_active (priv->underline_action, FALSE);
+
+		if (hyperlink_toggled == FALSE) {
+			gtk_toggle_action_set_active (priv->hyperlink_action, FALSE);
+		}
 	}
 
 	/* Unblock signals */
@@ -894,6 +914,129 @@ static void
 mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window)
 {
 	apply_formatting (main_window, "underline", gtk_toggle_action_get_active (action));
+}
+
+static gboolean
+hyperlink_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkTextIter *iter, gpointer user_data)
+{
+	AlmanahHyperlinkTag *self = ALMANAH_HYPERLINK_TAG (tag);
+
+	/* Open the hyperlink if it's control-clicked */
+	if (event->type == GDK_BUTTON_RELEASE && event->button.state & GDK_CONTROL_MASK) {
+		GtkWindow *main_window;
+		const gchar *uri;
+		GError *error = NULL;
+
+		main_window = GTK_WINDOW (almanah->main_window);
+		uri = almanah_hyperlink_tag_get_uri (self);
+
+		/* Attempt to open the URI */
+		gtk_show_uri (gtk_widget_get_screen (GTK_WIDGET (main_window)), uri, gdk_event_get_time (event), &error);
+
+		if (error != NULL) {
+			/* Error */
+			GtkWidget *dialog = gtk_message_dialog_new (main_window,
+			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+			                                            _("Error opening URI"));
+			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+			gtk_dialog_run (GTK_DIALOG (dialog));
+			gtk_widget_destroy (dialog);
+
+			g_error_free (error);
+		}
+
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+static void
+mw_hyperlink_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *self)
+{
+	AlmanahMainWindowPrivate *priv = self->priv;
+	GtkTextIter start, end;
+
+	/* Make sure we don't muck up the formatting when the actions are having
+	 * their sensitivity set by the code. */
+	if (priv->updating_formatting == TRUE)
+		return;
+
+	gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start, &end);
+
+	if (gtk_toggle_action_get_active (action) == TRUE) {
+		/* Add a new hyperlink on the selected text */
+		AlmanahUriEntryDialog *uri_entry_dialog;
+
+		/* Get a URI from the user */
+		uri_entry_dialog = almanah_uri_entry_dialog_new ();
+		gtk_window_set_transient_for (GTK_WINDOW (uri_entry_dialog), GTK_WINDOW (self));
+		gtk_widget_show_all (GTK_WIDGET (uri_entry_dialog));
+
+		if (almanah_uri_entry_dialog_run (uri_entry_dialog) == TRUE) {
+			GtkTextTag *tag;
+			GtkTextTagTable *table;
+
+			/* Create and apply a new anonymous tag */
+			tag = GTK_TEXT_TAG (almanah_hyperlink_tag_new (almanah_uri_entry_dialog_get_uri (uri_entry_dialog)));
+
+			table = gtk_text_buffer_get_tag_table (priv->entry_buffer);
+			gtk_text_tag_table_add (table, tag);
+
+			gtk_text_buffer_apply_tag (priv->entry_buffer, tag, &start, &end);
+
+			/* Connect up events */
+			g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, NULL);
+
+			/* The text tag table keeps a reference */
+			g_object_unref (tag);
+		}
+
+		gtk_widget_destroy (GTK_WIDGET (uri_entry_dialog));
+	} else {
+		GtkTextIter iter = start;
+		GSList *tags, *i;
+
+		/* Remove all hyperlinks which are active at the start iter. This covers the case of hyperlinks which span more than the
+		 * selected text (i.e. begin before the start iter and end after the end iter). All other spanning hyperlinks will have an end point
+		 * inside the selected text, and will be caught below. */
+		tags  = gtk_text_iter_get_tags (&start);
+
+		for (i = tags; i != NULL; i = i->next) {
+			GtkTextTag *tag = GTK_TEXT_TAG (i->data);
+
+			if (ALMANAH_IS_HYPERLINK_TAG (tag)) {
+				GtkTextIter tag_start = start, tag_end = start;
+
+				if (gtk_text_iter_backward_to_tag_toggle (&tag_start, tag) == TRUE &&
+				    gtk_text_iter_forward_to_tag_toggle (&tag_end, tag) == TRUE) {
+					gtk_text_buffer_remove_tag (priv->entry_buffer, tag, &tag_start, &tag_end);
+				}
+			}
+		}
+
+		g_slist_free (tags);
+
+		/* Remove all hyperlinks which span the selected text and have an end point inside the selected text */
+		while (gtk_text_iter_forward_to_tag_toggle (&iter, NULL) == TRUE) {
+			/* Break once we've passed the end of the selected text range */
+			if (gtk_text_iter_compare (&iter, &end) > 0) {
+				break;
+			}
+
+			tags = gtk_text_iter_get_toggled_tags (&iter, FALSE);
+
+			for (i = tags; i != NULL; i = i->next) {
+				if (ALMANAH_IS_HYPERLINK_TAG (i->data)) {
+					gtk_text_buffer_remove_tag (priv->entry_buffer, GTK_TEXT_TAG (i->data), &start, &end);
+				}
+			}
+
+			g_slist_free (tags);
+		}
+	}
+
+	gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
 }
 
 void

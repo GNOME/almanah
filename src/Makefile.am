@@ -31,6 +31,8 @@ almanah_SOURCES = \
 	import-operation.h		\
 	export-operation.c		\
 	export-operation.h		\
+	uri-entry-dialog.c		\
+	uri-entry-dialog.h		\
 	widgets/calendar.c		\
 	widgets/calendar.h		\
 	widgets/hyperlink-tag.c		\
