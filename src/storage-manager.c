@@ -622,11 +622,13 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 
 	return TRUE;
 
+#ifdef ENABLE_ENCRYPTION
 delete_encrypted_db:
 	/* Delete the old encrypted database and return */
 	g_unlink (self->priv->filename);
 	g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 	return TRUE;
+#endif /* ENABLE_ENCRYPTION */
 }
 
 static gboolean
