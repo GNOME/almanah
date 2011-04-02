@@ -100,7 +100,7 @@ ALMANAH_MARSHAL_FILES = \
 
 almanah-marshal.h: almanah-marshal.list
 	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=almanah_marshal --header $< > $@
-almanah-marshal.c: almanah-marshal.list
+almanah-marshal.c: almanah-marshal.list almanah-marshal.h
 	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=almanah_marshal --header --body $< > $@
 
 # Enums
