@@ -154,11 +154,9 @@ contact_build_dialog (AlmanahDefinition *definition, GtkVBox *parent_vbox)
 {
 	AlmanahContactDefinitionPrivate *priv = ALMANAH_CONTACT_DEFINITION (definition)->priv;
 	ENameSelectorEntry *name_selector_entry;
-	EDestinationStore *destination_store;
 	const gchar *value = almanah_definition_get_value (definition);
 
 	name_selector_entry = e_name_selector_peek_section_entry (priv->name_selector, "Select Contact");
-	destination_store = e_name_selector_entry_peek_destination_store (name_selector_entry);
 
 	/* Initialise the dialogue with the definition's current values */
 	if (value != NULL)
