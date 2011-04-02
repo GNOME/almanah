@@ -30,7 +30,18 @@ MAINTAINERCLEANFILES = \
 	ltmain.sh	\
 	missing		\
 	mkinstalldirs	\
-	`find "$(srcdir)" -type f -name Makefile.in -print`
+	`find "$(srcdir)" -type f -name Makefile.in -print` \
+	ABOUT-NLS \
+	config.rpath \
+	po/Makevars.template \
+	po/Rules-quot \
+	po/boldquot.sed \
+	po/en@boldquot.header \
+	po/en@quot.header \
+	po/insert-header.sin \
+	po/quot.sed \
+	po/remove-potcdate.sin \
+	$(NULL)
 
 # Copy all the spec files. Of course, only one is actually used.
 dist-hook:
