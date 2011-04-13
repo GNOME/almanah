@@ -1,0 +1,96 @@
+Formatting
+==========
+
+All code should follow the same formatting standards which are broadly based on the GNU style (http://www.gnu.org/prep/standards.html) with some
+additions. Briefly:
+
+ - Tab indents are used and braces for blocks go on the same line as the block statement:
+
+	if (x < foo (y, z)) {
+		haha = bar[4] + 5;
+	} else {
+		while (z) {
+			haha += foo (z, z);
+			z--;
+		}
+		return abc (haha);
+	}
+
+   Braces should be omitted for single-line blocks, but included for all blocks in a multi-part if statement which has blocks containing more than
+   one line (as above).
+
+ - Spaces should be present between function name and argument block, and after commas:
+
+	foo (z, z)
+
+ - In pointer types, the '*' is grouped with the variable name, not with the base type. 
+
+	int *a;
+
+   Not:
+
+	int* a;
+
+   In cases where there is no variable name, for instance, return values, there should be a single space between the base type and the '*'.
+
+   Type casts should have no space between the type and '*', but a space before the variable being cast:
+
+	(gchar*) foobar;
+	(gchar**) &foobar;
+
+ - Function and variable names are lower_case_with_underscores, type names are CamelCase and macro names are UPPER_CASE_WITH_UNDERSCORES.
+
+ - Comparisons to NULL, TRUE and FALSE should always be made explicit, for clarity.
+
+ - Code should be wrapped at the 150th column, such that it doesn't require horizontal scrolling on a decent-sized display.
+   Don't wrap at the 80th column.
+
+Adding API
+==========
+
+ - For all functions except trivial internal ones, ensure they have proper guards against bad parameters:
+
+	g_return_if_fail (ALMANAH_IS_ENTRY (self));
+	g_return_if_fail (foobar != NULL);
+
+ - All GObject properties must have getter/setter functions.
+
+ - All API which returns allocated memory must be tagged with G_GNUC_WARN_UNUSED_RESULT after its declaration, to safeguard against consumers of the
+   API forgetting to use (and consequently free) the memory. This is unlikely, but adding the macro costs little and acts as a reminder in the API
+   documentation to free the result.
+
+ - All GObject *_get_type function declarations must be tagged with the G_GNUC_CONST macro, as well as any other applicable functions
+   (see the gcc documentation: http://gcc.gnu.org/onlinedocs/gcc/Function-Attributes.html#index-g_t_0040code_007bconst_007d-function-attribute-2207).
+
+Choosing function names
+=======================
+
+In general, use common sense. However, there are some specific cases where a standard is enforced:
+
+ - For boolean getters (e.g. for FooBar:is-baz) use foo_bar_is_baz, rather than foo_bar_get_is_baz. Note that the property name should be "is-baz",
+   rather than just "baz".
+
+ - For boolean setters use foo_bar_set_is_baz, rather than foo_bar_set_baz.
+
+Commit messages
+===============
+
+Almanah does not use a ChangeLog; it is auto-generated from the git log when packaging a release. Commit messages should follow the GNOME commit
+message guidelines (http://live.gnome.org/Git/CommitMessages), with the exception that when a commit closes a bug, the short explanation of the commit
+should simply be the bug's title, as copied from Bugzilla (e.g. "Bug 579885 – Add code examples to documentation"). The long explanation should then
+be used to give details of the changes. If the bug's title is not relevant, it should be changed before committing the changes.
+
+Unless the short explanation of a commit is a bug title, it should always be prefixed by a tag to describe the part of the project it touches, using
+the following format "tag: Short explanation". The following tags are valid:
+
+ - core: for the core code in the src directory, such as AlmanahEntry.
+
+ - build: for build changes and releases.
+
+ - docs: for documentation changes which are not specific to a piece of code, such as updates to NEWS, README, this file, etc.
+
+ - events: for the event (factory) code in src/events and src/event-factories.
+
+ - widgets: for the widget code in src/widgets.
+
+The only commits which should not have a tag are translation commits, touching only the po directory.
