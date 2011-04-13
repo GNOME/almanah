@@ -229,6 +229,7 @@ create_tables (AlmanahStorageManager *self)
 		"ALTER TABLE entries ADD COLUMN edited_year INTEGER", /* added in 0.8.0 */
 		"ALTER TABLE entries ADD COLUMN edited_month INTEGER", /* added in 0.8.0 */
 		"ALTER TABLE entries ADD COLUMN edited_day INTEGER", /* added in 0.8.0 */
+		"ALTER TABLE entries ADD COLUMN version INTEGER DEFAULT 1", /* added in 0.8.0 */
 		NULL
 	};
 
@@ -726,7 +727,7 @@ build_entry_from_statement (sqlite3_stmt *statement)
 	GDate date, last_edited;
 	AlmanahEntry *entry;
 
-	/* Assumes query for SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, ... FROM entries ... */
+	/* Assumes query for SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version, ... FROM entries ... */
 
 	/* Get the date */
 	g_date_set_dmy (&date,
@@ -736,7 +737,7 @@ build_entry_from_statement (sqlite3_stmt *statement)
 
 	/* Get the content */
 	entry = almanah_entry_new (&date);
-	almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0));
+	almanah_entry_set_data (entry, sqlite3_column_blob (statement, 0), sqlite3_column_bytes (statement, 0), sqlite3_column_int (statement, 8));
 	almanah_entry_set_is_important (entry, (sqlite3_column_int (statement, 1) == 1) ? TRUE : FALSE);
 
 	/* Set the last-edited date if possible (for backwards-compatibility, we have to assume that not all entries have valid last-edited dates set,
@@ -771,7 +772,7 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (self->priv->connection,
-	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries "
+	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version FROM entries "
 	                        "WHERE year = ? AND month = ? AND day = ?", -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
@@ -831,13 +832,15 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		sqlite3_stmt *statement;
 		GDate last_edited;
 		gboolean existed_before;
+		guint version;
 
 		existed_before = almanah_storage_manager_entry_exists (self, &date);
 
 		/* Prepare the statement */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-		                        "REPLACE INTO entries (year, month, day, content, is_important, edited_day, edited_month, edited_year) "
-		                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", -1,
+		                        "REPLACE INTO entries "
+		                        "(year, month, day, content, is_important, edited_day, edited_month, edited_year, version) "
+		                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", -1,
 		                        &statement, NULL) != SQLITE_OK) {
 			return FALSE;
 		}
@@ -847,8 +850,9 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		sqlite3_bind_int (statement, 2, g_date_get_month (&date));
 		sqlite3_bind_int (statement, 3, g_date_get_day (&date));
 
-		data = almanah_entry_get_data (entry, &length);
+		data = almanah_entry_get_data (entry, &length, &version);
 		sqlite3_bind_blob (statement, 4, data, length, SQLITE_TRANSIENT);
+		sqlite3_bind_int (statement, 9, version);
 
 		sqlite3_bind_int (statement, 5, almanah_entry_is_important (entry));
 
@@ -936,7 +940,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 		/* Prepare the statement. */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries "
+		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version FROM entries "
 		                        "ORDER BY year DESC, month DESC, day DESC", -1,
 		                        (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
 			return NULL;
@@ -1031,7 +1035,8 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 	if (iter->statement == NULL) {
 		/* Prepare the statement */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year FROM entries", -1,
+		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version "
+		                        "FROM entries", -1,
 		                        (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
 			return NULL;
 		}

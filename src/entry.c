@@ -19,10 +19,24 @@
 
 #include <config.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "entry.h"
 #include "main.h"
+
+GQuark
+almanah_entry_error_quark (void)
+{
+	return g_quark_from_static_string ("almanah-entry-error-quark");
+}
+
+typedef enum {
+	/* Unset */
+	DATA_FORMAT_UNSET = 0,
+	/* Plain text or GtkTextBuffer's default serialisation format, as used in Almanah versions < 0.8.0 */
+	DATA_FORMAT_PLAIN_TEXT__GTK_TEXT_BUFFER = 1,
+} DataFormat;
 
 static void almanah_entry_finalize (GObject *object);
 static void almanah_entry_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
@@ -32,6 +46,7 @@ struct _AlmanahEntryPrivate {
 	GDate date;
 	guint8 *data;
 	gsize length;
+	DataFormat version; /* version of the *format* used for ->data */
 	gboolean is_empty;
 	gboolean is_important;
 	GDate last_edited; /* date the entry was last edited *in the database*; e.g. this isn't updated when almanah_entry_set_content() is called */
@@ -103,6 +118,7 @@ almanah_entry_init (AlmanahEntry *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_ENTRY, AlmanahEntryPrivate);
 	self->priv->data = NULL;
 	self->priv->length = 0;
+	self->priv->version = DATA_FORMAT_UNSET;
 	g_date_clear (&(self->priv->date), 1);
 	g_date_clear (&(self->priv->last_edited), 1);
 }
@@ -198,17 +214,23 @@ almanah_entry_new (GDate *date)
 
 /* NOTE: There's a difference between content and data, as recognised by AlmanahEntry.
  * Content is deserialized, and handled in terms of GtkTextBuffers.
- * Data is serialized, and handled in terms of a guint8 *data and gsize length. */
+ * Data is serialized, and handled in terms of a guint8 *data and gsize length, as well as an associated data format version.
+ * Internally, the data format version is structured according to DataFormat; but externally it's just an opaque guint. */
 const guint8 *
-almanah_entry_get_data (AlmanahEntry *self, gsize *length)
+almanah_entry_get_data (AlmanahEntry *self, gsize *length, guint *version)
 {
 	if (length != NULL)
 		*length = self->priv->length;
+
+	if (version != NULL) {
+		*version = self->priv->version;
+	}
+
 	return self->priv->data;
 }
 
 void
-almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length)
+almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length, guint version)
 {
 	AlmanahEntryPrivate *priv = self->priv;
 
@@ -216,39 +238,54 @@ almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length)
 
 	priv->data = g_memdup (data, length * sizeof (*data));
 	priv->length = length;
+	priv->version = version;
 	priv->is_empty = FALSE;
 }
 
 gboolean
 almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gboolean create_tags, GError **error)
 {
-	GdkAtom format_atom;
-	GtkTextIter start_iter;
 	AlmanahEntryPrivate *priv = self->priv;
-	GError *deserialise_error = NULL;
 
-	format_atom = gtk_text_buffer_register_deserialize_tagset (text_buffer, PACKAGE_NAME);
-	gtk_text_buffer_deserialize_set_can_create_tags (text_buffer, format_atom, create_tags);
-	gtk_text_buffer_get_start_iter (text_buffer, &start_iter);
+	/* Deserialise the data according to the version of the data format attached to the entry */
+	switch (priv->version) {
+		case DATA_FORMAT_PLAIN_TEXT__GTK_TEXT_BUFFER: {
+			GdkAtom format_atom;
+			GtkTextIter start_iter;
+			GError *deserialise_error = NULL;
 
-	/* Try deserializing the (hopefully) serialized data first */
-	if (gtk_text_buffer_deserialize (text_buffer, text_buffer,
-					 format_atom,
-					 &start_iter,
-					 priv->data, priv->length,
-					 &deserialise_error) == FALSE) {
-		/* Since that failed, check the data's in the old format, and try to just load it as text */
-		if (g_strcmp0 ((gchar*) priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
-			gtk_text_buffer_set_text (text_buffer, (gchar*) priv->data, priv->length);
-			g_error_free (deserialise_error);
+			format_atom = gtk_text_buffer_register_deserialize_tagset (text_buffer, PACKAGE_NAME);
+			gtk_text_buffer_deserialize_set_can_create_tags (text_buffer, format_atom, create_tags);
+			gtk_text_buffer_get_start_iter (text_buffer, &start_iter);
+
+			/* Try deserializing the (hopefully) serialized data first */
+			if (gtk_text_buffer_deserialize (text_buffer, text_buffer,
+			                                 format_atom,
+			                                 &start_iter,
+			                                 priv->data, priv->length,
+			                                 &deserialise_error) == FALSE) {
+				/* Since that failed, check the data's in the old format, and try to just load it as text */
+				if (g_strcmp0 ((gchar*) priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
+					gtk_text_buffer_set_text (text_buffer, (gchar*) priv->data, priv->length);
+					g_error_free (deserialise_error);
+					return TRUE;
+				}
+
+				g_propagate_error (error, deserialise_error);
+				return FALSE;
+			}
+
 			return TRUE;
 		}
+		case DATA_FORMAT_UNSET:
+		default: {
+			/* Invalid/Unset version number */
+			g_set_error (error, ALMANAH_ENTRY_ERROR, ALMANAH_ENTRY_ERROR_INVALID_DATA_VERSION,
+			             _("Invalid data version number %u."), priv->version);
 
-		g_propagate_error (error, deserialise_error);
-		return FALSE;
+			return FALSE;
+		}
 	}
-
-	return TRUE;
 }
 
 void
@@ -269,6 +306,9 @@ almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer)
 						format_atom,
 						&start, &end,
 						&(priv->length));
+
+	/* Always serialise data in the latest format */
+	priv->version = DATA_FORMAT_PLAIN_TEXT__GTK_TEXT_BUFFER;
 }
 
 /* NOTE: Designed for use on the stack */

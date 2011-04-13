@@ -34,6 +34,13 @@ typedef enum {
 /* The number of days after which a diary entry requires confirmation to be edited */
 #define ALMANAH_ENTRY_CUTOFF_AGE 14
 
+typedef enum {
+	ALMANAH_ENTRY_ERROR_INVALID_DATA_VERSION,
+} AlmanahEntryError;
+
+GQuark almanah_entry_error_quark (void) G_GNUC_CONST;
+#define ALMANAH_ENTRY_ERROR		(almanah_entry_error_quark ())
+
 #define ALMANAH_TYPE_ENTRY		(almanah_entry_get_type ())
 #define ALMANAH_ENTRY(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_ENTRY, AlmanahEntry))
 #define ALMANAH_ENTRY_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_ENTRY, AlmanahEntryClass))
@@ -55,8 +62,8 @@ typedef struct {
 GType almanah_entry_get_type (void);
 AlmanahEntry *almanah_entry_new (GDate *date);
 
-const guint8 *almanah_entry_get_data (AlmanahEntry *self, gsize *length);
-void almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length);
+const guint8 *almanah_entry_get_data (AlmanahEntry *self, gsize *length, guint *version);
+void almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length, guint version);
 gboolean almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gboolean create_tags, GError **error);
 void almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer);
 

@@ -5,6 +5,7 @@ data/org.gnome.almanah.gschema.xml.in.in
 [type: gettext/glade]data/almanah.ui
 src/add-definition-dialog.c
 src/date-entry-dialog.c
+src/entry.c
 src/events/calendar-appointment.c
 src/events/calendar-task.c
 src/export-operation.c
