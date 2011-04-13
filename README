@@ -11,14 +11,12 @@ See NEWS file.
 Dependencies
 ============
 
-GNOME 2.24 development platform
+GNOME 3.0 development platform
 	http://www.gnome.org/
 SQLite 3
 	http://sqlite.org/
-GtkSpell 2.0
+GtkSpell 2.0 (optional)
 	http://gtkspell.sourceforge.net/
-DBus-GLib
-	http://dbus.freedesktop.org/
 GPGME (optional)
 	http://www.gnupg.org/gpgme.html
 Evolution Data Server (optional)
