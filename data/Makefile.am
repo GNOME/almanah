@@ -55,7 +55,8 @@ EXTRA_DIST = \
 	$(ui_DATA)		\
 	$(desktop_in_files)	\
 	$(schemas_in_files)	\
-	$(convert_DATA)
+	$(convert_DATA)		\
+	entry-2.0.rnc
 CLEANFILES = \
 	$(desktop_DATA)		\
 	$(gsettings_SCHEMAS)

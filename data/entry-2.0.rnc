@@ -1,0 +1,30 @@
+default namespace almanah = "http://www.gnome.org/almanah-diary/entry/2.0/"
+start = almanah_entry
+
+almanah_entry = element entry {
+	almanah_inline
+}
+
+almanah_inline = mixed {
+	almanah_inline_underline* &
+	almanah_inline_bold* &
+	almanah_inline_italic* &
+	almanah_inline_link*
+}
+
+almanah_inline_underline = element underline {
+	almanah_inline
+}
+
+almanah_inline_bold = element bold {
+	almanah_inline
+}
+
+almanah_inline_italic = element italic {
+	almanah_inline
+}
+
+almanah_inline_link = element link {
+	attribute uri { xsd:anyURI },
+	almanah_inline
+}
