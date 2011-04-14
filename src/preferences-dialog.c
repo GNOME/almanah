@@ -40,9 +40,7 @@ static void almanah_preferences_dialog_dispose (GObject *object);
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
 static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
-#ifdef ENABLE_SPELL_CHECKING
 static void pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog);
-#endif /* ENABLE_SPELL_CHECKING */
 
 struct _AlmanahPreferencesDialogPrivate {
 #ifdef ENABLE_ENCRYPTION
@@ -72,9 +70,7 @@ almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 {
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogPrivate);
 
-#ifdef ENABLE_SPELL_CHECKING
 	g_signal_connect (self, "response", G_CALLBACK (pd_response_cb), self);
-#endif /* ENABLE_SPELL_CHECKING */
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Preferences"));
 	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
@@ -253,10 +249,8 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 }
 #endif /* ENABLE_ENCRYPTION */
 
-#ifdef ENABLE_SPELL_CHECKING
 static void
 pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog)
 {
 	gtk_widget_hide (GTK_WIDGET (dialog));
 }
-#endif /* ENABLE_SPELL_CHECKING */
