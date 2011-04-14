@@ -35,7 +35,7 @@ almanah_entry_error_quark (void)
 typedef enum {
 	/* Unset */
 	DATA_FORMAT_UNSET = 0,
-	/* Plain text or GtkTextBuffer's default serialisation format, as used in Almanah versions < 0.8.0 */
+	/* Plain text or GtkTextBuffer's default serialisation format, as used in Almanah versions <= 0.8.0 */
 	DATA_FORMAT_PLAIN_TEXT__GTK_TEXT_BUFFER = 1,
 	/* Custom XML serialisation format using schema data/entry-2.0.rnc. */
 	DATA_FORMAT_XML_2_0 = 2,
