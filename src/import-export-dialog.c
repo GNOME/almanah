@@ -75,8 +75,6 @@ almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 static void
 almanah_import_export_dialog_dispose (GObject *object)
 {
-	g_message ("almanah_import_export_dialog_dispose");
-
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_import_export_dialog_parent_class)->dispose (object);
 }
@@ -165,7 +163,7 @@ static void
 import_progress_cb (const GDate *date, AlmanahImportStatus status, const gchar *message, AlmanahImportResultsDialog *results_dialog)
 {
 	AlmanahImportExportDialog *self;
-g_message ("import_progress_cb");
+
 	self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
 	almanah_import_results_dialog_add_result (results_dialog, date, status, message);
 	gtk_progress_bar_pulse (self->priv->progress_bar);
@@ -176,7 +174,7 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 {
 	AlmanahImportExportDialog *self;
 	GError *error = NULL;
-g_message ("import_cb");
+
 	self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
@@ -252,7 +250,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 {
 	AlmanahImportExportDialogPrivate *priv = self->priv;
 	GFile *file;
-g_message ("response_cb");
+
 	/* If the user pressed Cancel, cancel the operation if we've started, and return otherwise */
 	if (response_id != GTK_RESPONSE_OK) {
 		if (priv->cancellable == NULL)

@@ -117,7 +117,7 @@ progress_idle_callback_cb (ProgressData *data)
 {
 	g_assert (data->callback != NULL);
 	data->callback (data->date, data->status, data->message, data->user_data);
-g_message ("progress_idle_callback_cb");
+
 	/* Free the data */
 	g_free (data->message);
 	g_date_free (data->date);
@@ -139,7 +139,6 @@ progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_da
 	data->date = g_date_new_dmy (g_date_get_day (date), g_date_get_month (date), g_date_get_year (date));
 	data->status = status;
 	data->message = g_strdup (message);
-g_message ("progress_idle_callback");
 
 	/* We can't just use g_idle_add() here, since GSimpleAsyncResult uses default priority, so the finished callback will skip any outstanding
 	 * progress callbacks in the main loop's priority queue, causing Bad Things to happen. We need to guarantee that no more progress callbacks
@@ -180,7 +179,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	GtkTextIter existing_start, existing_end, imported_start, imported_end;
 	gchar *header_string;
 	GError *error = NULL;
-g_message ("set_entry");
+
 	/* Check to see if there's a conflict first */
 	almanah_entry_get_date (imported_entry, &entry_date);
 	existing_entry = almanah_storage_manager_get_entry (almanah->storage_manager, &entry_date);
@@ -287,7 +286,7 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 	GFileEnumerator *enumerator;
 	GtkTextBuffer *buffer;
 	GError *child_error = NULL;
-g_message ("import_text_files");
+
 	enumerator = g_file_enumerate_children (source, "standard::name,standard::display-name,standard::is-hidden,time::modified",
 	                                        G_FILE_QUERY_INFO_NONE, NULL, error);
 	if (enumerator == NULL)
@@ -467,7 +466,7 @@ import_thread (GSimpleAsyncResult *result, AlmanahImportOperation *operation, GC
 {
 	GError *error = NULL;
 	ImportData *data = g_simple_async_result_get_op_res_gpointer (result);
-g_message ("import_thread");
+
 	/* Check to see if the operation's been cancelled already */
 	if (g_cancellable_set_error_if_cancelled (cancellable, &error) == TRUE) {
 		g_simple_async_result_set_from_error (result, error);
@@ -489,7 +488,7 @@ almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancel
 {
 	GSimpleAsyncResult *result;
 	ImportData *data;
-g_message ("almanah_import_operation_run");
+
 	g_return_if_fail (ALMANAH_IS_IMPORT_OPERATION (self));
 	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
@@ -507,7 +506,7 @@ gboolean
 almanah_import_operation_finish (AlmanahImportOperation *self, GAsyncResult *async_result, GError **error)
 {
 	GSimpleAsyncResult *result = G_SIMPLE_ASYNC_RESULT (async_result);
-g_message ("almanah_import_operation_finish");
+
 	g_return_val_if_fail (ALMANAH_IS_IMPORT_OPERATION (self), FALSE);
 	g_return_val_if_fail (G_IS_ASYNC_RESULT (async_result), FALSE);
 	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
