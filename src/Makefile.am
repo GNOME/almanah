@@ -32,7 +32,9 @@ almanah_SOURCES = \
 	export-operation.c		\
 	export-operation.h		\
 	widgets/calendar.c		\
-	widgets/calendar.h
+	widgets/calendar.h		\
+	widgets/hyperlink-tag.c		\
+	widgets/hyperlink-tag.h
 
 if HAVE_EVO
 almanah_SOURCES += \
