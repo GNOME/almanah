@@ -36,6 +36,7 @@
 #include "printing.h"
 #include "entry.h"
 #include "storage-manager.h"
+#include "event-manager.h"
 #include "event.h"
 #include "import-export-dialog.h"
 #include "uri-entry-dialog.h"
@@ -111,8 +112,11 @@ struct _AlmanahMainWindowPrivate {
 	AlmanahEntry *current_entry; /* whether it's been modified is stored as gtk_text_buffer_get_modified (priv->entry_buffer) */
 	gulong current_entry_notify_id; /* signal handler for current_entry::notify */
 
+	GtkPrintSettings *print_settings;
+	GtkPageSetup *page_setup;
+
 #ifdef ENABLE_SPELL_CHECKING
-	gulong spell_checking_enabled_changed_id; /* signal handler for almanah->settings::changed::spell-checking-enabled */
+	gulong spell_checking_enabled_changed_id; /* signal handler for application->settings::changed::spell-checking-enabled */
 #endif /* ENABLE_SPELL_CHECKING */
 };
 
@@ -137,18 +141,22 @@ almanah_main_window_init (AlmanahMainWindow *self)
 
 	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Diary"));
 	g_signal_connect (self, "delete-event", G_CALLBACK (mw_delete_event_cb), NULL);
-
-#ifdef ENABLE_SPELL_CHECKING
-	/* We don't use g_settings_bind() because enabling spell checking could fail, and we need to show an error dialogue */
-	self->priv->spell_checking_enabled_changed_id = g_signal_connect (almanah->settings, "changed::spell-checking-enabled",
-	                                                                  (GCallback) spell_checking_enabled_changed_cb, self);
-#endif /* ENABLE_SPELL_CHECKING */
 }
 
 static void
 almanah_main_window_dispose (GObject *object)
 {
+	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW (object)->priv;
+
 	set_current_entry (ALMANAH_MAIN_WINDOW (object), NULL);
+
+	if (priv->page_setup != NULL)
+		g_object_unref (priv->page_setup);
+	priv->page_setup = NULL;
+
+	if (priv->print_settings != NULL)
+		g_object_unref (priv->print_settings);
+	priv->print_settings = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_main_window_parent_class)->dispose (object);
@@ -168,9 +176,11 @@ almanah_main_window_finalize (GObject *object)
 #endif /* ENABLE_SPELL_CHECKING */
 
 AlmanahMainWindow *
-almanah_main_window_new (void)
+almanah_main_window_new (AlmanahApplication *application)
 {
 	GtkBuilder *builder;
+	AlmanahStorageManager *storage_manager;
+	AlmanahEventManager *event_manager;
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
 	GError *error = NULL;
@@ -182,6 +192,8 @@ almanah_main_window_new (void)
 		"almanah_ui_manager",
 		NULL
 	};
+
+	g_return_val_if_fail (ALMANAH_IS_APPLICATION (application), NULL);
 
 	builder = gtk_builder_new ();
 
@@ -211,6 +223,9 @@ almanah_main_window_new (void)
 		return NULL;
 	}
 
+	/* Set up the application */
+	gtk_window_set_application (GTK_WINDOW (main_window), GTK_APPLICATION (application));
+
 	priv = ALMANAH_MAIN_WINDOW (main_window)->priv;
 
 	/* Grab our child widgets */
@@ -234,8 +249,17 @@ almanah_main_window_new (void)
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
-	if (g_settings_get_boolean (almanah->settings, "spell-checking-enabled") == TRUE)
+	settings = almanah_application_dup_settings (application);
+
+	if (g_settings_get_boolean (settings, "spell-checking-enabled") == TRUE) {
 		enable_spell_checking (main_window, NULL);
+	}
+
+	/* We don't use g_settings_bind() because enabling spell checking could fail, and we need to show an error dialogue */
+	priv->spell_checking_enabled_changed_id = g_signal_connect (settings, "changed::spell-checking-enabled",
+	                                                            (GCallback) spell_checking_enabled_changed_cb, main_window);
+
+	g_object_unref (settings);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Set up text formatting. It's important this is done after setting up GtkSpell, so that we know whether to
@@ -259,8 +283,19 @@ almanah_main_window_new (void)
 	g_signal_connect (priv->underline_action, "toggled", G_CALLBACK (mw_underline_toggled_cb), main_window);
 	g_signal_connect (priv->hyperlink_action, "toggled", (GCallback) mw_hyperlink_toggled_cb, main_window);
 
+	/* Notification for calendar changes */
+	storage_manager = almanah_application_dup_storage_manager (application);
+	almanah_calendar_set_storage_manager (priv->calendar, storage_manager);
+	g_object_unref (storage_manager);
+
 	/* Notification for event changes */
-	g_signal_connect (almanah->event_manager, "events-updated", G_CALLBACK (mw_events_updated_cb), main_window);
+	event_manager = almanah_application_dup_event_manager (application);
+	g_signal_connect (event_manager, "events-updated", G_CALLBACK (mw_events_updated_cb), main_window);
+	g_object_unref (event_manager);
+
+	/* Set up printing objects */
+	priv->print_settings = gtk_print_settings_new ();
+	priv->page_setup = gtk_page_setup_new ();
 
 	/* Select the current day and month */
 	mw_jump_to_today_activate_cb (NULL, main_window);
@@ -514,6 +549,7 @@ save_current_entry (AlmanahMainWindow *self)
 {
 	gboolean entry_exists, existing_entry_is_empty, entry_is_empty;
 	GDate date, last_edited;
+	AlmanahStorageManager *storage_manager;
 	AlmanahMainWindowPrivate *priv = self->priv;
 	AlmanahEntryEditability editability;
 
@@ -525,9 +561,11 @@ save_current_entry (AlmanahMainWindow *self)
 	    gtk_text_buffer_get_modified (priv->entry_buffer) == FALSE)
 		return;
 
+	storage_manager = almanah_application_dup_storage_manager (ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (self))));
+
 	almanah_entry_get_date (priv->current_entry, &date);
 	editability = almanah_entry_get_editability (priv->current_entry);
-	entry_exists = almanah_storage_manager_entry_exists (almanah->storage_manager, &date);
+	entry_exists = almanah_storage_manager_entry_exists (storage_manager, &date);
 	existing_entry_is_empty = almanah_entry_is_empty (priv->current_entry);
 	entry_is_empty = (gtk_text_buffer_get_char_count (priv->entry_buffer) == 0) ? TRUE : FALSE;
 
@@ -536,7 +574,7 @@ save_current_entry (AlmanahMainWindow *self)
 	 * If an entry is being deleted, permission must be given for that as a priority. */
 	if (editability == ALMANAH_ENTRY_FUTURE) {
 		/* Can't edit entries for dates in the future */
-		return;
+		goto done;
 	} else if (editability == ALMANAH_ENTRY_PAST && (existing_entry_is_empty == FALSE || entry_is_empty == FALSE)) {
 		/* Attempting to edit an existing entry in the past */
 		gchar date_string[100];
@@ -558,7 +596,7 @@ save_current_entry (AlmanahMainWindow *self)
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled the edit */
 			gtk_widget_destroy (dialog);
-			return;
+			goto done;
 		}
 
 		gtk_widget_destroy (dialog);
@@ -583,7 +621,7 @@ save_current_entry (AlmanahMainWindow *self)
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled deletion */
 			gtk_widget_destroy (dialog);
-			return;
+			goto done;
 		}
 
 		gtk_widget_destroy (dialog);
@@ -597,12 +635,15 @@ save_current_entry (AlmanahMainWindow *self)
 	almanah_entry_set_last_edited (priv->current_entry, &last_edited);
 
 	/* Store the entry! */
-	almanah_storage_manager_set_entry (almanah->storage_manager, priv->current_entry);
+	almanah_storage_manager_set_entry (storage_manager, priv->current_entry);
 
 	if (entry_is_empty == TRUE) {
 		/* Since the entry is empty, remove all the events from the treeview */
 		gtk_list_store_clear (priv->event_store);
 	}
+
+done:
+	g_object_unref (storage_manager);
 }
 
 void
@@ -745,7 +786,7 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 	save_current_entry (ALMANAH_MAIN_WINDOW (window));
 	save_window_state (ALMANAH_MAIN_WINDOW (window));
 
-	almanah_quit ();
+	gtk_widget_destroy (GTK_WIDGET (window));
 
 	return TRUE;
 }
@@ -753,7 +794,15 @@ mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 void
 mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	GtkWidget *dialog = GTK_WIDGET (almanah_import_export_dialog_new (TRUE));
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+	GtkWidget *dialog;
+
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
+	storage_manager = almanah_application_dup_storage_manager (application);
+	dialog = GTK_WIDGET (almanah_import_export_dialog_new (storage_manager, TRUE));
+	g_object_unref (storage_manager);
+
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 
@@ -764,7 +813,15 @@ mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_export_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	GtkWidget *dialog = GTK_WIDGET (almanah_import_export_dialog_new (FALSE));
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+	GtkWidget *dialog;
+
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
+	storage_manager = almanah_application_dup_storage_manager (application);
+	dialog = GTK_WIDGET (almanah_import_export_dialog_new (storage_manager, FALSE));
+	g_object_unref (storage_manager);
+
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 
@@ -775,26 +832,46 @@ mw_export_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_page_setup_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	almanah_print_page_setup ();
+	AlmanahMainWindowPrivate *priv = main_window->priv;
+	GtkPageSetup *page_setup;
+
+	page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (main_window), priv->page_setup, priv->print_settings);
+	if (priv->page_setup != NULL)
+		g_object_unref (priv->page_setup);
+	priv->page_setup = page_setup;
 }
 
 void
 mw_print_preview_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	almanah_print_entries (TRUE);
+	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
+	storage_manager = almanah_application_dup_storage_manager (application);
+	almanah_print_entries (TRUE, GTK_WINDOW (main_window), &(priv->page_setup), &(priv->print_settings), storage_manager);
+	g_object_unref (storage_manager);
 }
 
 void
 mw_print_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	almanah_print_entries (FALSE);
+	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
+	storage_manager = almanah_application_dup_storage_manager (application);
+	almanah_print_entries (FALSE, GTK_WINDOW (main_window), &(priv->page_setup), &(priv->print_settings), storage_manager);
+	g_object_unref (storage_manager);
 }
 
 void
 mw_quit_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	save_current_entry (main_window);
-	almanah_quit ();
+	gtk_widget_destroy (GTK_WIDGET (main_window));
 }
 
 void
@@ -844,38 +921,51 @@ mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_select_date_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	if (almanah->date_entry_dialog == NULL)
-		almanah->date_entry_dialog = GTK_WIDGET (almanah_date_entry_dialog_new ());
+	AlmanahDateEntryDialog *dialog = almanah_date_entry_dialog_new ();
 
-	gtk_widget_show_all (almanah->date_entry_dialog);
-	if (almanah_date_entry_dialog_run (ALMANAH_DATE_ENTRY_DIALOG (almanah->date_entry_dialog)) == TRUE) {
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
+	gtk_widget_show_all (GTK_WIDGET (dialog));
+	if (almanah_date_entry_dialog_run (dialog) == TRUE) {
 		GDate new_date;
 
 		/* Switch to the specified date */
-		almanah_date_entry_dialog_get_date (ALMANAH_DATE_ENTRY_DIALOG (almanah->date_entry_dialog), &new_date);
+		almanah_date_entry_dialog_get_date (dialog, &new_date);
 		almanah_main_window_select_date (main_window, &new_date);
 	}
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
 mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-	if (almanah->search_dialog == NULL)
-		almanah->search_dialog = GTK_WIDGET (almanah_search_dialog_new ());
+	AlmanahSearchDialog *dialog = almanah_search_dialog_new ();
 
-	gtk_widget_show_all (almanah->search_dialog);
-	gtk_dialog_run (GTK_DIALOG (almanah->search_dialog));
+	gtk_window_set_application (GTK_WINDOW (dialog), gtk_window_get_application (GTK_WINDOW (main_window)));
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
+	gtk_widget_show_all (GTK_WIDGET (dialog));
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
 mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 #ifdef ENABLE_ENCRYPTION
-	if (almanah->preferences_dialog == NULL)
-		almanah->preferences_dialog = GTK_WIDGET (almanah_preferences_dialog_new ());
+	AlmanahApplication *application;
+	GSettings *settings;
+	AlmanahPreferencesDialog *dialog;
 
-	gtk_widget_show_all (almanah->preferences_dialog);
-	gtk_dialog_run (GTK_DIALOG (almanah->preferences_dialog));
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
+	settings = almanah_application_dup_settings (application);
+	dialog = almanah_preferences_dialog_new (settings);
+	g_object_unref (settings);
+
+	gtk_widget_show_all (GTK_WIDGET (dialog));
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 #endif /* ENABLE_ENCRYPTION */
 }
 
@@ -917,25 +1007,23 @@ mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window
 }
 
 static gboolean
-hyperlink_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkTextIter *iter, gpointer user_data)
+hyperlink_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkTextIter *iter, AlmanahMainWindow *self)
 {
-	AlmanahHyperlinkTag *self = ALMANAH_HYPERLINK_TAG (tag);
+	AlmanahHyperlinkTag *hyperlink_tag = ALMANAH_HYPERLINK_TAG (tag);
 
 	/* Open the hyperlink if it's control-clicked */
 	if (event->type == GDK_BUTTON_RELEASE && event->button.state & GDK_CONTROL_MASK) {
-		GtkWindow *main_window;
 		const gchar *uri;
 		GError *error = NULL;
 
-		main_window = GTK_WINDOW (almanah->main_window);
-		uri = almanah_hyperlink_tag_get_uri (self);
+		uri = almanah_hyperlink_tag_get_uri (hyperlink_tag);
 
 		/* Attempt to open the URI */
-		gtk_show_uri (gtk_widget_get_screen (GTK_WIDGET (main_window)), uri, gdk_event_get_time (event), &error);
+		gtk_show_uri (gtk_widget_get_screen (GTK_WIDGET (self)), uri, gdk_event_get_time (event), &error);
 
 		if (error != NULL) {
 			/* Error */
-			GtkWidget *dialog = gtk_message_dialog_new (main_window,
+			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (self),
 			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 			                                            _("Error opening URI"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
@@ -986,7 +1074,7 @@ mw_hyperlink_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *self)
 			gtk_text_buffer_apply_tag (priv->entry_buffer, tag, &start, &end);
 
 			/* Connect up events */
-			g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, NULL);
+			g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, self);
 
 			/* The text tag table keeps a reference */
 			g_object_unref (tag);
@@ -1042,6 +1130,8 @@ mw_hyperlink_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *self)
 void
 mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
 	gchar *license, *description;
 	guint entry_count;
 
@@ -1069,7 +1159,11 @@ mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 			  _(license_parts[2]),
 			  NULL);
 
-	almanah_storage_manager_get_statistics (almanah->storage_manager, &entry_count);
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
+	storage_manager = almanah_application_dup_storage_manager (application);
+	almanah_storage_manager_get_statistics (storage_manager, &entry_count);
+	g_object_unref (storage_manager);
+
 	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries."), entry_count);
 
 	gtk_show_about_dialog (GTK_WINDOW (main_window),
@@ -1108,8 +1202,7 @@ clear_factory_events (AlmanahMainWindow *self, AlmanahEventFactoryType type_id)
 	GtkTreeIter iter;
 	GtkTreeModel *model = GTK_TREE_MODEL (self->priv->event_store);
 
-	if (almanah->debug == TRUE)
-		g_debug ("Removing events belonging to factory %u from the list store...", type_id);
+	g_debug ("Removing events belonging to factory %u from the list store...", type_id);
 
 	if (gtk_tree_model_get_iter_first (model, &iter) == FALSE)
 		return;
@@ -1120,11 +1213,9 @@ clear_factory_events (AlmanahMainWindow *self, AlmanahEventFactoryType type_id)
 		gtk_tree_model_get (model, &iter, 2, &row_type_id, -1);
 
 		if (row_type_id == type_id) {
-			if (almanah->debug == TRUE) {
-				AlmanahEvent *event;
-				gtk_tree_model_get (model, &iter, 0, &event, -1);
-				g_debug ("\t%s", almanah_event_format_value (event));
-			}
+			AlmanahEvent *event;
+			gtk_tree_model_get (model, &iter, 0, &event, -1);
+			g_debug ("\t%s", almanah_event_format_value (event));
 
 			if (gtk_list_store_remove (GTK_LIST_STORE (model), &iter) == FALSE)
 				break;
@@ -1134,8 +1225,7 @@ clear_factory_events (AlmanahMainWindow *self, AlmanahEventFactoryType type_id)
 		}
 	}
 
-	if (almanah->debug == TRUE)
-		g_debug ("Finished removing events.");
+	g_debug ("Finished removing events.");
 }
 
 static void
@@ -1151,15 +1241,13 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 	/* Clear all the events generated by this factory out of the list store first */
 	clear_factory_events (main_window, type_id);
 
-	if (almanah->debug == TRUE)
-		g_debug ("Adding events from factory %u to the list store...", type_id);
+	g_debug ("Adding events from factory %u to the list store...", type_id);
 
 	for (events = _events; events != NULL; events = g_slist_next (events)) {
 		GtkTreeIter iter;
 		AlmanahEvent *event = events->data;
 
-		if (almanah->debug == TRUE)
-			g_debug ("\t%s", almanah_event_format_value (event));
+		g_debug ("\t%s", almanah_event_format_value (event));
 
 		gtk_list_store_append (priv->event_store, &iter);
 		gtk_list_store_set (priv->event_store, &iter,
@@ -1171,8 +1259,7 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 		g_object_unref (event);
 	}
 
-	if (almanah->debug == TRUE)
-		g_debug ("Finished adding events.");
+	g_debug ("Finished adding events.");
 
 	g_slist_free (_events);
 }
@@ -1180,6 +1267,9 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 void
 mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window)
 {
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+	AlmanahEventManager *event_manager;
 	GDate calendar_date;
 	gchar calendar_string[100];
 #ifdef ENABLE_SPELL_CHECKING
@@ -1187,6 +1277,9 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 #endif /* ENABLE_SPELL_CHECKING */
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 	AlmanahEntry *entry;
+
+	/* Set up */
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
 
 	/* Save the previous entry */
 	save_current_entry (main_window);
@@ -1199,7 +1292,10 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	gtk_label_set_markup (priv->date_label, calendar_string);
 
 	/* Update the entry */
-	entry = almanah_storage_manager_get_entry (almanah->storage_manager, &calendar_date);
+	storage_manager = almanah_application_dup_storage_manager (application);
+	entry = almanah_storage_manager_get_entry (storage_manager, &calendar_date);
+	g_object_unref (storage_manager);
+
 	if (entry == NULL)
 		entry = almanah_entry_new (&calendar_date);
 	set_current_entry (main_window, entry);
@@ -1218,7 +1314,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 		gtk_text_buffer_set_text (priv->entry_buffer, "", 0);
 		if (almanah_entry_get_content (priv->current_entry, priv->entry_buffer, FALSE, &error) == FALSE) {
-			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
 								    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 								    _("Entry content could not be loaded"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
@@ -1250,7 +1346,9 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
 
 	/* List the entry's events */
-	almanah_event_manager_query_events (almanah->event_manager, ALMANAH_EVENT_FACTORY_UNKNOWN, &calendar_date);
+	event_manager = almanah_application_dup_event_manager (application);
+	almanah_event_manager_query_events (event_manager, ALMANAH_EVENT_FACTORY_UNKNOWN, &calendar_date);
+	g_object_unref (event_manager);
 }
 
 static void
@@ -1288,7 +1386,7 @@ mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path,
 			    -1);
 
 	/* NOTE: event types should display their own errors, so one won't be displayed here. */
-	almanah_event_view (event);
+	almanah_event_view (event, GTK_WINDOW (main_window));
 }
 
 void
@@ -1309,7 +1407,7 @@ mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window)
 				    -1);
 
 		/* NOTE: event types should display their own errors, so one won't be displayed here. */
-		almanah_event_view (event);
+		almanah_event_view (event, GTK_WINDOW (main_window));
 
 		gtk_tree_path_free (events->data);
 	}
@@ -1323,8 +1421,7 @@ spell_checking_enabled_changed_cb (GSettings *settings, gchar *key, AlmanahMainW
 {
 	gboolean enabled = g_settings_get_boolean (settings, "spell-checking-enabled");
 
-	if (almanah->debug)
-		g_debug ("spell_checking_enabled_changed_cb called with %u.", enabled);
+	g_debug ("spell_checking_enabled_changed_cb called with %u.", enabled);
 
 	if (enabled == TRUE) {
 		GError *error = NULL;
@@ -1349,6 +1446,8 @@ spell_checking_enabled_changed_cb (GSettings *settings, gchar *key, AlmanahMainW
 static gboolean
 enable_spell_checking (AlmanahMainWindow *self, GError **error)
 {
+	AlmanahApplication *application;
+	GSettings *settings;
 	GtkSpell *gtkspell;
 	gchar *spelling_language;
 	GtkTextTagTable *table;
@@ -1365,7 +1464,10 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 		gtk_text_tag_table_remove (table, tag);
 
 	/* Get the spell checking language */
-	spelling_language = g_settings_get_string (almanah->settings, "spelling-language");
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (self)));
+	settings = almanah_application_dup_settings (application);
+	spelling_language = g_settings_get_string (settings, "spelling-language");
+	g_object_unref (settings);
 
 	/* Make sure it's either NULL or a proper locale specifier */
 	if (spelling_language != NULL && spelling_language[0] == '\0') {

@@ -24,6 +24,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "application.h"
+
 G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_MAIN_WINDOW		(almanah_main_window_get_type ())
@@ -45,7 +47,7 @@ typedef struct {
 } AlmanahMainWindowClass;
 
 GType almanah_main_window_get_type (void);
-AlmanahMainWindow *almanah_main_window_new (void);
+AlmanahMainWindow *almanah_main_window_new (AlmanahApplication *application) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 void almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date);
 

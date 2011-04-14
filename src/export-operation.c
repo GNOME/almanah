@@ -54,11 +54,18 @@ static const ExportModeDetails export_modes[] = {
 	  export_database }
 };
 
+static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_export_operation_dispose (GObject *object);
 
 struct _AlmanahExportOperationPrivate {
 	gint current_mode; /* index into export_modes */
+	AlmanahStorageManager *storage_manager;
 	GFile *destination;
+};
+
+enum {
+	PROP_STORAGE_MANAGER = 1,
 };
 
 G_DEFINE_TYPE (AlmanahExportOperation, almanah_export_operation, G_TYPE_OBJECT)
@@ -71,7 +78,15 @@ almanah_export_operation_class_init (AlmanahExportOperationClass *klass)
 
 	g_type_class_add_private (klass, sizeof (AlmanahExportOperationPrivate));
 
+	gobject_class->get_property = get_property;
+	gobject_class->set_property = set_property;
 	gobject_class->dispose = almanah_export_operation_dispose;
+
+	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
+	                                 g_param_spec_object ("storage-manager",
+	                                                      "Storage manager", "The source storage manager for the export operation.",
+	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
+	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -86,6 +101,10 @@ almanah_export_operation_dispose (GObject *object)
 {
 	AlmanahExportOperationPrivate *priv = ALMANAH_EXPORT_OPERATION (object)->priv;
 
+	if (priv->storage_manager != NULL)
+		g_object_unref (priv->storage_manager);
+	priv->storage_manager = NULL;
+
 	if (priv->destination != NULL)
 		g_object_unref (priv->destination);
 	priv->destination = NULL;
@@ -94,10 +113,42 @@ almanah_export_operation_dispose (GObject *object)
 	G_OBJECT_CLASS (almanah_export_operation_parent_class)->dispose (object);
 }
 
-AlmanahExportOperation *
-almanah_export_operation_new (AlmanahExportOperationType type_id, GFile *destination)
+static void
+get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahExportOperation *export_operation = g_object_new (ALMANAH_TYPE_EXPORT_OPERATION, NULL);
+	AlmanahExportOperationPrivate *priv = ALMANAH_EXPORT_OPERATION (object)->priv;
+
+	switch (property_id) {
+		case PROP_STORAGE_MANAGER:
+			g_value_set_object (value, priv->storage_manager);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
+}
+
+static void
+set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
+{
+	AlmanahExportOperation *self = ALMANAH_EXPORT_OPERATION (object);
+
+	switch (property_id) {
+		case PROP_STORAGE_MANAGER:
+			self->priv->storage_manager = g_value_dup_object (value);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
+}
+
+AlmanahExportOperation *
+almanah_export_operation_new (AlmanahExportOperationType type_id, AlmanahStorageManager *source_storage_manager, GFile *destination)
+{
+	AlmanahExportOperation *export_operation = g_object_new (ALMANAH_TYPE_EXPORT_OPERATION, "storage-manager", source_storage_manager, NULL);
 	export_operation->priv->current_mode = type_id;
 	export_operation->priv->destination = g_object_ref (destination);
 
@@ -161,7 +212,7 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 
 	/* Iterate through the entries */
 	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_get_entries (almanah->storage_manager, &iter)) != NULL) {
+	while ((entry = almanah_storage_manager_get_entries (self->priv->storage_manager, &iter)) != NULL) {
 		GDate date;
 		gchar *filename, *content;
 		GFile *file;
@@ -230,7 +281,7 @@ export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExport
 	/* We ignore the progress callbacks, since this is a fairly fast operation, and it exports all the entries at once. */
 
 	/* Get the input file (current unencrypted database) */
-	source = g_file_new_for_path (almanah_storage_manager_get_filename (almanah->storage_manager, TRUE));
+	source = g_file_new_for_path (almanah_storage_manager_get_filename (self->priv->storage_manager, TRUE));
 
 	/* Copy the current database to that location */
 	success = g_file_copy (source, destination, G_FILE_COPY_OVERWRITE, cancellable, NULL, NULL, error);

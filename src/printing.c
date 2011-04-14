@@ -34,6 +34,7 @@
 #define PAGE_MARGIN 20 /* left- and right-hand page margin size, in pixels */
 
 typedef struct {
+	AlmanahStorageManager *storage_manager;
 	GtkTextBuffer *buffer;
 	GDate *start_date;
 	GDate *end_date;
@@ -252,7 +253,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	gdouble title_y = 0, important_y = 0, entry_y;
 	cairo_t *cr = NULL;
 
-	entry = almanah_storage_manager_get_entry (almanah->storage_manager, almanah_operation->current_date);
+	entry = almanah_storage_manager_get_entry (almanah_operation->storage_manager, almanah_operation->current_date);
 
 	if (almanah_operation->current_line == 0) {
 		/* Set up the title layout */
@@ -444,8 +445,8 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	GtkBox *vbox, *hbox;
 
 	/* Start and end calendars */
-	start_calendar = almanah_calendar_new ();
-	end_calendar = almanah_calendar_new ();
+	start_calendar = almanah_calendar_new (almanah_operation->storage_manager);
+	end_calendar = almanah_calendar_new (almanah_operation->storage_manager);
 
 	g_object_set (G_OBJECT (start_calendar), "show-details", FALSE, NULL);
 	g_object_set (G_OBJECT (end_calendar), "show-details", FALSE, NULL);
@@ -513,7 +514,8 @@ custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, Almanah
 }
 
 void
-almanah_print_entries (gboolean print_preview)
+almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPageSetup **page_setup, GtkPrintSettings **print_settings,
+                       AlmanahStorageManager *storage_manager)
 {
 	GtkPrintOperation *operation;
 	GtkPrintOperationResult res;
@@ -524,6 +526,7 @@ almanah_print_entries (gboolean print_preview)
 	almanah_operation.paginated = FALSE;
 	almanah_operation.y = 0;
 	almanah_operation.current_line = 0;
+	almanah_operation.storage_manager = storage_manager;
 
 	almanah_operation.buffer = gtk_text_buffer_new (NULL);
 	almanah_interface_create_text_tags (almanah_operation.buffer, FALSE);
@@ -538,10 +541,10 @@ almanah_print_entries (gboolean print_preview)
 
 	almanah_operation.current_date = g_memdup (almanah_operation.start_date, sizeof (*(almanah_operation.start_date)));
 
-	if (almanah->print_settings != NULL) 
-		gtk_print_operation_set_print_settings (operation, almanah->print_settings);
-	if (almanah->page_setup != NULL)
-		gtk_print_operation_set_default_page_setup (operation, almanah->page_setup);
+	if (*print_settings != NULL)
+		gtk_print_operation_set_print_settings (operation, *print_settings);
+	if (*page_setup != NULL)
+		gtk_print_operation_set_default_page_setup (operation, *page_setup);
 
 	gtk_print_operation_set_n_pages (operation, 1);
 
@@ -552,16 +555,16 @@ almanah_print_entries (gboolean print_preview)
 
 	res = gtk_print_operation_run (operation,
 				       (print_preview == TRUE) ? GTK_PRINT_OPERATION_ACTION_PREVIEW : GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-				       GTK_WINDOW (almanah->main_window), NULL);
+				       parent_window, NULL);
 
 	if (res == GTK_PRINT_OPERATION_RESULT_APPLY) {
-		if (almanah->print_settings != NULL)
-			g_object_unref (almanah->print_settings);
-		almanah->print_settings = g_object_ref (gtk_print_operation_get_print_settings (operation));
+		if (*print_settings != NULL)
+			g_object_unref (*print_settings);
+		*print_settings = g_object_ref (gtk_print_operation_get_print_settings (operation));
 
-		if (almanah->page_setup != NULL)
-			g_object_unref (almanah->page_setup);
-		almanah->page_setup = g_object_ref (gtk_print_operation_get_default_page_setup (operation));
+		if (*page_setup != NULL)
+			g_object_unref (*page_setup);
+		*page_setup = g_object_ref (gtk_print_operation_get_default_page_setup (operation));
 	}
 
 	if (almanah_operation.current_date != NULL) {
@@ -571,15 +574,4 @@ almanah_print_entries (gboolean print_preview)
 		g_date_free (almanah_operation.end_date);
 	}
 	g_object_unref (operation);
-}
-
-void
-almanah_print_page_setup (void)
-{
-	GtkPageSetup *page_setup;
-
-	page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (almanah->main_window), almanah->page_setup, almanah->print_settings);
-	if (almanah->page_setup != NULL)
-		g_object_unref (almanah->page_setup);
-	almanah->page_setup = page_setup;
 }

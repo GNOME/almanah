@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 
 #include "import-operation.h"
+#include "storage-manager.h"
 
 G_BEGIN_DECLS
 
@@ -48,7 +49,7 @@ typedef struct {
 
 GType almanah_import_export_dialog_get_type (void) G_GNUC_CONST;
 
-AlmanahImportExportDialog *almanah_import_export_dialog_new (gboolean import) G_GNUC_WARN_UNUSED_RESULT;
+AlmanahImportExportDialog *almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboolean import) G_GNUC_WARN_UNUSED_RESULT;
 
 #define ALMANAH_TYPE_IMPORT_RESULTS_DIALOG		(almanah_import_results_dialog_get_type ())
 #define ALMANAH_IMPORT_RESULTS_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG, AlmanahImportResultsDialog))

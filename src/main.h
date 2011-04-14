@@ -20,37 +20,13 @@
 #include <config.h>
 #include <gtk/gtk.h>
 #include <glib.h>
-#include <gio/gio.h>
-
-#include "storage-manager.h"
-#include "event-manager.h"
 
 #ifndef ALMANAH_MAIN_H
 #define ALMANAH_MAIN_H
 
 G_BEGIN_DECLS
 
-typedef struct {
-	AlmanahStorageManager *storage_manager;
-	AlmanahEventManager *event_manager;
-	GSettings *settings;
-	GtkPrintSettings *print_settings;
-	GtkPageSetup *page_setup;
-
-	GtkWidget *main_window;
-	GtkWidget *search_dialog;
-	GtkWidget *date_entry_dialog;
-#ifdef ENABLE_ENCRYPTION
-	GtkWidget *preferences_dialog;
-#endif /* ENABLE_ENCRYPTION */
-
-	gboolean debug;
-} Almanah;
-
-extern Almanah *almanah;
-
 gboolean almanah_run_on_screen (GdkScreen *screen, const gchar *commandline, GError **error);
-void almanah_quit (void);
 
 G_END_DECLS
 

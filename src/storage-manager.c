@@ -44,12 +44,14 @@ static gboolean simple_query (AlmanahStorageManager *self, const gchar *query, G
 
 struct _AlmanahStorageManagerPrivate {
 	gchar *filename, *plain_filename;
+	gchar *encryption_key;
 	sqlite3 *connection;
 	gboolean decrypted;
 };
 
 enum {
-	PROP_FILENAME = 1
+	PROP_FILENAME = 1,
+	PROP_ENCRYPTION_KEY,
 };
 
 enum {
@@ -88,6 +90,12 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                      NULL,
 	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+	g_object_class_install_property (gobject_class, PROP_ENCRYPTION_KEY,
+	                                 g_param_spec_string ("encryption-key",
+	                                                      "Encryption key", "The identifier for the encryption key in the user's keyring.",
+	                                                      NULL,
+	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
 	storage_manager_signals[SIGNAL_DISCONNECTED] = g_signal_new ("disconnected",
 	                                                             G_TYPE_FROM_CLASS (klass),
 	                                                             G_SIGNAL_RUN_LAST,
@@ -120,22 +128,26 @@ almanah_storage_manager_init (AlmanahStorageManager *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate);
 	self->priv->filename = NULL;
 	self->priv->plain_filename = NULL;
+	self->priv->encryption_key = NULL;
 	self->priv->decrypted = FALSE;
 }
 
 /**
  * almanah_storage_manager_new:
  * @filename: database filename to open
+ * @encryption_key: identifier for the encryption key to use in the user's keyring, or %NULL
  *
  * Creates a new #AlmanahStorageManager, connected to the given database @filename.
  *
  * If @filename is for an encrypted database, it will automatically be changed to the canonical filename for the unencrypted database, even if that
  * file doesn't exist, and even if Almanah was compiled without encryption support. Database filenames are always passed as the unencrypted filename.
  *
+ * If @encryption_key is %NULL, encryption will be disabled.
+ *
  * Return value: the new #AlmanahStorageManager
  **/
 AlmanahStorageManager *
-almanah_storage_manager_new (const gchar *filename)
+almanah_storage_manager_new (const gchar *filename, const gchar *encryption_key)
 {
 	gchar *new_filename = NULL;
 	AlmanahStorageManager *sm;
@@ -143,7 +155,10 @@ almanah_storage_manager_new (const gchar *filename)
 	if (g_str_has_suffix (filename, ENCRYPTED_SUFFIX) == TRUE)
 		filename = new_filename = g_strndup (filename, strlen (filename) - strlen (ENCRYPTED_SUFFIX));
 
-	sm = g_object_new (ALMANAH_TYPE_STORAGE_MANAGER, "filename", filename, NULL);
+	sm = g_object_new (ALMANAH_TYPE_STORAGE_MANAGER,
+	                   "filename", filename,
+	                   "encryption-key", encryption_key,
+	                   NULL);
 	g_free (new_filename);
 
 	return sm;
@@ -156,6 +171,7 @@ almanah_storage_manager_finalize (GObject *object)
 
 	g_free (priv->filename);
 	g_free (priv->plain_filename);
+	g_free (priv->encryption_key);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_storage_manager_parent_class)->finalize (object);
@@ -169,6 +185,9 @@ almanah_storage_manager_get_property (GObject *object, guint property_id, GValue
 	switch (property_id) {
 		case PROP_FILENAME:
 			g_value_set_string (value, g_strdup (priv->filename));
+			break;
+		case PROP_ENCRYPTION_KEY:
+			g_value_set_string (value, priv->encryption_key);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -186,6 +205,11 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 		case PROP_FILENAME:
 			priv->plain_filename = g_strdup (g_value_get_string (value));
 			priv->filename = g_strjoin (NULL, priv->plain_filename, ENCRYPTED_SUFFIX, NULL);
+			break;
+		case PROP_ENCRYPTION_KEY:
+			g_free (priv->encryption_key);
+			priv->encryption_key = g_value_dup_string (value);
+			g_object_notify (object, "encryption-key");
 			break;
 		default:
 			/* We don't have any other property... */
@@ -457,13 +481,13 @@ encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GErr
 }
 
 static gchar *
-get_encryption_key (void)
+get_encryption_key (AlmanahStorageManager *self)
 {
 	gchar **key_parts;
 	guint i;
 	gchar *encryption_key;
 
-	encryption_key = g_settings_get_string (almanah->settings, "encryption-key");
+	encryption_key = g_strdup (self->priv->encryption_key);
 	if (encryption_key == NULL || encryption_key[0] == '\0') {
 		g_free (encryption_key);
 		return NULL;
@@ -576,7 +600,7 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
 		goto delete_encrypted_db;
 
 	/* Get the encryption key */
-	encryption_key = get_encryption_key ();
+	encryption_key = get_encryption_key (self);
 	if (encryption_key == NULL)
 		goto delete_encrypted_db;
 
@@ -620,8 +644,8 @@ simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, .
 	new_query = sqlite3_vmprintf (query, params);
 	va_end (params);
 
-	if (almanah->debug)
-		g_debug ("Database query: %s", new_query);
+	g_debug ("Database query: %s", new_query);
+
 	if (sqlite3_exec (priv->connection, new_query, NULL, NULL, NULL) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
 		             _("Could not run query \"%s\". SQLite provided the following error message: %s"),

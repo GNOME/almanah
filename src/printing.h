@@ -18,14 +18,17 @@
  */
 
 #include <glib.h>
+#include <gtk/gtk.h>
+
+#include "storage-manager.h"
 
 #ifndef ALMANAH_PRINTING_H
 #define ALMANAH_PRINTING_H
 
 G_BEGIN_DECLS
 
-void almanah_print_entries (gboolean print_preview);
-void almanah_print_page_setup (void);
+void almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPageSetup **page_setup, GtkPrintSettings **print_settings,
+                            AlmanahStorageManager *storage_manager);
 
 G_END_DECLS
 

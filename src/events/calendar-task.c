@@ -26,7 +26,7 @@
 
 static void almanah_calendar_task_event_finalize (GObject *object);
 static const gchar *almanah_calendar_task_event_format_value (AlmanahEvent *event);
-static gboolean almanah_calendar_task_event_view (AlmanahEvent *event);
+static gboolean almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window);
 
 struct _AlmanahCalendarTaskEventPrivate {
 	gchar *uid;
@@ -88,7 +88,7 @@ almanah_calendar_task_event_format_value (AlmanahEvent *event)
 }
 
 static gboolean
-almanah_calendar_task_event_view (AlmanahEvent *event)
+almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window)
 {
 	AlmanahCalendarTaskEventPrivate *priv = ALMANAH_CALENDAR_TASK_EVENT (event)->priv;
 	gchar *command_line;
@@ -97,14 +97,13 @@ almanah_calendar_task_event_view (AlmanahEvent *event)
 
 	command_line = g_strdup_printf ("evolution task:%s", priv->uid);
 
-	if (almanah->debug == TRUE)
-		g_debug ("Executing \"%s\".", command_line);
+	g_debug ("Executing \"%s\".", command_line);
 
-	retval = almanah_run_on_screen (gtk_widget_get_screen (almanah->main_window), command_line, &error);
+	retval = almanah_run_on_screen (gtk_widget_get_screen (GTK_WIDGET (parent_window)), command_line, &error);
 	g_free (command_line);
 
 	if (retval == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->main_window),
+		GtkWidget *dialog = gtk_message_dialog_new (parent_window,
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error launching Evolution"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);

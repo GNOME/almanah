@@ -96,11 +96,11 @@ almanah_event_format_value (AlmanahEvent *self)
 }
 
 gboolean
-almanah_event_view (AlmanahEvent *self)
+almanah_event_view (AlmanahEvent *self, GtkWindow *parent_window)
 {
 	AlmanahEventClass *klass = ALMANAH_EVENT_GET_CLASS (self);
 	g_assert (klass->view != NULL);
-	return klass->view (self);
+	return klass->view (self, parent_window);
 }
 
 const gchar *

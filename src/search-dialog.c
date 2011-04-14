@@ -32,7 +32,7 @@ static void sd_results_selection_changed_cb (GtkTreeSelection *tree_selection, G
 
 /* GtkBuilder callbacks */
 void sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
-void sd_results_tree_view_row_activated_cb (GtkTreeView *self, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data);
+void sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahSearchDialog *self);
 void sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
 
 struct _AlmanahSearchDialogPrivate {
@@ -139,6 +139,8 @@ sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search
 void
 sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
 	AlmanahEntry *entry;
 	AlmanahStorageManagerIter iter;
 	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
@@ -147,9 +149,13 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	/* Clear the results store of previous search results first */
 	gtk_list_store_clear (search_dialog->priv->sd_results_store);
 
+	/* Grab the storage manager */
+	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (search_dialog)));
+	storage_manager = almanah_application_dup_storage_manager (application);
+
 	/* Search over all entries */
 	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_search_entries (almanah->storage_manager, search_string, &iter)) != NULL) {
+	while ((entry = almanah_storage_manager_search_entries (storage_manager, search_string, &iter)) != NULL) {
 		GDate date;
 		gchar formatted_date[100];
 		GtkTreeIter tree_iter;
@@ -170,11 +176,14 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 
 		g_object_unref (entry);
 	}
+
+	g_object_unref (storage_manager);
 }
 
 static void
-select_date (GtkTreeModel *model, GtkTreeIter *iter)
+select_date (AlmanahSearchDialog *self, GtkTreeModel *model, GtkTreeIter *iter)
 {
+	AlmanahMainWindow *main_window;
 	guint day, month, year;
 	GDate date;
 
@@ -184,19 +193,20 @@ select_date (GtkTreeModel *model, GtkTreeIter *iter)
 			    2, &year,
 			    -1);
 
+	main_window = ALMANAH_MAIN_WINDOW (gtk_window_get_transient_for (GTK_WINDOW (self)));
 	g_date_set_dmy (&date, day, month, year);
-	almanah_main_window_select_date (ALMANAH_MAIN_WINDOW (almanah->main_window), &date);
+	almanah_main_window_select_date (main_window, &date);
 }
 
 void
-sd_results_tree_view_row_activated_cb (GtkTreeView *self, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahSearchDialog *self)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 
-	model = gtk_tree_view_get_model (self);
+	model = gtk_tree_view_get_model (tree_view);
 	gtk_tree_model_get_iter (model, &iter, path);
-	select_date (model, &iter);
+	select_date (self, model, &iter);
 }
 
 void
@@ -205,6 +215,7 @@ sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 
-	if (gtk_tree_selection_get_selected (search_dialog->priv->sd_results_selection, &model, &iter) == TRUE)
-		select_date (model, &iter);
+	if (gtk_tree_selection_get_selected (search_dialog->priv->sd_results_selection, &model, &iter) == TRUE) {
+		select_date (search_dialog, model, &iter);
+	}
 }

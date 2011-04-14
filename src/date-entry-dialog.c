@@ -71,7 +71,6 @@ almanah_date_entry_dialog_init (AlmanahDateEntryDialog *self)
 	g_signal_connect (self, "response", G_CALLBACK (gtk_widget_hide), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Select Date"));
-	gtk_window_set_transient_for (GTK_WINDOW (self), GTK_WINDOW (almanah->main_window));
 }
 
 static void

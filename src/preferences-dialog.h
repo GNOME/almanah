@@ -44,7 +44,7 @@ typedef struct {
 } AlmanahPreferencesDialogClass;
 
 GType almanah_preferences_dialog_get_type (void);
-AlmanahPreferencesDialog *almanah_preferences_dialog_new (void);
+AlmanahPreferencesDialog *almanah_preferences_dialog_new (GSettings *settings) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 G_END_DECLS
 

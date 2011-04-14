@@ -24,6 +24,8 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#include "storage-manager.h"
+
 G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_CALENDAR		(almanah_calendar_get_type ())
@@ -46,7 +48,10 @@ typedef struct {
 
 GType almanah_calendar_get_type (void) G_GNUC_CONST;
 
-GtkWidget *almanah_calendar_new (void) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+GtkWidget *almanah_calendar_new (AlmanahStorageManager *storage_manager) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+
+AlmanahStorageManager *almanah_calendar_get_storage_manager (AlmanahCalendar *self) G_GNUC_PURE;
+void almanah_calendar_set_storage_manager (AlmanahCalendar *self, AlmanahStorageManager *storage_manager);
 
 void almanah_calendar_select_date (AlmanahCalendar *self, GDate *date);
 void almanah_calendar_select_today (AlmanahCalendar *self);

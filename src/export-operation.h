@@ -23,6 +23,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "storage-manager.h"
+
 G_BEGIN_DECLS
 
 typedef guint AlmanahExportOperationType;
@@ -49,7 +51,8 @@ typedef struct {
 
 GType almanah_export_operation_get_type (void) G_GNUC_CONST;
 
-AlmanahExportOperation *almanah_export_operation_new (AlmanahExportOperationType type_id, GFile *destination) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
+AlmanahExportOperation *almanah_export_operation_new (AlmanahExportOperationType type_id, AlmanahStorageManager *source_storage_manager,
+                                                      GFile *destination) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 void almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable,
                                    AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,

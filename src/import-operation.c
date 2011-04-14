@@ -54,11 +54,18 @@ static const ImportModeDetails import_modes[] = {
 	  import_database }
 };
 
+static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_import_operation_dispose (GObject *object);
 
 struct _AlmanahImportOperationPrivate {
 	gint current_mode; /* index into import_modes */
 	GFile *source;
+	AlmanahStorageManager *storage_manager;
+};
+
+enum {
+	PROP_STORAGE_MANAGER = 1,
 };
 
 G_DEFINE_TYPE (AlmanahImportOperation, almanah_import_operation, G_TYPE_OBJECT)
@@ -71,7 +78,15 @@ almanah_import_operation_class_init (AlmanahImportOperationClass *klass)
 
 	g_type_class_add_private (klass, sizeof (AlmanahImportOperationPrivate));
 
+	gobject_class->get_property = get_property;
+	gobject_class->set_property = set_property;
 	gobject_class->dispose = almanah_import_operation_dispose;
+
+	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
+	                                 g_param_spec_object ("storage-manager",
+	                                                      "Storage manager", "The destination storage manager for the import operation.",
+	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
+	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -90,14 +105,50 @@ almanah_import_operation_dispose (GObject *object)
 		g_object_unref (priv->source);
 	priv->source = NULL;
 
+	if (priv->storage_manager != NULL)
+		g_object_unref (priv->storage_manager);
+	priv->storage_manager = NULL;
+
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_import_operation_parent_class)->dispose (object);
 }
 
-AlmanahImportOperation *
-almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source)
+static void
+get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahImportOperation *import_operation = g_object_new (ALMANAH_TYPE_IMPORT_OPERATION, NULL);
+	AlmanahImportOperationPrivate *priv = ALMANAH_IMPORT_OPERATION (object)->priv;
+
+	switch (property_id) {
+		case PROP_STORAGE_MANAGER:
+			g_value_set_object (value, priv->storage_manager);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
+}
+
+static void
+set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
+{
+	AlmanahImportOperation *self = ALMANAH_IMPORT_OPERATION (object);
+
+	switch (property_id) {
+		case PROP_STORAGE_MANAGER:
+			self->priv->storage_manager = g_value_dup_object (value);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
+}
+
+AlmanahImportOperation *
+almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source, AlmanahStorageManager *dest_storage_manager)
+{
+	AlmanahImportOperation *import_operation = g_object_new (ALMANAH_TYPE_IMPORT_OPERATION, "storage-manager", dest_storage_manager, NULL);
 	import_operation->priv->current_mode = type_id;
 	import_operation->priv->source = g_object_ref (source);
 
@@ -182,11 +233,11 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 
 	/* Check to see if there's a conflict first */
 	almanah_entry_get_date (imported_entry, &entry_date);
-	existing_entry = almanah_storage_manager_get_entry (almanah->storage_manager, &entry_date);
+	existing_entry = almanah_storage_manager_get_entry (self->priv->storage_manager, &entry_date);
 
 	if (existing_entry == NULL) {
 		/* Add the entry to the proper database and return, ignoring failure */
-		almanah_storage_manager_set_entry (almanah->storage_manager, imported_entry);
+		almanah_storage_manager_set_entry (self->priv->storage_manager, imported_entry);
 
 		return ALMANAH_IMPORT_STATUS_IMPORTED;
 	}
@@ -208,7 +259,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	existing_buffer = gtk_text_buffer_new (gtk_text_buffer_get_tag_table (imported_buffer));
 	if (almanah_entry_get_content (existing_entry, existing_buffer, FALSE, &error) == FALSE) {
 		/* Deserialising the existing entry failed; use the imported entry instead */
-		almanah_storage_manager_set_entry (almanah->storage_manager, imported_entry);
+		almanah_storage_manager_set_entry (self->priv->storage_manager, imported_entry);
 
 		if (message != NULL) {
 			*message = g_strdup_printf (_("Error deserializing existing entry into buffer; overwriting with imported entry: %s"),
@@ -271,7 +322,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	if (g_date_valid (&existing_last_edited) == FALSE || g_date_compare (&existing_last_edited, &imported_last_edited) < 0)
 		almanah_entry_set_last_edited (existing_entry, &imported_last_edited);
 
-	almanah_storage_manager_set_entry (almanah->storage_manager, existing_entry);
+	almanah_storage_manager_set_entry (self->priv->storage_manager, existing_entry);
 	g_object_unref (existing_entry);
 
 	return ALMANAH_IMPORT_STATUS_MERGED;
@@ -396,7 +447,7 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 
 	/* Open the database */
 	path = g_file_get_path (source);
-	database = almanah_storage_manager_new (path);
+	database = almanah_storage_manager_new (path, NULL);
 	g_free (path);
 
 	/* Connect to the database */

@@ -37,6 +37,7 @@ void ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, Almana
 void ied_file_chooser_file_activated_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
 
 struct _AlmanahImportExportDialogPrivate {
+	AlmanahStorageManager *storage_manager;
 	gboolean import; /* TRUE if we're in import mode, FALSE otherwise */
 	GtkComboBox *mode_combo_box;
 	GtkListStore *mode_store;
@@ -48,18 +49,35 @@ struct _AlmanahImportExportDialogPrivate {
 	GCancellable *cancellable; /* non-NULL iff an operation is underway */
 };
 
+enum {
+	PROP_STORAGE_MANAGER = 1,
+};
+
 G_DEFINE_TYPE (AlmanahImportExportDialog, almanah_import_export_dialog, GTK_TYPE_DIALOG)
 #define ALMANAH_IMPORT_EXPORT_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG,\
                                                        AlmanahImportExportDialogPrivate))
 
+static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_import_export_dialog_dispose (GObject *object);
 
 static void
 almanah_import_export_dialog_class_init (AlmanahImportExportDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-	gobject_class->dispose = almanah_import_export_dialog_dispose;
+
 	g_type_class_add_private (klass, sizeof (AlmanahImportExportDialogPrivate));
+
+	gobject_class->get_property = get_property;
+	gobject_class->set_property = set_property;
+	gobject_class->dispose = almanah_import_export_dialog_dispose;
+
+	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
+	                                 g_param_spec_object ("storage-manager",
+	                                                      "Storage manager", "The local storage manager: source for export operations and "
+	                                                      "destination for import operations.",
+	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
+	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -75,20 +93,59 @@ almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 static void
 almanah_import_export_dialog_dispose (GObject *object)
 {
+	AlmanahImportExportDialogPrivate *priv = ALMANAH_IMPORT_EXPORT_DIALOG (object)->priv;
+
+	if (priv->storage_manager != NULL)
+		g_object_unref (priv->storage_manager);
+	priv->storage_manager = NULL;
+
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_import_export_dialog_parent_class)->dispose (object);
+}
+
+static void
+get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
+{
+	AlmanahImportExportDialogPrivate *priv = ALMANAH_IMPORT_EXPORT_DIALOG (object)->priv;
+
+	switch (property_id) {
+		case PROP_STORAGE_MANAGER:
+			g_value_set_object (value, priv->storage_manager);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
+}
+
+static void
+set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
+{
+	AlmanahImportExportDialog *self = ALMANAH_IMPORT_EXPORT_DIALOG (object);
+
+	switch (property_id) {
+		case PROP_STORAGE_MANAGER:
+			self->priv->storage_manager = g_value_dup_object (value);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
 }
 
 /**
  * almanah_import_export_dialog_new:
  * @import: %TRUE to set the dialog up for importing, %FALSE to set it up for exporting
+ * @storage_manager: the storage manager which will be the source for export operations and the destination for import operations
  *
  * Returns a new #AlmanahImportExportDialog, configured for importing if @import is %TRUE, and exporting otherwise.
  *
  * Return value: a new #AlmanahImportExportDialog; destroy with gtk_widget_destroy()
  **/
 AlmanahImportExportDialog *
-almanah_import_export_dialog_new (gboolean import)
+almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboolean import)
 {
 	GtkBuilder *builder;
 	AlmanahImportExportDialog *import_export_dialog;
@@ -100,6 +157,8 @@ almanah_import_export_dialog_new (gboolean import)
 		"almanah_import_export_dialog",
 		NULL
 	};
+
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (storage_manager), NULL);
 
 	builder = gtk_builder_new ();
 
@@ -127,6 +186,7 @@ almanah_import_export_dialog_new (gboolean import)
 	}
 
 	priv = import_export_dialog->priv;
+	priv->storage_manager = g_object_ref (storage_manager);
 	priv->import = import;
 
 	/* Grab our child widgets */
@@ -279,7 +339,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 		AlmanahImportResultsDialog *results_dialog = almanah_import_results_dialog_new (); /* destroyed in import_cb() */
 		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), GTK_WINDOW (self)); /* this is required in import_cb() */
 
-		operation = almanah_import_operation_new (priv->current_mode, file);
+		operation = almanah_import_operation_new (priv->current_mode, file, priv->storage_manager);
 		almanah_import_operation_run (operation, priv->cancellable, (AlmanahImportProgressCallback) import_progress_cb, results_dialog,
 		                              (GAsyncReadyCallback) import_cb, results_dialog);
 		g_object_unref (operation);
@@ -287,7 +347,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 		/* Export the entries according to the selected method. */
 		AlmanahExportOperation *operation;
 
-		operation = almanah_export_operation_new (priv->current_mode, file);
+		operation = almanah_export_operation_new (priv->current_mode, priv->storage_manager, file);
 		almanah_export_operation_run (operation, priv->cancellable, (AlmanahExportProgressCallback) export_progress_cb, self,
 		                              (GAsyncReadyCallback) export_cb, self);
 		g_object_unref (operation);
@@ -352,7 +412,7 @@ static gboolean filter_results_cb (GtkTreeModel *model, GtkTreeIter *iter, Alman
 static void results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkWidget *button);
 
 /* GtkBuilder callbacks */
-void ird_results_tree_view_row_activated_cb (GtkTreeView *self, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data);
+void ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahImportResultsDialog *self);
 void ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self);
 void ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialog *self);
 
@@ -489,8 +549,9 @@ almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, cons
 }
 
 static void
-select_date (GtkTreeModel *model, GtkTreeIter *iter)
+select_date (AlmanahImportResultsDialog *self, GtkTreeModel *model, GtkTreeIter *iter)
 {
+	AlmanahMainWindow *main_window;
 	guint day, month, year;
 	GDate date;
 
@@ -500,19 +561,20 @@ select_date (GtkTreeModel *model, GtkTreeIter *iter)
 	                    2, &year,
 	                    -1);
 
+	main_window = ALMANAH_MAIN_WINDOW (gtk_window_get_transient_for (GTK_WINDOW (self)));
 	g_date_set_dmy (&date, day, month, year);
-	almanah_main_window_select_date (ALMANAH_MAIN_WINDOW (almanah->main_window), &date);
+	almanah_main_window_select_date (main_window, &date);
 }
 
 void
-ird_results_tree_view_row_activated_cb (GtkTreeView *self, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahImportResultsDialog *self)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 
-	model = gtk_tree_view_get_model (self);
+	model = gtk_tree_view_get_model (tree_view);
 	gtk_tree_model_get_iter (model, &iter, path);
-	select_date (model, &iter);
+	select_date (self, model, &iter);
 }
 
 void
@@ -521,8 +583,9 @@ ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self)
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 
-	if (gtk_tree_selection_get_selected (self->priv->results_selection, &model, &iter) == TRUE)
-		select_date (model, &iter);
+	if (gtk_tree_selection_get_selected (self->priv->results_selection, &model, &iter) == TRUE) {
+		select_date (self, model, &iter);
+	}
 }
 
 void

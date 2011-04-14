@@ -3,7 +3,7 @@
 data/almanah.desktop.in
 data/org.gnome.almanah.gschema.xml.in.in
 [type: gettext/glade]data/almanah.ui
-src/add-definition-dialog.c
+src/application.c
 src/date-entry-dialog.c
 src/entry.c
 src/events/calendar-appointment.c
@@ -12,12 +12,6 @@ src/export-operation.c
 src/import-export-dialog.c
 src/import-operation.c
 src/interface.c
-src/definition-manager-window.c
-src/definition.c
-src/definitions/contact.c
-src/definitions/file.c
-src/definitions/note.c
-src/definitions/uri.c
 src/main-window.c
 src/main.c
 src/preferences-dialog.c
@@ -25,3 +19,4 @@ src/printing.c
 src/search-dialog.c
 src/storage-manager.c
 src/widgets/calendar.c
+src/uri-entry-dialog.c

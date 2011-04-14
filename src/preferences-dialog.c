@@ -35,6 +35,8 @@
 #include "main.h"
 #include "main-window.h"
 
+static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_preferences_dialog_dispose (GObject *object);
 #ifdef ENABLE_ENCRYPTION
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
@@ -43,6 +45,7 @@ static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesD
 static void pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog);
 
 struct _AlmanahPreferencesDialogPrivate {
+	GSettings *settings;
 #ifdef ENABLE_ENCRYPTION
 	CryptUIKeyset *keyset;
 	CryptUIKeyStore *key_store;
@@ -54,6 +57,10 @@ struct _AlmanahPreferencesDialogPrivate {
 #endif /* ENABLE_SPELL_CHECKING */
 };
 
+enum {
+	PROP_SETTINGS = 1,
+};
+
 G_DEFINE_TYPE (AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG)
 #define ALMANAH_PREFERENCES_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogPrivate))
 
@@ -61,8 +68,18 @@ static void
 almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
 	g_type_class_add_private (klass, sizeof (AlmanahPreferencesDialogPrivate));
+
+	gobject_class->get_property = get_property;
+	gobject_class->set_property = set_property;
 	gobject_class->dispose = almanah_preferences_dialog_dispose;
+
+	g_object_class_install_property (gobject_class, PROP_SETTINGS,
+	                                 g_param_spec_object ("settings",
+	                                                      "Settings", "Settings instance to modify.",
+	                                                      G_TYPE_SETTINGS,
+	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -94,8 +111,44 @@ almanah_preferences_dialog_dispose (GObject *object)
 	}
 #endif /* ENABLE_ENCRYPTION */
 
+	if (priv->settings != NULL)
+		g_object_unref (priv->settings);
+	priv->settings = NULL;
+
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_preferences_dialog_parent_class)->dispose (object);
+}
+
+static void
+get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
+{
+	AlmanahPreferencesDialogPrivate *priv = ALMANAH_PREFERENCES_DIALOG (object)->priv;
+
+	switch (property_id) {
+		case PROP_SETTINGS:
+			g_value_set_object (value, priv->settings);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
+}
+
+static void
+set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
+{
+	AlmanahPreferencesDialog *self = ALMANAH_PREFERENCES_DIALOG (object);
+
+	switch (property_id) {
+		case PROP_SETTINGS:
+			self->priv->settings = g_value_dup_object (value);
+			break;
+		default:
+			/* We don't have any other property... */
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
 }
 
 /* Filter the key list so it's not pages and pages long */
@@ -107,7 +160,7 @@ key_store_filter_cb (CryptUIKeyset *keyset, const gchar *key, gpointer user_data
 }
 
 AlmanahPreferencesDialog *
-almanah_preferences_dialog_new (void)
+almanah_preferences_dialog_new (GSettings *settings)
 {
 	GtkBuilder *builder;
 	GtkTable *table;
@@ -124,6 +177,8 @@ almanah_preferences_dialog_new (void)
 		"almanah_preferences_dialog",
 		NULL
 	};
+
+	g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
 
 	builder = gtk_builder_new ();
 
@@ -154,6 +209,7 @@ almanah_preferences_dialog_new (void)
 	}
 
 	priv = ALMANAH_PREFERENCES_DIALOG (preferences_dialog)->priv;
+	priv->settings = g_object_ref (settings);
 	table = GTK_TABLE (gtk_builder_get_object (builder, "almanah_pd_table"));
 
 #ifdef ENABLE_ENCRYPTION
@@ -176,7 +232,7 @@ almanah_preferences_dialog_new (void)
 	atk_object_add_relationship (a11y_key_combo, ATK_RELATION_LABELLED_BY, a11y_label);
 
 	/* Set the selected key combo value */
-	key = g_settings_get_string (almanah->settings, "encryption-key");
+	key = g_settings_get_string (priv->settings, "encryption-key");
 	if (key != NULL && *key == '\0') {
 		g_free (key);
 		key = NULL;
@@ -197,7 +253,7 @@ almanah_preferences_dialog_new (void)
 	priv->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_("Enable _spell checking")));
 	gtk_table_attach_defaults (table, GTK_WIDGET (priv->spell_checking_enabled_check_button), 1, 4, 2, 3);
 
-	g_settings_bind (almanah->settings, "spell-checking-enabled", priv->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (priv->settings, "spell-checking-enabled", priv->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	g_object_unref (builder);
@@ -217,8 +273,8 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 	if (key == NULL)
 		key = "";
 
-	if (g_settings_set_string (almanah->settings, "encryption-key", key) == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->preferences_dialog),
+	if (g_settings_set_string (preferences_dialog->priv->settings, "encryption-key", key) == FALSE) {
+		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error saving the encryption key"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
@@ -237,7 +293,7 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 	GError *error = NULL;
 
 	if (g_spawn_async (NULL, (gchar**) argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (almanah->preferences_dialog),
+		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error opening Seahorse"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);

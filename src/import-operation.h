@@ -24,6 +24,8 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
+#include "storage-manager.h"
+
 G_BEGIN_DECLS
 
 /* TODO: These must be kept in synchrony with the rows in almanah_ird_view_store in almanah.ui */
@@ -57,7 +59,8 @@ typedef struct {
 
 GType almanah_import_operation_get_type (void) G_GNUC_CONST;
 
-AlmanahImportOperation *almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
+AlmanahImportOperation *almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source,
+                                                      AlmanahStorageManager *dest_storage_manager) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 void almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancellable,
                                    AlmanahImportProgressCallback progress_callback, gpointer progress_user_data,

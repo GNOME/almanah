@@ -127,8 +127,8 @@ almanah_event_manager_query_events (AlmanahEventManager *self, AlmanahEventFacto
 	AlmanahEventManagerPrivate *priv = ALMANAH_EVENT_MANAGER_GET_PRIVATE (self);
 	guint i;
 
-	if (almanah->debug == TRUE)
-		g_debug ("almanah_event_manager_query_events called for factory %u and date %u-%u-%u.", type_id, g_date_get_year (date), g_date_get_month (date), g_date_get_day (date));
+	g_debug ("almanah_event_manager_query_events called for factory %u and date %u-%u-%u.", type_id,
+	         g_date_get_year (date), g_date_get_month (date), g_date_get_day (date));
 
 	if (type_id != ALMANAH_EVENT_FACTORY_UNKNOWN) {
 		/* Just query that factory */
@@ -152,8 +152,8 @@ almanah_event_manager_get_events (AlmanahEventManager *self, AlmanahEventFactory
 	GSList *list = NULL, *end = NULL;
 	guint i;
 
-	if (almanah->debug == TRUE)
-		g_debug ("almanah_event_manager_get_events called for factory %u and date %u-%u-%u.", type_id, g_date_get_year (date), g_date_get_month (date), g_date_get_day (date));
+	g_debug ("almanah_event_manager_get_events called for factory %u and date %u-%u-%u.", type_id,
+	         g_date_get_year (date), g_date_get_month (date), g_date_get_day (date));
 
 	if (type_id != ALMANAH_EVENT_FACTORY_UNKNOWN) {
 		/* Just return the events for the specified event factory */
