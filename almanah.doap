@@ -1,15 +1,20 @@
-<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	 xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-	 xmlns:foaf="http://xmlns.com/foaf/0.1/"
-	 xmlns:gnome="http://api.gnome.org/doap-extensions#"
-	 xmlns="http://usefulinc.com/ns/doap#">
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:gnome="http://api.gnome.org/doap-extensions#" xmlns="http://usefulinc.com/ns/doap#">
 	<name xml:lang="en">almanah</name>
 	<shortdesc xml:lang="en">Small GTK+ application to allow you to keep a diary of your life</shortdesc>
-	<homepage rdf:resource="http://live.gnome.org/Almanah_Diary" />
+	<description>
+		Almanah Diary is a small GTK+ application to allow you to keep a diary of your life.
+		It allows entries to be written for each day, and supports encrypting the entire diary using GPG encryption if desired.
+		It has basic text formatting support, and displays important events associated with each day, such as calendar appointments
+		and past Evolution tasks.
+	</description>
+	<homepage rdf:resource="http://live.gnome.org/Almanah_Diary"/>
+	<download-page rdf:resource="http://download.gnome.org/sources/almanah/"/>
+	<bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=almanah"/>
 	<maintainer>
 		<foaf:Person>
 			<foaf:name>Philip Withnall</foaf:name>
-			<foaf:mbox rdf:resource="mailto:philip@tecnocode.co.uk" />
+			<foaf:mbox rdf:resource="mailto:philip@tecnocode.co.uk"/>
 			<gnome:userid>pwithnall</gnome:userid>
 		</foaf:Person>
 	</maintainer>
