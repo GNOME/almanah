@@ -1,3 +1,45 @@
+Overview of changes from Almanah 0.7.2 to Almanah 0.8.0
+=======================================================
+
+Major changes:
+* Highlight important entries better in the interface
+* Add text and database file export support and make import/export asynchronous
+* Add support for storing the edit date of entries
+* Make database queries less memory-intensive by using iterators
+* Drop the F-Spot event support, as they've dropped their D-Bus plugin
+* Build system improvements
+* Port to GTK+ 3 (requiring spell checking support to be disabled, as GtkSpell
+  doesn't support GTK+ 3 yet)
+* Port to GSettings
+* Add data format versioning support to the database
+
+Bugs fixed:
+* Bug 611889 — A little padding in the textaera would be nice
+* Bug 572927 — Important entries
+* Bug 622887 — Migrate from dbus-glib to glib's GDBus
+* Bug 623231 — Dutch translation
+* Bug 641481 — Cannot build with gtk3/evolution 2.91.6
+
+Updated translations:
+* ca (Jordi Estrada)
+* cs (Marek Černocký)
+* da (Joe Hansen)
+* de (Mario Blättermann, Christian Kirbach)
+* el (Μάριος Ζηντίλης, Kostas Papadimas)
+* en_GB (Philip Withnall)
+* es (Jorge González)
+* fr (Claude Paroz)
+* gl (Fran Diéguez, marcoslans)
+* hu (Gabor Kelemen, György Balló)
+* id (Andika Triwidada)
+* nl (Heimen)
+* pt_BR (Antonio Fernandes C. Neto, Carlos José Pereira)
+* ro (Lucian Adrian Grijincu)
+* ru (Diana Kuzachenko, Leonid Kanter)
+* sl (Andrej Žnidaršič)
+* sv (Daniel Nylander)
+* zh_CN (YunQiang Su)
+
 Overview of changes from Almanah 0.7.1 to Almanah 0.7.2
 =======================================================
 
