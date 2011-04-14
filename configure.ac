@@ -65,9 +65,10 @@ AC_ARG_ENABLE([spell-checking],
 		yes) spell_checking=true ;;
 		no)  spell_checking=false ;;
 		*) AC_MSG_ERROR([bad value ${enableval} for --enable-spell-checking]) ;;
-	esac],[spell_checking=true])
+	esac],[spell_checking=false])
 
 if test $spell_checking = "true"; then
+	AC_ERROR([Building with spell checking enabled is not possible, as gtkspell-2.0 does not support GTK+ 3. Use --disable-spell-checking])
 	AC_DEFINE([ENABLE_SPELL_CHECKING],[1],[Define if you want spell checking support])
 fi
 
