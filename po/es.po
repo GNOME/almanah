@@ -4,15 +4,16 @@
 #
 # Carlos Albornoz <carlos@debianchile.cl>, 2009.
 # Jorge González <jorgegonz@svn.gnome.org>, 2008, 2009, 2010.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=almanah&component=general\n"
-"POT-Creation-Date: 2010-05-11 12:35+0000\n"
-"PO-Revision-Date: 2010-05-12 08:12+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"product=almanah&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-04-14 18:39+0000\n"
+"PO-Revision-Date: 2011-04-15 10:03+0200\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +21,7 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:134 ../src/main.c:116
+#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:144 ../src/main.c:137
 msgid "Almanah Diary"
 msgstr "Diario Almanah"
 
@@ -32,39 +33,19 @@ msgstr "Diario"
 msgid "Keep a personal diary"
 msgstr "Mantenga un diario personal"
 
-#: ../data/almanah.schemas.in.h:1
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
 msgid "Database encryption key ID"
 msgstr "ID de la clave de cifrado de la base de datos"
 
-#: ../data/almanah.schemas.in.h:2
-msgid "Main window X position"
-msgstr "Posición de la ventana principal en X"
-
-#: ../data/almanah.schemas.in.h:3
-msgid "Main window Y position"
-msgstr "Posición de la ventana principal en Y"
-
-#: ../data/almanah.schemas.in.h:4
-msgid "Main window height"
-msgstr "Altura de la ventana principal"
-
-#: ../data/almanah.schemas.in.h:5
-msgid "Main window maximization"
-msgstr "Maximización de la ventana principal"
-
-#: ../data/almanah.schemas.in.h:6
-msgid "Main window width"
-msgstr "Anchura de la ventana principal"
-
-#: ../data/almanah.schemas.in.h:7
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
 msgid "Spell checking enabled?"
 msgstr "¿Activar revisión ortográfica?"
 
-#: ../data/almanah.schemas.in.h:8
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
 msgid "Spell checking language"
 msgstr "Revisión ortográfica de idiomas"
 
-#: ../data/almanah.schemas.in.h:9
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -74,35 +55,15 @@ msgstr ""
 "se ha construido con soporte de cifrado. Déjelo en blanco para desactivar e "
 "cifrado de la base de datos."
 
-#: ../data/almanah.schemas.in.h:10
-msgid "The X position of the main window."
-msgstr "La posición X de la ventana principal."
-
-#: ../data/almanah.schemas.in.h:11
-msgid "The Y position of the main window."
-msgstr "La posición Y de la ventana principal."
-
-#: ../data/almanah.schemas.in.h:12
-msgid "The height of the main window."
-msgstr "La altura de la ventana principal."
-
-#: ../data/almanah.schemas.in.h:13
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr ""
 "La configuración local específica del idioma en el cual se comprobará la "
 "ortografía de las entradas."
 
-#: ../data/almanah.schemas.in.h:14
-msgid "The width of the main window."
-msgstr "El ancho de la ventana principal."
-
-#: ../data/almanah.schemas.in.h:15
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
 msgid "Whether spell checking of entries is enabled."
 msgstr "La corrección ortográfica de las entradas está activada."
-
-#: ../data/almanah.schemas.in.h:16
-msgid "Whether the main window should start maximized."
-msgstr "La ventana principal se debe iniciar maximizada."
 
 #: ../data/almanah.ui.h:1
 msgid "Add a definition for the currently selected text."
@@ -192,7 +153,7 @@ msgstr "Lista de resultados"
 msgid "Results:"
 msgstr "Resultados:"
 
-#: ../data/almanah.ui.h:23 ../src/search-dialog.c:61
+#: ../data/almanah.ui.h:23 ../src/search-dialog.c:60
 msgid "Search"
 msgstr "Buscar"
 
@@ -284,21 +245,26 @@ msgstr "_Ver definiciones"
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "ej. «14/03/2009» o «14 de marzo 2009»."
 
-#: ../src/add-definition-dialog.c:82
+#: ../src/add-definition-dialog.c:81
 msgid "Add Definition"
 msgstr "Añadir definición"
 
-#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
-#: ../src/import-export-dialog.c:148 ../src/import-export-dialog.c:745
-#: ../src/definition-manager-window.c:132 ../src/main-window.c:171
-#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
+#: ../src/add-definition-dialog.c:163 ../src/date-entry-dialog.c:130
+#: ../src/import-export-dialog.c:109 ../src/import-export-dialog.c:411
+#: ../src/definition-manager-window.c:132 ../src/main-window.c:200
+#: ../src/preferences-dialog.c:136 ../src/search-dialog.c:86
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "No se pudo cargar el archivo de interfaz de usuario «%s»"
 
-#: ../src/date-entry-dialog.c:74
+#: ../src/date-entry-dialog.c:73
 msgid "Select Date"
 msgstr "Seleccionar fecha"
+
+#: ../src/entry.c:284
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Datos del número de versión %u no válidos"
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -320,41 +286,11 @@ msgstr "Calendario de tareas"
 msgid "A task on an Evolution calendar."
 msgstr "Una tarea en el calendario de Evolution."
 
-#: ../src/events/f-spot-photo.c:49
-msgid "F-Spot Photo"
-msgstr "Foto F-Spot"
-
-#: ../src/events/f-spot-photo.c:50
-msgid "A photo stored in F-Spot."
-msgstr "Una foto almacenada en F-Spot."
-
-#: ../src/events/f-spot-photo.c:109
-msgid "Error launching F-Spot"
-msgstr "Error lanzando F-Spot"
-
-#: ../src/import-export-dialog.c:50
+#: ../src/export-operation.c:46 ../src/import-operation.c:46
 msgid "Text Files"
 msgstr "Archivos de texto"
 
-#: ../src/import-export-dialog.c:51
-#| msgid ""
-#| "Select a folder containing text files, one per entry, with names in the "
-#| "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
-#| "imported."
-msgid ""
-"Select a _folder containing text files, one per entry, with names in the "
-"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
-"imported."
-msgstr ""
-"Seleccionar una carp_eta que contenga archivos de texto, uno por entrada, "
-"con nombres en formato «aaaa-mm-dd», y sin extensión. Cualquiera y todos los "
-"archivos parecidos serán importados."
-
-#: ../src/import-export-dialog.c:53
-#| msgid ""
-#| "Select a folder to export the entries to as text files, one per entry, "
-#| "with names in the format 'yyyy-mm-dd', and no extension. All entries will "
-#| "be exported, unencrypted in plain text format."
+#: ../src/export-operation.c:47
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -364,26 +300,11 @@ msgstr ""
 "una por entrada, uno por entrada, con nombres en formato «aaaa-mm-dd», y sin "
 "extensión. Cualquiera y todos los archivos parecidos serán importados."
 
-#: ../src/import-export-dialog.c:56
-#| msgid "Select File"
-msgid "Select a Folder"
-msgstr "Seleccionar una carpeta"
-
-#: ../src/import-export-dialog.c:59
+#: ../src/export-operation.c:51 ../src/import-operation.c:51
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../src/import-export-dialog.c:60
-#| msgid "Select a database file created by Almanah Diary to import."
-msgid "Select a database _file created by Almanah Diary to import."
-msgstr ""
-"Seleccionar un _archivo de base de datos creado por el Diario Almanah para "
-"importar."
-
-#: ../src/import-export-dialog.c:61
-#| msgid ""
-#| "Select a filename for a complete copy of the unencrypted Almanah Diary "
-#| "database to be given."
+#: ../src/export-operation.c:52
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
@@ -391,45 +312,86 @@ msgstr ""
 "Seleccionar un _archivo para completar la copia de la base de datos no "
 "cifrada del Diario Almanah."
 
-#: ../src/import-export-dialog.c:63
-#| msgid "Select File"
-msgid "Select a File"
-msgstr "Seleccionar un archivo"
-
-#: ../src/import-export-dialog.c:180
-#| msgid "Import mode: "
+#: ../src/import-export-dialog.c:142
 msgid "Import _mode: "
 msgstr "_Modo importar: "
 
-#: ../src/import-export-dialog.c:180
-#| msgid "Export mode: "
+#: ../src/import-export-dialog.c:142
 msgid "Export _mode: "
 msgstr "_Modo exportar: "
 
 #. Set the window title
-#: ../src/import-export-dialog.c:183
+#: ../src/import-export-dialog.c:145
 msgid "Import Entries"
 msgstr "Importar entradas"
 
-#: ../src/import-export-dialog.c:183
+#: ../src/import-export-dialog.c:145
 msgid "Export Entries"
 msgstr "Exportar entradas"
 
 #. Set the button label
-#: ../src/import-export-dialog.c:186
+#: ../src/import-export-dialog.c:148
 msgid "_Import"
 msgstr "_Importar"
 
-#: ../src/import-export-dialog.c:186
+#: ../src/import-export-dialog.c:148
 msgid "_Export"
 msgstr "_Exportar"
 
-#: ../src/import-export-dialog.c:240
+#: ../src/import-export-dialog.c:185
+msgid "Import failed"
+msgstr "Falló la importación"
+
+#: ../src/import-export-dialog.c:223
+msgid "Export failed"
+msgstr "Falló la exportación"
+
+#: ../src/import-export-dialog.c:236
+msgid "Export successful"
+msgstr "Exportación satisfactoria"
+
+#: ../src/import-export-dialog.c:237
+msgid "The diary was successfully exported."
+msgstr "El diario se exportó de forma satisfactoria."
+
+#: ../src/import-export-dialog.c:385
+msgid "Import Results"
+msgstr "Importar resultados"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-export-dialog.c:478 ../src/main-window.c:558
+#: ../src/main-window.c:583 ../src/main-window.c:1223 ../src/printing.c:263
+#: ../src/search-dialog.c:160
+msgid "%A, %e %B %Y"
+msgstr "%A, %e de %B de %Y"
+
+#: ../src/import-operation.c:47
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Seleccionar una carp_eta que contenga archivos de texto, uno por entrada, "
+"con nombres en formato «aaaa-mm-dd», y sin extensión. Cualquiera y todos los "
+"archivos parecidos serán importados."
+
+#: ../src/import-operation.c:52
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr ""
+"Seleccionar un _archivo de base de datos creado por el Diario Almanah para "
+"importar."
+
+#: ../src/import-operation.c:198
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
 msgstr "Error deserializando la entrada importada en el búfer: %s"
 
-#: ../src/import-export-dialog.c:256
+#: ../src/import-operation.c:214
 #, c-format
 msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
@@ -441,7 +403,7 @@ msgstr ""
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 #. * The imported entry is appended to this text.
-#: ../src/import-export-dialog.c:297
+#: ../src/import-operation.c:255
 #, c-format
 msgid ""
 "\n"
@@ -453,38 +415,6 @@ msgstr ""
 "\n"
 "Entrada importada desde \"%s\":\n"
 "\n"
-
-#: ../src/import-export-dialog.c:610
-msgid "Import failed"
-msgstr "Falló la importación"
-
-#: ../src/import-export-dialog.c:610
-msgid "Export failed"
-msgstr "Falló la exportación"
-
-#: ../src/import-export-dialog.c:630
-msgid "Export successful"
-msgstr "Exportación satisfactoria"
-
-#: ../src/import-export-dialog.c:631
-msgid "The diary was successfully exported."
-msgstr "El diario se exportó de forma satisfactoria."
-
-#: ../src/import-export-dialog.c:719
-msgid "Import Results"
-msgstr "Importar resultados"
-
-#. Translators: This is a strftime()-format string for the dates displayed in import results.
-#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
-#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
-#. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:812 ../src/main-window.c:394
-#: ../src/main-window.c:419 ../src/main-window.c:1056 ../src/printing.c:263
-#: ../src/search-dialog.c:161
-msgid "%A, %e %B %Y"
-msgstr "%A, %e de %B de %Y"
 
 #: ../src/definition-manager-window.c:72
 msgid "Definition Manager"
@@ -507,7 +437,7 @@ msgstr "Un contacto de Evolution"
 msgid "Select Contact"
 msgstr "Seleccionar contacto"
 
-#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
+#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:222
 msgid "Error opening contact"
 msgstr "Error al abrir contacto"
 
@@ -555,24 +485,24 @@ msgstr "Error abriendo URI"
 msgid "URI: "
 msgstr "URI:"
 
-#: ../src/main-window.c:398
+#: ../src/main-window.c:562
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "¿Está seguro de que quiere editar esta entrada del diario para %s?"
 
-#: ../src/main-window.c:423
+#: ../src/main-window.c:587
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "¿Está seguro de que quiere borrar esta entrada del diario para %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:610
+#: ../src/main-window.c:774
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Etiqueta de texto «%s» desconocida o duplicada en la entrada. Ignorando."
 
-#: ../src/main-window.c:889
+#: ../src/main-window.c:1056
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -584,7 +514,7 @@ msgstr ""
 "Software Foundation; tanto en la versión 3 de la Licencia como (a su "
 "elección) cualquier versión posterior."
 
-#: ../src/main-window.c:893
+#: ../src/main-window.c:1060
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -596,7 +526,7 @@ msgstr ""
 "PARA UN PROPÓSITO PARTICULAR. Vea la Licencia Publica General para más "
 "detalles."
 
-#: ../src/main-window.c:897
+#: ../src/main-window.c:1064
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -604,12 +534,12 @@ msgstr ""
 "Debería haber recibido una copia de la Licencia Pública General GNU junto "
 "con Almanah. Si no la recibió, consulte <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:908
+#: ../src/main-window.c:1075
 #, c-format
 msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgstr "Un diario útil, almacenando %u entradas con %u enlaces."
 
-#: ../src/main-window.c:914
+#: ../src/main-window.c:1081
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -618,78 +548,74 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:922
+#: ../src/main-window.c:1089
 msgid "translator-credits"
 msgstr ""
 "Jorge González <jorgegonz@svn.gnome.org>, 2008, 2010\n"
 "Carlos Albornoz <carlos@debianchile.cl>, 2009"
 
-#: ../src/main-window.c:926
+#: ../src/main-window.c:1093
 msgid "Almanah Website"
 msgstr "Página web de Almanah"
 
-#: ../src/main-window.c:1083
+#: ../src/main-window.c:1250
 msgid "Entry content could not be loaded"
 msgstr "No se pudo cargar el contenido de la entrada: %s"
+
+#: ../src/main-window.c:1372
+msgid "Spelling checker could not be initialized"
+msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
 #: ../src/main.c:38
 msgid "Error encrypting database"
 msgstr "Error al cifrar la base de datos: %s"
 
-#: ../src/main.c:103
+#: ../src/main.c:125
 msgid "Enable debug mode"
 msgstr "Activar modo de depuración"
 
-#: ../src/main.c:104
-msgid "Enable import mode"
-msgstr "Activar modo de importación"
-
 #. Options
-#: ../src/main.c:120
+#: ../src/main.c:141
 msgid "- Manage your diary"
 msgstr "- Gestione su diario"
 
-#: ../src/main.c:130
+#: ../src/main.c:151
 msgid "Command-line options could not be parsed"
 msgstr "No se pudieron analizar las opciones de la línea de comandos"
 
-#: ../src/main.c:162
+#: ../src/main.c:181
 msgid "Error opening database"
 msgstr "Error al abrir la base de datos"
 
-#: ../src/preferences-dialog.c:79
+#: ../src/preferences-dialog.c:75
 msgid "Almanah Preferences"
 msgstr "Preferencias de Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:168
+#: ../src/preferences-dialog.c:161
 msgid "Encryption key: "
 msgstr "Clave de cifrado: "
 
-#: ../src/preferences-dialog.c:173
+#: ../src/preferences-dialog.c:166
 msgid "None (don't encrypt)"
 msgstr "Ninguna (no cifrar)"
 
-#: ../src/preferences-dialog.c:197
+#: ../src/preferences-dialog.c:190
 msgid "New _Key"
 msgstr "_Clave nueva"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:204
+#: ../src/preferences-dialog.c:197
 msgid "Enable _spell checking"
 msgstr "Activar la corrección ortográfica"
 
-#: ../src/preferences-dialog.c:234
+#: ../src/preferences-dialog.c:223
 msgid "Error saving the encryption key"
 msgstr "Error al guardar la clave de cifrado: %s"
 
-#: ../src/preferences-dialog.c:253
+#: ../src/preferences-dialog.c:242
 msgid "Error opening Seahorse"
 msgstr "Error al abrir Seahorse: %s"
-
-#: ../src/preferences-dialog.c:291
-msgid "Spelling checker could not be initialized"
-msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
 #: ../src/printing.c:277
 msgid "This entry is marked as important."
@@ -712,32 +638,32 @@ msgstr "Fecha de finalización:"
 msgid "Line spacing:"
 msgstr "Espaciado de líneas:"
 
-#: ../src/storage-manager.c:257
+#: ../src/storage-manager.c:259
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "La versión de GPGME no es al menos la %s"
 
-#: ../src/storage-manager.c:266
+#: ../src/storage-manager.c:268
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME no soporta OpenPGP: %s"
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:277
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Error al crear el contexto de cifrado: %s"
 
-#: ../src/storage-manager.c:304
+#: ../src/storage-manager.c:306
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Error al abrir el archivo cifrado de la base de datos «%s»: %s"
 
-#: ../src/storage-manager.c:323
+#: ../src/storage-manager.c:325
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Error al abrir el archivo plano de la base de datos «%s»: %s"
 
-#: ../src/storage-manager.c:371
+#: ../src/storage-manager.c:373
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -746,27 +672,27 @@ msgstr ""
 "ha dejado como copia de seguridad."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:374
+#: ../src/storage-manager.c:376
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "No se pudo borrar el archivo plano de la base de datos «%s»."
 
-#: ../src/storage-manager.c:415
+#: ../src/storage-manager.c:417
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Error al descifrar la base de datos: %s"
 
-#: ../src/storage-manager.c:449
+#: ../src/storage-manager.c:451
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Error al obtener la clave de cifrado: %s"
 
-#: ../src/storage-manager.c:470
+#: ../src/storage-manager.c:472
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Error al cifrar la base de datos: %s"
 
-#: ../src/storage-manager.c:572
+#: ../src/storage-manager.c:574
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -775,7 +701,7 @@ msgstr ""
 "No se pudo abrir la base de datos «%s». SQLite proporcionó el siguiente "
 "mensaje de error: %s"
 
-#: ../src/storage-manager.c:647
+#: ../src/storage-manager.c:651
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -783,7 +709,7 @@ msgstr ""
 "No se pudo ejecutar la consulta «%s». SQLite proporcionó el siguiente mensaje "
 "de error: %s"
 
-#: ../src/storage-manager.c:964
+#: ../src/storage-manager.c:971
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Error al deserializar la entrada en el búfer mientras se buscaba."
 
@@ -791,6 +717,56 @@ msgstr "Error al deserializar la entrada en el búfer mientras se buscaba."
 #: ../src/widgets/calendar.c:116
 msgid "Important!"
 msgstr "Importante"
+
+#~ msgid "Main window X position"
+#~ msgstr "Posición de la ventana principal en X"
+
+#~ msgid "Main window Y position"
+#~ msgstr "Posición de la ventana principal en Y"
+
+#~ msgid "Main window height"
+#~ msgstr "Altura de la ventana principal"
+
+#~ msgid "Main window maximization"
+#~ msgstr "Maximización de la ventana principal"
+
+#~ msgid "Main window width"
+#~ msgstr "Anchura de la ventana principal"
+
+#~ msgid "The X position of the main window."
+#~ msgstr "La posición X de la ventana principal."
+
+#~ msgid "The Y position of the main window."
+#~ msgstr "La posición Y de la ventana principal."
+
+#~ msgid "The height of the main window."
+#~ msgstr "La altura de la ventana principal."
+
+#~ msgid "The width of the main window."
+#~ msgstr "El ancho de la ventana principal."
+
+#~ msgid "Whether the main window should start maximized."
+#~ msgstr "La ventana principal se debe iniciar maximizada."
+
+#~ msgid "F-Spot Photo"
+#~ msgstr "Foto F-Spot"
+
+#~ msgid "A photo stored in F-Spot."
+#~ msgstr "Una foto almacenada en F-Spot."
+
+#~ msgid "Error launching F-Spot"
+#~ msgstr "Error lanzando F-Spot"
+
+#~| msgid "Select File"
+#~ msgid "Select a Folder"
+#~ msgstr "Seleccionar una carpeta"
+
+#~| msgid "Select File"
+#~ msgid "Select a File"
+#~ msgstr "Seleccionar un archivo"
+
+#~ msgid "Enable import mode"
+#~ msgstr "Activar modo de importación"
 
 #~ msgid "Description: "
 #~ msgstr "Descripción:"
