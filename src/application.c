@@ -213,6 +213,14 @@ startup (GApplication *application)
 	priv->event_manager = almanah_event_manager_new ();
 }
 
+/* Nullify our pointer to the main window when it gets destroyed (e.g. when we quit) so that we don't then try
+ * to destroy it again in dispose(). */
+static void
+main_window_destroy_cb (AlmanahMainWindow *main_window, AlmanahApplication *self)
+{
+	self->priv->main_window = NULL;
+}
+
 static void
 activate (GApplication *application)
 {
@@ -223,6 +231,7 @@ activate (GApplication *application)
 	if (priv->main_window == NULL) {
 		priv->main_window = almanah_main_window_new (self);
 		gtk_widget_show_all (GTK_WIDGET (priv->main_window));
+		g_signal_connect (priv->main_window, "destroy", (GCallback) main_window_destroy_cb, application);
 	}
 
 	/* Bring it to the foreground */
