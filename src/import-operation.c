@@ -319,8 +319,10 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	almanah_entry_get_last_edited (existing_entry, &existing_last_edited);
 	almanah_entry_get_last_edited (imported_entry, &imported_last_edited);
 
-	if (g_date_valid (&existing_last_edited) == FALSE || g_date_compare (&existing_last_edited, &imported_last_edited) < 0)
+	if (g_date_valid (&imported_last_edited) == TRUE &&
+	    (g_date_valid (&existing_last_edited) == FALSE || g_date_compare (&existing_last_edited, &imported_last_edited) < 0)) {
 		almanah_entry_set_last_edited (existing_entry, &imported_last_edited);
+	}
 
 	almanah_storage_manager_set_entry (self->priv->storage_manager, existing_entry);
 	g_object_unref (existing_entry);
