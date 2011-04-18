@@ -22,6 +22,7 @@
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
+#include <gtk/gtk.h>
 #include <sqlite3.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -30,7 +31,6 @@
 #include <gpgme.h>
 #endif /* ENABLE_ENCRYPTION */
 
-#include "main.h"
 #include "entry.h"
 #include "storage-manager.h"
 #include "almanah-marshal.h"

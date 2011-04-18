@@ -32,7 +32,6 @@
 
 #include "preferences-dialog.h"
 #include "interface.h"
-#include "main.h"
 #include "main-window.h"
 
 static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);

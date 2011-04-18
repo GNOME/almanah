@@ -33,7 +33,6 @@ typedef struct {
 #ifdef HAVE_EVO
 #include "calendar.h"
 #endif /* HAVE_EVO */
-#include "main.h"
 
 const EventFactoryType event_factory_types[] = {
 #ifdef HAVE_EVO

@@ -4,7 +4,6 @@ almanah_SOURCES = \
 	$(ALMANAH_MARSHAL_FILES)	\
 	$(ALMANAH_ENUM_FILES)		\
 	main.c				\
-	main.h				\
 	application.c			\
 	application.h			\
 	interface.c			\

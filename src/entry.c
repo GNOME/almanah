@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 
 #include "entry.h"
-#include "main.h"
 #include "widgets/hyperlink-tag.h"
 
 GQuark

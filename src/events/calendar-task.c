@@ -22,7 +22,7 @@
 
 #include "event.h"
 #include "calendar-task.h"
-#include "main.h"
+#include "interface.h"
 
 static void almanah_calendar_task_event_finalize (GObject *object);
 static const gchar *almanah_calendar_task_event_format_value (AlmanahEvent *event);

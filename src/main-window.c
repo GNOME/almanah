@@ -28,7 +28,6 @@
 #endif /* ENABLE_SPELL_CHECKING */
 
 #include "main-window.h"
-#include "main.h"
 #include "interface.h"
 #include "preferences-dialog.h"
 #include "search-dialog.h"

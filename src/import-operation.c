@@ -25,7 +25,6 @@
 #include "import-operation.h"
 #include "entry.h"
 #include "storage-manager.h"
-#include "main.h"
 
 typedef gboolean (*ImportFunc) (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback callback, gpointer user_data,
                                 GCancellable *cancellable, GError **error);

@@ -23,7 +23,6 @@
 #include <string.h>
 
 #include "event.h"
-#include "main.h"
 
 static void almanah_event_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 

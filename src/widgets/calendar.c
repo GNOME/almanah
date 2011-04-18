@@ -22,7 +22,6 @@
 
 #include "calendar.h"
 #include "storage-manager.h"
-#include "main.h"
 
 static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);

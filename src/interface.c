@@ -21,7 +21,6 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
-#include "main.h"
 #include "main-window.h"
 #include "search-dialog.h"
 #ifdef ENABLE_ENCRYPTION
@@ -64,4 +63,31 @@ almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect
 	gtk_text_buffer_create_tag (text_buffer, "underline",
 				    "underline", PANGO_UNDERLINE_SINGLE,
 				    NULL);
+}
+
+gboolean
+almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **error)
+{
+	gboolean retval;
+	GAppInfo *app_info;
+	GdkAppLaunchContext *context;
+
+	app_info = g_app_info_create_from_commandline (command_line,
+	                                               "Almanah Execute",
+	                                               G_APP_INFO_CREATE_NONE,
+	                                               error);
+
+	if (app_info == NULL) {
+		return FALSE;
+	}
+
+	context = gdk_display_get_app_launch_context (gdk_screen_get_display (screen));
+	gdk_app_launch_context_set_screen (context, screen);
+
+	retval = g_app_info_launch (app_info, NULL, G_APP_LAUNCH_CONTEXT (context), error);
+
+	g_object_unref (context);
+	g_object_unref (app_info);
+
+	return retval;
 }

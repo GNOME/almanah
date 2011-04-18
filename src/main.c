@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
- * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
+ * Copyright (C) Philip Withnall 2008, 2009, 2011 <philip@tecnocode.co.uk>
  * 
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,36 +18,10 @@
  */
 
 #include <config.h>
-#include <gtk/gtk.h>
+#include <glib.h>
+#include <gio/gio.h>
 
-#include "main.h"
 #include "application.h"
-
-gboolean
-almanah_run_on_screen (GdkScreen *screen, const gchar *commandline, GError **error)
-{
-	gboolean retval;
-	GAppInfo *appinfo;
-	GdkAppLaunchContext *context;
-
-	appinfo = g_app_info_create_from_commandline (commandline,
-                                                "Almanah Execute",
-                                                G_APP_INFO_CREATE_NONE,
-                                                error);
-
-	if (!appinfo)
-		return FALSE;
-
-	context = gdk_display_get_app_launch_context (gdk_screen_get_display (screen));
-	gdk_app_launch_context_set_screen (context, screen);
-
-	retval = g_app_info_launch (appinfo, NULL, G_APP_LAUNCH_CONTEXT (context), error);
-
-	g_object_unref (context);
-	g_object_unref (appinfo);
-
-	return retval;
-}
 
 int
 main (int argc, char *argv[])

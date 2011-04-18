@@ -24,7 +24,6 @@
 
 #include "search-dialog.h"
 #include "interface.h"
-#include "main.h"
 #include "main-window.h"
 
 static void sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search_dialog);

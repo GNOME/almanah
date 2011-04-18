@@ -25,7 +25,6 @@
 #include "export-operation.h"
 #include "entry.h"
 #include "storage-manager.h"
-#include "main.h"
 
 typedef gboolean (*ExportFunc) (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback,
                                 gpointer progress_user_data, GCancellable *cancellable, GError **error);

@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 
 #include "date-entry-dialog.h"
-#include "main.h"
 #include "interface.h"
 
 static void almanah_date_entry_dialog_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);

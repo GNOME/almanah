@@ -23,7 +23,6 @@
 #include <gtk/gtk.h>
 
 #include "uri-entry-dialog.h"
-#include "main.h"
 #include "interface.h"
 
 static void almanah_uri_entry_dialog_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);

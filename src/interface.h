@@ -27,6 +27,7 @@ G_BEGIN_DECLS
 const gchar *almanah_get_interface_filename (void);
 void almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events);
 void almanah_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_data);
+gboolean almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **error);
 
 G_END_DECLS
 

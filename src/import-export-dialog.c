@@ -26,7 +26,6 @@
 #include "import-operation.h"
 #include "export-operation.h"
 #include "interface.h"
-#include "main.h"
 #include "main-window.h"
 
 static void response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self);

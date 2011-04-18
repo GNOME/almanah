@@ -23,7 +23,6 @@
 
 #include "storage-manager.h"
 #include "interface.h"
-#include "main.h"
 #include "printing.h"
 #include "widgets/calendar.h"
 
