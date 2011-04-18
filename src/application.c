@@ -46,12 +46,6 @@ struct _AlmanahApplicationPrivate {
 	AlmanahEventManager *event_manager;
 
 	AlmanahMainWindow *main_window;
-
-	GtkWidget *search_dialog;
-	GtkWidget *date_entry_dialog;
-#ifdef ENABLE_ENCRYPTION
-	GtkWidget *preferences_dialog;
-#endif /* ENABLE_ENCRYPTION */
 };
 
 enum {
@@ -117,21 +111,6 @@ static void
 dispose (GObject *object)
 {
 	AlmanahApplicationPrivate *priv = ALMANAH_APPLICATION (object)->priv;
-
-	/* TODO */
-	if (priv->search_dialog != NULL)
-		gtk_widget_destroy (priv->search_dialog);
-	priv->search_dialog = NULL;
-
-	if (priv->date_entry_dialog != NULL)
-		gtk_widget_destroy (priv->date_entry_dialog);
-	priv->date_entry_dialog = NULL;
-
-#ifdef ENABLE_ENCRYPTION
-	if (priv->preferences_dialog != NULL)
-		gtk_widget_destroy (priv->preferences_dialog);
-	priv->preferences_dialog = NULL;
-#endif /* ENABLE_ENCRYPTION */
 
 	if (priv->main_window != NULL)
 		gtk_widget_destroy (GTK_WIDGET (priv->main_window));
