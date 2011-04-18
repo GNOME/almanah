@@ -179,7 +179,7 @@ startup (GApplication *application)
 	AlmanahApplicationPrivate *priv = ALMANAH_APPLICATION (application)->priv;
 	gchar *db_filename, *encryption_key;
 	GError *error = NULL;
-g_message ("startup");
+
 	/* Debug log handling */
 	g_log_set_handler (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, (GLogFunc) debug_handler, application);
 
@@ -218,7 +218,7 @@ activate (GApplication *application)
 {
 	AlmanahApplication *self = ALMANAH_APPLICATION (application);
 	AlmanahApplicationPrivate *priv = self->priv;
-g_message ("activate");
+
 	/* Create the interface */
 	if (priv->main_window == NULL) {
 		priv->main_window = almanah_main_window_new (self);
@@ -242,7 +242,7 @@ handle_command_line (GApplication *application, GApplicationCommandLine *command
 		{ "debug", 0, 0, G_OPTION_ARG_NONE, &(priv->debug), N_("Enable debug mode"), NULL },
 		{ NULL }
 	};
-g_message ("handle_command_line");
+
 	args = g_application_command_line_get_arguments (command_line, &argc);
 
 	/* We have to make an extra copy of the array, since g_option_context_parse() assumes that it can remove strings from the array without
