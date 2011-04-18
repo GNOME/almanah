@@ -869,6 +869,9 @@ mw_print_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_quit_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
+	/* Hide the window to make things look faster */
+	gtk_widget_hide (GTK_WIDGET (main_window));
+
 	save_current_entry (main_window);
 	gtk_widget_destroy (GTK_WIDGET (main_window));
 }
