@@ -177,7 +177,7 @@ static void
 startup (GApplication *application)
 {
 	AlmanahApplicationPrivate *priv = ALMANAH_APPLICATION (application)->priv;
-	gchar *db_filename, *encryption_key;
+	gchar *db_filename;
 	GError *error = NULL;
 
 	/* Debug log handling */
@@ -193,10 +193,11 @@ startup (GApplication *application)
 
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
-	encryption_key = g_settings_get_string (priv->settings, "encryption-key");
-	priv->storage_manager = almanah_storage_manager_new (db_filename, encryption_key);
-	g_free (encryption_key);
+	priv->storage_manager = almanah_storage_manager_new (db_filename, NULL);
 	g_free (db_filename);
+
+	g_settings_bind (priv->settings, "encryption-key", priv->storage_manager, "encryption-key",
+	                 G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY);
 
 	if (almanah_storage_manager_connect (priv->storage_manager, &error) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,

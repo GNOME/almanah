@@ -94,7 +94,7 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                 g_param_spec_string ("encryption-key",
 	                                                      "Encryption key", "The identifier for the encryption key in the user's keyring.",
 	                                                      NULL,
-	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 	storage_manager_signals[SIGNAL_DISCONNECTED] = g_signal_new ("disconnected",
 	                                                             G_TYPE_FROM_CLASS (klass),
