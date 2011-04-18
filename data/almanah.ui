@@ -270,7 +270,11 @@
 					</packing>
 				</child>
 				<child>
-					<object class="GtkToolbar" constructor="almanah_ui_manager" id="almanah_mw_toolbar"/>
+					<object class="GtkToolbar" constructor="almanah_ui_manager" id="almanah_mw_toolbar">
+						<style>
+							<class name="primary-toolbar"/>
+						</style>
+					</object>
 					<packing>
 						<property name="expand">False</property>
 					</packing>
