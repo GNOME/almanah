@@ -670,7 +670,7 @@ start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name,
 			/* Just retrieve the predefined tag from the tag table */
 			tag = gtk_text_tag_table_lookup (table, element_name);
 		} else if (strcmp (element_name, "link") == 0) {
-			guint i;
+			guint i = 0;
 			const gchar *uri;
 
 			/* Extract the URI */
@@ -715,6 +715,7 @@ end_element_cb (GMarkupParseContext *parse_context, const gchar *element_name, g
 		    strcmp (element_name, "underline") == 0 ||
 		    strcmp (element_name, "link") == 0) {
 			/* Pop the topmost tag off the active tags stack */
+			g_assert (deserialise_context->active_tags != NULL);
 			deserialise_context->active_tags = g_slist_remove (deserialise_context->active_tags, deserialise_context->active_tags->data);
 		}
 
