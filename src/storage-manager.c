@@ -957,7 +957,8 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 			/* Perform the search */
 			gtk_text_buffer_get_start_iter (text_buffer, &text_iter);
-			if (gtk_text_iter_forward_search (&text_iter, search_string, GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY,
+			if (gtk_text_iter_forward_search (&text_iter, search_string,
+			                                  GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY | GTK_TEXT_SEARCH_CASE_INSENSITIVE,
 			                                  NULL, NULL, NULL) == TRUE) {
 				/* A match was found! */
 				return entry;
