@@ -4,21 +4,24 @@
 #
 # György Balló <ballogy at freestart dot hu>, 2011.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2011.
+# Balázs Úr <urbalazs at gmail dot com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&component=general\n"
-"POT-Creation-Date: 2011-02-07 11:19+0000\n"
-"PO-Revision-Date: 2011-03-17 22:57+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-05-07 19:11+0200\n"
+"PO-Revision-Date: 2011-05-07 19:16+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:134 ../src/main.c:137
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:103
+#: ../src/main-window.c:141
 msgid "Almanah Diary"
 msgstr "Almanah napló"
 
@@ -30,39 +33,19 @@ msgstr "Napló"
 msgid "Keep a personal diary"
 msgstr "Személyes napló vezetése"
 
-#: ../data/almanah.schemas.in.h:1
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
 msgid "Database encryption key ID"
 msgstr "Adatbázis-titkosítási kulcs azonosítója"
 
-#: ../data/almanah.schemas.in.h:2
-msgid "Main window X position"
-msgstr "Főablak X-pozíciója"
-
-#: ../data/almanah.schemas.in.h:3
-msgid "Main window Y position"
-msgstr "Főablak Y-pozíciója"
-
-#: ../data/almanah.schemas.in.h:4
-msgid "Main window height"
-msgstr "Főablak magassága"
-
-#: ../data/almanah.schemas.in.h:5
-msgid "Main window maximization"
-msgstr "Főablak maximalizált állapota"
-
-#: ../data/almanah.schemas.in.h:6
-msgid "Main window width"
-msgstr "Főablak szélessége"
-
-#: ../data/almanah.schemas.in.h:7
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
 msgid "Spell checking enabled?"
 msgstr "Helyesírás-ellenőrzés engedélyezve?"
 
-#: ../data/almanah.schemas.in.h:8
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
 msgid "Spell checking language"
 msgstr "Helyesírás-ellenőrzés nyelve"
 
-#: ../data/almanah.schemas.in.h:9
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -72,229 +55,202 @@ msgstr ""
 "ha az Almanah titkosítási támogatással került fordításra. Az adatbázis "
 "titkosításának letiltásához hagyja ezt a mezőt üresen."
 
-#: ../data/almanah.schemas.in.h:10
-msgid "The X position of the main window."
-msgstr "A főablak X-pozíciója."
-
-#: ../data/almanah.schemas.in.h:11
-msgid "The Y position of the main window."
-msgstr "A főablak Y-pozíciója."
-
-#: ../data/almanah.schemas.in.h:12
-msgid "The height of the main window."
-msgstr "A főablak magassága."
-
-#: ../data/almanah.schemas.in.h:13
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "A nyelv, amin a bejegyzések helyesírása ellenőrzésre kerül."
 
-#: ../data/almanah.schemas.in.h:14
-msgid "The width of the main window."
-msgstr "A főablak szélessége."
-
-#: ../data/almanah.schemas.in.h:15
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
 msgid "Whether spell checking of entries is enabled."
 msgstr "A bejegyzések helyesírás-ellenőrzése engedélyezve legyen-e?"
 
-#: ../data/almanah.schemas.in.h:16
-msgid "Whether the main window should start maximized."
-msgstr "A főablak teljes méretben induljon-e?"
-
 #: ../data/almanah.ui.h:1
-msgid "Add a definition for the currently selected text."
-msgstr "Meghatározás hozzáadása a jelenleg kijelölt szöveghez."
+msgid ""
+"Add or remove a hyperlink from the currently selected text to a specified "
+"URI."
+msgstr "Hiperhivatkozás felvétele a jelenleg kijelölt szövegről a megadott URI-címre, vagy annak eltávolítása."
 
 #: ../data/almanah.ui.h:2
+msgid "Add/Remove _Hyperlink"
+msgstr "_Hiperhivatkozás hozzáadása/eltávolítása"
+
+#: ../data/almanah.ui.h:3
 msgid "Calendar"
 msgstr "Naptár"
 
-#: ../data/almanah.ui.h:3
-msgid "Definition Description"
-msgstr "Meghatározás leírása"
-
 #: ../data/almanah.ui.h:4
-msgid "Definition List"
-msgstr "Meghatározások listája"
-
-#: ../data/almanah.ui.h:5
-msgid "Definition Type"
-msgstr "Meghatározás típusa"
-
-#: ../data/almanah.ui.h:6
-msgid "Definition type:"
-msgstr "Meghatározás típusa:"
-
-#: ../data/almanah.ui.h:7
 msgid "Entry editing area"
 msgstr "Bejegyzésszerkesztési terület"
 
-#: ../data/almanah.ui.h:8
+#: ../data/almanah.ui.h:5
 msgid "F_ormat"
 msgstr "F_ormátum"
 
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:6
 msgid "Failed Entries"
 msgstr "Sikertelen bejegyzések"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:7
 msgid "Go to _Today"
 msgstr "Ugrás a _mai napra"
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:8
 msgid "I_mportant"
 msgstr "F_ontos"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:9
 msgid "Import Results List"
 msgstr "Eredmények listájának importálása"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:10
 msgid "Insert _Time"
 msgstr "_Idő beszúrása"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:11
 msgid "Jump to the current date in the diary."
 msgstr "Ugrás az aktuális napra a naplóban."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:12
 msgid "Merged Entries"
 msgstr "Egyesített bejegyzések"
 
-#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
-msgid "Nothing selected"
-msgstr "Nincs semmi kiválasztva"
-
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:13
 msgid "Past Event List"
 msgstr "Legutóbbi események listája"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:14
 msgid "Past Events"
 msgstr "Legutóbbi események"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:15
 msgid "Pr_eferences"
 msgstr "Beá_llítások"
 
-#: ../data/almanah.ui.h:20
-msgid "Remove the definition from the currently selected text."
-msgstr "Eltávolítja a meghatározást a jelenleg kijelölt szövegről."
-
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:16
 msgid "Result List"
 msgstr "Eredménylista"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:17
 msgid "Results:"
 msgstr "Eredmények:"
 
-#: ../data/almanah.ui.h:23 ../src/search-dialog.c:60
+#: ../data/almanah.ui.h:18 ../src/search-dialog.c:59
 msgid "Search"
 msgstr "Keresés"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:19
 msgid "Search entry"
 msgstr "Bejegyzés keresése"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:20
 msgid "Select Date…"
 msgstr "Dátum kiválasztása…"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:21
 msgid "Successful Entries"
 msgstr "Sikeres bejegyzések"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:22
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Fontosnak jelöli a jelenlegi bejegyzést."
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:23
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Félkövérré változtatja a kijelölt szöveget."
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:24
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Dőltté változtatja a kijelölt szöveget."
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:25
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Aláhúzza a jelenleg kijelölt szöveget."
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:26
 msgid "View"
 msgstr "Megjelenítés"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:27
 msgid "View Entry"
 msgstr "Bejegyzés megjelenítése"
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:28
 msgid "View Event"
 msgstr "Esemény megjelenítése"
 
-#: ../data/almanah.ui.h:34
-msgid "_Add Definition"
-msgstr "Meghatározás _hozzáadása"
-
-#: ../data/almanah.ui.h:35
-msgid "_Definitions"
-msgstr "_Meghatározások"
-
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:29
 msgid "_Edit"
 msgstr "S_zerkesztés"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:30
 msgid "_Export…"
 msgstr "_Exportálás…"
 
-#: ../data/almanah.ui.h:38
+#: ../data/almanah.ui.h:31
 msgid "_File"
 msgstr "_Fájl"
 
-#: ../data/almanah.ui.h:39
+#: ../data/almanah.ui.h:32
 msgid "_Help"
 msgstr "_Súgó"
 
-#: ../data/almanah.ui.h:40
+#: ../data/almanah.ui.h:33
 msgid "_Import…"
 msgstr "_Importálás…"
 
-#: ../data/almanah.ui.h:41
+#: ../data/almanah.ui.h:34
 msgid "_Print…"
 msgstr "_Nyomtatás…"
 
-#: ../data/almanah.ui.h:42
-msgid "_Remove Definition"
-msgstr "Meghatározás _eltávolítása"
-
-#: ../data/almanah.ui.h:43
+#: ../data/almanah.ui.h:35
 msgid "_Search…"
 msgstr "K_eresés…"
 
-#: ../data/almanah.ui.h:44
-msgid "_View Definitions"
-msgstr "Meghatározások _megjelenítése"
-
-#: ../data/almanah.ui.h:45
+#: ../data/almanah.ui.h:36
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "pl. „2009/03/14” vagy „2009. március 14.”."
+msgstr "például: „2009/03/14” vagy „2009. március 14.”."
 
-#: ../src/add-definition-dialog.c:81
-msgid "Add Definition"
-msgstr "Meghatározás hozzáadása"
+#: ../data/almanah.ui.h:37
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "például: „http://google.com/” vagy „file:///home/én/Képek/kép.jpg”."
 
-#: ../src/add-definition-dialog.c:163 ../src/date-entry-dialog.c:130
-#: ../src/import-export-dialog.c:111 ../src/import-export-dialog.c:413
-#: ../src/definition-manager-window.c:132 ../src/main-window.c:171
-#: ../src/preferences-dialog.c:144 ../src/search-dialog.c:86
+#: ../src/application.c:204
+msgid "Error opening database"
+msgstr "Hiba történt az adatbázis megnyitásakor"
+
+#: ../src/application.c:252
+msgid "Enable debug mode"
+msgstr "Hibakereső üzemmód bekapcsolása"
+
+#: ../src/application.c:269
+msgid "Manage your diary. Only one instance of the program may be open at any time."
+msgstr "Személyes napló kezelése. Egyszerre csak egy példányban futtatható a program."
+
+#. Print an error
+#: ../src/application.c:280
+#, c-format
+msgid "Command line options could not be parsed: %s\n"
+msgstr "A parancssori kapcsolók nem értelmezhetők: %s\n"
+
+#: ../src/application.c:299
+msgid "Error encrypting database"
+msgstr "Hiba az adatbázis titkosításakor"
+
+#: ../src/date-entry-dialog.c:72
+msgid "Select Date"
+msgstr "Dátum kiválasztása"
+
+#: ../src/date-entry-dialog.c:128 ../src/import-export-dialog.c:167
+#: ../src/import-export-dialog.c:470 ../src/main-window.c:205
+#: ../src/preferences-dialog.c:190 ../src/search-dialog.c:85
+#: ../src/uri-entry-dialog.c:127
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "A(z) „%s” UI fájl nem tölthető be"
 
-#: ../src/date-entry-dialog.c:73
-msgid "Select Date"
-msgstr "Dátum kiválasztása"
+#: ../src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Érvénytelen adatverziószám: %u."
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -304,7 +260,7 @@ msgstr "Naptáridőpont"
 msgid "An appointment on an Evolution calendar."
 msgstr "Egy időpont az Evolution naptárban."
 
-#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
+#: ../src/events/calendar-appointment.c:119 ../src/events/calendar-task.c:108
 msgid "Error launching Evolution"
 msgstr "Hiba az Evolution indításakor"
 
@@ -316,11 +272,11 @@ msgstr "Naptárfeladat"
 msgid "A task on an Evolution calendar."
 msgstr "Egy feladat az Evolution naptárban."
 
-#: ../src/export-operation.c:46 ../src/import-operation.c:46
+#: ../src/export-operation.c:45 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Szövegfájlok"
 
-#: ../src/export-operation.c:47
+#: ../src/export-operation.c:46
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -331,11 +287,11 @@ msgstr ""
 "„yyyy-mm-dd” lesz, és nem lesz kiterjesztésük. Minden bejegyzés exportálásra "
 "kerül titkosítatlan sima szövegformátumban."
 
-#: ../src/export-operation.c:51 ../src/import-operation.c:51
+#: ../src/export-operation.c:50 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Adatbázis"
 
-#: ../src/export-operation.c:52
+#: ../src/export-operation.c:51
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
@@ -343,49 +299,49 @@ msgstr ""
 "Válasszon egy _fájlnevet a titkosítatlan Almanah naplóadatbázis teljes "
 "másolatához."
 
-#: ../src/import-export-dialog.c:144
+#: ../src/import-export-dialog.c:201
 msgid "Import _mode: "
 msgstr "Importálás _módja:"
 
-#: ../src/import-export-dialog.c:144
+#: ../src/import-export-dialog.c:201
 msgid "Export _mode: "
 msgstr "Exportálás _módja:"
 
 #. Set the window title
-#: ../src/import-export-dialog.c:147
+#: ../src/import-export-dialog.c:204
 msgid "Import Entries"
 msgstr "Bejegyzések importálása"
 
-#: ../src/import-export-dialog.c:147
+#: ../src/import-export-dialog.c:204
 msgid "Export Entries"
 msgstr "Bejegyzések exportálása"
 
 #. Set the button label
-#: ../src/import-export-dialog.c:150
+#: ../src/import-export-dialog.c:207
 msgid "_Import"
 msgstr "_Importálás"
 
-#: ../src/import-export-dialog.c:150
+#: ../src/import-export-dialog.c:207
 msgid "_Export"
 msgstr "_Exportálás"
 
-#: ../src/import-export-dialog.c:187
+#: ../src/import-export-dialog.c:244
 msgid "Import failed"
 msgstr "Az importálás meghiúsult"
 
-#: ../src/import-export-dialog.c:225
+#: ../src/import-export-dialog.c:282
 msgid "Export failed"
 msgstr "Az exportálás meghiúsult"
 
-#: ../src/import-export-dialog.c:238
+#: ../src/import-export-dialog.c:295
 msgid "Export successful"
 msgstr "Az exportálás sikeres"
 
-#: ../src/import-export-dialog.c:239
+#: ../src/import-export-dialog.c:296
 msgid "The diary was successfully exported."
 msgstr "A napló sikeresen exportálva."
 
-#: ../src/import-export-dialog.c:387
+#: ../src/import-export-dialog.c:444
 msgid "Import Results"
 msgstr "Importálás eredménye"
 
@@ -395,13 +351,13 @@ msgstr "Importálás eredménye"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:480 ../src/main-window.c:394
-#: ../src/main-window.c:419 ../src/main-window.c:1058 ../src/printing.c:263
-#: ../src/search-dialog.c:160
+#: ../src/import-export-dialog.c:537 ../src/main-window.c:583
+#: ../src/main-window.c:608 ../src/main-window.c:1293 ../src/printing.c:263
+#: ../src/search-dialog.c:165
 msgid "%A, %e %B %Y"
 msgstr "%Y. %B %e. %A"
 
-#: ../src/import-operation.c:47
+#: ../src/import-operation.c:46
 msgid ""
 "Select a _folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
@@ -411,18 +367,18 @@ msgstr ""
 "egy fájl tartozik, a fájlnevek formátuma „yyyy-mm-dd”, és nincs "
 "kiterjesztésük. Minden ilyen fájl importálásra kerül."
 
-#: ../src/import-operation.c:52
+#: ../src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
 "Az importáláshoz válasszon egy, az Almanah napló által készített "
 "_adatbázisfájlt."
 
-#: ../src/import-operation.c:199
+#: ../src/import-operation.c:248
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
 msgstr "Hiba az importált bejegyzés pufferbe történő visszafejtésekor: %s"
 
-#: ../src/import-operation.c:215
+#: ../src/import-operation.c:264
 #, c-format
 msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
@@ -434,7 +390,7 @@ msgstr ""
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 #. * The imported entry is appended to this text.
-#: ../src/import-operation.c:256
+#: ../src/import-operation.c:305
 #, c-format
 msgid ""
 "\n"
@@ -447,94 +403,29 @@ msgstr ""
 "Bejegyzés importálva innen: „%s”, tartalma:\n"
 "\n"
 
-#: ../src/definition-manager-window.c:72
-msgid "Definition Manager"
-msgstr "Meghatározáskezelő"
-
-#: ../src/definition-manager-window.c:203
-#, c-format
-msgid "Are you sure you want to delete the definition for \"%s\"?"
-msgstr "Biztosan törli a meghatározást ehhez: „%s”?"
-
-#: ../src/definitions/contact.c:53
-msgid "Contact"
-msgstr "Kapcsolat"
-
-#: ../src/definitions/contact.c:54
-msgid "An Evolution contact."
-msgstr "Egy Evolution kapcsolat."
-
-#: ../src/definitions/contact.c:73
-msgid "Select Contact"
-msgstr "Kapcsolat kiválasztása"
-
-#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
-msgid "Error opening contact"
-msgstr "Hiba a kapcsolat megnyitásakor"
-
-#: ../src/definitions/contact.c:136
-msgid "Error opening Evolution"
-msgstr "Hiba az Evolution megnyitásakor"
-
-#: ../src/definitions/file.c:48
-msgid "File"
-msgstr "Fájl"
-
-#: ../src/definitions/file.c:49
-msgid "An attached file."
-msgstr "Egy csatolt fájl."
-
-#: ../src/definitions/file.c:74
-msgid "Error opening file"
-msgstr "Hiba a fájl megnyitásakor"
-
-#: ../src/definitions/file.c:93
-msgid "Select File"
-msgstr "Fájl kiválasztása"
-
-#: ../src/definitions/note.c:49
-msgid "Note"
-msgstr "Jegyzet"
-
-#: ../src/definitions/note.c:50
-msgid "A note about an important event."
-msgstr "Jegyzet egy fontos eseményről."
-
-#: ../src/definitions/uri.c:50
-msgid "URI"
-msgstr "URI"
-
-#: ../src/definitions/uri.c:51
-msgid "A URI of a file or web page."
-msgstr "Egy fájl vagy weboldal URI-ja."
-
-#: ../src/definitions/uri.c:76
-msgid "Error opening URI"
-msgstr "Hiba az URI megnyitásakor"
-
-#: ../src/definitions/uri.c:99
-msgid "URI: "
-msgstr "URI:"
-
-#: ../src/main-window.c:398
+#: ../src/main-window.c:587
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Biztosan szeretné szerkeszteni ezt a naplóbejegyzést ehhez: %s?"
 
-#: ../src/main-window.c:423
+#: ../src/main-window.c:612
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Biztosan szeretné törölni ezt a naplóbejegyzést ehhez: %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:610
+#: ../src/main-window.c:714
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Ismeretlen vagy kettőzött szövegcímke a bejegyzésben: „%s”. Figyelmen kívül "
 "hagyva."
 
-#: ../src/main-window.c:891
+#: ../src/main-window.c:1030
+msgid "Error opening URI"
+msgstr "Hiba az URI megnyitásakor"
+
+#: ../src/main-window.c:1146
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -545,7 +436,7 @@ msgstr ""
 "Software Foundation által kiadott GNU General Public License harmadik (vagy "
 "bármely későbbi) változatában foglaltak alapján."
 
-#: ../src/main-window.c:895
+#: ../src/main-window.c:1150
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -557,7 +448,7 @@ msgstr ""
 "alkalmas-e a KÖZREADÁSRA vagy EGY BIZONYOS FELADAT ELVÉGZÉSÉRE. További "
 "részletekért tanulmányozza a GNU GPL licencet."
 
-#: ../src/main-window.c:899
+#: ../src/main-window.c:1154
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -565,12 +456,12 @@ msgstr ""
 "Az Almanah programhoz a GNU General Public License egy példánya is jár, ha "
 "nem kapta meg, itt elolvashatja: <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:910
+#: ../src/main-window.c:1169
 #, c-format
-msgid "A helpful diary keeper, storing %u entries and %u definitions."
-msgstr "Egy hasznos naplóíró, %u bejegyzést és %u meghatározást tárol."
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Egy hasznos naplóíró, amely %u bejegyzést tárol."
 
-#: ../src/main-window.c:916
+#: ../src/main-window.c:1173
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -579,72 +470,51 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:924
+#: ../src/main-window.c:1181
 msgid "translator-credits"
 msgstr "Balló György <ballogy at freestart dot hu>"
 
-#: ../src/main-window.c:928
+#: ../src/main-window.c:1185
 msgid "Almanah Website"
 msgstr "Az Almanah webhelye"
 
-#: ../src/main-window.c:1085
+#: ../src/main-window.c:1321
 msgid "Entry content could not be loaded"
 msgstr "A bejegyzés tartalma nem tölthető be"
 
-#: ../src/main.c:38
-msgid "Error encrypting database"
-msgstr "Hiba az adatbázis titkosításakor"
+#: ../src/main-window.c:1436
+msgid "Spelling checker could not be initialized"
+msgstr "Nem sikerült inicializálni a helyesírás-ellenőrzőt"
 
-#: ../src/main.c:125
-msgid "Enable debug mode"
-msgstr "Hibakereső üzemmód bekapcsolása"
-
-#. Options
-#: ../src/main.c:141
-msgid "- Manage your diary"
-msgstr "- Személyes napló kezelése"
-
-#: ../src/main.c:151
-msgid "Command-line options could not be parsed"
-msgstr "A parancssori kapcsolók nem értelmezhetők"
-
-#: ../src/main.c:182
-msgid "Error opening database"
-msgstr "Hiba történt az adatbázis megnyitásakor"
-
-#: ../src/preferences-dialog.c:80
+#: ../src/preferences-dialog.c:91
 msgid "Almanah Preferences"
 msgstr "Almanah beállításai"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:169
+#: ../src/preferences-dialog.c:216
 msgid "Encryption key: "
 msgstr "Titkosítási kulcs:"
 
-#: ../src/preferences-dialog.c:174
+#: ../src/preferences-dialog.c:221
 msgid "None (don't encrypt)"
 msgstr "Nincs (ne titkosítson)"
 
-#: ../src/preferences-dialog.c:198
+#: ../src/preferences-dialog.c:245
 msgid "New _Key"
 msgstr "Ú_j kulcs"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:205
+#: ../src/preferences-dialog.c:252
 msgid "Enable _spell checking"
 msgstr "_Helyesírás-ellenőrző engedélyezése"
 
-#: ../src/preferences-dialog.c:235
+#: ../src/preferences-dialog.c:278
 msgid "Error saving the encryption key"
 msgstr "Hiba a titkosítási kulcs mentésekor"
 
-#: ../src/preferences-dialog.c:254
+#: ../src/preferences-dialog.c:297
 msgid "Error opening Seahorse"
 msgstr "Hiba a Seahorse megnyitásakor"
-
-#: ../src/preferences-dialog.c:293
-msgid "Spelling checker could not be initialized"
-msgstr "Nem sikerült inicializálni a helyesírás-ellenőrzőt"
 
 #: ../src/printing.c:277
 msgid "This entry is marked as important."
@@ -667,32 +537,32 @@ msgstr "Befejezés dátuma:"
 msgid "Line spacing:"
 msgstr "Sorköz:"
 
-#: ../src/storage-manager.c:257
+#: ../src/storage-manager.c:259
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "A GPGME verziója nincs legalább %s"
 
-#: ../src/storage-manager.c:266
+#: ../src/storage-manager.c:268
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "A GPGME nem támogatja az OpenPGP-t: %s"
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:277
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Hiba a rejtjelező kontextus létrehozásakor: %s"
 
-#: ../src/storage-manager.c:304
+#: ../src/storage-manager.c:306
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” titkosított adatbázisfájl megnyitásakor: %s"
 
-#: ../src/storage-manager.c:323
+#: ../src/storage-manager.c:325
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” sima adatbázisfájl megnyitásakor: %s"
 
-#: ../src/storage-manager.c:371
+#: ../src/storage-manager.c:373
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -701,27 +571,27 @@ msgstr ""
 "nem került törlésre."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:374
+#: ../src/storage-manager.c:376
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "A(z) „%s” sima adatbázisfájl nem törölhető."
 
-#: ../src/storage-manager.c:415
+#: ../src/storage-manager.c:417
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Hiba az adatbázis visszafejtésekor: %s"
 
-#: ../src/storage-manager.c:449
+#: ../src/storage-manager.c:451
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Hiba a titkosítási kulcs lekérésekor: %s"
 
-#: ../src/storage-manager.c:470
+#: ../src/storage-manager.c:472
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Hiba az adatbázis titkosításakor: %s"
 
-#: ../src/storage-manager.c:572
+#: ../src/storage-manager.c:574
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -730,19 +600,23 @@ msgstr ""
 "A(z) „%s” adatbázis nem nyitható meg. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:647
+#: ../src/storage-manager.c:651
 #, c-format
 msgid "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
 "A(z) „%s” lekérdezés nem futtatható. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:964
+#: ../src/storage-manager.c:954
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Hiba a bejegyzés pufferbe történő visszafejtésekor keresés közben."
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:116
+#: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Fontos!"
+
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Adjon meg egy URI-t"
 
