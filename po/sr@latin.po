@@ -1,54 +1,621 @@
-Free `recode' converts files between various character sets and surfaces.
+# Language almanah translations for F package.
+# Copyright (C) 2011 THE F'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the F package.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: almanah\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=almanah&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-05-12 16:16+0000\n"
+"PO-Revision-Date: 2011-05-15 16:33+0200\n"
+"Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
+"Language-Team:  Serbian <gnom@prevod.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: Serbian (sr)\n"
+"X-Generator: Virtaal 0.5.2\n"
 
-Usage: recode [OPTION]... [ [CHARSET] | REQUEST [FILE]... ]
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:103
+#: ../src/main-window.c:141
+msgid "Almanah Diary"
+msgstr "Almanah — dnevnik"
 
-If a long option shows an argument as mandatory, then it is mandatory
-for the equivalent short option also.  Similarly for optional arguments.
+#: ../data/almanah.desktop.in.h:2
+msgid "Diary"
+msgstr "Dnevnik"
 
-Listings:
-  -l, --list[=FORMAT]        list one or all known charsets and aliases
-  -k, --known=PAIRS          restrict charsets according to known PAIRS list
-  -h, --header[=[LN/]NAME]   write table NAME on stdout using LN, then exit
-  -F, --freeze-tables        write out a C module holding all tables
-  -T, --find-subsets         report all charsets being subset of others
-  -C, --copyright            display Copyright and copying conditions
-      --help                 display this help and exit
-      --version              output version information and exit
+#: ../data/almanah.desktop.in.h:3
+msgid "Keep a personal diary"
+msgstr "Vodite lični dnevnik"
 
-Operation modes:
-  -v, --verbose           explain sequence of steps and report progress
-  -q, --quiet, --silent   inhibit messages about irreversible recodings
-  -f, --force             force recodings even when not reversible
-  -t, --touch             touch the recoded files after replacement
-  -i, --sequence=files    use intermediate files for sequencing passes
-      --sequence=memory   use memory buffers for sequencing passes
-  -p, --sequence=pipe     use pipe machinery for sequencing passes
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "IB ključa šifrovanja baze podataka"
 
-Fine tuning:
-  -s, --strict           use strict mappings, even loose characters
-  -d, --diacritics       convert only diacritics or alike for HTML/LaTeX
-  -S, --source[=LN]      limit recoding to strings and comments as for LN
-  -c, --colons           use colons instead of double quotes for diaeresis
-  -g, --graphics         approximate IBMPC rulers by ASCII graphics
-  -x, --ignore=CHARSET   ignore CHARSET while choosing a recoding path
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid "Spell checking enabled?"
+msgstr "Provera pisanja"
 
-Option -l with no FORMAT nor CHARSET list available charsets and surfaces.
-FORMAT is `decimal', `octal', `hexadecimal' or `full' (or one of `dohf').
-Unless DEFAULT_CHARSET is set in environment, CHARSET defaults to the locale
-dependent encoding, determined by LC_ALL, LC_CTYPE, LANG.
-With -k, possible before charsets are listed for the given after CHARSET,
-both being tabular charsets, with PAIRS of the form `BEF1:AFT1,BEF2:AFT2,...'
-and BEFs and AFTs being codes are given as decimal numbers.
-LN is some language, it may be `c', `perl' or `po'; `c' is the default.
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Jezik provere pisanja"
 
-REQUEST is SUBREQUEST[,SUBREQUEST]...; SUBREQUEST is ENCODING[..ENCODING]...
-ENCODING is [CHARSET][/[SURFACE]]...; REQUEST often looks like BEFORE..AFTER,
-with BEFORE and AFTER being charsets.  An omitted CHARSET implies the usual
-charset; an omitted [/SURFACE]... means the implied surfaces for CHARSET; a /
-with an empty surface name means no surfaces at all.  See the manual.
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"ID ključa koji se koristi za šifrovanje i dešifrovanje baze podataka, ako je "
+"Almanah izgrađen sa podrškom za šifrovanje. Ostavite prazno da onemogućite "
+"šifrovanje baze podataka."
 
-If none of -i and -p are given, presume -p if no FILE, else -i.
-Each FILE is recoded over itself, destroying the original.  If no
-FILE is specified, then act as a filter and recode stdin to stdout.
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Šifra jezika za koji će se vršiti provera pisanja."
 
-Report bugs to <recode-bugs@iro.umontreal.ca>.
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Ako je izabrano, vršiće se provera prilikom pisanja."
+
+#: ../data/almanah.ui.h:1
+msgid ""
+"Add or remove a hyperlink from the currently selected text to a specified "
+"URI."
+msgstr ""
+"Dodajte ili uklonite hipervezu iz trenutno izabranog teksta u zadatu adresu."
+
+#: ../data/almanah.ui.h:2
+msgid "Add/Remove _Hyperlink"
+msgstr "Dodaj/ukloni _hipervezu"
+
+#: ../data/almanah.ui.h:3
+msgid "Calendar"
+msgstr "Kalendar"
+
+#: ../data/almanah.ui.h:4
+msgid "Entry editing area"
+msgstr "Oblast za uređivanje unosa"
+
+#: ../data/almanah.ui.h:5
+msgid "F_ormat"
+msgstr "_Format"
+
+#: ../data/almanah.ui.h:6
+msgid "Failed Entries"
+msgstr "Neuspeli unosi"
+
+#: ../data/almanah.ui.h:7
+msgid "Go to _Today"
+msgstr "_Idi na današnje"
+
+#: ../data/almanah.ui.h:8
+msgid "I_mportant"
+msgstr "_Važno"
+
+#: ../data/almanah.ui.h:9
+msgid "Import Results List"
+msgstr "Spisak rezultata uvoženja"
+
+#: ../data/almanah.ui.h:10
+msgid "Insert _Time"
+msgstr "Umetni _vreme"
+
+#: ../data/almanah.ui.h:11
+msgid "Jump to the current date in the diary."
+msgstr "Prebacite se na tekući datum u dnevniku."
+
+#: ../data/almanah.ui.h:12
+msgid "Merged Entries"
+msgstr "Spojeni unosi"
+
+#: ../data/almanah.ui.h:13
+msgid "Past Event List"
+msgstr "Spisak prošlih događaja"
+
+#: ../data/almanah.ui.h:14
+msgid "Past Events"
+msgstr "Prošli događaji"
+
+#: ../data/almanah.ui.h:15
+msgid "Pr_eferences"
+msgstr "_Postavke"
+
+#: ../data/almanah.ui.h:16
+msgid "Result List"
+msgstr "Spisak rezultata"
+
+#: ../data/almanah.ui.h:17
+msgid "Results:"
+msgstr "Rezultati:"
+
+#: ../data/almanah.ui.h:18 ../src/search-dialog.c:59
+msgid "Search"
+msgstr "Potraži"
+
+#: ../data/almanah.ui.h:19
+msgid "Search entry"
+msgstr "Unos pretrage"
+
+#: ../data/almanah.ui.h:20
+msgid "Select Date…"
+msgstr "Izaberi datum..."
+
+#: ../data/almanah.ui.h:21
+msgid "Successful Entries"
+msgstr "Uspešni unosi"
+
+#: ../data/almanah.ui.h:22
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Odredite da li je trenutni unos označen kao važan."
+
+#: ../data/almanah.ui.h:23
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Odredite da li je trenutno izabrani tekst podebljan."
+
+#: ../data/almanah.ui.h:24
+msgid "Toggle whether the currently selected text is italic."
+msgstr "Odredite da li je trenutno izabrani tekst iskošen."
+
+#: ../data/almanah.ui.h:25
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "Odredite da li je trenutno izabrani tekst podvučen."
+
+#: ../data/almanah.ui.h:26
+msgid "View"
+msgstr "Prikaži"
+
+#: ../data/almanah.ui.h:27
+msgid "View Entry"
+msgstr "Prikaži unos"
+
+#: ../data/almanah.ui.h:28
+msgid "View Event"
+msgstr "Prikaži događaj"
+
+#: ../data/almanah.ui.h:29
+msgid "_Edit"
+msgstr "_Uređivanje"
+
+#: ../data/almanah.ui.h:30
+msgid "_Export…"
+msgstr "_Izvezi..."
+
+#: ../data/almanah.ui.h:31
+msgid "_File"
+msgstr "_Datoteka"
+
+#: ../data/almanah.ui.h:32
+msgid "_Help"
+msgstr "_Pomoć"
+
+#: ../data/almanah.ui.h:33
+msgid "_Import…"
+msgstr "_Uvezi…"
+
+#: ../data/almanah.ui.h:34
+msgid "_Print…"
+msgstr "_Štampaj…"
+
+#: ../data/almanah.ui.h:35
+msgid "_Search…"
+msgstr "_Potraži..."
+
+#: ../data/almanah.ui.h:36
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "npr. „16.07.2033“ ili „16. Jul 2033.“."
+
+#: ../data/almanah.ui.h:37
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr ""
+"npr. „http://google.com/“ ili „datoteka:///lična_fascikla/Marko/fotografije/"
+"slika.jpg“"
+
+#: ../src/application.c:204
+msgid "Error opening database"
+msgstr "Greška prilikom otvaranja baze podataka"
+
+#: ../src/application.c:252
+msgid "Enable debug mode"
+msgstr "Uključuje režim za ispravljanje grešaka"
+
+#: ../src/application.c:269
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"Upravljajte vašim dnevnikom. Samo jedan primerak programa može biti otvoren u "
+"isto vreme."
+
+#. Print an error
+#: ../src/application.c:280
+#, c-format
+msgid "Command line options could not be parsed: %s\n"
+msgstr "Opcije komandne linije ne mogu biti analizirane: %s\n"
+
+#: ../src/application.c:299
+msgid "Error encrypting database"
+msgstr "Greška prilikom šifrovanja baze podataka"
+
+#: ../src/date-entry-dialog.c:72
+msgid "Select Date"
+msgstr "Izaberite datum"
+
+#: ../src/date-entry-dialog.c:128 ../src/import-export-dialog.c:167
+#: ../src/import-export-dialog.c:470 ../src/main-window.c:205
+#: ../src/preferences-dialog.c:190 ../src/search-dialog.c:85
+#: ../src/uri-entry-dialog.c:127
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Ne mogu da učitam datoteku korisničkog sučelja „%s“"
+
+#: ../src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Neispravan broj izdanja podataka „%u“."
+
+#: ../src/events/calendar-appointment.c:49
+msgid "Calendar Appointment"
+msgstr "Obaveza u kalendaru"
+
+#: ../src/events/calendar-appointment.c:50
+msgid "An appointment on an Evolution calendar."
+msgstr "Zakazana obaveza u kalendaru Evolucije."
+
+#: ../src/events/calendar-appointment.c:119 ../src/events/calendar-task.c:108
+msgid "Error launching Evolution"
+msgstr "Greška prilikom pokretanja Evolucije"
+
+#: ../src/events/calendar-task.c:49
+msgid "Calendar Task"
+msgstr "Zadatak u kalendaru"
+
+#: ../src/events/calendar-task.c:50
+msgid "A task on an Evolution calendar."
+msgstr "Zadatak u kalendaru Evolucije."
+
+#: ../src/export-operation.c:45 ../src/import-operation.c:45
+msgid "Text Files"
+msgstr "Datoteke teksta"
+
+#: ../src/export-operation.c:46
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"Izaberite _fasciklu u koju će biti izveženi unosi kao datoteke teksta, sa "
+"imenima u obliku „dd-mm-gggg“, i bez proširenja. Svi unosi će biti izveženi, "
+"bez šifrovanja u obliku čistog teksta."
+
+#: ../src/export-operation.c:50 ../src/import-operation.c:50
+msgid "Database"
+msgstr "Baza podataka"
+
+#: ../src/export-operation.c:51
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"Izaberite _naziv datoteke koji će biti dat potpunom umnošku nešifrovane baze "
+"podataka Almanahovog dnevnika."
+
+#: ../src/import-export-dialog.c:201
+msgid "Import _mode: "
+msgstr "Režim _uvoženja: "
+
+#: ../src/import-export-dialog.c:201
+msgid "Export _mode: "
+msgstr "Režim _izvoženja: "
+
+#. Set the window title
+#: ../src/import-export-dialog.c:204
+msgid "Import Entries"
+msgstr "Unosi za uvoženje"
+
+#: ../src/import-export-dialog.c:204
+msgid "Export Entries"
+msgstr "Unosi za izvoženje"
+
+#. Set the button label
+#: ../src/import-export-dialog.c:207
+msgid "_Import"
+msgstr "_Uvezi"
+
+#: ../src/import-export-dialog.c:207
+msgid "_Export"
+msgstr "_Izvezi"
+
+#: ../src/import-export-dialog.c:244
+msgid "Import failed"
+msgstr "Uvoženje nije uspelo"
+
+#: ../src/import-export-dialog.c:282
+msgid "Export failed"
+msgstr "Izvoženje nije uspelo"
+
+#: ../src/import-export-dialog.c:295
+msgid "Export successful"
+msgstr "Uspešno izvoženje"
+
+#: ../src/import-export-dialog.c:296
+msgid "The diary was successfully exported."
+msgstr "Dnevnik je uspešno izvežen."
+
+#: ../src/import-export-dialog.c:444
+msgid "Import Results"
+msgstr "Rezultati uvoženja"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-export-dialog.c:537 ../src/main-window.c:583
+#: ../src/main-window.c:608 ../src/main-window.c:1293 ../src/printing.c:263
+#: ../src/search-dialog.c:165
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: ../src/import-operation.c:46
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Izaberite _fasciklu koja sadrži datoteke teksta, po jednu za svaki unos, sa "
+"nazivima u obliku „dd-mm-gg“, i bez proširenja. Sve takve datoteke će biti "
+"uvežene."
+
+#: ../src/import-operation.c:51
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr ""
+"Izaberite _datoteku baze podataka za uvoženje koju je stvorio Almanah dnevnik."
+
+#: ../src/import-operation.c:248
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "Greška prilikom raščlanjivanja uvežene stavke u baferu: %s"
+
+#: ../src/import-operation.c:264
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"Greška prilikom raščlanjivanja postojećeg unosa u baferu; prepisujem je "
+"uveženim unosom: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-operation.c:305
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Unos je uvežen iz „%s“:\n"
+"\n"
+
+#: ../src/main-window.c:587
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "Da li ste sigurni da želite da uredite ovaj unos dnevnika za „%s“?"
+
+#: ../src/main-window.c:612
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Da li ste sigurni da želite da obrišete ovaj unos dnevnika za „%s“?"
+
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:714
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "Nepoznata ili duplirana oznaka teksta „%s“ u unosu. Zanemarujem."
+
+#: ../src/main-window.c:1030
+msgid "Error opening URI"
+msgstr "Greška prilikom otvaranja adrese"
+
+#: ../src/main-window.c:1146
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah je slobodan softver: možete ga prosleđivati i/ili menjati pod "
+"uslovima GNU Opšte javne licence koju je objavila Zadužbina slobodnog "
+"softvera, bilo verzije 3 licence ili (po vašem izboru) bilo koje novije "
+"verzije."
+
+#: ../src/main-window.c:1150
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah se raspodeljuje u nadi da će biti koristan, ali BEZ IKAKVE GARANCIJE; "
+"čak i bez primenjene garancije TRŽIŠNE VREDNOSTI ili PRILAGOĐENOSTI ODREĐENOJ "
+"NAMENI. Pogledajte GNU Opštu javnu licencu za više detalja."
+
+#: ../src/main-window.c:1154
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Trebalo bi da ste primili primerak GNU Opšte javne licence uz Almanah. Ako "
+"niste, pogledajte <http://www.gnu.org/licenses/>."
+
+#: ../src/main-window.c:1169
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Koristan čuvar dnevnika, sadrži %u unosa."
+
+#: ../src/main-window.c:1173
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Autorska prava © 2008-2009 Filip Vitnal"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:1181
+msgid "translator-credits"
+msgstr "  Miroslav Nikolić, miroslavnikolic@rocketmail.com"
+
+#: ../src/main-window.c:1185
+msgid "Almanah Website"
+msgstr "Veb stranica Almanaha"
+
+#: ../src/main-window.c:1321
+msgid "Entry content could not be loaded"
+msgstr "Sadržaj unosa ne može biti učitan"
+
+#: ../src/main-window.c:1436
+msgid "Spelling checker could not be initialized"
+msgstr "Provera pisanja ne može biti započeta"
+
+#: ../src/preferences-dialog.c:91
+msgid "Almanah Preferences"
+msgstr "Postavke Almanaha"
+
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:216
+msgid "Encryption key: "
+msgstr "Ključ šifrovanja: "
+
+#: ../src/preferences-dialog.c:221
+msgid "None (don't encrypt)"
+msgstr "Ništa (ne šifruj)"
+
+#: ../src/preferences-dialog.c:245
+msgid "New _Key"
+msgstr "_Novi ključ..."
+
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:252
+msgid "Enable _spell checking"
+msgstr "Uključi _proveru pisanja"
+
+#: ../src/preferences-dialog.c:278
+msgid "Error saving the encryption key"
+msgstr "Greška prilikom čuvanja ključa za šifrovanje"
+
+#: ../src/preferences-dialog.c:297
+msgid "Error opening Seahorse"
+msgstr "Greška prilikom otvaranja priveska ključeva"
+
+#: ../src/printing.c:277
+msgid "This entry is marked as important."
+msgstr "Ovaj unos je označen kao važan."
+
+#: ../src/printing.c:298
+msgid "No entry for this date."
+msgstr "Nema unosa za ovaj datum."
+
+#: ../src/printing.c:453
+msgid "Start date:"
+msgstr "Početni datum:"
+
+#: ../src/printing.c:455
+msgid "End date:"
+msgstr "Krajnji datum:"
+
+#. Line spacing
+#: ../src/printing.c:471
+msgid "Line spacing:"
+msgstr "Razmak reda:"
+
+#: ../src/storage-manager.c:259
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME nije najnovije izdanje %s"
+
+#: ../src/storage-manager.c:268
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME ne podržava OpenPGP: %s"
+
+#: ../src/storage-manager.c:277
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Greška prilikom stvaranja konteksta šifrovanja: %s"
+
+#: ../src/storage-manager.c:306
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Greška prilikom otvaranja šifrovane datoteke baze podataka „%s“: %s"
+
+#: ../src/storage-manager.c:325
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Greška prilikom otvaranja obične datoteke baze podataka „%s“: %s"
+
+#: ../src/storage-manager.c:373
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Šifrovana baza podataka je prazna. Datoteka obične baze podataka nije "
+"obrisana prilikom pravljenja rezervne kopije."
+
+#. Delete the plain file
+#: ../src/storage-manager.c:376
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Ne mogu da obrišem datoteku obične baze podataka „%s“."
+
+#: ../src/storage-manager.c:417
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Greška prilikom dešifrovanja baze podataka: %s"
+
+#: ../src/storage-manager.c:451
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Greška prilikom nabavljanja ključa za šifrovanje: %s"
+
+#: ../src/storage-manager.c:472
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Greška prilikom šifrovanja baze podataka: %s"
+
+#: ../src/storage-manager.c:574
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Ne mogu da otvorim bazu podataka „%s“. SKuLajte je obezbedio sledeću poruku "
+"o grešci: %s"
+
+#: ../src/storage-manager.c:651
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"Ne mogu da pokrenem upit „%s“. SKuLajte je obezbedio sledeću poruku o "
+"grešci: %s"
+
+#: ../src/storage-manager.c:954
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Greška u raščlanjivanju unosa u baferu tokom pretraživanja."
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Važno!"
+
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Unesite adresu"
