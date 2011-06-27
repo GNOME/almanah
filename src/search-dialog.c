@@ -31,13 +31,23 @@ static void sd_results_selection_changed_cb (GtkTreeSelection *tree_selection, G
 
 /* GtkBuilder callbacks */
 void sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
+void sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
 void sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahSearchDialog *self);
 void sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
 
+static void sd_search_progress_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahSearchDialog **search_dialog_weak_pointer);
+static void sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, AlmanahSearchDialog **search_dialog_weak_pointer);
+
 struct _AlmanahSearchDialogPrivate {
 	GtkEntry *sd_search_entry;
+	GtkWidget *sd_search_button;
+	GtkWidget *sd_cancel_button;
+	GtkSpinner *sd_search_spinner;
+	GtkLabel *sd_results_label;
+	GtkWidget *sd_results_alignment;
 	GtkListStore *sd_results_store;
 	GtkTreeSelection *sd_results_selection;
+	GCancellable *sd_cancellable;
 };
 
 G_DEFINE_TYPE (AlmanahSearchDialog, almanah_search_dialog, GTK_TYPE_DIALOG)
@@ -70,6 +80,7 @@ almanah_search_dialog_new (void)
 	const gchar *object_names[] = {
 		"almanah_search_dialog",
 		"almanah_sd_search_button_image",
+		"almanah_sd_cancel_button_image",
 		"almanah_sd_results_store",
 		NULL
 	};
@@ -104,15 +115,22 @@ almanah_search_dialog_new (void)
 
 	priv = ALMANAH_SEARCH_DIALOG (search_dialog)->priv;
 
+	priv->sd_cancellable = NULL;
+
 	/* Grab our child widgets */
 	priv->sd_search_entry = GTK_ENTRY (gtk_builder_get_object (builder, "almanah_sd_search_entry"));
 	priv->sd_results_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_sd_results_store"));
 	priv->sd_results_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_sd_results_tree_view")));
+	priv->sd_results_alignment = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_results_alignment"));
+	priv->sd_search_spinner = GTK_SPINNER (gtk_builder_get_object (builder, "almanah_sd_search_spinner"));
+	priv->sd_results_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_sd_results_label"));
+	priv->sd_search_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_search_button"));
+	priv->sd_cancel_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_cancel_button"));
 
 	g_signal_connect (priv->sd_results_selection, "changed", G_CALLBACK (sd_results_selection_changed_cb),
 			  gtk_builder_get_object (builder, "almanah_sd_view_button"));
 
-	gtk_widget_grab_default (GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_search_button")));
+	gtk_widget_grab_default (priv->sd_search_button);
 
 	g_object_unref (builder);
 
@@ -129,10 +147,109 @@ static void
 sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search_dialog)
 {
 	/* Ensure everything's tidy before we leave the room */
+	if (search_dialog->priv->sd_cancellable != NULL) {
+		g_cancellable_cancel (search_dialog->priv->sd_cancellable);
+	}
+
 	gtk_list_store_clear (search_dialog->priv->sd_results_store);
 	gtk_entry_set_text (search_dialog->priv->sd_search_entry, "");
 
 	gtk_widget_hide (GTK_WIDGET (dialog));
+}
+
+static void
+sd_search_progress_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahSearchDialog **search_dialog_weak_pointer)
+{
+	AlmanahSearchDialogPrivate *priv;
+	GDate date;
+	gchar formatted_date[100];
+	GtkTreeIter tree_iter;
+
+	if (*search_dialog_weak_pointer == NULL) {
+		/* The dialogue's been finalised already, so we'd better just return */
+		return;
+	}
+
+	g_return_if_fail (ALMANAH_IS_STORAGE_MANAGER (storage_manager));
+	g_return_if_fail (ALMANAH_IS_ENTRY (entry));
+	g_return_if_fail (ALMANAH_IS_SEARCH_DIALOG (*search_dialog_weak_pointer));
+
+	priv = ALMANAH_SEARCH_DIALOG (*search_dialog_weak_pointer)->priv;
+
+	almanah_entry_get_date (entry, &date);
+	/* Translators: This is a strftime()-format string for the dates displayed in search results. */
+	g_date_strftime (formatted_date, sizeof (formatted_date), _("%A, %e %B %Y"), &date);
+
+	gtk_list_store_append (priv->sd_results_store, &tree_iter);
+	gtk_list_store_set (priv->sd_results_store, &tree_iter,
+	                    0, g_date_get_day (&date),
+	                    1, g_date_get_month (&date),
+	                    2, g_date_get_year (&date),
+	                    3, &formatted_date,
+	                    4, (almanah_entry_is_important (entry) == TRUE) ? "emblem-important" : NULL,
+	                    -1);
+}
+
+static void
+sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, AlmanahSearchDialog **search_dialog_weak_pointer)
+{
+	AlmanahSearchDialogPrivate *priv;
+	AlmanahSearchDialog *search_dialog;
+	gint counter;
+	GError *error = NULL;
+
+	/* Finish the operation */
+	counter = almanah_storage_manager_search_entries_async_finish (storage_manager, res, &error);
+
+	if (*search_dialog_weak_pointer == NULL) {
+		/* The dialogue's been finalised already, so we'd better just return */
+		g_clear_error (&error);
+		return;
+	}
+
+	g_return_if_fail (ALMANAH_IS_SEARCH_DIALOG (*search_dialog_weak_pointer));
+
+	search_dialog = ALMANAH_SEARCH_DIALOG (*search_dialog_weak_pointer);
+	priv = search_dialog->priv;
+
+	/* Return the search result count to the user */
+	gtk_spinner_stop (priv->sd_search_spinner);
+	gtk_widget_hide (GTK_WIDGET (priv->sd_search_spinner));
+	gtk_widget_set_sensitive (priv->sd_cancel_button, FALSE);
+	gtk_widget_set_sensitive (priv->sd_search_button, TRUE);
+
+	if (error != NULL && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == TRUE) {
+		gtk_label_set_text (priv->sd_results_label, _("Search canceled."));
+	} else if (error != NULL) {
+		/* Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message. */
+		gchar *error_message = g_strdup_printf (_("Error: %s"), error->message);
+		gtk_label_set_text (priv->sd_results_label, error_message);
+		g_free (error_message);
+	} else {
+		/* Success! */
+		gchar *results_string = g_strdup_printf (g_dngettext (GETTEXT_PACKAGE, "Found %d entry:", "Found %d entries:", counter), counter);
+		gtk_label_set_text (priv->sd_results_label, results_string);
+		g_free (results_string);
+	}
+
+	g_clear_error (&error);
+
+	/* Tidy up */
+	g_object_remove_weak_pointer (G_OBJECT (search_dialog), (gpointer*) search_dialog_weak_pointer);
+	g_slice_free (AlmanahSearchDialog*, search_dialog_weak_pointer);
+
+	g_object_unref (priv->sd_cancellable);
+	search_dialog->priv->sd_cancellable = NULL;
+}
+
+void
+sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
+{
+	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
+
+	if (priv->sd_cancellable != NULL) {
+		g_cancellable_cancel (priv->sd_cancellable);
+	}
 }
 
 void
@@ -140,41 +257,47 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 {
 	AlmanahApplication *application;
 	AlmanahStorageManager *storage_manager;
-	AlmanahEntry *entry;
-	AlmanahStorageManagerIter iter;
 	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
-	const gchar *search_string = gtk_entry_get_text (priv->sd_search_entry);
+	const gchar *search_string;
+	AlmanahSearchDialog **search_dialog_weak_pointer;
+
+	if (priv->sd_cancellable != NULL) {
+		// Already searching
+		g_assert_not_reached ();
+		return;
+	}
 
 	/* Clear the results store of previous search results first */
-	gtk_list_store_clear (search_dialog->priv->sd_results_store);
+	gtk_list_store_clear (priv->sd_results_store);
+
+	priv->sd_cancellable = g_cancellable_new ();
+
+	search_string = gtk_entry_get_text (priv->sd_search_entry);
+
+	/* Change UI to show the status */
+	gtk_widget_show (GTK_WIDGET (priv->sd_results_alignment));
+	gtk_label_set_text (priv->sd_results_label, _("Searching…"));
+	gtk_widget_show (GTK_WIDGET (priv->sd_search_spinner));
+	gtk_spinner_start (priv->sd_search_spinner);
 
 	/* Grab the storage manager */
 	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (search_dialog)));
 	storage_manager = almanah_application_dup_storage_manager (application);
 
-	/* Search over all entries */
-	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_search_entries (storage_manager, search_string, &iter)) != NULL) {
-		GDate date;
-		gchar formatted_date[100];
-		GtkTreeIter tree_iter;
+	/* Launch the search */
+	search_dialog_weak_pointer = g_slice_new (AlmanahSearchDialog*);
+	*search_dialog_weak_pointer = search_dialog;
+	g_object_add_weak_pointer (G_OBJECT (search_dialog), (gpointer*) search_dialog_weak_pointer);
 
-		almanah_entry_get_date (entry, &date);
+	almanah_storage_manager_search_entries_async (storage_manager, search_string, priv->sd_cancellable,
+	                                              (AlmanahStorageManagerSearchCallback) sd_search_progress_cb,
+	                                              (gpointer) search_dialog_weak_pointer, NULL,
+	                                              (GAsyncReadyCallback) sd_search_ready_cb, (gpointer) search_dialog_weak_pointer);
 
-		/* Translators: This is a strftime()-format string for the dates displayed in search results. */
-		g_date_strftime (formatted_date, sizeof (formatted_date), _("%A, %e %B %Y"), &date);
-
-		gtk_list_store_append (priv->sd_results_store, &tree_iter);
-		gtk_list_store_set (priv->sd_results_store, &tree_iter,
-		                    0, g_date_get_day (&date),
-		                    1, g_date_get_month (&date),
-		                    2, g_date_get_year (&date),
-		                    3, &formatted_date,
-		                    4, (almanah_entry_is_important (entry) == TRUE) ? "emblem-important" : NULL,
-		                    -1);
-
-		g_object_unref (entry);
-	}
+	/* Allow the user to cancel the search */
+	gtk_widget_set_sensitive (priv->sd_search_button, FALSE);
+	gtk_widget_set_sensitive (priv->sd_cancel_button, TRUE);
+	gtk_widget_grab_default (priv->sd_cancel_button);
 
 	g_object_unref (storage_manager);
 }

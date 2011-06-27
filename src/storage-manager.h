@@ -64,6 +64,8 @@ typedef struct {
 	gpointer user_data; /* to be used by #AlmanahStorageManager functions which need to associate data with a statement */
 } AlmanahStorageManagerIter;
 
+typedef void (*AlmanahStorageManagerSearchCallback) (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, gpointer user_data);
+
 GType almanah_storage_manager_get_type (void);
 GQuark almanah_storage_manager_error_quark (void);
 AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename, const gchar *encryption_key) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
@@ -80,6 +82,11 @@ gboolean almanah_storage_manager_set_entry (AlmanahStorageManager *self, Almanah
 void almanah_storage_manager_iter_init (AlmanahStorageManagerIter *iter);
 AlmanahEntry *almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string,
                                                       AlmanahStorageManagerIter *iter) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+void almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const gchar *search_string, GCancellable *cancellable,
+                                                   AlmanahStorageManagerSearchCallback progress_callback, gpointer progress_user_data,
+                                                   GDestroyNotify progress_user_data_destroy,
+                                                   GAsyncReadyCallback callback_ready, gpointer user_data);
+gint almanah_storage_manager_search_entries_async_finish (AlmanahStorageManager *self, GAsyncResult *result, GError **error);
 AlmanahEntry *almanah_storage_manager_get_entries (AlmanahStorageManager *self,
                                                    AlmanahStorageManagerIter *iter) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 

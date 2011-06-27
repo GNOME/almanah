@@ -477,116 +477,172 @@
 
 	<object class="AlmanahSearchDialog" id="almanah_search_dialog">
 		<property name="border-width">5</property>
+		<property name="default_width">400</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="vbox2">
 				<property name="spacing">6</property>
+				<property name="visible">True</property>
 				<child>
 					<object class="GtkVBox" id="almanah_search_dialog_vbox">
 						<property name="spacing">6</property>
-						<property name="border-width">5</property>
+						<property name="border-width">6</property>
+						<property name="visible">True</property>
 						<child>
-							<object class="GtkAlignment" id="alignment0">
-								<property name="bottom-padding">12</property>
+							<object class="GtkHBox" id="hbox0">
+								<property name="spacing">6</property>
+								<property name="visible">True</property>
 								<child>
-									<object class="GtkHBox" id="hbox0">
-										<property name="spacing">6</property>
-										<child>
-											<object class="GtkEntry" id="almanah_sd_search_entry">
-												<property name="activates-default">True</property>
-												<accessibility>
-													<relation target="almanah_sd_search_button" type="labelled-by"/>
-												</accessibility>
-												<child internal-child="accessible">
-													<object class="AtkObject" id="a11y-almanah_sd_search_entry">
-														<property name="AtkObject::accessible-name" translatable="yes">Search entry</property>
-													</object>
-												</child>
+									<object class="GtkEntry" id="almanah_sd_search_entry">
+										<property name="activates-default">True</property>
+										<property name="visible">True</property>
+										<accessibility>
+											<relation target="almanah_sd_search_button" type="labelled-by"/>
+										</accessibility>
+										<child internal-child="accessible">
+											<object class="AtkObject" id="a11y-almanah_sd_search_entry">
+												<property name="AtkObject::accessible-name" translatable="yes">Search entry</property>
 											</object>
 										</child>
+									</object>
+								</child>
+								<child>
+									<object class="GtkButton" id="almanah_sd_search_button">
+										<property name="image">almanah_sd_search_button_image</property>
+										<property name="label" translatable="yes">Search</property>
+										<property name="can-default">True</property>
+										<property name="has-default">True</property>
+										<property name="visible">True</property>
+										<signal name="clicked" handler="sd_search_button_clicked_cb"/>
+										<accessibility>
+											<relation target="almanah_sd_search_entry" type="label-for"/>
+										</accessibility>
+									</object>
+									<packing>
+										<property name="expand">False</property>
+									</packing>
+								</child>
+								<child>
+									<object class="GtkButton" id="almanah_sd_cancel_button">
+										<property name="use-stock">True</property>
+										<property name="label">gtk-cancel</property>
+										<property name="can-default">True</property>
+										<property name="has-default">True</property>
+										<property name="sensitive">False</property>
+										<property name="visible">True</property>
+										<signal name="clicked" handler="sd_cancel_button_clicked_cb"/>
+										<accessibility>
+											<relation target="almanah_sd_search_entry" type="label-for"/>
+										</accessibility>
+										</object>
+									<packing>
+										<property name="expand">False</property>
+									</packing>
+								</child>
+							</object>
+						</child>
+						<child>
+							<object class="GtkAlignment" id="almanah_sd_results_alignment">
+								<property name="top-padding">12</property>
+								<property name="visible">False</property>
+								<child>
+									<object class="GtkVBox" id="almanah_sd_results_vbox">
+										<property name="spacing">6</property>
+										<property name="visible">True</property>
 										<child>
-											<object class="GtkButton" id="almanah_sd_search_button">
-												<property name="image">almanah_sd_search_button_image</property>
-												<property name="label" translatable="yes">Search</property>
-												<property name="can-default">True</property>
-												<property name="has-default">True</property>
-												<signal name="clicked" handler="sd_search_button_clicked_cb"/>
-												<accessibility>
-													<relation target="almanah_sd_search_entry" type="label-for"/>
-												</accessibility>
+											<object class="GtkHBox" id="almanah_sd_results_hbox">
+												<property name="spacing">6</property>
+												<property name="visible">True</property>
+												<child>
+													<object class="GtkLabel" id="almanah_sd_results_label">
+														<property name="label"></property>
+														<property name="xalign">0</property>
+														<property name="visible">True</property>
+														<accessibility>
+															<relation target="almanah_sd_results_tree_view" type="label-for"/>
+														</accessibility>
+													</object>
+													<packing>
+														<property name="expand">True</property>
+													</packing>
+												</child>
+												<child>
+													<object class="GtkSpinner" id="almanah_sd_search_spinner">
+														<property name="can_focus">False</property>
+														<property name="visible">False</property>
+													</object>
+													<packing>
+														<property name="expand">False</property>
+													</packing>
+												</child>
 											</object>
 											<packing>
 												<property name="expand">False</property>
+											</packing>
+										</child>
+										<child>
+											<object class="GtkScrolledWindow" id="almanah_sd_results_scrolled">
+												<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+												<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+												<property name="shadow-type">GTK_SHADOW_IN</property>
+												<property name="visible">True</property>
+												<child>
+													<object class="GtkTreeView" id="almanah_sd_results_tree_view">
+														<property name="model">almanah_sd_results_store</property>
+														<property name="headers-visible">False</property>
+														<property name="visible">True</property>
+														<signal name="row-activated" handler="sd_results_tree_view_row_activated_cb"/>
+														<accessibility>
+															<relation target="almanah_sd_results_label" type="labelled-by"/>
+														</accessibility>
+														<child internal-child="accessible">
+															<object class="AtkObject" id="a11y-almanah_sd_results_tree_view">
+																<property name="AtkObject::accessible-name" translatable="yes">Result List</property>
+															</object>
+														</child>
+														<child>
+															<object class="GtkTreeViewColumn" id="almanah_sd_results_column_icon">
+																<child>
+																	<object class="GtkCellRendererPixbuf" id="almanah_sd_results_column_icon_renderer"/>
+																	<attributes>
+																		<attribute name="icon-name">4</attribute>
+																	</attributes>
+																</child>
+															</object>
+														</child>
+														<child>
+															<object class="GtkTreeViewColumn" id="almanah_sd_results_column_date">
+																<child>
+																	<object class="GtkCellRendererText" id="almanah_sd_results_column_date_renderer"/>
+																	<attributes>
+																		<attribute name="text">3</attribute>
+																	</attributes>
+																</child>
+															</object>
+														</child>
+													</object>
+												</child>
+											</object>
+											<packing>
+												<property name="expand">True</property>
 											</packing>
 										</child>
 									</object>
 								</child>
 							</object>
 							<packing>
-								<property name="expand">False</property>
+								<property name="expand">True</property>
 							</packing>
-						</child>
-						<child>
-							<object class="GtkLabel" id="almanah_sd_results_label">
-								<property name="label" translatable="yes">Results:</property>
-								<property name="xalign">0</property>
-								<accessibility>
-									<relation target="almanah_sd_results_tree_view" type="label-for"/>
-								</accessibility>
-							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
-						</child>
-						<child>
-							<object class="GtkScrolledWindow" id="scrolledwindow2">
-								<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-								<property name="shadow-type">GTK_SHADOW_IN</property>
-								<child>
-									<object class="GtkTreeView" id="almanah_sd_results_tree_view">
-										<property name="model">almanah_sd_results_store</property>
-										<property name="headers-visible">False</property>
-										<signal name="row-activated" handler="sd_results_tree_view_row_activated_cb"/>
-										<accessibility>
-											<relation target="almanah_sd_results_label" type="labelled-by"/>
-										</accessibility>
-										<child internal-child="accessible">
-											<object class="AtkObject" id="a11y-almanah_sd_results_tree_view">
-												<property name="AtkObject::accessible-name" translatable="yes">Result List</property>
-											</object>
-										</child>
-										<child>
-											<object class="GtkTreeViewColumn" id="almanah_sd_results_column_icon">
-												<child>
-													<object class="GtkCellRendererPixbuf" id="almanah_sd_results_column_icon_renderer"/>
-													<attributes>
-														<attribute name="icon-name">4</attribute>
-													</attributes>
-												</child>
-											</object>
-										</child>
-										<child>
-											<object class="GtkTreeViewColumn" id="almanah_sd_results_column_date">
-												<child>
-													<object class="GtkCellRendererText" id="almanah_sd_results_column_date_renderer"/>
-													<attributes>
-														<attribute name="text">3</attribute>
-													</attributes>
-												</child>
-											</object>
-										</child>
-									</object>
-								</child>
-							</object>
 						</child>
 					</object>
 				</child>
 				<child internal-child="action_area">
 					<object class="GtkHButtonBox" id="hbuttonbox2">
+						<property name="visible">True</property>
 						<child>
 							<object class="GtkButton" id="almanah_sd_view_button">
 								<property name="label" translatable="yes">View Entry</property>
 								<property name="sensitive">False</property>
+								<property name="visible">True</property>
 								<signal name="clicked" handler="sd_view_button_clicked_cb"/>
 							</object>
 						</child>
@@ -594,6 +650,7 @@
 							<object class="GtkButton" id="almanah_sd_close_button">
 								<property name="use-stock">True</property>
 								<property name="label">gtk-close</property>
+								<property name="visible">True</property>
 							</object>
 						</child>
 					</object>

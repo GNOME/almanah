@@ -945,7 +945,7 @@ mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 
 	gtk_window_set_application (GTK_WINDOW (dialog), gtk_window_get_application (GTK_WINDOW (main_window)));
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
-	gtk_widget_show_all (GTK_WIDGET (dialog));
+	gtk_widget_show (GTK_WIDGET (dialog));
 	gtk_dialog_run (GTK_DIALOG (dialog));
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
