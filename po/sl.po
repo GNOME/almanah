@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-21 17:33+0000\n"
-"PO-Revision-Date: 2011-04-23 08:10+0100\n"
+"POT-Creation-Date: 2011-06-28 20:00+0000\n"
+"PO-Revision-Date: 2011-07-02 13:52+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -124,87 +124,83 @@ msgid "Result List"
 msgstr "Seznam rezultatov"
 
 #: ../data/almanah.ui.h:17
-msgid "Results:"
-msgstr "Rezultati:"
-
-#: ../data/almanah.ui.h:18
-#: ../src/search-dialog.c:59
+#: ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Iskanje"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:18
 msgid "Search entry"
 msgstr "Iskanje vnosa"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:19
 msgid "Select Date…"
 msgstr "Izbor datuma ..."
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:20
 msgid "Successful Entries"
 msgstr "Uspešni vnosi"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:21
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Preklopi oznako trenutnega vnosa kot pomembno."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:22
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Preklopi izpis trenutno izbranega besedila kot krepko."
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:23
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Preklopi izpis trenutno izbranega besedila kot ležeče."
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:24
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Preklopi izpis trenutno izbranega besedila kot podčrtano."
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:25
 msgid "View"
 msgstr "Pogled"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:26
 msgid "View Entry"
 msgstr "Ogled vnosa"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:27
 msgid "View Event"
 msgstr "Ogled dogodka"
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:28
 msgid "_Edit"
 msgstr "_Uredi"
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:29
 msgid "_Export…"
 msgstr "_Izvozi ..."
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:30
 msgid "_File"
 msgstr "_Datoteka"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:31
 msgid "_Help"
 msgstr "Pomo_č"
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:32
 msgid "_Import…"
 msgstr "_Uvozi ..."
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:33
 msgid "_Print…"
 msgstr "_Natisni ..."
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:34
 msgid "_Search…"
 msgstr "_Iskanje ..."
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:35
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "na primer: \"14. marec 2009\" ali \"14.3.2009\"."
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:36
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "na primer “http://google.com/” ali “file:///home/me/Photos/photo.jpg”."
 
@@ -239,7 +235,7 @@ msgstr "Izberi datum"
 #: ../src/import-export-dialog.c:470
 #: ../src/main-window.c:205
 #: ../src/preferences-dialog.c:190
-#: ../src/search-dialog.c:85
+#: ../src/search-dialog.c:96
 #: ../src/uri-entry-dialog.c:127
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -346,7 +342,7 @@ msgstr "Rezultati uvoza"
 #: ../src/main-window.c:608
 #: ../src/main-window.c:1293
 #: ../src/printing.c:263
-#: ../src/search-dialog.c:165
+#: ../src/search-dialog.c:181
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %m. %Y"
 
@@ -497,6 +493,30 @@ msgstr "Končni datum:"
 msgid "Line spacing:"
 msgstr "Razmik med vrsticami:"
 
+#: ../src/search-dialog.c:222
+msgid "Search canceled."
+msgstr "Iskanje je bilo preklicano."
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: ../src/search-dialog.c:225
+#, c-format
+msgid "Error: %s"
+msgstr "Napaka: %s"
+
+#. Success!
+#: ../src/search-dialog.c:230
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "Najdenih je bilo %d vnosov:"
+msgstr[1] "Najden je bil %d vnos:"
+msgstr[2] "Najdena sta bila %d vnosa:"
+msgstr[3] "Najdeni so bili %d vnosi:"
+
+#: ../src/search-dialog.c:279
+msgid "Searching…"
+msgstr "Iskanje ..."
+
 #: ../src/storage-manager.c:259
 #, c-format
 msgid "GPGME is not at least version %s"
@@ -570,6 +590,8 @@ msgstr "Pomembno!"
 msgid "Enter URI"
 msgstr "Vnesite URI"
 
+#~ msgid "Results:"
+#~ msgstr "Rezultati:"
 #~ msgid "Add a definition for the currently selected text."
 #~ msgstr "Dodajanje povezave za trenutno izbrano besedilo."
 #~ msgid "Definition Description"
