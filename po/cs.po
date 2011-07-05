@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-18 16:27+0000\n"
-"PO-Revision-Date: 2011-04-21 09:47+0200\n"
+"POT-Creation-Date: 2011-06-27 22:29+0000\n"
+"PO-Revision-Date: 2011-07-05 15:38+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:109
-#: ../src/main-window.c:142
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:103
+#: ../src/main-window.c:141
 msgid "Almanah Diary"
 msgstr "Diář Almanah"
 
@@ -64,7 +64,6 @@ msgid "Whether spell checking of entries is enabled."
 msgstr "Zda je zapnutá kontrola pravopisu záznamů."
 
 #: ../data/almanah.ui.h:1
-#| msgid "Remove the definition from the currently selected text."
 msgid ""
 "Add or remove a hyperlink from the currently selected text to a specified "
 "URI."
@@ -132,99 +131,95 @@ msgstr "Př_edvolby"
 msgid "Result List"
 msgstr "Seznam výsledků"
 
-#: ../data/almanah.ui.h:17
-msgid "Results:"
-msgstr "Výsledky:"
-
-#: ../data/almanah.ui.h:18 ../src/search-dialog.c:60
+#: ../data/almanah.ui.h:17 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Hledat"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:18
 msgid "Search entry"
 msgstr "Hledat záznam"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:19
 msgid "Select Date…"
 msgstr "Vybrat datum…"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:20
 msgid "Successful Entries"
 msgstr "Úspěšné záznamy"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:21
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Přepíná, zda je současný záznam označený jako důležitý."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:22
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Přepíná, zda je aktuálně vybraný text tučný."
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:23
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Přepíná, zda je aktuálně vybraný text kurzívou."
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:24
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Přepíná, zda je aktuálně vybraný text podtržený."
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:25
 msgid "View"
 msgstr "Zobrazit"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:26
 msgid "View Entry"
 msgstr "Zobrazit záznam"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:27
 msgid "View Event"
 msgstr "Zobrazit událost"
 
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:28
 msgid "_Edit"
 msgstr "_Upravit"
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:29
 msgid "_Export…"
 msgstr "_Exportovat…"
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:30
 msgid "_File"
 msgstr "_Soubor"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:31
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:32
 msgid "_Import…"
 msgstr "_Importovat…"
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:33
 msgid "_Print…"
 msgstr "_Tisk…"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:34
 msgid "_Search…"
 msgstr "_Hledat…"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:35
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "např. „14/03/2009“ nebo „14th March 2009“."
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:36
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "např. “http://google.cz/” nebo “file:///home/ja/Obrázky/fotka.jpg”."
 
-#: ../src/application.c:224
+#: ../src/application.c:204
 msgid "Error opening database"
 msgstr "Chyba při otevírání databáze"
 
-#: ../src/application.c:263
+#: ../src/application.c:252
 msgid "Enable debug mode"
 msgstr "Zapnout režim ladění"
 
-#: ../src/application.c:280
+#: ../src/application.c:269
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -232,29 +227,28 @@ msgstr ""
 "programu."
 
 #. Print an error
-#: ../src/application.c:291
+#: ../src/application.c:280
 #, c-format
-#| msgid "Command-line options could not be parsed"
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Nelze zpracovat přepínače příkazového řádku: %s\n"
 
-#: ../src/application.c:310
+#: ../src/application.c:299
 msgid "Error encrypting database"
 msgstr "Chyba při šifrování databáze"
 
-#: ../src/date-entry-dialog.c:73
+#: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Výběr data"
 
-#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
-#: ../src/import-export-dialog.c:471 ../src/main-window.c:206
-#: ../src/preferences-dialog.c:191 ../src/search-dialog.c:86
-#: ../src/uri-entry-dialog.c:128
+#: ../src/date-entry-dialog.c:128 ../src/import-export-dialog.c:167
+#: ../src/import-export-dialog.c:470 ../src/main-window.c:205
+#: ../src/preferences-dialog.c:190 ../src/search-dialog.c:96
+#: ../src/uri-entry-dialog.c:127
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
 
-#: ../src/entry.c:304
+#: ../src/entry.c:303
 #, c-format
 msgid "Invalid data version number %u."
 msgstr "Neplatné číslo verze dat %u."
@@ -279,11 +273,11 @@ msgstr "Úkol v kalendáři"
 msgid "A task on an Evolution calendar."
 msgstr "Úkol v kalendáři Evolution"
 
-#: ../src/export-operation.c:46 ../src/import-operation.c:46
+#: ../src/export-operation.c:45 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Textové soubory"
 
-#: ../src/export-operation.c:47
+#: ../src/export-operation.c:46
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -294,11 +288,11 @@ msgstr ""
 "Exportovány budou všechny záznamy a to nezašifrovaném, v čistě textovém "
 "formátu."
 
-#: ../src/export-operation.c:51 ../src/import-operation.c:51
+#: ../src/export-operation.c:50 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Databáze"
 
-#: ../src/export-operation.c:52
+#: ../src/export-operation.c:51
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
@@ -306,49 +300,49 @@ msgstr ""
 "Vyberte název _souboru, do kterého se má dát úplná kopie nezašifrované "
 "databáze Diáře Almanah"
 
-#: ../src/import-export-dialog.c:202
+#: ../src/import-export-dialog.c:201
 msgid "Import _mode: "
 msgstr "Reži_m importu: "
 
-#: ../src/import-export-dialog.c:202
+#: ../src/import-export-dialog.c:201
 msgid "Export _mode: "
 msgstr "Reži_m exportu: "
 
 #. Set the window title
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:204
 msgid "Import Entries"
 msgstr "Import záznamů"
 
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:204
 msgid "Export Entries"
 msgstr "Export záznamů"
 
 #. Set the button label
-#: ../src/import-export-dialog.c:208
+#: ../src/import-export-dialog.c:207
 msgid "_Import"
 msgstr "_Importovat"
 
-#: ../src/import-export-dialog.c:208
+#: ../src/import-export-dialog.c:207
 msgid "_Export"
 msgstr "_Exportovat"
 
-#: ../src/import-export-dialog.c:245
+#: ../src/import-export-dialog.c:244
 msgid "Import failed"
 msgstr "Import selhal"
 
-#: ../src/import-export-dialog.c:283
+#: ../src/import-export-dialog.c:282
 msgid "Export failed"
 msgstr "Export selhal"
 
-#: ../src/import-export-dialog.c:296
+#: ../src/import-export-dialog.c:295
 msgid "Export successful"
 msgstr "Export úspěšný"
 
-#: ../src/import-export-dialog.c:297
+#: ../src/import-export-dialog.c:296
 msgid "The diary was successfully exported."
 msgstr "Diář byl úspěšně vyexportován."
 
-#: ../src/import-export-dialog.c:445
+#: ../src/import-export-dialog.c:444
 msgid "Import Results"
 msgstr "Výsledky importu"
 
@@ -358,13 +352,13 @@ msgstr "Výsledky importu"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:538 ../src/main-window.c:584
-#: ../src/main-window.c:609 ../src/main-window.c:1291 ../src/printing.c:264
-#: ../src/search-dialog.c:166
+#: ../src/import-export-dialog.c:537 ../src/main-window.c:583
+#: ../src/main-window.c:608 ../src/main-window.c:1293 ../src/printing.c:263
+#: ../src/search-dialog.c:181
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %B %Y"
 
-#: ../src/import-operation.c:47
+#: ../src/import-operation.c:46
 msgid ""
 "Select a _folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
@@ -374,19 +368,19 @@ msgstr ""
 "ve formátu „rrrr-mm-dd“ a bez přípony. Všechny takovéto soubory budou "
 "naimportovány."
 
-#: ../src/import-operation.c:52
+#: ../src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
 "Vyberte databázový _soubor vytvořený aplikací Diář Almanah, který se má "
 "importovat."
 
-#: ../src/import-operation.c:249
+#: ../src/import-operation.c:248
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
 msgstr ""
 "Chyba při deserializaci importovaného záznamu do vyrovnávací paměti: %s"
 
-#: ../src/import-operation.c:265
+#: ../src/import-operation.c:264
 #, c-format
 msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
@@ -398,7 +392,7 @@ msgstr ""
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 #. * The imported entry is appended to this text.
-#: ../src/import-operation.c:306
+#: ../src/import-operation.c:305
 #, c-format
 msgid ""
 "\n"
@@ -411,28 +405,28 @@ msgstr ""
 "Záznam importován z „%s“:\n"
 "\n"
 
-#: ../src/main-window.c:588
+#: ../src/main-window.c:587
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Opravdu chcete upravit tento záznam v diáři na %s?"
 
-#: ../src/main-window.c:613
+#: ../src/main-window.c:612
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Opravdu chcete smazat tento záznam v diáři na %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:715
+#: ../src/main-window.c:714
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Neznámá nebo duplicitní textová značka „%s“ v záznamu. Bude se ignorovat."
 
-#: ../src/main-window.c:1028
+#: ../src/main-window.c:1030
 msgid "Error opening URI"
 msgstr "Chyba při otevírání URI"
 
-#: ../src/main-window.c:1144
+#: ../src/main-window.c:1146
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -444,7 +438,7 @@ msgstr ""
 "Free Software Foundation, a to buď ve verzi 3 této licence nebo (dle vaší "
 "volby) v libovolné novější verzi."
 
-#: ../src/main-window.c:1148
+#: ../src/main-window.c:1150
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -456,7 +450,7 @@ msgstr ""
 "KONKRÉTNÍ ÚČEL. Více podrobností najdete přímo v licenci GNU General Public "
 "License."
 
-#: ../src/main-window.c:1152
+#: ../src/main-window.c:1154
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -465,13 +459,12 @@ msgstr ""
 "License. Pokud se tak nestalo, podívejte se na <http://www.gnu.org/licenses/"
 ">."
 
-#: ../src/main-window.c:1167
+#: ../src/main-window.c:1169
 #, c-format
-#| msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Užitečný diář na hlídání termínů, uloženo %u záznamů."
 
-#: ../src/main-window.c:1171
+#: ../src/main-window.c:1173
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -480,72 +473,96 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:1179
+#: ../src/main-window.c:1181
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
-#: ../src/main-window.c:1183
+#: ../src/main-window.c:1185
 msgid "Almanah Website"
 msgstr "Webové stránky Almanah"
 
-#: ../src/main-window.c:1319
+#: ../src/main-window.c:1321
 msgid "Entry content could not be loaded"
 msgstr "Obsah záznamu nelze načíst"
 
-#: ../src/main-window.c:1434
+#: ../src/main-window.c:1436
 msgid "Spelling checker could not be initialized"
 msgstr "Nelze inicializovat kontrolu pravopisu"
 
-#: ../src/preferences-dialog.c:92
+#: ../src/preferences-dialog.c:91
 msgid "Almanah Preferences"
 msgstr "Předvolby Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:217
+#: ../src/preferences-dialog.c:216
 msgid "Encryption key: "
 msgstr "Šifrovací klíč:"
 
-#: ../src/preferences-dialog.c:222
+#: ../src/preferences-dialog.c:221
 msgid "None (don't encrypt)"
 msgstr "Žádný (nešifrovat)"
 
-#: ../src/preferences-dialog.c:246
+#: ../src/preferences-dialog.c:245
 msgid "New _Key"
 msgstr "Nový _klíč"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:253
+#: ../src/preferences-dialog.c:252
 msgid "Enable _spell checking"
 msgstr "Zapnout kontrolu pravopi_su"
 
-#: ../src/preferences-dialog.c:279
+#: ../src/preferences-dialog.c:278
 msgid "Error saving the encryption key"
 msgstr "Chyba při ukládání šifrovacího klíče"
 
-#: ../src/preferences-dialog.c:298
+#: ../src/preferences-dialog.c:297
 msgid "Error opening Seahorse"
 msgstr "Chyba při otevírání aplikace Seahorse"
 
-#: ../src/printing.c:278
+#: ../src/printing.c:277
 msgid "This entry is marked as important."
 msgstr "Tento záznam je označený jako důležitý."
 
-#: ../src/printing.c:299
+#: ../src/printing.c:298
 msgid "No entry for this date."
 msgstr "Pro tento den není žádný záznam."
 
-#: ../src/printing.c:454
+#: ../src/printing.c:453
 msgid "Start date:"
 msgstr "Počáteční datum:"
 
-#: ../src/printing.c:456
+#: ../src/printing.c:455
 msgid "End date:"
 msgstr "Konečné datum:"
 
 #. Line spacing
-#: ../src/printing.c:472
+#: ../src/printing.c:471
 msgid "Line spacing:"
 msgstr "Řádkování:"
+
+#: ../src/search-dialog.c:222
+msgid "Search canceled."
+msgstr "Hledání zrušeno."
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: ../src/search-dialog.c:225
+#, c-format
+msgid "Error: %s"
+msgstr "Chyba: %s"
+
+#. Success!
+#: ../src/search-dialog.c:230
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "Nalezen %d záznam:"
+msgstr[1] "Nalezeny %d záznamy:"
+msgstr[2] "Nalezeno %d záznamů:"
+
+#: ../src/search-dialog.c:279
+#| msgid "_Search…"
+msgid "Searching…"
+msgstr "Hledá se…"
 
 #: ../src/storage-manager.c:259
 #, c-format
@@ -623,142 +640,11 @@ msgid "Error deserializing entry into buffer while searching."
 msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledání."
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:177
+#: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Důležité!"
 
-#: ../src/uri-entry-dialog.c:72
+#: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Zadání adresy URI"
 
-#~ msgid "Add a definition for the currently selected text."
-#~ msgstr "Přidat definici pro aktuálně vybraný text."
-
-#~ msgid "Definition Description"
-#~ msgstr "Popis definice"
-
-#~ msgid "Definition List"
-#~ msgstr "Seznam definic"
-
-#~ msgid "Definition Type"
-#~ msgstr "Typ definice"
-
-#~ msgid "Definition type:"
-#~ msgstr "Typ definice:"
-
-#~ msgid "Nothing selected"
-#~ msgstr "Není nic vybráno"
-
-#~ msgid "_Add Definition"
-#~ msgstr "Přid_at definici"
-
-#~ msgid "_Definitions"
-#~ msgstr "_Definice"
-
-#~ msgid "_Remove Definition"
-#~ msgstr "Odst_ranit definici"
-
-#~ msgid "_View Definitions"
-#~ msgstr "_Zobrazit definice"
-
-#~ msgid "Add Definition"
-#~ msgstr "Přidání definice"
-
-#~ msgid "Definition Manager"
-#~ msgstr "Správce definic"
-
-#~ msgid "Are you sure you want to delete the definition for \"%s\"?"
-#~ msgstr "Opravdu chcete smazat definici pro „%s“"
-
-#~ msgid "Contact"
-#~ msgstr "Kontakt"
-
-#~ msgid "An Evolution contact."
-#~ msgstr "Kontakt z aplikace Evolution."
-
-#~ msgid "Select Contact"
-#~ msgstr "Výběr kontaktu"
-
-#~ msgid "Error opening contact"
-#~ msgstr "Chyba při otevírání kontaktu"
-
-#~ msgid "Error opening Evolution"
-#~ msgstr "Chyba při otevírání aplikace Evolution"
-
-#~ msgid "File"
-#~ msgstr "Soubor"
-
-#~ msgid "An attached file."
-#~ msgstr "Přiložený soubor."
-
-#~ msgid "Error opening file"
-#~ msgstr "Chyba při otevírání souboru"
-
-#~ msgid "Select File"
-#~ msgstr "Výběr souboru"
-
-#~ msgid "Note"
-#~ msgstr "Poznámka"
-
-#~ msgid "A note about an important event."
-#~ msgstr "Poznámka o důležité události."
-
-#~ msgid "URI"
-#~ msgstr "URI"
-
-#~ msgid "A URI of a file or web page."
-#~ msgstr "URI souboru nebo webové stránky."
-
-#~ msgid "URI: "
-#~ msgstr "URI: "
-
-#~ msgid "- Manage your diary"
-#~ msgstr "- Spravovat svůj diář"
-
-#~ msgid "Main window X position"
-#~ msgstr "Poloha X hlavního okna"
-
-#~ msgid "Main window Y position"
-#~ msgstr "Poloha Y hlavního okna"
-
-#~ msgid "Main window height"
-#~ msgstr "Výška hlavního okna"
-
-#~ msgid "Main window maximization"
-#~ msgstr "Maximalizace hlavního okna"
-
-#~ msgid "Main window width"
-#~ msgstr "Šířka hlavního okna"
-
-#~ msgid "The X position of the main window."
-#~ msgstr "X-ová souřadnice polohy hlavního okna."
-
-#~ msgid "The Y position of the main window."
-#~ msgstr "Y-ová souřadnice polohy hlavního okna."
-
-#~ msgid "The height of the main window."
-#~ msgstr "Výška hlavního okna."
-
-#~ msgid "The width of the main window."
-#~ msgstr "Šířka hlavního okna."
-
-#~ msgid "Whether the main window should start maximized."
-#~ msgstr "Zda by se mělo hlavní okno spustit maximalizované."
-
-#~ msgid "F-Spot Photo"
-#~ msgstr "Fotka z F-Spot"
-
-#~ msgid "A photo stored in F-Spot."
-#~ msgstr "Fotka uložená v aplikaci F-Spot."
-
-#~ msgid "Error launching F-Spot"
-#~ msgstr "Chyba při spouštění aplikace F-Spot"
-
-#~ msgid "Select a Folder"
-#~ msgstr "Výběr složky"
-
-#~ msgid "Select a File"
-#~ msgstr "Výběr souboru"
-
-#~ msgid "Enable import mode"
-#~ msgstr "Zapnout režim importu"
