@@ -1061,7 +1061,9 @@ search_entries_async_thread (GSimpleAsyncResult *result, AlmanahStorageManager *
 		progress_data->entry = g_object_ref (entry);
 		progress_data->user_data = search_data->progress_user_data;
 
-		g_idle_add_full (G_PRIORITY_HIGH_IDLE, (GSourceFunc) search_entry_async_progress_cb,
+		/* We have to use G_PRIORITY_DEFAULT here to contend with the GAsyncReadyCallback for the whole search operation. All the progress
+		 * callbacks must have been made before the finished callback. */
+		g_idle_add_full (G_PRIORITY_DEFAULT, (GSourceFunc) search_entry_async_progress_cb,
 		                 progress_data, (GDestroyNotify) progress_callback_data_free);
 	}
 }
