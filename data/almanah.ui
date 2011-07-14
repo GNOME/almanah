@@ -533,12 +533,15 @@
 										<accessibility>
 											<relation target="almanah_sd_search_entry" type="label-for"/>
 										</accessibility>
-										</object>
+									</object>
 									<packing>
 										<property name="expand">False</property>
 									</packing>
 								</child>
 							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
 						</child>
 						<child>
 							<object class="GtkAlignment" id="almanah_sd_results_alignment">
