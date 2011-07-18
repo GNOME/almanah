@@ -805,7 +805,7 @@ mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 void
 mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
-#ifdef ENABLE_ENCRYPTION
+#if defined(ENABLE_ENCRYPTION) || defined(ENABLE_SPELL_CHECKING)
 	if (almanah->preferences_dialog == NULL)
 		almanah->preferences_dialog = GTK_WIDGET (almanah_preferences_dialog_new ());
 
