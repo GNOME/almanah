@@ -40,10 +40,11 @@ static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesD
 static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
 #endif /* ENABLE_ENCRYPTION */
 #ifdef ENABLE_SPELL_CHECKING
-static void pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog);
 static void spell_checking_enabled_notify_cb (GConfClient *client, guint connection_id, GConfEntry *entry, AlmanahPreferencesDialog *self);
 static void pd_spell_checking_enabled_check_button_toggled_cb (GtkToggleButton *toggle_button, gpointer user_data);
 #endif /* ENABLE_SPELL_CHECKING */
+
+static void pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog);
 
 struct _AlmanahPreferencesDialogPrivate {
 #ifdef ENABLE_ENCRYPTION
@@ -260,12 +261,7 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 }
 #endif /* ENABLE_ENCRYPTION */
 
-static void
-pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog)
-{
-	gtk_widget_hide_all (GTK_WIDGET (dialog));
-}
-
+#ifdef ENABLE_SPELL_CHECKING
 static void
 spell_checking_enabled_notify_cb (GConfClient *client, guint connection_id, GConfEntry *entry, AlmanahPreferencesDialog *self)
 {
@@ -305,4 +301,11 @@ pd_spell_checking_enabled_check_button_toggled_cb (GtkToggleButton *toggle_butto
 {
 	gconf_client_set_bool (almanah->gconf_client, "/apps/almanah/spell_checking_enabled",
 			       gtk_toggle_button_get_active (toggle_button), NULL);
+}
+#endif /* ENABLE_SPELL_CHECKING */
+
+static void
+pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog)
+{
+	gtk_widget_hide_all (GTK_WIDGET (dialog));
 }
