@@ -23,9 +23,6 @@
 
 #include "main-window.h"
 #include "search-dialog.h"
-#ifdef ENABLE_ENCRYPTION
-#include "preferences-dialog.h"
-#endif /* ENABLE_ENCRYPTION */
 #include "interface.h"
 
 const gchar *
