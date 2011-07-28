@@ -1,0 +1,764 @@
+# translation of almanah_eu.po to Basque
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: almanah_eu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-28 18:14+0200\n"
+"PO-Revision-Date: 2011-06-17 12:14+0200\n"
+"Last-Translator: \n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: eu\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"\n"
+"\n"
+"\n"
+"\n"
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:103
+#: ../src/main-window.c:141
+msgid "Almanah Diary"
+msgstr "Almanah agenda"
+
+#: ../data/almanah.desktop.in.h:2
+msgid "Diary"
+msgstr "Agenda"
+
+#: ../data/almanah.desktop.in.h:3
+msgid "Keep a personal diary"
+msgstr "Eduki agenda pertsonala"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "Datu-baseak enkriptatzeko gakoaren IDa"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid "Spell checking enabled?"
+msgstr "Ortografia-egiaztatzailea gaituta?"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Ortografia egiaztatzeko hizkuntza"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Datu-basea enkriptatzeko eta desenkriptatzeko gakoaren Ida, Almanah "
+"eraikitzeko enkriptatze-euskarria erabili bada. Utzi hutsik datu-basearen "
+"enkriptatzea desgaitzeko."
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr ""
+"Sarreren ortografia egiaztatzeko erabilitako hizkuntzaren adierazle lokala."
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Sarreren ortografia egiaztatzea gaituta dagoen ala ez adierazten du."
+
+#: ../data/almanah.ui.h:1
+#, fuzzy
+msgid ""
+"Add or remove a hyperlink from the currently selected text to a specified "
+"URI."
+msgstr "Kendu unean hautatutako testuaren definizioa."
+
+#: ../data/almanah.ui.h:2
+msgid "Add/Remove _Hyperlink"
+msgstr ""
+
+#: ../data/almanah.ui.h:3
+msgid "Calendar"
+msgstr "Egutegia"
+
+#: ../data/almanah.ui.h:4
+msgid "Entry editing area"
+msgstr "Sarrerak editatzeko area"
+
+#: ../data/almanah.ui.h:5
+msgid "F_ormat"
+msgstr "_Formatua"
+
+#: ../data/almanah.ui.h:6
+msgid "Failed Entries"
+msgstr "Huts egindako sarrerak"
+
+#: ../data/almanah.ui.h:7
+msgid "Go to _Today"
+msgstr "_Joan gaurko egunera"
+
+#: ../data/almanah.ui.h:8
+msgid "I_mportant"
+msgstr "_Garrantzitsua"
+
+#: ../data/almanah.ui.h:9
+msgid "Import Results List"
+msgstr "Inportatu emaitzen zerrenda"
+
+#: ../data/almanah.ui.h:10
+msgid "Insert _Time"
+msgstr "_Txertatu ordua"
+
+#: ../data/almanah.ui.h:11
+msgid "Jump to the current date in the diary."
+msgstr "Joan Agendako uneko datara."
+
+#: ../data/almanah.ui.h:12
+msgid "Merged Entries"
+msgstr "Batutako sarrerak"
+
+#: ../data/almanah.ui.h:13
+msgid "Past Event List"
+msgstr "Lehenagoko gertaeren zerrenda"
+
+#: ../data/almanah.ui.h:14
+msgid "Past Events"
+msgstr "Lehenagoko gertaerak"
+
+#: ../data/almanah.ui.h:15
+msgid "Pr_eferences"
+msgstr "_Hobespenak"
+
+#: ../data/almanah.ui.h:16
+msgid "Result List"
+msgstr "Emaitzen zerrenda"
+
+#: ../data/almanah.ui.h:17 ../src/search-dialog.c:69
+msgid "Search"
+msgstr "Bilatu"
+
+#: ../data/almanah.ui.h:18
+msgid "Search entry"
+msgstr "Bilatu sarrera"
+
+#: ../data/almanah.ui.h:19
+msgid "Select Date…"
+msgstr "Hautatu data..."
+
+#: ../data/almanah.ui.h:20
+msgid "Successful Entries"
+msgstr "Sarrera onak"
+
+#: ../data/almanah.ui.h:21
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Txandakatu uneko sarrera garrantzitsu gisa markatuta dagoen edo ez."
+
+#: ../data/almanah.ui.h:22
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Txandakatu unean hautatutako testua lodia den edo ez."
+
+#: ../data/almanah.ui.h:23
+msgid "Toggle whether the currently selected text is italic."
+msgstr "Txandakatu unean hautatutako testua etzana den edo ez."
+
+#: ../data/almanah.ui.h:24
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "Txandakatu unean hautatutako testua azpimarratuta dagoen edo ez."
+
+#: ../data/almanah.ui.h:25
+msgid "View"
+msgstr "Ikuspegia"
+
+#: ../data/almanah.ui.h:26
+msgid "View Entry"
+msgstr "Ikusi sarrera"
+
+#: ../data/almanah.ui.h:27
+msgid "View Event"
+msgstr "Ikusi gertaera"
+
+#: ../data/almanah.ui.h:28
+msgid "_Edit"
+msgstr "_Editatu"
+
+#: ../data/almanah.ui.h:29
+msgid "_Export…"
+msgstr "_Esportatu..."
+
+#: ../data/almanah.ui.h:30
+msgid "_File"
+msgstr "_Fitxategia"
+
+#: ../data/almanah.ui.h:31
+msgid "_Help"
+msgstr "_Laguntza"
+
+#: ../data/almanah.ui.h:32
+msgid "_Import…"
+msgstr "_Inportatu..."
+
+#: ../data/almanah.ui.h:33
+msgid "_Print…"
+msgstr "I_nprimatu..."
+
+#: ../data/almanah.ui.h:34
+msgid "_Search…"
+msgstr "_Bilatu..."
+
+#: ../data/almanah.ui.h:35
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "adib. \"2009/03/14\" edo \"2009ko martxoaren 14\"."
+
+#: ../data/almanah.ui.h:36
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr ""
+
+#: ../src/application.c:204
+msgid "Error opening database"
+msgstr "Errorea datu-basea irekitzean"
+
+#: ../src/application.c:252
+msgid "Enable debug mode"
+msgstr "Gaitu arazketa-modua"
+
+#: ../src/application.c:269
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+
+#. Print an error
+#: ../src/application.c:280
+#, fuzzy, c-format
+msgid "Command line options could not be parsed: %s\n"
+msgstr "Ezin izan dira komando-lerroen aukerak analizatu"
+
+#: ../src/application.c:299
+msgid "Error encrypting database"
+msgstr "Errorea datu-basea enkriptatzean"
+
+#: ../src/date-entry-dialog.c:72
+msgid "Select Date"
+msgstr "Hautatu data"
+
+#: ../src/date-entry-dialog.c:128 ../src/import-export-dialog.c:167
+#: ../src/import-export-dialog.c:470 ../src/main-window.c:205
+#: ../src/preferences-dialog.c:190 ../src/search-dialog.c:96
+#: ../src/uri-entry-dialog.c:127
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Ezin izan da interfazeetako \"%s\" fitxategia kargatu"
+
+#: ../src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr ""
+
+#: ../src/events/calendar-appointment.c:49
+msgid "Calendar Appointment"
+msgstr "Egutegiko hitzordua"
+
+#: ../src/events/calendar-appointment.c:50
+msgid "An appointment on an Evolution calendar."
+msgstr "Evolution-en egutegiko hitzordua."
+
+#: ../src/events/calendar-appointment.c:119 ../src/events/calendar-task.c:108
+msgid "Error launching Evolution"
+msgstr "Errorea Evolution abiaraztean"
+
+#: ../src/events/calendar-task.c:49
+msgid "Calendar Task"
+msgstr "Egutegiko zeregina"
+
+#: ../src/events/calendar-task.c:50
+msgid "A task on an Evolution calendar."
+msgstr "Evolution-en egutegiko zeregina."
+
+#: ../src/export-operation.c:45 ../src/import-operation.c:45
+msgid "Text Files"
+msgstr "Testu-fitxategiak"
+
+#: ../src/export-operation.c:46
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"Hautatu testu-fitxategiak dauzkan karpeta bat, bat sarrera bakoitzeko, 'uuuu-"
+"hh-ee' formatudun izenekin, eta luzapenik gabe. Fitxategi horiek guztiak "
+"esportatuko dira, enkriptatu gabeko testu soileko formatuan."
+
+#: ../src/export-operation.c:50 ../src/import-operation.c:50
+msgid "Database"
+msgstr "Datu-basea"
+
+#: ../src/export-operation.c:51
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"Hautatu _fitxategi-izen bat Almanah Diary-ren datu-basearen enkriptatu "
+"gabeko kopia osoarentzako."
+
+#: ../src/import-export-dialog.c:201
+#, fuzzy
+msgid "Import _mode: "
+msgstr "Inportatzeko modua: "
+
+#: ../src/import-export-dialog.c:201
+msgid "Export _mode: "
+msgstr "_Esportatzeko modua: "
+
+#. Set the window title
+#: ../src/import-export-dialog.c:204
+msgid "Import Entries"
+msgstr "Inportatu sarrerak"
+
+#: ../src/import-export-dialog.c:204
+msgid "Export Entries"
+msgstr "Esportatu sarrerak"
+
+#. Set the button label
+#: ../src/import-export-dialog.c:207
+msgid "_Import"
+msgstr "_Inportatu"
+
+#: ../src/import-export-dialog.c:207
+msgid "_Export"
+msgstr "_Esportatu"
+
+#: ../src/import-export-dialog.c:244
+msgid "Import failed"
+msgstr "Huts egin du inportatzean"
+
+#: ../src/import-export-dialog.c:282
+msgid "Export failed"
+msgstr "Huts egin du esportatzean"
+
+#: ../src/import-export-dialog.c:295
+msgid "Export successful"
+msgstr "Ongi esportatu da"
+
+#: ../src/import-export-dialog.c:296
+msgid "The diary was successfully exported."
+msgstr "Egunkaria ongi esportatu da."
+
+#: ../src/import-export-dialog.c:444
+msgid "Import Results"
+msgstr "Inportazio-emaitzak"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-export-dialog.c:537 ../src/main-window.c:583
+#: ../src/main-window.c:608 ../src/main-window.c:1293 ../src/printing.c:263
+#: ../src/search-dialog.c:181
+msgid "%A, %e %B %Y"
+msgstr "%A, %Y %B %e"
+
+#: ../src/import-operation.c:46
+#, fuzzy
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Hautatu testu-fitxategiak dauzkan karpeta bat, bat sarrera bakoitzeko, 'uuuu-"
+"hh-ee' formatudun izenekin, eta luzapenik gabe. Fitxategi horiek guztiak "
+"inportatuko dira."
+
+#: ../src/import-operation.c:51
+#, fuzzy
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr ""
+"Hautatu Almanah Diary-k sortutako datu-basearen fitxategi bat inportatzeko."
+
+#: ../src/import-operation.c:248
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "Errorea bufferrean inportatutako sarrera deserializatzean: %s"
+
+#: ../src/import-operation.c:264
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+" Errorea bufferrean inportatutako sarrera deserializatzean; gainidazten "
+"inportatutako sarrerarekin: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-operation.c:305
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"\"%s\"(e)tik inportatutako sarrera:\n"
+"\n"
+
+#: ../src/main-window.c:587
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "Ziur zaude %s(r)en agendako sarrera hau editatu nahi duzula?"
+
+#: ../src/main-window.c:612
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Ziur zaude %s(r)en agendako sarrera hau ezabatu nahi duzula?"
+
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:714
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "\"%s\" testu-etiketa ezezaguna edo bikoitza sarreran. Ez ikusi egiten."
+
+#: ../src/main-window.c:1030
+msgid "Error opening URI"
+msgstr "Errorea URIa irekitzean"
+
+#: ../src/main-window.c:1146
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah software librea da: birbanatu eta/edo alda dezakezu Free Software "
+"Foundation-ek argitaratutako GNU Lizentzia Publiko Orokorraren 3. bertsioan, "
+"edo (nahiago baduzu) bertsio berriago batean, jasotako "
+
+#: ../src/main-window.c:1150
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Baliagarria izateko asmoz banatzen da Almanah, baina INOLAKO BERMERIK GABE; "
+"era berean, ez da bermatzen beraren EGOKITASUNA MERKATURATZEKO edo HELBURU "
+"PARTIKULARRETARAKO ERABILTZEKO.  Argibide gehiago nahi izanez gero, ikus GNU "
+"Lizentzia Publiko Orokorra. "
+
+#: ../src/main-window.c:1154
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Almanah-rekin batera GNU Lizentzia Publiko Orokorraren kopia bat jasoko "
+"zenuen; hala ez bada, ikus <http://www.gnu.org/licenses/>."
+
+#: ../src/main-window.c:1169
+#, fuzzy, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Agenda erabilgarria, %u sarrera eta %u definizio biltegiratzeko."
+
+#: ../src/main-window.c:1173
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Copyright © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:1181
+msgid "translator-credits"
+msgstr "Hizkuntza Politikarako Sailburuordetza <hizkpol@ej-gv.es>"
+
+#: ../src/main-window.c:1185
+msgid "Almanah Website"
+msgstr "Almanah-ren webgunea"
+
+#: ../src/main-window.c:1321
+msgid "Entry content could not be loaded"
+msgstr "Ezin izan da sarreraren edukia kargatu"
+
+#: ../src/main-window.c:1436
+msgid "Spelling checker could not be initialized"
+msgstr "Ezin izan da hasieratu ortografia-egiaztatzailea"
+
+#: ../src/preferences-dialog.c:91
+msgid "Almanah Preferences"
+msgstr "Almanah-ren hobespenak"
+
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:216
+msgid "Encryption key: "
+msgstr "Enkriptatze-gakoa: "
+
+#: ../src/preferences-dialog.c:221
+msgid "None (don't encrypt)"
+msgstr "Bat ere ez (ez enkriptatu)"
+
+#: ../src/preferences-dialog.c:245
+msgid "New _Key"
+msgstr "_Gako berria"
+
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:252
+msgid "Enable _spell checking"
+msgstr "G_aitu ortografia-egiaztapena"
+
+#: ../src/preferences-dialog.c:278
+msgid "Error saving the encryption key"
+msgstr "Errorea enkriptatze-gakoa gordetzean"
+
+#: ../src/preferences-dialog.c:297
+msgid "Error opening Seahorse"
+msgstr "Errorea Seahorse irekitzean"
+
+#: ../src/printing.c:277
+msgid "This entry is marked as important."
+msgstr "Sarrera hau garrantzitsu gisa markatuta dago."
+
+#: ../src/printing.c:298
+msgid "No entry for this date."
+msgstr "Ez dago sarrerarik data honekin."
+
+#: ../src/printing.c:453
+msgid "Start date:"
+msgstr "Hasiera-data:"
+
+#: ../src/printing.c:455
+msgid "End date:"
+msgstr "Amaiera-data:"
+
+#. Line spacing
+#: ../src/printing.c:471
+msgid "Line spacing:"
+msgstr "Lerroen arteko tartea:"
+
+#: ../src/search-dialog.c:222
+msgid "Search canceled."
+msgstr ""
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: ../src/search-dialog.c:225
+#, c-format
+msgid "Error: %s"
+msgstr ""
+
+#: ../src/search-dialog.c:279
+#, fuzzy
+msgid "Searching…"
+msgstr "_Bilatu..."
+
+#: ../src/storage-manager.c:259
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGMEren bertsioa ez da gutxienez %s"
+
+#: ../src/storage-manager.c:268
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGMEk ez du onartzen OpenPGP: %s"
+
+#: ../src/storage-manager.c:277
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Errorea zifraketa-testuingurua sortzean: %s"
+
+#: ../src/storage-manager.c:306
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Errorea enkriptatutako datu-basearen \"%s\" fitxategia irekitzean: %s"
+
+#: ../src/storage-manager.c:325
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Errorea datu-base soilaren \"%s\" fitxategia irekitzean: %s"
+
+#: ../src/storage-manager.c:373
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Enkriptatutako datu-basea hutsik dago. Datu-base soilaren fitxategia ezabatu "
+"gabe utzi da babeskopia gisa."
+
+#. Delete the plain file
+#: ../src/storage-manager.c:376
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Ezin izan da ezabatu datu-base soilaren \"%s\" fitxategia."
+
+#: ../src/storage-manager.c:417
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Errorea datu-basea desenkriptatzean: %s"
+
+#: ../src/storage-manager.c:451
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Errorea enkriptatze-gakoa lortzean: %s"
+
+#: ../src/storage-manager.c:472
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Errorea datu-basea enkriptatzean: %s"
+
+#: ../src/storage-manager.c:574
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Ezin izan da ireki \"%s\" datu-basea. Errore-mezu hau eman du SQLite-k: %s"
+
+#: ../src/storage-manager.c:651
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"Ezin izan da exekutatu \"%s\" kontsulta. SQLite-k errore-mezu hau eman du: %s"
+
+#: ../src/storage-manager.c:954
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Errorea bilaketan zehar bufferreko sarrera deserializatzean."
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Garrantzitsua!"
+
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr ""
+
+#~ msgid "Main window X position"
+#~ msgstr "Leiho nagusiaren X posizioa"
+
+#~ msgid "Main window Y position"
+#~ msgstr "Leiho nagusiaren Y posizioa"
+
+#~ msgid "Main window height"
+#~ msgstr "Leiho nagusiaren altuera"
+
+#~ msgid "Main window maximization"
+#~ msgstr "Leiho nagusia maximizatzea"
+
+#~ msgid "Main window width"
+#~ msgstr "Leiho nagusiaren zabalera"
+
+#~ msgid "The X position of the main window."
+#~ msgstr "Leiho nagusiaren X posizioa."
+
+#~ msgid "The Y position of the main window."
+#~ msgstr "Leiho nagusiaren Y posizioa."
+
+#~ msgid "The height of the main window."
+#~ msgstr "Leiho nagusiaren altuera."
+
+#~ msgid "The width of the main window."
+#~ msgstr "Leiho nagusiaren zabalera."
+
+#~ msgid "Whether the main window should start maximized."
+#~ msgstr "Leiho nagusia maximizatuta ireki behar den ala ez adierazten du."
+
+#~ msgid "Add a definition for the currently selected text."
+#~ msgstr "Gehitu unean hautatutako testuaren definizioa."
+
+#~ msgid "Definition Description"
+#~ msgstr "Definizioen azalpena"
+
+#~ msgid "Definition List"
+#~ msgstr "Definizioen zerrenda"
+
+#~ msgid "Definition Type"
+#~ msgstr "Definizio mota"
+
+#~ msgid "Definition type:"
+#~ msgstr "Definizio mota:"
+
+#~ msgid "Nothing selected"
+#~ msgstr "Ez dago ezer hautatuta"
+
+#~ msgid "Results:"
+#~ msgstr "Emaitzak:"
+
+#~ msgid "_Add Definition"
+#~ msgstr "_Gehitu definizioa"
+
+#~ msgid "_Definitions"
+#~ msgstr "_Definizioak"
+
+#~ msgid "_Remove Definition"
+#~ msgstr "_Kendu definizioa"
+
+#~ msgid "_View Definitions"
+#~ msgstr "_Ikusi definizioak"
+
+#~ msgid "Add Definition"
+#~ msgstr "Gehitu definizioa"
+
+#~ msgid "F-Spot Photo"
+#~ msgstr "F-Spot argazkia"
+
+#~ msgid "A photo stored in F-Spot."
+#~ msgstr "'F-Spot'-en gordetako argazki bat."
+
+#~ msgid "Error launching F-Spot"
+#~ msgstr "Errorea F-Spot abiaraztean"
+
+#~ msgid "Definition Manager"
+#~ msgstr "Definizioen kudeatzailea"
+
+#~ msgid "Are you sure you want to delete the definition for \"%s\"?"
+#~ msgstr "Ziur zaude \"%s\"(r)en definizioa ezabatu nahi duzula?"
+
+#~ msgid "Contact"
+#~ msgstr "Kontaktua"
+
+#~ msgid "An Evolution contact."
+#~ msgstr "Evolution-en kontaktua."
+
+#~ msgid "Select Contact"
+#~ msgstr "Hautatu kontaktua"
+
+#~ msgid "Error opening contact"
+#~ msgstr "Errorea kontaktua irekitzean"
+
+#~ msgid "Error opening Evolution"
+#~ msgstr "Errorea Evolution irekitzean"
+
+#~ msgid "File"
+#~ msgstr "Fitxategia"
+
+#~ msgid "An attached file."
+#~ msgstr "Erantsitako fitxategia."
+
+#~ msgid "Error opening file"
+#~ msgstr "Errorea fitxategia irekitzean"
+
+#~ msgid "Select File"
+#~ msgstr "Hautatu fitxategia"
+
+#~ msgid "Note"
+#~ msgstr "Oharra"
+
+#~ msgid "A note about an important event."
+#~ msgstr "Gertaera garrantzitsu bati buruzko oharra."
+
+#~ msgid "URI"
+#~ msgstr "URIa"
+
+#~ msgid "A URI of a file or web page."
+#~ msgstr "Fitxategi edo web-orri baten URIa."
+
+#~ msgid "URI: "
+#~ msgstr "URIa: "
+
+#~ msgid "Enable import mode"
+#~ msgstr "Gaitu inportatzeko modua"
+
+#~ msgid "- Manage your diary"
+#~ msgstr "- Kudeatu zure agenda"
