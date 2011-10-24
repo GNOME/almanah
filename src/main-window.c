@@ -40,6 +40,7 @@
 #include "import-export-dialog.h"
 #include "uri-entry-dialog.h"
 #include "widgets/calendar.h"
+#include "widgets/font-style-menu-action.h"
 #include "widgets/hyperlink-tag.h"
 
 static void almanah_main_window_dispose (GObject *object);
@@ -61,6 +62,8 @@ static void mw_hyperlink_toggled_cb (GtkToggleAction *action, AlmanahMainWindow 
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static void mw_events_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window);
 static void mw_events_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
+static void mw_font_style_menu_position_func (GtkMenu *menu, int *x, int *y, gboolean *push_in, GtkMenuToolButton *button);
+static GtkMenuToolButton *mw_get_font_style_tool_button_from_action (GtkAction *action);
 
 /* GtkBuilder callbacks */
 void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
@@ -83,6 +86,7 @@ void mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
 void mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window);
+void mw_font_style_activate_cb (AlmanahFontStyleMenuAction *action, AlmanahMainWindow *main_window);
 
 struct _AlmanahMainWindowPrivate {
 	GtkTextView *entry_view;
@@ -102,6 +106,7 @@ struct _AlmanahMainWindowPrivate {
 	GtkAction *copy_action;
 	GtkAction *delete_action;
 	GtkAction *important_action;
+	GtkMenuToolButton *font_style_tool_button;
 
 	gboolean updating_formatting;
 	gboolean pending_bold_active;
@@ -245,6 +250,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	priv->copy_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_copy"));
 	priv->delete_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_delete"));
 	priv->important_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_important"));
+	priv->font_style_tool_button = mw_get_font_style_tool_button_from_action (GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_font_style")));
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
@@ -1196,6 +1202,99 @@ mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 	GDate current_date;
 	g_date_set_time_t (&current_date, time (NULL));
 	almanah_main_window_select_date (main_window, &current_date);
+}
+
+/**
+ * Just copied from GtkMenuToolButton (menu_position_func),
+ * but using the button widget (not the arrow widget) for
+ * menu position calc, and removing the code for a vertical
+ * toolbar situation.
+ *
+ * Copyright (C) 2003 Ricardo Fernandez Pascual
+ * Copyright (C) 2004 Paolo Borelli
+ * Licensed under the GPL v2
+ */
+static void
+mw_font_style_menu_position_func (GtkMenu *menu, int *x, int *y, gboolean *push_in, GtkMenuToolButton *button)
+{
+	GtkAllocation arrow_allocation;
+	GtkWidget *widget = GTK_WIDGET (button);
+	GtkRequisition menu_req;
+	GtkTextDirection direction;
+	GdkRectangle monitor;
+	gint monitor_num;
+	GdkScreen *screen;
+	GdkWindow *window;
+	GtkAllocation allocation;
+
+	gtk_widget_get_preferred_size (GTK_WIDGET (menu), &menu_req, NULL);
+	direction = gtk_widget_get_direction (widget);
+	window = gtk_widget_get_window (widget);
+
+	screen = gtk_widget_get_screen (GTK_WIDGET (menu));
+	monitor_num = gdk_screen_get_monitor_at_window (screen, window);
+	if (monitor_num < 0)
+		monitor_num = 0;
+	gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
+
+	gtk_widget_get_allocation (widget, &allocation);
+
+	gdk_window_get_origin (window, x, y);
+	*x += allocation.x;
+	*y += allocation.y;
+
+	if (direction == GTK_TEXT_DIR_LTR)
+		*x += MAX (allocation.width - menu_req.width, 0);
+	else if (menu_req.width > allocation.width)
+		*x -= menu_req.width - allocation.width;
+
+	if ((*y + arrow_allocation.height + menu_req.height) <= monitor.y + monitor.height)
+		*y += allocation.height;
+	else if ((*y - menu_req.height) >= monitor.y)
+		*y -= menu_req.height;
+	else if (monitor.y + monitor.height - (*y + arrow_allocation.height) > *y)
+		*y += allocation.height;
+	else
+		*y -= menu_req.height;
+
+	*push_in = FALSE;
+}
+
+void
+mw_font_style_activate_cb (AlmanahFontStyleMenuAction *action, AlmanahMainWindow *main_window)
+{
+	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW_GET_PRIVATE(main_window);
+	GtkMenu *menu = NULL;
+
+	if (GTK_IS_MENU_TOOL_BUTTON (priv->font_style_tool_button)) {
+		menu = GTK_MENU (gtk_menu_tool_button_get_menu (priv->font_style_tool_button));
+	}
+
+	if (GTK_IS_MENU (menu)) {
+		gtk_menu_popup (menu, NULL, NULL,
+				(GtkMenuPositionFunc) mw_font_style_menu_position_func,
+				priv->font_style_tool_button,
+				0,
+				gtk_get_current_event_time());
+	}
+}
+
+static GtkMenuToolButton *
+mw_get_font_style_tool_button_from_action (GtkAction *action)
+{
+	GSList *proxies;
+	GtkMenuToolButton *tool_button = NULL;
+
+	proxies = gtk_action_get_proxies (GTK_ACTION (action));
+	while (proxies != NULL) {
+		if (GTK_IS_MENU_TOOL_BUTTON (proxies->data)) {
+			tool_button = GTK_MENU_TOOL_BUTTON (proxies->data);
+		}
+
+		proxies = proxies->next;
+	}
+
+	return tool_button;
 }
 
 static void

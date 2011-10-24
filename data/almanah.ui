@@ -196,6 +196,21 @@
 						<signal name="activate" handler="mw_jump_to_today_activate_cb"/>
 					</object>
 				</child>
+				<child>
+					<object class="AlmanahFontStyleMenuAction" id="almanah_ui_font_style">
+						<property name="stock-id">gtk-select-font</property>
+						<property name="name">format-font-style</property>
+						<property name="label" translatable="yes">Font Style</property>
+						<property name="tooltip" translatable="yes">Change font style for selected text</property>
+						<signal name="activate" handler="mw_font_style_activate_cb"/>
+					</object>
+				</child>
+				<child>
+					<object class="GtkAction" id="almanah_ui_font_style_menu">
+						<property name="name">font-style</property>
+						<property name="label" translatable="yes">_Font Style</property>
+					</object>
+				</child>
 			</object>
 		</child>
 		<ui>
@@ -237,12 +252,16 @@
 				</menu>
 			</menubar>
 			<toolbar name="almanah_mw_toolbar">
+				<toolitem action="almanah_ui_font_style">
+					<menu action="almanah_ui_font_style_menu">
+						<menuitem action="almanah_ui_bold"/>
+						<menuitem action="almanah_ui_italic"/>
+						<menuitem action="almanah_ui_underline"/>
+					</menu>
+				</toolitem>
 				<toolitem action="almanah_ui_jump_to_today"/>
 				<toolitem action="almanah_ui_important"/>
 				<separator/>
-				<toolitem action="almanah_ui_bold"/>
-				<toolitem action="almanah_ui_italic"/>
-				<toolitem action="almanah_ui_underline"/>
 				<toolitem action="almanah_ui_hyperlink"/>
 			</toolbar>
 		</ui>
