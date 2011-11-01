@@ -60,8 +60,6 @@ static void mw_italic_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *ma
 static void mw_underline_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_hyperlink_toggled_cb (GtkToggleAction *action, AlmanahMainWindow *main_window);
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
-static void mw_events_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window);
-static void mw_events_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data);
 static void mw_font_style_menu_position_func (GtkMenu *menu, int *x, int *y, gboolean *push_in, GtkMenuToolButton *button);
 static GtkMenuToolButton *mw_get_font_style_tool_button_from_action (GtkAction *action);
 
@@ -85,7 +83,6 @@ void mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_wind
 void mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
-void mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window);
 void mw_font_style_activate_cb (AlmanahFontStyleMenuAction *action, AlmanahMainWindow *main_window);
 
 struct _AlmanahMainWindowPrivate {
@@ -93,11 +90,8 @@ struct _AlmanahMainWindowPrivate {
 	GtkTextBuffer *entry_buffer;
 	AlmanahCalendar *calendar;
 	GtkLabel *date_label;
-	GtkButton *view_button;
 	GtkListStore *event_store;
 	GtkTreeSelection *events_selection;
-	GtkTreeViewColumn *event_value_column;
-	GtkCellRendererText *event_value_renderer;
 	GtkToggleAction *bold_action;
 	GtkToggleAction *italic_action;
 	GtkToggleAction *underline_action;
@@ -192,7 +186,6 @@ almanah_main_window_new (AlmanahApplication *application)
 	const gchar *object_names[] = {
 		"almanah_main_window",
 		"almanah_mw_event_store",
-		"almanah_mw_view_button_image",
 		"almanah_ui_manager",
 		NULL
 	};
@@ -237,11 +230,8 @@ almanah_main_window_new (AlmanahApplication *application)
 	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
 	priv->calendar = ALMANAH_CALENDAR (gtk_builder_get_object (builder, "almanah_mw_calendar"));
 	priv->date_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_date_label"));
-	priv->view_button = GTK_BUTTON (gtk_builder_get_object (builder, "almanah_mw_view_button"));
 	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
 	priv->events_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_mw_events_tree_view")));
-	priv->event_value_column = GTK_TREE_VIEW_COLUMN (gtk_builder_get_object (builder, "almanah_mw_event_value_column"));
-	priv->event_value_renderer = GTK_CELL_RENDERER_TEXT (gtk_builder_get_object (builder, "almanah_mw_event_value_renderer"));
 	priv->bold_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_bold"));;
 	priv->italic_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_italic"));
 	priv->underline_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_underline"));
@@ -304,10 +294,6 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Select the current day and month */
 	mw_jump_to_today_activate_cb (NULL, main_window);
-
-	/* Set up the treeview */
-	g_signal_connect (priv->events_selection, "changed", G_CALLBACK (mw_events_selection_changed_cb), main_window);
-	gtk_tree_view_column_set_cell_data_func (priv->event_value_column, GTK_CELL_RENDERER (priv->event_value_renderer), mw_events_value_data_cb, NULL, NULL);
 
 #ifndef ENABLE_ENCRYPTION
 #ifndef ENABLE_SPELL_CHECKING
@@ -1355,6 +1341,8 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 				    0, event,
 				    1, almanah_event_get_icon_name (event),
 				    2, type_id,
+				    3, almanah_event_format_value (event),
+				    4, g_strdup_printf ("<small>%s</small>", almanah_event_get_name (event)),
 				    -1);
 
 		g_object_unref (event);
@@ -1408,7 +1396,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 
 	/* Prepare for the possibility of failure --- do as much of the general interface changes as possible first */
 	gtk_list_store_clear (priv->event_store);
-	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), FALSE);
 
 	if (almanah_entry_is_empty (priv->current_entry) == FALSE) {
 		GError *error = NULL;
@@ -1452,29 +1439,6 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	g_object_unref (event_manager);
 }
 
-static void
-mw_events_selection_changed_cb (GtkTreeSelection *tree_selection, AlmanahMainWindow *main_window)
-{
-	AlmanahMainWindowPrivate *priv = main_window->priv;
-	gtk_widget_set_sensitive (GTK_WIDGET (priv->view_button), (gtk_tree_selection_count_selected_rows (tree_selection) == 0) ? FALSE : TRUE);
-}
-
-static void
-mw_events_value_data_cb (GtkTreeViewColumn *column, GtkCellRenderer *renderer, GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data)
-{
-	const gchar *new_value;
-	AlmanahEvent *event;
-
-	/* TODO: Should really create a new model to render AlmanahEvents */
-
-	gtk_tree_model_get (model, iter,
-			    0, &event,
-			    -1);
-
-	new_value = almanah_event_format_value (event);
-	g_object_set (renderer, "text", new_value, NULL);
-}
-
 void
 mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window)
 {
@@ -1488,32 +1452,6 @@ mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path,
 
 	/* NOTE: event types should display their own errors, so one won't be displayed here. */
 	almanah_event_view (event, GTK_WINDOW (main_window));
-}
-
-void
-mw_view_button_clicked_cb (GtkButton *button, AlmanahMainWindow *main_window)
-{
-	GList *events;
-	GtkTreeModel *model;
-
-	events = gtk_tree_selection_get_selected_rows (main_window->priv->events_selection, &model);
-
-	for (; events != NULL; events = events->next) {
-		AlmanahEvent *event;
-		GtkTreeIter iter;
-
-		gtk_tree_model_get_iter (model, &iter, (GtkTreePath*) events->data);
-		gtk_tree_model_get (model, &iter,
-				    0, &event,
-				    -1);
-
-		/* NOTE: event types should display their own errors, so one won't be displayed here. */
-		almanah_event_view (event, GTK_WINDOW (main_window));
-
-		gtk_tree_path_free (events->data);
-	}
-
-	g_list_free (events);
 }
 
 #ifdef ENABLE_SPELL_CHECKING
