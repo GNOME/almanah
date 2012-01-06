@@ -45,7 +45,9 @@
 
 static void almanah_main_window_dispose (GObject *object);
 #ifdef ENABLE_SPELL_CHECKING
-static void almanah_main_window_finalize (GObject *object);
+static void spell_checking_enabled_changed_cb (GSettings *settings, gchar *key, AlmanahMainWindow *self);
+static gboolean enable_spell_checking (AlmanahMainWindow *self, GError **error);
+static void disable_spell_checking (AlmanahMainWindow *self);
 #endif /* ENABLE_SPELL_CHECKING */
 static void set_current_entry (AlmanahMainWindow *self, AlmanahEntry *entry);
 static void save_window_state (AlmanahMainWindow *self);
@@ -114,6 +116,7 @@ struct _AlmanahMainWindowPrivate {
 	GtkPageSetup *page_setup;
 
 #ifdef ENABLE_SPELL_CHECKING
+	GSettings *settings;
 	gulong spell_checking_enabled_changed_id; /* signal handler for application->settings::changed::spell-checking-enabled */
 #endif /* ENABLE_SPELL_CHECKING */
 };
@@ -127,9 +130,6 @@ almanah_main_window_class_init (AlmanahMainWindowClass *klass)
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	g_type_class_add_private (klass, sizeof (AlmanahMainWindowPrivate));
 	gobject_class->dispose = almanah_main_window_dispose;
-#ifdef ENABLE_SPELL_CHECKING
-	gobject_class->finalize = almanah_main_window_finalize;
-#endif /* ENABLE_SPELL_CHECKING */
 }
 
 static void
@@ -156,22 +156,21 @@ almanah_main_window_dispose (GObject *object)
 		g_object_unref (priv->print_settings);
 	priv->print_settings = NULL;
 
+#ifdef ENABLE_SPELL_CHECKING
+	if (priv->settings != NULL) {
+		if (priv->spell_checking_enabled_changed_id != 0) {
+			g_signal_handler_disconnect (priv->settings, priv->spell_checking_enabled_changed_id);
+			priv->spell_checking_enabled_changed_id = 0;
+		}
+
+		g_object_unref (priv->settings);
+		priv->settings = NULL;
+	}
+#endif /* ENABLE_SPELL_CHECKING */
+
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_main_window_parent_class)->dispose (object);
 }
-
-#ifdef ENABLE_SPELL_CHECKING
-static void
-almanah_main_window_finalize (GObject *object)
-{
-	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW (object)->priv;
-
-	g_signal_handler_disconnect (object, priv->spell_checking_enabled_changed_id);
-
-	/* Chain up to the parent class */
-	G_OBJECT_CLASS (almanah_main_window_parent_class)->finalize (object);
-}
-#endif /* ENABLE_SPELL_CHECKING */
 
 AlmanahMainWindow *
 almanah_main_window_new (AlmanahApplication *application)
@@ -244,17 +243,15 @@ almanah_main_window_new (AlmanahApplication *application)
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
-	settings = almanah_application_dup_settings (application);
+	priv->settings = almanah_application_dup_settings (application);
 
-	if (g_settings_get_boolean (settings, "spell-checking-enabled") == TRUE) {
+	if (g_settings_get_boolean (priv->settings, "spell-checking-enabled") == TRUE) {
 		enable_spell_checking (main_window, NULL);
 	}
 
 	/* We don't use g_settings_bind() because enabling spell checking could fail, and we need to show an error dialogue */
-	priv->spell_checking_enabled_changed_id = g_signal_connect (settings, "changed::spell-checking-enabled",
+	priv->spell_checking_enabled_changed_id = g_signal_connect (priv->settings, "changed::spell-checking-enabled",
 	                                                            (GCallback) spell_checking_enabled_changed_cb, main_window);
-
-	g_object_unref (settings);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Set up text formatting. It's important this is done after setting up GtkSpell, so that we know whether to
