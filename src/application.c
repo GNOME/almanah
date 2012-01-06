@@ -180,6 +180,9 @@ startup (GApplication *application)
 	gchar *db_filename;
 	GError *error = NULL;
 
+	/* Chain up. */
+	G_APPLICATION_CLASS (almanah_application_parent_class)->startup (application);
+
 	/* Debug log handling */
 	g_log_set_handler (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, (GLogFunc) debug_handler, application);
 
