@@ -473,11 +473,11 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 
 	almanah_operation->line_spacing_spin_button = GTK_SPIN_BUTTON (line_spacing_spin_button);
 
-	hbox = GTK_BOX (gtk_hbox_new (FALSE, 6));
+	hbox = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6));
 	gtk_box_pack_start (hbox, GTK_WIDGET (line_spacing_label), FALSE, TRUE, 6);
 	gtk_box_pack_start (hbox, line_spacing_spin_button, TRUE, TRUE, 6);
 
-	vbox = GTK_BOX (gtk_vbox_new (FALSE, 12));
+	vbox = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, 12));
 	gtk_box_pack_start (vbox, GTK_WIDGET (table), TRUE, TRUE, 6);
 	gtk_box_pack_start (vbox, GTK_WIDGET (hbox), FALSE, TRUE, 6);
 
