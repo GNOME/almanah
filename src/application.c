@@ -94,11 +94,9 @@ constructed (GObject *object)
 	g_application_set_flags (G_APPLICATION (object), G_APPLICATION_HANDLES_COMMAND_LINE);
 
 	/* Localisation */
-#ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
-#endif
 
 	g_set_application_name (_("Almanah Diary"));
 	gtk_window_set_default_icon_name ("almanah");
