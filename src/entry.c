@@ -690,8 +690,7 @@ start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name,
 			g_object_unref (tag); /* the tag table keeps a reference */
 		}
 
-		/* Ignore unrecognised tags */
-
+		/* Ignore unrecognised tags (which can happen when searching, for example). */
 		if (tag != NULL) {
 			/* Push the tag onto the stack of active tags which will be applied to the next text run */
 			deserialise_context->active_tags = g_slist_prepend (deserialise_context->active_tags, tag);
@@ -713,9 +712,12 @@ end_element_cb (GMarkupParseContext *parse_context, const gchar *element_name, g
 		    strcmp (element_name, "italic") == 0 ||
 		    strcmp (element_name, "underline") == 0 ||
 		    strcmp (element_name, "link") == 0) {
-			/* Pop the topmost tag off the active tags stack */
-			g_assert (deserialise_context->active_tags != NULL);
-			deserialise_context->active_tags = g_slist_remove (deserialise_context->active_tags, deserialise_context->active_tags->data);
+			/* Pop the topmost tag off the active tags stack. Note that the stack might be empty if our text tag table is empty (which can
+			 * happen when we're searching, because we don't bother setting up the text tags for that). */
+			if (deserialise_context->active_tags != NULL) {
+				deserialise_context->active_tags = g_slist_remove (deserialise_context->active_tags,
+				                                                   deserialise_context->active_tags->data);
+			}
 		}
 
 		/* Ignore unrecognised tags */
