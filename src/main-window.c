@@ -43,6 +43,9 @@
 #include "widgets/font-style-menu-action.h"
 #include "widgets/hyperlink-tag.h"
 
+/* Interval for automatically saving the current entry. Currently an arbitrary 10 minutes. */
+#define SAVE_ENTRY_INTERVAL 10 * 60 /* seconds */
+
 static void almanah_main_window_dispose (GObject *object);
 #ifdef ENABLE_SPELL_CHECKING
 static void spell_checking_enabled_changed_cb (GSettings *settings, gchar *key, AlmanahMainWindow *self);
@@ -64,6 +67,7 @@ static void mw_hyperlink_toggled_cb (GtkToggleAction *action, AlmanahMainWindow 
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static void mw_font_style_menu_position_func (GtkMenu *menu, int *x, int *y, gboolean *push_in, GtkMenuToolButton *button);
 static GtkMenuToolButton *mw_get_font_style_tool_button_from_action (GtkAction *action);
+static gboolean save_entry_timeout_cb (AlmanahMainWindow *self);
 
 /* GtkBuilder callbacks */
 void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
@@ -111,6 +115,7 @@ struct _AlmanahMainWindowPrivate {
 
 	AlmanahEntry *current_entry; /* whether it's been modified is stored as gtk_text_buffer_get_modified (priv->entry_buffer) */
 	gulong current_entry_notify_id; /* signal handler for current_entry::notify */
+	guint save_entry_timeout_id; /* source ID for timer to save current entry periodically */
 
 	GtkPrintSettings *print_settings;
 	GtkPageSetup *page_setup;
@@ -145,6 +150,11 @@ static void
 almanah_main_window_dispose (GObject *object)
 {
 	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW (object)->priv;
+
+	if (priv->save_entry_timeout_id != 0) {
+		g_source_remove (priv->save_entry_timeout_id);
+		priv->save_entry_timeout_id = 0;
+	}
 
 	set_current_entry (ALMANAH_MAIN_WINDOW (object), NULL);
 
@@ -291,6 +301,9 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Select the current day and month */
 	mw_jump_to_today_activate_cb (NULL, main_window);
+
+	/* Set up a timeout for saving the current entry every so often. */
+	priv->save_entry_timeout_id = g_timeout_add_seconds (SAVE_ENTRY_INTERVAL, (GSourceFunc) save_entry_timeout_cb, main_window);
 
 #ifndef ENABLE_ENCRYPTION
 #ifndef ENABLE_SPELL_CHECKING
@@ -533,7 +546,7 @@ restore_window_state (AlmanahMainWindow *self)
 }
 
 static void
-save_current_entry (AlmanahMainWindow *self)
+save_current_entry (AlmanahMainWindow *self, gboolean prompt_user)
 {
 	gboolean entry_exists, existing_entry_is_empty, entry_is_empty;
 	GDate date, last_edited;
@@ -568,6 +581,11 @@ save_current_entry (AlmanahMainWindow *self)
 		gchar date_string[100];
 		GtkWidget *dialog;
 
+		/* No-op if we're not allowed to prompt the user. */
+		if (prompt_user == FALSE) {
+			goto done;
+		}
+
 		/* Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry. */
 		g_date_strftime (date_string, sizeof (date_string), _("%A, %e %B %Y"), &date);
 
@@ -592,6 +610,11 @@ save_current_entry (AlmanahMainWindow *self)
 		/* Deleting an existing entry */
 		gchar date_string[100];
 		GtkWidget *dialog;
+
+		/* No-op if we're not allowed to prompt the user. */
+		if (prompt_user == FALSE) {
+			goto done;
+		}
 
 		/* Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry. */
 		g_date_strftime (date_string, sizeof (date_string), _("%A, %e %B %Y"), &date);
@@ -632,6 +655,13 @@ save_current_entry (AlmanahMainWindow *self)
 
 done:
 	g_object_unref (storage_manager);
+}
+
+static gboolean
+save_entry_timeout_cb (AlmanahMainWindow *self)
+{
+	save_current_entry (self, FALSE);
+	return TRUE;
 }
 
 void
@@ -771,7 +801,7 @@ mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMai
 static gboolean
 mw_delete_event_cb (GtkWindow *window, gpointer user_data)
 {
-	save_current_entry (ALMANAH_MAIN_WINDOW (window));
+	save_current_entry (ALMANAH_MAIN_WINDOW (window), TRUE);
 	save_window_state (ALMANAH_MAIN_WINDOW (window));
 
 	gtk_widget_destroy (GTK_WIDGET (window));
@@ -861,7 +891,7 @@ mw_quit_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 	/* Hide the window to make things look faster */
 	gtk_widget_hide (GTK_WIDGET (main_window));
 
-	save_current_entry (main_window);
+	save_current_entry (main_window, TRUE);
 	gtk_widget_destroy (GTK_WIDGET (main_window));
 }
 
@@ -1368,7 +1398,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
 
 	/* Save the previous entry */
-	save_current_entry (main_window);
+	save_current_entry (main_window, TRUE);
 
 	/* Update the date label */
 	almanah_calendar_get_date (main_window->priv->calendar, &calendar_date);
