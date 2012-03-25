@@ -562,7 +562,7 @@ select_date (AlmanahImportResultsDialog *self, GtkTreeModel *model, GtkTreeIter 
 	                    2, &year,
 	                    -1);
 
-	main_window = ALMANAH_MAIN_WINDOW (gtk_window_get_transient_for (GTK_WINDOW (self)));
+	main_window = ALMANAH_MAIN_WINDOW (gtk_window_get_transient_for (gtk_window_get_transient_for (GTK_WINDOW (self))));
 	g_date_set_dmy (&date, day, month, year);
 	almanah_main_window_select_date (main_window, &date);
 }
