@@ -174,6 +174,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_preferences_dialog",
+		"almanah_ui_manager", /* HACK: work around bgo#672789 */
 		NULL
 	};
 

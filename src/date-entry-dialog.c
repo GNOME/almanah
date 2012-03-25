@@ -114,6 +114,7 @@ almanah_date_entry_dialog_new (void)
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_date_entry_dialog",
+		"almanah_ui_manager", /* HACK: work around bgo#672789 */
 		NULL
 	};
 

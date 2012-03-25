@@ -154,6 +154,7 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 	const gchar *object_names[] = {
 		"almanah_ied_mode_store",
 		"almanah_import_export_dialog",
+		"almanah_ui_manager", /* HACK: work around bgo#672789 */
 		NULL
 	};
 
@@ -459,6 +460,7 @@ almanah_import_results_dialog_new (void)
 		"almanah_ird_results_store",
 		"almanah_ird_filtered_results_store",
 		"almanah_import_results_dialog",
+		"almanah_ui_manager", /* HACK: work around bgo#672789 */
 		NULL
 	};
 
