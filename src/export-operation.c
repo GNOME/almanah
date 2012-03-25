@@ -251,6 +251,9 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 		g_object_unref (file);
 		g_free (content);
 
+		/* Clear the buffer. */
+		gtk_text_buffer_delete (buffer, &start_iter, &end_iter);
+
 		/* Check for cancellation */
 		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
 			break;
