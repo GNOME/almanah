@@ -151,6 +151,7 @@
 						<property name="name">format-hyperlink</property>
 						<property name="label" translatable="yes">Add/Remove _Hyperlink</property>
 						<property name="tooltip" translatable="yes">Add or remove a hyperlink from the currently selected text to a specified URI.</property>
+						<property name="icon-name">insert-link</property>
 					</object>
 					<accelerator key="H" modifiers="GDK_CONTROL_MASK"/>
 				</child>
