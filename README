@@ -15,8 +15,8 @@ GNOME 3.0 development platform
 	http://www.gnome.org/
 SQLite 3
 	http://sqlite.org/
-GtkSpell 2.0 (optional)
-	http://gtkspell.sourceforge.net/
+GtkSpell 3.0 (optional)
+	http://gtkspell.sourceforge.net/ or https://github.com/manisandro/gtkspell3
 GPGME (optional)
 	http://www.gnupg.org/gpgme.html
 Evolution Data Server (optional)
