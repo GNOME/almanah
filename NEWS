@@ -1,3 +1,48 @@
+Overview of changes from Almanah 0.8.0 to Almanah 0.9.0
+=======================================================
+
+Major changes:
+* Removed ‘definitions’ in favour of hyperlinks
+* Move to a new XML-based entry serialisation format (the change should be transparent to users)
+* Use the new GApplication single instance mechanism (bumping our GTK+ and GIO dependencies to 3.0.0 and 2.28.0, respectively)
+* Various fixes to the import system
+* Search is now asynchronous and case-insensitive (thanks to Álvaro Peña)
+* Fixed build with --enable-spell-checking and --disable-encryption
+* The first phase of a major re-working of the UI to make it more GNOME-3-ish (thanks to Álvaro Peña) — see https://live.gnome.org/Almanah_Diary/Design
+* Re-enable spell checking with GTK+3 (which adds a dependency on GtkSpell v3)
+* Automatically save the current entry every 5 minutes (instead of just when closing or changing entries)
+
+Bugs fixed:
+* Bug 631835 — Support hyperlinks in diary entries
+* Bug 622193 — Use single instance
+* Bug 647691 — Make search case-insensitive
+* Bug 647690 — Make search asynchronous
+* Bug 662016 — Create a toolbar menu item with the fonts style
+* Bug 662014 — Remove the right panel
+* Bug 667263 — Add support for gtkspell-3.0 in configure
+* Bug 666801 — Fix build with encryption support
+* Bug 671801 — i18n doesn't work
+* Bug 669927 — Save current entry after a timeout
+
+Updated translations:
+* cs (Marek Černocký)
+* da (Joe Hansen)
+* de (Mario Blättermann)
+* en_GB (Philip Withnall)
+* eo (Kristjan SCHMIDT)
+* es (Daniel Mustieles)
+* eu (Iñaki Larrañaga Murgoitio)
+* fr (Claude Paroz, Pierre Henry)
+* gl (Fran Diéguez)
+* hu (Balázs Úr)
+* pl (Mateusz Kacprzak)
+* pt_BR (Djavan Fagundes, Gabriel Speckhahn)
+* ru (Yuri Myasoedov)
+* sl (Andrej Žnidaršič)
+* sr (Мирослав Николић)
+* tr (Muhammet Kara)
+* uk (Sergiy Gavrylov)
+
 Overview of changes from Almanah 0.7.2 to Almanah 0.8.0
 =======================================================
 
