@@ -202,7 +202,7 @@
 						<property name="stock-id">gtk-select-font</property>
 						<property name="name">format-font-style</property>
 						<property name="label" translatable="yes">Font Style</property>
-						<property name="tooltip" translatable="yes">Change font style for selected text</property>
+						<property name="tooltip" translatable="yes">Change font style for selected text.</property>
 						<signal name="activate" handler="mw_font_style_activate_cb"/>
 					</object>
 				</child>
