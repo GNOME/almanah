@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-24 00:13+0100\n"
-"PO-Revision-Date: 2012-03-24 00:14+0100\n"
+"POT-Creation-Date: 2012-03-26 12:22+0200\n"
+"PO-Revision-Date: 2012-03-26 12:22+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-Language: Galician\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:103
-#: ../src/main-window.c:140
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:101
+#: ../src/main-window.c:145
 msgid "Almanah Diary"
 msgstr "Diario Almanah"
 
@@ -152,8 +152,8 @@ msgid "Font Style"
 msgstr "Estilo do tipo de letra"
 
 #: ../data/almanah.ui.h:22
-msgid "Change font style for selected text"
-msgstr "Cambiar o estilo do tipo de letra para o texto seleccionado"
+msgid "Change font style for selected text."
+msgstr "Cambiar o estilo do tipo de letra para o texto seleccionado."
 
 #: ../data/almanah.ui.h:23
 msgid "_Font Style"
@@ -215,15 +215,15 @@ msgstr "Entradas fallidas"
 msgid "Import Results List"
 msgstr "Importar a lista de resultados"
 
-#: ../src/application.c:207
+#: ../src/application.c:205
 msgid "Error opening database"
 msgstr "Produciuse un erro ao abrir a base de datos"
 
-#: ../src/application.c:255
+#: ../src/application.c:253
 msgid "Enable debug mode"
 msgstr "Activar o modo de depuración"
 
-#: ../src/application.c:272
+#: ../src/application.c:270
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -231,12 +231,12 @@ msgstr ""
 "vez."
 
 #. Print an error
-#: ../src/application.c:283
+#: ../src/application.c:281
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Non foi posíbel analizar as opcións da liña de ordes: %s\n"
 
-#: ../src/application.c:302
+#: ../src/application.c:300
 msgid "Error encrypting database"
 msgstr "Produciuse un erro no cifrado da base de datos"
 
@@ -244,10 +244,10 @@ msgstr "Produciuse un erro no cifrado da base de datos"
 msgid "Select Date"
 msgstr "Seleccionar unha data"
 
-#: ../src/date-entry-dialog.c:128 ../src/import-export-dialog.c:167
-#: ../src/import-export-dialog.c:470 ../src/main-window.c:202
-#: ../src/preferences-dialog.c:190 ../src/search-dialog.c:96
-#: ../src/uri-entry-dialog.c:127
+#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
+#: ../src/import-export-dialog.c:472 ../src/main-window.c:212
+#: ../src/preferences-dialog.c:191 ../src/search-dialog.c:97
+#: ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Non foi posíbel cargar o ficheiro da IU «%s»"
@@ -303,49 +303,49 @@ msgstr ""
 "Seleccionar un nome de _ficheiro para unha copia, sen cifrar, da base de "
 "datos do Diario Almanah."
 
-#: ../src/import-export-dialog.c:201
+#: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
 msgstr "_Modo importación: "
 
-#: ../src/import-export-dialog.c:201
+#: ../src/import-export-dialog.c:202
 msgid "Export _mode: "
 msgstr "_Modo exportación: "
 
 #. Set the window title
-#: ../src/import-export-dialog.c:204
+#: ../src/import-export-dialog.c:205
 msgid "Import Entries"
 msgstr "Importar entradas"
 
-#: ../src/import-export-dialog.c:204
+#: ../src/import-export-dialog.c:205
 msgid "Export Entries"
 msgstr "Exportar as entradas"
 
 #. Set the button label
-#: ../src/import-export-dialog.c:207
+#: ../src/import-export-dialog.c:208
 msgid "_Import"
 msgstr "I_mportar"
 
-#: ../src/import-export-dialog.c:207
+#: ../src/import-export-dialog.c:208
 msgid "_Export"
 msgstr "_Exportar"
 
-#: ../src/import-export-dialog.c:244
+#: ../src/import-export-dialog.c:245
 msgid "Import failed"
 msgstr "A importación fallou"
 
-#: ../src/import-export-dialog.c:282
+#: ../src/import-export-dialog.c:283
 msgid "Export failed"
 msgstr "A exportación fallou"
 
-#: ../src/import-export-dialog.c:295
+#: ../src/import-export-dialog.c:296
 msgid "Export successful"
 msgstr "A exportación rematou correctamente"
 
-#: ../src/import-export-dialog.c:296
+#: ../src/import-export-dialog.c:297
 msgid "The diary was successfully exported."
 msgstr "O diario exportouse correctamente."
 
-#: ../src/import-export-dialog.c:444
+#: ../src/import-export-dialog.c:445
 msgid "Import Results"
 msgstr "Resultados da importación"
 
@@ -355,9 +355,9 @@ msgstr "Resultados da importación"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:537 ../src/main-window.c:572
-#: ../src/main-window.c:597 ../src/main-window.c:1377 ../src/printing.c:263
-#: ../src/search-dialog.c:181
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:590
+#: ../src/main-window.c:620 ../src/main-window.c:1407 ../src/printing.c:263
+#: ../src/search-dialog.c:182
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B %Y"
 
@@ -407,29 +407,29 @@ msgstr ""
 "Importouse unha entrada desde «%s»\n"
 "\n"
 
-#: ../src/main-window.c:576
+#: ../src/main-window.c:594
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Está seguro que quere editar esta entrada do diario para %s?"
 
-#: ../src/main-window.c:601
+#: ../src/main-window.c:624
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Está seguro que quere eliminar esta entrada do diario para %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:703
+#: ../src/main-window.c:733
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Detectouse unha etiqueta de texto «%s» descoñecida ou duplicada na entrada. "
 "Ignorándoa."
 
-#: ../src/main-window.c:1019
+#: ../src/main-window.c:1049
 msgid "Error opening URI"
 msgstr "Produciuse un erro ao abrir a URI"
 
-#: ../src/main-window.c:1135
+#: ../src/main-window.c:1165
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -440,7 +440,7 @@ msgstr ""
 "os termos da Licenza Pública de GNU publicada pola Free Software Foundation, "
 "na versión 3 da licenza ou calquera versión posterior."
 
-#: ../src/main-window.c:1139
+#: ../src/main-window.c:1169
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -452,7 +452,7 @@ msgstr ""
 "A UN PROPÓSITO ESPECÍFICO. Olle a Licenza Pública Xeral de GNU para obter "
 "máis información."
 
-#: ../src/main-window.c:1143
+#: ../src/main-window.c:1173
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -460,12 +460,12 @@ msgstr ""
 "Debería recibir unha copia da Licenza Pública Xeral de GNU xunto co Almanah. "
 "Se non é así olle <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:1158
+#: ../src/main-window.c:1188
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Un xestor de diario moi útil, que almacena %u entradas."
 
-#: ../src/main-window.c:1162
+#: ../src/main-window.c:1192
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -474,22 +474,22 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:1170
+#: ../src/main-window.c:1200
 msgid "translator-credits"
 msgstr ""
 "Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010;\n"
 "Marcos Lans <marcoslansgarza@gmail.com>,2010.\n"
 "Xosé M. Lamas <correo.xmgz@gmail.com>, 2011."
 
-#: ../src/main-window.c:1174
+#: ../src/main-window.c:1204
 msgid "Almanah Website"
 msgstr "Sitio web de Almanah"
 
-#: ../src/main-window.c:1404
+#: ../src/main-window.c:1434
 msgid "Entry content could not be loaded"
 msgstr "Non foi posíbel cargar o contido da entrada"
 
-#: ../src/main-window.c:1470
+#: ../src/main-window.c:1500
 msgid "Spelling checker could not be initialized"
 msgstr "Non foi posíbel iniciar a comprobación ortográfica"
 
@@ -498,28 +498,28 @@ msgid "Almanah Preferences"
 msgstr "Preferencias de Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:216
+#: ../src/preferences-dialog.c:217
 msgid "Encryption key: "
 msgstr "Chave de cifrado: "
 
-#: ../src/preferences-dialog.c:221
+#: ../src/preferences-dialog.c:222
 msgid "None (don't encrypt)"
 msgstr "Ningunha (non cifrar)"
 
-#: ../src/preferences-dialog.c:245
+#: ../src/preferences-dialog.c:246
 msgid "New _Key"
 msgstr "Nova _chave"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:252
+#: ../src/preferences-dialog.c:253
 msgid "Enable _spell checking"
 msgstr "Activar comprobación _ortográfica"
 
-#: ../src/preferences-dialog.c:278
+#: ../src/preferences-dialog.c:279
 msgid "Error saving the encryption key"
 msgstr "Produciuse un erro ao gardar a chave de cifrado"
 
-#: ../src/preferences-dialog.c:297
+#: ../src/preferences-dialog.c:298
 msgid "Error opening Seahorse"
 msgstr "Produciuse un erro ao abrir Seahorse"
 
@@ -544,25 +544,25 @@ msgstr "Data de finalización:"
 msgid "Line spacing:"
 msgstr "Espazado de liña:"
 
-#: ../src/search-dialog.c:222
+#: ../src/search-dialog.c:223
 msgid "Search canceled."
 msgstr "Procura cancelada."
 
 #. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
-#: ../src/search-dialog.c:225
+#: ../src/search-dialog.c:226
 #, c-format
 msgid "Error: %s"
 msgstr "Erro: %s"
 
 #. Success!
-#: ../src/search-dialog.c:230
+#: ../src/search-dialog.c:231
 #, c-format
 msgid "Found %d entry:"
 msgid_plural "Found %d entries:"
 msgstr[0] "Atopouse %d entrada:"
 msgstr[1] "Atopáronse %d entradas:"
 
-#: ../src/search-dialog.c:279
+#: ../src/search-dialog.c:280
 msgid "Searching…"
 msgstr "_Buscando…"
 
