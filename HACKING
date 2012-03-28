@@ -1,3 +1,11 @@
+General principles
+==================
+
+The following general principles should guide all development on Almanah:
+ 1. Data loss is bad. The user's data should never be lost or corrupted. It could be invaluable to them.
+ 2. Simplicity. Almanah is meant to be a simple program, free from featuritis. All new features should be useful for the majority of users, and designed to be general.
+ 3. Flexibility. Users write all sorts of things in Almanah, from personal diary entries to logs of work done each day. New features should be designed to be flexible, and not force a particular use case on the user.
+
 Formatting
 ==========
 
