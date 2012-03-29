@@ -6,6 +6,21 @@ The following general principles should guide all development on Almanah:
  2. Simplicity. Almanah is meant to be a simple program, free from featuritis. All new features should be useful for the majority of users, and designed to be general.
  3. Flexibility. Users write all sorts of things in Almanah, from personal diary entries to logs of work done each day. New features should be designed to be flexible, and not force a particular use case on the user.
 
+Security policy
+===============
+
+Threat model:
+ 1. User's confidential/personal information (in their diary) being copied/viewed by unauthorised people.
+     - Other users on the same computer.
+     - Offline attacks on copies of the diary.
+ 2. User's diary being modified without their permission by unauthorised people.
+
+Defences:
+ 1. Encrypt the user's diary when the application isn't open. The assumption is made that if the application is open, the user is present and can stop attacks themselves.
+    Public-key encryption with the one of the user's GPG keys is used, but this is an arbitrary choice made due to the availability of widgets for handling GPG keys.
+    The whole diary is encrypted, rather than each entry individually, to make it harder for an attacker to figure out which days have entries (which may reveal a small amount of information about the content in the diary, for example).
+ 2. Integrity of the diary is maintained through the same layer of encryption. Again, the assumption is made that if the application is open (and thus able to modify the diary) the user is present and can stop attacks themselves.
+
 Formatting
 ==========
 
