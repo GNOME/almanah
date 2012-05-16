@@ -1,0 +1,643 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=almanah&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-04-22 14:20+0000\n"
+"PO-Revision-Date: 2012-05-14 11:30+0300\n"
+"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
+"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
+"Language: lv\n"
+"X-Generator: Lokalize 1.4\n"
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:101
+#: ../src/main-window.c:145
+msgid "Almanah Diary"
+msgstr "Almanah dienasgrāmata"
+
+#: ../data/almanah.desktop.in.h:2
+msgid "Keep a personal diary"
+msgstr "Turēt personīgo dienasgrāmatu"
+
+#: ../data/almanah.desktop.in.h:3
+msgid "Diary"
+msgstr "Dienasgrāmata"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "Datubāzes šifrēšanas atslēgas ID"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"ID atslēgai, ko izmantot datubāzes šifrēšanai un atšifrēšanai, ja Almanah ir "
+"būvēts ar šifrēšanas atbalstu. Atstājiet tukšu, lai deaktivētu šifrēšanu."
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Pareizrakstības pārbaudes valoda"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Valodas kods, kurai veikt ieraksta pareizrakstības pārbaudi."
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr "Pareizrakstības pārbaude ir aktivēta?"
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Vai ierakstu pareizrakstības pārbaude ir aktivēta."
+
+#: ../data/almanah.ui.h:1
+msgid "_File"
+msgstr "_Fails"
+
+#: ../data/almanah.ui.h:2
+msgid "_Import…"
+msgstr "_Importēt…"
+
+#: ../data/almanah.ui.h:3
+msgid "_Export…"
+msgstr "_Eksportēt…"
+
+#: ../data/almanah.ui.h:4
+msgid "_Print…"
+msgstr "_Drukāt..."
+
+#: ../data/almanah.ui.h:5
+msgid "_Edit"
+msgstr "R_ediģēt"
+
+#: ../data/almanah.ui.h:6
+msgid "Select Date…"
+msgstr "Izvēlieties datumu…"
+
+#: ../data/almanah.ui.h:7
+msgid "_Search…"
+msgstr "_Meklēt…"
+
+#: ../data/almanah.ui.h:8
+msgid "Pr_eferences"
+msgstr "I_estatījumi"
+
+#: ../data/almanah.ui.h:9
+msgid "F_ormat"
+msgstr "F_ormāts"
+
+#: ../data/almanah.ui.h:10
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Pārslēgt, vai pašlaik izvēlētais teksts ir treknrakstā."
+
+#: ../data/almanah.ui.h:11
+msgid "Toggle whether the currently selected text is italic."
+msgstr "Pārslēgt, vai pašlaik izvēlētais teksts ir slīprakstā."
+
+#: ../data/almanah.ui.h:12
+msgid "Toggle whether the currently selected text is underlined."
+msgstr "Pārslēgt, vai pašlaik izvēlētais teksts ir pasvītrots."
+
+#: ../data/almanah.ui.h:13
+msgid "Add/Remove _Hyperlink"
+msgstr "Pievienot/izņemt _hipersaiti"
+
+#: ../data/almanah.ui.h:14
+msgid ""
+"Add or remove a hyperlink from the currently selected text to a specified "
+"URI."
+msgstr ""
+"Pievienot vai izņemt hipersaiti no pašlaik izvēlētā teksta uz norādīto URI,"
+
+#: ../data/almanah.ui.h:15
+msgid "Insert _Time"
+msgstr "Ievie_tot laiku"
+
+#: ../data/almanah.ui.h:16
+msgid "I_mportant"
+msgstr "_Svarīgs"
+
+#: ../data/almanah.ui.h:17
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Pārslēgt, vai tekošais ieraksts ir atzīmēts kā svarīgs."
+
+#: ../data/almanah.ui.h:18
+msgid "_Help"
+msgstr "_Palīdzība"
+
+#: ../data/almanah.ui.h:19
+msgid "Go to _Today"
+msgstr "Ie_t uz šodienu"
+
+#: ../data/almanah.ui.h:20
+msgid "Jump to the current date in the diary."
+msgstr "Lēkt uz pašreizējo datumu dienasgrāmatā."
+
+#: ../data/almanah.ui.h:21
+msgid "Font Style"
+msgstr "Fonta stils"
+
+#: ../data/almanah.ui.h:22
+msgid "Change font style for selected text."
+msgstr "Mainīt izvēlētā teksta fonta stilu."
+
+#: ../data/almanah.ui.h:23
+msgid "_Font Style"
+msgstr "_Fonta stils"
+
+#: ../data/almanah.ui.h:24
+msgid "Entry editing area"
+msgstr "Ieraksta rediģēšanas laukums"
+
+#: ../data/almanah.ui.h:25
+msgid "Calendar"
+msgstr "Kalendārs"
+
+#: ../data/almanah.ui.h:26
+msgid "Past Events"
+msgstr "Pagātnes notikumi"
+
+#: ../data/almanah.ui.h:27
+msgid "Past Event List"
+msgstr "Pagātnes notikumu saraksts"
+
+#: ../data/almanah.ui.h:28
+msgid "Search entry"
+msgstr "Meklēt ierakstu"
+
+#: ../data/almanah.ui.h:29 ../src/search-dialog.c:69
+msgid "Search"
+msgstr "Meklēt"
+
+#: ../data/almanah.ui.h:30
+msgid "Result List"
+msgstr "Rezultātu saraksts"
+
+#: ../data/almanah.ui.h:31
+msgid "View Entry"
+msgstr "Skatīt ierakstu"
+
+#: ../data/almanah.ui.h:32
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "piem., \"14.03.2009\" vai \"14. marts 2009\"."
+
+#: ../data/almanah.ui.h:33
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "piem., “http://google.com/” vai “file:///home/me/Photos/photo.jpg”."
+
+#: ../data/almanah.ui.h:34
+msgid "Successful Entries"
+msgstr "Veiksmīgi ieraksti"
+
+#: ../data/almanah.ui.h:35
+msgid "Merged Entries"
+msgstr "Pārvaldītie ieraksti"
+
+#: ../data/almanah.ui.h:36
+msgid "Failed Entries"
+msgstr "Neizdevušies ieraksti"
+
+#: ../data/almanah.ui.h:37
+msgid "Import Results List"
+msgstr "Importēšanas rezultātu saraksts"
+
+#: ../src/application.c:205
+msgid "Error opening database"
+msgstr "Kļūda, atverot datubāzi"
+
+#: ../src/application.c:253
+msgid "Enable debug mode"
+msgstr "Aktivēt atkļūdošanas režīmu"
+
+#: ../src/application.c:270
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"Pārvaldiet savu dienasgrāmatu. Vienlaicīgi var tikt palaista tikai viena "
+"programmas instance."
+
+#. Print an error
+#: ../src/application.c:281
+#, c-format
+msgid "Command line options could not be parsed: %s\n"
+msgstr "Neizdevās parsēt komandrindas opcijas: %s\n"
+
+#: ../src/application.c:300
+msgid "Error encrypting database"
+msgstr "Kļūda, šifrējot datubāzi"
+
+#: ../src/date-entry-dialog.c:72
+msgid "Select Date"
+msgstr "Izvēlieties datumu"
+
+#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
+#: ../src/import-export-dialog.c:472 ../src/main-window.c:212
+#: ../src/preferences-dialog.c:191 ../src/search-dialog.c:97
+#: ../src/uri-entry-dialog.c:128
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Nevarēja ielādēt “%s” UI failu"
+
+#: ../src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Nederīgs datu versijas numurs %u."
+
+#: ../src/events/calendar-appointment.c:49
+msgid "Calendar Appointment"
+msgstr "Kalendāra tikšanās"
+
+#: ../src/events/calendar-appointment.c:50
+msgid "An appointment on an Evolution calendar."
+msgstr "Tikšanās Evolution kalendārā."
+
+#: ../src/events/calendar-appointment.c:119 ../src/events/calendar-task.c:108
+msgid "Error launching Evolution"
+msgstr "Kļūda, palaižot Evolution"
+
+#: ../src/events/calendar-task.c:49
+msgid "Calendar Task"
+msgstr "Kalendāra uzdevums"
+
+#: ../src/events/calendar-task.c:50
+msgid "A task on an Evolution calendar."
+msgstr "Uzdevums Evolution kalendārā."
+
+#: ../src/export-operation.c:45 ../src/import-operation.c:45
+msgid "Text Files"
+msgstr "Teksta faili"
+
+#: ../src/export-operation.c:46
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"Izvēlieties mapi, kurā eksportēt ierakstus kā teksta _failus, viens fails "
+"katram ierakstam, ar nosaukumiem formātā “yyyy-mm-dd” un bez paplašinājuma. "
+"Visi ieraksti tiks eksportēti nešifrēti — atklātā teksta formātā."
+
+#: ../src/export-operation.c:50 ../src/import-operation.c:50
+msgid "Database"
+msgstr "Datubāze"
+
+#: ../src/export-operation.c:51
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"Izvēlieties faila nosaukum pilnai un nešifrētai Almanah dienasgrāmatas "
+"datubāzes kopijai."
+
+#: ../src/import-export-dialog.c:202
+msgid "Import _mode: "
+msgstr "Importēšanas režī_ms: "
+
+#: ../src/import-export-dialog.c:202
+msgid "Export _mode: "
+msgstr "Eksportēšanas režī_ms: "
+
+#. Set the window title
+#: ../src/import-export-dialog.c:205
+msgid "Import Entries"
+msgstr "Importēt ierakstus"
+
+#: ../src/import-export-dialog.c:205
+msgid "Export Entries"
+msgstr "Eksportēt ierakstus"
+
+#. Set the button label
+#: ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Importēt"
+
+#: ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Eksportēt"
+
+#: ../src/import-export-dialog.c:245
+msgid "Import failed"
+msgstr "Importēšana neizdevās"
+
+#: ../src/import-export-dialog.c:283
+msgid "Export failed"
+msgstr "Eksportēšana neizdevās"
+
+#: ../src/import-export-dialog.c:296
+msgid "Export successful"
+msgstr "Eksportēšana ir veiksmīga"
+
+#: ../src/import-export-dialog.c:297
+msgid "The diary was successfully exported."
+msgstr "Dienasgrāmata tika sekmīgi eksportēta."
+
+#: ../src/import-export-dialog.c:445
+msgid "Import Results"
+msgstr "Importēšanas rezultāts"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:590
+#: ../src/main-window.c:620 ../src/main-window.c:1407 ../src/printing.c:263
+#: ../src/search-dialog.c:182
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: ../src/import-operation.c:46
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Izvēlieties mapi, kurš satur teksta _failus, viens fails katram ierakstam, ar "
+"nosaukumiem formātā “yyyy-mm-dd” un bez paplašinājuma. Visi šādi faili tiks "
+"importēti."
+
+#: ../src/import-operation.c:51
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr ""
+"Izvēlieties Almanah dienasgrāmatas izveidoto datubāzes _failu, ko importēt"
+
+#: ../src/import-operation.c:248
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "Kļūda, deserializējot importēto ierakstu buferī — %s"
+
+#: ../src/import-operation.c:264
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"Kļūda, deserializējot importēto ierakstu buferī. Pārraksta ar importēto "
+"ierakstu — %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-operation.c:305
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Ieraksts importēts no “%s”:\n"
+"\n"
+
+#: ../src/main-window.c:594
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "Vai tiešām vēlaties rediģēt %s dienasgrāmatas ierakstu?"
+
+#: ../src/main-window.c:624
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "Vai tiešām vēlaties dzēst %s dienasgrāmatas ierakstu?"
+
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:733
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "Nezināma vai dublējoša teksta birka “%s” ierakstā. Ignorē."
+
+#: ../src/main-window.c:1049
+msgid "Error opening URI"
+msgstr "Kļūda, atverot URI"
+
+#: ../src/main-window.c:1165
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah ir brīvā programmatūra: jūs varat izplatīt un/vai modificēt to "
+"saskaņā ar GNU Vispārējās Publiskās Licences 3. vai kādas vēlākas versijas "
+"noteikumiem."
+
+#: ../src/main-window.c:1169
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah tiek izplatīts ar cerību, ka tas būs noderīgs. Tas tiek izplatīts BEZ "
+"jebkādas garantijas vai iekļautas ražotāja atbildības par šo produktu. "
+"Sīkāku informāciju meklējiet GNU Vispārējās Publiskās Licences tekstā."
+
+#: ../src/main-window.c:1173
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Jums vajadzēja saņemt GNU Vispārējo Publisko Licenci ar Almanah. Ja nē, "
+"skatiet <http://www.gnu.org/licenses/>."
+
+#: ../src/main-window.c:1188
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Noderīgs dienasgrāmatas turētājs, glabā %u ierakstus."
+
+#: ../src/main-window.c:1192
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Autortiesības © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/main-window.c:1200
+msgid "translator-credits"
+msgstr "Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>"
+
+#: ../src/main-window.c:1204
+msgid "Almanah Website"
+msgstr "Almanah tīmekļa vietne"
+
+#: ../src/main-window.c:1434
+msgid "Entry content could not be loaded"
+msgstr "Nevarēja ielādēt ieraksta saturu"
+
+#: ../src/main-window.c:1500
+msgid "Spelling checker could not be initialized"
+msgstr "Nevarēja inicializēt pareizrakstības pārbaudi"
+
+#: ../src/preferences-dialog.c:91
+msgid "Almanah Preferences"
+msgstr "Almanah iestatījumi"
+
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:217
+msgid "Encryption key: "
+msgstr "Šifrēšanas atslēga:"
+
+#: ../src/preferences-dialog.c:222
+msgid "None (don't encrypt)"
+msgstr "Nekāda (nešifrēt)"
+
+#: ../src/preferences-dialog.c:246
+msgid "New _Key"
+msgstr "Jauna _atslēga"
+
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:253
+msgid "Enable _spell checking"
+msgstr "Aktivēt pareizrak_stības pārbaudi"
+
+#: ../src/preferences-dialog.c:279
+msgid "Error saving the encryption key"
+msgstr "Kļūda, saglabājot šifrēšanas atslēgu"
+
+#: ../src/preferences-dialog.c:298
+msgid "Error opening Seahorse"
+msgstr "Kļūda, atverot Seahorse"
+
+#: ../src/printing.c:277
+msgid "This entry is marked as important."
+msgstr "Ieraksts ir marķēts kā svarīgs."
+
+#: ../src/printing.c:298
+msgid "No entry for this date."
+msgstr "Šim datumam nav ierakstu"
+
+#: ../src/printing.c:453
+msgid "Start date:"
+msgstr "Sākuma datums:"
+
+#: ../src/printing.c:455
+msgid "End date:"
+msgstr "Beigu datums:"
+
+#. Line spacing
+#: ../src/printing.c:471
+msgid "Line spacing:"
+msgstr "Rindstarpa:"
+
+#: ../src/search-dialog.c:223
+msgid "Search canceled."
+msgstr "Meklēšana ir atcelta."
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: ../src/search-dialog.c:226
+#, c-format
+msgid "Error: %s"
+msgstr "Kļūda: %s"
+
+#. Success!
+#: ../src/search-dialog.c:231
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "Atrasts %d ieraksts:"
+msgstr[1] "Atrasti %d ieraksti:"
+msgstr[2] "Atrasti %d ierakstu:"
+
+#: ../src/search-dialog.c:280
+msgid "Searching…"
+msgstr "Meklē..."
+
+#: ../src/storage-manager.c:259
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME nav jaunākā versija %s"
+
+#: ../src/storage-manager.c:268
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME neatbalsta OpenPGP — %s"
+
+#: ../src/storage-manager.c:277
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Kļūda, izveidojot cipher kontekstu — %s"
+
+#: ../src/storage-manager.c:306
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Kļūda, atverot šifrētu datubāzes failu “%s” — %s"
+
+#: ../src/storage-manager.c:325
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Kļūda, atverot atvērta teksta datubāzes failu “%s” — %s"
+
+#: ../src/storage-manager.c:373
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Šifrētā datubāze ir tukša. Ir atstāta atklāta teksta datubāze kā rezerves "
+"kopija."
+
+#. Delete the plain file
+#: ../src/storage-manager.c:376
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Nevarēja izdzēst atklāta teksta datubāzes failu “%s”."
+
+#: ../src/storage-manager.c:417
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Kļūda, atšifrējot datubāzi — %s"
+
+#: ../src/storage-manager.c:451
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Kļūda, saņemot šifrēšanas atslēgu — %s"
+
+#: ../src/storage-manager.c:472
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Kļūda, šifrējot datubāzi — %s"
+
+#: ../src/storage-manager.c:574
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Neizdevās atvērt datubāzi “%s”. SQLite deva sekojošo kļūdas ziņojumu: "
+"%s"
+
+#: ../src/storage-manager.c:651
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"Neizdevās palaist vaicājumu “%s”. SQLite deva sekojošo kļūdas ziņojumu: "
+"%s"
+
+#: ../src/storage-manager.c:954
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Kļūda, deserializējot ierakstu buferī, veicot meklēšanu."
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Svarīgi!"
+
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Ievadiet URI"
+
