@@ -36,6 +36,10 @@ almanah_SOURCES = \
 	uri-entry-dialog.h			\
 	widgets/calendar.c			\
 	widgets/calendar.h			\
+	widgets/calendar-button.h		\
+	widgets/calendar-button.c		\
+	widgets/calendar-window.h		\
+	widgets/calendar-window.c		\
 	widgets/font-style-menu-action.h	\
 	widgets/font-style-menu-action.c	\
 	widgets/hyperlink-tag.c			\

@@ -19,4 +19,6 @@ src/printing.c
 src/search-dialog.c
 src/storage-manager.c
 src/widgets/calendar.c
+src/widgets/calendar-button.c
+src/widgets/calendar-window.c
 src/uri-entry-dialog.c

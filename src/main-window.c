@@ -40,6 +40,7 @@
 #include "import-export-dialog.h"
 #include "uri-entry-dialog.h"
 #include "widgets/calendar.h"
+#include "widgets/calendar-button.h"
 #include "widgets/font-style-menu-action.h"
 #include "widgets/hyperlink-tag.h"
 
@@ -68,9 +69,9 @@ static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEve
 static void mw_font_style_menu_position_func (GtkMenu *menu, int *x, int *y, gboolean *push_in, GtkMenuToolButton *button);
 static GtkMenuToolButton *mw_get_font_style_tool_button_from_action (GtkAction *action);
 static gboolean save_entry_timeout_cb (AlmanahMainWindow *self);
+static void mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *application, GtkToolbar *toolbar, GtkAction *today_action);
 
 /* GtkBuilder callbacks */
-void mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window);
 void mw_import_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_export_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_page_setup_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
@@ -88,14 +89,17 @@ void mw_search_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_preferences_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_about_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_old_entries_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
 void mw_font_style_activate_cb (AlmanahFontStyleMenuAction *action, AlmanahMainWindow *main_window);
+
+/* Other callbacks */
+void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 
 struct _AlmanahMainWindowPrivate {
 	GtkTextView *entry_view;
 	GtkTextBuffer *entry_buffer;
-	AlmanahCalendar *calendar;
-	GtkLabel *date_label;
+	AlmanahCalendarButton *calendar_button;
 	GtkListStore *event_store;
 	GtkTreeSelection *events_selection;
 	GtkToggleAction *bold_action;
@@ -186,10 +190,11 @@ AlmanahMainWindow *
 almanah_main_window_new (AlmanahApplication *application)
 {
 	GtkBuilder *builder;
-	AlmanahStorageManager *storage_manager;
 	AlmanahEventManager *event_manager;
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
+	GtkToolbar *toolbar;
+	GtkAction *today_action;
 	GError *error = NULL;
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
@@ -237,8 +242,6 @@ almanah_main_window_new (AlmanahApplication *application)
 	/* Grab our child widgets */
 	priv->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
 	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
-	priv->calendar = ALMANAH_CALENDAR (gtk_builder_get_object (builder, "almanah_mw_calendar"));
-	priv->date_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_date_label"));
 	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
 	priv->events_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_mw_events_tree_view")));
 	priv->bold_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_bold"));;
@@ -285,11 +288,6 @@ almanah_main_window_new (AlmanahApplication *application)
 	g_signal_connect (priv->underline_action, "toggled", G_CALLBACK (mw_underline_toggled_cb), main_window);
 	g_signal_connect (priv->hyperlink_action, "toggled", (GCallback) mw_hyperlink_toggled_cb, main_window);
 
-	/* Notification for calendar changes */
-	storage_manager = almanah_application_dup_storage_manager (application);
-	almanah_calendar_set_storage_manager (priv->calendar, storage_manager);
-	g_object_unref (storage_manager);
-
 	/* Notification for event changes */
 	event_manager = almanah_application_dup_event_manager (application);
 	g_signal_connect (event_manager, "events-updated", G_CALLBACK (mw_events_updated_cb), main_window);
@@ -298,6 +296,11 @@ almanah_main_window_new (AlmanahApplication *application)
 	/* Set up printing objects */
 	priv->print_settings = gtk_print_settings_new ();
 	priv->page_setup = gtk_page_setup_new ();
+
+	/* Set up the toolbar */
+	toolbar = GTK_TOOLBAR (gtk_builder_get_object (builder, "almanah_mw_toolbar"));
+	today_action = GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_jump_to_today"));
+	mw_setup_toolbar (main_window, application, toolbar, today_action);
 
 	/* Select the current day and month */
 	mw_jump_to_today_activate_cb (NULL, main_window);
@@ -667,7 +670,7 @@ save_entry_timeout_cb (AlmanahMainWindow *self)
 void
 almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date)
 {
-	almanah_calendar_select_date (self->priv->calendar, date);
+	almanah_calendar_button_select_date (self->priv->calendar_button, date);
 }
 
 static void
@@ -1214,7 +1217,14 @@ mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	GDate current_date;
 	g_date_set_time_t (&current_date, time (NULL));
-	almanah_main_window_select_date (main_window, &current_date);
+	almanah_calendar_button_select_date (main_window->priv->calendar_button, &current_date);
+}
+
+void
+mw_old_entries_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+{
+	// TODO: Show the old entries
+	g_debug ("Old entries clicked, but nothing implemented yet...");
 }
 
 /**
@@ -1349,7 +1359,7 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 	GSList *_events, *events;
 	GDate date;
 
-	almanah_calendar_get_date (main_window->priv->calendar, &date);
+	almanah_calendar_button_get_date (main_window->priv->calendar_button, &date);
 	_events = almanah_event_manager_get_events (event_manager, type_id, &date);
 
 	/* Clear all the events generated by this factory out of the list store first */
@@ -1381,13 +1391,12 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 }
 
 void
-mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_window)
+mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar_button, AlmanahMainWindow *main_window)
 {
 	AlmanahApplication *application;
 	AlmanahStorageManager *storage_manager;
 	AlmanahEventManager *event_manager;
 	GDate calendar_date;
-	gchar calendar_string[100];
 #ifdef ENABLE_SPELL_CHECKING
 	GtkSpell *gtkspell;
 #endif /* ENABLE_SPELL_CHECKING */
@@ -1401,11 +1410,7 @@ mw_calendar_day_selected_cb (GtkCalendar *calendar, AlmanahMainWindow *main_wind
 	save_current_entry (main_window, TRUE);
 
 	/* Update the date label */
-	almanah_calendar_get_date (main_window->priv->calendar, &calendar_date);
-
-	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
-	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
-	gtk_label_set_markup (priv->date_label, calendar_string);
+	almanah_calendar_button_get_date (main_window->priv->calendar_button, &calendar_date);
 
 	/* Update the entry */
 	storage_manager = almanah_application_dup_storage_manager (application);
@@ -1479,6 +1484,35 @@ mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path,
 
 	/* NOTE: event types should display their own errors, so one won't be displayed here. */
 	almanah_event_view (event, GTK_WINDOW (main_window));
+}
+
+static void
+mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *application, GtkToolbar *toolbar, GtkAction *today_action)
+{
+	GtkToolItem *calendar_button_item, *separator;
+	AlmanahStorageManager *storage_manager;
+
+	/* Insert a dynamic space between the text style and calendar & important.
+	 * This can't be done using the <separator/> in the UI file at the moment
+	 */
+	separator = gtk_separator_tool_item_new ();
+	gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (separator), FALSE);
+	gtk_tool_item_set_expand (separator, TRUE);
+	gtk_toolbar_insert (toolbar, separator, 2);
+
+	/* Setup the calendar button */
+	storage_manager = almanah_application_dup_storage_manager (application);
+	main_window->priv->calendar_button = ALMANAH_CALENDAR_BUTTON (almanah_calendar_button_new (storage_manager));
+	g_object_unref (storage_manager);
+	g_signal_connect (main_window->priv->calendar_button, "day-selected", G_CALLBACK (mw_calendar_day_selected_cb), main_window);
+	/* Use the same action for the today button in the dropdown window */
+	almanah_calendar_button_set_today_action (main_window->priv->calendar_button, today_action);
+
+	/* Insert the calendar button into the toolbar through a GtkToolItem but button style */
+	calendar_button_item = gtk_tool_item_new ();
+	gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (calendar_button_item)), GTK_STYLE_CLASS_RAISED);
+	gtk_container_add (GTK_CONTAINER (calendar_button_item), GTK_WIDGET (main_window->priv->calendar_button));
+	gtk_toolbar_insert (toolbar, calendar_button_item, 3);
 }
 
 #ifdef ENABLE_SPELL_CHECKING
