@@ -18,4 +18,11 @@
 			<gnome:userid>pwithnall</gnome:userid>
 		</foaf:Person>
 	</maintainer>
+	<maintainer>
+		<foaf:Person>
+			<foaf:name>Álvaro Peña</foaf:name>
+			<foaf:mbox rdf:resource="mailto:alvaropg@src.gnome.org"/>
+			<gnome:userid>alvaropg</gnome:userid>
+		</foaf:Person>
+	</maintainer>
 </Project>
