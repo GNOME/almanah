@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-26 20:53+0200\n"
-"PO-Revision-Date: 2012-05-26 20:55+0200\n"
+"POT-Creation-Date: 2012-05-31 20:35+0200\n"
+"PO-Revision-Date: 2012-05-31 20:36+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -364,7 +364,7 @@ msgstr "Wyniki importowania"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #: ../src/import-export-dialog.c:539 ../src/main-window.c:593
 #: ../src/main-window.c:623 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:309
+#: ../src/widgets/calendar-button.c:317
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -665,7 +665,17 @@ msgid "Can't load calendar window object from UI file"
 msgstr ""
 "Nie można wczytać obiektu okna kalendarza z pliku interfejsu użytkownika"
 
-#: ../src/widgets/calendar-window.c:80
+#. Error loading the CSS
+#: ../src/widgets/calendar-window.c:63
+#, c-format
+msgid ""
+"Couldn't load the CSS file '%s' for calendar window. The interface might not "
+"be styled correctly"
+msgstr ""
+"Nie można wczytać pliku CSS \"%s\" dla okna kalendarza. Interfejs może "
+"wyglądać niepoprawnie"
+
+#: ../src/widgets/calendar-window.c:100
 msgid "Unknown input device"
 msgstr "Nieznane urządzenie wejściowe"
 
