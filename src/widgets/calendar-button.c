@@ -147,6 +147,7 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 
 		return;
 	}
+	gtk_window_set_type_hint (GTK_WINDOW (self->priv->dock), GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU);
 
 	g_signal_connect (self->priv->dock, "hide", G_CALLBACK (almanah_calendar_button_dock_hiden), self);
 
@@ -278,11 +279,11 @@ almanah_calendar_button_toggled (GtkToggleButton *togglebutton, gpointer user_da
 	gint x, y;
 	AlmanahCalendarButton *self;
 	GtkStyleContext *style_context;
+	const GtkWidgetPath *path;
 
 	self = ALMANAH_CALENDAR_BUTTON (togglebutton);
-	style_context = gtk_widget_get_style_context (GTK_WIDGET (togglebutton));
+	style_context = gtk_widget_get_style_context (GTK_WIDGET (self));
 	if (gtk_toggle_button_get_active (togglebutton)) {
-		/* FIXME: Changing the style don't work!?! */
 		gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_MENUBAR);
 		gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_MENUITEM);
 		/* Show the dock */
@@ -295,7 +296,14 @@ almanah_calendar_button_toggled (GtkToggleButton *togglebutton, gpointer user_da
 		/* Isn't necesary to hide the dock */
 	}
 
-	gtk_widget_reset_style (GTK_WIDGET (togglebutton));
+	gtk_widget_reset_style (GTK_WIDGET (self));
+
+	/* Just for style purposes.
+	 * Remove the toolbar style from the path allowing display the CalendarButton as a MenuItem when the user activate it.
+	 * It's necesary remove the toolbar style classes every time because the gtk_widget_reset_style reload the path.
+	 */
+	path = gtk_style_context_get_path (style_context);
+	gtk_widget_path_iter_clear_classes ((GtkWidgetPath *) path, 2);
 }
 
 static void

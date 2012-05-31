@@ -1,0 +1,4 @@
+/* Style to make the Calendar window looks like a menu popup */
+AlmanahCalendarWindow {
+    background-color: @menu_bg_color;
+}

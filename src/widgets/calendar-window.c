@@ -50,7 +50,27 @@ almanah_calendar_window_class_init (AlmanahCalendarWindowClass *klass)
 static void
 almanah_calendar_window_init (AlmanahCalendarWindow *self)
 {
+	gchar *css_path;
+	GtkCssProvider *style_provider;
+	GError *error = NULL;
+
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_CALENDAR_WINDOW, AlmanahCalendarWindowPrivate);
+
+	css_path = g_build_filename (almanah_get_css_path (), "calendar-window.css", NULL);
+	style_provider = gtk_css_provider_new ();
+	if (!gtk_css_provider_load_from_path (style_provider, css_path, NULL)) {
+		/* Error loading the CSS */
+		g_warning (_("Couldn't load the CSS file '%s' for calendar window. The interface might not be styled correctly"), css_path);
+		g_error_free (error);
+	} else {
+		GtkStyleContext *style_context;
+
+		style_context = gtk_widget_get_style_context (GTK_WIDGET (self));
+		gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	}
+
+	g_free (css_path);
+	g_object_unref (style_provider);
 }
 
 static void

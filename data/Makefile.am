@@ -22,7 +22,9 @@ update-icon-cache:
 ###############################################################################
 
 uidir = $(datadir)/almanah
-ui_DATA = almanah.ui
+ui_DATA = \
+	almanah.ui		\
+	calendar-window.css
 
 ###############################################################################
 # Desktop file
