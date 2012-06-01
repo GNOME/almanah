@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-26 17:02+0000\n"
-"PO-Revision-Date: 2012-05-27 12:02+0200\n"
+"POT-Creation-Date: 2012-05-31 16:45+0000\n"
+"PO-Revision-Date: 2012-06-01 10:20+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -360,7 +360,7 @@ msgstr "Importar resultados"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #: ../src/import-export-dialog.c:539 ../src/main-window.c:593
 #: ../src/main-window.c:623 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:309
+#: ../src/widgets/calendar-button.c:317
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
 
@@ -636,8 +636,8 @@ msgstr ""
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
-"No se pudo ejecutar la consulta «%s». SQLite proporcionó el siguiente "
-"mensaje de error: %s"
+"No se pudo ejecutar la consulta «%s». SQLite proporcionó el siguiente mensaje "
+"de error: %s"
 
 #: ../src/storage-manager.c:954
 msgid "Error deserializing entry into buffer while searching."
@@ -650,7 +650,6 @@ msgstr "Importante"
 
 #: ../src/widgets/calendar-button.c:135
 #, c-format
-#| msgid "UI file \"%s\" could not be loaded"
 msgid "UI file \"%s\" could not be loaded: %s"
 msgstr "No se pudo cargar el archivo de interfaz de usuario «%s»: %s"
 
@@ -659,7 +658,17 @@ msgid "Can't load calendar window object from UI file"
 msgstr ""
 "No se puede cargar el objeto de ventana de calendario desde el archivo de IU"
 
-#: ../src/widgets/calendar-window.c:80
+#. Error loading the CSS
+#: ../src/widgets/calendar-window.c:63
+#, c-format
+msgid ""
+"Couldn't load the CSS file '%s' for calendar window. The interface might not "
+"be styled correctly"
+msgstr ""
+"No se pudo cargar el archivo CSS «%s» para la ventana del calendario. Es "
+"posible que la interfaz no se muestre correctamente."
+
+#: ../src/widgets/calendar-window.c:100
 msgid "Unknown input device"
 msgstr "Dispositivo de entrada desconocido"
 
