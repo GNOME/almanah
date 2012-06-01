@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almana"
 "h&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-25 21:42+0000\n"
-"PO-Revision-Date: 2012-03-31 13:50+0200\n"
+"POT-Creation-Date: 2012-05-31 16:45+0000\n"
+"PO-Revision-Date: 2012-06-01 20:19+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:101
-#: ../src/main-window.c:145
+#: ../src/main-window.c:149
 msgid "Almanah Diary"
 msgstr "Алманах — дневник"
 
@@ -150,7 +150,6 @@ msgid "Font Style"
 msgstr "Изглед писма"
 
 #: ../data/almanah.ui.h:22
-#| msgid "Change font style for selected text"
 msgid "Change font style for selected text."
 msgstr "Измените стил писма за изабрани текст."
 
@@ -159,12 +158,12 @@ msgid "_Font Style"
 msgstr "_Изглед писма"
 
 #: ../data/almanah.ui.h:24
-msgid "Entry editing area"
-msgstr "Област за уређивање уноса"
-
-#: ../data/almanah.ui.h:25
 msgid "Calendar"
 msgstr "Календар"
+
+#: ../data/almanah.ui.h:25
+msgid "Entry editing area"
+msgstr "Област за уређивање уноса"
 
 #: ../data/almanah.ui.h:26
 msgid "Past Events"
@@ -198,7 +197,7 @@ msgstr "нпр. „16.07.2033“ или „16. Јул 2033.“."
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr ""
 "нпр. „http://google.com/“ или "
-"„датотека:///лична_фасцикла/Марко/фотографије/слика.jpg“"
+"„датотека:///лична_фасцикла/Марко/фотографије/слика.jpg“."
 
 #: ../data/almanah.ui.h:34
 msgid "Successful Entries"
@@ -246,7 +245,7 @@ msgid "Select Date"
 msgstr "Изаберите датум"
 
 #: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
-#: ../src/import-export-dialog.c:472 ../src/main-window.c:212
+#: ../src/import-export-dialog.c:472 ../src/main-window.c:217
 #: ../src/preferences-dialog.c:191 ../src/search-dialog.c:97
 #: ../src/uri-entry-dialog.c:128
 #, c-format
@@ -353,12 +352,12 @@ msgstr "Резултати увожења"
 #. Translators: This is a strftime()-format string for the dates displayed in import results.
 #. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
 #. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:590
-#: ../src/main-window.c:620 ../src/main-window.c:1407 ../src/printing.c:263
-#: ../src/search-dialog.c:182
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:593
+#: ../src/main-window.c:623 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/widgets/calendar-button.c:317
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -407,27 +406,27 @@ msgstr ""
 "Унос је увежен из „%s“:\n"
 "\n"
 
-#: ../src/main-window.c:594
+#: ../src/main-window.c:597
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Да ли сте сигурни да желите да уредите овај унос дневника за „%s“?"
 
-#: ../src/main-window.c:624
+#: ../src/main-window.c:627
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Да ли сте сигурни да желите да обришете овај унос дневника за „%s“?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:733
+#: ../src/main-window.c:736
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Непозната или дуплирана ознака текста „%s“ у уносу. Занемарујем."
 
-#: ../src/main-window.c:1049
+#: ../src/main-window.c:1052
 msgid "Error opening URI"
 msgstr "Грешка приликом отварања адресе"
 
-#: ../src/main-window.c:1165
+#: ../src/main-window.c:1168
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -435,11 +434,11 @@ msgid ""
 "version."
 msgstr ""
 "Алманах је слободан софтвер: можете га прослеђивати и/или мењати под "
-"условима ГНУ Опште јавне лиценце коју је објавила Задужбина слободног "
+"условима Гнуове опште јавне лиценце коју је објавила Задужбина слободног "
 "софтвера, било верзије 3 лиценце или (по вашем избору) било које новије "
 "верзије."
 
-#: ../src/main-window.c:1169
+#: ../src/main-window.c:1172
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -448,22 +447,22 @@ msgid ""
 msgstr ""
 "Алманах се расподељује у нади да ће бити користан, али БЕЗ ИКАКВЕ ГАРАНЦИЈЕ; "
 "чак и без примењене гаранције ТРЖИШНЕ ВРЕДНОСТИ или ПРИЛАГОЂЕНОСТИ "
-"ОДРЕЂЕНОЈ НАМЕНИ. Погледајте ГНУ Општу јавну лиценцу за више детаља."
+"ОДРЕЂЕНОЈ НАМЕНИ. Погледајте Гнуову општу јавну лиценцу за више детаља."
 
-#: ../src/main-window.c:1173
+#: ../src/main-window.c:1176
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Требало би да сте примили примерак ГНУ Опште јавне лиценце уз Алманах. Ако "
+"Треба да сте примили примерак Гнуове опште јавне лиценце уз Алманах. Ако "
 "нисте, погледајте <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:1188
+#: ../src/main-window.c:1191
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Користан чувар дневника, садржи %u уносa."
 
-#: ../src/main-window.c:1192
+#: ../src/main-window.c:1195
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Ауторска права © 2008-2009 Филип Витнал"
 
@@ -472,19 +471,19 @@ msgstr "Ауторска права © 2008-2009 Филип Витнал"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:1200
+#: ../src/main-window.c:1203
 msgid "translator-credits"
 msgstr "  Мирослав Николић, miroslavnikolic@rocketmail.com"
 
-#: ../src/main-window.c:1204
+#: ../src/main-window.c:1207
 msgid "Almanah Website"
 msgstr "Веб страница Алманаха"
 
-#: ../src/main-window.c:1434
+#: ../src/main-window.c:1439
 msgid "Entry content could not be loaded"
 msgstr "Садржај уноса не може бити учитан"
 
-#: ../src/main-window.c:1500
+#: ../src/main-window.c:1534
 msgid "Spelling checker could not be initialized"
 msgstr "Провера писања не може бити започета"
 
@@ -623,16 +622,16 @@ msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr ""
-"Не могу да отворим базу података „%s“. СКуЛајте је обезбедио следећу поруку "
-"о грешци: %s"
+"Не могу да отворим базу података „%s“. СКуЛајт је обезбедио следећу поруку о "
+"грешци: %s"
 
 #: ../src/storage-manager.c:651
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
-"Не могу да покренем упит „%s“. СКуЛајте је обезбедио следећу поруку о "
-"грешци: %s"
+"Не могу да покренем упит „%s“. СКуЛајт је обезбедио следећу поруку о грешци: "
+"%s"
 
 #: ../src/storage-manager.c:954
 msgid "Error deserializing entry into buffer while searching."
@@ -642,6 +641,31 @@ msgstr "Грешка у рашчлањивању уноса у баферу то
 #: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Важно!"
+
+#: ../src/widgets/calendar-button.c:135
+#, c-format
+#| msgid "UI file \"%s\" could not be loaded"
+msgid "UI file \"%s\" could not be loaded: %s"
+msgstr "Не могу да учитам датотеку корисничког сучеља „%s“: %s"
+
+#: ../src/widgets/calendar-button.c:145
+msgid "Can't load calendar window object from UI file"
+msgstr ""
+"Не могу да учитам објекат прозора календара из датотеке корисничког сучеља"
+
+#. Error loading the CSS
+#: ../src/widgets/calendar-window.c:63
+#, c-format
+msgid ""
+"Couldn't load the CSS file '%s' for calendar window. The interface might not "
+"be styled correctly"
+msgstr ""
+"Не могу да учитам ЦСС датотеку „%s“ за прозор календара. Сучеље не може бити "
+"исправно стилизовано"
+
+#: ../src/widgets/calendar-window.c:100
+msgid "Unknown input device"
+msgstr "Непознат улазни уређај"
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
