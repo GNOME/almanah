@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-27 10:30+0000\n"
-"PO-Revision-Date: 2012-05-28 14:47+0100\n"
+"POT-Creation-Date: 2012-06-02 18:58+0000\n"
+"PO-Revision-Date: 2012-06-08 21:01+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -346,7 +346,7 @@ msgstr "Rezultati uvoza"
 #: ../src/main-window.c:623
 #: ../src/printing.c:263
 #: ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:309
+#: ../src/widgets/calendar-button.c:317
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %m. %Y"
 
@@ -599,7 +599,13 @@ msgstr "Uporabniškega vmesnika \"%s\" ni mogoče naložiti: %s"
 msgid "Can't load calendar window object from UI file"
 msgstr "Ni mogoče naložiti predmeta okna koledarja iz datoteke uporabniškega vmesnika"
 
-#: ../src/widgets/calendar-window.c:80
+#. Error loading the CSS
+#: ../src/widgets/calendar-window.c:63
+#, c-format
+msgid "Couldn't load the CSS file '%s' for calendar window. The interface might not be styled correctly"
+msgstr "Datoteke CSS '%s' za okno koledarja ni mogoče naložiti. Vmesnik morda ne bo oblikovan do popolnosti."
+
+#: ../src/widgets/calendar-window.c:100
 msgid "Unknown input device"
 msgstr "Neznana vhodna naprava"
 
