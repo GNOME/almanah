@@ -377,14 +377,31 @@
 								<child>
 									<object class="GtkExpander" id="almanah_mw_events_expander">
 										<child type="label">
-											<object class="GtkLabel" id="almanah_mw_events_label">
-												<property name="label" translatable="yes">Past Events</property>
-												<accessibility>
-													<relation target="almanah_mw_events_tree_view" type="label-for"/>
-												</accessibility>
-												<attributes>
-													<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-												</attributes>
+											<object class="GtkHBox" id="almanah_mw_events_expander_label_box">
+												<property name="spacing">6</property>
+												<child>
+													<object class="GtkLabel" id="almanah_mw_events_label">
+														<property name="label" translatable="yes">Past events</property>
+														<accessibility>
+															<relation target="almanah_mw_events_tree_view" type="label-for"/>
+														</accessibility>
+														<attributes>
+															<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+														</attributes>
+													</object>
+													<packing>
+														<property name="expand">False</property>
+														<property name="fill">True</property>
+													</packing>
+												</child>
+												<child>
+													<object class="GtkLabel" id="almanah_mw_events_count_label">
+													</object>
+													<packing>
+														<property name="expand">False</property>
+														<property name="fill">True</property>
+													</packing>
+												</child>
 											</object>
 										</child>
 										<child>

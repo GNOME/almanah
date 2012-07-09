@@ -101,6 +101,8 @@ struct _AlmanahMainWindowPrivate {
 	GtkTextBuffer *entry_buffer;
 	AlmanahCalendarButton *calendar_button;
 	GtkListStore *event_store;
+	GtkWidget *events_expander;
+	GtkLabel *events_count_label;
 	GtkTreeSelection *events_selection;
 	GtkToggleAction *bold_action;
 	GtkToggleAction *italic_action;
@@ -243,6 +245,8 @@ almanah_main_window_new (AlmanahApplication *application)
 	priv->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
 	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
 	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
+	priv->events_expander = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_events_expander"));
+	priv->events_count_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_events_count_label"));
 	priv->events_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_mw_events_tree_view")));
 	priv->bold_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_bold"));;
 	priv->italic_action = GTK_TOGGLE_ACTION (gtk_builder_get_object (builder, "almanah_ui_italic"));
@@ -1358,6 +1362,8 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 	GSList *_events, *events;
 	GDate date;
+	guint events_count = 0;
+	gchar *events_text;
 
 	almanah_calendar_button_get_date (main_window->priv->calendar_button, &date);
 	_events = almanah_event_manager_get_events (event_manager, type_id, &date);
@@ -1382,7 +1388,20 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 				    4, g_strdup_printf ("<small>%s</small>", almanah_event_get_name (event)),
 				    -1);
 
+		events_count++;
+
 		g_object_unref (event);
+	}
+
+	events_text = g_strdup_printf ("%u", events_count);
+	gtk_label_set_label (priv->events_count_label, events_text);
+	g_free (events_text);
+
+	if (events_count > 0) {
+		gtk_widget_set_sensitive (priv->events_expander, TRUE);
+	} else {
+		gtk_expander_set_expanded (GTK_EXPANDER (priv->events_expander), FALSE);
+		gtk_widget_set_sensitive (priv->events_expander, FALSE);
 	}
 
 	g_debug ("Finished adding events.");
