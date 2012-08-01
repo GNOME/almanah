@@ -1385,7 +1385,7 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 				    1, almanah_event_get_icon_name (event),
 				    2, type_id,
 				    3, almanah_event_format_value (event),
-				    4, g_strdup_printf ("<small>%s</small>", almanah_event_get_name (event)),
+				    4, g_strdup_printf ("<small>%s @ %s</small>", almanah_event_format_time (event), almanah_event_get_name (event)),
 				    -1);
 
 		events_count++;

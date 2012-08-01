@@ -46,7 +46,7 @@ typedef struct {
 } AlmanahCalendarTaskEventClass;
 
 GType almanah_calendar_task_event_get_type (void);
-AlmanahCalendarTaskEvent *almanah_calendar_task_event_new (const gchar *uid, const gchar *summary);
+AlmanahCalendarTaskEvent *almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, GTime start_time);
 
 G_END_DECLS
 

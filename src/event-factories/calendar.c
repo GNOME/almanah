@@ -128,7 +128,7 @@ get_events (AlmanahEventFactory *event_factory, GDate *date)
 			/* Have to filter out tasks by date */
 			if (calendar_event->event.task.start_time <= today_time &&
 			    (calendar_event->event.task.completed_time == 0 || calendar_event->event.task.completed_time >= yesterday_time)) {
-				event = ALMANAH_EVENT (almanah_calendar_task_event_new (calendar_event->event.task.uid, calendar_event->event.task.summary));
+				event = ALMANAH_EVENT (almanah_calendar_task_event_new (calendar_event->event.task.uid, calendar_event->event.task.summary, calendar_event->event.task.start_time));
 			} else {
 				event = NULL;
 			}

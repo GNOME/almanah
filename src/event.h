@@ -47,12 +47,14 @@ typedef struct {
 	const gchar *icon_name;
 
 	const gchar *(*format_value) (AlmanahEvent *event);
+	const gchar *(*format_time) (AlmanahEvent *event);
 	gboolean (*view) (AlmanahEvent *event, GtkWindow *parent_window);
 } AlmanahEventClass;
 
 GType almanah_event_get_type (void);
 
 const gchar *almanah_event_format_value (AlmanahEvent *self);
+const gchar *almanah_event_format_time (AlmanahEvent *self);
 gboolean almanah_event_view (AlmanahEvent *self, GtkWindow *parent_window);
 const gchar *almanah_event_get_name (AlmanahEvent *self);
 const gchar *almanah_event_get_description (AlmanahEvent *self);

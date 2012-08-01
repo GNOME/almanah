@@ -26,11 +26,13 @@
 
 static void almanah_calendar_task_event_finalize (GObject *object);
 static const gchar *almanah_calendar_task_event_format_value (AlmanahEvent *event);
+static const gchar *almanah_calendar_task_event_format_time (AlmanahEvent *event);
 static gboolean almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window);
 
 struct _AlmanahCalendarTaskEventPrivate {
 	gchar *uid;
 	gchar *summary;
+	gchar *time;
 };
 
 G_DEFINE_TYPE (AlmanahCalendarTaskEvent, almanah_calendar_task_event, ALMANAH_TYPE_EVENT)
@@ -51,6 +53,7 @@ almanah_calendar_task_event_class_init (AlmanahCalendarTaskEventClass *klass)
 	event_class->icon_name = "stock_task";
 
 	event_class->format_value = almanah_calendar_task_event_format_value;
+	event_class->format_time = almanah_calendar_task_event_format_time;
 	event_class->view = almanah_calendar_task_event_view;
 }
 
@@ -67,17 +70,24 @@ almanah_calendar_task_event_finalize (GObject *object)
 
 	g_free (priv->uid);
 	g_free (priv->summary);
+	g_free (priv->time);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_calendar_task_event_parent_class)->finalize (object);
 }
 
 AlmanahCalendarTaskEvent *
-almanah_calendar_task_event_new (const gchar *uid, const gchar *summary)
+almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, GTime start_time)
 {
 	AlmanahCalendarTaskEvent *event = g_object_new (ALMANAH_TYPE_CALENDAR_TASK_EVENT, NULL);
+	struct tm utc_date_tm;
+
 	event->priv->uid = g_strdup (uid);
 	event->priv->summary = g_strdup (summary);
+
+	gmtime_r ((const time_t*) &(start_time), &utc_date_tm);
+	event->priv->time = g_strdup_printf ("%.2d:%.2d", utc_date_tm.tm_hour, utc_date_tm.tm_min);
+
 	return event;
 }
 
@@ -85,6 +95,12 @@ static const gchar *
 almanah_calendar_task_event_format_value (AlmanahEvent *event)
 {
 	return ALMANAH_CALENDAR_TASK_EVENT (event)->priv->summary;
+}
+
+static const gchar *
+almanah_calendar_task_event_format_time (AlmanahEvent *event)
+{
+	return ALMANAH_CALENDAR_TASK_EVENT (event)->priv->time;
 }
 
 static gboolean
