@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-02 18:58+0000\n"
-"PO-Revision-Date: 2012-06-08 21:01+0100\n"
+"POT-Creation-Date: 2012-08-07 06:27+0000\n"
+"PO-Revision-Date: 2012-08-07 12:15+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: ../data/almanah.desktop.in.h:1
 #: ../src/application.c:101
-#: ../src/main-window.c:149
+#: ../src/main-window.c:151
 msgid "Almanah Diary"
 msgstr "Almanah dnevnik"
 
@@ -160,7 +160,7 @@ msgid "Entry editing area"
 msgstr "Območje urejanje vnosa"
 
 #: ../data/almanah.ui.h:26
-msgid "Past Events"
+msgid "Past events"
 msgstr "Pretekli dogodki"
 
 #: ../data/almanah.ui.h:27
@@ -237,7 +237,7 @@ msgstr "Izberi datum"
 #: ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168
 #: ../src/import-export-dialog.c:472
-#: ../src/main-window.c:217
+#: ../src/main-window.c:219
 #: ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97
 #: ../src/uri-entry-dialog.c:128
@@ -250,24 +250,24 @@ msgstr "Uporabniškega vmesnika datoteke \"%s\" ni mogoče naložiti"
 msgid "Invalid data version number %u."
 msgstr "Neveljavni podatki o številki različice %u."
 
-#: ../src/events/calendar-appointment.c:49
+#: ../src/events/calendar-appointment.c:51
 msgid "Calendar Appointment"
 msgstr "Sestanek v koledarju"
 
-#: ../src/events/calendar-appointment.c:50
+#: ../src/events/calendar-appointment.c:52
 msgid "An appointment on an Evolution calendar."
 msgstr "Sestanek v koledarju programa Evolution."
 
-#: ../src/events/calendar-appointment.c:119
-#: ../src/events/calendar-task.c:108
+#: ../src/events/calendar-appointment.c:134
+#: ../src/events/calendar-task.c:124
 msgid "Error launching Evolution"
 msgstr "Napaka med zaganjanjem programa Evolution"
 
-#: ../src/events/calendar-task.c:49
+#: ../src/events/calendar-task.c:51
 msgid "Calendar Task"
 msgstr "Naloga v koledarju"
 
-#: ../src/events/calendar-task.c:50
+#: ../src/events/calendar-task.c:52
 msgid "A task on an Evolution calendar."
 msgstr "Naloga v koledarju Evolution."
 
@@ -342,8 +342,8 @@ msgstr "Rezultati uvoza"
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #: ../src/import-export-dialog.c:539
-#: ../src/main-window.c:593
-#: ../src/main-window.c:623
+#: ../src/main-window.c:597
+#: ../src/main-window.c:627
 #: ../src/printing.c:263
 #: ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:317
@@ -384,44 +384,44 @@ msgstr ""
 "Vnos uvožen iz \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:597
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Ali ste prepričani, da želite urejati dnevniški vnos za %s?"
 
-#: ../src/main-window.c:627
+#: ../src/main-window.c:631
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Ali ste prepričani, da želite izbrisati dnevniški vnos za %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:736
+#: ../src/main-window.c:740
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Neznana ali podvojena oznaka \"%s\" v vnosu. Oznaka je prezrta."
 
-#: ../src/main-window.c:1052
+#: ../src/main-window.c:1056
 msgid "Error opening URI"
 msgstr "Napaka med odpiranjem URI"
 
-#: ../src/main-window.c:1168
+#: ../src/main-window.c:1172
 msgid "Almanah is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version."
 msgstr "Almanah je prosta programska oprema; program lahko razširjate in/ali spreminjate pod pogoji Splošnega dovoljenja GNU (GNU General PublicLicense), kot ga je objavila ustanova Free Software Foundation; bodisi različice 2 ali (po vaši izbiri) katerekoli poznejše različice."
 
-#: ../src/main-window.c:1172
+#: ../src/main-window.c:1176
 msgid "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
 msgstr "Almanah se razširja v upanju, da bo uporaben, vendar BREZ VSAKRŠNEGA JAMSTVA; tudi brez posredne zagotovitve CENOVNE VREDNOSTI ali PRIMERNOSTI ZA DOLOČEN NAMEN.  Za podrobnosti glejte besedilo GNU General Public License."
 
-#: ../src/main-window.c:1176
+#: ../src/main-window.c:1180
 msgid "You should have received a copy of the GNU General Public License along with Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr "Skupaj s programom bi morali dobiti tudi kopijo GNU splošne javne licence. V primeru, da je niste, si oglejte <http://www.gnu.org/licenses/>."
 
-#: ../src/main-window.c:1191
+#: ../src/main-window.c:1195
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Priročen dnevnik, shranjuje %u vnosov."
 
-#: ../src/main-window.c:1195
+#: ../src/main-window.c:1199
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Zasluge © 2008-2009 Philip Withnall"
 
@@ -430,19 +430,19 @@ msgstr "Zasluge © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:1203
+#: ../src/main-window.c:1207
 msgid "translator-credits"
 msgstr "Andrej Žnidaršič <andrej.znidarsic@gmail.com>"
 
-#: ../src/main-window.c:1207
+#: ../src/main-window.c:1211
 msgid "Almanah Website"
 msgstr "Spletna stran Almanah"
 
-#: ../src/main-window.c:1439
+#: ../src/main-window.c:1458
 msgid "Entry content could not be loaded"
 msgstr "Vsebine vnosa ni mogoče naložiti"
 
-#: ../src/main-window.c:1534
+#: ../src/main-window.c:1553
 msgid "Spelling checker could not be initialized"
 msgstr "Preverjanja črkovanja ni mogoče zagnati"
 
