@@ -2,14 +2,15 @@
 # Copyright (C) 2009 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011.
+# Oscar Blanco <dev.4m1g0@gmail.com>, 2012.
 # Fran Dieguez <frandieguez@gnome.org>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-26 12:22+0200\n"
-"PO-Revision-Date: 2012-03-26 12:22+0200\n"
+"POT-Creation-Date: 2012-08-13 14:22+0200\n"
+"PO-Revision-Date: 2012-08-13 14:22+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -18,6 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-Language: Galician\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:101
 #: ../src/main-window.c:145
@@ -43,7 +45,7 @@ msgid ""
 "encryption."
 msgstr ""
 "O ID da chave a empregar no cifrado e descifrado da base de datos, se "
-"Almanah se compilou con compatibilidade de cifrado. Deixar en branco para "
+"Almanah foi compilado con compatibilidade de cifrado. Deixar en branco para "
 "desactivar o cifrado da base de datos."
 
 #: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
@@ -69,7 +71,7 @@ msgstr "_Ficheiro"
 
 #: ../data/almanah.ui.h:2
 msgid "_Import…"
-msgstr "_Importar..."
+msgstr "_Importar…"
 
 #: ../data/almanah.ui.h:3
 msgid "_Export…"
@@ -85,7 +87,7 @@ msgstr "_Editar"
 
 #: ../data/almanah.ui.h:6
 msgid "Select Date…"
-msgstr "Seleccionar unha data..."
+msgstr "Seleccionar unha data…"
 
 #: ../data/almanah.ui.h:7
 msgid "_Search…"
@@ -101,15 +103,15 @@ msgstr "F_ormato"
 
 #: ../data/almanah.ui.h:10
 msgid "Toggle whether the currently selected text is bold."
-msgstr "Cambiar a letra grosa do texto seleccionado"
+msgstr "Cambiar a letra grosa do texto seleccionado."
 
 #: ../data/almanah.ui.h:11
 msgid "Toggle whether the currently selected text is italic."
-msgstr "Cambiar a letra cursiva do texto seleccionado"
+msgstr "Cambiar a letra cursiva do texto seleccionado."
 
 #: ../data/almanah.ui.h:12
 msgid "Toggle whether the currently selected text is underlined."
-msgstr "Cambiar o subliñado do texto seleccionado"
+msgstr "Cambiar o subliñado do texto seleccionado."
 
 #: ../data/almanah.ui.h:13
 msgid "Add/Remove _Hyperlink"
@@ -120,8 +122,8 @@ msgid ""
 "Add or remove a hyperlink from the currently selected text to a specified "
 "URI."
 msgstr ""
-"Engadir ou eliminar a hiperligazón desde o texto actualmente seleccionado a "
-"unha URI especificada."
+"Engadir ou eliminar a hiperligazón do texto actualmente seleccionado a unha "
+"URI especificada."
 
 #: ../data/almanah.ui.h:15
 msgid "Insert _Time"
@@ -145,7 +147,7 @@ msgstr "Ir ao día de _hoxe"
 
 #: ../data/almanah.ui.h:20
 msgid "Jump to the current date in the diary."
-msgstr "Ir á data actual."
+msgstr "Ir á data actual no diario."
 
 #: ../data/almanah.ui.h:21
 msgid "Font Style"
@@ -227,8 +229,7 @@ msgstr "Activar o modo de depuración"
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
-"Xestiona o teu diario. Só unha instacia do programa pode ser aberta de cada "
-"vez."
+"Xestione o seu diario. Só é posíbel abrir unha instancia do programa á vez."
 
 #. Print an error
 #: ../src/application.c:281
@@ -255,7 +256,7 @@ msgstr "Non foi posíbel cargar o ficheiro da IU «%s»"
 #: ../src/entry.c:303
 #, c-format
 msgid "Invalid data version number %u."
-msgstr "Número de datos da versión %u non válido."
+msgstr "O número de versión %u dos datos non é válido."
 
 #: ../src/events/calendar-appointment.c:49
 msgid "Calendar Appointment"
@@ -267,7 +268,7 @@ msgstr "Unha cita nun calendario do Evolution."
 
 #: ../src/events/calendar-appointment.c:119 ../src/events/calendar-task.c:108
 msgid "Error launching Evolution"
-msgstr "Produciuse un erro ao abrir Evolution"
+msgstr "Produciuse un erro ao iniciar Evolution"
 
 #: ../src/events/calendar-task.c:49
 msgid "Calendar Task"
@@ -300,8 +301,8 @@ msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
-"Seleccionar un nome de _ficheiro para unha copia, sen cifrar, da base de "
-"datos do Diario Almanah."
+"Seleccionar un nome de _ficheiro para unha copia completa da base de datos, "
+"sen cifrar, do Diario Almanah."
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
@@ -359,7 +360,7 @@ msgstr "Resultados da importación"
 #: ../src/main-window.c:620 ../src/main-window.c:1407 ../src/printing.c:263
 #: ../src/search-dialog.c:182
 msgid "%A, %e %B %Y"
-msgstr "%A, %e de %B %Y"
+msgstr "%A, %e de %B de %Y"
 
 #: ../src/import-operation.c:46
 msgid ""
@@ -427,7 +428,7 @@ msgstr ""
 
 #: ../src/main-window.c:1049
 msgid "Error opening URI"
-msgstr "Produciuse un erro ao abrir a URI"
+msgstr "Produciuse un erro ao abrir o URI"
 
 #: ../src/main-window.c:1165
 msgid ""
@@ -477,7 +478,7 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #: ../src/main-window.c:1200
 msgid "translator-credits"
 msgstr ""
-"Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010;\n"
+"Fran Diéguez <frandieguez@ubuntu.com>, 2009-2012;\n"
 "Marcos Lans <marcoslansgarza@gmail.com>,2010.\n"
 "Xosé M. Lamas <correo.xmgz@gmail.com>, 2011."
 
@@ -546,7 +547,7 @@ msgstr "Espazado de liña:"
 
 #: ../src/search-dialog.c:223
 msgid "Search canceled."
-msgstr "Procura cancelada."
+msgstr "Busca cancelada."
 
 #. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
 #: ../src/search-dialog.c:226
@@ -630,7 +631,7 @@ msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr ""
-"Non foi posíbel abrir a base de datos «%s». SQLite devolveu a seguinte "
+"Non foi posíbel abrir a base de datos «%s». SQLite devolveu o seguinte "
 "mensaxe de erro: %s"
 
 #: ../src/storage-manager.c:651
@@ -653,6 +654,24 @@ msgstr "Importante"
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Introducir URI"
+
+#~ msgid "UI file \"%s\" could not be loaded: %s"
+#~ msgstr "Non foi posíbel cargar o ficheiro da IU «%s»: %s"
+
+#~ msgid "Can't load calendar window object from UI file"
+#~ msgstr ""
+#~ "Non se pode cargar o obxecto de xanela do calendario dende o ficheiro da "
+#~ "UI"
+
+#~ msgid ""
+#~ "Couldn't load the CSS file '%s' for calendar window. The interface might "
+#~ "not be styled correctly"
+#~ msgstr ""
+#~ "Non foi posíbel cargar o ficheiro de CSS «%s» para a xanela do "
+#~ "calendario. É posíbel que a interface non se mostre correctamente."
+
+#~ msgid "Unknown input device"
+#~ msgstr "Dispositivo de entrada descoñecido"
 
 #~ msgid "View"
 #~ msgstr "Visualizar"
