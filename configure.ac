@@ -78,7 +78,7 @@ dnl Dependencies
 dnl ***************************************************************************
 
 dnl Required dependencies
-PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-3.0 >= 3.0.0 gmodule-2.0 gthread-2.0 gio-2.0 >= 2.28.0 sqlite3 cairo atk)
+PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-3.0 >= 3.3.20 gmodule-2.0 gthread-2.0 gio-2.0 >= 2.28.0 sqlite3 cairo atk)
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
