@@ -299,8 +299,11 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Set up printing objects */
 	priv->print_settings = gtk_print_settings_new ();
+
+#ifdef GTK_PRINT_SETTINGS_OUTPUT_BASENAME
 	/* Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen. */
 	gtk_print_settings_set (priv->print_settings, GTK_PRINT_SETTINGS_OUTPUT_BASENAME, _("Diary"));
+#endif
 
 	priv->page_setup = gtk_page_setup_new ();
 
