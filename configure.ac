@@ -83,13 +83,13 @@ AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
 dnl Evolution
-PKG_CHECK_MODULES(EVO, libecal-1.2 libedataserver-1.2 libedataserverui-3.0 gconf-2.0, have_evo=yes, have_evo=no)
+PKG_CHECK_MODULES(EVO, libecal-1.2 libedataserver-1.2 libedataserverui-3.0, have_evo=yes, have_evo=no)
 if test "x$have_evo" = "xyes"; then
-	AM_GCONF_SOURCE_2
 	AC_DEFINE(HAVE_EVO, 1, [Defined if libecal-1.2 is installed])
 fi
 AM_CONDITIONAL([HAVE_EVO], [test x$have_evo = xyes])
 
+EVO_CFLAGS="$EVO_CFLAGS -DE_BOOK_DISABLE_DEPRECATED -DE_CAL_DISABLE_DEPRECATED"
 AC_SUBST(EVO_CFLAGS)
 AC_SUBST(EVO_LIBS)
 

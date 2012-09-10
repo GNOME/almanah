@@ -50,7 +50,7 @@ almanah_calendar_task_event_class_init (AlmanahCalendarTaskEventClass *klass)
 
 	event_class->name = _("Calendar Task");
 	event_class->description = _("A task on an Evolution calendar.");
-	event_class->icon_name = "stock_task";
+	event_class->icon_name = "evolution-tasks";
 
 	event_class->format_value = almanah_calendar_task_event_format_value;
 	event_class->format_time = almanah_calendar_task_event_format_time;
