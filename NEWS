@@ -1,3 +1,40 @@
+Overview of changes from Almanah 0.9.0 to Almanah 0.10.0
+========================================================
+
+Updated dependencies:
+
+Major changes:
+* Updated EDS events integration to the new 3.5.91 API
+* Second phase of the new UI
+* Now is set the default file name when the user doing "Print to File"
+* Updated HACKING doc with general principles and a security policy
+
+Bugs fixed:
+* Bug 683570 - Fails to build against evolution-data-server 3.5.91
+* Bug 680845 - Include the event time as new design suggest
+* Bug 676765 - Deactivate the events expander when no events and show an events counter
+* Bug 676931 - Fix the calendar button/window style
+* Bug 676766 - Show the number of events
+
+Known bugs:
+* The CalendarWindow dropdown doesn't displayed in the correct place - see https://bugzilla.gnome.org/show_bug.cgi?id=677209
+
+Updated translations:
+* cs (Marek Černocký)
+* da (Joe Hansen)
+* de (Daniel Winzen)
+* en_GB (Chris Leonard)
+* es (Daniel Mustieles)
+* fr (Bruno Brouard)
+* gl (Fran Diéguez)
+* id (Andika Triwidada)
+* lv (Rūdolfs Mazurs)
+* pl (Piotr Drąg)
+* sl (Matej Urbančič)
+* sr (Мирослав Николић)
+* ru (Yuri Myasoedov)
+
+
 Overview of changes from Almanah 0.8.0 to Almanah 0.9.0
 =======================================================
 
