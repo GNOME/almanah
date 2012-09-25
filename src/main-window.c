@@ -1382,8 +1382,12 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 	for (events = _events; events != NULL; events = g_slist_next (events)) {
 		GtkTreeIter iter;
 		AlmanahEvent *event = events->data;
+		gchar *event_time;
 
 		g_debug ("\t%s", almanah_event_format_value (event));
+
+		/* Translators: this is an event source name (like Calendar appointment) and the time when the event takes place */
+		event_time = g_strdup_printf (_("%s @ %s"), almanah_event_format_time (event), almanah_event_get_name (event));
 
 		gtk_list_store_append (priv->event_store, &iter);
 		gtk_list_store_set (priv->event_store, &iter,
@@ -1391,12 +1395,13 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 				    1, almanah_event_get_icon_name (event),
 				    2, type_id,
 				    3, almanah_event_format_value (event),
-				    4, g_strdup_printf ("<small>%s @ %s</small>", almanah_event_format_time (event), almanah_event_get_name (event)),
+				    4, g_strdup_printf ("<small>%s</small>", event_time),
 				    -1);
 
 		events_count++;
 
 		g_object_unref (event);
+		g_free (event_time);
 	}
 
 	events_text = g_strdup_printf ("%u", events_count);

@@ -86,7 +86,8 @@ almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, GTime s
 	event->priv->summary = g_strdup (summary);
 
 	gmtime_r ((const time_t*) &(start_time), &utc_date_tm);
-	event->priv->time = g_strdup_printf ("%.2d:%.2d", utc_date_tm.tm_hour, utc_date_tm.tm_min);
+	/* Translators: This is a time string with the format hh:mm */
+	event->priv->time = g_strdup_printf (_("%.2d:%.2d"), utc_date_tm.tm_hour, utc_date_tm.tm_min);
 
 	return event;
 }
