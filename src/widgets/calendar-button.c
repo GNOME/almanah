@@ -51,6 +51,7 @@ struct _AlmanahCalendarButtonPrivate {
 	guchar user_event;
 	AlmanahCalendar *calendar;
 	GtkWidget *today_button;
+	GtkWidget *select_date_button;
 	AlmanahStorageManager *storage_manager;
 };
 
@@ -64,6 +65,7 @@ static void almanah_calendar_button_toggled (GtkToggleButton *togglebutton, gpoi
 static void almanah_calendar_button_day_selected_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
 static void almanah_calendar_button_month_changed_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
 static gboolean almanah_calendar_button_today_press_cb (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
+static gboolean almanah_calendar_button_select_date_press_cb (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
 
 static void dock_position_func (AlmanahCalendarButton *self, gint *x, gint *y);
 
@@ -160,6 +162,11 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 	/* Today button */
 	self->priv->today_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_cw_today_button"));
 	g_signal_connect (self->priv->today_button, "button-press-event", G_CALLBACK (almanah_calendar_button_today_press_cb), self);
+
+	/* Select a day button */
+	/* @TODO: No the button press event, instead the 'activate' action funcion (if not, the select day window dosn't showed... */
+	self->priv->select_date_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_cw_select_date_button"));
+	g_signal_connect (self->priv->select_date_button, "button-press-event", G_CALLBACK (almanah_calendar_button_select_date_press_cb), self);
 
 	g_object_unref (builder);
 }
@@ -347,6 +354,14 @@ almanah_calendar_button_today_press_cb (GtkWidget *widget, GdkEvent *event, Alma
 	return FALSE;
 }
 
+static gboolean
+almanah_calendar_button_select_date_press_cb (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self)
+{
+	self->priv->user_event = NONE_EVENT;
+
+	return FALSE;
+}
+
 GtkWidget *
 almanah_calendar_button_new (AlmanahStorageManager *storage_manager)
 {
@@ -381,6 +396,17 @@ almanah_calendar_button_set_today_action (AlmanahCalendarButton *self, GtkAction
 }
 
 void
+almanah_calendar_button_set_select_date_action (AlmanahCalendarButton *self, GtkAction *action)
+{
+	g_return_if_fail (ALMANAH_IS_CALENDAR_BUTTON (self));
+	g_return_if_fail (GTK_IS_ACTION (action));
+
+	if (GTK_IS_BUTTON (self->priv->select_date_button)) {
+		gtk_activatable_set_related_action (GTK_ACTIVATABLE (self->priv->select_date_button), action);
+	}
+}
+
+void
 almanah_calendar_button_select_date (AlmanahCalendarButton *self, GDate *date)
 {
 	g_return_if_fail (ALMANAH_IS_CALENDAR_BUTTON (self));
@@ -396,4 +422,12 @@ almanah_calendar_button_get_date (AlmanahCalendarButton *self, GDate *date)
 	g_return_if_fail (date != NULL);
 
 	almanah_calendar_get_date (self->priv->calendar, date);
+}
+
+void
+almanah_calendar_button_popdown (AlmanahCalendarButton *self)
+{
+	g_return_if_fail (ALMANAH_IS_CALENDAR_BUTTON (self));
+
+	almanah_calendar_window_popdown (ALMANAH_CALENDAR_WINDOW (self->priv->dock));
 }

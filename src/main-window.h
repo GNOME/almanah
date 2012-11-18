@@ -38,18 +38,19 @@ G_BEGIN_DECLS
 typedef struct _AlmanahMainWindowPrivate	AlmanahMainWindowPrivate;
 
 typedef struct {
-	GtkWindow parent;
+	GtkApplicationWindow parent;
 	AlmanahMainWindowPrivate *priv;
 } AlmanahMainWindow;
 
 typedef struct {
-	GtkWindowClass parent;
+	GtkApplicationWindowClass parent;
 } AlmanahMainWindowClass;
 
 GType almanah_main_window_get_type (void);
 AlmanahMainWindow *almanah_main_window_new (AlmanahApplication *application) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 void almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date);
+void almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt_user);
 
 G_END_DECLS
 

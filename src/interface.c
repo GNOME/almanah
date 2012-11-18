@@ -35,6 +35,15 @@ almanah_get_interface_filename (void)
 }
 
 const gchar *
+almanah_get_interface_app_menu_filename (void)
+{
+	if (g_file_test ("./data/almanah-app-menu.ui", G_FILE_TEST_EXISTS) == TRUE)
+		return "./data/almanah-app-menu.ui";
+	else
+		return PACKAGE_DATA_DIR"/almanah/almanah-app-menu.ui";
+}
+
+const gchar *
 almanah_get_css_path (void)
 {
 	if (g_file_test ("./data", G_FILE_TEST_IS_DIR) == TRUE)

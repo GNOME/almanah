@@ -24,6 +24,7 @@ update-icon-cache:
 uidir = $(datadir)/almanah
 ui_DATA = \
 	almanah.ui		\
+	almanah-app-menu.ui	\
 	calendar-window.css
 
 ###############################################################################

@@ -4,64 +4,6 @@
 		<child>
 			<object class="GtkActionGroup" id="actiongroup1">
 				<child>
-					<object class="GtkAction" id="almanah_ui_file">
-						<property name="name">file</property>
-						<property name="label" translatable="yes">_File</property>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_import">
-						<property name="name">file-import</property>
-						<property name="label" translatable="yes">_Import…</property>
-						<signal name="activate" handler="mw_import_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_export">
-						<property name="name">file-export</property>
-						<property name="label" translatable="yes">_Export…</property>
-						<signal name="activate" handler="mw_export_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_page_setup">
-						<property name="stock-id">gtk-page-setup</property>
-						<property name="name">file-page-setup</property>
-						<signal name="activate" handler="mw_page_setup_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_print_preview">
-						<property name="stock-id">gtk-print-preview</property>
-						<property name="name">file-print-preview</property>
-						<signal name="activate" handler="mw_print_preview_activate_cb"/>
-					</object>
-					<accelerator key="P" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_print">
-						<property name="stock-id">gtk-print</property>
-						<property name="name">file-print</property>
-						<property name="label" translatable="yes">_Print…</property>
-						<signal name="activate" handler="mw_print_activate_cb"/>
-					</object>
-					<accelerator key="P" modifiers="GDK_CONTROL_MASK"/>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_quit">
-						<property name="stock-id">gtk-quit</property>
-						<property name="name">file-quit</property>
-						<signal name="activate" handler="mw_quit_activate_cb"/>
-					</object>
-					<accelerator key="Q" modifiers="GDK_CONTROL_MASK"/>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_edit">
-						<property name="name">edit</property>
-						<property name="label" translatable="yes">_Edit</property>
-					</object>
-				</child>
-				<child>
 					<object class="GtkAction" id="almanah_ui_cut">
 						<property name="stock-id">gtk-cut</property>
 						<property name="name">edit-cut</property>
@@ -98,22 +40,6 @@
 						<property name="label" translatable="yes">Select Date…</property>
 						<property name="name">edit-select-date</property>
 						<signal name="activate" handler="mw_select_date_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_search">
-						<property name="stock-id">gtk-find</property>
-						<property name="label" translatable="yes">_Search…</property>
-						<property name="name">edit-search</property>
-						<signal name="activate" handler="mw_search_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_preferences">
-						<property name="stock-id">gtk-preferences</property>
-						<property name="label" translatable="yes">Pr_eferences</property>
-						<property name="name">edit-preferences</property>
-						<signal name="activate" handler="mw_preferences_activate_cb"/>
 					</object>
 				</child>
 				<child>
@@ -181,13 +107,6 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkAction" id="almanah_ui_about">
-						<property name="stock-id">gtk-about</property>
-						<property name="name">help-about</property>
-						<signal name="activate" handler="mw_about_activate_cb"/>
-					</object>
-				</child>
-				<child>
 					<object class="GtkAction" id="almanah_ui_jump_to_today">
 						<property name="stock-id">gtk-jump-to</property>
 						<property name="name">jump-to-today</property>
@@ -215,43 +134,14 @@
 			</object>
 		</child>
 		<ui>
-			<menubar name="almanah_mw_menu_bar">
-				<menu action="almanah_ui_file">
-					<menuitem action="almanah_ui_import"/>
-					<menuitem action="almanah_ui_export"/>
-					<separator/>
-					<menuitem action="almanah_ui_page_setup"/>
-					<menuitem action="almanah_ui_print_preview"/>
-					<menuitem action="almanah_ui_print"/>
-					<separator/>
-					<menuitem action="almanah_ui_jump_to_today"/>
-					<separator/>
-					<menuitem action="almanah_ui_quit"/>
-				</menu>
-				<menu action="almanah_ui_edit">
-					<menuitem action="almanah_ui_cut"/>
-					<menuitem action="almanah_ui_copy"/>
-					<menuitem action="almanah_ui_paste"/>
-					<menuitem action="almanah_ui_delete"/>
-					<separator/>
-					<menuitem action="almanah_ui_select_date"/>
-					<menuitem action="almanah_ui_search"/>
-					<separator/>
-					<menuitem action="almanah_ui_preferences"/>
-				</menu>
-				<menu action="almanah_ui_format">
-					<menuitem action="almanah_ui_bold"/>
-					<menuitem action="almanah_ui_italic"/>
-					<menuitem action="almanah_ui_underline"/>
-					<menuitem action="almanah_ui_hyperlink"/>
-					<separator/>
-					<menuitem action="almanah_ui_insert_time"/>
-					<menuitem action="almanah_ui_important"/>
-				</menu>
-				<menu action="almanah_ui_help">
-					<menuitem action="almanah_ui_about"/>
-				</menu>
-			</menubar>
+			<popup name="almanah_mw_menu_button">
+				<menuitem action="almanah_ui_cut"/>
+				<menuitem action="almanah_ui_copy"/>
+				<menuitem action="almanah_ui_paste"/>
+				<menuitem action="almanah_ui_delete"/>
+				<separator/>
+				<menuitem action="almanah_ui_insert_time"/>
+			</popup>
 			<toolbar name="almanah_mw_toolbar">
 				<toolitem action="almanah_ui_font_style">
 					<menu action="almanah_ui_font_style_menu">
@@ -313,6 +203,15 @@
 								<property name="expand">False</property>
 							</packing>
 						</child>
+						<child>
+							<object class="GtkButton" id="almanah_cw_select_date_button">
+								<property name="visible">True</property>
+								<property name="can_focus">True</property>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
 					</object>
 					<packing>
 						<property name="expand">False</property>
@@ -325,12 +224,6 @@
 	<object class="AlmanahMainWindow" id="almanah_main_window">
 		<child>
 			<object class="GtkVBox" id="vbox1">
-				<child>
-					<object class="GtkMenuBar" constructor="almanah_ui_manager" id="almanah_mw_menu_bar"/>
-					<packing>
-						<property name="expand">False</property>
-					</packing>
-				</child>
 				<child>
 					<object class="GtkToolbar" constructor="almanah_ui_manager" id="almanah_mw_toolbar">
 						<style>

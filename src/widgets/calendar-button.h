@@ -51,9 +51,11 @@ typedef struct {
 GType almanah_calendar_button_get_type (void) G_GNUC_CONST;
 GtkWidget *almanah_calendar_button_new (AlmanahStorageManager *storage_manager) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 void almanah_calendar_button_set_today_action (AlmanahCalendarButton *self, GtkAction *action);
+void almanah_calendar_button_set_select_date_action (AlmanahCalendarButton *self, GtkAction *action);
 void almanah_calendar_button_set_storage_manager (AlmanahCalendarButton *self, AlmanahStorageManager *storage_manager);
 void almanah_calendar_button_select_date (AlmanahCalendarButton *self, GDate *date);
 void almanah_calendar_button_get_date (AlmanahCalendarButton *self, GDate *date);
+void almanah_calendar_button_popdown (AlmanahCalendarButton *self);
 
 G_END_DECLS
 

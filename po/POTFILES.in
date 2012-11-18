@@ -3,6 +3,7 @@
 data/almanah.desktop.in
 data/org.gnome.almanah.gschema.xml.in.in
 [type: gettext/glade]data/almanah.ui
+[type: gettext/glade]data/almanah-app-menu.ui
 src/application.c
 src/date-entry-dialog.c
 src/entry.c

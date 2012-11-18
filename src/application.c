@@ -24,9 +24,13 @@
 #include <gtk/gtk.h>
 
 #include "application.h"
-#include "storage-manager.h"
 #include "event-manager.h"
+#include "import-export-dialog.h"
 #include "main-window.h"
+#include "preferences-dialog.h"
+#include "printing.h"
+#include "search-dialog.h"
+#include "storage-manager.h"
 
 static void constructed (GObject *object);
 static void dispose (GObject *object);
@@ -38,6 +42,17 @@ static void activate (GApplication *application);
 static gint handle_command_line (GApplication *application, GApplicationCommandLine *command_line);
 static void quit_main_loop (GApplication *application);
 
+static void almanah_application_init_actions (AlmanahApplication *self);
+
+/* GMenu application actions */
+static void action_search_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void action_import_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void action_export_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void action_print_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+
 struct _AlmanahApplicationPrivate {
 	gboolean debug;
 
@@ -46,10 +61,23 @@ struct _AlmanahApplicationPrivate {
 	AlmanahEventManager *event_manager;
 
 	AlmanahMainWindow *main_window;
+
+	GtkPrintSettings *print_settings;
+	GtkPageSetup *page_setup;
 };
 
 enum {
 	PROP_DEBUG = 1
+};
+
+static GActionEntry app_entries[] = {
+	{"search", action_search_cb, NULL, NULL, NULL},
+	{"preferences", action_preferences_cb, NULL, NULL, NULL },
+	{"import", action_import_cb, NULL, NULL, NULL },
+	{"export", action_export_cb, NULL, NULL, NULL },
+	{"print", action_print_cb, NULL, NULL, NULL },
+	{"about", action_about_cb, NULL, NULL, NULL },
+	{"quit", action_quit_cb, NULL, NULL, NULL },
 };
 
 G_DEFINE_TYPE (AlmanahApplication, almanah_application, GTK_TYPE_APPLICATION)
@@ -125,6 +153,14 @@ dispose (GObject *object)
 	if (priv->settings != NULL)
 		g_object_unref (priv->settings);
 	priv->settings = NULL;
+
+	if (priv->page_setup != NULL)
+		g_object_unref (priv->page_setup);
+	priv->page_setup = NULL;
+
+	if (priv->print_settings != NULL)
+		g_object_unref (priv->print_settings);
+	priv->print_settings = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_application_parent_class)->dispose (object);
@@ -213,6 +249,19 @@ startup (GApplication *application)
 
 	/* Create the event manager */
 	priv->event_manager = almanah_event_manager_new ();
+
+	/* Set up printing objects */
+	priv->print_settings = gtk_print_settings_new ();
+
+#ifdef GTK_PRINT_SETTINGS_OUTPUT_BASENAME
+	/* Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen. */
+	gtk_print_settings_set (priv->print_settings, GTK_PRINT_SETTINGS_OUTPUT_BASENAME, _("Diary"));
+#endif
+
+	priv->page_setup = gtk_page_setup_new ();
+
+	/* Load GMenu application actions */
+	almanah_application_init_actions (ALMANAH_APPLICATION (application));
 }
 
 /* Nullify our pointer to the main window when it gets destroyed (e.g. when we quit) so that we don't then try
@@ -325,6 +374,206 @@ quit_main_loop (GApplication *application)
 
 	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once
 	 * the storage manager has encrypted the DB and disconnected from it. */
+}
+
+static void
+almanah_application_init_actions (AlmanahApplication *self)
+{
+	GtkBuilder *builder;
+	GError *error = NULL;
+	const gchar *interface_filename = almanah_get_interface_app_menu_filename ();
+
+	g_action_map_add_action_entries (G_ACTION_MAP (self), app_entries, G_N_ELEMENTS (app_entries), self);
+
+	builder = gtk_builder_new ();
+	if (gtk_builder_add_from_file (builder, interface_filename, &error) == FALSE) {
+		/* Show an error */
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
+							    GTK_DIALOG_MODAL,
+							    GTK_MESSAGE_ERROR,
+							    GTK_BUTTONS_OK,
+							    _("UI file \"%s\" could not be loaded"), interface_filename);
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
+		g_error_free (error);
+		g_object_unref (builder);
+
+		exit (1);
+	}
+
+	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
+	gtk_application_set_app_menu (GTK_APPLICATION (self), G_MENU_MODEL (gtk_builder_get_object (builder, "almanah_app_menu")));
+
+#ifndef ENABLE_ENCRYPTION
+#ifndef ENABLE_SPELL_CHECKING
+	/* Remove the "Preferences" entry from the menu */
+	g_action_map_remove_action (G_ACTION_MAP (self), "preferences");
+#endif /* !ENABLE_SPELL_CHECKING */
+#endif /* !ENABLE_ENCRYPTION */
+
+	g_object_unref (builder);
+}
+
+static void
+action_search_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahApplication *application;
+	AlmanahSearchDialog *dialog = almanah_search_dialog_new ();
+
+	application = ALMANAH_APPLICATION (user_data);
+	gtk_window_set_application (GTK_WINDOW (dialog), GTK_APPLICATION (application));
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (application->priv->main_window));
+	gtk_widget_show (GTK_WIDGET (dialog));
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+#if defined(ENABLE_ENCRYPTION) || defined(ENABLE_SPELL_CHECKING)
+	AlmanahApplication *application;
+	GSettings *settings;
+	AlmanahPreferencesDialog *dialog;
+
+	application = ALMANAH_APPLICATION (user_data);
+	settings = almanah_application_dup_settings (application);
+	dialog = almanah_preferences_dialog_new (settings);
+	g_object_unref (settings);
+
+	gtk_widget_show_all (GTK_WIDGET (dialog));
+	gtk_dialog_run (GTK_DIALOG (dialog));
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+#endif /* ENABLE_ENCRYPTION || ENABLE_SPELL_CHECKING */
+}
+
+static void
+action_import_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+	GtkWidget *dialog;
+
+	application = ALMANAH_APPLICATION (user_data);
+	storage_manager = almanah_application_dup_storage_manager (application);
+	dialog = GTK_WIDGET (almanah_import_export_dialog_new (storage_manager, TRUE));
+	g_object_unref (storage_manager);
+
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (application->priv->main_window));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+
+	/* The dialog destroys itself once done */
+	gtk_widget_show_all (dialog);
+}
+
+static void
+action_export_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+	GtkWidget *dialog;
+
+	application = ALMANAH_APPLICATION (user_data);
+	storage_manager = almanah_application_dup_storage_manager (application);
+	dialog = GTK_WIDGET (almanah_import_export_dialog_new (storage_manager, FALSE));
+	g_object_unref (storage_manager);
+
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (application->priv->main_window));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+
+	/* The dialog destroys itself once done */
+	gtk_widget_show_all (dialog);
+}
+
+static void
+action_print_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+
+	application = ALMANAH_APPLICATION (user_data);
+	storage_manager = almanah_application_dup_storage_manager (application);
+	almanah_print_entries (FALSE, GTK_WINDOW (application->priv->main_window), &(application->priv->page_setup), &(application->priv->print_settings), storage_manager);
+	g_object_unref (storage_manager);
+}
+
+static void
+action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahApplication *application;
+	AlmanahStorageManager *storage_manager;
+	gchar *license, *description;
+	guint entry_count;
+
+	const gchar *authors[] =
+	{
+		"Philip Withnall <philip@tecnocode.co.uk>",
+		NULL
+	};
+	const gchar *license_parts[] = {
+		N_("Almanah is free software: you can redistribute it and/or modify "
+		   "it under the terms of the GNU General Public License as published by "
+		   "the Free Software Foundation, either version 3 of the License, or "
+		   "(at your option) any later version."),
+		N_("Almanah is distributed in the hope that it will be useful, "
+		   "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+		   "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+		   "GNU General Public License for more details."),
+		N_("You should have received a copy of the GNU General Public License "
+		   "along with Almanah.  If not, see <http://www.gnu.org/licenses/>."),
+	};
+
+	license = g_strjoin ("\n\n",
+			  _(license_parts[0]),
+			  _(license_parts[1]),
+			  _(license_parts[2]),
+			  NULL);
+
+	application = ALMANAH_APPLICATION (user_data);
+	storage_manager = almanah_application_dup_storage_manager (application);
+	almanah_storage_manager_get_statistics (storage_manager, &entry_count);
+	g_object_unref (storage_manager);
+
+	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries."), entry_count);
+
+	gtk_show_about_dialog (GTK_WINDOW (application->priv->main_window),
+				"version", VERSION,
+				"copyright", _("Copyright \xc2\xa9 2008-2009 Philip Withnall"),
+				"comments", description,
+				"authors", authors,
+				/* Translators: please include your names here to be credited for your hard work!
+				 * Format:
+				 * "Translator name 1 <translator@email.address>\n"
+				 * "Translator name 2 <translator2@email.address>"
+				 */
+				"translator-credits", _("translator-credits"),
+				"logo-icon-name", "almanah",
+				"license", license,
+				"wrap-license", TRUE,
+				"website-label", _("Almanah Website"),
+				"website", "http://live.gnome.org/Almanah_Diary",
+				NULL);
+
+	g_free (license);
+	g_free (description);
+}
+
+static void
+action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahMainWindow *main_window;
+
+	main_window = ALMANAH_APPLICATION (user_data)->priv->main_window;
+
+	/* Hide the window to make things look faster */
+	gtk_widget_hide (GTK_WIDGET (main_window));
+
+	almanah_main_window_save_current_entry (main_window, TRUE);
+	gtk_widget_destroy (GTK_WIDGET (main_window));
 }
 
 AlmanahApplication *
