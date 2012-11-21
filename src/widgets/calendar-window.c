@@ -60,7 +60,7 @@ almanah_calendar_window_init (AlmanahCalendarWindow *self)
 	style_provider = gtk_css_provider_new ();
 	if (!gtk_css_provider_load_from_path (style_provider, css_path, NULL)) {
 		/* Error loading the CSS */
-		g_warning (_("Couldn't load the CSS file '%s' for calendar window. The interface might not be styled correctly"), css_path);
+		g_warning (_("Couldn't load the CSS file '%s'. The interface might not be styled correctly"), css_path);
 		g_error_free (error);
 	} else {
 		GtkStyleContext *style_context;

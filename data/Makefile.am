@@ -25,6 +25,7 @@ uidir = $(datadir)/almanah
 ui_DATA = \
 	almanah.ui		\
 	almanah-app-menu.ui	\
+	calendar-button.css	\
 	calendar-window.css
 
 ###############################################################################

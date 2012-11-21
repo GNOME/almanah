@@ -59,9 +59,9 @@ static void almanah_calendar_button_get_property (GObject *object, guint propert
 static void almanah_calendar_button_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_calendar_button_finalize (GObject *object);
 
-static void almanah_calendar_button_dock_hiden (GtkWidget *widget, gpointer user_data);
+static void almanah_calendar_button_dock_hiden (GtkWidget *dock, AlmanahCalendarButton *self);
 
-static void almanah_calendar_button_toggled (GtkToggleButton *togglebutton, gpointer user_data);
+static void almanah_calendar_button_toggled (GtkToggleButton *togglebutton);
 static void almanah_calendar_button_day_selected_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
 static void almanah_calendar_button_month_changed_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
 static gboolean almanah_calendar_button_today_press_cb (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
@@ -75,12 +75,15 @@ static void
 almanah_calendar_button_class_init (AlmanahCalendarButtonClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GtkToggleButtonClass *toggle_button_class = GTK_TOGGLE_BUTTON_CLASS (klass);
 
 	g_type_class_add_private (klass, sizeof (AlmanahCalendarButtonPrivate));
 
 	gobject_class->get_property = almanah_calendar_button_get_property;
 	gobject_class->set_property = almanah_calendar_button_set_property;
 	gobject_class->finalize = almanah_calendar_button_finalize;
+
+	toggle_button_class->toggled = almanah_calendar_button_toggled;
 
 	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
 	                                 g_param_spec_object ("storage-manager",
@@ -110,6 +113,8 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 	GtkBox *main_box;
 	GtkBuilder *builder;
 	GError *error = NULL;
+	GtkCssProvider *style_provider;
+	gchar *css_path;
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_calendar_window",
@@ -119,17 +124,33 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_CALENDAR_BUTTON, AlmanahCalendarButtonPrivate);
 	self->priv->user_event = FIRST_EVENT;
 
+	gtk_button_set_focus_on_click (GTK_BUTTON (self), TRUE);
+
+	/* The style for the widgets */
+	css_path = g_build_filename (almanah_get_css_path (), "calendar-button.css", NULL);
+	style_provider = gtk_css_provider_new ();
+	if (!gtk_css_provider_load_from_path (style_provider, css_path, NULL)) {
+		/* Error loading the CSS */
+		g_warning (_("Couldn't load the CSS file '%s'. The interface might not be styled correctly"), css_path);
+		g_error_free (error);
+	} else {
+		gtk_style_context_add_provider (gtk_widget_get_style_context (GTK_WIDGET (self)), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	}
+	g_free (css_path);
+
 	/* The button elements */
 	self->priv->label = gtk_label_new (NULL);
+	gtk_style_context_add_provider (gtk_widget_get_style_context (self->priv->label), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
 	arrow = gtk_arrow_new (GTK_ARROW_DOWN, GTK_SHADOW_NONE);
+	gtk_style_context_add_provider (gtk_widget_get_style_context (arrow), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
 	main_box = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6));
 	gtk_box_pack_start (main_box, self->priv->label, TRUE, TRUE, 0);
 	gtk_box_pack_start (main_box, arrow, FALSE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (main_box));
 
-	gtk_button_set_focus_on_click (GTK_BUTTON (self), TRUE);
-
-	g_signal_connect (self, "toggled", G_CALLBACK (almanah_calendar_button_toggled), NULL);
+	g_object_unref (style_provider);
 
 	/* Calendar dock window from the UI file */
 	builder = gtk_builder_new ();
@@ -273,44 +294,26 @@ dock_position_func (AlmanahCalendarButton *self, gint *x, gint *y)
 }
 
 static void
-almanah_calendar_button_dock_hiden (GtkWidget *widget, gpointer user_data)
+almanah_calendar_button_dock_hiden (GtkWidget *dock, AlmanahCalendarButton *self);
 {
 	/* Reset the calendar user event and toggle off the button */
-	ALMANAH_CALENDAR_BUTTON (user_data)->priv->user_event = NONE_EVENT;
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (user_data), FALSE);
+	ALMANAH_CALENDAR_BUTTON (self)->priv->user_event = NONE_EVENT;
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (self), FALSE);
 }
 
 static void
-almanah_calendar_button_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+almanah_calendar_button_toggled (GtkToggleButton *togglebutton)
 {
 	gint x, y;
 	AlmanahCalendarButton *self;
-	GtkStyleContext *style_context;
-	const GtkWidgetPath *path;
 
 	self = ALMANAH_CALENDAR_BUTTON (togglebutton);
-	style_context = gtk_widget_get_style_context (GTK_WIDGET (self));
 	if (gtk_toggle_button_get_active (togglebutton)) {
-		gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_MENUBAR);
-		gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_MENUITEM);
 		/* Show the dock */
 		dock_position_func (self, &x, &y);
-		almanah_calendar_window_popup (ALMANAH_CALENDAR_WINDOW (self->priv->dock));
 		gtk_window_move (GTK_WINDOW (self->priv->dock), x, y);
-	} else {
-		gtk_style_context_remove_class (style_context, GTK_STYLE_CLASS_MENUBAR);
-		gtk_style_context_remove_class (style_context, GTK_STYLE_CLASS_MENUITEM);
-		/* Isn't necesary to hide the dock */
+		almanah_calendar_window_popup (ALMANAH_CALENDAR_WINDOW (self->priv->dock));
 	}
-
-	gtk_widget_reset_style (GTK_WIDGET (self));
-
-	/* Just for style purposes.
-	 * Remove the toolbar style from the path allowing display the CalendarButton as a MenuItem when the user activate it.
-	 * It's necesary remove the toolbar style classes every time because the gtk_widget_reset_style reload the path.
-	 */
-	path = gtk_style_context_get_path (style_context);
-	gtk_widget_path_iter_clear_classes ((GtkWidgetPath *) path, 2);
 }
 
 static void

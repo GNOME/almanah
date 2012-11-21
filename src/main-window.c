@@ -1341,7 +1341,6 @@ mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *applicatio
 
 	/* Insert the calendar button into the toolbar through a GtkToolItem but button style */
 	calendar_button_item = gtk_tool_item_new ();
-	gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (calendar_button_item)), GTK_STYLE_CLASS_RAISED);
 	gtk_container_add (GTK_CONTAINER (calendar_button_item), GTK_WIDGET (main_window->priv->calendar_button));
 	gtk_toolbar_insert (toolbar, calendar_button_item, 3);
 
