@@ -294,7 +294,7 @@ dock_position_func (AlmanahCalendarButton *self, gint *x, gint *y)
 }
 
 static void
-almanah_calendar_button_dock_hiden (GtkWidget *dock, AlmanahCalendarButton *self);
+almanah_calendar_button_dock_hiden (GtkWidget *dock, AlmanahCalendarButton *self)
 {
 	/* Reset the calendar user event and toggle off the button */
 	ALMANAH_CALENDAR_BUTTON (self)->priv->user_event = NONE_EVENT;
