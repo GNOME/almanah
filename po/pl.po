@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-21 20:53+0100\n"
-"PO-Revision-Date: 2012-11-21 20:55+0100\n"
+"POT-Creation-Date: 2012-11-22 01:31+0100\n"
+"PO-Revision-Date: 2012-11-22 01:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -424,7 +424,7 @@ msgstr "Wyniki importowania"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #: ../src/import-export-dialog.c:539 ../src/main-window.c:568
 #: ../src/main-window.c:598 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:324
+#: ../src/widgets/calendar-button.c:327
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -506,7 +506,7 @@ msgstr "%s o %s"
 msgid "Entry content could not be loaded"
 msgstr "Nie można wczytać treści wpisu"
 
-#: ../src/main-window.c:1381
+#: ../src/main-window.c:1380
 msgid "Spelling checker could not be initialized"
 msgstr "Nie można uruchomić sprawdzania pisowni"
 
@@ -664,25 +664,23 @@ msgstr "Błąd podczas rozszeregowywania wpisu do bufora podczas wyszukiwania."
 msgid "Important!"
 msgstr "Ważne"
 
-#: ../src/widgets/calendar-button.c:137
+#. Error loading the CSS
+#: ../src/widgets/calendar-button.c:134 ../src/widgets/calendar-window.c:63
+#, c-format
+msgid ""
+"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
+msgstr ""
+"Nie można wczytać pliku CSS \"%s\". Interfejs może wyglądać niepoprawnie"
+
+#: ../src/widgets/calendar-button.c:158
 #, c-format
 msgid "UI file \"%s\" could not be loaded: %s"
 msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\": %s"
 
-#: ../src/widgets/calendar-button.c:147
+#: ../src/widgets/calendar-button.c:168
 msgid "Can't load calendar window object from UI file"
 msgstr ""
 "Nie można wczytać obiektu okna kalendarza z pliku interfejsu użytkownika"
-
-#. Error loading the CSS
-#: ../src/widgets/calendar-window.c:63
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s' for calendar window. The interface might not "
-"be styled correctly"
-msgstr ""
-"Nie można wczytać pliku CSS \"%s\" dla okna kalendarza. Interfejs może "
-"wyglądać niepoprawnie"
 
 #: ../src/widgets/calendar-window.c:100
 msgid "Unknown input device"
