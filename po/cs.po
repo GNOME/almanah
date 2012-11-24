@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-25 15:52+0000\n"
-"PO-Revision-Date: 2012-09-01 18:20+0200\n"
+"POT-Creation-Date: 2012-11-21 22:35+0000\n"
+"PO-Revision-Date: 2012-11-23 11:38+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:101
-#: ../src/main-window.c:151
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Diář Almanah"
 
@@ -29,7 +29,7 @@ msgid "Keep a personal diary"
 msgstr "Vést si osobní diář"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/main-window.c:305
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:258
 msgid "Diary"
 msgstr "Diář"
 
@@ -65,58 +65,30 @@ msgid "Whether spell checking of entries is enabled."
 msgstr "Zda je zapnutá kontrola pravopisu záznamů."
 
 #: ../data/almanah.ui.h:1
-msgid "_File"
-msgstr "_Soubor"
-
-#: ../data/almanah.ui.h:2
-msgid "_Import…"
-msgstr "_Importovat…"
-
-#: ../data/almanah.ui.h:3
-msgid "_Export…"
-msgstr "_Exportovat…"
-
-#: ../data/almanah.ui.h:4
-msgid "_Print…"
-msgstr "_Tisk…"
-
-#: ../data/almanah.ui.h:5
-msgid "_Edit"
-msgstr "_Upravit"
-
-#: ../data/almanah.ui.h:6
 msgid "Select Date…"
 msgstr "Vybrat datum…"
 
-#: ../data/almanah.ui.h:7
-msgid "_Search…"
-msgstr "_Hledat…"
-
-#: ../data/almanah.ui.h:8
-msgid "Pr_eferences"
-msgstr "Př_edvolby"
-
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:2
 msgid "F_ormat"
 msgstr "F_ormát"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:3
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Přepíná, zda je aktuálně vybraný text tučný."
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:4
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Přepíná, zda je aktuálně vybraný text kurzívou."
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:5
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Přepíná, zda je aktuálně vybraný text podtržený."
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:6
 msgid "Add/Remove _Hyperlink"
 msgstr "Přidat/odebrat _hypertextový odkaz"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:7
 msgid ""
 "Add or remove a hyperlink from the currently selected text to a specified "
 "URI."
@@ -124,107 +96,136 @@ msgstr ""
 "Ve vybraném textu přidat nebo odebrat hypertextový odkaz na zadanou adresu "
 "URI."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:8
 msgid "Insert _Time"
 msgstr "_Vložit čas"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:9
 msgid "I_mportant"
 msgstr "Dů_ležité"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:10
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Přepíná, zda je současný záznam označený jako důležitý."
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:11
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:12
 msgid "Go to _Today"
 msgstr "Přejí_t na dnešek"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:13
 msgid "Jump to the current date in the diary."
 msgstr "Přejít v diáři na dnešní datum."
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:14
 msgid "Font Style"
 msgstr "Styl písma"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:15
 msgid "Change font style for selected text."
 msgstr "Změnit styl písma pro vybraný text."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:16
 msgid "_Font Style"
 msgstr "Styl _písma"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:17
 msgid "Calendar"
 msgstr "Kalendář"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:18
 msgid "Entry editing area"
 msgstr "Oblast pro úpravu záznamů"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:19
 msgid "Past events"
 msgstr "Poslední události"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:20
 msgid "Past Event List"
 msgstr "Seznam posledních událostí"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:21
 msgid "Search entry"
 msgstr "Hledat záznam"
 
-#: ../data/almanah.ui.h:29 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:22 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Hledat"
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:23
 msgid "Result List"
 msgstr "Seznam výsledků"
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:24
 msgid "View Entry"
 msgstr "Zobrazit záznam"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:25
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "např. „14/03/2009“ nebo „14th March 2009“."
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:26
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "např. “http://google.cz/” nebo “file:///home/ja/Obrázky/fotka.jpg”."
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:27
 msgid "Successful Entries"
 msgstr "Úspěšné záznamy"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:28
 msgid "Merged Entries"
 msgstr "Sloučené záznamy"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:29
 msgid "Failed Entries"
 msgstr "Neúspěšné zázmamy"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:30
 msgid "Import Results List"
 msgstr "Seznam výsledků importu"
 
-#: ../src/application.c:205
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Hledat"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "Př_edvolby"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Importovat"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Exportovat"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "Vy_tisknout diář"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "O diáři _Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "U_končit"
+
+#: ../src/application.c:241
 msgid "Error opening database"
 msgstr "Chyba při otevírání databáze"
 
-#: ../src/application.c:253
+#: ../src/application.c:302
 msgid "Enable debug mode"
 msgstr "Zapnout režim ladění"
 
-#: ../src/application.c:270
+#: ../src/application.c:319
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -232,26 +233,81 @@ msgstr ""
 "programu."
 
 #. Print an error
-#: ../src/application.c:281
+#: ../src/application.c:330
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Nelze zpracovat přepínače příkazového řádku: %s\n"
 
-#: ../src/application.c:300
+#: ../src/application.c:349
 msgid "Error encrypting database"
 msgstr "Chyba při šifrování databáze"
+
+#: ../src/application.c:395 ../src/date-entry-dialog.c:129
+#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
+#: ../src/main-window.c:198 ../src/preferences-dialog.c:191
+#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
+
+#: ../src/application.c:518
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Aplikace Almanah je svobodný software: Můžete ji dále šířit a/nebo upravovat "
+"za podmínek licence GNU General Public License v podobě, v jaké ji vydala "
+"Free Software Foundation, a to buď ve verzi 3 této licence nebo (dle vaší "
+"volby) v libovolné novější verzi."
+
+#: ../src/application.c:522
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Aplikace Almanah je šířena ve víře, že bude užitečná, ale BEZ JAKÝCHKOLIV "
+"ZÁRUK, a to i bez předpokládané záruky na PRODEJNOST nebo VHODNOST PRO "
+"KONKRÉTNÍ ÚČEL. Více podrobností najdete přímo v licenci GNU General Public "
+"License."
+
+#: ../src/application.c:526
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Spolu s aplikací Almanah byste měli obdržet kopii licence GNU General Public "
+"License. Pokud se tak nestalo, podívejte se na <http://www.gnu.org/licenses/"
+">."
+
+#: ../src/application.c:541
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Užitečný diář na hlídání termínů, uloženo %u záznamů."
+
+#: ../src/application.c:545
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Copyright © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/application.c:553
+msgid "translator-credits"
+msgstr "Marek Černocký <marek@manet.cz>"
+
+#: ../src/application.c:557
+msgid "Almanah Website"
+msgstr "Webové stránky Almanah"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Výběr data"
-
-#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
-#: ../src/import-export-dialog.c:472 ../src/main-window.c:219
-#: ../src/preferences-dialog.c:191 ../src/search-dialog.c:97
-#: ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
 
 #: ../src/entry.c:303
 #, c-format
@@ -328,15 +384,6 @@ msgstr "Import záznamů"
 msgid "Export Entries"
 msgstr "Export záznamů"
 
-#. Set the button label
-#: ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Importovat"
-
-#: ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Exportovat"
-
 #: ../src/import-export-dialog.c:245
 msgid "Import failed"
 msgstr "Import selhal"
@@ -363,9 +410,9 @@ msgstr "Výsledky importu"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:603
-#: ../src/main-window.c:633 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:317
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:568
+#: ../src/main-window.c:598 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/widgets/calendar-button.c:327
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %B %Y"
 
@@ -416,92 +463,38 @@ msgstr ""
 "Záznam importován z „%s“:\n"
 "\n"
 
-#: ../src/main-window.c:607
+#: ../src/main-window.c:572
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Opravdu chcete upravit tento záznam v diáři na %s?"
 
-#: ../src/main-window.c:637
+#: ../src/main-window.c:602
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Opravdu chcete smazat tento záznam v diáři na %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:746
+#: ../src/main-window.c:711
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Neznámá nebo duplicitní textová značka „%s“ v záznamu. Bude se ignorovat."
 
-#: ../src/main-window.c:1062
+#: ../src/main-window.c:910
 msgid "Error opening URI"
 msgstr "Chyba při otevírání URI"
 
-#: ../src/main-window.c:1178
-msgid ""
-"Almanah is free software: you can redistribute it and/or modify it under the "
-"terms of the GNU General Public License as published by the Free Software "
-"Foundation, either version 3 of the License, or (at your option) any later "
-"version."
-msgstr ""
-"Aplikace Almanah je svobodný software: Můžete ji dále šířit a/nebo upravovat "
-"za podmínek licence GNU General Public License v podobě, v jaké ji vydala "
-"Free Software Foundation, a to buď ve verzi 3 této licence nebo (dle vaší "
-"volby) v libovolné novější verzi."
-
-#: ../src/main-window.c:1182
-msgid ""
-"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
-"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-"details."
-msgstr ""
-"Aplikace Almanah je šířena ve víře, že bude užitečná, ale BEZ JAKÝCHKOLIV "
-"ZÁRUK, a to i bez předpokládané záruky na PRODEJNOST nebo VHODNOST PRO "
-"KONKRÉTNÍ ÚČEL. Více podrobností najdete přímo v licenci GNU General Public "
-"License."
-
-#: ../src/main-window.c:1186
-msgid ""
-"You should have received a copy of the GNU General Public License along with "
-"Almanah.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Spolu s aplikací Almanah byste měli obdržet kopii licence GNU General Public "
-"License. Pokud se tak nestalo, podívejte se na <http://www.gnu.org/licenses/>."
-
-#: ../src/main-window.c:1201
-#, c-format
-msgid "A helpful diary keeper, storing %u entries."
-msgstr "Užitečný diář na hlídání termínů, uloženo %u záznamů."
-
-#: ../src/main-window.c:1205
-msgid "Copyright © 2008-2009 Philip Withnall"
-msgstr "Copyright © 2008-2009 Philip Withnall"
-
-#. Translators: please include your names here to be credited for your hard work!
-#. * Format:
-#. * "Translator name 1 <translator@email.address>\n"
-#. * "Translator name 2 <translator2@email.address>"
-#.
-#: ../src/main-window.c:1213
-msgid "translator-credits"
-msgstr "Marek Černocký <marek@manet.cz>"
-
-#: ../src/main-window.c:1217
-msgid "Almanah Website"
-msgstr "Webové stránky Almanah"
-
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1390
+#: ../src/main-window.c:1177
 #, c-format
 msgid "%s @ %s"
 msgstr "%s v %s"
 
-#: ../src/main-window.c:1469
+#: ../src/main-window.c:1256
 msgid "Entry content could not be loaded"
 msgstr "Obsah záznamu nelze načíst"
 
-#: ../src/main-window.c:1564
+#: ../src/main-window.c:1380
 msgid "Spelling checker could not be initialized"
 msgstr "Nelze inicializovat kontrolu pravopisu"
 
@@ -659,25 +652,23 @@ msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledá
 msgid "Important!"
 msgstr "Důležité!"
 
-#: ../src/widgets/calendar-button.c:135
+#. Error loading the CSS
+#: ../src/widgets/calendar-button.c:134 ../src/widgets/calendar-window.c:63
+#, c-format
+msgid ""
+"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
+msgstr ""
+"Nelze načíst soubor CSS „%s“. Rozhraní nemusí být správně ostylováno."
+
+#: ../src/widgets/calendar-button.c:158
 #, c-format
 msgid "UI file \"%s\" could not be loaded: %s"
 msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním: %s"
 
-#: ../src/widgets/calendar-button.c:145
+#: ../src/widgets/calendar-button.c:168
 msgid "Can't load calendar window object from UI file"
 msgstr ""
 "Ze souboru s uživatelským rozhraním nelze načíst objekt okna s kalendářem"
-
-#. Error loading the CSS
-#: ../src/widgets/calendar-window.c:63
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s' for calendar window. The interface might not "
-"be styled correctly"
-msgstr ""
-"Nelze načíst soubor CSS „%s“ pro okno s kalendářem. Rozhraní nemusí být "
-"správně ostylováno"
 
 #: ../src/widgets/calendar-window.c:100
 msgid "Unknown input device"
