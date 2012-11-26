@@ -40,8 +40,6 @@ almanah_SOURCES = \
 	widgets/calendar-button.c		\
 	widgets/calendar-window.h		\
 	widgets/calendar-window.c		\
-	widgets/font-style-menu-action.h	\
-	widgets/font-style-menu-action.c	\
 	widgets/hyperlink-tag.c			\
 	widgets/hyperlink-tag.h
 

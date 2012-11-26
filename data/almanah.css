@@ -1,0 +1,29 @@
+AlmanahCalendarButton:active {
+    background-image: none;
+    background-color: @menu_bg_color;
+
+    border-image: none;
+    border-color: @menu_bg_color;
+    border-radius: 4px 4px 0 0;
+}
+
+AlmanahCalendarButton GtkLabel:active {
+    color: @theme_text_color;
+    text-shadow: none;
+}
+
+AlmanahCalendarButton GtkArrow:active {
+    color: @theme_text_color;
+}
+
+AlmanahCalendarWindow {
+    background-color: @menu_bg_color;
+}
+
+AlmanahMainWindow GtkScrolledWindow {
+    border-style: solid;
+    border-radius: 0px;
+    border-width: 0px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}

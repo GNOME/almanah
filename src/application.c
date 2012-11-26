@@ -213,6 +213,8 @@ startup (GApplication *application)
 	AlmanahApplicationPrivate *priv = ALMANAH_APPLICATION (application)->priv;
 	gchar *db_filename;
 	GError *error = NULL;
+	GtkCssProvider *style_provider;
+	gchar *css_path;
 
 	/* Chain up. */
 	G_APPLICATION_CLASS (almanah_application_parent_class)->startup (application);
@@ -262,6 +264,18 @@ startup (GApplication *application)
 
 	/* Load GMenu application actions */
 	almanah_application_init_actions (ALMANAH_APPLICATION (application));
+
+	css_path = g_build_filename (almanah_get_css_path (), "almanah.css", NULL);
+	style_provider = gtk_css_provider_new ();
+	if (!gtk_css_provider_load_from_path (style_provider, css_path, NULL)) {
+		/* Error loading the CSS */
+		g_warning (_("Couldn't load the CSS file '%s'. The interface might not be styled correctly"), css_path);
+		g_error_free (error);
+	} else {
+		gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	}
+	g_free (css_path);
+	g_object_unref (style_provider);
 }
 
 /* Nullify our pointer to the main window when it gets destroyed (e.g. when we quit) so that we don't then try

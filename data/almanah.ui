@@ -77,7 +77,7 @@
 						<property name="name">format-hyperlink</property>
 						<property name="label" translatable="yes">Add/Remove _Hyperlink</property>
 						<property name="tooltip" translatable="yes">Add or remove a hyperlink from the currently selected text to a specified URI.</property>
-						<property name="icon-name">insert-link</property>
+						<property name="icon-name">insert-link-symbolic</property>
 					</object>
 					<accelerator key="H" modifiers="GDK_CONTROL_MASK"/>
 				</child>
@@ -94,8 +94,7 @@
 						<property name="name">format-important</property>
 						<property name="label" translatable="yes">I_mportant</property>
 						<property name="tooltip" translatable="yes">Toggle whether the current entry is marked as important.</property>
-						<property name="icon-name">emblem-important</property>
-						<property name="is-important">True</property>
+						<property name="icon-name">starred-symbolic</property>
 						<signal name="activate" handler="mw_important_activate_cb"/>
 					</object>
 					<accelerator key="M" modifiers="GDK_CONTROL_MASK"/>
@@ -116,21 +115,6 @@
 						<signal name="activate" handler="mw_jump_to_today_activate_cb"/>
 					</object>
 				</child>
-				<child>
-					<object class="AlmanahFontStyleMenuAction" id="almanah_ui_font_style">
-						<property name="stock-id">gtk-select-font</property>
-						<property name="name">format-font-style</property>
-						<property name="label" translatable="yes">Font Style</property>
-						<property name="tooltip" translatable="yes">Change font style for selected text.</property>
-						<signal name="activate" handler="mw_font_style_activate_cb"/>
-					</object>
-				</child>
-				<child>
-					<object class="GtkAction" id="almanah_ui_font_style_menu">
-						<property name="name">font-style</property>
-						<property name="label" translatable="yes">_Font Style</property>
-					</object>
-				</child>
 			</object>
 		</child>
 		<ui>
@@ -141,18 +125,13 @@
 				<menuitem action="almanah_ui_delete"/>
 				<separator/>
 				<menuitem action="almanah_ui_insert_time"/>
+				<menuitem action="almanah_ui_hyperlink"/>
 			</popup>
-			<toolbar name="almanah_mw_toolbar">
-				<toolitem action="almanah_ui_font_style">
-					<menu action="almanah_ui_font_style_menu">
-						<menuitem action="almanah_ui_bold"/>
-						<menuitem action="almanah_ui_italic"/>
-						<menuitem action="almanah_ui_underline"/>
-					</menu>
-				</toolitem>
-				<toolitem action="almanah_ui_hyperlink"/>
-				<toolitem action="almanah_ui_important"/>
-			</toolbar>
+                        <popup name="almanah_mw_font_menu">
+                                <menuitem action="almanah_ui_bold"/>
+                                <menuitem action="almanah_ui_italic"/>
+                                <menuitem action="almanah_ui_underline"/>
+                        </popup>
 		</ui>
 	</object>
 
@@ -225,10 +204,7 @@
 		<child>
 			<object class="GtkVBox" id="vbox1">
 				<child>
-					<object class="GtkToolbar" constructor="almanah_ui_manager" id="almanah_mw_toolbar">
-						<style>
-							<class name="primary-toolbar"/>
-						</style>
+					<object class="GtkToolbar" id="almanah_mw_toolbar">
 					</object>
 					<packing>
 						<property name="expand">False</property>
@@ -244,7 +220,7 @@
 										<property name="can-focus">True</property>
 										<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 										<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-										<property name="shadow-type">GTK_SHADOW_NONE</property>
+										<property name="shadow-type">GTK_SHADOW_IN</property>
 										<child>
 											<object class="GtkTextView" id="almanah_mw_entry_view">
 												<property name="width-request">300</property>

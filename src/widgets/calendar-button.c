@@ -113,8 +113,6 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 	GtkBox *main_box;
 	GtkBuilder *builder;
 	GError *error = NULL;
-	GtkCssProvider *style_provider;
-	gchar *css_path;
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_calendar_window",
@@ -126,31 +124,15 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 
 	gtk_button_set_focus_on_click (GTK_BUTTON (self), TRUE);
 
-	/* The style for the widgets */
-	css_path = g_build_filename (almanah_get_css_path (), "calendar-button.css", NULL);
-	style_provider = gtk_css_provider_new ();
-	if (!gtk_css_provider_load_from_path (style_provider, css_path, NULL)) {
-		/* Error loading the CSS */
-		g_warning (_("Couldn't load the CSS file '%s'. The interface might not be styled correctly"), css_path);
-		g_error_free (error);
-	} else {
-		gtk_style_context_add_provider (gtk_widget_get_style_context (GTK_WIDGET (self)), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	}
-	g_free (css_path);
-
 	/* The button elements */
 	self->priv->label = gtk_label_new (NULL);
-	gtk_style_context_add_provider (gtk_widget_get_style_context (self->priv->label), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	arrow = gtk_arrow_new (GTK_ARROW_DOWN, GTK_SHADOW_NONE);
-	gtk_style_context_add_provider (gtk_widget_get_style_context (arrow), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	main_box = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6));
 	gtk_box_pack_start (main_box, self->priv->label, TRUE, TRUE, 0);
 	gtk_box_pack_start (main_box, arrow, FALSE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (main_box));
-
-	g_object_unref (style_provider);
 
 	/* Calendar dock window from the UI file */
 	builder = gtk_builder_new ();
