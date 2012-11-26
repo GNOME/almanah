@@ -1214,7 +1214,7 @@ get_icon_margin (void)
 
   gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &menu_size, NULL);
   gtk_icon_size_lookup (GTK_ICON_SIZE_LARGE_TOOLBAR, &toolbar_size, NULL);
-  return (gint) floor ((toolbar_size - menu_size) / 2.0);
+  return (gint) ((toolbar_size - menu_size) / 2);
 }
 
 static void
