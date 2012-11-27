@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-25 15:52+0000\n"
-"PO-Revision-Date: 2012-09-26 20:06+0700\n"
+"POT-Creation-Date: 2012-11-26 22:18+0000\n"
+"PO-Revision-Date: 2012-11-27 18:31+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id_ID\n"
@@ -18,10 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.5.4\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:101
-#: ../src/main-window.c:151
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../src/main-window.c:133
 msgid "Almanah Diary"
 msgstr "Buku Harian Almanah"
 
@@ -30,7 +30,7 @@ msgid "Keep a personal diary"
 msgstr "Simpan buku harian pribadi"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/main-window.c:305
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Buku Harian"
 
@@ -65,58 +65,30 @@ msgid "Whether spell checking of entries is enabled."
 msgstr "Apakah pemeriksaan ejaan entri diaktifkan."
 
 #: ../data/almanah.ui.h:1
-msgid "_File"
-msgstr "_Berkas"
-
-#: ../data/almanah.ui.h:2
-msgid "_Import…"
-msgstr "_Impor…"
-
-#: ../data/almanah.ui.h:3
-msgid "_Export…"
-msgstr "_Ekspor…"
-
-#: ../data/almanah.ui.h:4
-msgid "_Print…"
-msgstr "_Cetak…"
-
-#: ../data/almanah.ui.h:5
-msgid "_Edit"
-msgstr "_Sunting"
-
-#: ../data/almanah.ui.h:6
 msgid "Select Date…"
 msgstr "Pilih Tanggal…"
 
-#: ../data/almanah.ui.h:7
-msgid "_Search…"
-msgstr "_Cari…"
-
-#: ../data/almanah.ui.h:8
-msgid "Pr_eferences"
-msgstr "Pr_eferensi"
-
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:2
 msgid "F_ormat"
 msgstr "Bent_uk"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:3
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Jungkit apakah teks yang sedang dipilih ditebalkan."
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:4
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Jungkit apakah teks yang sedang dipilih dimiringkan."
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:5
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Jungkit apakah teks yang sedang dipilih digaris-bawahi."
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:6
 msgid "Add/Remove _Hyperlink"
 msgstr "Tambah/Hapus _Hyperlink"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:7
 msgid ""
 "Add or remove a hyperlink from the currently selected text to a specified "
 "URI."
@@ -124,107 +96,133 @@ msgstr ""
 "Tambah atau hapus hyperlink dari teks yang sedang dipilih ke URL yang "
 "dinyatakan."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:8
 msgid "Insert _Time"
 msgstr "Sisipkan Wak_tu"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:9
 msgid "I_mportant"
 msgstr "Penti_ng"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:10
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Jungkit apakah entri kini ditandai sebagai penting."
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:11
 msgid "_Help"
 msgstr "Ba_ntuan"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:12
 msgid "Go to _Today"
 msgstr "Lihat _Hari Ini"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:13
 msgid "Jump to the current date in the diary."
 msgstr "Lompat ke tanggal kini di buku harian."
 
-#: ../data/almanah.ui.h:21
-msgid "Font Style"
-msgstr "Gaya Fonta"
-
-#: ../data/almanah.ui.h:22
-msgid "Change font style for selected text."
-msgstr "Ubah gaya fonta bagi teks yang dipilih."
-
-#: ../data/almanah.ui.h:23
-msgid "_Font Style"
-msgstr "Gaya _Fonta"
-
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:14
 msgid "Calendar"
 msgstr "Kalender"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:15
 msgid "Entry editing area"
 msgstr "Wilayah penyuntingan entri"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:16
 msgid "Past events"
 msgstr "Kejadian lampau"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:17
 msgid "Past Event List"
 msgstr "Daftar Kejadian Lalu"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:18
 msgid "Search entry"
 msgstr "Cari entri"
 
-#: ../data/almanah.ui.h:29 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Cari"
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:20
 msgid "Result List"
 msgstr "Daftar Hasil"
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:21
 msgid "View Entry"
 msgstr "Tilik Entri"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:22
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "mis. \"14/03/2009\" atau \"14 Maret 2009\"."
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:23
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "mis. \"http://google.com/\" atau \"file:///home/me/Photos/photo.jpg\"."
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:24
 msgid "Successful Entries"
 msgstr "Entri Sukses"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:25
 msgid "Merged Entries"
 msgstr "Entri Tergabung"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:26
 msgid "Failed Entries"
 msgstr "Entri Gagal"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:27
 msgid "Import Results List"
 msgstr "Daftar Hasil Impor"
 
-#: ../src/application.c:205
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Cari"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "Pr_eferensi"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Impor"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Ekspor"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "_Cetak buku harian"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "Tent_ang Buku Harian Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "_Keluar"
+
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Galat membuka basis data"
 
-#: ../src/application.c:253
+#. Error loading the CSS
+#: ../src/application.c:272
+#, c-format
+msgid ""
+"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
+msgstr ""
+"Tak bisa memuat berkas CSS '%s'. Antar muka mungkin tak ditata gayanya "
+"secara benar"
+
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Aktifkan moda awakutu"
 
-#: ../src/application.c:270
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -232,26 +230,80 @@ msgstr ""
 "suatu saat."
 
 #. Print an error
-#: ../src/application.c:281
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opsi baris perintah tak dapat diurai: %s\n"
 
-#: ../src/application.c:300
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Galat menyandikan basis data"
+
+#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
+#: ../src/main-window.c:191 ../src/preferences-dialog.c:191
+#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Berkas UI \"%s\" tak dapat dimuat"
+
+#: ../src/application.c:532
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah adalah perangkat lunak bebas, Anda dapat menyebarkan dan/atau "
+"mengubahnya di bawah syarat GNU General Public License sebagaimana "
+"dipublikasikan oleh Free Software Foundation, apakah Lisensi versi 3 atau "
+"(sesuai pilihan Anda) versi selanjutnya."
+
+#: ../src/application.c:536
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah ini didistribusikan dengan harapan bahwa program ini akan berguna,"
+"tetapi TANPA GARANSI; tanpa garansi yang termasuk dari DAGANGAN atau "
+"KECOCOKAN UNTUK TUJUAN TERTENTU sekalipun. Lihat GNU General Public License "
+"untuk rincian lebih lanjut."
+
+#: ../src/application.c:540
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Anda mestinya menerima salinan GNU General Public License bersamaan dengan "
+"Almanah. Jika tidak, lihat <http://www.gnu.org/licenses/>."
+
+#: ../src/application.c:555
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Penyimpan buku harian yang penuh bantuan, menyimpan %u entri."
+
+#: ../src/application.c:559
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Hak Cipta © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/application.c:567
+msgid "translator-credits"
+msgstr "Andika Triwidada <andika@gmail.com>, 2009-2012"
+
+#: ../src/application.c:571
+msgid "Almanah Website"
+msgstr "Situs Web Almanah"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Pilih Tanggal"
-
-#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
-#: ../src/import-export-dialog.c:472 ../src/main-window.c:219
-#: ../src/preferences-dialog.c:191 ../src/search-dialog.c:97
-#: ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Berkas UI \"%s\" tak dapat dimuat"
 
 #: ../src/entry.c:303
 #, c-format
@@ -327,15 +379,6 @@ msgstr "Impor Entri"
 msgid "Export Entries"
 msgstr "Ekspor Entri"
 
-#. Set the button label
-#: ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Impor"
-
-#: ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Ekspor"
-
 #: ../src/import-export-dialog.c:245
 msgid "Import failed"
 msgstr "Impor gagal"
@@ -362,9 +405,9 @@ msgstr "Hasil Impor"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:603
-#: ../src/main-window.c:633 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:317
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:555
+#: ../src/main-window.c:585 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -414,91 +457,37 @@ msgstr ""
 "Entri diimpor dari \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:607
+#: ../src/main-window.c:559
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Anda yakin ingin menyunting entri buku harian ini bagi %s?"
 
-#: ../src/main-window.c:637
+#: ../src/main-window.c:589
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Anda yakin ingin menghapus entri buku harian ini bagi %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:746
+#: ../src/main-window.c:698
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Tag teks tak dikenal atau berganda \"%s\" dalam entri. Diabaikan."
 
-#: ../src/main-window.c:1062
+#: ../src/main-window.c:897
 msgid "Error opening URI"
 msgstr "Galat membuka URI"
 
-#: ../src/main-window.c:1178
-msgid ""
-"Almanah is free software: you can redistribute it and/or modify it under the "
-"terms of the GNU General Public License as published by the Free Software "
-"Foundation, either version 3 of the License, or (at your option) any later "
-"version."
-msgstr ""
-"Almanah adalah perangkat lunak bebas, Anda dapat menyebarkan dan/atau "
-"mengubahnya di bawah syarat GNU General Public License sebagaimana "
-"dipublikasikan oleh Free Software Foundation, apakah Lisensi versi 3 atau "
-"(sesuai pilihan Anda) versi selanjutnya."
-
-#: ../src/main-window.c:1182
-msgid ""
-"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
-"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-"details."
-msgstr ""
-"Almanah ini didistribusikan dengan harapan bahwa program ini akan berguna,"
-"tetapi TANPA GARANSI; tanpa garansi yang termasuk dari DAGANGAN atau "
-"KECOCOKAN UNTUK TUJUAN TERTENTU sekalipun. Lihat GNU General Public License "
-"untuk rincian lebih lanjut."
-
-#: ../src/main-window.c:1186
-msgid ""
-"You should have received a copy of the GNU General Public License along with "
-"Almanah.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Anda mestinya menerima salinan GNU General Public License bersamaan dengan "
-"Almanah. Jika tidak, lihat <http://www.gnu.org/licenses/>."
-
-#: ../src/main-window.c:1201
-#, c-format
-msgid "A helpful diary keeper, storing %u entries."
-msgstr "Penyimpan buku harian yang penuh bantuan, menyimpan %u entri."
-
-#: ../src/main-window.c:1205
-msgid "Copyright © 2008-2009 Philip Withnall"
-msgstr "Hak Cipta © 2008-2009 Philip Withnall"
-
-#. Translators: please include your names here to be credited for your hard work!
-#. * Format:
-#. * "Translator name 1 <translator@email.address>\n"
-#. * "Translator name 2 <translator2@email.address>"
-#.
-#: ../src/main-window.c:1213
-msgid "translator-credits"
-msgstr "Andika Triwidada <andika@gmail.com>, 2009-2012"
-
-#: ../src/main-window.c:1217
-msgid "Almanah Website"
-msgstr "Situs Web Almanah"
-
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1390
+#: ../src/main-window.c:1071
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1469
+#: ../src/main-window.c:1150
 msgid "Entry content could not be loaded"
 msgstr "Isi entri tak dapat dimuat"
 
-#: ../src/main-window.c:1564
+#: ../src/main-window.c:1312
 msgid "Spelling checker could not be initialized"
 msgstr "Pemeriksa ejaan tak dapat diinisialisasi"
 
@@ -652,29 +641,20 @@ msgstr "Galat deserialisasi entri ke dalam penyangga ketika mencari."
 msgid "Important!"
 msgstr "Penting!"
 
-#: ../src/widgets/calendar-button.c:135
+#: ../src/widgets/calendar-button.c:140
 #, c-format
 msgid "UI file \"%s\" could not be loaded: %s"
 msgstr "Berkas UI \"%s\" tak dapat dimuat: %s"
 
-#: ../src/widgets/calendar-button.c:145
+#: ../src/widgets/calendar-button.c:150
 msgid "Can't load calendar window object from UI file"
 msgstr "Tak bisa memuat objek jendela kalender dari berkas UI"
 
-#. Error loading the CSS
-#: ../src/widgets/calendar-window.c:63
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s' for calendar window. The interface might not "
-"be styled correctly"
-msgstr ""
-"Tak bisa memuat berkas CSS '%s' dari jendela kalender. Antar muka mungkin "
-"tak ditata gayanya secara benar"
-
-#: ../src/widgets/calendar-window.c:100
+#: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Perangkat masukan tak dikenal"
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Masukkan URI"
+
