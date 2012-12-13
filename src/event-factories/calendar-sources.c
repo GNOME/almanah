@@ -32,7 +32,8 @@
 #define HANDLE_LIBICAL_MEMORY
 #include <libecal/libecal.h>
 #include <libedataserver/libedataserver.h>
-#include <libedataserverui/libedataserverui.h>
+
+#include "e-source-selector.h"
 
 #undef CALENDAR_ENABLE_DEBUG
 #include "calendar-debug.h"

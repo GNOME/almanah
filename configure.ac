@@ -83,7 +83,7 @@ AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
 dnl Evolution
-PKG_CHECK_MODULES(EVO, libecal-1.2 >= 3.5.91 libedataserver-1.2 libedataserverui-3.0, have_evo=yes, have_evo=no)
+PKG_CHECK_MODULES(EVO, libecal-1.2 >= 3.5.91 libedataserver-1.2, have_evo=yes, have_evo=no)
 if test "x$have_evo" = "xyes"; then
 	AC_DEFINE(HAVE_EVO, 1, [Defined if libecal-1.2 is installed])
 fi

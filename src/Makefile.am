@@ -52,6 +52,10 @@ almanah_SOURCES += \
 	event-factories/calendar-debug.h	\
 	event-factories/calendar-sources.c	\
 	event-factories/calendar-sources.h	\
+	event-factories/e-cell-renderer-color.c	\
+	event-factories/e-cell-renderer-color.h	\
+	event-factories/e-source-selector.c	\
+	event-factories/e-source-selector.h	\
 	events/calendar-appointment.c		\
 	events/calendar-appointment.h		\
 	events/calendar-task.c			\
