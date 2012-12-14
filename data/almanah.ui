@@ -201,6 +201,7 @@
 	</object>
 
 	<object class="AlmanahMainWindow" id="almanah_main_window">
+		<property name="hide-titlebar-when-maximized">True</property>
 		<child>
 			<object class="GtkVBox" id="vbox1">
 				<child>
