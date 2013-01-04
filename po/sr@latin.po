@@ -1,14 +1,14 @@
 # Language almanah translations for F package.
 # Copyright (C) 2011 THE F'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the F package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011, 2012.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almana"
 "h&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-25 15:52+0000\n"
-"PO-Revision-Date: 2012-09-29 06:02+0200\n"
+"POT-Creation-Date: 2012-11-26 22:18+0000\n"
+"PO-Revision-Date: 2013-01-04 21:48+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -19,8 +19,8 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:101
-#: ../src/main-window.c:151
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../src/main-window.c:133
 msgid "Almanah Diary"
 msgstr "Dnevnik Almanah"
 
@@ -29,7 +29,7 @@ msgid "Keep a personal diary"
 msgstr "Vodite lični dnevnik"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/main-window.c:305
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Dnevnik"
 
@@ -64,167 +64,170 @@ msgid "Whether spell checking of entries is enabled."
 msgstr "Ako je izabrano, vršiće se provera prilikom pisanja."
 
 #: ../data/almanah.ui.h:1
-msgid "_File"
-msgstr "_Datoteka"
-
-#: ../data/almanah.ui.h:2
-msgid "_Import…"
-msgstr "_Uvezi…"
-
-#: ../data/almanah.ui.h:3
-msgid "_Export…"
-msgstr "_Izvezi…"
-
-#: ../data/almanah.ui.h:4
-msgid "_Print…"
-msgstr "_Štampaj…"
-
-#: ../data/almanah.ui.h:5
-msgid "_Edit"
-msgstr "_Uređivanje"
-
-#: ../data/almanah.ui.h:6
 msgid "Select Date…"
 msgstr "Izaberi datum…"
 
-#: ../data/almanah.ui.h:7
-msgid "_Search…"
-msgstr "_Potraži…"
-
-#: ../data/almanah.ui.h:8
-msgid "Pr_eferences"
-msgstr "_Postavke"
-
-#: ../data/almanah.ui.h:9
+#: ../data/almanah.ui.h:2
 msgid "F_ormat"
 msgstr "_Format"
 
-#: ../data/almanah.ui.h:10
+#: ../data/almanah.ui.h:3
 msgid "Toggle whether the currently selected text is bold."
 msgstr "Odredite da li je trenutno izabrani tekst podebljan."
 
-#: ../data/almanah.ui.h:11
+#: ../data/almanah.ui.h:4
 msgid "Toggle whether the currently selected text is italic."
 msgstr "Odredite da li je trenutno izabrani tekst iskošen."
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:5
 msgid "Toggle whether the currently selected text is underlined."
 msgstr "Odredite da li je trenutno izabrani tekst podvučen."
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:6
 msgid "Add/Remove _Hyperlink"
 msgstr "Dodaj/ukloni _hipervezu"
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:7
 msgid ""
 "Add or remove a hyperlink from the currently selected text to a specified "
 "URI."
 msgstr ""
 "Dodajte ili uklonite hipervezu iz trenutno izabranog teksta u zadatu adresu."
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:8
 msgid "Insert _Time"
 msgstr "Umetni _vreme"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:9
 msgid "I_mportant"
 msgstr "_Važno"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:10
 msgid "Toggle whether the current entry is marked as important."
 msgstr "Odredite da li je trenutni unos označen kao važan."
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:11
 msgid "_Help"
 msgstr "Po_moć"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:12
 msgid "Go to _Today"
 msgstr "_Idi na današnje"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:13
 msgid "Jump to the current date in the diary."
 msgstr "Prebacite se na tekući datum u dnevniku."
 
-#: ../data/almanah.ui.h:21
-msgid "Font Style"
-msgstr "Izgled pisma"
-
-#: ../data/almanah.ui.h:22
-msgid "Change font style for selected text."
-msgstr "Izmenite stil pisma za izabrani tekst."
-
-#: ../data/almanah.ui.h:23
-msgid "_Font Style"
-msgstr "_Izgled pisma"
-
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:14
 msgid "Calendar"
 msgstr "Kalendar"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:15
 msgid "Entry editing area"
 msgstr "Oblast za uređivanje unosa"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:16
 msgid "Past events"
 msgstr "Prošli događaji"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:17
 msgid "Past Event List"
 msgstr "Spisak prošlih događaja"
 
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:18
 msgid "Search entry"
 msgstr "Unos pretrage"
 
-#: ../data/almanah.ui.h:29 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Potraži"
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:20
 msgid "Result List"
 msgstr "Spisak rezultata"
 
-#: ../data/almanah.ui.h:31
+#: ../data/almanah.ui.h:21
 msgid "View Entry"
 msgstr "Prikaži unos"
 
-#: ../data/almanah.ui.h:32
+#: ../data/almanah.ui.h:22
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "npr. „16.07.2033“ ili „16. jul 2033.“."
 
-#: ../data/almanah.ui.h:33
+#: ../data/almanah.ui.h:23
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr ""
 "npr. „http://google.com/“ ili „datoteka:///lična_fascikla/Marko/fotografije/"
 "slika.jpg“."
 
-#: ../data/almanah.ui.h:34
+#: ../data/almanah.ui.h:24
 msgid "Successful Entries"
 msgstr "Uspešni unosi"
 
-#: ../data/almanah.ui.h:35
+#: ../data/almanah.ui.h:25
 msgid "Merged Entries"
 msgstr "Spojeni unosi"
 
-#: ../data/almanah.ui.h:36
+#: ../data/almanah.ui.h:26
 msgid "Failed Entries"
 msgstr "Neuspeli unosi"
 
-#: ../data/almanah.ui.h:37
+#: ../data/almanah.ui.h:27
 msgid "Import Results List"
 msgstr "Spisak rezultata uvoženja"
 
-#: ../src/application.c:205
+#: ../data/almanah-app-menu.ui.h:1
+#| msgid "Search"
+msgid "_Search"
+msgstr "_Traži"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "_Postavke"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Uvezi"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Izvezi"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "_Štampaj dnevnik"
+
+#: ../data/almanah-app-menu.ui.h:6
+#| msgid "Almanah Diary"
+msgid "_About Almanah Diary"
+msgstr "_O dnevniku Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "_Izađi"
+
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Greška prilikom otvaranja baze podataka"
 
-#: ../src/application.c:253
+#. Error loading the CSS
+#: ../src/application.c:272
+#, c-format
+#| msgid ""
+#| "Couldn't load the CSS file '%s' for calendar window. The interface might "
+#| "not be styled correctly"
+msgid ""
+"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
+msgstr ""
+"Ne mogu da učitam CSS datoteku „%s“. Sučelje ne može biti ispravno "
+"stilizovano."
+
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Uključuje režim za ispravljanje grešaka"
 
-#: ../src/application.c:270
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -232,26 +235,79 @@ msgstr ""
 "isto vreme."
 
 #. Print an error
-#: ../src/application.c:281
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opcije linije naredbi ne mogu biti obrađene: %s\n"
 
-#: ../src/application.c:300
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Greška prilikom šifrovanja baze podataka"
+
+#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
+#: ../src/main-window.c:191 ../src/preferences-dialog.c:191
+#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Ne mogu da učitam datoteku korisničkog sučelja „%s“"
+
+#: ../src/application.c:532
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah je slobodan softver: možete ga prosleđivati i/ili menjati pod "
+"uslovima Gnuove opšte javne licence koju je objavila Zadužbina slobodnog "
+"softvera, bilo verzije 3 licence ili (po vašem izboru) bilo koje novije "
+"verzije."
+
+#: ../src/application.c:536
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah se raspodeljuje u nadi da će biti koristan, ali BEZ IKAKVE GARANCIJE; "
+"čak i bez primenjene garancije TRŽIŠNE VREDNOSTI ili PRILAGOĐENOSTI ODREĐENOJ "
+"NAMENI. Pogledajte Gnuovu opštu javnu licencu za više detalja."
+
+#: ../src/application.c:540
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Treba da ste primili primerak Gnuove opšte javne licence uz Almanah. Ako "
+"niste, pogledajte <http://www.gnu.org/licenses/>."
+
+#: ../src/application.c:555
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Koristan čuvar dnevnika, sadrži %u unosa."
+
+#: ../src/application.c:559
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Autorska prava © 2008-2009 Filip Vitnal"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: ../src/application.c:567
+msgid "translator-credits"
+msgstr "  Miroslav Nikolić, miroslavnikolic@rocketmail.com"
+
+#: ../src/application.c:571
+msgid "Almanah Website"
+msgstr "Veb stranica Almanaha"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Izaberite datum"
-
-#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
-#: ../src/import-export-dialog.c:472 ../src/main-window.c:219
-#: ../src/preferences-dialog.c:191 ../src/search-dialog.c:97
-#: ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Ne mogu da učitam datoteku korisničkog sučelja „%s“"
 
 #: ../src/entry.c:303
 #, c-format
@@ -327,15 +383,6 @@ msgstr "Unosi za uvoz"
 msgid "Export Entries"
 msgstr "Unosi za izvoz"
 
-#. Set the button label
-#: ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Uvezi"
-
-#: ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Izvezi"
-
 #: ../src/import-export-dialog.c:245
 msgid "Import failed"
 msgstr "Uvoz nije uspeo"
@@ -362,9 +409,9 @@ msgstr "Rezultati uvoženja"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:603
-#: ../src/main-window.c:633 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:317
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:555
+#: ../src/main-window.c:585 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -413,90 +460,37 @@ msgstr ""
 "Unos je uvežen iz „%s“:\n"
 "\n"
 
-#: ../src/main-window.c:607
+#: ../src/main-window.c:559
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Da li ste sigurni da želite da uredite ovaj unos dnevnika za „%s“?"
 
-#: ../src/main-window.c:637
+#: ../src/main-window.c:589
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Da li ste sigurni da želite da obrišete ovaj unos dnevnika za „%s“?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:746
+#: ../src/main-window.c:698
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Nepoznata ili duplirana oznaka teksta „%s“ u unosu. Zanemarujem."
 
-#: ../src/main-window.c:1062
+#: ../src/main-window.c:897
 msgid "Error opening URI"
 msgstr "Greška prilikom otvaranja adrese"
 
-#: ../src/main-window.c:1178
-msgid ""
-"Almanah is free software: you can redistribute it and/or modify it under the "
-"terms of the GNU General Public License as published by the Free Software "
-"Foundation, either version 3 of the License, or (at your option) any later "
-"version."
-msgstr ""
-"Almanah je slobodan softver: možete ga prosleđivati i/ili menjati pod "
-"uslovima Gnuove opšte javne licence koju je objavila Zadužbina slobodnog "
-"softvera, bilo verzije 3 licence ili (po vašem izboru) bilo koje novije "
-"verzije."
-
-#: ../src/main-window.c:1182
-msgid ""
-"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
-"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-"details."
-msgstr ""
-"Almanah se raspodeljuje u nadi da će biti koristan, ali BEZ IKAKVE GARANCIJE; "
-"čak i bez primenjene garancije TRŽIŠNE VREDNOSTI ili PRILAGOĐENOSTI ODREĐENOJ "
-"NAMENI. Pogledajte Gnuovu opštu javnu licencu za više detalja."
-
-#: ../src/main-window.c:1186
-msgid ""
-"You should have received a copy of the GNU General Public License along with "
-"Almanah.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Treba da ste primili primerak Gnuove opšte javne licence uz Almanah. Ako "
-"niste, pogledajte <http://www.gnu.org/licenses/>."
-
-#: ../src/main-window.c:1201
-#, c-format
-msgid "A helpful diary keeper, storing %u entries."
-msgstr "Koristan čuvar dnevnika, sadrži %u unosa."
-
-#: ../src/main-window.c:1205
-msgid "Copyright © 2008-2009 Philip Withnall"
-msgstr "Autorska prava © 2008-2009 Filip Vitnal"
-
-#. Translators: please include your names here to be credited for your hard work!
-#. * Format:
-#. * "Translator name 1 <translator@email.address>\n"
-#. * "Translator name 2 <translator2@email.address>"
-#.
-#: ../src/main-window.c:1213
-msgid "translator-credits"
-msgstr "  Miroslav Nikolić, miroslavnikolic@rocketmail.com"
-
-#: ../src/main-window.c:1217
-msgid "Almanah Website"
-msgstr "Veb stranica Almanaha"
-
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1390
+#: ../src/main-window.c:1071
 #, c-format
 msgid "%s @ %s"
 msgstr "%s u %s"
 
-#: ../src/main-window.c:1469
+#: ../src/main-window.c:1150
 msgid "Entry content could not be loaded"
 msgstr "Sadržaj unosa ne može biti učitan"
 
-#: ../src/main-window.c:1564
+#: ../src/main-window.c:1312
 msgid "Spelling checker could not be initialized"
 msgstr "Provera pisanja ne može biti započeta"
 
@@ -655,30 +649,47 @@ msgstr "Greška u raščlanjivanju unosa u baferu tokom pretraživanja."
 msgid "Important!"
 msgstr "Važno!"
 
-#: ../src/widgets/calendar-button.c:135
+#: ../src/widgets/calendar-button.c:140
 #, c-format
 msgid "UI file \"%s\" could not be loaded: %s"
 msgstr "Ne mogu da učitam datoteku korisničkog sučelja „%s“: %s"
 
-#: ../src/widgets/calendar-button.c:145
+#: ../src/widgets/calendar-button.c:150
 msgid "Can't load calendar window object from UI file"
 msgstr ""
 "Ne mogu da učitam objekat prozora kalendara iz datoteke korisničkog sučelja"
 
-#. Error loading the CSS
-#: ../src/widgets/calendar-window.c:63
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s' for calendar window. The interface might not "
-"be styled correctly"
-msgstr ""
-"Ne mogu da učitam CSS datoteku „%s“ za prozor kalendara. Sučelje ne može biti "
-"ispravno stilizovano"
-
-#: ../src/widgets/calendar-window.c:100
+#: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Nepoznat ulazni uređaj"
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Unesite adresu"
+
+#~ msgid "_File"
+#~ msgstr "_Datoteka"
+
+#~ msgid "_Import…"
+#~ msgstr "_Uvezi…"
+
+#~ msgid "_Export…"
+#~ msgstr "_Izvezi…"
+
+#~ msgid "_Print…"
+#~ msgstr "_Štampaj…"
+
+#~ msgid "_Edit"
+#~ msgstr "_Uređivanje"
+
+#~ msgid "_Search…"
+#~ msgstr "_Potraži…"
+
+#~ msgid "Font Style"
+#~ msgstr "Izgled pisma"
+
+#~ msgid "Change font style for selected text."
+#~ msgstr "Izmenite stil pisma za izabrani tekst."
+
+#~ msgid "_Font Style"
+#~ msgstr "_Izgled pisma"
