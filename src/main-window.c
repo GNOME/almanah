@@ -39,6 +39,7 @@
 #include "widgets/calendar.h"
 #include "widgets/calendar-button.h"
 #include "widgets/hyperlink-tag.h"
+#include "widgets/entry-tags-area.h"
 
 /* Interval for automatically saving the current entry. Currently an arbitrary 10 minutes. */
 #define SAVE_ENTRY_INTERVAL 10 * 60 /* seconds */
@@ -85,6 +86,7 @@ static void mw_menu_button_popup_visible_cb (GtkWidget *menu, GParamSpec *pspec,
 struct _AlmanahMainWindowPrivate {
 	GtkTextView *entry_view;
 	GtkTextBuffer *entry_buffer;
+	AlmanahEntryTagsArea *entry_tags_area;
 	AlmanahCalendarButton *calendar_button;
 	GtkListStore *event_store;
 	GtkWidget *events_expander;
@@ -170,6 +172,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
 	GError *error = NULL;
+	AlmanahStorageManager *storage_manager;
 	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_main_window",
@@ -216,6 +219,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	/* Grab our child widgets */
 	priv->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
 	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
+	priv->entry_tags_area = ALMANAH_ENTRY_TAGS_AREA (gtk_builder_get_object (builder, "almanah_mw_entry_tags_area"));
 	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
 	priv->events_expander = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_events_expander"));
 	priv->events_count_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_events_count_label"));
@@ -256,6 +260,11 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Similarly, make sure we're notified when there's a selection so we can change the status of cut/copy/paste actions */
 	g_signal_connect (priv->entry_buffer, "notify::has-selection", G_CALLBACK (mw_entry_buffer_has_selection_cb), main_window);
+
+	/* Set the storage to the tags area */
+	storage_manager = almanah_application_dup_storage_manager (application);
+	almanah_entry_tags_area_set_storage_manager (priv->entry_tags_area, storage_manager);
+	g_object_unref (storage_manager);
 
 	/* Connect up the formatting actions */
 	g_signal_connect (priv->bold_action, "toggled", G_CALLBACK (mw_bold_toggled_cb), main_window);
@@ -1180,6 +1189,9 @@ mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar_button, AlmanahMain
 	event_manager = almanah_application_dup_event_manager (application);
 	almanah_event_manager_query_events (event_manager, ALMANAH_EVENT_FACTORY_UNKNOWN, &calendar_date);
 	g_object_unref (event_manager);
+
+	/* Show the entry tags */
+	almanah_entry_tags_area_set_entry (priv->entry_tags_area, priv->current_entry);
 }
 
 void

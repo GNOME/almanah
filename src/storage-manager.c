@@ -59,6 +59,8 @@ enum {
 	SIGNAL_ENTRY_ADDED,
 	SIGNAL_ENTRY_MODIFIED,
 	SIGNAL_ENTRY_REMOVED,
+	SIGNAL_ENTRY_TAG_ADDED,
+	SIGNAL_ENTRY_TAG_REMOVED,
 	LAST_SIGNAL
 };
 
@@ -120,6 +122,18 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                              0, NULL, NULL,
 	                                                              g_cclosure_marshal_VOID__BOXED,
 	                                                              G_TYPE_NONE, 1, G_TYPE_DATE);
+	storage_manager_signals[SIGNAL_ENTRY_TAG_ADDED] = g_signal_new ("entry-tag-added",
+									G_TYPE_FROM_CLASS (klass),
+									G_SIGNAL_RUN_LAST,
+									0, NULL, NULL,
+									almanah_marshal_VOID__OBJECT_STRING,
+									G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
+	storage_manager_signals[SIGNAL_ENTRY_TAG_REMOVED] = g_signal_new ("entry-tag-removed",
+									  G_TYPE_FROM_CLASS (klass),
+									  G_SIGNAL_RUN_LAST,
+									  0, NULL, NULL,
+									  almanah_marshal_VOID__OBJECT_STRING,
+									  G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
 }
 
 static void
@@ -230,6 +244,8 @@ create_tables (AlmanahStorageManager *self)
 		"ALTER TABLE entries ADD COLUMN edited_month INTEGER", /* added in 0.8.0 */
 		"ALTER TABLE entries ADD COLUMN edited_day INTEGER", /* added in 0.8.0 */
 		"ALTER TABLE entries ADD COLUMN version INTEGER DEFAULT 1", /* added in 0.8.0 */
+		"CREATE TABLE IF NOT EXISTS entry_tag (year INTEGER, month INTEGER, day INTEGER, tag TEXT)", /* added in 0.10.0 */
+		"CREATE INDEX idx_tag ON entry_tag(tag)", /* added in 0.10.0, for information take a look at: http://www.sqlite.org/queryplanner.html */
 		NULL
 	};
 
@@ -1297,4 +1313,186 @@ const gchar *
 almanah_storage_manager_get_filename (AlmanahStorageManager *self, gboolean plain)
 {
 	return (plain == TRUE) ? self->priv->plain_filename : self->priv->filename;
+}
+
+/**
+ * almanah_storage_manager_entry_add_tag:
+ * @self: an #AlmanahStorageManager
+ * @entry: an #AlmanahEntry
+ * @tag: a string
+ *
+ * Append the string in @tag as a tag for the entry @entry. If the @tag is empty or the @entry don't be previuslly saved, returns %FALSE
+ *
+ * Return value: %TRUE on success, %FALSE otherwise
+ */
+gboolean
+almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag)
+{
+	GDate entry_last_edited;
+	GDate entry_date;
+	sqlite3_stmt *statement;
+	gint result_error;
+
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), FALSE);
+	g_return_val_if_fail (ALMANAH_IS_ENTRY (entry), FALSE);
+	g_return_val_if_fail (g_utf8_strlen (tag, 1) == 1, FALSE);
+
+	/* This validations are required for DB integrity. Only saved entry
+	   must have tags */
+	almanah_entry_get_last_edited (entry, &entry_last_edited);
+	if (g_date_valid (&entry_last_edited) != TRUE) {
+		g_debug ("Entry don't saved into the storage");
+		return FALSE;
+	}
+
+	almanah_entry_get_date (entry, &entry_date);
+	if (g_date_valid (&entry_date) != TRUE) {
+		g_debug ("Invalid entry date");
+		return FALSE;
+	}
+
+	if ((result_error = sqlite3_prepare_v2 (self->priv->connection,
+						"INSERT INTO entry_tag (year, month, day, tag) VALUES (?, ?, ?, ?)",
+						-1, &statement, NULL)) != SQLITE_OK) {
+		g_debug ("Can't prepare statement. SQLite error code: %d", result_error);
+		return FALSE;
+	}
+
+	sqlite3_bind_int (statement, 1, g_date_get_year (&entry_date));
+	sqlite3_bind_int (statement, 2, g_date_get_month (&entry_date));
+	sqlite3_bind_int (statement, 3, g_date_get_day (&entry_date));
+	sqlite3_bind_text (statement, 4, tag, -1, SQLITE_STATIC); /* @TODO: STATIC or TRANSIENT */
+
+	if (sqlite3_step (statement) != SQLITE_DONE) {
+		sqlite3_finalize (statement);
+		g_debug ("Can't save tag");
+		return FALSE;
+	}
+
+	sqlite3_finalize (statement);
+
+	g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_TAG_ADDED], 0, entry, g_strdup (tag));
+
+	return TRUE;
+}
+
+/**
+ * almanah_storage_manager_entry_remove_tag:
+ * @self: an #AlmanahStorageManager
+ * @entry: an #AlmanahEntry
+ * @tag: a string with the tag to be removed
+ *
+ * Remove the tag with the given string in @tag as a tag for the entry @entry.
+ *
+ * Return value: %TRUE on success, %FALSE otherwise
+ */
+gboolean
+almanah_storage_manager_entry_remove_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag)
+{
+	GDate date;
+	gboolean result;
+
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), FALSE);
+	g_return_val_if_fail (ALMANAH_IS_ENTRY (entry), FALSE);
+	g_return_val_if_fail (g_utf8_strlen (tag, 1) == 1, FALSE);
+
+	almanah_entry_get_date (entry, &date);
+
+	result = simple_query (self, "DELETE FROM entry_tag WHERE year = %u AND month = %u AND day = %u AND tag = '%s'", NULL,
+			       g_date_get_year (&date),
+			       g_date_get_month (&date),
+			       g_date_get_day (&date),
+			       tag);
+
+	if (result)
+		g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_TAG_REMOVED], 0, entry, tag);
+
+	return result;
+}
+
+/**
+ * almanah_storage_manager_entry_get_tags:
+ * @self: an #AlmanahStorageManager
+ * @entry: an #AlmanahEntry
+ *
+ * Gets the tags added to an entry by the user from the database.
+ */
+GList *
+almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntry *entry)
+{
+	GList *tags = NULL;
+	GDate date;
+	sqlite3_stmt *statement;
+	gint result;
+
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), FALSE);
+	g_return_val_if_fail (ALMANAH_IS_ENTRY (entry), FALSE);
+
+	almanah_entry_get_date (entry, &date);
+	if (g_date_valid (&date) != TRUE) {
+		g_debug ("Invalid entry date.");
+		return NULL;
+	}
+
+	if (sqlite3_prepare_v2 (self->priv->connection,
+				"SELECT DISTINCT tag FROM entry_tag WHERE year = ? AND month = ? AND day = ?",
+				-1, &statement, NULL) != SQLITE_OK) {
+		g_debug ("Can't prepare statement");
+		return NULL;
+	}
+
+	sqlite3_bind_int (statement, 1, g_date_get_year (&date));
+	sqlite3_bind_int (statement, 2, g_date_get_month (&date));
+	sqlite3_bind_int (statement, 3, g_date_get_day (&date));
+
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
+		tags = g_list_append (tags, g_strdup (sqlite3_column_text (statement, 0)));
+	}
+
+	sqlite3_finalize (statement);
+
+	if (result != SQLITE_DONE) {
+		g_debug ("Error quering for tags from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_free (tags);
+		tags = NULL;
+	}
+
+	return tags;
+}
+
+/**
+ * almanah_storage_manager_get_tags:
+ * @self: an #AlmanahStorageManager
+ *
+ * Gets all the tags added to entries by the user from the database.
+ *
+ * Return value: #GList with all the tags.
+ */
+GList *
+almanah_storage_manager_get_tags (AlmanahStorageManager *self)
+{
+	GList *tags = NULL;
+	sqlite3_stmt *statement;
+	gint result;
+
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), FALSE);
+
+	if ((result = sqlite3_prepare_v2 (self->priv->connection, "SELECT DISTINCT tag FROM entry_tag", -1, &statement, NULL)) != SQLITE_OK) {
+		g_debug ("Can't prepare statement, error code: %d", result);
+		return NULL;
+	}
+
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
+		tags = g_list_append (tags, g_strdup (sqlite3_column_text (statement, 0)));
+	}
+
+	sqlite3_finalize (statement);
+
+	if (result != SQLITE_DONE) {
+		g_debug ("Error quering for tags from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_free (tags);
+		tags = NULL;
+	}
+
+	return tags;
 }

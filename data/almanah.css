@@ -20,10 +20,39 @@ AlmanahCalendarWindow {
     background-color: @menu_bg_color;
 }
 
-AlmanahMainWindow GtkScrolledWindow {
+AlmanahMainWindow GtkToolbar {
     border-style: solid;
     border-radius: 0px;
     border-width: 0px;
-    border-top-width: 1px;
+    border-top-width: 0px;
     border-bottom-width: 1px;
+}
+
+AlmanahEntryTagsArea * {
+    background-color: #fff;
+}
+
+.almanah-mw-main-content GtkScrolledWindow {
+    border-style: solid;
+    border-radius: 0px;
+    border-width: 0px;
+    border-bottom-width: 1px;
+    background-color: #fff;
+}
+
+AlmanahTagEntry {
+   color: #aaa;
+   font-size: 8;
+   border-width: 0px;
+   border-style: none;
+   border-radius: 0px;
+   margin: 0px;
+   padding: 10px;
+   box-shadow: none;
+   background-color: #fff;
+   background-image: none;
+}
+
+AlmanahTagEntry:focused {
+   color: @theme_text_color;
 }
