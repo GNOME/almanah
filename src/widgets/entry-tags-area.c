@@ -41,11 +41,13 @@ static void almanah_entry_tags_area_finalize          (GObject *object);
 static void almanah_entry_tags_area_load_tags         (AlmanahEntryTagsArea *self);
 static void almanah_entry_tags_area_update            (AlmanahEntryTagsArea *self);
 static gint almanah_entry_tags_area_draw              (GtkWidget *widget, cairo_t *cr);
+static void almanah_entry_tags_area_add_tag                (AlmanahEntryTagsArea *self, const gchar *tag);
 
 /* Signals */
 void tag_entry_activate_cb              (GtkEntry *entry, AlmanahEntryTagsArea *self);
 void entry_tags_area_remove_foreach_cb  (GtkWidget *tag_widget, AlmanahEntryTagsArea *self);
 void storage_manager_entry_tag_added_cb (AlmanahEntry *entry, gchar *tag,  AlmanahEntryTagsArea *self);
+static void tag_remove                  (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
 G_DEFINE_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_GRID)
 
@@ -152,9 +154,7 @@ almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 
 	tags = almanah_storage_manager_entry_get_tags (self->priv->storage_manager, self->priv->entry);
 	while (tags) {
-		GtkWidget *tag_widget = almanah_tag_new (tags->data);
-		gtk_container_add (GTK_CONTAINER (self), tag_widget);
-		self->priv->tags_number++;
+		almanah_entry_tags_area_add_tag (self, (const gchar*) tags->data);
 
 		g_free (tags->data);
 		tags = g_list_next (tags);
@@ -185,6 +185,19 @@ almanah_entry_tags_area_draw (GtkWidget *widget, cairo_t *cr)
 	return GTK_WIDGET_CLASS (almanah_entry_tags_area_parent_class)->draw (widget, cr);
 }
 
+static void
+almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const gchar *tag)
+{
+	GtkWidget *tag_widget;
+
+	tag_widget = almanah_tag_new (tag);
+	gtk_container_add (GTK_CONTAINER (self), tag_widget);
+	gtk_widget_show (tag_widget);
+	g_signal_connect (tag_widget, "remove", G_CALLBACK (tag_remove), self);
+
+	self->priv->tags_number++;
+}
+
 void
 tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 {
@@ -193,15 +206,13 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 
 	tag = g_strdup (gtk_entry_get_text (entry));
 	gtk_entry_set_text (entry, "");
-	if (almanah_storage_manager_entry_add_tag (self->priv->storage_manager, self->priv->entry, tag)) {
-		GtkWidget *tag_widget = almanah_tag_new (tag);
-		gtk_container_add (GTK_CONTAINER (self), tag_widget);
-		self->priv->tags_number++;
-		gtk_widget_show (tag_widget);
+	/* Check fist if the tag as already added to the entry */
+	if (almanah_storage_manager_entry_check_tag (self->priv->storage_manager, self->priv->entry, tag) == FALSE) {
+		if (almanah_storage_manager_entry_add_tag (self->priv->storage_manager, self->priv->entry, tag)) {
+			almanah_entry_tags_area_add_tag (self, (const gchar*) tag);
+		}
 	}
 	g_free (tag);
-
-	/* @TODO: Return the focus to the GtkTextView */
 }
 
 void
@@ -239,6 +250,17 @@ storage_manager_entry_tag_added_cb (AlmanahEntry *entry, gchar *tag, AlmanahEntr
 
 	/* TODO: test if the priv->entry == entry */
 
+}
+
+static void
+tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self)
+{
+	if (almanah_storage_manager_entry_remove_tag (self->priv->storage_manager, self->priv->entry, almanah_tag_get_tag (tag_widget))) {
+		gtk_widget_destroy (GTK_WIDGET (tag_widget));
+		self->priv->tags_number--;
+	} else {
+		g_debug ("Can't remove the tag");
+	}
 }
 
 void

@@ -1430,7 +1430,7 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 
 	almanah_entry_get_date (entry, &date);
 	if (g_date_valid (&date) != TRUE) {
-		g_debug ("Invalid entry date.");
+		g_debug ("Invalid entry date");
 		return NULL;
 	}
 
@@ -1459,6 +1459,62 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 
 	return tags;
 }
+
+/**
+ * almanah_storage_manager_entry_check_tag:
+ * @self: an #AlmanahStorageManager
+ * @entry: an #AlmanahEntry to check into it
+ * @tag: the tag to be checked
+ *
+ * Check if a tag has been added to an entry
+ *
+ * Return value: TRUE if the tag already added to the entry, FALSE otherwise
+ */
+gboolean
+almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag)
+{
+	gboolean result, q_result;
+	sqlite3_stmt *statement;
+	GDate date;
+
+	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), FALSE);
+	g_return_val_if_fail (ALMANAH_IS_ENTRY (entry), FALSE);
+	g_return_val_if_fail (g_utf8_strlen (tag, 1) == 1, FALSE);
+
+	result = FALSE;
+
+	almanah_entry_get_date (entry, &date);
+	if (g_date_valid (&date) != TRUE) {
+		g_debug ("Invalid entry date");
+		return FALSE;
+	}
+
+	if (sqlite3_prepare_v2 (self->priv->connection, 
+				"SELECT count(1) FROM entry_tag WHERE year = ? AND month = ? AND day = ? AND tag = ?",
+				-1, &statement, NULL) != SQLITE_OK) {
+		g_debug ("Can't prepare statement");
+		return FALSE;
+	}
+
+	sqlite3_bind_int (statement, 1, g_date_get_year (&date));
+	sqlite3_bind_int (statement, 2, g_date_get_month (&date));
+	sqlite3_bind_int (statement, 3, g_date_get_day (&date));
+	sqlite3_bind_text (statement, 4, tag, -1, SQLITE_STATIC);
+
+	if ((q_result  = sqlite3_step (statement)) == SQLITE_ROW) {
+		if (sqlite3_column_int (statement, 0) > 0)
+			result = TRUE;
+	}
+
+	if (q_result != SQLITE_DONE) {
+		g_debug ("Error quering for a tag from database: %s", sqlite3_errmsg (self->priv->connection));
+	}
+
+	sqlite3_finalize (statement);
+
+	return result;
+}
+
 
 /**
  * almanah_storage_manager_get_tags:
