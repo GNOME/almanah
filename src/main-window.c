@@ -1109,7 +1109,7 @@ mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar_button, AlmanahMain
 	AlmanahEventManager *event_manager;
 	GDate calendar_date;
 #ifdef ENABLE_SPELL_CHECKING
-	GtkSpell *gtkspell;
+	GtkSpellChecker *gtkspell;
 #endif /* ENABLE_SPELL_CHECKING */
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 	AlmanahEntry *entry;
@@ -1166,9 +1166,9 @@ mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar_button, AlmanahMain
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Ensure the spell-checking is updated */
-	gtkspell = gtkspell_get_from_text_view (priv->entry_view);
+	gtkspell = gtk_spell_checker_get_from_text_view (priv->entry_view);
 	if (gtkspell != NULL) {
-		gtkspell_recheck_all (gtkspell);
+		gtk_spell_checker_recheck_all (gtkspell);
 		gtk_widget_queue_draw (GTK_WIDGET (priv->entry_view));
 	}
 #endif /* ENABLE_SPELL_CHECKING */
@@ -1326,13 +1326,13 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 {
 	AlmanahApplication *application;
 	GSettings *settings;
-	GtkSpell *gtkspell;
+	GtkSpellChecker *gtkspell;
 	gchar *spelling_language;
 	GtkTextTagTable *table;
 	GtkTextTag *tag;
 
 	/* Bail out if spell checking's already enabled */
-	if (gtkspell_get_from_text_view (self->priv->entry_view) != NULL)
+	if (gtk_spell_checker_get_from_text_view (self->priv->entry_view) != NULL)
 		return TRUE;
 
 	/* If spell checking wasn't already enabled, we have a dummy gtkspell-misspelled text tag to destroy */
@@ -1353,7 +1353,9 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 		spelling_language = NULL;
 	}
 
-	gtkspell = gtkspell_new_attach (self->priv->entry_view, spelling_language, error);
+	gtkspell = gtk_spell_checker_new ();
+	gtk_spell_checker_set_language (gtkspell, spelling_language, error);
+	gtk_spell_checker_attach (gtkspell, self->priv->entry_view);
 	g_free (spelling_language);
 
 	if (gtkspell == NULL)
@@ -1364,13 +1366,13 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 static void
 disable_spell_checking (AlmanahMainWindow *self)
 {
-	GtkSpell *gtkspell;
+	GtkSpellChecker *gtkspell;
 	GtkTextTagTable *table;
 	GtkTextTag *tag;
 
-	gtkspell = gtkspell_get_from_text_view (self->priv->entry_view);
+	gtkspell = gtk_spell_checker_get_from_text_view (self->priv->entry_view);
 	if (gtkspell != NULL)
-		gtkspell_detach (gtkspell);
+		gtk_spell_checker_detach (gtkspell);
 
 	/* Remove the old gtkspell-misspelling text tag */
 	table = gtk_text_buffer_get_tag_table (self->priv->entry_buffer);

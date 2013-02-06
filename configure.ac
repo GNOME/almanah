@@ -95,7 +95,7 @@ AC_SUBST(EVO_LIBS)
 
 dnl Spell checking
 if test $spell_checking = "true"; then
-	PKG_CHECK_MODULES(SPELL_CHECKING, gtkspell-3.0)
+	PKG_CHECK_MODULES(SPELL_CHECKING, gtkspell3-3.0)
 	AC_SUBST(SPELL_CHECKING_CFLAGS)
 	AC_SUBST(SPELL_CHECKING_LIBS)
 fi
