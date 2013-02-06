@@ -24,14 +24,16 @@
 #include "storage-manager.h"
 
 enum {
-        PROP_ENTRY = 1,
-        PROP_STORAGE_MANAGER
+	PROP_ENTRY = 1,
+	PROP_STORAGE_MANAGER,
+	PROP_BACK_WIDGET
 };
 
 struct _AlmanahEntryTagsAreaPrivate {
-        AlmanahEntry *entry;
-        AlmanahStorageManager *storage_manager;
-        guint tags_number;
+	AlmanahEntry *entry;
+	AlmanahStorageManager *storage_manager;
+	GtkWidget *back_widget;
+	guint tags_number;
 	AlmanahTagEntry *tag_entry;
 };
 
@@ -54,37 +56,43 @@ G_DEFINE_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_GRID)
 static void
 almanah_entry_tags_area_class_init (AlmanahEntryTagsAreaClass *klass)
 {
-        GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-        g_type_class_add_private (klass, sizeof (AlmanahEntryTagsAreaPrivate));
+	g_type_class_add_private (klass, sizeof (AlmanahEntryTagsAreaPrivate));
 
-        gobject_class->get_property = almanah_entry_tags_area_get_property;
-        gobject_class->set_property = almanah_entry_tags_area_set_property;
-        gobject_class->finalize = almanah_entry_tags_area_finalize;
+	gobject_class->get_property = almanah_entry_tags_area_get_property;
+	gobject_class->set_property = almanah_entry_tags_area_set_property;
+	gobject_class->finalize = almanah_entry_tags_area_finalize;
 
 	widget_class->draw = almanah_entry_tags_area_draw;
 
-        g_object_class_install_property (gobject_class, PROP_ENTRY,
-                                         g_param_spec_object ("entry",
-                                                              "Entry", "The entry from which show the tag list",
-                                                              ALMANAH_TYPE_ENTRY,
-                                                              G_PARAM_READWRITE));
+	g_object_class_install_property (gobject_class, PROP_ENTRY,
+					 g_param_spec_object ("entry",
+							      "Entry", "The entry from which show the tag list",
+							      ALMANAH_TYPE_ENTRY,
+							      G_PARAM_READWRITE));
 
-        g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
-	                                 g_param_spec_object ("storage-manager",
-	                                                      "Storage manager", "The storage manager whose entries should be listed.",
-	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
-	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
+					 g_param_spec_object ("storage-manager",
+							      "Storage manager", "The storage manager whose entries should be listed.",
+							      ALMANAH_TYPE_STORAGE_MANAGER,
+							      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	g_object_class_install_property (gobject_class, PROP_BACK_WIDGET,
+					 g_param_spec_object ("back-widget",
+							      "Back Widget", "The widget to grab the focus after a tag was added to an entry.",
+							      GTK_TYPE_WIDGET,
+							      G_PARAM_READWRITE));
 }
 
 static void
 almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 {
-        self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_ENTRY_TAGS_AREA, AlmanahEntryTagsAreaPrivate);
+	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_ENTRY_TAGS_AREA, AlmanahEntryTagsAreaPrivate);
 
-        /* There is no tags showed right now. */
-        self->priv->tags_number = 0;
+	/* There is no tags showed right now. */
+	self->priv->tags_number = 0;
 
 	/* The tag entry widget */
 	self->priv->tag_entry = g_object_new (ALMANAH_TYPE_TAG_ENTRY, NULL);
@@ -96,55 +104,61 @@ almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 static void
 almanah_entry_tags_area_finalize (GObject *object)
 {
-        AlmanahEntryTagsAreaPrivate *priv = ALMANAH_ENTRY_TAGS_AREA (object)->priv;
+	AlmanahEntryTagsAreaPrivate *priv = ALMANAH_ENTRY_TAGS_AREA (object)->priv;
 
-        g_clear_object (&priv->entry);
-        g_clear_object (&priv->storage_manager);
+	g_clear_object (&priv->entry);
+	g_clear_object (&priv->storage_manager);
 
-        G_OBJECT_CLASS (almanah_entry_tags_area_parent_class)->finalize (object);
+	G_OBJECT_CLASS (almanah_entry_tags_area_parent_class)->finalize (object);
 }
 
 static void
 almanah_entry_tags_area_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-        AlmanahEntryTagsAreaPrivate *priv = ALMANAH_ENTRY_TAGS_AREA (object)->priv;
+	AlmanahEntryTagsAreaPrivate *priv = ALMANAH_ENTRY_TAGS_AREA (object)->priv;
 
-        switch (property_id) {
-                case PROP_ENTRY:
-                        g_value_set_object (value, priv->entry);
-                        break;
-                case PROP_STORAGE_MANAGER:
-                        g_value_set_object (value, priv->storage_manager);
-                        break;
-                default:
-                        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-                        break;
-        }
+	switch (property_id) {
+		case PROP_ENTRY:
+			g_value_set_object (value, priv->entry);
+			break;
+		case PROP_STORAGE_MANAGER:
+			g_value_set_object (value, priv->storage_manager);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
 }
 
 static void
 almanah_entry_tags_area_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-        AlmanahEntryTagsAreaPrivate *priv = ALMANAH_ENTRY_TAGS_AREA (object)->priv;
+	AlmanahEntryTagsAreaPrivate *priv = ALMANAH_ENTRY_TAGS_AREA (object)->priv;
 
-        switch (property_id) {
-                case PROP_ENTRY:
-                        g_clear_object (&priv->entry);
-                        priv->entry = ALMANAH_ENTRY (g_value_get_object (value));
-                        g_object_ref (priv->entry);
-                        almanah_entry_tags_area_update (ALMANAH_ENTRY_TAGS_AREA (object));
-                        break;
-                case PROP_STORAGE_MANAGER:
+	switch (property_id) {
+		case PROP_ENTRY:
+			g_clear_object (&priv->entry);
+			priv->entry = ALMANAH_ENTRY (g_value_get_object (value));
+			g_object_ref (priv->entry);
+			almanah_entry_tags_area_update (ALMANAH_ENTRY_TAGS_AREA (object));
+			break;
+		case PROP_STORAGE_MANAGER:
 			g_return_if_fail (ALMANAH_IS_STORAGE_MANAGER (g_value_get_object (value)));
-                        g_clear_object (&priv->storage_manager);
-                        priv->storage_manager = ALMANAH_STORAGE_MANAGER (g_value_get_object (value));
-                        g_object_ref (priv->storage_manager);
+			g_clear_object (&priv->storage_manager);
+			priv->storage_manager = ALMANAH_STORAGE_MANAGER (g_value_get_object (value));
+			g_object_ref (priv->storage_manager);
 			almanah_tag_entry_set_storage_manager (priv->tag_entry, priv->storage_manager);
-                        break;
-                default:
-                        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-                        break;
-        }        
+			break;
+		case PROP_BACK_WIDGET:
+			g_return_if_fail (GTK_IS_WIDGET (g_value_get_object (value)) && gtk_widget_get_can_focus (g_value_get_object (value)));
+			g_clear_object (&priv->back_widget);
+			priv->back_widget = GTK_WIDGET (g_value_get_object (value));
+			g_object_ref (priv->back_widget);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
 }
 
 static void
@@ -167,7 +181,7 @@ almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 static void
 almanah_entry_tags_area_update (AlmanahEntryTagsArea *self)
 {
-        gtk_container_foreach (GTK_CONTAINER (self), (GtkCallback) entry_tags_area_remove_foreach_cb, self);
+	gtk_container_foreach (GTK_CONTAINER (self), (GtkCallback) entry_tags_area_remove_foreach_cb, self);
 }
 
 static gint
@@ -210,6 +224,7 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 	if (almanah_storage_manager_entry_check_tag (self->priv->storage_manager, self->priv->entry, tag) == FALSE) {
 		if (almanah_storage_manager_entry_add_tag (self->priv->storage_manager, self->priv->entry, tag)) {
 			almanah_entry_tags_area_add_tag (self, (const gchar*) tag);
+			gtk_widget_grab_focus (self->priv->back_widget);
 		}
 	}
 	g_free (tag);
@@ -218,29 +233,29 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 void
 entry_tags_area_remove_foreach_cb (GtkWidget *tag_widget, AlmanahEntryTagsArea *self)
 {
-        if (ALMANAH_IS_TAG (tag_widget)) {
-                gtk_widget_destroy (tag_widget);
-                self->priv->tags_number--;
-        }
+	if (ALMANAH_IS_TAG (tag_widget)) {
+		gtk_widget_destroy (tag_widget);
+		self->priv->tags_number--;
+	}
 
-        /* Show the tags for the entry */
-        if (self->priv->tags_number == 0) {
-                almanah_entry_tags_area_load_tags (self);
-        }
+	/* Show the tags for the entry */
+	if (self->priv->tags_number == 0) {
+		almanah_entry_tags_area_load_tags (self);
+	}
 }
 
 void
 almanah_entry_tags_area_set_entry (AlmanahEntryTagsArea *entry_tags_area, AlmanahEntry *entry)
 {
-        GValue entry_value = G_VALUE_INIT;
+	GValue entry_value = G_VALUE_INIT;
 
-        g_return_if_fail (ALMANAH_IS_ENTRY_TAGS_AREA (entry_tags_area));
-        g_return_if_fail (ALMANAH_IS_ENTRY (entry));
+	g_return_if_fail (ALMANAH_IS_ENTRY_TAGS_AREA (entry_tags_area));
+	g_return_if_fail (ALMANAH_IS_ENTRY (entry));
 
-        g_value_init (&entry_value, G_TYPE_OBJECT);
-        g_value_set_object (&entry_value, entry);
-        g_object_set_property (G_OBJECT (entry_tags_area), "entry", &entry_value);
-        g_value_unset (&entry_value);
+	g_value_init (&entry_value, G_TYPE_OBJECT);
+	g_value_set_object (&entry_value, entry);
+	g_object_set_property (G_OBJECT (entry_tags_area), "entry", &entry_value);
+	g_value_unset (&entry_value);
 }
 
 void
@@ -263,16 +278,34 @@ tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self)
 	}
 }
 
+/**
+ * TODO: Document
+ */
 void
 almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_tags_area, AlmanahStorageManager *storage_manager)
 {
 	GValue storage_value = G_VALUE_INIT;
 
 	g_return_if_fail (ALMANAH_IS_ENTRY_TAGS_AREA (entry_tags_area));
-	g_return_if_fail (ALMANAH_IS_STORAGE_MANAGER (storage_manager));
 
 	g_value_init (&storage_value, G_TYPE_OBJECT);
 	g_value_set_object (&storage_value, storage_manager);
 	g_object_set_property (G_OBJECT (entry_tags_area), "storage-manager", &storage_value);
 	g_value_unset (&storage_value);
+}
+
+/**
+ * TODO: Document
+ */
+void
+almanah_entry_tags_area_set_back_widget (AlmanahEntryTagsArea *entry_tags_area, GtkWidget *back_widget)
+{
+	GValue back_w_value = G_VALUE_INIT;
+
+	g_return_if_fail (ALMANAH_IS_ENTRY_TAGS_AREA (entry_tags_area));
+
+	g_value_init (&back_w_value, G_TYPE_OBJECT);
+	g_value_set_object (&back_w_value, back_widget);
+	g_object_set_property (G_OBJECT (entry_tags_area), "back-widget", &back_w_value);
+	g_value_unset (&back_w_value);
 }

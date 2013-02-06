@@ -47,6 +47,7 @@ typedef struct {
 GType almanah_entry_tags_area_get_type  (void) G_GNUC_CONST;
 void  almanah_entry_tags_area_set_entry (AlmanahEntryTagsArea *entry_tags_area, AlmanahEntry *entry);
 void  almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_tags_area, AlmanahStorageManager *storage_manager);
+void  almanah_entry_tags_area_set_back_widget (AlmanahEntryTagsArea *entry_tags_area, GtkWidget *back_widget);
 
 G_END_DECLS
 

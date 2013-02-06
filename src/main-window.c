@@ -265,6 +265,8 @@ almanah_main_window_new (AlmanahApplication *application)
 	storage_manager = almanah_application_dup_storage_manager (application);
 	almanah_entry_tags_area_set_storage_manager (priv->entry_tags_area, storage_manager);
 	g_object_unref (storage_manager);
+	/* The entry GtkTextView is the widget that grab the focus after a tag was added */
+	almanah_entry_tags_area_set_back_widget (priv->entry_tags_area, priv->entry_view);
 
 	/* Connect up the formatting actions */
 	g_signal_connect (priv->bold_action, "toggled", G_CALLBACK (mw_bold_toggled_cb), main_window);
