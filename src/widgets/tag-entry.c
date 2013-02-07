@@ -38,6 +38,7 @@ static void almanah_tag_entry_update_tags         (AlmanahTagEntry *tag_entry);
 static void almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *natural);
 gboolean    almanah_tag_entry_focus_out_event     (GtkWidget *self, GdkEventFocus *event);
 gboolean    almanah_tag_entry_focus_in_event      (GtkWidget *self, GdkEventFocus *event);
+gboolean    almanah_tag_entry_match_selected      (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
 
 G_DEFINE_TYPE (AlmanahTagEntry, almanah_tag_entry, GTK_TYPE_ENTRY)
 
@@ -76,6 +77,7 @@ almanah_tag_entry_init (AlmanahTagEntry *self)
         gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (self->priv->tags_store));
         gtk_entry_completion_set_text_column (completion, 0);
         gtk_entry_set_completion (GTK_ENTRY (self), completion);
+	g_signal_connect (completion, "match-selected", G_CALLBACK (almanah_tag_entry_match_selected), self);
 
 	gtk_entry_set_has_frame (GTK_ENTRY (self), FALSE);
 }
@@ -150,6 +152,7 @@ almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *n
 
 	GTK_WIDGET_CLASS (almanah_tag_entry_parent_class)->get_preferred_width (widget, &m_width, &n_width);
 
+	/* Just a bad hack... @TODO: set the width to a maximun number of characters, using the pango layout */
 	*minimum = m_width - 100;
 	*natural = n_width - 100;
 }
@@ -168,6 +171,18 @@ almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event)
 	gtk_entry_set_text (GTK_ENTRY (self), "");
 
 	return FALSE;
+}
+
+gboolean
+almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self)
+{
+	gchar *tag;
+
+	gtk_tree_model_get (model, iter, 0, &tag, -1);
+	gtk_entry_set_text (GTK_ENTRY (self), tag);
+	g_signal_emit_by_name (GTK_ENTRY (self), "activate");
+
+	return TRUE;
 }
 
 /* @TODO: Remove? use g_object_set */
