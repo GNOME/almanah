@@ -120,7 +120,6 @@ almanah_tag_init (AlmanahTag *self)
 	gdk_rgba_parse (&self->priv->fill_b_color, "#FCBC4E");
 
 	gtk_widget_set_has_tooltip (GTK_WIDGET (self), TRUE);
-	gtk_widget_set_tooltip_text (GTK_WIDGET (self), _("Remove tag"));
 
 	self->priv->close_highlighted = FALSE;
 	self->priv->close_pressed = FALSE;
@@ -381,8 +380,11 @@ almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_
 	gint close_x = ALMANAH_TAG (widget)->priv->close_x;
 	gint close_y = ALMANAH_TAG (widget)->priv->close_y;
 
+	/* @TODO: Maybe remove all this code and test if ALMANAH_TAG (widget)->priv->close_highlighted == TRUE, or just return it */
 	if (x >= close_x && x <= close_x + CLOSE_BUTTON
 	    && y >= close_y && y <= close_y + CLOSE_BUTTON) {
+		/* Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ? */
+		gtk_tooltip_set_text (tooltip, _("Remove tag"));
 		return TRUE;
 	} else {
 		return FALSE;
