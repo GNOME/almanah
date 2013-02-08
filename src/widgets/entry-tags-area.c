@@ -51,7 +51,7 @@ void entry_tags_area_remove_foreach_cb  (GtkWidget *tag_widget, AlmanahEntryTags
 void storage_manager_entry_tag_added_cb (AlmanahEntry *entry, gchar *tag,  AlmanahEntryTagsArea *self);
 static void tag_remove                  (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
-G_DEFINE_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_GRID)
+G_DEFINE_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, EGG_TYPE_WRAP_BOX)
 
 static void
 almanah_entry_tags_area_class_init (AlmanahEntryTagsAreaClass *klass)

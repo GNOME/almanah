@@ -21,6 +21,7 @@
 #define ALMANAH_ENTRY_TAGS_AREA_H
 
 #include <gtk/gtk.h>
+#include "eggwrapbox.h"
 #include "entry.h"
 #include "storage-manager.h"
 
@@ -36,12 +37,12 @@ G_BEGIN_DECLS
 typedef struct _AlmanahEntryTagsAreaPrivate AlmanahEntryTagsAreaPrivate;
 
 typedef struct {
-        GtkGrid parent;
-        AlmanahEntryTagsAreaPrivate *priv;
+	EggWrapBox parent;
+	AlmanahEntryTagsAreaPrivate *priv;
 } AlmanahEntryTagsArea;
 
 typedef struct {
-        GtkGridClass parent;
+	EggWrapBoxClass parent;
 } AlmanahEntryTagsAreaClass;
 
 GType almanah_entry_tags_area_get_type  (void) G_GNUC_CONST;
