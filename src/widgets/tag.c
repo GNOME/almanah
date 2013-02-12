@@ -33,12 +33,12 @@
 #define CLOSE_BUTTON_SPACING 5
 
 enum {
-        PROP_TAG = 1
+	PROP_TAG = 1
 };
 
 struct _AlmanahTagPrivate {
-        gchar *tag;
-        PangoLayout *layout;
+	gchar *tag;
+	PangoLayout *layout;
 
 	/* Tag colors */
 	GdkRGBA text_color;
@@ -62,6 +62,7 @@ enum {
 
 static guint tag_signals[LAST_SIGNAL] = { 0, };
 
+static void almanah_tag_finalize             (GObject *object);
 static void almanah_tag_get_property         (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_tag_set_property         (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 void        almanah_tag_ensure_layout        (AlmanahTag *self);
@@ -78,13 +79,14 @@ G_DEFINE_TYPE (AlmanahTag, almanah_tag, GTK_TYPE_DRAWING_AREA)
 static void
 almanah_tag_class_init (AlmanahTagClass *klass)
 {
-        GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-        g_type_class_add_private (klass, sizeof (AlmanahTagPrivate));
+	g_type_class_add_private (klass, sizeof (AlmanahTagPrivate));
 
-        gobject_class->get_property = almanah_tag_get_property;
-        gobject_class->set_property = almanah_tag_set_property;
+	gobject_class->get_property = almanah_tag_get_property;
+	gobject_class->set_property = almanah_tag_set_property;
+	gobject_class->finalize = almanah_tag_finalize;
 
 	widget_class->get_preferred_width = almanah_tag_get_preferred_width;
 	widget_class->get_preferred_height = almanah_tag_get_preferred_height;
@@ -93,10 +95,10 @@ almanah_tag_class_init (AlmanahTagClass *klass)
 	widget_class->button_press_event = almanah_tag_button_press_event;
 	widget_class->query_tooltip = almanah_tag_query_tooltip;
 
-        g_object_class_install_property (gobject_class, PROP_TAG,
-                                         g_param_spec_string ("tag",
-                                                              "Tag", "The tag name.",
-                                                              NULL, G_PARAM_READWRITE));
+	g_object_class_install_property (gobject_class, PROP_TAG,
+					 g_param_spec_string ("tag",
+							      "Tag", "The tag name.",
+							      NULL, G_PARAM_READWRITE));
 
 	tag_signals[SIGNAL_REMOVE] = g_signal_new ("remove",
 						   G_TYPE_FROM_CLASS (klass),
@@ -110,7 +112,7 @@ static void
 almanah_tag_init (AlmanahTag *self)
 {
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_TAG, AlmanahTagPrivate);
-        g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (almanah_tag_draw), NULL);
+	g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (almanah_tag_draw), NULL);
 
 	gtk_widget_add_events (GTK_WIDGET  (self), GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
@@ -126,36 +128,47 @@ almanah_tag_init (AlmanahTag *self)
 }
 
 static void
+almanah_tag_finalize (GObject *object)
+{
+	AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
+
+	g_free (priv->tag);
+	g_clear_object (&priv->layout);
+
+	G_OBJECT_CLASS (almanah_tag_parent_class)->finalize (object);
+}
+
+static void
 almanah_tag_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-        AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
+	AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
 
-        switch (property_id) {
-                case PROP_TAG:
-                        g_value_set_string (value, priv->tag);
-                        break;
-                default:
-                        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-                        break;
-        }
+	switch (property_id) {
+		case PROP_TAG:
+			g_value_set_string (value, priv->tag);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
+	}
 }
 
 static void
 almanah_tag_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-        AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
+	AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
 
-        switch (property_id) {
-                case PROP_TAG:
+	switch (property_id) {
+		case PROP_TAG:
 			if (priv->tag)
 				g_free (priv->tag);
-                        priv->tag = g_strdup (g_value_get_string (value));
-                        if (PANGO_IS_LAYOUT (priv->layout)) {
-                                pango_layout_set_text (priv->layout, priv->tag, -1);
+			priv->tag = g_strdup (g_value_get_string (value));
+			if (PANGO_IS_LAYOUT (priv->layout)) {
+				pango_layout_set_text (priv->layout, priv->tag, -1);
 				gtk_widget_queue_resize (GTK_WIDGET (object));
 			}
-                        break;
-                default:
+			break;
+		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 			break;
 	}
@@ -265,7 +278,7 @@ almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event)
 gboolean
 almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 {
-        AlmanahTagPrivate *priv = ALMANAH_TAG (widget)->priv;
+	AlmanahTagPrivate *priv = ALMANAH_TAG (widget)->priv;
 	gint y_origin, allocated_height, width, height, middle_height, middle_padding_left, text_height, text_width;
 	cairo_pattern_t *fill_pattrn;
 
@@ -297,12 +310,12 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	cairo_close_path (cr);
 	/* gradient background */
 	fill_pattrn = cairo_pattern_create_linear (1, y_origin + 1, 2, y_origin + height - 1);
-	cairo_pattern_add_color_stop_rgb (fill_pattrn, 0,  
-					  priv->fill_a_color.red, 
+	cairo_pattern_add_color_stop_rgb (fill_pattrn, 0,
+					  priv->fill_a_color.red,
 					  priv->fill_a_color.green,
 					  priv->fill_a_color.blue);
-	cairo_pattern_add_color_stop_rgb (fill_pattrn, 1,  
-					  priv->fill_b_color.red, 
+	cairo_pattern_add_color_stop_rgb (fill_pattrn, 1,
+					  priv->fill_b_color.red,
 					  priv->fill_b_color.green,
 					  priv->fill_b_color.blue);
 	cairo_set_source (cr, fill_pattrn);
@@ -371,7 +384,7 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	cairo_line_to (cr, priv->close_x, y_origin + middle_height + (CLOSE_BUTTON / 2));
 	cairo_stroke (cr);
 
-        return FALSE;
+	return FALSE;
 }
 
 gboolean
@@ -394,9 +407,9 @@ almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_
 GtkWidget *
 almanah_tag_new (const gchar *tag)
 {
-        return GTK_WIDGET (g_object_new (ALMANAH_TYPE_TAG,
-                                         "tag", tag,
-                                         NULL));
+	return GTK_WIDGET (g_object_new (ALMANAH_TYPE_TAG,
+					 "tag", tag,
+					 NULL));
 }
 
 
