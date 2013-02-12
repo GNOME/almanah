@@ -18,9 +18,9 @@
  */
 
 #include "entry-tags-area.h"
+#include "entry.h"
 #include "tag.h"
 #include "tag-entry.h"
-#include "entry.h"
 #include "storage-manager.h"
 
 enum {
@@ -37,19 +37,18 @@ struct _AlmanahEntryTagsAreaPrivate {
 	AlmanahTagEntry *tag_entry;
 };
 
-static void almanah_entry_tags_area_get_property      (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
-static void almanah_entry_tags_area_set_property      (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
-static void almanah_entry_tags_area_finalize          (GObject *object);
-static void almanah_entry_tags_area_load_tags         (AlmanahEntryTagsArea *self);
-static void almanah_entry_tags_area_update            (AlmanahEntryTagsArea *self);
-static gint almanah_entry_tags_area_draw              (GtkWidget *widget, cairo_t *cr);
-static void almanah_entry_tags_area_add_tag                (AlmanahEntryTagsArea *self, const gchar *tag);
+static void almanah_entry_tags_area_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void almanah_entry_tags_area_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
+static void almanah_entry_tags_area_finalize     (GObject *object);
+static void almanah_entry_tags_area_load_tags    (AlmanahEntryTagsArea *self);
+static void almanah_entry_tags_area_update       (AlmanahEntryTagsArea *self);
+static gint almanah_entry_tags_area_draw         (GtkWidget *widget, cairo_t *cr);
+static void almanah_entry_tags_area_add_tag      (AlmanahEntryTagsArea *self, const gchar *tag);
 
 /* Signals */
-void tag_entry_activate_cb              (GtkEntry *entry, AlmanahEntryTagsArea *self);
-void entry_tags_area_remove_foreach_cb  (GtkWidget *tag_widget, AlmanahEntryTagsArea *self);
-void storage_manager_entry_tag_added_cb (AlmanahEntry *entry, gchar *tag,  AlmanahEntryTagsArea *self);
-static void tag_remove                  (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
+void        tag_entry_activate_cb              (GtkEntry *entry, AlmanahEntryTagsArea *self);
+void        entry_tags_area_remove_foreach_cb  (GtkWidget *tag_widget, AlmanahEntryTagsArea *self);
+static void tag_remove                         (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
 G_DEFINE_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, EGG_TYPE_WRAP_BOX)
 
@@ -108,6 +107,7 @@ almanah_entry_tags_area_finalize (GObject *object)
 
 	g_clear_object (&priv->entry);
 	g_clear_object (&priv->storage_manager);
+	g_clear_object (&priv->back_widget);
 
 	G_OBJECT_CLASS (almanah_entry_tags_area_parent_class)->finalize (object);
 }
@@ -189,9 +189,14 @@ almanah_entry_tags_area_draw (GtkWidget *widget, cairo_t *cr)
 {
 	gint width, height;
 
+	/* All GtkContainer objects don't draw anything, so just draw the background using cairo here */
+
 	width = gtk_widget_get_allocated_width (widget);
 	height = gtk_widget_get_allocated_height (widget);
 
+	/* Draw the background with white.
+	 * @TODO: use the widget default background color, so this color can be moved to the CSS
+	 */
 	cairo_set_source_rgb (cr, 1, 1, 1);
 	cairo_rectangle (cr, 0, 0, width, height);
 	cairo_fill (cr);
@@ -220,12 +225,12 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 
 	tag = g_strdup (gtk_entry_get_text (entry));
 	gtk_entry_set_text (entry, "");
-	/* Check fist if the tag as already added to the entry */
-	if (almanah_storage_manager_entry_check_tag (self->priv->storage_manager, self->priv->entry, tag) == FALSE) {
-		if (almanah_storage_manager_entry_add_tag (self->priv->storage_manager, self->priv->entry, tag)) {
-			almanah_entry_tags_area_add_tag (self, (const gchar*) tag);
-			gtk_widget_grab_focus (self->priv->back_widget);
-		}
+	if (almanah_storage_manager_entry_add_tag (self->priv->storage_manager, self->priv->entry, tag)) {
+		/* @TODO: turn this async waiting for the storage signal "tag-added" */
+		almanah_entry_tags_area_add_tag (self, (const gchar*) tag);
+		gtk_widget_grab_focus (self->priv->back_widget);
+	} else {
+		g_debug ("Can't add the tag");
 	}
 	g_free (tag);
 }
@@ -258,15 +263,6 @@ almanah_entry_tags_area_set_entry (AlmanahEntryTagsArea *entry_tags_area, Almana
 	g_value_unset (&entry_value);
 }
 
-void
-storage_manager_entry_tag_added_cb (AlmanahEntry *entry, gchar *tag, AlmanahEntryTagsArea *self)
-{
-	GtkWidget *tag_widget;
-
-	/* TODO: test if the priv->entry == entry */
-
-}
-
 static void
 tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self)
 {
@@ -279,7 +275,7 @@ tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self)
 }
 
 /**
- * TODO: Document
+ * @TODO: Document
  */
 void
 almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_tags_area, AlmanahStorageManager *storage_manager)
@@ -295,7 +291,7 @@ almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_tags_ar
 }
 
 /**
- * TODO: Document
+ * @TODO: Document
  */
 void
 almanah_entry_tags_area_set_back_widget (AlmanahEntryTagsArea *entry_tags_area, GtkWidget *back_widget)

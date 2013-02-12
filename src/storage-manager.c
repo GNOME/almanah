@@ -1337,17 +1337,15 @@ almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry
 	g_return_val_if_fail (ALMANAH_IS_ENTRY (entry), FALSE);
 	g_return_val_if_fail (g_utf8_strlen (tag, 1) == 1, FALSE);
 
-	/* This validations are required for DB integrity. Only saved entry
-	   must have tags */
-	almanah_entry_get_last_edited (entry, &entry_last_edited);
-	if (g_date_valid (&entry_last_edited) != TRUE) {
-		g_debug ("Entry don't saved into the storage");
-		return FALSE;
-	}
-
 	almanah_entry_get_date (entry, &entry_date);
 	if (g_date_valid (&entry_date) != TRUE) {
 		g_debug ("Invalid entry date");
+		return FALSE;
+	}
+
+	/* Don't duplicate tags */
+	if (almanah_storage_manager_entry_check_tag (self, entry, tag)) {
+		g_debug ("Duplicated tag now allowed");
 		return FALSE;
 	}
 
@@ -1361,7 +1359,8 @@ almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry
 	sqlite3_bind_int (statement, 1, g_date_get_year (&entry_date));
 	sqlite3_bind_int (statement, 2, g_date_get_month (&entry_date));
 	sqlite3_bind_int (statement, 3, g_date_get_day (&entry_date));
-	sqlite3_bind_text (statement, 4, tag, -1, SQLITE_STATIC); /* @TODO: STATIC or TRANSIENT */
+	/* @TODO: STATIC or TRANSIENT */
+	sqlite3_bind_text (statement, 4, tag, -1, SQLITE_STATIC);
 
 	if (sqlite3_step (statement) != SQLITE_DONE) {
 		sqlite3_finalize (statement);
