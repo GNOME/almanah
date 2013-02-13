@@ -181,6 +181,7 @@ almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 static void
 almanah_entry_tags_area_update (AlmanahEntryTagsArea *self)
 {
+	/* Update the tags area removing all tag widgets first */
 	gtk_container_foreach (GTK_CONTAINER (self), (GtkCallback) entry_tags_area_remove_foreach_cb, self);
 }
 
@@ -188,18 +189,15 @@ static gint
 almanah_entry_tags_area_draw (GtkWidget *widget, cairo_t *cr)
 {
 	gint width, height;
+	GtkStyleContext *context;
 
-	/* All GtkContainer objects don't draw anything, so just draw the background using cairo here */
+	/* All GtkContainer objects don't draw anything, so just draw the background using current style */
 
+	context = gtk_widget_get_style_context (widget);
 	width = gtk_widget_get_allocated_width (widget);
 	height = gtk_widget_get_allocated_height (widget);
 
-	/* Draw the background with white.
-	 * @TODO: use the widget default background color, so this color can be moved to the CSS
-	 */
-	cairo_set_source_rgb (cr, 1, 1, 1);
-	cairo_rectangle (cr, 0, 0, width, height);
-	cairo_fill (cr);
+	gtk_render_background (context, cr, 0, 0, width, height);
 
 	return GTK_WIDGET_CLASS (almanah_entry_tags_area_parent_class)->draw (widget, cr);
 }
@@ -238,12 +236,13 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 void
 entry_tags_area_remove_foreach_cb (GtkWidget *tag_widget, AlmanahEntryTagsArea *self)
 {
+	/* Remove all the tag widget */
 	if (ALMANAH_IS_TAG (tag_widget)) {
 		gtk_widget_destroy (tag_widget);
 		self->priv->tags_number--;
 	}
 
-	/* Show the tags for the entry */
+	/* Show the tags for the entry when no remains tag widgets */
 	if (self->priv->tags_number == 0) {
 		almanah_entry_tags_area_load_tags (self);
 	}

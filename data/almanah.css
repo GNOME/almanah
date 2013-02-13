@@ -28,8 +28,12 @@ AlmanahMainWindow GtkToolbar {
     border-bottom-width: 1px;
 }
 
-AlmanahEntryTagsArea * {
+AlmanahEntryTagsArea {
     background-color: #fff;
+}
+
+AlmanahEntryTagsArea:backdrop {
+    background-color: @theme_unfocused_base_color;
 }
 
 .almanah-mw-main-content GtkScrolledWindow {
@@ -38,6 +42,10 @@ AlmanahEntryTagsArea * {
     border-width: 0px;
     border-bottom-width: 1px;
     background-color: #fff;
+}
+
+.almanah-mw-main-content GtkScrolledWindow:backdrop {
+    background-color: @theme_unfocused_base_color;
 }
 
 AlmanahTagEntry {
@@ -51,8 +59,13 @@ AlmanahTagEntry {
    box-shadow: none;
    background-color: #fff;
    background-image: none;
+   transition: none;
 }
 
 AlmanahTagEntry:focused {
    color: @theme_text_color;
+}
+
+AlmanahTagEntry:backdrop {
+    background-color: @theme_unfocused_base_color;
 }
