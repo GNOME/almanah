@@ -95,6 +95,12 @@ gboolean *almanah_storage_manager_get_month_important_days (AlmanahStorageManage
 
 const gchar *almanah_storage_manager_get_filename (AlmanahStorageManager *self, gboolean plain);
 
+gboolean almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag);
+gboolean almanah_storage_manager_entry_remove_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag);
+GList *almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntry *entry);
+gboolean almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag);
+GList *almanah_storage_manager_get_tags (AlmanahStorageManager *self);
+
 G_END_DECLS
 
 #endif /* !ALMANAH_STORAGE_MANAGER_H */

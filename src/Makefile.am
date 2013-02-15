@@ -40,8 +40,18 @@ almanah_SOURCES = \
 	widgets/calendar-button.c		\
 	widgets/calendar-window.h		\
 	widgets/calendar-window.c		\
+	widgets/eggwrapbox.h			\
+	widgets/eggwrapbox.c			\
+	widgets/eggwrapbox-enums.h		\
+	widgets/eggwrapbox-enums.c		\
+	widgets/entry-tags-area.h		\
+	widgets/entry-tags-area.c		\
 	widgets/hyperlink-tag.c			\
-	widgets/hyperlink-tag.h
+	widgets/hyperlink-tag.h			\
+	widgets/tag.c				\
+	widgets/tag.h				\
+	widgets/tag-entry.c			\
+	widgets/tag-entry.h
 
 if HAVE_EVO
 almanah_SOURCES += \

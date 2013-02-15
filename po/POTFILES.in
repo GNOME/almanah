@@ -22,4 +22,5 @@ src/storage-manager.c
 src/widgets/calendar.c
 src/widgets/calendar-button.c
 src/widgets/calendar-window.c
+src/widgets/tag.c
 src/uri-entry-dialog.c
