@@ -5,14 +5,14 @@
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Mateusz Kacprzak <mateusz.kacprzak@yandex.ru>, 2011.
-# Piotr Drąg <piotrdrag@gmail.com>, 2012.
-# Aviary.pl <gnomepl@aviary.pl>, 2011-2012.
+# Piotr Drąg <piotrdrag@gmail.com>, 2012-2013.
+# Aviary.pl <gnomepl@aviary.pl>, 2011-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-22 01:31+0100\n"
-"PO-Revision-Date: 2012-11-22 01:32+0100\n"
+"POT-Creation-Date: 2013-02-15 13:51+0100\n"
+"PO-Revision-Date: 2013-02-15 13:52+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -24,8 +24,37 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "Wy_szukaj"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "_Preferencje"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "Zai_mportuj"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "Wy_eksportuj"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "Wy_drukuj pamiętnik"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "_O pamiętniku Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "Za_kończ"
+
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:129
-#: ../src/main-window.c:136
+#: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Pamiętnik Almanah"
 
@@ -34,39 +63,9 @@ msgid "Keep a personal diary"
 msgstr "Prowadzenie osobistego pamiętnika"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:258
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Pamiętnik"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
-msgid "Database encryption key ID"
-msgstr "Identyfikator klucza szyfrującego bazy danych"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
-msgid ""
-"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
-"been built with encryption support. Leave blank to disable database "
-"encryption."
-msgstr ""
-"Identyfikator klucza szyfrującego i deszyfrującego bazy danych, jeśli "
-"program Almanah został utworzony z obsługą szyfrowania. Pozostawienie "
-"pustego pola wyłączy szyfrowanie baz danych."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
-msgid "Spell checking language"
-msgstr "Język sprawdzania pisowni"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
-msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "Określa język, który będzie użyty do sprawdzania pisowni we wpisach."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
-msgid "Spell checking enabled?"
-msgstr "Sprawdzanie pisowni włączone?"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
-msgid "Whether spell checking of entries is enabled."
-msgstr "Określa, czy sprawdzanie pisowni we wpisach jest włączone."
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -125,114 +124,111 @@ msgid "Jump to the current date in the diary."
 msgstr "Przechodzi do bieżącej daty w pamiętniku."
 
 #: ../data/almanah.ui.h:14
-msgid "Font Style"
-msgstr "Styl czcionki"
-
-#: ../data/almanah.ui.h:15
-msgid "Change font style for selected text."
-msgstr "Zmienia styl czcionki dla zaznaczonego tekstu."
-
-#: ../data/almanah.ui.h:16
-msgid "_Font Style"
-msgstr "_Styl czcionki"
-
-#: ../data/almanah.ui.h:17
 msgid "Calendar"
 msgstr "Kalendarz"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:15
 msgid "Entry editing area"
 msgstr "Obszar modyfikowania wpisów"
 
-#: ../data/almanah.ui.h:19
+#: ../data/almanah.ui.h:16
 msgid "Past events"
 msgstr "Przeszłe wydarzenia"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:17
 msgid "Past Event List"
 msgstr "Lista przeszłych wydarzeń"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:18
 msgid "Search entry"
 msgstr "Przeszukaj wpis"
 
-#: ../data/almanah.ui.h:22 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Wyszukaj"
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:20
 msgid "Result List"
 msgstr "Lista wyników"
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:21
 msgid "View Entry"
 msgstr "Wyświetl wpis"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:22
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "np. \"14/03/2009\" lub \"14 marca 2009\"."
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:23
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "np. \"http://google.pl/\" lub \"file:///home/ja/Zdjęcia/zdjęcie.jpg\"."
 
 # pozycja na liście wyników importowania
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:24
 msgid "Successful Entries"
 msgstr "Pomyślnie zaimportowane wpisy"
 
 # pozycja na liście wyników importowania
-#: ../data/almanah.ui.h:28
+#: ../data/almanah.ui.h:25
 msgid "Merged Entries"
 msgstr "Połączone wpisy"
 
 # pozycja na liście wyników importowania
-#: ../data/almanah.ui.h:29
+#: ../data/almanah.ui.h:26
 msgid "Failed Entries"
 msgstr "Nie powiodło się importowanie wpisów"
 
-#: ../data/almanah.ui.h:30
+#: ../data/almanah.ui.h:27
 msgid "Import Results List"
 msgstr "Lista wyników importowania"
 
-#: ../data/almanah-app-menu.ui.h:1
-msgid "_Search"
-msgstr "Wy_szukaj"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "Identyfikator klucza szyfrującego bazy danych"
 
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "_Preferencje"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Identyfikator klucza szyfrującego i deszyfrującego bazy danych, jeśli "
+"program Almanah został utworzony z obsługą szyfrowania. Pozostawienie "
+"pustego pola wyłączy szyfrowanie baz danych."
 
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "Zai_mportuj"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Język sprawdzania pisowni"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "Wy_eksportuj"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Określa język, który będzie użyty do sprawdzania pisowni we wpisach."
 
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "Wy_drukuj pamiętnik"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr "Sprawdzanie pisowni włączone?"
 
-#: ../data/almanah-app-menu.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "_O pamiętniku Almanah"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Określa, czy sprawdzanie pisowni we wpisach jest włączone."
 
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "Za_kończ"
-
-#: ../src/application.c:241
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Błąd podczas otwierania bazy danych"
 
-#: ../src/application.c:302
+#. Error loading the CSS
+#: ../src/application.c:272
+#, c-format
+msgid ""
+"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
+msgstr ""
+"Nie można wczytać pliku CSS \"%s\". Interfejs może wyglądać niepoprawnie"
+
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Włącza tryb debugowania"
 
-#: ../src/application.c:319
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -240,24 +236,24 @@ msgstr ""
 "otwarta w danym momencie."
 
 #. Print an error
-#: ../src/application.c:330
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opcje wiersza poleceń nie mogły zostać przetworzone: %s\n"
 
-#: ../src/application.c:349
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Błąd podczas szyfrowania bazy danych"
 
-#: ../src/application.c:395 ../src/date-entry-dialog.c:129
+#: ../src/application.c:409 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:198 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\""
 
-#: ../src/application.c:518
+#: ../src/application.c:532
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -269,7 +265,7 @@ msgstr ""
 "przez Fundację Wolnego Oprogramowania (Free Software Foundation) - według "
 "wersji trzeciej tej Licencji lub którejś z późniejszych wersji."
 
-#: ../src/application.c:522
+#: ../src/application.c:536
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -281,7 +277,7 @@ msgstr ""
 "HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
 "bliższych informacji należy zapoznać się z Powszechną Licencją Publiczną GNU."
 
-#: ../src/application.c:526
+#: ../src/application.c:540
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -290,12 +286,12 @@ msgstr ""
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
 "- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:541
+#: ../src/application.c:555
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Pomocny zarządca pamiętnika, przechowuje %u wpisów."
 
-#: ../src/application.c:545
+#: ../src/application.c:559
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -304,14 +300,14 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:553
+#: ../src/application.c:567
 msgid "translator-credits"
 msgstr ""
 "Mateusz Kacprzak <mateusz.kacprzak@yandex.ru>, 2011\n"
-"Piotr Drąg <piotrdrag@gmail.com>, 2012\n"
-"Aviary.pl <gnomepl@aviary.pl>, 2011-2012"
+"Piotr Drąg <piotrdrag@gmail.com>, 2012-2013\n"
+"Aviary.pl <gnomepl@aviary.pl>, 2011-2013"
 
-#: ../src/application.c:557
+#: ../src/application.c:571
 msgid "Almanah Website"
 msgstr "Witryna programu Almanah"
 
@@ -422,9 +418,9 @@ msgstr "Wyniki importowania"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:568
-#: ../src/main-window.c:598 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:327
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
+#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -476,37 +472,37 @@ msgstr ""
 "Wpis zaimportowany z \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:572
+#: ../src/main-window.c:570
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Na pewno zmienić ten wpis pamiętnika z %s?"
 
-#: ../src/main-window.c:602
+#: ../src/main-window.c:600
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Na pewno usunąć ten wpis pamiętnika z %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:711
+#: ../src/main-window.c:709
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Nieznana lub powtarzająca się etykieta \"%s\" we wpisie. Ignorowanie."
 
-#: ../src/main-window.c:910
+#: ../src/main-window.c:908
 msgid "Error opening URI"
 msgstr "Błąd podczas otwierania adresu URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1177
+#: ../src/main-window.c:1082
 #, c-format
 msgid "%s @ %s"
 msgstr "%s o %s"
 
-#: ../src/main-window.c:1256
+#: ../src/main-window.c:1161
 msgid "Entry content could not be loaded"
 msgstr "Nie można wczytać treści wpisu"
 
-#: ../src/main-window.c:1380
+#: ../src/main-window.c:1326
 msgid "Spelling checker could not be initialized"
 msgstr "Nie można uruchomić sprawdzania pisowni"
 
@@ -584,32 +580,32 @@ msgstr[2] "Odnaleziono %d wpisów:"
 msgid "Searching…"
 msgstr "Wyszukiwanie…"
 
-#: ../src/storage-manager.c:259
+#: ../src/storage-manager.c:275
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "Biblioteka GPGME nie jest w wersji co najmniej %s"
 
-#: ../src/storage-manager.c:268
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "Biblioteka GPGME nie obsługuje standardu OpenPGP: %s"
 
-#: ../src/storage-manager.c:277
+#: ../src/storage-manager.c:293
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Błąd podczas tworzenia kontekstu szyfrowania: %s"
 
-#: ../src/storage-manager.c:306
+#: ../src/storage-manager.c:322
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Błąd podczas otwierania zaszyfrowanego pliku bazy danych \"%s\": %s"
 
-#: ../src/storage-manager.c:325
+#: ../src/storage-manager.c:341
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Błąd podczas otwierania pliku bazy danych \"%s\": %s"
 
-#: ../src/storage-manager.c:373
+#: ../src/storage-manager.c:389
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -618,27 +614,27 @@ msgstr ""
 "pozostawiono jako kopię zapasową."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:376
+#: ../src/storage-manager.c:392
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Nie można usunąć pliku bazy danych \"%s\"."
 
-#: ../src/storage-manager.c:417
+#: ../src/storage-manager.c:433
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Błąd podczas deszyfrowania bazy danych: %s"
 
-#: ../src/storage-manager.c:451
+#: ../src/storage-manager.c:467
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Błąd podczas pobierania klucza szyfrującego: %s"
 
-#: ../src/storage-manager.c:472
+#: ../src/storage-manager.c:488
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Błąd podczas szyfrowania bazy danych: %s"
 
-#: ../src/storage-manager.c:574
+#: ../src/storage-manager.c:590
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -647,7 +643,7 @@ msgstr ""
 "Nie można otworzyć bazy danych \"%s\". Biblioteka SQLite wysłała następujący "
 "komunikat o błędzie: %s"
 
-#: ../src/storage-manager.c:651
+#: ../src/storage-manager.c:667
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -655,38 +651,35 @@ msgstr ""
 "Nie można wykonać zapytania \"%s\". Biblioteka SQLite wysłała następujący "
 "komunikat o błędzie: %s"
 
-#: ../src/storage-manager.c:954
+#: ../src/storage-manager.c:970
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Błąd podczas rozszeregowywania wpisu do bufora podczas wyszukiwania."
+
+# belka tytułowa okna
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Wprowadzanie adresu URI"
+
+#: ../src/widgets/calendar-button.c:140
+#, c-format
+msgid "UI file \"%s\" could not be loaded: %s"
+msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\": %s"
+
+#: ../src/widgets/calendar-button.c:150
+msgid "Can't load calendar window object from UI file"
+msgstr ""
+"Nie można wczytać obiektu okna kalendarza z pliku interfejsu użytkownika"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Ważne"
 
-#. Error loading the CSS
-#: ../src/widgets/calendar-button.c:134 ../src/widgets/calendar-window.c:63
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
-msgstr ""
-"Nie można wczytać pliku CSS \"%s\". Interfejs może wyglądać niepoprawnie"
-
-#: ../src/widgets/calendar-button.c:158
-#, c-format
-msgid "UI file \"%s\" could not be loaded: %s"
-msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\": %s"
-
-#: ../src/widgets/calendar-button.c:168
-msgid "Can't load calendar window object from UI file"
-msgstr ""
-"Nie można wczytać obiektu okna kalendarza z pliku interfejsu użytkownika"
-
-#: ../src/widgets/calendar-window.c:100
+#: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Nieznane urządzenie wejściowe"
 
-# belka tytułowa okna
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Wprowadzanie adresu URI"
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: ../src/widgets/tag.c:400
+msgid "Remove tag"
+msgstr "Usuń etykietę"
