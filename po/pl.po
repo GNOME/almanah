@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-15 13:51+0100\n"
-"PO-Revision-Date: 2013-02-15 13:52+0100\n"
+"POT-Creation-Date: 2013-02-16 20:37+0100\n"
+"PO-Revision-Date: 2013-02-16 20:38+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -326,7 +326,7 @@ msgstr "Przypomnienie kalendarza"
 
 #: ../src/events/calendar-appointment.c:52
 msgid "An appointment on an Evolution calendar."
-msgstr "Przypomnienie w kalendarzu programu Evolution"
+msgstr "Przypomnienie w kalendarzu programu Evolution."
 
 #. Translators: This is a time string with the format hh:mm
 #: ../src/events/calendar-appointment.c:89 ../src/events/calendar-task.c:90
@@ -344,7 +344,7 @@ msgstr "Zadanie kalendarza"
 
 #: ../src/events/calendar-task.c:52
 msgid "A task on an Evolution calendar."
-msgstr "Zadanie w kalendarzu programu Evolution"
+msgstr "Zadanie w kalendarzu programu Evolution."
 
 #: ../src/export-operation.c:45 ../src/import-operation.c:45
 msgid "Text Files"
@@ -377,11 +377,11 @@ msgstr ""
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
-msgstr "_Tryb importu:"
+msgstr "_Tryb importu: "
 
 #: ../src/import-export-dialog.c:202
 msgid "Export _mode: "
-msgstr "_Tryb eksportu:"
+msgstr "_Tryb eksportu: "
 
 #. Set the window title
 #: ../src/import-export-dialog.c:205
@@ -513,7 +513,7 @@ msgstr "Preferencje programu Almanah"
 #. Grab our child widgets
 #: ../src/preferences-dialog.c:217
 msgid "Encryption key: "
-msgstr "Klucz szyfrowania:"
+msgstr "Klucz szyfrowania: "
 
 #: ../src/preferences-dialog.c:222
 msgid "None (don't encrypt)"
