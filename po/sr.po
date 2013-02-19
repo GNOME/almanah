@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almana"
 "h&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-26 22:18+0000\n"
-"PO-Revision-Date: 2013-01-04 21:48+0200\n"
+"POT-Creation-Date: 2013-02-15 10:07+0000\n"
+"PO-Revision-Date: 2013-02-19 20:38+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:129
-#: ../src/main-window.c:133
+#: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Дневник Алманах"
 
@@ -177,7 +177,6 @@ msgid "Import Results List"
 msgstr "Списак резултата увожења"
 
 #: ../data/almanah-app-menu.ui.h:1
-#| msgid "Search"
 msgid "_Search"
 msgstr "_Тражи"
 
@@ -199,7 +198,6 @@ msgid "_Print diary"
 msgstr "_Штампај дневник"
 
 #: ../data/almanah-app-menu.ui.h:6
-#| msgid "Almanah Diary"
 msgid "_About Almanah Diary"
 msgstr "_О дневнику Алманах"
 
@@ -214,9 +212,6 @@ msgstr "Грешка приликом отварања базе података
 #. Error loading the CSS
 #: ../src/application.c:272
 #, c-format
-#| msgid ""
-#| "Couldn't load the CSS file '%s' for calendar window. The interface might "
-#| "not be styled correctly"
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr ""
@@ -246,7 +241,7 @@ msgstr "Грешка приликом шифровања базе податак
 
 #: ../src/application.c:409 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:191 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -409,8 +404,8 @@ msgstr "Резултати увожења"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:555
-#: ../src/main-window.c:585 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
+#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
@@ -460,37 +455,37 @@ msgstr ""
 "Унос је увежен из „%s“:\n"
 "\n"
 
-#: ../src/main-window.c:559
+#: ../src/main-window.c:570
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Да ли сте сигурни да желите да уредите овај унос дневника за „%s“?"
 
-#: ../src/main-window.c:589
+#: ../src/main-window.c:600
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Да ли сте сигурни да желите да обришете овај унос дневника за „%s“?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:698
+#: ../src/main-window.c:709
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Непозната или дуплирана ознака текста „%s“ у уносу. Занемарујем."
 
-#: ../src/main-window.c:897
+#: ../src/main-window.c:908
 msgid "Error opening URI"
 msgstr "Грешка приликом отварања адресе"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1071
+#: ../src/main-window.c:1082
 #, c-format
 msgid "%s @ %s"
 msgstr "%s у %s"
 
-#: ../src/main-window.c:1150
+#: ../src/main-window.c:1161
 msgid "Entry content could not be loaded"
 msgstr "Садржај уноса не може бити учитан"
 
-#: ../src/main-window.c:1312
+#: ../src/main-window.c:1326
 msgid "Spelling checker could not be initialized"
 msgstr "Провера писања не може бити започета"
 
@@ -569,32 +564,32 @@ msgstr[3] "Пронашао сам једну ставку:"
 msgid "Searching…"
 msgstr "Тражим…"
 
-#: ../src/storage-manager.c:259
+#: ../src/storage-manager.c:275
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "ГПГМЕ није најновије издање %s"
 
-#: ../src/storage-manager.c:268
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "ГПГМЕ не подржава ОпенПГП: %s"
 
-#: ../src/storage-manager.c:277
+#: ../src/storage-manager.c:293
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Грешка приликом стварања контекста шифровања: %s"
 
-#: ../src/storage-manager.c:306
+#: ../src/storage-manager.c:322
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Грешка приликом отварања шифроване датотеке базе података „%s“: %s"
 
-#: ../src/storage-manager.c:325
+#: ../src/storage-manager.c:341
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Грешка приликом отварања обичне датотеке базе података „%s“: %s"
 
-#: ../src/storage-manager.c:373
+#: ../src/storage-manager.c:389
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -603,27 +598,27 @@ msgstr ""
 "обрисана приликом прављења резервне копије."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:376
+#: ../src/storage-manager.c:392
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Не могу да обришем датотеку обичне базе података „%s“."
 
-#: ../src/storage-manager.c:417
+#: ../src/storage-manager.c:433
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Грешка приликом дешифровања базе података: %s"
 
-#: ../src/storage-manager.c:451
+#: ../src/storage-manager.c:467
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Грешка приликом набављања кључа за шифровање: %s"
 
-#: ../src/storage-manager.c:472
+#: ../src/storage-manager.c:488
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Грешка приликом шифровања базе података: %s"
 
-#: ../src/storage-manager.c:574
+#: ../src/storage-manager.c:590
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -632,7 +627,7 @@ msgstr ""
 "Не могу да отворим базу података „%s“. СКуЛајт је обезбедио следећу поруку о "
 "грешци: %s"
 
-#: ../src/storage-manager.c:651
+#: ../src/storage-manager.c:667
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -640,7 +635,7 @@ msgstr ""
 "Не могу да покренем упит „%s“. СКуЛајт је обезбедио следећу поруку о грешци: "
 "%s"
 
-#: ../src/storage-manager.c:954
+#: ../src/storage-manager.c:970
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Грешка у рашчлањивању уноса у баферу током претраживања."
 
@@ -663,33 +658,11 @@ msgstr ""
 msgid "Unknown input device"
 msgstr "Непознат улазни уређај"
 
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: ../src/widgets/tag.c:400
+msgid "Remove tag"
+msgstr "Уклоните ознаку"
+
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Унесите адресу"
-
-#~ msgid "_File"
-#~ msgstr "_Датотека"
-
-#~ msgid "_Import…"
-#~ msgstr "_Увези…"
-
-#~ msgid "_Export…"
-#~ msgstr "_Извези…"
-
-#~ msgid "_Print…"
-#~ msgstr "_Штампај…"
-
-#~ msgid "_Edit"
-#~ msgstr "_Уређивање"
-
-#~ msgid "_Search…"
-#~ msgstr "_Потражи…"
-
-#~ msgid "Font Style"
-#~ msgstr "Изглед писма"
-
-#~ msgid "Change font style for selected text."
-#~ msgstr "Измените стил писма за изабрани текст."
-
-#~ msgid "_Font Style"
-#~ msgstr "_Изглед писма"
