@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-09 01:31+0000\n"
-"PO-Revision-Date: 2013-01-30 09:27+0400\n"
+"POT-Creation-Date: 2013-02-15 12:50+0000\n"
+"PO-Revision-Date: 2013-02-20 00:24+0400\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -24,49 +24,48 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Poedit 1.5.4\n"
 
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "И_скать"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "На_стройки"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Импорт"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Экспортировать"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "Рас_печатать дневник"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "_О дневнике Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "В_ыйти"
+
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:129
-#: ../src/main-window.c:133
+#: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Дневник Almanah"
 
 #: ../data/almanah.desktop.in.h:2
 msgid "Keep a personal diary"
-msgstr "Ведение личного дневника"
+msgstr "Вести личный дневник"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
 #: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Дневник"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
-msgid "Database encryption key ID"
-msgstr "Идентификатор ключа шифрования базы данных"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
-msgid ""
-"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
-"been built with encryption support. Leave blank to disable database "
-"encryption."
-msgstr ""
-"Идентификатор ключа, используемого для шифрования базы данных, если Almanah "
-"был создан с поддержкой шифрования. Оставьте поля пустыми, чтобы выключить "
-"шифрование."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
-msgid "Spell checking language"
-msgstr "Язык проверки орфографии"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
-msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "Определение языка для проверки орфографии записи."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
-msgid "Spell checking enabled?"
-msgstr "Включить проверку орфографии?"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
-msgid "Whether spell checking of entries is enabled."
-msgstr "Включена ли проверка орфографии для записей."
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -157,7 +156,7 @@ msgstr "Просмотр записи"
 
 #: ../data/almanah.ui.h:22
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "напр., «14/03/2009» или «14 марта 2009»."
+msgstr "например, «14/03/2009» или «14 марта 2009»."
 
 #: ../data/almanah.ui.h:23
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
@@ -179,34 +178,35 @@ msgstr "Неудачные записи"
 msgid "Import Results List"
 msgstr "Импортировать список результатов"
 
-#: ../data/almanah-app-menu.ui.h:1
-msgid "_Search"
-msgstr "И_скать"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "Идентификатор ключа шифрования базы данных"
 
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "_Параметры"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Идентификатор ключа, используемого для шифрования базы данных, если Almanah "
+"был создан с поддержкой шифрования. Оставьте поля пустыми, чтобы выключить "
+"шифрование."
 
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Импортировать"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Язык проверки орфографии"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Экспортировать"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Определение языка для проверки орфографии записи."
 
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "_Печать"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr "Включить проверку орфографии?"
 
-#: ../data/almanah-app-menu.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "_О программе"
-
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "В_ыйти"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Включена ли проверка орфографии для записей."
 
 #: ../src/application.c:243
 msgid "Error opening database"
@@ -243,7 +243,7 @@ msgstr "Ошибка при шифровании базы данных"
 
 #: ../src/application.c:409 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:191 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -408,8 +408,8 @@ msgstr "Импортировать результы"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:555
-#: ../src/main-window.c:585 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
+#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
@@ -459,43 +459,43 @@ msgstr ""
 "Запись импортирована из «%s»:\n"
 "\n"
 
-#: ../src/main-window.c:559
+#: ../src/main-window.c:570
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Действительно хотите изменить эту запись в дневнике для %s?"
 
-#: ../src/main-window.c:589
+#: ../src/main-window.c:600
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Действительно хотите удалить эту запись в дневнике для %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:698
+#: ../src/main-window.c:709
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Неизвестный или дублированный текстовый тег «%s» в записи. Пропуск."
 
-#: ../src/main-window.c:897
+#: ../src/main-window.c:908
 msgid "Error opening URI"
 msgstr "Ошибка при открытии URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1071
+#: ../src/main-window.c:1082
 #, c-format
 msgid "%s @ %s"
 msgstr "%s в %s"
 
-#: ../src/main-window.c:1150
+#: ../src/main-window.c:1161
 msgid "Entry content could not be loaded"
 msgstr "Не удалось загрузить содержимое записи"
 
-#: ../src/main-window.c:1312
+#: ../src/main-window.c:1326
 msgid "Spelling checker could not be initialized"
 msgstr "Не удалось инициализировать модуль проверки орфографии"
 
 #: ../src/preferences-dialog.c:91
 msgid "Almanah Preferences"
-msgstr "Параметры Almanah"
+msgstr "Настройки Almanah"
 
 #. Grab our child widgets
 #: ../src/preferences-dialog.c:217
@@ -567,32 +567,32 @@ msgstr[2] "Найдено %d записей:"
 msgid "Searching…"
 msgstr "Поиск…"
 
-#: ../src/storage-manager.c:259
+#: ../src/storage-manager.c:275
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME версии не %s"
 
-#: ../src/storage-manager.c:268
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME не поддерживает OpenPGP: %s"
 
-#: ../src/storage-manager.c:277
+#: ../src/storage-manager.c:293
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Ошибка при создании контекста шифра: %s"
 
-#: ../src/storage-manager.c:306
+#: ../src/storage-manager.c:322
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Ошибка при открытии файла шифрованной базы данных «%s»: %s"
 
-#: ../src/storage-manager.c:325
+#: ../src/storage-manager.c:341
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Ошибка при открытии файла незашифрованной базы данных «%s»: %s"
 
-#: ../src/storage-manager.c:373
+#: ../src/storage-manager.c:389
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -601,47 +601,46 @@ msgstr ""
 "резервной копией."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:376
+#: ../src/storage-manager.c:392
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Не удалось удалить файл незашифрованной базы данных «%s»."
 
-#: ../src/storage-manager.c:417
+#: ../src/storage-manager.c:433
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Ошибка при расшифровке базы данных: %s"
 
-#: ../src/storage-manager.c:451
+#: ../src/storage-manager.c:467
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Ошибка при получении ключа шифрования: %s"
 
-#: ../src/storage-manager.c:472
+#: ../src/storage-manager.c:488
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Ошибка при шифровании базы данных: %s"
 
-#: ../src/storage-manager.c:574
+#: ../src/storage-manager.c:590
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr "Не удалось открыть базу данных «%s». SQLite выдал следующую ошибку: %s"
 
-#: ../src/storage-manager.c:651
+#: ../src/storage-manager.c:667
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr "Не удалось сделать запрос «%s». SQLite выдал следующую ошибку: %s"
 
-#: ../src/storage-manager.c:954
+#: ../src/storage-manager.c:970
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Ошибка при десериализации записи в буфер во время поиска."
 
-#. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:176
-msgid "Important!"
-msgstr "Важное!"
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Введите URI"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
@@ -654,13 +653,19 @@ msgstr ""
 "Не удалось загрузить объект окна календаря из файла пользовательского "
 "интерфейса"
 
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Важное!"
+
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Неизвестное устройство ввода"
 
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Введите URI"
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: ../src/widgets/tag.c:400
+msgid "Remove tag"
+msgstr "Удалить метку"
 
 #~ msgid "_File"
 #~ msgstr "_Файл"
