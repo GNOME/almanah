@@ -939,9 +939,11 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 		/* Prepare the statement. */
 		if (sqlite3_prepare_v2 (self->priv->connection,
-		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version FROM entries "
-		                        "ORDER BY year DESC, month DESC, day DESC", -1,
-		                        (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
+					"SELECT e.content, e.is_important, e.day, e.month, e.year, e.edited_day, e.edited_month, e.edited_year, e.version, GROUP_CONCAT(et.tag) AS tags FROM entries AS e "
+					"LEFT JOIN entry_tag AS et ON (e.day=et.day AND e.month=et.month AND e.year=et.year) "
+					"GROUP BY e.year, e.month, e.day "
+					"ORDER BY e.year DESC, e.month DESC, e.day DESC", -1,
+					(sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
 			return NULL;
 		}
 
@@ -961,6 +963,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 		case SQLITE_ROW: {
 			GtkTextIter text_iter;
 			AlmanahEntry *entry = build_entry_from_statement (statement);
+			const gchar *tags = sqlite3_column_text (statement, 9);
 
 			/* Deserialise the entry into our buffer */
 			gtk_text_buffer_set_text (text_buffer, "", 0);
@@ -977,6 +980,9 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 			                                  GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY | GTK_TEXT_SEARCH_CASE_INSENSITIVE,
 			                                  NULL, NULL, NULL) == TRUE) {
 				/* A match was found! */
+				return entry;
+			} else if (tags != NULL && (strstr (tags, search_string) != NULL)) {
+				/* A match in an entry tag */
 				return entry;
 			}
 
