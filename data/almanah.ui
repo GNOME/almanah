@@ -255,7 +255,6 @@
 												<property name="can-focus">True</property>
 												<property name="has-focus">True</property>
 												<property name="wrap-mode">GTK_WRAP_WORD</property>
-												<property name="margin_top">6</property>
 												<property name="left-margin">10</property>
 												<property name="right-margin">10</property>
 												<child internal-child="accessible">

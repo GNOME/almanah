@@ -1,3 +1,11 @@
+AlmanahMainWindow GtkToolbar {
+    border-style: solid;
+    border-radius: 0px;
+    border-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+}
+
 AlmanahCalendarButton:active {
     background-image: none;
     background-color: @menu_bg_color;
@@ -20,31 +28,11 @@ AlmanahCalendarWindow {
     background-color: @menu_bg_color;
 }
 
-AlmanahMainWindow GtkToolbar {
-    border-style: solid;
-    border-radius: 0px;
-    border-width: 0px;
-    border-top-width: 0px;
-    border-bottom-width: 1px;
-}
-
 AlmanahEntryTagsArea {
     background-color: #fff;
 }
 
 AlmanahEntryTagsArea:backdrop {
-    background-color: @theme_unfocused_base_color;
-}
-
-.almanah-mw-main-content GtkScrolledWindow {
-    border-style: solid;
-    border-radius: 0px;
-    border-width: 0px;
-    border-bottom-width: 1px;
-    background-color: #fff;
-}
-
-.almanah-mw-main-content GtkScrolledWindow:backdrop {
     background-color: @theme_unfocused_base_color;
 }
 
@@ -67,5 +55,18 @@ AlmanahTagEntry:focused {
 }
 
 AlmanahTagEntry:backdrop {
+    background-color: @theme_unfocused_base_color;
+}
+
+.almanah-mw-main-content GtkScrolledWindow {
+    border-style: solid;
+    border-radius: 0px;
+    border-width: 0px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    background-color: #fff;
+}
+
+.almanah-mw-main-content GtkScrolledWindow:backdrop {
     background-color: @theme_unfocused_base_color;
 }
