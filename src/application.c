@@ -36,7 +36,7 @@ static void set_property (GObject *object, guint property_id, const GValue *valu
 static void startup (GApplication *application);
 static void activate (GApplication *application);
 static gint handle_command_line (GApplication *application, GApplicationCommandLine *command_line);
-static void quit_main_loop (GApplication *application);
+static void window_removed (GtkApplication *application, GtkWindow *window);
 
 struct _AlmanahApplicationPrivate {
 	gboolean debug;
@@ -59,6 +59,7 @@ almanah_application_class_init (AlmanahApplicationClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	GApplicationClass *gapplication_class = G_APPLICATION_CLASS (klass);
+	GtkApplicationClass *gtkapplication_class = GTK_APPLICATION_CLASS (klass);
 
 	g_type_class_add_private (klass, sizeof (AlmanahApplicationPrivate));
 
@@ -70,7 +71,8 @@ almanah_application_class_init (AlmanahApplicationClass *klass)
 	gapplication_class->startup = startup;
 	gapplication_class->activate = activate;
 	gapplication_class->command_line = handle_command_line;
-	gapplication_class->quit_mainloop = quit_main_loop;
+
+	gtkapplication_class->window_removed = window_removed;
 
 	g_object_class_install_property (gobject_class, PROP_DEBUG,
 	                                 g_param_spec_boolean ("debug",
@@ -293,7 +295,7 @@ handle_command_line (GApplication *application, GApplicationCommandLine *command
 }
 
 static void
-storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme_error_message, const gchar *warning_message, GApplication *application)
+storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme_error_message, const gchar *warning_message, GtkApplication *application)
 {
 	if (gpgme_error_message != NULL || warning_message != NULL) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -310,21 +312,28 @@ storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme
 		gtk_widget_destroy (dialog);
 	}
 
-	/* Chain up to the parent class */
-	G_APPLICATION_CLASS (almanah_application_parent_class)->quit_mainloop (application);
+	/* Allow the end of the applaction */
+	g_application_release (G_APPLICATION (application));
 }
 
 static void
-quit_main_loop (GApplication *application)
+window_removed (GtkApplication *application, GtkWindow *window)
 {
-	AlmanahApplicationPrivate *priv = ALMANAH_APPLICATION (application)->priv;
+	/* This would normally result in the end of the application, but we need to close the database connection first
+	   to prevent an unencrypted database in the filesystem, and we don't want a bug like that.
+	   So, we append a reference to the application when the user close the main window. When the application disconnect
+	   from the database, allowing the encryption if necessary, we remove this reference with g_application_release.
+	   See: https://bugzilla.gnome.org/show_bug.cgi?id=695117 */
+	if (ALMANAH_IS_MAIN_WINDOW (window)) {
+		AlmanahApplicationPrivate *priv = ALMANAH_APPLICATION (application)->priv;
 
-	/* This would normally result in gtk_main_quit() being called, but we need to close the database connection first. */
-	g_signal_connect (priv->storage_manager, "disconnected", (GCallback) storage_manager_disconnected_cb, application);
-	almanah_storage_manager_disconnect (priv->storage_manager, NULL);
+		g_application_hold (G_APPLICATION (application));
 
-	/* Quitting is actually done in storage_manager_disconnected_cb, which is called once
-	 * the storage manager has encrypted the DB and disconnected from it. */
+		g_signal_connect (priv->storage_manager, "disconnected", (GCallback) storage_manager_disconnected_cb, application);
+		almanah_storage_manager_disconnect (priv->storage_manager, NULL);
+	}
+
+	GTK_APPLICATION_CLASS (almanah_application_parent_class)->window_removed (application, window);
 }
 
 AlmanahApplication *
