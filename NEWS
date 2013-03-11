@@ -29,6 +29,12 @@ Update translations:
 * sl (Andrej Žnidaršič and Matej Urbančič)
 * sr (Мирослав Николић)
 
+Overview of changes from Almanah 0.10.0 to Almanah 0.10.1
+========================================================
+
+Bug fixed:
+* Bug 695117 - Almanah doesn't encrypt the database when the application close (see https://bugzilla.gnome.org/show_bug.cgi?id=695117)
+
 Overview of changes from Almanah 0.9.0 to Almanah 0.10.0
 ========================================================
 
