@@ -4,14 +4,14 @@
 #
 # György Balló <ballogy at freestart dot hu>, 2011.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2011.
-# Balázs Úr <urbalazs at gmail dot com>, 2011, 2012.
+# Balázs Úr <urbalazs at gmail dot com>, 2011, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-26 22:18+0000\n"
-"PO-Revision-Date: 2012-12-26 16:49+0100\n"
+"POT-Creation-Date: 2013-02-15 10:07+0000\n"
+"PO-Revision-Date: 2013-03-16 19:56+0100\n"
 "Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:129
-#: ../src/main-window.c:133
+#: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Almanah napló"
 
@@ -130,7 +130,6 @@ msgid "Entry editing area"
 msgstr "Bejegyzésszerkesztési terület"
 
 #: ../data/almanah.ui.h:16
-#| msgid "Past Events"
 msgid "Past events"
 msgstr "Legutóbbi események"
 
@@ -179,7 +178,6 @@ msgid "Import Results List"
 msgstr "Eredmények listájának importálása"
 
 #: ../data/almanah-app-menu.ui.h:1
-#| msgid "Search"
 msgid "_Search"
 msgstr "_Keresés"
 
@@ -201,7 +199,6 @@ msgid "_Print diary"
 msgstr "_Napló nyomtatása"
 
 #: ../data/almanah-app-menu.ui.h:6
-#| msgid "Almanah Diary"
 msgid "_About Almanah Diary"
 msgstr "Az Almanah napló né_vjegye"
 
@@ -219,7 +216,8 @@ msgstr "Hiba történt az adatbázis megnyitásakor"
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr ""
-"Nem tölthető be a CSS fájl: „%s”. A felület valószínűleg nem megfelelő stílusú"
+"Nem tölthető be a CSS fájl: „%s”. A felület valószínűleg nem megfelelő "
+"stílusú"
 
 #: ../src/application.c:316
 msgid "Enable debug mode"
@@ -243,7 +241,7 @@ msgstr "Hiba az adatbázis titkosításakor"
 
 #: ../src/application.c:409 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:191 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -407,8 +405,8 @@ msgstr "Importálás eredménye"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:555
-#: ../src/main-window.c:585 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
+#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%Y. %B %e. %A"
@@ -459,39 +457,39 @@ msgstr ""
 "Bejegyzés importálva innen: „%s”, tartalma:\n"
 "\n"
 
-#: ../src/main-window.c:559
+#: ../src/main-window.c:570
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Biztosan szeretné szerkeszteni ezt a naplóbejegyzést ehhez: %s?"
 
-#: ../src/main-window.c:589
+#: ../src/main-window.c:600
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Biztosan szeretné törölni ezt a naplóbejegyzést ehhez: %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:698
+#: ../src/main-window.c:709
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Ismeretlen vagy kettőzött szövegcímke a bejegyzésben: „%s”. Figyelmen kívül "
 "hagyva."
 
-#: ../src/main-window.c:897
+#: ../src/main-window.c:908
 msgid "Error opening URI"
 msgstr "Hiba az URI megnyitásakor"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1071
+#: ../src/main-window.c:1082
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1150
+#: ../src/main-window.c:1161
 msgid "Entry content could not be loaded"
 msgstr "A bejegyzés tartalma nem tölthető be"
 
-#: ../src/main-window.c:1312
+#: ../src/main-window.c:1326
 msgid "Spelling checker could not be initialized"
 msgstr "Nem sikerült inicializálni a helyesírás-ellenőrzőt"
 
@@ -568,32 +566,32 @@ msgstr[1] "%d bejegyzés található:"
 msgid "Searching…"
 msgstr "Keresés…"
 
-#: ../src/storage-manager.c:259
+#: ../src/storage-manager.c:275
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "A GPGME verziója nincs legalább %s"
 
-#: ../src/storage-manager.c:268
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "A GPGME nem támogatja az OpenPGP-t: %s"
 
-#: ../src/storage-manager.c:277
+#: ../src/storage-manager.c:293
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Hiba a rejtjelező kontextus létrehozásakor: %s"
 
-#: ../src/storage-manager.c:306
+#: ../src/storage-manager.c:322
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” titkosított adatbázisfájl megnyitásakor: %s"
 
-#: ../src/storage-manager.c:325
+#: ../src/storage-manager.c:341
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” sima adatbázisfájl megnyitásakor: %s"
 
-#: ../src/storage-manager.c:373
+#: ../src/storage-manager.c:389
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -602,27 +600,27 @@ msgstr ""
 "nem került törlésre."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:376
+#: ../src/storage-manager.c:392
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "A(z) „%s” sima adatbázisfájl nem törölhető."
 
-#: ../src/storage-manager.c:417
+#: ../src/storage-manager.c:433
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Hiba az adatbázis visszafejtésekor: %s"
 
-#: ../src/storage-manager.c:451
+#: ../src/storage-manager.c:467
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Hiba a titkosítási kulcs lekérésekor: %s"
 
-#: ../src/storage-manager.c:472
+#: ../src/storage-manager.c:488
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Hiba az adatbázis titkosításakor: %s"
 
-#: ../src/storage-manager.c:574
+#: ../src/storage-manager.c:590
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -631,7 +629,7 @@ msgstr ""
 "A(z) „%s” adatbázis nem nyitható meg. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:651
+#: ../src/storage-manager.c:667
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -639,7 +637,7 @@ msgstr ""
 "A(z) „%s” lekérdezés nem futtatható. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:954
+#: ../src/storage-manager.c:970
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Hiba a bejegyzés pufferbe történő visszafejtésekor keresés közben."
 
@@ -650,7 +648,6 @@ msgstr "Fontos!"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
-#| msgid "UI file \"%s\" could not be loaded"
 msgid "UI file \"%s\" could not be loaded: %s"
 msgstr "A(z) „%s” UI fájl nem tölthető be: %s"
 
@@ -661,6 +658,11 @@ msgstr "Nem lehet betölteni naptár ablak objektumot UI fájlból"
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Ismeretlen beviteli eszköz"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: ../src/widgets/tag.c:400
+msgid "Remove tag"
+msgstr "Címke eltávolítása"
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
