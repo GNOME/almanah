@@ -31,6 +31,7 @@
 #include "printing.h"
 #include "search-dialog.h"
 #include "storage-manager.h"
+#include "interface.h"
 
 static void constructed (GObject *object);
 static void dispose (GObject *object);
