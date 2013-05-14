@@ -1457,7 +1457,7 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 	sqlite3_finalize (statement);
 
 	if (result != SQLITE_DONE) {
-		g_debug ("Error quering for tags from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (self->priv->connection));
 		g_free (tags);
 		tags = NULL;
 	}
@@ -1512,7 +1512,7 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
 	}
 
 	if (q_result != SQLITE_DONE) {
-		g_debug ("Error quering for a tag from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_debug ("Error querying for a tag from database: %s", sqlite3_errmsg (self->priv->connection));
 	}
 
 	sqlite3_finalize (statement);
@@ -1550,7 +1550,7 @@ almanah_storage_manager_get_tags (AlmanahStorageManager *self)
 	sqlite3_finalize (statement);
 
 	if (result != SQLITE_DONE) {
-		g_debug ("Error quering for tags from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (self->priv->connection));
 		g_free (tags);
 		tags = NULL;
 	}
