@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-16 20:37+0100\n"
-"PO-Revision-Date: 2013-02-16 20:38+0100\n"
+"POT-Creation-Date: 2013-05-14 18:52+0200\n"
+"PO-Revision-Date: 2013-05-14 18:53+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -53,7 +53,7 @@ msgstr "_O pamiętniku Almanah"
 msgid "_Quit"
 msgstr "Za_kończ"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
 #: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Pamiętnik Almanah"
@@ -63,9 +63,14 @@ msgid "Keep a personal diary"
 msgstr "Prowadzenie osobistego pamiętnika"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Pamiętnik"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "pamiętnik;dziennik;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -212,23 +217,23 @@ msgstr "Sprawdzanie pisowni włączone?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Określa, czy sprawdzanie pisowni we wpisach jest włączone."
 
-#: ../src/application.c:243
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Błąd podczas otwierania bazy danych"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr ""
 "Nie można wczytać pliku CSS \"%s\". Interfejs może wyglądać niepoprawnie"
 
-#: ../src/application.c:316
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Włącza tryb debugowania"
 
-#: ../src/application.c:333
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -236,16 +241,16 @@ msgstr ""
 "otwarta w danym momencie."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opcje wiersza poleceń nie mogły zostać przetworzone: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Błąd podczas szyfrowania bazy danych"
 
-#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -253,7 +258,7 @@ msgstr "Błąd podczas szyfrowania bazy danych"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\""
 
-#: ../src/application.c:532
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -265,7 +270,7 @@ msgstr ""
 "przez Fundację Wolnego Oprogramowania (Free Software Foundation) - według "
 "wersji trzeciej tej Licencji lub którejś z późniejszych wersji."
 
-#: ../src/application.c:536
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -277,7 +282,7 @@ msgstr ""
 "HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
 "bliższych informacji należy zapoznać się z Powszechną Licencją Publiczną GNU."
 
-#: ../src/application.c:540
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -286,12 +291,12 @@ msgstr ""
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
 "- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:555
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Pomocny zarządca pamiętnika, przechowuje %u wpisów."
 
-#: ../src/application.c:559
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -300,14 +305,14 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:567
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr ""
 "Mateusz Kacprzak <mateusz.kacprzak@yandex.ru>, 2011\n"
 "Piotr Drąg <piotrdrag@gmail.com>, 2012-2013\n"
 "Aviary.pl <gnomepl@aviary.pl>, 2011-2013"
 
-#: ../src/application.c:571
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Witryna programu Almanah"
 
@@ -651,7 +656,7 @@ msgstr ""
 "Nie można wykonać zapytania \"%s\". Biblioteka SQLite wysłała następujący "
 "komunikat o błędzie: %s"
 
-#: ../src/storage-manager.c:970
+#: ../src/storage-manager.c:973
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Błąd podczas rozszeregowywania wpisu do bufora podczas wyszukiwania."
 
