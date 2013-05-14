@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almana"
 "h&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-15 10:07+0000\n"
-"PO-Revision-Date: 2013-02-19 20:38+0200\n"
+"POT-Creation-Date: 2013-05-14 08:57+0000\n"
+"PO-Revision-Date: 2013-05-14 12:22+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -19,7 +19,36 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Traži"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "_Postavke"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Uvezi"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Izvezi"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "_Štampaj dnevnik"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "_O dnevniku Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "_Izađi"
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
 #: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Dnevnik Almanah"
@@ -29,39 +58,14 @@ msgid "Keep a personal diary"
 msgstr "Vodite lični dnevnik"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Dnevnik"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
-msgid "Database encryption key ID"
-msgstr "IB ključa šifrovanja baze podataka"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
-msgid ""
-"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
-"been built with encryption support. Leave blank to disable database "
-"encryption."
-msgstr ""
-"ID ključa koji se koristi za šifrovanje i dešifrovanje baze podataka, ako je "
-"Almanah izgrađen sa podrškom za šifrovanje. Ostavite prazno da onemogućite "
-"šifrovanje baze podataka."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
-msgid "Spell checking language"
-msgstr "Jezik provere pisanja"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
-msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "Šifra jezika za koji će se vršiti provera pisanja."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
-msgid "Spell checking enabled?"
-msgstr "Provera pisanja je uključena?"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
-msgid "Whether spell checking of entries is enabled."
-msgstr "Ako je izabrano, vršiće se provera prilikom pisanja."
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "dnevnik;zapisnik;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -176,41 +180,42 @@ msgstr "Neuspeli unosi"
 msgid "Import Results List"
 msgstr "Spisak rezultata uvoženja"
 
-#: ../data/almanah-app-menu.ui.h:1
-msgid "_Search"
-msgstr "_Traži"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "IB ključa šifrovanja baze podataka"
 
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "_Postavke"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"ID ključa koji se koristi za šifrovanje i dešifrovanje baze podataka, ako je "
+"Almanah izgrađen sa podrškom za šifrovanje. Ostavite prazno da onemogućite "
+"šifrovanje baze podataka."
 
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Uvezi"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Jezik provere pisanja"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Izvezi"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Šifra jezika za koji će se vršiti provera pisanja."
 
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "_Štampaj dnevnik"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr "Provera pisanja je uključena?"
 
-#: ../data/almanah-app-menu.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "_O dnevniku Almanah"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Ako je izabrano, vršiće se provera prilikom pisanja."
 
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "_Izađi"
-
-#: ../src/application.c:243
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Greška prilikom otvaranja baze podataka"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -218,11 +223,11 @@ msgstr ""
 "Ne mogu da učitam CSS datoteku „%s“. Sučelje ne može biti ispravno "
 "stilizovano."
 
-#: ../src/application.c:316
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Uključuje režim za ispravljanje grešaka"
 
-#: ../src/application.c:333
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -230,16 +235,16 @@ msgstr ""
 "isto vreme."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opcije linije naredbi ne mogu biti obrađene: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Greška prilikom šifrovanja baze podataka"
 
-#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -247,7 +252,7 @@ msgstr "Greška prilikom šifrovanja baze podataka"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Ne mogu da učitam datoteku korisničkog sučelja „%s“"
 
-#: ../src/application.c:532
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -259,7 +264,7 @@ msgstr ""
 "softvera, bilo verzije 3 licence ili (po vašem izboru) bilo koje novije "
 "verzije."
 
-#: ../src/application.c:536
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -270,7 +275,7 @@ msgstr ""
 "čak i bez primenjene garancije TRŽIŠNE VREDNOSTI ili PRILAGOĐENOSTI ODREĐENOJ "
 "NAMENI. Pogledajte Gnuovu opštu javnu licencu za više detalja."
 
-#: ../src/application.c:540
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -278,12 +283,12 @@ msgstr ""
 "Treba da ste primili primerak Gnuove opšte javne licence uz Almanah. Ako "
 "niste, pogledajte <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:555
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Koristan čuvar dnevnika, sadrži %u unosa."
 
-#: ../src/application.c:559
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Autorska prava © 2008-2009 Filip Vitnal"
 
@@ -292,11 +297,11 @@ msgstr "Autorska prava © 2008-2009 Filip Vitnal"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:567
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr "  Miroslav Nikolić, miroslavnikolic@rocketmail.com"
 
-#: ../src/application.c:571
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Veb stranica Almanaha"
 
@@ -635,14 +640,13 @@ msgstr ""
 "Ne mogu da pokrenem upit „%s“. SKuLajt je obezbedio sledeću poruku o grešci: "
 "%s"
 
-#: ../src/storage-manager.c:970
+#: ../src/storage-manager.c:973
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Greška u raščlanjivanju unosa u baferu tokom pretraživanja."
 
-#. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:176
-msgid "Important!"
-msgstr "Važno!"
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Unesite adresu"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
@@ -654,6 +658,11 @@ msgid "Can't load calendar window object from UI file"
 msgstr ""
 "Ne mogu da učitam objekat prozora kalendara iz datoteke korisničkog sučelja"
 
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Važno!"
+
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Nepoznat ulazni uređaj"
@@ -662,7 +671,3 @@ msgstr "Nepoznat ulazni uređaj"
 #: ../src/widgets/tag.c:400
 msgid "Remove tag"
 msgstr "Uklonite oznaku"
-
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Unesite adresu"
