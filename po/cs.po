@@ -1,7 +1,6 @@
 # Czech translation for almanah.
 # Copyright (C) 2009, 2010 the author(s) of almanah.
 # This file is distributed under the same license as the almanah package.
-#
 # Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013.
 #
 msgid ""
@@ -9,8 +8,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-15 10:07+0000\n"
-"PO-Revision-Date: 2013-02-15 21:13+0100\n"
+"POT-Creation-Date: 2013-05-14 08:57+0000\n"
+"PO-Revision-Date: 2013-05-15 14:48+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -20,7 +19,36 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Hledat"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "Př_edvolby"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Importovat"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Exportovat"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "Vy_tisknout diář"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "O diáři _Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "U_končit"
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
 #: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Diář Almanah"
@@ -30,40 +58,14 @@ msgid "Keep a personal diary"
 msgstr "Vést si osobní diář"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Diář"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
-msgid "Database encryption key ID"
-msgstr "ID šifrovacího klíče databáze"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
-msgid ""
-"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
-"been built with encryption support. Leave blank to disable database "
-"encryption."
-msgstr ""
-"ID klíče použitého k šifrování a dešifrování databáze v případě, že byla "
-"aplikace Almanah sestavená s podporou šifrování. Pokud chcete šifrování "
-"databáze zakázat, ponechte pole prázdné."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
-msgid "Spell checking language"
-msgstr "Jazyk kontroly pravopisu"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
-msgid "The locale specifier of the language in which to check entry spellings."
-msgstr ""
-"Národní identifikátor jazyka, pro který se má provádět kontrola pravopisu."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
-msgid "Spell checking enabled?"
-msgstr "Povolená kontrola pravopisu?"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
-msgid "Whether spell checking of entries is enabled."
-msgstr "Zda je zapnutá kontrola pravopisu záznamů."
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "diář;plánovač;záznamník;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -177,51 +179,53 @@ msgstr "Neúspěšné zázmamy"
 msgid "Import Results List"
 msgstr "Seznam výsledků importu"
 
-#: ../data/almanah-app-menu.ui.h:1
-msgid "_Search"
-msgstr "_Hledat"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "ID šifrovacího klíče databáze"
 
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "Př_edvolby"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"ID klíče použitého k šifrování a dešifrování databáze v případě, že byla "
+"aplikace Almanah sestavená s podporou šifrování. Pokud chcete šifrování "
+"databáze zakázat, ponechte pole prázdné."
 
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Importovat"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Jazyk kontroly pravopisu"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Exportovat"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr ""
+"Národní identifikátor jazyka, pro který se má provádět kontrola pravopisu."
 
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "Vy_tisknout diář"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr "Povolená kontrola pravopisu?"
 
-#: ../data/almanah-app-menu.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "O diáři _Almanah"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Zda je zapnutá kontrola pravopisu záznamů."
 
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "U_končit"
-
-#: ../src/application.c:243
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Chyba při otevírání databáze"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr "Nelze načíst soubor CSS „%s“. Rozhraní nemusí být správně ostylováno."
 
-#: ../src/application.c:316
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Zapnout režim ladění"
 
-#: ../src/application.c:333
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -229,16 +233,16 @@ msgstr ""
 "programu."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Nelze zpracovat přepínače příkazového řádku: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Chyba při šifrování databáze"
 
-#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -246,7 +250,7 @@ msgstr "Chyba při šifrování databáze"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
 
-#: ../src/application.c:532
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -258,7 +262,7 @@ msgstr ""
 "Free Software Foundation, a to buď ve verzi 3 této licence nebo (dle vaší "
 "volby) v libovolné novější verzi."
 
-#: ../src/application.c:536
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -270,7 +274,7 @@ msgstr ""
 "KONKRÉTNÍ ÚČEL. Více podrobností najdete přímo v licenci GNU General Public "
 "License."
 
-#: ../src/application.c:540
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -279,12 +283,12 @@ msgstr ""
 "License. Pokud se tak nestalo, podívejte se na <http://www.gnu.org/licenses/"
 ">."
 
-#: ../src/application.c:555
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Užitečný diář na hlídání termínů, uloženo %u záznamů."
 
-#: ../src/application.c:559
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -293,11 +297,11 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:567
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
-#: ../src/application.c:571
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Webové stránky Almanah"
 
@@ -639,14 +643,13 @@ msgstr ""
 "Nelze spustit dotaz „%s“. Aplikace SQLite poskytla následující chybovou "
 "zprávu: %s"
 
-#: ../src/storage-manager.c:970
+#: ../src/storage-manager.c:973
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledání."
 
-#. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:176
-msgid "Important!"
-msgstr "Důležité!"
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Zadání adresy URI"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
@@ -658,6 +661,11 @@ msgid "Can't load calendar window object from UI file"
 msgstr ""
 "Ze souboru s uživatelským rozhraním nelze načíst objekt okna s kalendářem"
 
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Důležité!"
+
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Neznámé vstupní zařízení"
@@ -666,7 +674,3 @@ msgstr "Neznámé vstupní zařízení"
 #: ../src/widgets/tag.c:400
 msgid "Remove tag"
 msgstr "Odebrat značku"
-
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Zadání adresy URI"
