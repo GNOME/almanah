@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-26 21:53+0000\n"
-"PO-Revision-Date: 2013-03-07 21:35+0100\n"
+"POT-Creation-Date: 2013-05-15 12:49+0000\n"
+"PO-Revision-Date: 2013-06-03 21:56+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.4\n"
 
@@ -51,7 +52,7 @@ msgstr "_O osebnem dnevniku"
 msgid "_Quit"
 msgstr "_Končaj"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
 #: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Almanah dnevnik"
@@ -61,9 +62,14 @@ msgid "Keep a personal diary"
 msgstr "Pišite osebni dnevnik"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Dnevnik"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "blog;dnevnik;časopis;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -207,12 +213,12 @@ msgstr "Ali naj bo črkovanja omogočeno?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Ali naj bo preverjanje črkovanja omogočeno."
 
-#: ../src/application.c:243
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Napaka med odpiranjem podatkovne zbirke"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -220,27 +226,27 @@ msgstr ""
 "Datoteke CSS '%s' ni mogoče naložiti. Vmesnik morda ne bo oblikovan do "
 "popolnosti."
 
-#: ../src/application.c:316
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Omogoči razhroščevalni način"
 
-#: ../src/application.c:333
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
 "Upravljajte svoj dnevnik. Hkrati lahko odprete le en primerek programa."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Možnosti ukazne vrstice ni mogoče razčleniti: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Napaka med šifriranjem podatkovne zbirke"
 
-#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -248,7 +254,7 @@ msgstr "Napaka med šifriranjem podatkovne zbirke"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Uporabniškega vmesnika datoteke \"%s\" ni mogoče naložiti"
 
-#: ../src/application.c:532
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -260,7 +266,7 @@ msgstr ""
 "kot ga je objavila ustanova Free Software Foundation; bodisi različice 2 ali "
 "(po vaši izbiri) katerekoli poznejše različice."
 
-#: ../src/application.c:536
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -271,7 +277,7 @@ msgstr ""
 "JAMSTVA; tudi brez posredne zagotovitve CENOVNE VREDNOSTI ali PRIMERNOSTI ZA "
 "DOLOČEN NAMEN.  Za podrobnosti glejte besedilo GNU General Public License."
 
-#: ../src/application.c:540
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -279,12 +285,12 @@ msgstr ""
 "Skupaj s programom bi morali dobiti tudi kopijo GNU splošne javne licence. V "
 "primeru, da je niste, si oglejte <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:555
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Priročen dnevnik, shranjuje %u vnosov."
 
-#: ../src/application.c:559
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Zasluge © 2008-2009 Philip Withnall"
 
@@ -293,11 +299,11 @@ msgstr "Zasluge © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:567
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr "Andrej Žnidaršič <andrej.znidarsic@gmail.com>"
 
-#: ../src/application.c:571
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Spletna stran Almanah"
 
