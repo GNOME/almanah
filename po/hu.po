@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-15 10:07+0000\n"
-"PO-Revision-Date: 2013-03-16 19:56+0100\n"
+"POT-Creation-Date: 2013-05-14 08:57+0000\n"
+"PO-Revision-Date: 2013-06-16 20:23+0200\n"
 "Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: \n"
@@ -21,7 +21,36 @@ msgstr ""
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.2\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Keresés"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "Beá_llítások"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Importálás"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Exportálás"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "_Napló nyomtatása"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "Az Almanah napló né_vjegye"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "_Kilépés"
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
 #: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Almanah napló"
@@ -31,39 +60,14 @@ msgid "Keep a personal diary"
 msgstr "Személyes napló vezetése"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Napló"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
-msgid "Database encryption key ID"
-msgstr "Adatbázis-titkosítási kulcs azonosítója"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
-msgid ""
-"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
-"been built with encryption support. Leave blank to disable database "
-"encryption."
-msgstr ""
-"Az adatbázis titkosításához és visszafejtéséhez használt kulcs azonosítója, "
-"ha az Almanah titkosítási támogatással került fordításra. Az adatbázis "
-"titkosításának letiltásához hagyja ezt a mezőt üresen."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
-msgid "Spell checking language"
-msgstr "Helyesírás-ellenőrzés nyelve"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
-msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "A nyelv, amin a bejegyzések helyesírása ellenőrzésre kerül."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
-msgid "Spell checking enabled?"
-msgstr "Helyesírás-ellenőrzés engedélyezve?"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
-msgid "Whether spell checking of entries is enabled."
-msgstr "A bejegyzések helyesírás-ellenőrzése engedélyezve legyen-e?"
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "napló;folyóirat;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -177,41 +181,42 @@ msgstr "Sikertelen bejegyzések"
 msgid "Import Results List"
 msgstr "Eredmények listájának importálása"
 
-#: ../data/almanah-app-menu.ui.h:1
-msgid "_Search"
-msgstr "_Keresés"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "Adatbázis-titkosítási kulcs azonosítója"
 
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "Beá_llítások"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Az adatbázis titkosításához és visszafejtéséhez használt kulcs azonosítója, "
+"ha az Almanah titkosítási támogatással került fordításra. Az adatbázis "
+"titkosításának letiltásához hagyja ezt a mezőt üresen."
 
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Importálás"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Helyesírás-ellenőrzés nyelve"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Exportálás"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "A nyelv, amin a bejegyzések helyesírása ellenőrzésre kerül."
 
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "_Napló nyomtatása"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr "Helyesírás-ellenőrzés engedélyezve?"
 
-#: ../data/almanah-app-menu.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "Az Almanah napló né_vjegye"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "A bejegyzések helyesírás-ellenőrzése engedélyezve legyen-e?"
 
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "_Kilépés"
-
-#: ../src/application.c:243
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Hiba történt az adatbázis megnyitásakor"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -219,27 +224,27 @@ msgstr ""
 "Nem tölthető be a CSS fájl: „%s”. A felület valószínűleg nem megfelelő "
 "stílusú"
 
-#: ../src/application.c:316
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Hibakereső üzemmód bekapcsolása"
 
-#: ../src/application.c:333
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
 "Személyes napló kezelése. Egyszerre csak egy példányban futtatható a program."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "A parancssori kapcsolók nem értelmezhetők: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Hiba az adatbázis titkosításakor"
 
-#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -247,7 +252,7 @@ msgstr "Hiba az adatbázis titkosításakor"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "A(z) „%s” UI fájl nem tölthető be"
 
-#: ../src/application.c:532
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -258,7 +263,7 @@ msgstr ""
 "Software Foundation által kiadott GNU General Public License harmadik (vagy "
 "bármely későbbi) változatában foglaltak alapján."
 
-#: ../src/application.c:536
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -270,7 +275,7 @@ msgstr ""
 "alkalmas-e a KÖZREADÁSRA vagy EGY BIZONYOS FELADAT ELVÉGZÉSÉRE. További "
 "részletekért tanulmányozza a GNU GPL licencet."
 
-#: ../src/application.c:540
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -278,12 +283,12 @@ msgstr ""
 "Az Almanah programhoz a GNU General Public License egy példánya is jár, ha "
 "nem kapta meg, itt elolvashatja: <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:555
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Egy hasznos naplóíró, amely %u bejegyzést tárol."
 
-#: ../src/application.c:559
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -292,11 +297,11 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:567
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr "Balló György <ballogy at freestart dot hu>"
 
-#: ../src/application.c:571
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Az Almanah webhelye"
 
@@ -637,14 +642,13 @@ msgstr ""
 "A(z) „%s” lekérdezés nem futtatható. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:970
+#: ../src/storage-manager.c:973
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Hiba a bejegyzés pufferbe történő visszafejtésekor keresés közben."
 
-#. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:176
-msgid "Important!"
-msgstr "Fontos!"
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Adjon meg egy URI-t"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
@@ -655,6 +659,11 @@ msgstr "A(z) „%s” UI fájl nem tölthető be: %s"
 msgid "Can't load calendar window object from UI file"
 msgstr "Nem lehet betölteni naptár ablak objektumot UI fájlból"
 
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Fontos!"
+
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Ismeretlen beviteli eszköz"
@@ -663,10 +672,6 @@ msgstr "Ismeretlen beviteli eszköz"
 #: ../src/widgets/tag.c:400
 msgid "Remove tag"
 msgstr "Címke eltávolítása"
-
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Adjon meg egy URI-t"
 
 #~ msgid "Change font style for selected text"
 #~ msgstr "A kijelölt szöveg betűkészletének megváltoztatása"
