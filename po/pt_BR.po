@@ -1,4 +1,4 @@
-# Brazilian Portuguese translation of Diary.
+# Brazilian Portuguese translation of Almanah.
 # Copyright (C) 2008-2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the almanah package.
 # Fabrício Godoy <skarllot@gmail.com>, 2008.
@@ -9,21 +9,22 @@
 # Carlos José Pereira <carlao2005@gmail.com>, 2010.
 # Gabriel Speckhahn <gabspeck@gmail.com>, 2011.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2012, 2013.
+# Adorilson Bezerra <adorilson@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Diary\n"
+"Project-Id-Version: Almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-11 12:06+0000\n"
-"PO-Revision-Date: 2013-02-17 15:59-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2013-06-16 18:23+0000\n"
+"PO-Revision-Date: 2013-06-28 13:21-0300\n"
+"Last-Translator: Adorilson Bezerra <adorilson@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "X-Generator: Poedit 1.5.4\n"
 "X-Project-Style: gnome\n"
 
@@ -56,7 +57,7 @@ msgstr "_Sobre o Diário Almanah"
 msgid "_Quit"
 msgstr "_Sair"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:131
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
 #: ../src/main-window.c:135
 msgid "Almanah Diary"
 msgstr "Diário Almanah"
@@ -66,13 +67,18 @@ msgid "Keep a personal diary"
 msgstr "Mantenha um diário pessoal"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:262
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Diário"
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "diário;blog;"
+
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
-msgstr "Selecionar data..."
+msgstr "Selecionar data…"
 
 #: ../data/almanah.ui.h:2
 msgid "F_ormat"
@@ -164,7 +170,7 @@ msgstr "exemplo \"14/03/2009\" ou \"14 de março de 2009\"."
 
 #: ../data/almanah.ui.h:23
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
-msgstr "ex: “http://google.com/” ou “file:///home/me/Photos/photo.jpg”."
+msgstr "ex: “http://google.com/” ou “file:///home/eu/Fotos/foto.jpg”."
 
 #: ../data/almanah.ui.h:24
 msgid "Successful Entries"
@@ -214,12 +220,12 @@ msgstr "A verificação ortográfica está habilitada?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Se a verificação ortográfica de entradas está habilitada."
 
-#: ../src/application.c:245
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Erro ao abrir o banco de dados"
 
 #. Error loading the CSS
-#: ../src/application.c:274
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -227,11 +233,11 @@ msgstr ""
 "Não foi possível carregar o arquivo CSS \"%s\". A interface pode não estar "
 "configurada com estilo corretamente."
 
-#: ../src/application.c:318
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Habilitar o modo de depuração"
 
-#: ../src/application.c:335
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -239,16 +245,16 @@ msgstr ""
 "cada vez."
 
 #. Print an error
-#: ../src/application.c:346
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Não foi possível analisar as opções da linha de comando: %s\n"
 
-#: ../src/application.c:365
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Erro ao criptografar o banco de dados"
 
-#: ../src/application.c:418 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:194 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -256,7 +262,7 @@ msgstr "Erro ao criptografar o banco de dados"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Arquivo de interface de usuário \"%s\" não pôde ser carregado"
 
-#: ../src/application.c:541
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -268,7 +274,7 @@ msgstr ""
 "publicada pela Free Software Foundation, tanto na versão 3 da licença, "
 "quanto (a seu critério) qualquer versão posterior."
 
-#: ../src/application.c:545
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -280,7 +286,7 @@ msgstr ""
 "UM PROPÓSITO EM PARTICULAR. Veja a Licença Pública Geral GNU (GNU General "
 "Public License) para mais detalhes."
 
-#: ../src/application.c:549
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -289,12 +295,12 @@ msgstr ""
 "Public License) junto com o Almanah; se não, consulte <http://www.gnu.org/"
 "licenses/>."
 
-#: ../src/application.c:564
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Um criador de diário útil, armazenando %u entradas."
 
-#: ../src/application.c:568
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -303,7 +309,7 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:576
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr ""
 "Fabrício Godoy <skarllot@gmail.com>\n"
@@ -314,7 +320,7 @@ msgstr ""
 "Carlos José Pereira <carlao2005@gmail.com>\n"
 "Rafael Ferreira <rafael.f.f1@gmail.com>"
 
-#: ../src/application.c:580
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Site do Almanah"
 
