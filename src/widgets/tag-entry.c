@@ -154,7 +154,7 @@ almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *n
 
 	/* Just a bad hack... @TODO: set the width to a maximun number of characters, using the pango layout */
 	*minimum = m_width - 100;
-	*natural = n_width - 100;
+	*natural = n_width - 50;
 }
 
 gboolean
