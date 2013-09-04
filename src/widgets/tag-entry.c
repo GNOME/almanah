@@ -17,6 +17,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "tag-entry.h"
@@ -78,8 +79,6 @@ almanah_tag_entry_init (AlmanahTagEntry *self)
         gtk_entry_completion_set_text_column (completion, 0);
         gtk_entry_set_completion (GTK_ENTRY (self), completion);
 	g_signal_connect (completion, "match-selected", G_CALLBACK (almanah_tag_entry_match_selected), self);
-
-	gtk_entry_set_has_frame (GTK_ENTRY (self), FALSE);
 }
 
 static void
@@ -160,7 +159,7 @@ almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *n
 gboolean
 almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event)
 {
-	gtk_entry_set_text (GTK_ENTRY (self), "add tag");
+	gtk_entry_set_text (GTK_ENTRY (self), _("add tag"));
 
 	return FALSE;
 }

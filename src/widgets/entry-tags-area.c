@@ -17,6 +17,8 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <glib/gi18n.h>
+
 #include "entry-tags-area.h"
 #include "entry.h"
 #include "tag.h"
@@ -95,7 +97,7 @@ almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 
 	/* The tag entry widget */
 	self->priv->tag_entry = g_object_new (ALMANAH_TYPE_TAG_ENTRY, NULL);
-	gtk_entry_set_text (GTK_ENTRY (self->priv->tag_entry), "add tag");
+	gtk_entry_set_text (GTK_ENTRY (self->priv->tag_entry), _("add tag"));
 	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->tag_entry));
 	g_signal_connect (self->priv->tag_entry, "activate", G_CALLBACK (tag_entry_activate_cb), self);
 }
