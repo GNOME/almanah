@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <id type="desktop">almanah.desktop</id>
+  <licence>CC0</licence>
+  <description>
+    <_p>
+      Almanah Diary is an application to allow you to keep a diary of your life.
+    </_p>
+    <_p>
+      You can encrypt the diary to preserve your privacy. It has editing
+      abilities, including text formatting and printing  and shows you a lists
+      of events which happened (on your computer) for each day (such as tasks
+      and appointments from Evolution).
+    </_p>
+  </description>
+  <screenshots>
+    <screenshot type="default" width="642" height="406">https://wiki.gnome.org/Almanah_Diary?action=AttachFile&amp;do=get&amp;target=screenshot-almanah-diary.png</screenshot>
+  </screenshots>
+  <url type="homepage">http://live.gnome.org/Almanah_Diary/</url>
+  <updatecontact>alvaropg_at_gmail.com</updatecontact>
+</application>

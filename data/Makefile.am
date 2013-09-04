@@ -51,16 +51,25 @@ convertdir = $(datadir)/GConf/gsettings
 convert_DATA = almanah.convert
 
 ###############################################################################
+# AppData file
+###############################################################################
+
+appdatadir = $(datadir)/appdata
+appdata_DATA = almanah.appdata.xml
+
+###############################################################################
 # General
 ###############################################################################
 
 EXTRA_DIST = \
+	almanah.appdata.xml.in	\
 	$(ui_DATA)		\
 	$(desktop_in_files)	\
 	$(schemas_in_files)	\
 	$(convert_DATA)		\
 	entry-2.0.rnc
 CLEANFILES = \
+	almanah.appdata.xml	\
 	$(desktop_DATA)		\
 	$(gsettings_SCHEMAS)
 
