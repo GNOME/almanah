@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-14 08:57+0000\n"
-"PO-Revision-Date: 2013-05-15 14:48+0200\n"
+"POT-Creation-Date: 2013-09-04 16:32+0000\n"
+"PO-Revision-Date: 2013-09-04 22:26+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -49,7 +49,7 @@ msgid "_Quit"
 msgstr "U_končit"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:132
-#: ../src/main-window.c:135
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Diář Almanah"
 
@@ -112,70 +112,78 @@ msgid "Toggle whether the current entry is marked as important."
 msgstr "Přepíná, zda je současný záznam označený jako důležitý."
 
 #: ../data/almanah.ui.h:11
+msgid "Show tags"
+msgstr "Zobrazovat štitky"
+
+#: ../data/almanah.ui.h:12
+msgid "Show tags for the current entry"
+msgstr "Zobrazovat štítky pro aktuální záznam"
+
+#: ../data/almanah.ui.h:13
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:14
 msgid "Go to _Today"
 msgstr "Přejí_t na dnešek"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Přejít v diáři na dnešní datum."
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:16
 msgid "Calendar"
 msgstr "Kalendář"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:17
 msgid "Entry editing area"
 msgstr "Oblast pro úpravu záznamů"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:18
 msgid "Past events"
 msgstr "Poslední události"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:19
 msgid "Past Event List"
 msgstr "Seznam posledních událostí"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:20
 msgid "Search entry"
 msgstr "Hledat záznam"
 
-#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Hledat"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Seznam výsledků"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:23
 msgid "View Entry"
 msgstr "Zobrazit záznam"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:24
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "např. „14/03/2009“ nebo „14th March 2009“."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:25
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "např. “http://google.cz/” nebo “file:///home/ja/Obrázky/fotka.jpg”."
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Úspěšné záznamy"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Merged Entries"
 msgstr "Sloučené záznamy"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:28
 msgid "Failed Entries"
 msgstr "Neúspěšné zázmamy"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:29
 msgid "Import Results List"
 msgstr "Seznam výsledků importu"
 
@@ -244,7 +252,7 @@ msgstr "Chyba při šifrování databáze"
 
 #: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -410,8 +418,8 @@ msgstr "Výsledky importu"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
-#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %B %Y"
@@ -463,38 +471,38 @@ msgstr ""
 "Záznam importován z „%s“:\n"
 "\n"
 
-#: ../src/main-window.c:570
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Opravdu chcete upravit tento záznam v diáři na %s?"
 
-#: ../src/main-window.c:600
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Opravdu chcete smazat tento záznam v diáři na %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:709
+#: ../src/main-window.c:710
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Neznámá nebo duplicitní textová značka „%s“ v záznamu. Bude se ignorovat."
 
-#: ../src/main-window.c:908
+#: ../src/main-window.c:918
 msgid "Error opening URI"
 msgstr "Chyba při otevírání URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1082
+#: ../src/main-window.c:1092
 #, c-format
 msgid "%s @ %s"
 msgstr "%s v %s"
 
-#: ../src/main-window.c:1161
+#: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
 msgstr "Obsah záznamu nelze načíst"
 
-#: ../src/main-window.c:1326
+#: ../src/main-window.c:1344
 msgid "Spelling checker could not be initialized"
 msgstr "Nelze inicializovat kontrolu pravopisu"
 
@@ -673,4 +681,4 @@ msgstr "Neznámé vstupní zařízení"
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:400
 msgid "Remove tag"
-msgstr "Odebrat značku"
+msgstr "Odebrat štítek"
