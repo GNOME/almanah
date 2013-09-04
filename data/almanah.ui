@@ -100,6 +100,15 @@
 					<accelerator key="M" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
+					<object class="GtkToggleAction" id="almanah_ui_show_tags">
+						<property name="name">show-tags</property>
+						<property name="label" translatable="yes">Show tags</property>
+						<property name="tooltip" translatable="yes">Show tags for the current entry</property>
+						<property name="icon-name">almanah-tags-symbolic</property>
+						<signal name="activate" handler="mw_show_tags_activate_cb"/>
+					</object>
+				</child>
+				<child>
 					<object class="GtkAction" id="almanah_ui_help">
 						<property name="name">help</property>
 						<property name="label" translatable="yes">_Help</property>
@@ -223,12 +232,16 @@
 								</style>
 								<child>
 									<object class="AlmanahEntryTagsArea" id="almanah_mw_entry_tags_area">
+										<property name="visible">False</property>
+										<property name="no-show-all">True</property>
+										<property name="vexpand">False</property>
 										<property name="hexpand">True</property>
 										<property name="horizontal-spacing">6</property>
 										<property name="vertical-spacing">6</property>
-										<property name="margin_top">0</property>
-										<property name="margin_left">0</property>
-										<property name="margin_right">0</property>
+										<property name="margin_top">6</property>
+										<property name="margin_left">6</property>
+										<property name="margin_right">6</property>
+										<property name="margin_bottom">6</property>
 									</object>
 									<packing>
 										<property name="left_attach">0</property>

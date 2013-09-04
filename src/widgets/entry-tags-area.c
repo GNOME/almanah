@@ -44,7 +44,7 @@ static void almanah_entry_tags_area_set_property (GObject *object, guint propert
 static void almanah_entry_tags_area_finalize     (GObject *object);
 static void almanah_entry_tags_area_load_tags    (AlmanahEntryTagsArea *self);
 static void almanah_entry_tags_area_update       (AlmanahEntryTagsArea *self);
-static gint almanah_entry_tags_area_draw         (GtkWidget *widget, cairo_t *cr);
+static void almanah_entry_tags_area_show         (GtkWidget *widget);
 static void almanah_entry_tags_area_add_tag      (AlmanahEntryTagsArea *self, const gchar *tag);
 
 /* Signals */
@@ -66,7 +66,7 @@ almanah_entry_tags_area_class_init (AlmanahEntryTagsAreaClass *klass)
 	gobject_class->set_property = almanah_entry_tags_area_set_property;
 	gobject_class->finalize = almanah_entry_tags_area_finalize;
 
-	widget_class->draw = almanah_entry_tags_area_draw;
+	widget_class->show = almanah_entry_tags_area_show;
 
 	g_object_class_install_property (gobject_class, PROP_ENTRY,
 					 g_param_spec_object ("entry",
@@ -187,21 +187,13 @@ almanah_entry_tags_area_update (AlmanahEntryTagsArea *self)
 	gtk_container_foreach (GTK_CONTAINER (self), (GtkCallback) entry_tags_area_remove_foreach_cb, self);
 }
 
-static gint
-almanah_entry_tags_area_draw (GtkWidget *widget, cairo_t *cr)
+static void
+almanah_entry_tags_area_show (GtkWidget *widget)
 {
-	gint width, height;
-	GtkStyleContext *context;
+	AlmanahEntryTagsArea *self = ALMANAH_ENTRY_TAGS_AREA (widget);
 
-	/* All GtkContainer objects don't draw anything, so just draw the background using current style */
-
-	context = gtk_widget_get_style_context (widget);
-	width = gtk_widget_get_allocated_width (widget);
-	height = gtk_widget_get_allocated_height (widget);
-
-	gtk_render_background (context, cr, 0, 0, width, height);
-
-	return GTK_WIDGET_CLASS (almanah_entry_tags_area_parent_class)->draw (widget, cr);
+	gtk_widget_show (GTK_WIDGET (self->priv->tag_entry));
+	GTK_WIDGET_CLASS (almanah_entry_tags_area_parent_class)->show (widget);
 }
 
 static void

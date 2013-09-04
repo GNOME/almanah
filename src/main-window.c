@@ -74,6 +74,7 @@ void mw_paste_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_delete_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_insert_time_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
+void mw_show_tags_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_select_date_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_jump_to_today_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
 void mw_old_entries_activate_cb (GtkAction *action, AlmanahMainWindow *main_window);
@@ -830,6 +831,15 @@ mw_important_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 }
 
 void
+mw_show_tags_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
+{
+	if (gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (action)))
+		gtk_widget_show (GTK_WIDGET (main_window->priv->entry_tags_area));
+	else
+		gtk_widget_hide (GTK_WIDGET (main_window->priv->entry_tags_area));
+}
+
+void
 mw_select_date_activate_cb (GtkAction *action, AlmanahMainWindow *main_window)
 {
 	AlmanahDateEntryDialog *dialog = almanah_date_entry_dialog_new ();
@@ -1294,7 +1304,15 @@ mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *applicatio
 	gtk_tool_item_set_expand (tool_item, TRUE);
 	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
 
+	/* Show/hide tags: future "side pane", for photos and other elements */
+	tool_item = gtk_toggle_tool_button_new ();
+	gtk_activatable_set_related_action (GTK_ACTIVATABLE (tool_item), GTK_ACTION (gtk_builder_get_object (builder, "almanah_ui_show_tags")));
+	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
+
 	/* Menu button with the common GNOME applications style (Nautilus, Epiphany, ...) */
+	tool_item = gtk_separator_tool_item_new ();
+	gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (tool_item), FALSE);
+	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
 	tool_item = gtk_tool_item_new ();
 	button = gtk_menu_button_new ();
 	popup = gtk_ui_manager_get_widget (manager, "/almanah_mw_menu_button");
