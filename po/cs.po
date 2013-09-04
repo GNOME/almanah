@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-04 16:32+0000\n"
-"PO-Revision-Date: 2013-09-04 22:26+0200\n"
+"POT-Creation-Date: 2013-09-04 20:32+0000\n"
+"PO-Revision-Date: 2013-09-04 22:33+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -677,6 +677,10 @@ msgstr "Důležité!"
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Neznámé vstupní zařízení"
+
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+msgid "add tag"
+msgstr "přidat štítek"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:400
