@@ -41,6 +41,7 @@
 						<property name="name">edit-select-date</property>
 						<signal name="activate" handler="mw_select_date_activate_cb"/>
 					</object>
+					<accelerator key="D" modifiers="GDK_CONTROL_MASK"/>
 				</child>
 				<child>
 					<object class="GtkAction" id="almanah_ui_format">
