@@ -10,23 +10,43 @@
 # Gabriel Speckhahn <gabspeck@gmail.com>, 2011.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2012, 2013.
 # Adorilson Bezerra <adorilson@gmail.com>, 2013.
+# Ramon Brandão <rcbdesigner@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-06-16 18:23+0000\n"
-"PO-Revision-Date: 2013-06-28 13:21-0300\n"
-"Last-Translator: Adorilson Bezerra <adorilson@gmail.com>\n"
+"POT-Creation-Date: 2013-09-05 17:42+0000\n"
+"PO-Revision-Date: 2013-09-05 14:51-0300\n"
+"Last-Translator: Ramon Brandão <rcbdesigner@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Poedit 1.5.4\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-Project-Style: gnome\n"
+
+#: ../data/almanah.appdata.xml.in.h:1
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"O diário Almanah é um aplicativo que lhe permite manter um diário da sua "
+"vida."
+
+#: ../data/almanah.appdata.xml.in.h:2
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Você pode criptografar o diário para preservar sua privacidade. Possui "
+"alguns recursos de edição, incluindo formatação de texto e impressão, também "
+"mostra a você uma lista de eventos que aconteceram (no seu computador) para "
+"cada dia (como tarefas e compromissos do Evolution)."
 
 #: ../data/almanah-app-menu.ui.h:1
 msgid "_Search"
@@ -58,7 +78,7 @@ msgid "_Quit"
 msgstr "_Sair"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:132
-#: ../src/main-window.c:135
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Diário Almanah"
 
@@ -121,70 +141,78 @@ msgid "Toggle whether the current entry is marked as important."
 msgstr "Define se a entrada atual é marcada como importante."
 
 #: ../data/almanah.ui.h:11
+msgid "Show tags"
+msgstr "Mostrar etiquetas"
+
+#: ../data/almanah.ui.h:12
+msgid "Show tags for the current entry"
+msgstr "Mostra etiquetas para a entrada atual"
+
+#: ../data/almanah.ui.h:13
 msgid "_Help"
 msgstr "Aj_uda"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:14
 msgid "Go to _Today"
 msgstr "Ir para _hoje"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Vai para a data atual no diário."
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:16
 msgid "Calendar"
 msgstr "Calendário"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:17
 msgid "Entry editing area"
 msgstr "Área de edição de entrada"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:18
 msgid "Past events"
 msgstr "Últimos eventos"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:19
 msgid "Past Event List"
 msgstr "Lista dos últimos eventos"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:20
 msgid "Search entry"
 msgstr "Pesquisar entrada"
 
-#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Pesquisar"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Lista de resultado"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:23
 msgid "View Entry"
 msgstr "Ver entrada"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:24
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "exemplo \"14/03/2009\" ou \"14 de março de 2009\"."
+msgstr "ex: \"14/03/2009\" ou \"14 de março de 2009\"."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:25
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "ex: “http://google.com/” ou “file:///home/eu/Fotos/foto.jpg”."
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Entradas com sucesso"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Merged Entries"
 msgstr "Entradas mescladas"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:28
 msgid "Failed Entries"
 msgstr "Entradas que falharam"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:29
 msgid "Import Results List"
 msgstr "Lista de resultado da importação"
 
@@ -204,7 +232,7 @@ msgstr ""
 
 #: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
 msgid "Spell checking language"
-msgstr "Idioma para verificação ortográfica"
+msgstr "Verificação ortográfica para o idioma"
 
 #: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
 msgid "The locale specifier of the language in which to check entry spellings."
@@ -256,7 +284,7 @@ msgstr "Erro ao criptografar o banco de dados"
 
 #: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -428,8 +456,8 @@ msgstr "Resultados da importação"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
-#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
@@ -480,38 +508,38 @@ msgstr ""
 "Entrada importada para \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:570
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Você tem certeza que quer editar essa entrada de diário para %s?"
 
-#: ../src/main-window.c:600
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Você tem certeza que quer excluir essa entrada de diário para %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:709
+#: ../src/main-window.c:710
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Etiqueta de texto \"%s\" desconhecida ou duplicada na entrada. Ignorando."
 
-#: ../src/main-window.c:908
+#: ../src/main-window.c:918
 msgid "Error opening URI"
 msgstr "Erro ao abrir a URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1082
+#: ../src/main-window.c:1092
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1161
+#: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
 msgstr "O conteúdo da entrada não pôde ser carregado"
 
-#: ../src/main-window.c:1326
+#: ../src/main-window.c:1344
 msgid "Spelling checker could not be initialized"
 msgstr "O verificador ortográfico não pôde ser inicializado"
 
@@ -686,6 +714,10 @@ msgstr "Importante!"
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Dispositivo de entrada desconhecido"
+
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+msgid "add tag"
+msgstr "Adicionar etiqueta"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:400
