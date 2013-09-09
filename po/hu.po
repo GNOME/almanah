@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-14 08:57+0000\n"
-"PO-Revision-Date: 2013-06-16 20:23+0200\n"
+"POT-Creation-Date: 2013-09-04 23:24+0000\n"
+"PO-Revision-Date: 2013-09-10 00:00+0200\n"
 "Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: \n"
@@ -20,6 +20,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.2\n"
+
+#: ../data/almanah.appdata.xml.in.h:1
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Az Almanah napló egy olyan alkalmazás, amely lehetővé teszi az élete "
+"naplójának vezetését."
+
+#: ../data/almanah.appdata.xml.in.h:2
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Titkosíthatja a naplót az adatvédelem megőrzéséhez. Rendelkezik módosítási "
+"képességgel, beleértve a szövegformázást és a nyomtatást, valamint "
+"megjeleníti azon események listáját, amelyek (a számítógépén) az adott "
+"napokon történtek (úgymint feladatok és találkozók az Evolution programból)."
 
 #: ../data/almanah-app-menu.ui.h:1
 msgid "_Search"
@@ -51,7 +70,7 @@ msgid "_Quit"
 msgstr "_Kilépés"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:132
-#: ../src/main-window.c:135
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Almanah napló"
 
@@ -114,70 +133,79 @@ msgid "Toggle whether the current entry is marked as important."
 msgstr "Fontosnak jelöli a jelenlegi bejegyzést."
 
 #: ../data/almanah.ui.h:11
+msgid "Show tags"
+msgstr "Címkék megjelenítése"
+
+#: ../data/almanah.ui.h:12
+#| msgid "Jump to the current date in the diary."
+msgid "Show tags for the current entry"
+msgstr "Címkék megjelenítése a jelenlegi bejegyzéshez"
+
+#: ../data/almanah.ui.h:13
 msgid "_Help"
 msgstr "_Súgó"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:14
 msgid "Go to _Today"
 msgstr "Ugrás a _mai napra"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Ugrás az aktuális napra a naplóban."
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:16
 msgid "Calendar"
 msgstr "Naptár"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:17
 msgid "Entry editing area"
 msgstr "Bejegyzésszerkesztési terület"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:18
 msgid "Past events"
 msgstr "Legutóbbi események"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:19
 msgid "Past Event List"
 msgstr "Legutóbbi események listája"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:20
 msgid "Search entry"
 msgstr "Bejegyzés keresése"
 
-#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Keresés"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Eredménylista"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:23
 msgid "View Entry"
 msgstr "Bejegyzés megjelenítése"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:24
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "például: „2009/03/14” vagy „2009. március 14.”."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:25
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "például: „http://google.com/” vagy „file:///home/én/Képek/kép.jpg”."
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Sikeres bejegyzések"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Merged Entries"
 msgstr "Egyesített bejegyzések"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:28
 msgid "Failed Entries"
 msgstr "Sikertelen bejegyzések"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:29
 msgid "Import Results List"
 msgstr "Eredmények listájának importálása"
 
@@ -246,7 +274,7 @@ msgstr "Hiba az adatbázis titkosításakor"
 
 #: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -410,8 +438,8 @@ msgstr "Importálás eredménye"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
-#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%Y. %B %e. %A"
@@ -462,39 +490,39 @@ msgstr ""
 "Bejegyzés importálva innen: „%s”, tartalma:\n"
 "\n"
 
-#: ../src/main-window.c:570
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Biztosan szeretné szerkeszteni ezt a naplóbejegyzést ehhez: %s?"
 
-#: ../src/main-window.c:600
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Biztosan szeretné törölni ezt a naplóbejegyzést ehhez: %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:709
+#: ../src/main-window.c:710
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Ismeretlen vagy kettőzött szövegcímke a bejegyzésben: „%s”. Figyelmen kívül "
 "hagyva."
 
-#: ../src/main-window.c:908
+#: ../src/main-window.c:918
 msgid "Error opening URI"
 msgstr "Hiba az URI megnyitásakor"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1082
+#: ../src/main-window.c:1092
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1161
+#: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
 msgstr "A bejegyzés tartalma nem tölthető be"
 
-#: ../src/main-window.c:1326
+#: ../src/main-window.c:1344
 msgid "Spelling checker could not be initialized"
 msgstr "Nem sikerült inicializálni a helyesírás-ellenőrzőt"
 
@@ -667,6 +695,10 @@ msgstr "Fontos!"
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Ismeretlen beviteli eszköz"
+
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+msgid "add tag"
+msgstr "címke hozzáadása"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:400
