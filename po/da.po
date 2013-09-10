@@ -1,8 +1,9 @@
 # Danish translation for almanah.
-# Copyright (C) 2012 almanah's COPYRIGHT HOLDER
+# Copyright (C) 2013 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
 # Joe Hansen (joedalton2@yahoo.dk), 2009, 2010, 2011, 2012, 2013.
 # Korrekturlæst Torben Grøn Helligsø, 2010.
+# Korrekturlæst Aputsiaq Janussen, 2013.
 #
 # entry -> post
 #
@@ -10,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-12 21:09+0100\n"
-"PO-Revision-Date: 2013-03-10 12:42+0000\n"
+"POT-Creation-Date: 2013-09-10 23:27+0200\n"
+"PO-Revision-Date: 2013-09-10 12:42+0000\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -19,6 +20,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/almanah.appdata.xml.in.h:1
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr "Almanah Diary er et program, som du kan bruge som dagbog i dit liv."
+
+#: ../data/almanah.appdata.xml.in.h:2
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Du kan kryptere dagbogen for at beskytte dit privatliv. Programmet har "
+"funktioner til redigering, inklusive tekstformatering og udskrivning, og "
+"viser en liste over hændelser (på din computer) for dig om hvad der skete "
+"hver dag (såsom opgaver og aftaler fra Evolution)."
 
 #: ../data/almanah-app-menu.ui.h:1
 msgid "_Search"
@@ -49,8 +67,8 @@ msgstr "_Om Almanah - dagbog"
 msgid "_Quit"
 msgstr "_Afslut"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:131
-#: ../src/main-window.c:135
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Almanah - dagbog"
 
@@ -59,9 +77,14 @@ msgid "Keep a personal diary"
 msgstr "Hold en personlig dagbog"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:262
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Dagbog"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "dagbog;journal;logbog;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -108,73 +131,81 @@ msgid "Toggle whether the current entry is marked as important."
 msgstr "Skifter mellem om den aktuelle post er markeret som vigtig eller ej."
 
 #: ../data/almanah.ui.h:11
+msgid "Show tags"
+msgstr "Vis mærker"
+
+#: ../data/almanah.ui.h:12
+msgid "Show tags for the current entry"
+msgstr "Vis mærker for den aktuelle post"
+
+#: ../data/almanah.ui.h:13
 msgid "_Help"
 msgstr "_Hjælp"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:14
 msgid "Go to _Today"
 msgstr "Gå _til I dag"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Gå til den aktuelle dato i dagbogen."
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:16
 msgid "Calendar"
 msgstr "Kalender"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:17
 msgid "Entry editing area"
 msgstr "Postredigeringsområde"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:18
 msgid "Past events"
 msgstr "Tidligere begivenheder"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:19
 msgid "Past Event List"
 msgstr "Tidligere begivenhedsliste"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:20
 msgid "Search entry"
 msgstr "Søgetekst"
 
-#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Søg"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Resultatliste"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:23
 msgid "View Entry"
 msgstr "Vis post"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:24
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "f.eks. \"14/03/2009\" eller \"14. marts 2009\"."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:25
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr ""
 "f.eks. \"http://google.com/\" eller \"file:///home/me/Photos/photo.jpg\"."
 
 # Succesfulde poster, poster med succes, vellykkede poster
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Vellykkede poster"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Merged Entries"
 msgstr "Flettede poster"
 
 # mislykkede poster
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:28
 msgid "Failed Entries"
 msgstr "Poster der mislykkedes"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:29
 msgid "Import Results List"
 msgstr "Importer resultatliste"
 
@@ -209,47 +240,47 @@ msgstr "Stavekontrol slået til?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Hvorvidt stavekontrol er slået til."
 
-#: ../src/application.c:245
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Fejl under åbning af database"
 
 #. Error loading the CSS
-#: ../src/application.c:274
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr ""
 "Kunne ikke indlæse CSS-filen \"%s\". Grænsefladen er måske ikke korrekt opsat"
 
-#: ../src/application.c:318
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Slå fejlsøgningstilstand til"
 
-#: ../src/application.c:335
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
 "Håndter din dagbog. Kun en instans af programmet kan være åben ad gangen."
 
 #. Print an error
-#: ../src/application.c:346
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Kommandolinjetilvalg kunne ikke fortolkes: %s\n"
 
-#: ../src/application.c:365
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Fejl under kryptering af database"
 
-#: ../src/application.c:418 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "UI-fil \"%s\" kunne ikke indlæses"
 
-#: ../src/application.c:541
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -261,7 +292,7 @@ msgstr ""
 "Foundation, enten version 3 af denne licens, eller (ved dit valg) enhver "
 "senere version."
 
-#: ../src/application.c:545
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -273,7 +304,7 @@ msgstr ""
 "EGNETHED TIL ET SPECIFIKT FORMÅL.  Se GNU General Public License for "
 "yderligere detaljer."
 
-#: ../src/application.c:549
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -281,12 +312,12 @@ msgstr ""
 "Du bør have modtaget en kopi af GNU General Public License sammen med "
 "Almanah.  Hvis ikke, så se <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:564
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "En nyttig dagbog, der gemmer %u poster."
 
-#: ../src/application.c:568
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Ophavsret © 2008-2009 Philip Withnall"
 
@@ -295,7 +326,7 @@ msgstr "Ophavsret © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:576
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr ""
 "Joe Hansen <joedalton2@yahoo.dk>, 2009, 2010, 2011, 2012, 2013.\n"
@@ -303,7 +334,7 @@ msgstr ""
 "Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
 "Mere info: http://www.dansk-gruppen.dk"
 
-#: ../src/application.c:580
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Almanahs internetside"
 
@@ -410,8 +441,8 @@ msgstr "Importresultater"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
-#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %B %Y"
@@ -463,37 +494,37 @@ msgstr ""
 "Post importeret fra \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:570
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Er du sikker på, at du ønsker at redigere denne dagbogspost for %s?"
 
-#: ../src/main-window.c:600
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Er du sikker på, at du ønsker at slette denne dagbogspost for %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:709
+#: ../src/main-window.c:710
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Ukendt eller duplikeret tekstmærke \"%s\" i post. Ignorerer."
 
-#: ../src/main-window.c:908
+#: ../src/main-window.c:918
 msgid "Error opening URI"
 msgstr "Fejl under åbning af URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1082
+#: ../src/main-window.c:1092
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1161
+#: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
 msgstr "Postindhold kunne ikke indlæses"
 
-#: ../src/main-window.c:1326
+#: ../src/main-window.c:1344
 msgid "Spelling checker could not be initialized"
 msgstr "Stavekontrol kunne ikke startes"
 
@@ -665,6 +696,10 @@ msgstr "Vigtigt!"
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Ukendt inputenhed"
+
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+msgid "add tag"
+msgstr "tilføj mærke"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:400
