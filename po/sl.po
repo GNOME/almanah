@@ -2,7 +2,7 @@
 # Copyright (C) 2009 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
 #
-# Andrej Žnidaršič <andrej.znidarsic@gmail.com>, 2009 - 2010.
+# Andrej Žnidaršič <andrej.znidarsic@gmail.com>, 2009-2010.
 # Matej Urbančič <mateju@svn.gnome.org>, 2010-2013
 #
 msgid ""
@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-15 12:49+0000\n"
-"PO-Revision-Date: 2013-06-03 21:56+0100\n"
+"POT-Creation-Date: 2013-09-09 22:01+0000\n"
+"PO-Revision-Date: 2013-09-10 21:24+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -22,6 +22,24 @@ msgstr ""
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.4\n"
+
+#: ../data/almanah.appdata.xml.in.h:1
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Snevnik Almanah je program, ki omogoča pisanje dnevnika vašega življenja."
+
+#: ../data/almanah.appdata.xml.in.h:2
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Dnevnik je mogoče šifrirati in s tem ohraniti zasebnost. Omogoča urejanje "
+"oblikovanja in tiskanje, pokaže sezname dogodkov (ki so zabeleženi "
+"digitalno) za vsak dan (na primer naloge in sestanki, povzeti iz programa "
+"Evolution)"
 
 #: ../data/almanah-app-menu.ui.h:1
 msgid "_Search"
@@ -53,7 +71,7 @@ msgid "_Quit"
 msgstr "_Končaj"
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:132
-#: ../src/main-window.c:135
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Almanah dnevnik"
 
@@ -116,70 +134,78 @@ msgid "Toggle whether the current entry is marked as important."
 msgstr "Preklopi oznako trenutnega vnosa kot pomembno."
 
 #: ../data/almanah.ui.h:11
+msgid "Show tags"
+msgstr "Prikaži oznake"
+
+#: ../data/almanah.ui.h:12
+msgid "Show tags for the current entry"
+msgstr "Pokaži oznake za trenutni izbor"
+
+#: ../data/almanah.ui.h:13
 msgid "_Help"
 msgstr "Pomo_č"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:14
 msgid "Go to _Today"
 msgstr "Pojdi na _današnji dan"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Skoči na trenutni datum v dnevniku."
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:16
 msgid "Calendar"
 msgstr "Koledar"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:17
 msgid "Entry editing area"
 msgstr "Območje urejanje vnosa"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:18
 msgid "Past events"
 msgstr "Pretekli dogodki"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:19
 msgid "Past Event List"
 msgstr "Seznam preteklih dogodkov"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:20
 msgid "Search entry"
 msgstr "Iskanje vnosa"
 
-#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Iskanje"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Seznam rezultatov"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:23
 msgid "View Entry"
 msgstr "Ogled vnosa"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:24
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "na primer: \"14. marec 2009\" ali \"14.3.2009\"."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:25
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "na primer “http://google.com/” ali “file:///home/me/Photos/photo.jpg”."
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Uspešni vnosi"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Merged Entries"
 msgstr "Združeni vnosi"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:28
 msgid "Failed Entries"
 msgstr "Spodleteli vnosi"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:29
 msgid "Import Results List"
 msgstr "Seznam rezultatov uvoza"
 
@@ -248,7 +274,7 @@ msgstr "Napaka med šifriranjem podatkovne zbirke"
 
 #: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
@@ -411,8 +437,8 @@ msgstr "Rezultati uvoza"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
-#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %m. %Y"
@@ -461,37 +487,37 @@ msgstr ""
 "Vnos uvožen iz \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:570
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Ali ste prepričani, da želite urejati dnevniški vnos za %s?"
 
-#: ../src/main-window.c:600
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Ali ste prepričani, da želite izbrisati dnevniški vnos za %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:709
+#: ../src/main-window.c:710
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Neznana ali podvojena oznaka \"%s\" v vnosu. Oznaka je prezrta."
 
-#: ../src/main-window.c:908
+#: ../src/main-window.c:918
 msgid "Error opening URI"
 msgstr "Napaka med odpiranjem URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1082
+#: ../src/main-window.c:1092
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1161
+#: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
 msgstr "Vsebine vnosa ni mogoče naložiti"
 
-#: ../src/main-window.c:1326
+#: ../src/main-window.c:1344
 msgid "Spelling checker could not be initialized"
 msgstr "Preverjanja črkovanja ni mogoče zagnati"
 
@@ -667,6 +693,10 @@ msgstr "Pomembno!"
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Neznana vhodna naprava"
+
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+msgid "add tag"
+msgstr "dodaj oznako"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:400
