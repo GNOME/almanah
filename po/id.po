@@ -1,15 +1,15 @@
 # Translation of almanah into Indonesian
 # Copyright (C) 2009 THE almanah'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
-# Andika Triwidada <andika@gmail.com>, 2009-2012.
+# Andika Triwidada <andika@gmail.com>, 2009-2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-26 22:18+0000\n"
-"PO-Revision-Date: 2012-11-27 18:31+0700\n"
+"POT-Creation-Date: 2013-09-04 23:24+0000\n"
+"PO-Revision-Date: 2013-10-04 22:24+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id_ID\n"
@@ -18,10 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.7\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
-#: ../src/main-window.c:133
+#: ../data/almanah.appdata.xml.in.h:1
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Buku Harian Almanah adalah aplikasi untuk mencatat buku harian kehidupan "
+"Anda."
+
+#: ../data/almanah.appdata.xml.in.h:2
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Anda dapat menyandikan buku harian untuk menjaga privasi Anda. Ini memiliki "
+"kemampuan penyuntingan, termasuk pemformatan teks dan menampilkan daftar "
+"peristiwa yang terjadi (pada komputer Anda) untuk setiap hari (seperti "
+"misalnya tugas dan janji temu dari Evolution)."
+
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Cari"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "Pr_eferensi"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "_Impor"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "_Ekspor"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "_Cetak buku harian"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "Tent_ang Buku Harian Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "_Keluar"
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Buku Harian Almanah"
 
@@ -30,39 +78,14 @@ msgid "Keep a personal diary"
 msgstr "Simpan buku harian pribadi"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Buku Harian"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
-msgid "Database encryption key ID"
-msgstr "ID kunci penyandian basis data"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
-msgid ""
-"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
-"been built with encryption support. Leave blank to disable database "
-"encryption."
-msgstr ""
-"ID dari kunci untuk menyandikan dan membongkar sandi basis data, bila "
-"Almanah telah dibangun dengan dukungan penyandian. Biarkan kosong untuk "
-"mematikan penyandian basis data."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
-msgid "Spell checking language"
-msgstr "Bahasa pemeriksaan ejaan"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
-msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "Nama locale bahasa untuk memeriksa ejaan entri."
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
-msgid "Spell checking enabled?"
-msgstr "Pemeriksaan ejaan diaktifkan?"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
-msgid "Whether spell checking of entries is enabled."
-msgstr "Apakah pemeriksaan ejaan entri diaktifkan."
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "buku harian;jurnal;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
@@ -109,108 +132,117 @@ msgid "Toggle whether the current entry is marked as important."
 msgstr "Jungkit apakah entri kini ditandai sebagai penting."
 
 #: ../data/almanah.ui.h:11
+msgid "Show tags"
+msgstr "Tampilkan tag"
+
+#: ../data/almanah.ui.h:12
+msgid "Show tags for the current entry"
+msgstr "Tampilkan tag untuk entri saat ini"
+
+#: ../data/almanah.ui.h:13
 msgid "_Help"
 msgstr "Ba_ntuan"
 
-#: ../data/almanah.ui.h:12
+#: ../data/almanah.ui.h:14
 msgid "Go to _Today"
 msgstr "Lihat _Hari Ini"
 
-#: ../data/almanah.ui.h:13
+#: ../data/almanah.ui.h:15
 msgid "Jump to the current date in the diary."
 msgstr "Lompat ke tanggal kini di buku harian."
 
-#: ../data/almanah.ui.h:14
+#: ../data/almanah.ui.h:16
 msgid "Calendar"
 msgstr "Kalender"
 
-#: ../data/almanah.ui.h:15
+#: ../data/almanah.ui.h:17
 msgid "Entry editing area"
 msgstr "Wilayah penyuntingan entri"
 
-#: ../data/almanah.ui.h:16
+#: ../data/almanah.ui.h:18
 msgid "Past events"
 msgstr "Kejadian lampau"
 
-#: ../data/almanah.ui.h:17
+#: ../data/almanah.ui.h:19
 msgid "Past Event List"
 msgstr "Daftar Kejadian Lalu"
 
-#: ../data/almanah.ui.h:18
+#: ../data/almanah.ui.h:20
 msgid "Search entry"
 msgstr "Cari entri"
 
-#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Cari"
 
-#: ../data/almanah.ui.h:20
+#: ../data/almanah.ui.h:22
 msgid "Result List"
 msgstr "Daftar Hasil"
 
-#: ../data/almanah.ui.h:21
+#: ../data/almanah.ui.h:23
 msgid "View Entry"
 msgstr "Tilik Entri"
 
-#: ../data/almanah.ui.h:22
+#: ../data/almanah.ui.h:24
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "mis. \"14/03/2009\" atau \"14 Maret 2009\"."
 
-#: ../data/almanah.ui.h:23
+#: ../data/almanah.ui.h:25
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "mis. \"http://google.com/\" atau \"file:///home/me/Photos/photo.jpg\"."
 
-#: ../data/almanah.ui.h:24
+#: ../data/almanah.ui.h:26
 msgid "Successful Entries"
 msgstr "Entri Sukses"
 
-#: ../data/almanah.ui.h:25
+#: ../data/almanah.ui.h:27
 msgid "Merged Entries"
 msgstr "Entri Tergabung"
 
-#: ../data/almanah.ui.h:26
+#: ../data/almanah.ui.h:28
 msgid "Failed Entries"
 msgstr "Entri Gagal"
 
-#: ../data/almanah.ui.h:27
+#: ../data/almanah.ui.h:29
 msgid "Import Results List"
 msgstr "Daftar Hasil Impor"
 
-#: ../data/almanah-app-menu.ui.h:1
-msgid "_Search"
-msgstr "_Cari"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr "ID kunci penyandian basis data"
 
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "Pr_eferensi"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"ID dari kunci untuk menyandikan dan membongkar sandi basis data, bila "
+"Almanah telah dibangun dengan dukungan penyandian. Biarkan kosong untuk "
+"mematikan penyandian basis data."
 
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Impor"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr "Bahasa pemeriksaan ejaan"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Ekspor"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Nama locale bahasa untuk memeriksa ejaan entri."
 
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "_Cetak buku harian"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr "Pemeriksaan ejaan diaktifkan?"
 
-#: ../data/almanah-app-menu.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "Tent_ang Buku Harian Almanah"
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr "Apakah pemeriksaan ejaan entri diaktifkan."
 
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "_Keluar"
-
-#: ../src/application.c:243
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Galat membuka basis data"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -218,11 +250,11 @@ msgstr ""
 "Tak bisa memuat berkas CSS '%s'. Antar muka mungkin tak ditata gayanya "
 "secara benar"
 
-#: ../src/application.c:316
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Aktifkan moda awakutu"
 
-#: ../src/application.c:333
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -230,24 +262,24 @@ msgstr ""
 "suatu saat."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:347
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opsi baris perintah tak dapat diurai: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Galat menyandikan basis data"
 
-#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:191 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Berkas UI \"%s\" tak dapat dimuat"
 
-#: ../src/application.c:532
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -259,7 +291,7 @@ msgstr ""
 "dipublikasikan oleh Free Software Foundation, apakah Lisensi versi 3 atau "
 "(sesuai pilihan Anda) versi selanjutnya."
 
-#: ../src/application.c:536
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -271,7 +303,7 @@ msgstr ""
 "KECOCOKAN UNTUK TUJUAN TERTENTU sekalipun. Lihat GNU General Public License "
 "untuk rincian lebih lanjut."
 
-#: ../src/application.c:540
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -279,12 +311,12 @@ msgstr ""
 "Anda mestinya menerima salinan GNU General Public License bersamaan dengan "
 "Almanah. Jika tidak, lihat <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:555
+#: ../src/application.c:565
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Penyimpan buku harian yang penuh bantuan, menyimpan %u entri."
 
-#: ../src/application.c:559
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Hak Cipta © 2008-2009 Philip Withnall"
 
@@ -293,11 +325,11 @@ msgstr "Hak Cipta © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:567
+#: ../src/application.c:577
 msgid "translator-credits"
-msgstr "Andika Triwidada <andika@gmail.com>, 2009-2012"
+msgstr "Andika Triwidada <andika@gmail.com>, 2009-2013"
 
-#: ../src/application.c:571
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Situs Web Almanah"
 
@@ -405,8 +437,8 @@ msgstr "Hasil Impor"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:555
-#: ../src/main-window.c:585 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
@@ -457,37 +489,37 @@ msgstr ""
 "Entri diimpor dari \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:559
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Anda yakin ingin menyunting entri buku harian ini bagi %s?"
 
-#: ../src/main-window.c:589
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Anda yakin ingin menghapus entri buku harian ini bagi %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:698
+#: ../src/main-window.c:710
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Tag teks tak dikenal atau berganda \"%s\" dalam entri. Diabaikan."
 
-#: ../src/main-window.c:897
+#: ../src/main-window.c:918
 msgid "Error opening URI"
 msgstr "Galat membuka URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1071
+#: ../src/main-window.c:1092
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1150
+#: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
 msgstr "Isi entri tak dapat dimuat"
 
-#: ../src/main-window.c:1312
+#: ../src/main-window.c:1344
 msgid "Spelling checker could not be initialized"
 msgstr "Pemeriksa ejaan tak dapat diinisialisasi"
 
@@ -563,32 +595,32 @@ msgstr[0] "Ditemukan %d entri:"
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: ../src/storage-manager.c:259
+#: ../src/storage-manager.c:275
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME kurang dari versi minimal %s"
 
-#: ../src/storage-manager.c:268
+#: ../src/storage-manager.c:284
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME tak mendukung OpenPGP: %s"
 
-#: ../src/storage-manager.c:277
+#: ../src/storage-manager.c:293
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Galat membuat konteks cipher: %s"
 
-#: ../src/storage-manager.c:306
+#: ../src/storage-manager.c:322
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Galat membuka berkas basis data tersandi \"%s\": %s"
 
-#: ../src/storage-manager.c:325
+#: ../src/storage-manager.c:341
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Galat membuka berkas basis data polos \"%s\": %s"
 
-#: ../src/storage-manager.c:373
+#: ../src/storage-manager.c:389
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -597,27 +629,27 @@ msgstr ""
 "dihapus sebagai cadangan."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:376
+#: ../src/storage-manager.c:392
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Tak bisa menghapus berkas basis data polos \"%s\"."
 
-#: ../src/storage-manager.c:417
+#: ../src/storage-manager.c:433
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Galat membongkar sandi basis data: %s"
 
-#: ../src/storage-manager.c:451
+#: ../src/storage-manager.c:467
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Galat memperoleh kunci penyandian: %s"
 
-#: ../src/storage-manager.c:472
+#: ../src/storage-manager.c:488
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Galat menyandikan basis data: %s"
 
-#: ../src/storage-manager.c:574
+#: ../src/storage-manager.c:590
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -625,21 +657,20 @@ msgid ""
 msgstr ""
 "Tak bisa membuka basis data \"%s\". SQLite memberikan pesan galat berikut: %s"
 
-#: ../src/storage-manager.c:651
+#: ../src/storage-manager.c:667
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
 "Tak bisa menjalankan query \"%s\". SQLite memberikan pesan galat berikut: %s"
 
-#: ../src/storage-manager.c:954
+#: ../src/storage-manager.c:973
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Galat deserialisasi entri ke dalam penyangga ketika mencari."
 
-#. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:176
-msgid "Important!"
-msgstr "Penting!"
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Masukkan URI"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
@@ -650,11 +681,20 @@ msgstr "Berkas UI \"%s\" tak dapat dimuat: %s"
 msgid "Can't load calendar window object from UI file"
 msgstr "Tak bisa memuat objek jendela kalender dari berkas UI"
 
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Penting!"
+
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Perangkat masukan tak dikenal"
 
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Masukkan URI"
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+msgid "add tag"
+msgstr "tambah tag"
 
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: ../src/widgets/tag.c:400
+msgid "Remove tag"
+msgstr "Hapus tag"
