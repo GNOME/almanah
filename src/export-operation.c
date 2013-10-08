@@ -18,8 +18,10 @@
  */
 
 #include <config.h>
+#include <errno.h>
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
 #include "export-operation.h"
@@ -213,7 +215,7 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 	almanah_storage_manager_iter_init (&iter);
 	while ((entry = almanah_storage_manager_get_entries (self->priv->storage_manager, &iter)) != NULL) {
 		GDate date;
-		gchar *filename, *content;
+		gchar *filename, *content, *path;
 		GFile *file;
 		GtkTextIter start_iter, end_iter;
 
@@ -245,11 +247,26 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 			break;
 		}
 
-		/* Progress callback */
-		progress_idle_callback (progress_callback, progress_user_data, &date);
+		g_free (content);
+
+		/* Ensure the file is only readable to the current user. */
+		path = g_file_get_path (file);
+		if (g_chmod (path, 0600) != 0) {
+			g_set_error (&child_error, G_IO_ERROR, G_IO_ERROR_FAILED,
+			             _("Error changing exported file permissions: %s"),
+			             g_strerror (errno));
+
+			g_object_unref (file);
+			g_free (path);
+
+			break;
+		}
 
 		g_object_unref (file);
-		g_free (content);
+		g_free (path);
+
+		/* Progress callback */
+		progress_idle_callback (progress_callback, progress_user_data, &date);
 
 		/* Clear the buffer. */
 		gtk_text_buffer_delete (buffer, &start_iter, &end_iter);
@@ -279,6 +296,7 @@ export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExport
 {
 	GFile *source;
 	gboolean success;
+	gchar *destination_path;
 
 	/* We ignore the progress callbacks, since this is a fairly fast operation, and it exports all the entries at once. */
 
@@ -288,6 +306,16 @@ export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExport
 	/* Copy the current database to that location */
 	success = g_file_copy (source, destination, G_FILE_COPY_OVERWRITE, cancellable, NULL, NULL, error);
 
+	/* Ensure the backup is only readable to the current user. */
+	destination_path = g_file_get_path (destination);
+	if (success == TRUE && g_chmod (destination_path, 0600) != 0) {
+		g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+		             _("Error changing exported file permissions: %s"),
+		             g_strerror (errno));
+		success = FALSE;
+	}
+
+	g_free (destination_path);
 	g_object_unref (source);
 
 	return success;

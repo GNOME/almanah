@@ -18,6 +18,7 @@
  */
 
 #include <config.h>
+#include <errno.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
@@ -525,11 +526,12 @@ get_encryption_key (AlmanahStorageManager *self)
 }
 #endif /* ENABLE_ENCRYPTION */
 
-static void
-back_up_file (const gchar *filename)
+static gboolean
+back_up_file (const gchar *filename, GError **error)
 {
 	GFile *original_file, *backup_file;
 	gchar *backup_filename;
+	gboolean retval = TRUE;
 
 	/* Make a backup of the encrypted database file */
 	original_file = g_file_new_for_path (filename);
@@ -537,10 +539,22 @@ back_up_file (const gchar *filename)
 	backup_file = g_file_new_for_path (backup_filename);
 	g_free (backup_filename);
 
-	g_file_copy_async (original_file, backup_file, G_FILE_COPY_OVERWRITE, G_PRIORITY_DEFAULT, NULL, NULL, NULL, NULL, NULL);
+	if (g_file_copy (original_file, backup_file, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, error) == FALSE) {
+		retval = FALSE;
+	}
+
+	/* Ensure the backup is only readable to the current user. */
+	if (g_chmod (backup_filename, 0600) != 0 && errno != ENOENT) {
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
+		             _("Error changing database backup file permissions: %s"),
+		             g_strerror (errno));
+		retval = FALSE;
+	}
 
 	g_object_unref (original_file);
 	g_object_unref (backup_file);
+
+	return retval;
 }
 
 gboolean
@@ -548,16 +562,27 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 {
 #ifdef ENABLE_ENCRYPTION
 	struct stat encrypted_db_stat, plaintext_db_stat;
+	GError *child_error = NULL;
 
 	g_stat (self->priv->filename, &encrypted_db_stat);
+
+	if (g_chmod (self->priv->filename, 0600) != 0 && errno != ENOENT) {
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
+		             _("Error changing database file permissions: %s"),
+		             g_strerror (errno));
+		return FALSE;
+	}
 
 	/* If we're decrypting, don't bother if the cipher file doesn't exist (i.e. the database hasn't yet been created), or is empty
 	 * (i.e. corrupt). */
 	if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
-		GError *child_error = NULL;
-
 		/* Make a backup of the encrypted database file */
-		back_up_file (self->priv->filename);
+		back_up_file (self->priv->filename, &child_error);
+		if (child_error != NULL) {
+			/* Translators: the first parameter is a filename, the second is an error message. */
+			g_warning (_("Error backing up file ‘%s’: %s"), self->priv->filename, child_error->message);
+			g_clear_error (&child_error);
+		}
 
 		g_stat (self->priv->plain_filename, &plaintext_db_stat);
 
@@ -580,7 +605,12 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 	self->priv->decrypted = TRUE;
 #else
 	/* Make a backup of the plaintext database file */
-	back_up_file (self->priv->plain_filename);
+	back_up_file (self->priv->plain_filename, &child_error);
+	if (child_error != NULL) {
+		/* Translators: the first parameter is a filename, the second is an error message. */
+		g_warning (_("Error backing up file ‘%s’: %s"), self->priv->plain_filename, child_error->message);
+		g_clear_error (&child_error);
+	}
 	self->priv->decrypted = FALSE;
 #endif /* ENABLE_ENCRYPTION */
 
@@ -589,6 +619,13 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 		             _("Could not open database \"%s\". SQLite provided the following error message: %s"),
 		             self->priv->filename, sqlite3_errmsg (self->priv->connection));
+		return FALSE;
+	}
+
+	if (g_chmod (self->priv->plain_filename, 0600) != 0 && errno != ENOENT) {
+		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
+		             _("Error changing database file permissions: %s"),
+		             g_strerror (errno));
 		return FALSE;
 	}
 
