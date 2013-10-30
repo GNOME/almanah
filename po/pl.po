@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-05 14:47+0200\n"
-"PO-Revision-Date: 2013-09-05 14:48+0200\n"
+"POT-Creation-Date: 2013-10-30 18:53+0100\n"
+"PO-Revision-Date: 2013-10-30 18:55+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -377,12 +377,12 @@ msgstr "Zadanie kalendarza"
 msgid "A task on an Evolution calendar."
 msgstr "Zadanie w kalendarzu programu Evolution."
 
-#: ../src/export-operation.c:45 ../src/import-operation.c:45
+#: ../src/export-operation.c:47 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Pliki tekstowe"
 
 # instrukcja w oknie eksportu
-#: ../src/export-operation.c:46
+#: ../src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -393,18 +393,23 @@ msgstr ""
 "rozszerzenia. Wszystkie wpisy zostaną wyeksportowane, niezaszyfrowane, jako "
 "zwykłe pliki tekstowe."
 
-#: ../src/export-operation.c:50 ../src/import-operation.c:50
+#: ../src/export-operation.c:52 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Baza danych"
 
 # instrukcja w oknie eksportu
-#: ../src/export-operation.c:51
+#: ../src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
 "Proszę wybrać _nazwę dla kompletnej, niezaszyfrowanej kopii bazy danych "
 "pamiętnika Almanah."
+
+#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "Błąd podczas zmieniania uprawnień wyeksportowanego pliku: %s"
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
@@ -611,32 +616,32 @@ msgstr[2] "Odnaleziono %d wpisów:"
 msgid "Searching…"
 msgstr "Wyszukiwanie…"
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:276
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "Biblioteka GPGME nie jest w wersji co najmniej %s"
 
-#: ../src/storage-manager.c:284
+#: ../src/storage-manager.c:285
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "Biblioteka GPGME nie obsługuje standardu OpenPGP: %s"
 
-#: ../src/storage-manager.c:293
+#: ../src/storage-manager.c:294
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Błąd podczas tworzenia kontekstu szyfrowania: %s"
 
-#: ../src/storage-manager.c:322
+#: ../src/storage-manager.c:323
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Błąd podczas otwierania zaszyfrowanego pliku bazy danych \"%s\": %s"
 
-#: ../src/storage-manager.c:341
+#: ../src/storage-manager.c:342
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Błąd podczas otwierania pliku bazy danych \"%s\": %s"
 
-#: ../src/storage-manager.c:389
+#: ../src/storage-manager.c:390
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -645,27 +650,44 @@ msgstr ""
 "pozostawiono jako kopię zapasową."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:392
+#: ../src/storage-manager.c:393
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Nie można usunąć pliku bazy danych \"%s\"."
 
-#: ../src/storage-manager.c:433
+#: ../src/storage-manager.c:434
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Błąd podczas deszyfrowania bazy danych: %s"
 
-#: ../src/storage-manager.c:467
+#: ../src/storage-manager.c:468
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Błąd podczas pobierania klucza szyfrującego: %s"
 
-#: ../src/storage-manager.c:488
+#: ../src/storage-manager.c:489
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Błąd podczas szyfrowania bazy danych: %s"
 
-#: ../src/storage-manager.c:590
+#: ../src/storage-manager.c:549
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr ""
+"Błąd podczas zmieniania uprawnień pliku kopii zapasowej bazy danych: %s"
+
+#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Błąd podczas zmieniania uprawnień pliku bazy danych: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
+#, c-format
+msgid "Error backing up file ‘%s’: %s"
+msgstr "Błąd podczas tworzenia kopii zapasowej pliku \"%s\": %s"
+
+#: ../src/storage-manager.c:620
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -674,7 +696,7 @@ msgstr ""
 "Nie można otworzyć bazy danych \"%s\". Biblioteka SQLite wysłała następujący "
 "komunikat o błędzie: %s"
 
-#: ../src/storage-manager.c:667
+#: ../src/storage-manager.c:704
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -682,7 +704,7 @@ msgstr ""
 "Nie można wykonać zapytania \"%s\". Biblioteka SQLite wysłała następujący "
 "komunikat o błędzie: %s"
 
-#: ../src/storage-manager.c:973
+#: ../src/storage-manager.c:1010
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Błąd podczas rozszeregowywania wpisu do bufora podczas wyszukiwania."
 
