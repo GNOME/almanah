@@ -288,7 +288,7 @@ msgstr "Erro ao criptografar o banco de dados"
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
-msgstr "Arquivo de interface de usuário \"%s\" não pôde ser carregado"
+msgstr "Não foi possível carregar o arquivo de interface gráfica \"%s\""
 
 #: ../src/application.c:542
 msgid ""
@@ -320,7 +320,7 @@ msgid ""
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 "Você deve ter recebido uma cópia da Licença Pública Geral GNU (GNU General "
-"Public License) junto com o Almanah; se não, consulte <http://www.gnu.org/"
+"Public License) junto com o Almanah. Caso contrário, consulte <http://www.gnu.org/"
 "licenses/>."
 
 #: ../src/application.c:565
@@ -542,11 +542,11 @@ msgstr "%s @ %s"
 
 #: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
-msgstr "O conteúdo da entrada não pôde ser carregado"
+msgstr "Não foi possível carregar o conteúdo de entrada"
 
 #: ../src/main-window.c:1344
 msgid "Spelling checker could not be initialized"
-msgstr "O verificador ortográfico não pôde ser inicializado"
+msgstr "Não foi possível inicializar a verificação ortográfica"
 
 #: ../src/preferences-dialog.c:91
 msgid "Almanah Preferences"
@@ -714,18 +714,18 @@ msgstr "Erro ao desserializar entrada dentro do buffer durante a pesquisa."
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
-msgstr "Inserir URI"
+msgstr "Digite o URI"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
 msgid "UI file \"%s\" could not be loaded: %s"
-msgstr "O arquivo de interface de usuário \"%s\" não pôde ser carregado: %s"
+msgstr "Não foi possível carregar arquivo de interface gráfica \"%s\": %s"
 
 #: ../src/widgets/calendar-button.c:150
 msgid "Can't load calendar window object from UI file"
 msgstr ""
-"Não é possível carregar objeto janela de calendário do arquivo de interface "
-"de usuário"
+"Não foi possível carregar objeto da janela de calendário do arquivo de interface "
+"gráfica"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: ../src/widgets/calendar.c:176
@@ -745,144 +745,3 @@ msgstr "Adicionar etiqueta"
 msgid "Remove tag"
 msgstr "Remover etiqueta"
 
-#~ msgid "View"
-#~ msgstr "Ver"
-
-#~ msgid "View Event"
-#~ msgstr "Ver evento"
-
-#~ msgid "_Edit"
-#~ msgstr "_Editar"
-
-#~ msgid "_Export…"
-#~ msgstr "E_xportar..."
-
-#~ msgid "_File"
-#~ msgstr "_Arquivo"
-
-#~ msgid "_Import…"
-#~ msgstr "_Importar..."
-
-#~ msgid "_Print…"
-#~ msgstr "_Imprimir..."
-
-#~ msgid "_Search…"
-#~ msgstr "_Pesquisar..."
-
-#~ msgid "Results:"
-#~ msgstr "Resultados:"
-
-#~ msgid "Main window X position"
-#~ msgstr "Posição X da janela principal"
-
-#~ msgid "Main window Y position"
-#~ msgstr "Posição Y da janela principal"
-
-#~ msgid "Main window height"
-#~ msgstr "Altura da janela principal"
-
-#~ msgid "Main window maximization"
-#~ msgstr "Maximização da janela principal"
-
-#~ msgid "Main window width"
-#~ msgstr "Largura da janela principal"
-
-#~ msgid "The X position of the main window."
-#~ msgstr "A posição X da janela principal."
-
-#~ msgid "The Y position of the main window."
-#~ msgstr "A posição Y da janela principal."
-
-#~ msgid "The height of the main window."
-#~ msgstr "A altura da janela principal."
-
-#~ msgid "The width of the main window."
-#~ msgstr "A largura da janela principal."
-
-#~ msgid "Whether the main window should start maximized."
-#~ msgstr "Se a janela principal deve ou não iniciar maximizada."
-
-#~ msgid "Add a definition for the currently selected text."
-#~ msgstr "Adicionar uma definição para o atual texto selecionado."
-
-#~ msgid "Definition Description"
-#~ msgstr "Descrição da definição"
-
-#~ msgid "Definition List"
-#~ msgstr "Lista de definição"
-
-#~ msgid "Definition Type"
-#~ msgstr "Tipo de definição"
-
-#~ msgid "Definition type:"
-#~ msgstr "Tipo de definição:"
-
-#~ msgid "Nothing selected"
-#~ msgstr "Nada selecionado"
-
-#~ msgid "_Add Definition"
-#~ msgstr "_Adicionar definição"
-
-#~ msgid "_Definitions"
-#~ msgstr "_Definições"
-
-#~ msgid "_Remove Definition"
-#~ msgstr "_Remover definição"
-
-#~ msgid "_View Definitions"
-#~ msgstr "_Ver definições"
-
-#~ msgid "Add Definition"
-#~ msgstr "Adicionar definição"
-
-#~ msgid "Definition Manager"
-#~ msgstr "Gerenciador de definições"
-
-#~ msgid "Are you sure you want to delete the definition for \"%s\"?"
-#~ msgstr ""
-#~ "Você tem certeza que quer excluir essa definição de diário para \"%s\"?"
-
-#~ msgid "Contact"
-#~ msgstr "Contato"
-
-#~ msgid "An Evolution contact."
-#~ msgstr "Um contato do Evolution."
-
-#~ msgid "Select Contact"
-#~ msgstr "Selecionar contato"
-
-#~ msgid "Error opening contact"
-#~ msgstr "Erro ao abrir o contato"
-
-#~ msgid "Error opening Evolution"
-#~ msgstr "Erro ao abrir o Evolution"
-
-#~ msgid "File"
-#~ msgstr "Arquivo"
-
-#~ msgid "An attached file."
-#~ msgstr "Um arquivo anexado."
-
-#~ msgid "Error opening file"
-#~ msgstr "Erro ao abrir o arquivo"
-
-#~ msgid "Select File"
-#~ msgstr "Selecionar arquivo"
-
-#~ msgid "Note"
-#~ msgstr "Nota"
-
-#~ msgid "A note about an important event."
-#~ msgstr "Uma nota sobre um evento importante."
-
-#~ msgid "URI"
-#~ msgstr "URI"
-
-#~ msgid "A URI of a file or web page."
-#~ msgstr "Um URI de um arquivo ou página Web."
-
-#~ msgid "URI: "
-#~ msgstr "URI: "
-
-#~ msgid "- Manage your diary"
-#~ msgstr "- Gerencie seu diário"
