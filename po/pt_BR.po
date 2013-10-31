@@ -5,7 +5,7 @@
 # Fábio Nogueira <deb-user-ba@ubuntu.com>, 2008.
 # Taylon Silmer <taylonsilva@gmail.com>, 2008.
 # Vladimir Melo <vmelo@gnome.org>, 2008.
-# Antonio Fernandes C. Neto <fernandes@pelivre.org>, 2009.
+# Antonio Fernandes C. Neto <fernandesn@gnome.org>, 2009,2013.
 # Carlos José Pereira <carlao2005@gmail.com>, 2010.
 # Gabriel Speckhahn <gabspeck@gmail.com>, 2011.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2012, 2013.
@@ -17,9 +17,9 @@ msgstr ""
 "Project-Id-Version: Almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-05 17:42+0000\n"
-"PO-Revision-Date: 2013-09-05 14:51-0300\n"
-"Last-Translator: Ramon Brandão <rcbdesigner@gmail.com>\n"
+"POT-Creation-Date: 2013-10-29 11:31+0000\n"
+"PO-Revision-Date: 2013-10-29 09:18-0300\n"
+"Last-Translator: Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -344,7 +344,7 @@ msgstr ""
 "Fábio Nogueira <deb-user-ba@ubuntu.com>\n"
 "Taylon Silmer <taylonsilva@gmail.com>\n"
 "Vladimir Melo <vmelo@gnome.org>\n"
-"Antonio Fernandes C. Neto <fernandes@pelivre.org>\n"
+"Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
 "Carlos José Pereira <carlao2005@gmail.com>\n"
 "Rafael Ferreira <rafael.f.f1@gmail.com>"
 
@@ -387,11 +387,11 @@ msgstr "Calendário de tarefas"
 msgid "A task on an Evolution calendar."
 msgstr "Uma tarefa em um calendário do Evolution."
 
-#: ../src/export-operation.c:45 ../src/import-operation.c:45
+#: ../src/export-operation.c:47 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Arquivos de texto"
 
-#: ../src/export-operation.c:46
+#: ../src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -401,17 +401,22 @@ msgstr ""
 "entrada, com nomes no formato 'aaaa-mm-dd' e sem extensão. Todas as entradas "
 "serão exportadas sem criptografia, no formato de texto puro."
 
-#: ../src/export-operation.c:50 ../src/import-operation.c:50
+#: ../src/export-operation.c:52 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Banco de dados"
 
-#: ../src/export-operation.c:51
+#: ../src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
 "Selecione um nome de ar_quivo onde será gerada uma cópia completa e sem "
 "criptografia da base de dados do Diário Almanah."
+
+#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "Erro ao alterar permissões dos arquivos exportados: %s"
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
@@ -616,32 +621,32 @@ msgstr[1] "%d entradas localizadas:"
 msgid "Searching…"
 msgstr "Pesquisando…"
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:276
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "O GPGME não está na versão mínima %s"
 
-#: ../src/storage-manager.c:284
+#: ../src/storage-manager.c:285
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "O GPGME não tem suporte a OpenPGP: %s"
 
-#: ../src/storage-manager.c:293
+#: ../src/storage-manager.c:294
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Erro ao criar o contexto cifrado: %s"
 
-#: ../src/storage-manager.c:322
+#: ../src/storage-manager.c:323
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Erro ao abrir o arquivo de banco de dados criptografado em \"%s\": %s"
 
-#: ../src/storage-manager.c:341
+#: ../src/storage-manager.c:342
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Erro ao abrir o arquivo de banco de dados em \"%s\": %s"
 
-#: ../src/storage-manager.c:389
+#: ../src/storage-manager.c:390
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -650,27 +655,43 @@ msgstr ""
 "desfeito como backup."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:392
+#: ../src/storage-manager.c:393
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Não foi possível excluir o arquivo de banco de dados em \"%s\"."
 
-#: ../src/storage-manager.c:433
+#: ../src/storage-manager.c:434
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Erro ao descriptografar o banco de dados: %s"
 
-#: ../src/storage-manager.c:467
+#: ../src/storage-manager.c:468
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Erro ao obter a chave de criptografia: %s"
 
-#: ../src/storage-manager.c:488
+#: ../src/storage-manager.c:489
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Erro ao criptografar o banco de dados: %s"
 
-#: ../src/storage-manager.c:590
+#: ../src/storage-manager.c:549
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Erro ao alterar permissões dos arquivos backup do banco de dados: %s"
+
+#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Erro ao alterar permissões dos arquivos de banco de dados: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
+#, c-format
+msgid "Error backing up file ‘%s’: %s"
+msgstr "Erro ao fazer backup do arquivo \"%s\": %s"
+
+#: ../src/storage-manager.c:620
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -679,7 +700,7 @@ msgstr ""
 "Não foi possível abrir o banco de dados em \"%s\". O SQLite retornou a "
 "seguinte mensagem de erro: %s"
 
-#: ../src/storage-manager.c:667
+#: ../src/storage-manager.c:704
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -687,7 +708,7 @@ msgstr ""
 "Não foi possível executar a consulta \"%s\". O SQLite retornou a seguinte "
 "mensagem de erro: %s"
 
-#: ../src/storage-manager.c:973
+#: ../src/storage-manager.c:1010
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Erro ao desserializar entrada dentro do buffer durante a pesquisa."
 
