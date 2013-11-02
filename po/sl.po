@@ -8,18 +8,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-09 22:01+0000\n"
-"PO-Revision-Date: 2013-09-10 21:24+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-10-31 01:20+0000\n"
+"PO-Revision-Date: 2013-11-02 11:41+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.5.4\n"
 
@@ -368,11 +366,11 @@ msgstr "Naloga v koledarju"
 msgid "A task on an Evolution calendar."
 msgstr "Naloga v koledarju Evolution."
 
-#: ../src/export-operation.c:45 ../src/import-operation.c:45
+#: ../src/export-operation.c:47 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Besedilne datoteke"
 
-#: ../src/export-operation.c:46
+#: ../src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -382,17 +380,22 @@ msgstr ""
 "obliki 'yyyy-mm-dd' in brez pripon. Vsi vnosi bodo izvoženi nešifrirani v "
 "obliki običajnega besedila."
 
-#: ../src/export-operation.c:50 ../src/import-operation.c:50
+#: ../src/export-operation.c:52 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Podatkovna zbirka"
 
-#: ../src/export-operation.c:51
+#: ../src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
 "Izberite _ime datoteke za celotno kopijo nešifrirane podatkovne zbirke "
 "dnevnika Almanah."
+
+#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "Napaka spreminjanja dovoljenj izvožene datoteke: %s"
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
@@ -596,32 +599,32 @@ msgstr[3] "Najdeni so bili %d vnosi:"
 msgid "Searching…"
 msgstr "Iskanje ..."
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:276
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "Različica GPGME ni vsaj različice %s"
 
-#: ../src/storage-manager.c:284
+#: ../src/storage-manager.c:285
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME ne podpira OpenPGP: %s"
 
-#: ../src/storage-manager.c:293
+#: ../src/storage-manager.c:294
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Napaka ustvarjanja vsebine cifre: %s"
 
-#: ../src/storage-manager.c:322
+#: ../src/storage-manager.c:323
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Napaka odpiranja šifrirane datoteke podatkovne zbirke \"%s\": %s"
 
-#: ../src/storage-manager.c:341
+#: ../src/storage-manager.c:342
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Napaka odpiranja besedilne podatkovne zbirke \"%s\": %s"
 
-#: ../src/storage-manager.c:389
+#: ../src/storage-manager.c:390
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -630,27 +633,43 @@ msgstr ""
 "ohranjena kot varnostna kopija."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:392
+#: ../src/storage-manager.c:393
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Besedilne podatkovne zbirke \"%s\" ni mogoče izbrisati."
 
-#: ../src/storage-manager.c:433
+#: ../src/storage-manager.c:434
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Napaka dešifriranja podatkovne zbirke: %s"
 
-#: ../src/storage-manager.c:467
+#: ../src/storage-manager.c:468
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Napaka pridobivanja šifrirnega ključa: %s"
 
-#: ../src/storage-manager.c:488
+#: ../src/storage-manager.c:489
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Napaka med šifriranjem podatkovne zbirke: %s"
 
-#: ../src/storage-manager.c:590
+#: ../src/storage-manager.c:549
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Napaka spreminjanja dovoljenj datoteke varnostne kopije: %s"
+
+#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Napaka spreminjanja dovoljenj datoteke podatkovne zbirke: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
+#, c-format
+msgid "Error backing up file ‘%s’: %s"
+msgstr "Napaka ustvarjanja varnostne kopije datoteke ‘%s’: %s"
+
+#: ../src/storage-manager.c:620
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -659,7 +678,7 @@ msgstr ""
 "Podatkovne zbirke \"%s\" ni mogoče odpreti. SQLite poroča naslednje poročilo "
 "o napaki: %s"
 
-#: ../src/storage-manager.c:667
+#: ../src/storage-manager.c:704
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -667,7 +686,7 @@ msgstr ""
 "Poizvedbe \"%s\" ni mogoče zagnati. SQLite poroča naslednje poročilo o "
 "napaki: %s"
 
-#: ../src/storage-manager.c:973
+#: ../src/storage-manager.c:1010
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Napaka med ločitvijo vnosa iz zaporedja v medpomnilnik med iskanjem."
 
