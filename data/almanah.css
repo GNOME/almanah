@@ -9,6 +9,9 @@ AlmanahCalendarButton:active {
     border-image: none;
     border-color: @menu_bg_color;
     border-radius: 4px 4px 0 0;
+
+    color: @theme_text_color;
+    text-shadow: none;
 }
 
 AlmanahCalendarButton GtkLabel:active {

@@ -239,10 +239,11 @@
 										<property name="hexpand">True</property>
 										<property name="horizontal-spacing">6</property>
 										<property name="vertical-spacing">6</property>
-										<property name="margin_top">6</property>
-										<property name="margin_left">6</property>
-										<property name="margin_right">6</property>
-										<property name="margin_bottom">6</property>
+										<property name="margin_top">0</property>
+										<property name="margin_left">0</property>
+										<property name="margin_right">0</property>
+										<property name="margin_bottom">0</property>
+										<property name="border-width">6</property>
 									</object>
 									<packing>
 										<property name="left_attach">0</property>
@@ -272,6 +273,7 @@
 												<property name="margin_top">6</property>
 												<property name="margin_left">10</property>
 												<property name="margin_right">10</property>
+												<property name="margin_top">4</property>
 												<child internal-child="accessible">
 													<object class="AtkObject" id="a11y-almanah_mw_entry_view">
 														<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>
