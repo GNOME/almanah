@@ -42,9 +42,10 @@ typedef struct {
 	GtkDrawingAreaClass parent;
 } AlmanahTagClass;
 
-GType      almanah_tag_get_type  (void) G_GNUC_CONST;
-GtkWidget *almanah_tag_new       (const gchar *tag);
-const gchar *almanah_tag_get_tag (AlmanahTag *tag_widget);
+GType        almanah_tag_get_type (void) G_GNUC_CONST;
+GtkWidget   *almanah_tag_new      (const gchar *tag);
+const gchar *almanah_tag_get_tag  (AlmanahTag *tag_widget);
+void         almanah_tag_remove   (AlmanahTag *tag_widget);
 
 G_END_DECLS
 

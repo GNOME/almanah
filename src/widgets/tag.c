@@ -22,6 +22,7 @@
 #include <math.h>
 
 #include "tag.h"
+#include "tag-accessible.h"
 
 #define PADDING_TOP    1
 #define PADDING_BOTTOM 1
@@ -106,6 +107,8 @@ almanah_tag_class_init (AlmanahTagClass *klass)
 						   0, NULL, NULL,
 						   g_cclosure_marshal_VOID__VOID,
 						   G_TYPE_NONE, 0);
+
+	gtk_widget_class_set_accessible_type (widget_class, ALMANAH_TYPE_TAG_ACCESSIBLE);
 }
 
 static void
@@ -114,7 +117,10 @@ almanah_tag_init (AlmanahTag *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_TAG, AlmanahTagPrivate);
 	g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (almanah_tag_draw), NULL);
 
-	gtk_widget_add_events (GTK_WIDGET  (self), GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
+	gtk_widget_add_events (GTK_WIDGET  (self),
+			       GDK_POINTER_MOTION_MASK
+			       | GDK_BUTTON_PRESS_MASK
+			       | GDK_BUTTON_RELEASE_MASK);
 
 	gdk_rgba_parse (&self->priv->text_color, "#936835");
 	gdk_rgba_parse (&self->priv->strock_color, "#ECB447");
@@ -125,6 +131,8 @@ almanah_tag_init (AlmanahTag *self)
 
 	self->priv->close_highlighted = FALSE;
 	self->priv->close_pressed = FALSE;
+
+	gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 }
 
 static void
@@ -286,8 +294,8 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 
 	/* Get the tag dimensions */
 	gtk_widget_get_preferred_width (widget, &width, NULL);
-	width = width - SHADOW_RIGHT;
 	gtk_widget_get_preferred_height (widget, &height, NULL);
+	width = width - SHADOW_RIGHT;
 	height = height - SHADOW_BOTTOM;
 
 	/* Some coordinates */
@@ -384,6 +392,14 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	cairo_line_to (cr, priv->close_x, y_origin + middle_height + (CLOSE_BUTTON / 2));
 	cairo_stroke (cr);
 
+	/* Focus */
+	if (gtk_widget_has_focus (widget))
+		gtk_render_focus (gtk_widget_get_style_context (widget),
+				  cr,
+				  0, 0,
+				  gtk_widget_get_allocated_width (widget),
+				  gtk_widget_get_allocated_height (widget));
+
 	return FALSE;
 }
 
@@ -412,11 +428,18 @@ almanah_tag_new (const gchar *tag)
 					 NULL));
 }
 
-
 const gchar *
 almanah_tag_get_tag (AlmanahTag *tag_widget)
 {
 	g_return_val_if_fail (ALMANAH_IS_TAG (tag_widget), NULL);
 
 	return tag_widget->priv->tag;
+}
+
+void
+almanah_tag_remove (AlmanahTag *tag_widget)
+{
+	g_return_val_if_fail (ALMANAH_IS_TAG (tag_widget), NULL);
+
+	g_signal_emit (tag_widget, tag_signals[SIGNAL_REMOVE], 0);
 }

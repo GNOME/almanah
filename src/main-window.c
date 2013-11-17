@@ -244,7 +244,7 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* We don't use g_settings_bind() because enabling spell checking could fail, and we need to show an error dialogue */
 	priv->spell_checking_enabled_changed_id = g_signal_connect (priv->settings, "changed::spell-checking-enabled",
-	                                                            (GCallback) spell_checking_enabled_changed_cb, main_window);
+								    (GCallback) spell_checking_enabled_changed_cb, main_window);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Set up text formatting. It's important this is done after setting up GtkSpell, so that we know whether to
@@ -1252,6 +1252,10 @@ mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *applicatio
 
 	toolbar = GTK_TOOLBAR (gtk_builder_get_object (builder, "almanah_mw_toolbar"));
 	manager = GTK_UI_MANAGER (gtk_builder_get_object (builder, "almanah_ui_manager"));
+
+	/* Accel */
+	gtk_window_add_accel_group (GTK_WINDOW (main_window),
+				    gtk_ui_manager_get_accel_group (manager));
 
 	/* Allow drag the window using the toolbar */
 	gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (toolbar)), GTK_STYLE_CLASS_MENUBAR);

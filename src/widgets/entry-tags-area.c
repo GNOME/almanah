@@ -98,6 +98,7 @@ almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 	/* The tag entry widget */
 	self->priv->tag_entry = g_object_new (ALMANAH_TYPE_TAG_ENTRY, NULL);
 	gtk_entry_set_text (GTK_ENTRY (self->priv->tag_entry), _("add tag"));
+	gtk_widget_set_tooltip_text (GTK_WIDGET (self->priv->tag_entry), _("Write the tag and press enter to save it"));
 	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->tag_entry));
 	g_signal_connect (self->priv->tag_entry, "activate", G_CALLBACK (tag_entry_activate_cb), self);
 }

@@ -48,6 +48,8 @@ almanah_SOURCES = \
 	widgets/entry-tags-area.c		\
 	widgets/hyperlink-tag.c			\
 	widgets/hyperlink-tag.h			\
+	widgets/tag-accessible.c		\
+	widgets/tag-accessible.h		\
 	widgets/tag.c				\
 	widgets/tag.h				\
 	widgets/tag-entry.c			\
