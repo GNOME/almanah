@@ -26,5 +26,6 @@ src/widgets/calendar.c
 src/widgets/calendar-window.c
 src/widgets/eggwrapbox.c
 src/widgets/entry-tags-area.c
+src/widgets/tag-accessible.c
 src/widgets/tag.c
 src/widgets/tag-entry.c
