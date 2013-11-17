@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-30 18:53+0100\n"
-"PO-Revision-Date: 2013-10-30 18:55+0100\n"
+"POT-Creation-Date: 2013-11-17 18:58+0100\n"
+"PO-Revision-Date: 2013-11-17 19:00+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -538,7 +538,7 @@ msgstr "%s o %s"
 msgid "Entry content could not be loaded"
 msgstr "Nie można wczytać treści wpisu"
 
-#: ../src/main-window.c:1344
+#: ../src/main-window.c:1348
 msgid "Spelling checker could not be initialized"
 msgstr "Nie można uruchomić sprawdzania pisowni"
 
@@ -732,11 +732,23 @@ msgstr "Ważne"
 msgid "Unknown input device"
 msgstr "Nieznane urządzenie wejściowe"
 
-#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
 msgstr "dodaj etykietę"
 
+#: ../src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "Proszę napisać etykietę i nacisnąć klawisz Enter, aby ją zapisać"
+
+#: ../src/widgets/tag-accessible.c:165
+msgid "Remove the tag from the entry"
+msgstr "Usuwa etykietę z wpisu"
+
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
-#: ../src/widgets/tag.c:400
+#: ../src/widgets/tag.c:416
 msgid "Remove tag"
 msgstr "Usuń etykietę"
+
+#: ../src/widgets/tag-entry.c:85
+msgid "Tag entry"
+msgstr "Nadaj etykietę wpisowi"
