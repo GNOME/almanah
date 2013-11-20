@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-04 23:24+0000\n"
-"PO-Revision-Date: 2013-09-05 11:28+0200\n"
+"POT-Creation-Date: 2013-11-17 17:58+0000\n"
+"PO-Revision-Date: 2013-11-20 13:30+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -138,7 +138,6 @@ msgid "Show tags"
 msgstr "Mostrar etiquetas"
 
 #: ../data/almanah.ui.h:12
-#| msgid "Jump to the current date in the diary."
 msgid "Show tags for the current entry"
 msgstr "Mostrar etiquetas para la entrada actual"
 
@@ -375,11 +374,11 @@ msgstr "Calendario de tareas"
 msgid "A task on an Evolution calendar."
 msgstr "Una tarea en el calendario de Evolution."
 
-#: ../src/export-operation.c:45 ../src/import-operation.c:45
+#: ../src/export-operation.c:47 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Archivos de texto"
 
-#: ../src/export-operation.c:46
+#: ../src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -389,17 +388,23 @@ msgstr ""
 "una por entrada, uno por entrada, con nombres en formato «aaaa-mm-dd», y sin "
 "extensión. Cualquiera y todos los archivos parecidos serán importados."
 
-#: ../src/export-operation.c:50 ../src/import-operation.c:50
+#: ../src/export-operation.c:52 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../src/export-operation.c:51
+#: ../src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
 "Seleccionar un _archivo para completar la copia de la base de datos no "
 "cifrada del Diario Almanah."
+
+#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#, c-format
+#| msgid "Error opening encrypted database file \"%s\": %s"
+msgid "Error changing exported file permissions: %s"
+msgstr "Error al cambiar los permisos del archivo exportado: %s"
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
@@ -527,7 +532,7 @@ msgstr "%s - %s"
 msgid "Entry content could not be loaded"
 msgstr "No se pudo cargar el contenido de la entrada: %s"
 
-#: ../src/main-window.c:1344
+#: ../src/main-window.c:1348
 msgid "Spelling checker could not be initialized"
 msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
@@ -604,32 +609,32 @@ msgstr[1] "Encontradas %d entradas:"
 msgid "Searching…"
 msgstr "Buscando…"
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:276
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "La versión de GPGME no es al menos la %s"
 
-#: ../src/storage-manager.c:284
+#: ../src/storage-manager.c:285
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME no soporta OpenPGP: %s"
 
-#: ../src/storage-manager.c:293
+#: ../src/storage-manager.c:294
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Error al crear el contexto de cifrado: %s"
 
-#: ../src/storage-manager.c:322
+#: ../src/storage-manager.c:323
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Error al abrir el archivo cifrado de la base de datos «%s»: %s"
 
-#: ../src/storage-manager.c:341
+#: ../src/storage-manager.c:342
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Error al abrir el archivo plano de la base de datos «%s»: %s"
 
-#: ../src/storage-manager.c:389
+#: ../src/storage-manager.c:390
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -638,27 +643,47 @@ msgstr ""
 "ha dejado como copia de seguridad."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:392
+#: ../src/storage-manager.c:393
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "No se pudo borrar el archivo plano de la base de datos «%s»."
 
-#: ../src/storage-manager.c:433
+#: ../src/storage-manager.c:434
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Error al descifrar la base de datos: %s"
 
-#: ../src/storage-manager.c:467
+#: ../src/storage-manager.c:468
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Error al obtener la clave de cifrado: %s"
 
-#: ../src/storage-manager.c:488
+#: ../src/storage-manager.c:489
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Error al cifrar la base de datos: %s"
 
-#: ../src/storage-manager.c:590
+#: ../src/storage-manager.c:549
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database backup file permissions: %s"
+msgstr ""
+"Error al cambiar los permisos del archivo de respaldo de la base de datos: %s"
+
+#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database file permissions: %s"
+msgstr "Error al cambiar los permisos del archivo de la base de datos: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error backing up file ‘%s’: %s"
+msgstr "Error al crear el archivo de respaldo «%s»: %s"
+
+#: ../src/storage-manager.c:620
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -667,7 +692,7 @@ msgstr ""
 "No se pudo abrir la base de datos «%s». SQLite proporcionó el siguiente "
 "mensaje de error: %s"
 
-#: ../src/storage-manager.c:667
+#: ../src/storage-manager.c:704
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -675,7 +700,7 @@ msgstr ""
 "No se pudo ejecutar la consulta «%s». SQLite proporcionó el siguiente mensaje "
 "de error: %s"
 
-#: ../src/storage-manager.c:973
+#: ../src/storage-manager.c:1010
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Error al deserializar la entrada en el búfer mientras se buscaba."
 
@@ -702,14 +727,28 @@ msgstr "Importante"
 msgid "Unknown input device"
 msgstr "Dispositivo de entrada desconocido"
 
-#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
 msgstr "añadir etiqueta"
 
+#: ../src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "Escriba la etiqueta y pulse Intro para guardarla"
+
+#: ../src/widgets/tag-accessible.c:165
+#| msgid "Show tags for the current entry"
+msgid "Remove the tag from the entry"
+msgstr "Quitar la etiqueta de la entrada"
+
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
-#: ../src/widgets/tag.c:400
+#: ../src/widgets/tag.c:416
 msgid "Remove tag"
 msgstr "Quitar etiqueta"
+
+#: ../src/widgets/tag-entry.c:85
+#| msgid "Search entry"
+msgid "Tag entry"
+msgstr "Etiquetar entrada"
 
 #~ msgid "_File"
 #~ msgstr "_Archivo"
