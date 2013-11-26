@@ -11,15 +11,16 @@
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2012, 2013.
 # Adorilson Bezerra <adorilson@gmail.com>, 2013.
 # Ramon Brandão <rcbdesigner@gmail.com>, 2013.
+# Enrico Nicoletto <liverig@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-29 11:31+0000\n"
-"PO-Revision-Date: 2013-10-29 09:18-0300\n"
-"Last-Translator: Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
+"POT-Creation-Date: 2013-11-17 18:01+0000\n"
+"PO-Revision-Date: 2013-11-19 19:36-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -320,8 +321,8 @@ msgid ""
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 "Você deve ter recebido uma cópia da Licença Pública Geral GNU (GNU General "
-"Public License) junto com o Almanah. Caso contrário, consulte <http://www.gnu.org/"
-"licenses/>."
+"Public License) junto com o Almanah. Caso contrário, consulte <http://www."
+"gnu.org/licenses/>."
 
 #: ../src/application.c:565
 #, c-format
@@ -544,7 +545,7 @@ msgstr "%s @ %s"
 msgid "Entry content could not be loaded"
 msgstr "Não foi possível carregar o conteúdo de entrada"
 
-#: ../src/main-window.c:1344
+#: ../src/main-window.c:1348
 msgid "Spelling checker could not be initialized"
 msgstr "Não foi possível inicializar a verificação ortográfica"
 
@@ -724,8 +725,8 @@ msgstr "Não foi possível carregar arquivo de interface gráfica \"%s\": %s"
 #: ../src/widgets/calendar-button.c:150
 msgid "Can't load calendar window object from UI file"
 msgstr ""
-"Não foi possível carregar objeto da janela de calendário do arquivo de interface "
-"gráfica"
+"Não foi possível carregar objeto da janela de calendário do arquivo de "
+"interface gráfica"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: ../src/widgets/calendar.c:176
@@ -736,12 +737,23 @@ msgstr "Importante!"
 msgid "Unknown input device"
 msgstr "Dispositivo de entrada desconhecido"
 
-#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
 msgstr "Adicionar etiqueta"
 
+#: ../src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "Escreva a etiqueta e pressione enter para salvá-la"
+
+#: ../src/widgets/tag-accessible.c:165
+msgid "Remove the tag from the entry"
+msgstr "Remove a etiqueta da entrada"
+
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
-#: ../src/widgets/tag.c:400
+#: ../src/widgets/tag.c:416
 msgid "Remove tag"
 msgstr "Remover etiqueta"
 
+#: ../src/widgets/tag-entry.c:85
+msgid "Tag entry"
+msgstr "Entrada da etiqueta"
