@@ -1,3 +1,28 @@
+Overview of changes from Almanah 0.10.8 to Almanah 0.11.0
+=========================================================
+
+Major changes:
+* Improved the tagging accesibility.
+* Enhanced the diary security.
+* Changed the tagging look (new button with a symbolic link in the toolbar and the tag bar shown integrated in the main toolbar).
+* Added a new 256x256 icon, that looks better in GNOME Shell.
+* Added an AppData file to show a completed information in Software App.
+
+Update translations:
+* Brazilian Portuguese (Enrico Nicoletto, Ramon Brandão, Adorilson Bezerra)
+* Czech (Marek Černocký)
+* Danish (Joe Hansen)
+* French (Alexandre Franke)
+* Galician (Fran Diéguez)
+* Greek (Dimitris Spingos)
+* Hungarian (Balázs Úr)
+* Indonesian (Andika Triwidada)
+* Latvian (Rūdolfs Mazurs)
+* Polish (Piotr Drąg)
+* Slovenian (Matej Urbančič)
+* Spanish (Daniel Mustieles)
+* Serbian (Мирослав Николић)
+
 Overview of changes from Almanah 0.10.0 to Almanah 0.10.8
 =========================================================
 
