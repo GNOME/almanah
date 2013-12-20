@@ -68,11 +68,17 @@ CLEANFILES += $(gsettings_SCHEMAS)
 # AppData file
 ###############################################################################
 
-appdatadir = $(datadir)/appdata
-appdata_DATA = almanah.appdata.xml
+# AppData
+@APPDATA_XML_RULES@
+@INTLTOOL_XML_RULE@
 
-EXTRA_DIST += almanah.appdata.xml.in
-CLEANFILES += $(appdata_DATA)
+appdata_in_files = almanah.appdata.xml.in
+appdata_XML = $(appdata_in_files:.appdata.xml.in=.appdata.xml)
+
+EXTRA_DIST += $(appdata_in_files)
+CLEANFILES += $(appdata_XML)
+
+DISTCHECK_CONFIGURE_FLAGS = --enable-appdata-validate
 
 ###############################################################################
 # General
