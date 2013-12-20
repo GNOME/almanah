@@ -19,18 +19,10 @@ DISTCLEANFILES = \
 	intltool-update
 
 MAINTAINERCLEANFILES = \
+	$(GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL) \
+	$(GITIGNORE_MAINTAINERCLEANFILES_MAKEFILE_IN) \
 	INSTALL		\
-	aclocal.m4	\
-	compile		\
-	config.guess	\
 	config.h.in	\
-	config.sub	\
-	depcomp		\
-	install-sh	\
-	ltmain.sh	\
-	missing		\
-	mkinstalldirs	\
-	`find "$(srcdir)" -type f -name Makefile.in -print` \
 	ABOUT-NLS \
 	config.rpath \
 	po/Makevars.template \
