@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Vasilis Kontogiannis <vasilisk@ics.forth.gr>, 2009.
 # Μάριος Ζηντίλης <m.zindilis@dmajor.org>, 2010.
-# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2013.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah - master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almana"
-"h&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-15 10:07+0000\n"
-"PO-Revision-Date: 2013-04-10 18:01+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=almanah&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-12-22 18:22+0000\n"
+"PO-Revision-Date: 2014-01-05 09:29+0300\n"
 "Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
-"Language-Team: team@gnome.gr\n"
+"Language-Team: www.gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,8 +21,57 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:129
-#: ../src/main-window.c:135
+#: ../data/almanah.appdata.xml.in.h:1
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Το ημερολόγιο Almanah είναι μια εφαρμογή που σας επιτρέπει να κρατάτε ένα "
+"ημερολόγιο της ζωή σας."
+
+#: ../data/almanah.appdata.xml.in.h:2
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Μπορείτε να κρυπτογραφήσετε το ημερολόγιο για να διατηρήσετε την "
+"ιδιωτικότητά σας. Έχει δυνατότητες επεξεργασίας, συμπεριλαμβανομένης της "
+"μορφοποίησης κειμένου και εκτύπωσης και σας εμφανίζει καταλόγους συμβάντων "
+"που συνέβησαν (στον υπολογιστή σας) για κάθε ημέρα (όπως εργασίες και "
+"συναντήσεις από το Evolution)."
+
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Αναζήτηση"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr "Προτιμήσ_εις"
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr "Ε_ισαγωγή"
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr "Ε_ξαγωγή"
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr "_Εκτύπωση ημερολογίου"
+
+#: ../data/almanah-app-menu.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "_Περί του ημερολογίου Almanah"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr "Έ_ξοδος"
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Ημερολόγιο Almanah"
 
@@ -31,9 +80,137 @@ msgid "Keep a personal diary"
 msgstr "Διατήρηση ενός προσωπικού ημερολόγιο"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
 msgid "Diary"
 msgstr "Ημερολόγιο"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr "ημερολόγιο;καταγραφή;"
+
+#: ../data/almanah.ui.h:1
+msgid "Select Date…"
+msgstr "Επιλογή ημερομηνίας…"
+
+#: ../data/almanah.ui.h:2
+msgid "F_ormat"
+msgstr "Μ_ορφή"
+
+#: ../data/almanah.ui.h:3
+msgid "Toggle whether the currently selected text is bold."
+msgstr "Εναλλαγή μορφοποίησης του τρέχοντος επιλεγμένου κειμένου ως έντονο."
+
+#: ../data/almanah.ui.h:4
+msgid "Toggle whether the currently selected text is italic."
+msgstr ""
+"Εναλλαγή της μορφοποίησης του τρέχοντος επιλεγμένου κειμένου ως πλαγιαστό."
+
+#: ../data/almanah.ui.h:5
+msgid "Toggle whether the currently selected text is underlined."
+msgstr ""
+"Εναλλαγή της μορφοποίησης του τρέχοντος επιλεγμένου κειμένου ως "
+"υπογραμμισμένο."
+
+#: ../data/almanah.ui.h:6
+msgid "Add/Remove _Hyperlink"
+msgstr "Προσθήκη/αφαίρεση _υπερσυνδέσμου"
+
+#: ../data/almanah.ui.h:7
+msgid ""
+"Add or remove a hyperlink from the currently selected text to a specified "
+"URI."
+msgstr ""
+"Προσθήκη ή αφαίρεση υπερσυνδέσμου από το τρέχον επιλεγμένο κείμενο σε μια "
+"συγκεκριμένη URI."
+
+#: ../data/almanah.ui.h:8
+msgid "Insert _Time"
+msgstr "Εισαγωγή ώ_ρας"
+
+#: ../data/almanah.ui.h:9
+msgid "I_mportant"
+msgstr "Σ_ημαντικό"
+
+#: ../data/almanah.ui.h:10
+msgid "Toggle whether the current entry is marked as important."
+msgstr "Εναλλαγής σημείωσης της τρέχουσας καταχώρησης ως σημαντικής."
+
+#: ../data/almanah.ui.h:11
+msgid "Show tags"
+msgstr "Εμφάνιση καρτελών"
+
+#: ../data/almanah.ui.h:12
+msgid "Show tags for the current entry"
+msgstr "Εμφάνιση ετικετών για την τρέχουσα καταχώριση"
+
+#: ../data/almanah.ui.h:13
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#: ../data/almanah.ui.h:14
+msgid "Go to _Today"
+msgstr "Πήγαινε στο _Σήμερα"
+
+#: ../data/almanah.ui.h:15
+msgid "Jump to the current date in the diary."
+msgstr "Μετάβαση στην τρέχουσα ημερομηνία στο ημερολόγιο."
+
+#: ../data/almanah.ui.h:16
+msgid "Calendar"
+msgstr "Ημερολόγιο"
+
+#: ../data/almanah.ui.h:17
+msgid "Entry editing area"
+msgstr "Περιοχή επεξεργασίας καταχώρισης"
+
+#: ../data/almanah.ui.h:18
+msgid "Past events"
+msgstr "Προηγούμενα συμβάντα"
+
+#: ../data/almanah.ui.h:19
+msgid "Past Event List"
+msgstr "Κατάλογος προηγούμενου γεγονότος"
+
+#: ../data/almanah.ui.h:20
+msgid "Search entry"
+msgstr "Αναζήτηση καταχώρισης"
+
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: ../data/almanah.ui.h:22
+msgid "Result List"
+msgstr "Λίστα αποτελέσματος"
+
+#: ../data/almanah.ui.h:23
+msgid "View Entry"
+msgstr "Προβολή καταχώρισης"
+
+#: ../data/almanah.ui.h:24
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "π.χ. \"14/03/2009\" ή \"14 Μαρτίου 2009\"."
+
+#: ../data/almanah.ui.h:25
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "π.χ. “http://google.com/” ή “file:///home/me/Photos/photo.jpg”."
+
+#: ../data/almanah.ui.h:26
+msgid "Successful Entries"
+msgstr "Επιτυχημένες καταχωρήσεις"
+
+#: ../data/almanah.ui.h:27
+msgid "Merged Entries"
+msgstr "Συγχωνευμένες καταχωρήσεις"
+
+#: ../data/almanah.ui.h:28
+msgid "Failed Entries"
+msgstr "Αποτυχημένες καταχωρήσεις"
+
+#: ../data/almanah.ui.h:29
+msgid "Import Results List"
+msgstr "Εισαγωγής λίστας αποτελεσμάτων"
 
 #: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
 msgid "Database encryption key ID"
@@ -68,160 +245,12 @@ msgstr "Είναι ενεργός ο ορθογραφικός έλεγχος;"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Εάν ο ορθογραφικός έλεγχος των καταχωρίσεων είναι ενεργός."
 
-#: ../data/almanah.ui.h:1
-msgid "Select Date…"
-msgstr "Επιλογή ημερομηνίας…"
-
-#: ../data/almanah.ui.h:2
-msgid "F_ormat"
-msgstr "Μ_ορφή"
-
-#: ../data/almanah.ui.h:3
-msgid "Toggle whether the currently selected text is bold."
-msgstr "Εναλλαγή μορφοποίησης του τρέχοντος επιλεγμένου κειμένου ως έντονο."
-
-#: ../data/almanah.ui.h:4
-msgid "Toggle whether the currently selected text is italic."
-msgstr ""
-"Εναλλαγή της μορφοποίησης του τρέχοντος επιλεγμένου κειμένου ως πλαγιαστό."
-
-#: ../data/almanah.ui.h:5
-msgid "Toggle whether the currently selected text is underlined."
-msgstr ""
-"Εναλλαγή της μορφοποίησης του τρέχοντος επιλεγμένου κειμένου ως "
-"υπογραμμισμένο."
-
-#: ../data/almanah.ui.h:6
-msgid "Add/Remove _Hyperlink"
-msgstr "Προσθήκη/αφαίρεση _υπερσυνδέσμου"
-
-#: ../data/almanah.ui.h:7
-#| msgid "Remove the definition from the currently selected text."
-msgid ""
-"Add or remove a hyperlink from the currently selected text to a specified "
-"URI."
-msgstr ""
-"Προσθήκη ή αφαίρεση υπερσυνδέσμου από το τρέχον επιλεγμένο κείμενο σε μια "
-"συγκεκριμένη URI."
-
-#: ../data/almanah.ui.h:8
-msgid "Insert _Time"
-msgstr "Εισαγωγή ώ_ρας"
-
-#: ../data/almanah.ui.h:9
-msgid "I_mportant"
-msgstr "Σ_ημαντικό"
-
-#: ../data/almanah.ui.h:10
-msgid "Toggle whether the current entry is marked as important."
-msgstr "Εναλλαγής σημείωσης της τρέχουσας καταχώρησης ως σημαντικής."
-
-#: ../data/almanah.ui.h:11
-msgid "_Help"
-msgstr "_Βοήθεια"
-
-#: ../data/almanah.ui.h:12
-msgid "Go to _Today"
-msgstr "Πήγαινε στο _Σήμερα"
-
-#: ../data/almanah.ui.h:13
-msgid "Jump to the current date in the diary."
-msgstr "Μετάβαση στην τρέχουσα ημερομηνία στο ημερολόγιο."
-
-#: ../data/almanah.ui.h:14
-msgid "Calendar"
-msgstr "Ημερολόγιο"
-
-#: ../data/almanah.ui.h:15
-msgid "Entry editing area"
-msgstr "Περιοχή επεξεργασίας καταχώρισης"
-
-#: ../data/almanah.ui.h:16
-#| msgid "Past Events"
-msgid "Past events"
-msgstr "Προηγούμενα συμβάντα"
-
-#: ../data/almanah.ui.h:17
-msgid "Past Event List"
-msgstr "Κατάλογος προηγούμενου γεγονότος"
-
-#: ../data/almanah.ui.h:18
-msgid "Search entry"
-msgstr "Αναζήτηση καταχώρισης"
-
-#: ../data/almanah.ui.h:19 ../src/search-dialog.c:69
-msgid "Search"
-msgstr "Αναζήτηση"
-
-#: ../data/almanah.ui.h:20
-msgid "Result List"
-msgstr "Λίστα αποτελέσματος"
-
-#: ../data/almanah.ui.h:21
-msgid "View Entry"
-msgstr "Προβολή καταχώρισης"
-
-#: ../data/almanah.ui.h:22
-msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "π.χ. \"14/03/2009\" ή \"14 Μαρτίου 2009\"."
-
-#: ../data/almanah.ui.h:23
-msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
-msgstr "π.χ. “http://google.com/” ή “file:///home/me/Photos/photo.jpg”."
-
-#: ../data/almanah.ui.h:24
-msgid "Successful Entries"
-msgstr "Επιτυχημένες καταχωρήσεις"
-
-#: ../data/almanah.ui.h:25
-msgid "Merged Entries"
-msgstr "Συγχωνευμένες καταχωρήσεις"
-
-#: ../data/almanah.ui.h:26
-msgid "Failed Entries"
-msgstr "Αποτυχημένες καταχωρήσεις"
-
-#: ../data/almanah.ui.h:27
-msgid "Import Results List"
-msgstr "Εισαγωγής λίστας αποτελεσμάτων"
-
-#: ../data/almanah-app-menu.ui.h:1
-#| msgid "Search"
-msgid "_Search"
-msgstr "_Αναζήτηση"
-
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "Προτιμήσ_εις"
-
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "Ε_ισαγωγή"
-
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "Ε_ξαγωγή"
-
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "_Εκτύπωση ημερολογίου"
-
-#: ../data/almanah-app-menu.ui.h:6
-#| msgid "Almanah Diary"
-msgid "_About Almanah Diary"
-msgstr "_Περί του ημερολογίου Almanah"
-
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "Έ_ξοδος"
-
-#: ../src/application.c:243
+#: ../src/application.c:246
 msgid "Error opening database"
 msgstr "Σφάλμα ανοίγματος βάσης δεδομένων"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:275
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -229,11 +258,11 @@ msgstr ""
 "Αδύνατη η φόρτωση του αρχείου CSS '%s'. Η διεπαφή μπορεί να μην έχει σωστή "
 "τεχνοτροπία"
 
-#: ../src/application.c:316
+#: ../src/application.c:319
 msgid "Enable debug mode"
 msgstr "Ενεργοποίηση κατάστασης εκσφαλμάτωσης"
 
-#: ../src/application.c:333
+#: ../src/application.c:336
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -241,25 +270,24 @@ msgstr ""
 "να ανοιχθεί οποτεδήποτε."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:347
 #, c-format
-#| msgid "Command-line options could not be parsed"
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Οι επιλογές της γραμμής εντολών δεν μπορούν να αναλυθούν: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:366
 msgid "Error encrypting database"
 msgstr "Σφάλμα κρυπτογράφησης βάσης δεδομένων"
 
-#: ../src/application.c:409 ../src/date-entry-dialog.c:129
+#: ../src/application.c:419 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:194 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Το αρχείο UI \"%s\" δεν μπορεί να φορτωθεί"
 
-#: ../src/application.c:532
+#: ../src/application.c:542
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -271,7 +299,7 @@ msgstr ""
 "δημοσιοποιήθηκαν από Ίδρυμα Ελεύθερου Λογισμικού, είτε η έκδοση 3 της "
 "άδειας, ή (κατά επιλογή σας) αποιαδήποτε μεταγενέστερη έκδοση."
 
-#: ../src/application.c:536
+#: ../src/application.c:546
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -283,7 +311,7 @@ msgstr ""
 "ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΙΔΙΚΟ ΣΚΟΠΟ. Δείτε τη GNU  Geneal Public License για "
 "περισσότερες λεπτομέρειες."
 
-#: ../src/application.c:540
+#: ../src/application.c:550
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -291,13 +319,12 @@ msgstr ""
 "Πρέπει να έχετε λάβει ένα αντίγραφο της  GNU General Public License σύμφωνα "
 "με το Almanah. Αν όχι , δείτε <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:555
+#: ../src/application.c:565
 #, c-format
-#| msgid "A helpful diary keeper, storing %u entries and %u definitions."
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Μια χρήσιμη διατήρηση ημερολογίου, που αποθηκεύει %u καταχωρίσεις."
 
-#: ../src/application.c:559
+#: ../src/application.c:569
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Πνευματικά δικαιώματα © 2008-2009 Philip Withnall"
 
@@ -306,16 +333,15 @@ msgstr "Πνευματικά δικαιώματα © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:567
+#: ../src/application.c:577
 msgid "translator-credits"
 msgstr ""
 "Ελληνική μεταφραστική ομάδα GNOME\n"
 " Δημήτρης Σπίγγος <dmtrs32@gmail.com>\n"
 " Βασίλης Κοντογιάννης <vasilisk@ics.forth.gr>,\n"
-" \n"
 "Για περισσότερες πληροφορίες, επισκεφθείτε την σελίδα http://www.gnome.gr/"
 
-#: ../src/application.c:571
+#: ../src/application.c:581
 msgid "Almanah Website"
 msgstr "Ιστοσελίδα Almanah"
 
@@ -354,11 +380,11 @@ msgstr "Εργασία ημερολογίου"
 msgid "A task on an Evolution calendar."
 msgstr "Μία εργασία στο ημερολόγιο του Evolution."
 
-#: ../src/export-operation.c:45 ../src/import-operation.c:45
+#: ../src/export-operation.c:47 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Αρχεία κειμένου"
 
-#: ../src/export-operation.c:46
+#: ../src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -368,17 +394,22 @@ msgstr ""
 "ανά καταχώρηση, με τα ονόματα στην μορφή 'yyyy-mm-dd', χωρίς κατάληξη. Όλες "
 "οι καταχωρήσεις θα εξαχθούν, χωρίς κωδικοποίηση σε μορφή απολού κειμένου."
 
-#: ../src/export-operation.c:50 ../src/import-operation.c:50
+#: ../src/export-operation.c:52 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Βάση δεδομένων"
 
-#: ../src/export-operation.c:51
+#: ../src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
 "Διαλέξτε ένα ό_νομα αρχείου για να κάνετε μια πλήρη αντιγραφή, χωρίς "
 "κωδικοποίηση, της βάση δεδομένων του ημερολογίου Almanah."
+
+#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "Σφάλμα αλλαγής εξαγόμενων δικαιωμάτων αρχείου: %s"
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
@@ -423,8 +454,8 @@ msgstr "Αποτελέσματα εισαγωγής"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:566
-#: ../src/main-window.c:596 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
 #: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
@@ -476,14 +507,14 @@ msgstr ""
 "Η καταχώρηση εισήχθηκε από το \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:570
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr ""
 "Είστε σίγουροι ότι θέλετε να επεξεργαστείτε αυτή την καταχώριση του "
 "ημερολογίου για %s;"
 
-#: ../src/main-window.c:600
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr ""
@@ -491,26 +522,27 @@ msgstr ""
 "%s;"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:709
+#: ../src/main-window.c:710
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
-msgstr "Άγνωστη ή διπλότυπη ετικέτα κειμένου \"%s\" στην καταχώριση. Παράβλεψη."
+msgstr ""
+"Άγνωστη ή διπλότυπη ετικέτα κειμένου \"%s\" στην καταχώριση. Παράβλεψη."
 
-#: ../src/main-window.c:908
+#: ../src/main-window.c:918
 msgid "Error opening URI"
 msgstr "Σφάλμα ανοίγματος URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1082
+#: ../src/main-window.c:1092
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1161
+#: ../src/main-window.c:1171
 msgid "Entry content could not be loaded"
 msgstr "Το περιεχόμενο της καταχώρισης δε μπορεί να φορτωθεί"
 
-#: ../src/main-window.c:1326
+#: ../src/main-window.c:1348
 msgid "Spelling checker could not be initialized"
 msgstr "Ο ορθογράφος δε μπόρεσε να αρχικοποιηθεί"
 
@@ -584,36 +616,35 @@ msgstr[0] "Βρέθηκε %d καταχώριση:"
 msgstr[1] "Βρέθηκαν %d καταχωρίσεις:"
 
 #: ../src/search-dialog.c:280
-#| msgid "_Search…"
 msgid "Searching…"
 msgstr "Αναζήτηση…"
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:276
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "Το GPGME είναι κάτω από την ελάχιστη έκδοση %s"
 
-#: ../src/storage-manager.c:284
+#: ../src/storage-manager.c:285
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "Το GPGME δεν υποστηρίζει το OpenPGP: %s"
 
-#: ../src/storage-manager.c:293
+#: ../src/storage-manager.c:294
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Σφάλμα ανοίγματος κρυπτογραφημένου περιβάλλοντος: %s"
 
-#: ../src/storage-manager.c:322
+#: ../src/storage-manager.c:323
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Σφάλμα ανοίγματος κρυπτογραφημένου αρχείου βάσης δεδομένων \"%s\": %s"
 
-#: ../src/storage-manager.c:341
+#: ../src/storage-manager.c:342
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Σφάλμα ανοίγματος απλού αρχείου βάσης δεδομένων \"%s\": %s"
 
-#: ../src/storage-manager.c:389
+#: ../src/storage-manager.c:390
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -622,27 +653,44 @@ msgstr ""
 "παραμένει για χρήση ως αντιγράφου ασφαλείας."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:392
+#: ../src/storage-manager.c:393
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Αδυναμία διαγραφής απλού αρχείου βάσης δεδομένων \"%s\"."
 
-#: ../src/storage-manager.c:433
+#: ../src/storage-manager.c:434
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Σφάλμα αποκρυπτογράφησης βάσης δεδομένων: %s"
 
-#: ../src/storage-manager.c:467
+#: ../src/storage-manager.c:468
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Σφάλμα ανάκτησης κλειδιού κρυπτογράφησης: %s"
 
-#: ../src/storage-manager.c:488
+#: ../src/storage-manager.c:489
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Σφάλμα κρυπτογράφησης βάσης δεδομένων: %s"
 
-#: ../src/storage-manager.c:590
+#: ../src/storage-manager.c:549
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr ""
+"Σφάλμα κατά την αλλαγή δικαιωμάτων αρχείου εφεδρικής βάσης δεδομένων: %s"
+
+#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Σφάλμα κατά την αλλαγή δικαιωμάτων αρχείου βάσης δεδομένων: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
+#, c-format
+msgid "Error backing up file ‘%s’: %s"
+msgstr "Σφάλμα κατά την δημιουργία εφεδρικού αρχείου ‘%s’: %s"
+
+#: ../src/storage-manager.c:620
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -651,7 +699,7 @@ msgstr ""
 "Δεν μπορεί να ανοίξει την βάση δεδομένων \"%s\". Το SQLite παρήγαγε το "
 "παρακάτω μήνυμα σφάλματος: %s"
 
-#: ../src/storage-manager.c:667
+#: ../src/storage-manager.c:704
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -659,19 +707,17 @@ msgstr ""
 "Δεν μπορεί να εκτελέσει το ερώτημα \"%s\". To SQLite παρήγαγε το παρακάτω "
 "μήνυμα σφάλματος: %s"
 
-#: ../src/storage-manager.c:970
+#: ../src/storage-manager.c:1010
 msgid "Error deserializing entry into buffer while searching."
 msgstr ""
 "Σφάλμα αποσειριοποίησης εισαγωγής στην ενδιάμεση μνήμη κατά την αναζήτηση."
 
-#. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:176
-msgid "Important!"
-msgstr "Σημαντικό!"
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Εισαγωγή URI"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
-#| msgid "UI file \"%s\" could not be loaded"
 msgid "UI file \"%s\" could not be loaded: %s"
 msgstr "Το αρχείο UI \"%s\" δεν μπορεί να φορτωθεί: %s"
 
@@ -679,18 +725,35 @@ msgstr "Το αρχείο UI \"%s\" δεν μπορεί να φορτωθεί: %
 msgid "Can't load calendar window object from UI file"
 msgstr "Αδύνατη η φόρτωση αντικειμένου παραθύρου ημερολογίου από αρχείο UI"
 
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "Σημαντικό!"
+
 #: ../src/widgets/calendar-window.c:80
 msgid "Unknown input device"
 msgstr "Άγνωστη συσκευή εισόδου"
 
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
+msgid "add tag"
+msgstr "προσθήκη ετικέτας"
+
+#: ../src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "Γράψτε την ετικέτα και πατήστε εισαγωγή για να την αποθηκεύσετε"
+
+#: ../src/widgets/tag-accessible.c:165
+msgid "Remove the tag from the entry"
+msgstr "Αφαιρέστε την ετικέτα από την καταχώριση"
+
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
-#: ../src/widgets/tag.c:400
+#: ../src/widgets/tag.c:416
 msgid "Remove tag"
 msgstr "Αφαίρεση ετικέτας"
 
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Εισαγωγή URI"
+#: ../src/widgets/tag-entry.c:85
+msgid "Tag entry"
+msgstr "Καταχώριση ετικέτας"
 
 #~ msgid "Main window X position"
 #~ msgstr "Θέση X κεντρικού παραθύρου"
