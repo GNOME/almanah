@@ -1,14 +1,14 @@
 # Language almanah translations for F package.
 # Copyright (C) 2011 THE F'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the F package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011, 2012, 2013.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almana"
 "h&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-09-04 23:24+0000\n"
-"PO-Revision-Date: 2013-09-08 07:42+0200\n"
+"POT-Creation-Date: 2013-12-18 13:50+0000\n"
+"PO-Revision-Date: 2014-01-29 10:25+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -132,7 +132,6 @@ msgid "Show tags"
 msgstr "Prikaži oznake"
 
 #: ../data/almanah.ui.h:12
-#| msgid "Jump to the current date in the diary."
 msgid "Show tags for the current entry"
 msgstr "Prikažite oznake za tekući unos"
 
@@ -366,11 +365,11 @@ msgstr "Zadatak u kalendaru"
 msgid "A task on an Evolution calendar."
 msgstr "Zadatak u kalendaru Evolucije."
 
-#: ../src/export-operation.c:45 ../src/import-operation.c:45
+#: ../src/export-operation.c:47 ../src/import-operation.c:45
 msgid "Text Files"
 msgstr "Datoteke teksta"
 
-#: ../src/export-operation.c:46
+#: ../src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -380,17 +379,23 @@ msgstr ""
 "imenima u obliku „dd-mm-gggg“, i bez proširenja. Svi unosi će biti izveženi, "
 "bez šifrovanja u obliku čistog teksta."
 
-#: ../src/export-operation.c:50 ../src/import-operation.c:50
+#: ../src/export-operation.c:52 ../src/import-operation.c:50
 msgid "Database"
 msgstr "Baza podataka"
 
-#: ../src/export-operation.c:51
+#: ../src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
 "Izaberite _naziv datoteke koji će biti dat potpunom umnošku nešifrovane baze "
 "podataka Almanahovog dnevnika."
+
+#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#, c-format
+#| msgid "Error opening encrypted database file \"%s\": %s"
+msgid "Error changing exported file permissions: %s"
+msgstr "Greška promene ovlašćenja izvezene datoteke: %s"
 
 #: ../src/import-export-dialog.c:202
 msgid "Import _mode: "
@@ -516,7 +521,7 @@ msgstr "%s u %s"
 msgid "Entry content could not be loaded"
 msgstr "Sadržaj unosa ne može biti učitan"
 
-#: ../src/main-window.c:1344
+#: ../src/main-window.c:1348
 msgid "Spelling checker could not be initialized"
 msgstr "Provera pisanja ne može biti započeta"
 
@@ -595,32 +600,32 @@ msgstr[3] "Pronašao sam jednu stavku:"
 msgid "Searching…"
 msgstr "Tražim…"
 
-#: ../src/storage-manager.c:275
+#: ../src/storage-manager.c:276
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME nije najnovije izdanje %s"
 
-#: ../src/storage-manager.c:284
+#: ../src/storage-manager.c:285
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME ne podržava OpenPGP: %s"
 
-#: ../src/storage-manager.c:293
+#: ../src/storage-manager.c:294
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Greška prilikom stvaranja konteksta šifrovanja: %s"
 
-#: ../src/storage-manager.c:322
+#: ../src/storage-manager.c:323
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Greška prilikom otvaranja šifrovane datoteke baze podataka „%s“: %s"
 
-#: ../src/storage-manager.c:341
+#: ../src/storage-manager.c:342
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Greška prilikom otvaranja obične datoteke baze podataka „%s“: %s"
 
-#: ../src/storage-manager.c:389
+#: ../src/storage-manager.c:390
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -629,27 +634,46 @@ msgstr ""
 "obrisana prilikom pravljenja rezervne kopije."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:392
+#: ../src/storage-manager.c:393
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Ne mogu da obrišem datoteku obične baze podataka „%s“."
 
-#: ../src/storage-manager.c:433
+#: ../src/storage-manager.c:434
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Greška prilikom dešifrovanja baze podataka: %s"
 
-#: ../src/storage-manager.c:467
+#: ../src/storage-manager.c:468
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Greška prilikom nabavljanja ključa za šifrovanje: %s"
 
-#: ../src/storage-manager.c:488
+#: ../src/storage-manager.c:489
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Greška prilikom šifrovanja baze podataka: %s"
 
-#: ../src/storage-manager.c:590
+#: ../src/storage-manager.c:549
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database backup file permissions: %s"
+msgstr "Greška promene ovlašćenja datoteke rezerve baze podataka: %s"
+
+#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database file permissions: %s"
+msgstr "Greška promene ovlašćenja datoteke baze podataka: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error backing up file ‘%s’: %s"
+msgstr "Greška stvaranja rezerve datoteke „%s“: %s"
+
+#: ../src/storage-manager.c:620
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -658,7 +682,7 @@ msgstr ""
 "Ne mogu da otvorim bazu podataka „%s“. SKuLajt je obezbedio sledeću poruku o "
 "grešci: %s"
 
-#: ../src/storage-manager.c:667
+#: ../src/storage-manager.c:704
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -666,7 +690,7 @@ msgstr ""
 "Ne mogu da pokrenem upit „%s“. SKuLajt je obezbedio sledeću poruku o grešci: "
 "%s"
 
-#: ../src/storage-manager.c:973
+#: ../src/storage-manager.c:1010
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Greška u raščlanjivanju unosa u baferu tokom pretraživanja."
 
@@ -693,11 +717,25 @@ msgstr "Važno!"
 msgid "Unknown input device"
 msgstr "Nepoznat ulazni uređaj"
 
-#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:162
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
 msgstr "dodaj oznaku"
 
+#: ../src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "Zapišite oznaku i pritisnite „Unesi“ da je sačuvate"
+
+#: ../src/widgets/tag-accessible.c:165
+#| msgid "Show tags for the current entry"
+msgid "Remove the tag from the entry"
+msgstr "Uklonite oznaku iz tekućeg unosa"
+
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
-#: ../src/widgets/tag.c:400
+#: ../src/widgets/tag.c:416
 msgid "Remove tag"
 msgstr "Uklonite oznaku"
+
+#: ../src/widgets/tag-entry.c:85
+#| msgid "Search entry"
+msgid "Tag entry"
+msgstr "Unos oznake"
