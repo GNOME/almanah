@@ -8,7 +8,7 @@
 		It has basic text formatting support, and displays important events associated with each day, such as calendar appointments
 		and past Evolution tasks.
 	</description>
-	<homepage rdf:resource="http://live.gnome.org/Almanah_Diary"/>
+	<homepage rdf:resource="https://wiki.gnome.org/Apps/Almanah_Diary"/>
 	<download-page rdf:resource="http://download.gnome.org/sources/almanah/"/>
 	<bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=almanah"/>
 	<maintainer>

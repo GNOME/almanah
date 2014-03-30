@@ -20,7 +20,7 @@ GtkSpell 3.0 (optional)
 GPGME (optional)
 	http://www.gnupg.org/gpgme.html
 Evolution Data Server (optional)
-	http://go-evolution.org/
+	https://wiki.gnome.org/Apps/Evolution
 
 Copyright
 =========
@@ -33,7 +33,7 @@ BUGS
 ====
 
 Bugs should be filed in GNOME's Bugzilla:
-http://bugzilla.gnome.org/enter_bug.cgi?product=almanah
+https://bugzilla.gnome.org/enter_bug.cgi?product=almanah
 
 To get a better debug output, run:
 # almanah --debug
@@ -42,4 +42,4 @@ Contact
 =======
 
 Philip Withnall <philip@tecnocode.co.uk>
-http://live.gnome.org/Almanah_Diary
+https://wiki.gnome.org/Apps/Almanah_Diary
