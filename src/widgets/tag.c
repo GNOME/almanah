@@ -439,7 +439,7 @@ almanah_tag_get_tag (AlmanahTag *tag_widget)
 void
 almanah_tag_remove (AlmanahTag *tag_widget)
 {
-	g_return_val_if_fail (ALMANAH_IS_TAG (tag_widget), NULL);
+	g_return_if_fail (ALMANAH_IS_TAG (tag_widget));
 
 	g_signal_emit (tag_widget, tag_signals[SIGNAL_REMOVE], 0);
 }
