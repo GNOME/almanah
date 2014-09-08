@@ -35,6 +35,7 @@
 #include "entry.h"
 #include "storage-manager.h"
 #include "almanah-marshal.h"
+#include "vfs.h"
 
 #define ENCRYPTED_SUFFIX ".encrypted"
 
@@ -614,8 +615,9 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 	self->priv->decrypted = FALSE;
 #endif /* ENABLE_ENCRYPTION */
 
+	almanah_vfs_init();
 	/* Open the plain database */
-	if (sqlite3_open (self->priv->plain_filename, &(self->priv->connection)) != SQLITE_OK) {
+	if (sqlite3_open_v2 (self->priv->plain_filename, &(self->priv->connection), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah") != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 		             _("Could not open database \"%s\". SQLite provided the following error message: %s"),
 		             self->priv->filename, sqlite3_errmsg (self->priv->connection));

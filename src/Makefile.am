@@ -53,7 +53,9 @@ almanah_SOURCES = \
 	widgets/tag.c				\
 	widgets/tag.h				\
 	widgets/tag-entry.c			\
-	widgets/tag-entry.h
+	widgets/tag-entry.h			\
+	vfs.h					\
+	vfs.c
 
 if HAVE_EVO
 almanah_SOURCES += \
