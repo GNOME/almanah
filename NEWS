@@ -1,3 +1,20 @@
+Overview of changes from Almanah 0.11.0 to Almanah 0.11.1
+=========================================================
+
+Major changes:
+* Improved AppData support for Software App.
+
+Update translations:
+* Czech (Marek Černocký)
+* French (Michael Scherer)
+* German (Benjamin St)
+* Greek (Dimitris Spingos)
+* Hungarian (Balázs Úr)
+* Indonesian (Andika Triwidada)
+* Slovenian (Matej Urbančič)
+* Serbian (Мирослав Николић)
+* Turkish (Muhammet Kara)
+
 Overview of changes from Almanah 0.10.8 to Almanah 0.11.0
 =========================================================
 
