@@ -10,17 +10,17 @@ AlmanahCalendarButton:active {
     border-color: @menu_bg_color;
     border-radius: 4px 4px 0 0;
 
-    color: @theme_text_color;
+    color: @theme_fg_color;
     text-shadow: none;
 }
 
 AlmanahCalendarButton GtkLabel:active {
-    color: @theme_text_color;
+    color: @theme_fg_color;
     text-shadow: none;
 }
 
 AlmanahCalendarButton GtkArrow:active {
-    color: @theme_text_color;
+    color: @theme_fg_color;
 }
 
 AlmanahCalendarWindow {
@@ -34,7 +34,7 @@ AlmanahTagEntry {
 }
 
 AlmanahTagEntry:focused {
-   color: @theme_text_color;
+   color: @theme_fg_color;
 }
 
 AlmanahTagEntry:backdrop {
