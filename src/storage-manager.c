@@ -28,16 +28,11 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <string.h>
-#ifdef ENABLE_ENCRYPTION
-#include <gpgme.h>
-#endif /* ENABLE_ENCRYPTION */
 
 #include "entry.h"
 #include "storage-manager.h"
 #include "almanah-marshal.h"
 #include "vfs.h"
-
-#define ENCRYPTED_SUFFIX ".encrypted"
 
 static void almanah_storage_manager_finalize (GObject *object);
 static void almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
@@ -45,15 +40,12 @@ static void almanah_storage_manager_set_property (GObject *object, guint propert
 static gboolean simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...);
 
 struct _AlmanahStorageManagerPrivate {
-	gchar *filename, *plain_filename;
-	gchar *encryption_key;
+	gchar *filename;
 	sqlite3 *connection;
-	gboolean decrypted;
 };
 
 enum {
 	PROP_FILENAME = 1,
-	PROP_ENCRYPTION_KEY,
 };
 
 enum {
@@ -93,12 +85,6 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                      "Database filename", "The path and filename for the unencrypted SQLite database.",
 	                                                      NULL,
 	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-
-	g_object_class_install_property (gobject_class, PROP_ENCRYPTION_KEY,
-	                                 g_param_spec_string ("encryption-key",
-	                                                      "Encryption key", "The identifier for the encryption key in the user's keyring.",
-	                                                      NULL,
-	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 	storage_manager_signals[SIGNAL_DISCONNECTED] = g_signal_new ("disconnected",
 	                                                             G_TYPE_FROM_CLASS (klass),
@@ -143,39 +129,26 @@ almanah_storage_manager_init (AlmanahStorageManager *self)
 {
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate);
 	self->priv->filename = NULL;
-	self->priv->plain_filename = NULL;
-	self->priv->encryption_key = NULL;
-	self->priv->decrypted = FALSE;
 }
 
 /**
  * almanah_storage_manager_new:
  * @filename: database filename to open
- * @encryption_key: identifier for the encryption key to use in the user's keyring, or %NULL
  *
  * Creates a new #AlmanahStorageManager, connected to the given database @filename.
- *
- * If @filename is for an encrypted database, it will automatically be changed to the canonical filename for the unencrypted database, even if that
- * file doesn't exist, and even if Almanah was compiled without encryption support. Database filenames are always passed as the unencrypted filename.
  *
  * If @encryption_key is %NULL, encryption will be disabled.
  *
  * Return value: the new #AlmanahStorageManager
  **/
 AlmanahStorageManager *
-almanah_storage_manager_new (const gchar *filename, const gchar *encryption_key)
+almanah_storage_manager_new (const gchar *filename)
 {
-	gchar *new_filename = NULL;
 	AlmanahStorageManager *sm;
-
-	if (g_str_has_suffix (filename, ENCRYPTED_SUFFIX) == TRUE)
-		filename = new_filename = g_strndup (filename, strlen (filename) - strlen (ENCRYPTED_SUFFIX));
 
 	sm = g_object_new (ALMANAH_TYPE_STORAGE_MANAGER,
 	                   "filename", filename,
-	                   "encryption-key", encryption_key,
 	                   NULL);
-	g_free (new_filename);
 
 	return sm;
 }
@@ -186,8 +159,6 @@ almanah_storage_manager_finalize (GObject *object)
 	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
 
 	g_free (priv->filename);
-	g_free (priv->plain_filename);
-	g_free (priv->encryption_key);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_storage_manager_parent_class)->finalize (object);
@@ -201,9 +172,6 @@ almanah_storage_manager_get_property (GObject *object, guint property_id, GValue
 	switch (property_id) {
 		case PROP_FILENAME:
 			g_value_set_string (value, g_strdup (priv->filename));
-			break;
-		case PROP_ENCRYPTION_KEY:
-			g_value_set_string (value, priv->encryption_key);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -219,13 +187,9 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 
 	switch (property_id) {
 		case PROP_FILENAME:
-			priv->plain_filename = g_strdup (g_value_get_string (value));
-			priv->filename = g_strjoin (NULL, priv->plain_filename, ENCRYPTED_SUFFIX, NULL);
-			break;
-		case PROP_ENCRYPTION_KEY:
-			g_free (priv->encryption_key);
-			priv->encryption_key = g_value_dup_string (value);
-			g_object_notify (object, "encryption-key");
+			if (priv->filename)
+				g_free (priv->filename);
+			priv->filename = g_strdup (g_value_get_string (value));
 			break;
 		default:
 			/* We don't have any other property... */
@@ -256,378 +220,17 @@ create_tables (AlmanahStorageManager *self)
 		simple_query (self, queries[i++], NULL);
 }
 
-#ifdef ENABLE_ENCRYPTION
-typedef struct {
-	AlmanahStorageManager *storage_manager;
-	GIOChannel *cipher_io_channel;
-	GIOChannel *plain_io_channel;
-	gpgme_data_t gpgme_cipher;
-	gpgme_data_t gpgme_plain;
-	gpgme_ctx_t context;
-} CipherOperation;
-
-static gboolean
-prepare_gpgme (AlmanahStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
-{
-	gpgme_error_t error_gpgme;
-
-	/* Check for a minimum GPGME version (bgo#599598) */
-	if (gpgme_check_version (MIN_GPGME_VERSION) == NULL) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_BAD_VERSION,
-		             _("GPGME is not at least version %s"),
-		             MIN_GPGME_VERSION);
-		return FALSE;
-	}
-
-	/* Check OpenPGP's supported */
-	error_gpgme = gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP);
-	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_UNSUPPORTED,
-		             _("GPGME doesn't support OpenPGP: %s"),
-		             gpgme_strerror (error_gpgme));
-		return FALSE;
-	}
-
-	/* Set up for the operation */
-	error_gpgme = gpgme_new (&(operation->context));
-	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
-		             _("Error creating cipher context: %s"),
-		             gpgme_strerror (error_gpgme));
-		return FALSE;
-	}
-
-	gpgme_set_protocol (operation->context, GPGME_PROTOCOL_OpenPGP);
-	gpgme_set_armor (operation->context, TRUE);
-	gpgme_set_textmode (operation->context, FALSE);
-
-	return TRUE;
-}
-
-static gboolean
-open_db_files (AlmanahStorageManager *self, gboolean encrypting, CipherOperation *operation, GError **error)
-{
-	GError *io_error = NULL;
-	gpgme_error_t error_gpgme;
-
-	/* Open the encrypted file */
-	operation->cipher_io_channel = g_io_channel_new_file (self->priv->filename, encrypting ? "w" : "r", &io_error);
-	if (operation->cipher_io_channel == NULL) {
-		g_propagate_error (error, io_error);
-		return FALSE;
-	}
-
-	/* Pass it to GPGME */
-	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_cipher), g_io_channel_unix_get_fd (operation->cipher_io_channel));
-	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
-		             _("Error opening encrypted database file \"%s\": %s"),
-		             self->priv->filename, gpgme_strerror (error_gpgme));
-		return FALSE;
-	}
-
-	/* Open/Create the plain file */
-	operation->plain_io_channel = g_io_channel_new_file (self->priv->plain_filename, encrypting ? "r" : "w", &io_error);
-	if (operation->plain_io_channel == NULL) {
-		g_propagate_error (error, io_error);
-		return FALSE;
-	}
-
-	/* Ensure the permissions are restricted to only the current user */
-	fchmod (g_io_channel_unix_get_fd (operation->plain_io_channel), S_IRWXU);
-
-	/* Pass it to GPGME */
-	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
-	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
-		             _("Error opening plain database file \"%s\": %s"),
-		             self->priv->plain_filename, gpgme_strerror (error_gpgme));
-		return FALSE;
-	}
-
-	return TRUE;
-}
-
-static void
-cipher_operation_free (CipherOperation *operation)
-{
-	gpgme_data_release (operation->gpgme_cipher);
-	gpgme_data_release (operation->gpgme_plain);
-
-	if (operation->cipher_io_channel != NULL) {
-		g_io_channel_flush (operation->cipher_io_channel, NULL);
-		g_io_channel_unref (operation->cipher_io_channel);
-	}
-
-	if (operation->plain_io_channel != NULL) {
-		g_io_channel_shutdown (operation->plain_io_channel, TRUE, NULL);
-		g_io_channel_unref (operation->plain_io_channel);
-	}
-
-	/* We could free the operation before the context is even created (bgo#599598) */
-	if (operation->context != NULL) {
-		gpgme_signers_clear (operation->context);
-		gpgme_release (operation->context);
-	}
-
-	g_object_unref (operation->storage_manager);
-	g_free (operation);
-}
-
-static gboolean
-database_idle_cb (CipherOperation *operation)
-{
-	AlmanahStorageManager *self = operation->storage_manager;
-	gpgme_error_t error_gpgme;
-
-	if (gpgme_wait (operation->context, &error_gpgme, FALSE) != NULL || error_gpgme != GPG_ERR_NO_ERROR) {
-		struct stat db_stat;
-		gchar *warning_message = NULL;
-
-		/* Check to see if the encrypted file is 0B in size, which isn't good. Not much we can do about it except quit without deleting the
-		 * plaintext database. */
-		g_stat (self->priv->filename, &db_stat);
-		if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == FALSE || db_stat.st_size == 0) {
-			warning_message = g_strdup (_("The encrypted database is empty. The plain database file has been left undeleted as backup."));
-		} else if (g_unlink (self->priv->plain_filename) != 0) {
-			/* Delete the plain file */
-			warning_message = g_strdup_printf (_("Could not delete plain database file \"%s\"."), self->priv->plain_filename);
-		}
-
-		/* A slight assumption that we're disconnecting at this point (we're technically only encrypting), but a valid one. */
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0,
-		               (error_gpgme == GPG_ERR_NO_ERROR) ? NULL: gpgme_strerror (error_gpgme),
-		               warning_message);
-		g_free (warning_message);
-
-		/* Finished! */
-		cipher_operation_free (operation);
-
-		return FALSE;
-	}
-
-	return TRUE;
-}
-
-static gboolean
-decrypt_database (AlmanahStorageManager *self, GError **error)
-{
-	GError *preparation_error = NULL;
-	CipherOperation *operation;
-	gpgme_error_t error_gpgme;
-
-	operation = g_new0 (CipherOperation, 1);
-	operation->storage_manager = g_object_ref (self);
-
-	/* Set up */
-	if (prepare_gpgme (self, FALSE, operation, &preparation_error) != TRUE ||
-	    open_db_files (self, FALSE, operation, &preparation_error) != TRUE) {
-		cipher_operation_free (operation);
-		g_propagate_error (error, preparation_error);
-		return FALSE;
-	}
-
-	/* Decrypt and verify! */
-	error_gpgme = gpgme_op_decrypt_verify (operation->context, operation->gpgme_cipher, operation->gpgme_plain);
-	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		cipher_operation_free (operation);
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_DECRYPTING,
-		             _("Error decrypting database: %s"),
-		             gpgme_strerror (error_gpgme));
-		return FALSE;
-	}
-
-	/* Do this one synchronously */
-	cipher_operation_free (operation);
-
-	return TRUE;
-}
-
-static gboolean
-encrypt_database (AlmanahStorageManager *self, const gchar *encryption_key, GError **error)
-{
-	GError *preparation_error = NULL;
-	CipherOperation *operation;
-	gpgme_error_t error_gpgme;
-	gpgme_key_t gpgme_keys[2] = { NULL, };
-
-	operation = g_new0 (CipherOperation, 1);
-	operation->storage_manager = g_object_ref (self);
-
-	/* Set up */
-	if (prepare_gpgme (self, TRUE, operation, &preparation_error) != TRUE) {
-		cipher_operation_free (operation);
-		g_propagate_error (error, preparation_error);
-		return FALSE;
-	}
-
-	/* Set up signing and the recipient */
-	error_gpgme = gpgme_get_key (operation->context, encryption_key, &gpgme_keys[0], FALSE);
-	if (error_gpgme != GPG_ERR_NO_ERROR || gpgme_keys[0] == NULL) {
-		cipher_operation_free (operation);
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY,
-		             _("Error getting encryption key: %s"),
-		             gpgme_strerror (error_gpgme));
-		return FALSE;
-	}
-
-	gpgme_signers_add (operation->context, gpgme_keys[0]);
-
-	if (open_db_files (self, TRUE, operation, &preparation_error) != TRUE) {
-		cipher_operation_free (operation);
-		g_propagate_error (error, preparation_error);
-		return FALSE;
-	}
-
-	/* Encrypt and sign! */
-	error_gpgme = gpgme_op_encrypt_sign_start (operation->context, gpgme_keys, 0, operation->gpgme_plain, operation->gpgme_cipher);
-	gpgme_key_unref (gpgme_keys[0]);
-
-	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		cipher_operation_free (operation);
-
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_ENCRYPTING,
-		             _("Error encrypting database: %s"),
-		             gpgme_strerror (error_gpgme));
-		return FALSE;
-	}
-
-	/* The operation will be completed in the idle function */
-	g_idle_add ((GSourceFunc) database_idle_cb, operation);
-
-	return TRUE;
-}
-
-static gchar *
-get_encryption_key (AlmanahStorageManager *self)
-{
-	gchar **key_parts;
-	guint i;
-	gchar *encryption_key;
-
-	encryption_key = g_strdup (self->priv->encryption_key);
-	if (encryption_key == NULL || encryption_key[0] == '\0') {
-		g_free (encryption_key);
-		return NULL;
-	}
-
-	/* Key is generally in the form openpgp:FOOBARKEY, and GPGME doesn't like the openpgp: prefix, so it must be removed. */
-	key_parts = g_strsplit (encryption_key, ":", 2);
-	g_free (encryption_key);
-
-	for (i = 0; key_parts[i] != NULL; i++) {
-		if (strcmp (key_parts[i], "openpgp") != 0)
-			encryption_key = key_parts[i];
-		else
-			g_free (key_parts[i]);
-	}
-	g_free (key_parts);
-
-	return encryption_key;
-}
-#endif /* ENABLE_ENCRYPTION */
-
-static gboolean
-back_up_file (const gchar *filename, GError **error)
-{
-	GFile *original_file, *backup_file;
-	gchar *backup_filename;
-	gboolean retval = TRUE;
-
-	/* Make a backup of the encrypted database file */
-	original_file = g_file_new_for_path (filename);
-	backup_filename = g_strdup_printf ("%s~", filename);
-	backup_file = g_file_new_for_path (backup_filename);
-	g_free (backup_filename);
-
-	if (g_file_copy (original_file, backup_file, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, error) == FALSE) {
-		retval = FALSE;
-	}
-
-	/* Ensure the backup is only readable to the current user. */
-	if (g_chmod (backup_filename, 0600) != 0 && errno != ENOENT) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
-		             _("Error changing database backup file permissions: %s"),
-		             g_strerror (errno));
-		retval = FALSE;
-	}
-
-	g_object_unref (original_file);
-	g_object_unref (backup_file);
-
-	return retval;
-}
-
 gboolean
 almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 {
-#ifdef ENABLE_ENCRYPTION
-	struct stat encrypted_db_stat, plaintext_db_stat;
-	GError *child_error = NULL;
-
-	g_stat (self->priv->filename, &encrypted_db_stat);
-
-	if (g_chmod (self->priv->filename, 0600) != 0 && errno != ENOENT) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
-		             _("Error changing database file permissions: %s"),
-		             g_strerror (errno));
-		return FALSE;
-	}
-
-	/* If we're decrypting, don't bother if the cipher file doesn't exist (i.e. the database hasn't yet been created), or is empty
-	 * (i.e. corrupt). */
-	if (g_file_test (self->priv->filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
-		/* Make a backup of the encrypted database file */
-		back_up_file (self->priv->filename, &child_error);
-		if (child_error != NULL) {
-			/* Translators: the first parameter is a filename, the second is an error message. */
-			g_warning (_("Error backing up file ‘%s’: %s"), self->priv->filename, child_error->message);
-			g_clear_error (&child_error);
-		}
-
-		g_stat (self->priv->plain_filename, &plaintext_db_stat);
-
-		/* Only decrypt the database if the plaintext database doesn't exist or is empty. If the plaintext database exists and is non-empty,
-		 * don't decrypt — just use that database. */
-		if (g_file_test (self->priv->plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
-			/* Decrypt the database, or display an error if that fails (but not if it fails due to a missing encrypted DB file — just
-			 * fall through and try to open the plain DB file in that case). */
-			if (decrypt_database (self, &child_error) != TRUE) {
-				if (child_error->code != G_FILE_ERROR_NOENT) {
-					g_propagate_error (error, child_error);
-					return FALSE;
-				}
-
-				g_error_free (child_error);
-			}
-		}
-	}
-
-	self->priv->decrypted = TRUE;
-#else
-	/* Make a backup of the plaintext database file */
-	back_up_file (self->priv->plain_filename, &child_error);
-	if (child_error != NULL) {
-		/* Translators: the first parameter is a filename, the second is an error message. */
-		g_warning (_("Error backing up file ‘%s’: %s"), self->priv->plain_filename, child_error->message);
-		g_clear_error (&child_error);
-	}
-	self->priv->decrypted = FALSE;
-#endif /* ENABLE_ENCRYPTION */
-
+	/* Our beautiful SQLite VFS */
 	almanah_vfs_init();
+
 	/* Open the plain database */
-	if (sqlite3_open_v2 (self->priv->plain_filename, &(self->priv->connection), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah") != SQLITE_OK) {
+	if (sqlite3_open_v2 (self->priv->filename, &(self->priv->connection), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah") != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 		             _("Could not open database \"%s\". SQLite provided the following error message: %s"),
 		             self->priv->filename, sqlite3_errmsg (self->priv->connection));
-		return FALSE;
-	}
-
-	if (g_chmod (self->priv->plain_filename, 0600) != 0 && errno != ENOENT) {
-		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_CREATING_CONTEXT,
-		             _("Error changing database file permissions: %s"),
-		             g_strerror (errno));
 		return FALSE;
 	}
 
@@ -638,54 +241,19 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 }
 
 gboolean
-almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error)
+almanah_storage_manager_disconnect (AlmanahStorageManager *self, __attribute__ ((unused)) GError **error)
 {
-#ifdef ENABLE_ENCRYPTION
-	gchar *encryption_key;
-	GError *child_error = NULL;
-#endif /* ENABLE_ENCRYPTION */
+	int sqlite_ret;
 
-	/* Close the DB connection */
-	sqlite3_close (self->priv->connection);
+	sqlite_ret = sqlite3_close (self->priv->connection);
 
-#ifdef ENABLE_ENCRYPTION
-	/* If the database wasn't encrypted before we opened it, we won't encrypt it when closing. In fact, we'll go so far as to delete the old
-	 * encrypted database file. */
-	if (self->priv->decrypted == FALSE)
-		goto delete_encrypted_db;
+	if (sqlite_ret != SQLITE_OK)
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, "Something goes wrong closing the database");
+	else
+		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 
-	/* Get the encryption key */
-	encryption_key = get_encryption_key (self);
-	if (encryption_key == NULL)
-		goto delete_encrypted_db;
-
-	/* Encrypt the plain DB file */
-	if (encrypt_database (self, encryption_key, &child_error) != TRUE) {
-		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, child_error->message);
-
-		if (g_error_matches (child_error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_GETTING_KEY) == TRUE)
-			g_propagate_error (error, child_error);
-		else
-			g_error_free (child_error);
-
-		g_free (encryption_key);
-		return FALSE;
-	}
-
-	g_free (encryption_key);
-#else /* ENABLE_ENCRYPTION */
-	g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
-#endif /* !ENABLE_ENCRYPTION */
 
 	return TRUE;
-
-#ifdef ENABLE_ENCRYPTION
-delete_encrypted_db:
-	/* Delete the old encrypted database and return */
-	g_unlink (self->priv->filename);
-	g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
-	return TRUE;
-#endif /* ENABLE_ENCRYPTION */
 }
 
 static gboolean
@@ -1355,9 +923,9 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 }
 
 const gchar *
-almanah_storage_manager_get_filename (AlmanahStorageManager *self, gboolean plain)
+almanah_storage_manager_get_filename (AlmanahStorageManager *self)
 {
-	return (plain == TRUE) ? self->priv->plain_filename : self->priv->filename;
+	return self->priv->filename;
 }
 
 /**

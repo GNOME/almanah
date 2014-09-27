@@ -235,11 +235,8 @@ startup (GApplication *application)
 
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
-	priv->storage_manager = almanah_storage_manager_new (db_filename, NULL);
+	priv->storage_manager = almanah_storage_manager_new (db_filename);
 	g_free (db_filename);
-
-	g_settings_bind (priv->settings, "encryption-key", priv->storage_manager, "encryption-key",
-	                 G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_NO_SENSITIVITY);
 
 	if (almanah_storage_manager_connect (priv->storage_manager, &error) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -359,7 +356,7 @@ handle_command_line (GApplication *application, GApplicationCommandLine *command
 }
 
 static void
-storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme_error_message, const gchar *warning_message, GtkApplication *application)
+storage_manager_disconnected_cb (__attribute__ ((unused)) AlmanahStorageManager *storage_manager, const gchar *gpgme_error_message, const gchar *warning_message, GtkApplication *self)
 {
 	if (gpgme_error_message != NULL || warning_message != NULL) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -377,7 +374,15 @@ storage_manager_disconnected_cb (AlmanahStorageManager *self, const gchar *gpgme
 	}
 
 	/* Allow the end of the applaction */
-	g_application_release (G_APPLICATION (application));
+	g_application_release (G_APPLICATION (self));
+}
+
+static gboolean
+storage_disconnect_idle_cb (AlmanahStorageManager *storage_manager)
+{
+	almanah_storage_manager_disconnect (storage_manager, NULL);
+
+	return FALSE;
 }
 
 static void
@@ -394,7 +399,7 @@ window_removed (GtkApplication *application, GtkWindow *window)
 		g_application_hold (G_APPLICATION (application));
 
 		g_signal_connect (priv->storage_manager, "disconnected", (GCallback) storage_manager_disconnected_cb, application);
-		almanah_storage_manager_disconnect (priv->storage_manager, NULL);
+		g_idle_add ((GSourceFunc) storage_disconnect_idle_cb, priv->storage_manager);
 	}
 
 	GTK_APPLICATION_CLASS (almanah_application_parent_class)->window_removed (application, window);

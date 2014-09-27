@@ -68,7 +68,7 @@ typedef void (*AlmanahStorageManagerSearchCallback) (AlmanahStorageManager *stor
 
 GType almanah_storage_manager_get_type (void);
 GQuark almanah_storage_manager_error_quark (void);
-AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename, const gchar *encryption_key) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
+AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 gboolean almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error);
 gboolean almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error);
@@ -93,7 +93,7 @@ AlmanahEntry *almanah_storage_manager_get_entries (AlmanahStorageManager *self,
 gboolean *almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
 gboolean *almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days);
 
-const gchar *almanah_storage_manager_get_filename (AlmanahStorageManager *self, gboolean plain);
+const gchar *almanah_storage_manager_get_filename (AlmanahStorageManager *self);
 
 gboolean almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag);
 gboolean almanah_storage_manager_entry_remove_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag);

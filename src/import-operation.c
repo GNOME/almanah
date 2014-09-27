@@ -448,7 +448,7 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 
 	/* Open the database */
 	path = g_file_get_path (source);
-	database = almanah_storage_manager_new (path, NULL);
+	database = almanah_storage_manager_new (path);
 	g_free (path);
 
 	/* Connect to the database */

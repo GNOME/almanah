@@ -301,7 +301,7 @@ export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExport
 	/* We ignore the progress callbacks, since this is a fairly fast operation, and it exports all the entries at once. */
 
 	/* Get the input file (current unencrypted database) */
-	source = g_file_new_for_path (almanah_storage_manager_get_filename (self->priv->storage_manager, TRUE));
+	source = g_file_new_for_path (almanah_storage_manager_get_filename (self->priv->storage_manager));
 
 	/* Copy the current database to that location */
 	success = g_file_copy (source, destination, G_FILE_COPY_OVERWRITE, cancellable, NULL, NULL, error);
