@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-18 13:50+0000\n"
-"PO-Revision-Date: 2014-03-28 18:36+0700\n"
+"POT-Creation-Date: 2014-09-28 18:07+0000\n"
+"PO-Revision-Date: 2014-10-04 18:34+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "Language: id\n"
@@ -78,7 +78,7 @@ msgid "Keep a personal diary"
 msgstr "Simpan buku harian pribadi"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Buku Harian"
 
@@ -237,12 +237,12 @@ msgstr "Pemeriksaan ejaan diaktifkan?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Apakah pemeriksaan ejaan entri diaktifkan."
 
-#: ../src/application.c:246
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Galat membuka basis data"
 
 #. Error loading the CSS
-#: ../src/application.c:275
+#: ../src/application.c:272
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -250,11 +250,11 @@ msgstr ""
 "Tak bisa memuat berkas CSS '%s'. Antar muka mungkin tak ditata gayanya "
 "secara benar"
 
-#: ../src/application.c:319
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Aktifkan moda awakutu"
 
-#: ../src/application.c:336
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -262,16 +262,16 @@ msgstr ""
 "suatu saat."
 
 #. Print an error
-#: ../src/application.c:347
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opsi baris perintah tak dapat diurai: %s\n"
 
-#: ../src/application.c:366
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Galat menyandikan basis data"
 
-#: ../src/application.c:419 ../src/date-entry-dialog.c:129
+#: ../src/application.c:424 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -279,7 +279,7 @@ msgstr "Galat menyandikan basis data"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Berkas UI \"%s\" tak dapat dimuat"
 
-#: ../src/application.c:542
+#: ../src/application.c:547
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -291,7 +291,7 @@ msgstr ""
 "dipublikasikan oleh Free Software Foundation, apakah Lisensi versi 3 atau "
 "(sesuai pilihan Anda) versi selanjutnya."
 
-#: ../src/application.c:546
+#: ../src/application.c:551
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -303,7 +303,7 @@ msgstr ""
 "KECOCOKAN UNTUK TUJUAN TERTENTU sekalipun. Lihat GNU General Public License "
 "untuk rincian lebih lanjut."
 
-#: ../src/application.c:550
+#: ../src/application.c:555
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -311,12 +311,12 @@ msgstr ""
 "Anda mestinya menerima salinan GNU General Public License bersamaan dengan "
 "Almanah. Jika tidak, lihat <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:565
+#: ../src/application.c:570
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Penyimpan buku harian yang penuh bantuan, menyimpan %u entri."
 
-#: ../src/application.c:569
+#: ../src/application.c:574
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Hak Cipta © 2008-2009 Philip Withnall"
 
@@ -325,11 +325,11 @@ msgstr "Hak Cipta © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:577
+#: ../src/application.c:582
 msgid "translator-credits"
 msgstr "Andika Triwidada <andika@gmail.com>, 2009-2014"
 
-#: ../src/application.c:581
+#: ../src/application.c:586
 msgid "Almanah Website"
 msgstr "Situs Web Almanah"
 
@@ -600,32 +600,80 @@ msgstr[0] "Ditemukan %d entri:"
 msgid "Searching…"
 msgstr "Mencari…"
 
-#: ../src/storage-manager.c:276
+#: ../src/storage-manager.c:232
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"Tak bisa membuka basis data \"%s\". SQLite memberikan pesan galat berikut: %s"
+
+#: ../src/storage-manager.c:274
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"Tak bisa menjalankan query \"%s\". SQLite memberikan pesan galat berikut: %s"
+
+#: ../src/storage-manager.c:580
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Galat deserialisasi entri ke dalam penyangga ketika mencari."
+
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Masukkan URI"
+
+#: ../src/vfs.c:102
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME kurang dari versi minimal %s"
 
-#: ../src/storage-manager.c:285
+#: ../src/vfs.c:109
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME tak mendukung OpenPGP: %s"
 
-#: ../src/storage-manager.c:294
+#: ../src/vfs.c:116
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Galat membuat konteks cipher: %s"
 
-#: ../src/storage-manager.c:323
+#: ../src/vfs.c:136
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Tak bisa membuat suatu GIOChannel baru bagi basis data terenkripsi: %s"
+
+#: ../src/vfs.c:144
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Galat membuka berkas basis data tersandi \"%s\": %s"
 
-#: ../src/storage-manager.c:342
+#: ../src/vfs.c:151
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Tak bisa membuat suatu GIOChannel baru bagi basis data polos: %s"
+
+#: ../src/vfs.c:162
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Galat membuka berkas basis data polos \"%s\": %s"
 
-#: ../src/storage-manager.c:390
+#: ../src/vfs.c:214
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Galat membongkar sandi basis data: %s"
+
+#: ../src/vfs.c:246
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Galat memperoleh kunci penyandian: %s"
+
+#: ../src/vfs.c:264
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Galat menyandikan basis data: %s"
+
+#: ../src/vfs.c:276
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -634,64 +682,33 @@ msgstr ""
 "dihapus sebagai cadangan."
 
 #. Delete the plain file
-#: ../src/storage-manager.c:393
+#: ../src/vfs.c:279
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Tak bisa menghapus berkas basis data polos \"%s\"."
 
-#: ../src/storage-manager.c:434
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: ../src/vfs.c:346
 #, c-format
-msgid "Error decrypting database: %s"
-msgstr "Galat membongkar sandi basis data: %s"
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Galat saat menyalin berkas dari %s ke %s: %s"
 
-#: ../src/storage-manager.c:468
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Galat memperoleh kunci penyandian: %s"
-
-#: ../src/storage-manager.c:489
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Galat menyandikan basis data: %s"
-
-#: ../src/storage-manager.c:549
+#: ../src/vfs.c:352
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr "Galat saat mengubah ijin berkas cadangan basis data: %s"
 
-#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
+#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename.
+#: ../src/vfs.c:693 ../src/vfs.c:721
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "Galat saat membuat cadangan berkas '%s'"
+
+#: ../src/vfs.c:739
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Galat saat mengubah ijin berkas basis data: %s"
-
-#. Translators: the first parameter is a filename, the second is an error message.
-#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
-#, c-format
-msgid "Error backing up file ‘%s’: %s"
-msgstr "Galat saat membuat cadangan berkas '%s': %s"
-
-#: ../src/storage-manager.c:620
-#, c-format
-msgid ""
-"Could not open database \"%s\". SQLite provided the following error message: "
-"%s"
-msgstr ""
-"Tak bisa membuka basis data \"%s\". SQLite memberikan pesan galat berikut: %s"
-
-#: ../src/storage-manager.c:704
-#, c-format
-msgid ""
-"Could not run query \"%s\". SQLite provided the following error message: %s"
-msgstr ""
-"Tak bisa menjalankan query \"%s\". SQLite memberikan pesan galat berikut: %s"
-
-#: ../src/storage-manager.c:1010
-msgid "Error deserializing entry into buffer while searching."
-msgstr "Galat deserialisasi entri ke dalam penyangga ketika mencari."
-
-#: ../src/uri-entry-dialog.c:71
-msgid "Enter URI"
-msgstr "Masukkan URI"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
