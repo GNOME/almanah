@@ -18,16 +18,16 @@ msgstr ""
 "Project-Id-Version: Almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-11-17 18:01+0000\n"
-"PO-Revision-Date: 2013-11-19 19:36-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2014-09-28 18:07+0000\n"
+"PO-Revision-Date: 2014-10-15 13:13-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.9\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/almanah.appdata.xml.in.h:1
@@ -88,7 +88,7 @@ msgid "Keep a personal diary"
 msgstr "Mantenha um diário pessoal"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Diário"
 
@@ -219,7 +219,7 @@ msgstr "Lista de resultado da importação"
 
 #: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
 msgid "Database encryption key ID"
-msgstr "ID da chave de criptografia da base de dados"
+msgstr "ID da chave de criptografia do banco de dados"
 
 #: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
 msgid ""
@@ -227,9 +227,9 @@ msgid ""
 "been built with encryption support. Leave blank to disable database "
 "encryption."
 msgstr ""
-"A ID da chave usada para criptografar e descriptografar a base de dados, se "
+"A ID da chave usada para criptografar e descriptografar o banco de dados, se "
 "o Almanah tiver sido compilado com suporte a criptografia. Deixe em branco "
-"para desabilitar a criptografia da base de dados."
+"para desabilitar a criptografia do banco de dados."
 
 #: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
 msgid "Spell checking language"
@@ -249,12 +249,12 @@ msgstr "A verificação ortográfica está habilitada?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Se a verificação ortográfica de entradas está habilitada."
 
-#: ../src/application.c:246
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Erro ao abrir o banco de dados"
 
 #. Error loading the CSS
-#: ../src/application.c:275
+#: ../src/application.c:272
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -262,11 +262,11 @@ msgstr ""
 "Não foi possível carregar o arquivo CSS \"%s\". A interface pode não estar "
 "configurada com estilo corretamente."
 
-#: ../src/application.c:319
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Habilitar o modo de depuração"
 
-#: ../src/application.c:336
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -274,16 +274,16 @@ msgstr ""
 "cada vez."
 
 #. Print an error
-#: ../src/application.c:347
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Não foi possível analisar as opções da linha de comando: %s\n"
 
-#: ../src/application.c:366
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Erro ao criptografar o banco de dados"
 
-#: ../src/application.c:419 ../src/date-entry-dialog.c:129
+#: ../src/application.c:424 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -291,7 +291,7 @@ msgstr "Erro ao criptografar o banco de dados"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Não foi possível carregar o arquivo de interface gráfica \"%s\""
 
-#: ../src/application.c:542
+#: ../src/application.c:547
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -303,7 +303,7 @@ msgstr ""
 "publicada pela Free Software Foundation, tanto na versão 3 da licença, "
 "quanto (a seu critério) qualquer versão posterior."
 
-#: ../src/application.c:546
+#: ../src/application.c:551
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -315,7 +315,7 @@ msgstr ""
 "UM PROPÓSITO EM PARTICULAR. Veja a Licença Pública Geral GNU (GNU General "
 "Public License) para mais detalhes."
 
-#: ../src/application.c:550
+#: ../src/application.c:555
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -324,12 +324,12 @@ msgstr ""
 "Public License) junto com o Almanah. Caso contrário, consulte <http://www."
 "gnu.org/licenses/>."
 
-#: ../src/application.c:565
+#: ../src/application.c:570
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Um criador de diário útil, armazenando %u entradas."
 
-#: ../src/application.c:569
+#: ../src/application.c:574
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -338,7 +338,7 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:577
+#: ../src/application.c:582
 msgid "translator-credits"
 msgstr ""
 "Fabrício Godoy <skarllot@gmail.com>\n"
@@ -349,7 +349,7 @@ msgstr ""
 "Carlos José Pereira <carlao2005@gmail.com>\n"
 "Rafael Ferreira <rafael.f.f1@gmail.com>"
 
-#: ../src/application.c:581
+#: ../src/application.c:586
 msgid "Almanah Website"
 msgstr "Site do Almanah"
 
@@ -412,7 +412,7 @@ msgid ""
 "database to be given."
 msgstr ""
 "Selecione um nome de ar_quivo onde será gerada uma cópia completa e sem "
-"criptografia da base de dados do Diário Almanah."
+"criptografia do banco de dados do Diário Almanah."
 
 #: ../src/export-operation.c:256 ../src/export-operation.c:313
 #, c-format
@@ -481,7 +481,7 @@ msgstr ""
 #: ../src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
-"Selecionar um _arquivo de base de dados criado pelo Diário Almanah para "
+"Selecionar um _arquivo de banco de dados criado pelo Diário Almanah para "
 "importar."
 
 #: ../src/import-operation.c:248
@@ -622,77 +622,7 @@ msgstr[1] "%d entradas localizadas:"
 msgid "Searching…"
 msgstr "Pesquisando…"
 
-#: ../src/storage-manager.c:276
-#, c-format
-msgid "GPGME is not at least version %s"
-msgstr "O GPGME não está na versão mínima %s"
-
-#: ../src/storage-manager.c:285
-#, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "O GPGME não tem suporte a OpenPGP: %s"
-
-#: ../src/storage-manager.c:294
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Erro ao criar o contexto cifrado: %s"
-
-#: ../src/storage-manager.c:323
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Erro ao abrir o arquivo de banco de dados criptografado em \"%s\": %s"
-
-#: ../src/storage-manager.c:342
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Erro ao abrir o arquivo de banco de dados em \"%s\": %s"
-
-#: ../src/storage-manager.c:390
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"A base de dados criptografada está vazia. O arquivo da base de dados foi "
-"desfeito como backup."
-
-#. Delete the plain file
-#: ../src/storage-manager.c:393
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Não foi possível excluir o arquivo de banco de dados em \"%s\"."
-
-#: ../src/storage-manager.c:434
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Erro ao descriptografar o banco de dados: %s"
-
-#: ../src/storage-manager.c:468
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Erro ao obter a chave de criptografia: %s"
-
-#: ../src/storage-manager.c:489
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Erro ao criptografar o banco de dados: %s"
-
-#: ../src/storage-manager.c:549
-#, c-format
-msgid "Error changing database backup file permissions: %s"
-msgstr "Erro ao alterar permissões dos arquivos backup do banco de dados: %s"
-
-#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
-#, c-format
-msgid "Error changing database file permissions: %s"
-msgstr "Erro ao alterar permissões dos arquivos de banco de dados: %s"
-
-#. Translators: the first parameter is a filename, the second is an error message.
-#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
-#, c-format
-msgid "Error backing up file ‘%s’: %s"
-msgstr "Erro ao fazer backup do arquivo \"%s\": %s"
-
-#: ../src/storage-manager.c:620
+#: ../src/storage-manager.c:232
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -701,7 +631,7 @@ msgstr ""
 "Não foi possível abrir o banco de dados em \"%s\". O SQLite retornou a "
 "seguinte mensagem de erro: %s"
 
-#: ../src/storage-manager.c:704
+#: ../src/storage-manager.c:274
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -709,13 +639,103 @@ msgstr ""
 "Não foi possível executar a consulta \"%s\". O SQLite retornou a seguinte "
 "mensagem de erro: %s"
 
-#: ../src/storage-manager.c:1010
+#: ../src/storage-manager.c:580
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Erro ao desserializar entrada dentro do buffer durante a pesquisa."
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Digite o URI"
+
+#: ../src/vfs.c:102
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "O GPGME não está na versão mínima %s"
+
+#: ../src/vfs.c:109
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "O GPGME não tem suporte a OpenPGP: %s"
+
+#: ../src/vfs.c:116
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Erro ao criar o contexto cifrado: %s"
+
+#: ../src/vfs.c:136
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr ""
+"Não foi possível criar um novo GIOChannel para o banco de dados "
+"criptografado: %s"
+
+#: ../src/vfs.c:144
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Erro ao abrir o arquivo de banco de dados criptografado em \"%s\": %s"
+
+#: ../src/vfs.c:151
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr ""
+"Não foi possível criar um novo GIOChannel para o banco de dados plano: %s"
+
+#: ../src/vfs.c:162
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Erro ao abrir o arquivo de banco de dados em \"%s\": %s"
+
+#: ../src/vfs.c:214
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Erro ao descriptografar o banco de dados: %s"
+
+#: ../src/vfs.c:246
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Erro ao obter a chave de criptografia: %s"
+
+#: ../src/vfs.c:264
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Erro ao criptografar o banco de dados: %s"
+
+#: ../src/vfs.c:276
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"O banco de dados criptografado está vazio. O arquivo do banco de dados foi "
+"desfeito como backup."
+
+#. Delete the plain file
+#: ../src/vfs.c:279
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Não foi possível excluir o arquivo de banco de dados em \"%s\"."
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: ../src/vfs.c:346
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Erro ao copiar o arquivo de %s para %s: %s"
+
+#: ../src/vfs.c:352
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Erro ao alterar permissões dos arquivos backup do banco de dados: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename.
+#: ../src/vfs.c:693 ../src/vfs.c:721
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "Erro ao fazer backup do arquivo \"%s\""
+
+#: ../src/vfs.c:739
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Erro ao alterar permissões dos arquivos de banco de dados: %s"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
