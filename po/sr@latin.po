@@ -1,14 +1,14 @@
 # Language almanah translations for F package.
-# Copyright (C) 2011 THE F'S COPYRIGHT HOLDER
+# Copyright (C) 2014 THE F'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the F package.
 # Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almana"
-"h&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-18 13:50+0000\n"
-"PO-Revision-Date: 2014-01-29 10:25+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-28 18:07+0000\n"
+"PO-Revision-Date: 2014-10-25 08:41+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -75,7 +75,7 @@ msgid "Keep a personal diary"
 msgstr "Vodite lični dnevnik"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Dnevnik"
 
@@ -235,12 +235,12 @@ msgstr "Provera pisanja je uključena?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Ako je izabrano, vršiće se provera prilikom pisanja."
 
-#: ../src/application.c:246
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Greška prilikom otvaranja baze podataka"
 
 #. Error loading the CSS
-#: ../src/application.c:275
+#: ../src/application.c:272
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -248,11 +248,11 @@ msgstr ""
 "Ne mogu da učitam CSS datoteku „%s“. Sučelje ne može biti ispravno "
 "stilizovano."
 
-#: ../src/application.c:319
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Uključuje režim za ispravljanje grešaka"
 
-#: ../src/application.c:336
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -260,16 +260,16 @@ msgstr ""
 "isto vreme."
 
 #. Print an error
-#: ../src/application.c:347
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opcije linije naredbi ne mogu biti obrađene: %s\n"
 
-#: ../src/application.c:366
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Greška prilikom šifrovanja baze podataka"
 
-#: ../src/application.c:419 ../src/date-entry-dialog.c:129
+#: ../src/application.c:424 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -277,7 +277,7 @@ msgstr "Greška prilikom šifrovanja baze podataka"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Ne mogu da učitam datoteku korisničkog sučelja „%s“"
 
-#: ../src/application.c:542
+#: ../src/application.c:547
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -289,7 +289,7 @@ msgstr ""
 "softvera, bilo verzije 3 licence ili (po vašem izboru) bilo koje novije "
 "verzije."
 
-#: ../src/application.c:546
+#: ../src/application.c:551
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -300,7 +300,7 @@ msgstr ""
 "čak i bez primenjene garancije TRŽIŠNE VREDNOSTI ili PRILAGOĐENOSTI ODREĐENOJ "
 "NAMENI. Pogledajte Gnuovu opštu javnu licencu za više detalja."
 
-#: ../src/application.c:550
+#: ../src/application.c:555
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -308,12 +308,12 @@ msgstr ""
 "Treba da ste primili primerak Gnuove opšte javne licence uz Almanah. Ako "
 "niste, pogledajte <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:565
+#: ../src/application.c:570
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Koristan čuvar dnevnika, sadrži %u unosa."
 
-#: ../src/application.c:569
+#: ../src/application.c:574
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Autorska prava © 2008-2009 Filip Vitnal"
 
@@ -322,11 +322,11 @@ msgstr "Autorska prava © 2008-2009 Filip Vitnal"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:577
+#: ../src/application.c:582
 msgid "translator-credits"
 msgstr "  Miroslav Nikolić, miroslavnikolic@rocketmail.com"
 
-#: ../src/application.c:581
+#: ../src/application.c:586
 msgid "Almanah Website"
 msgstr "Veb stranica Almanaha"
 
@@ -393,7 +393,6 @@ msgstr ""
 
 #: ../src/export-operation.c:256 ../src/export-operation.c:313
 #, c-format
-#| msgid "Error opening encrypted database file \"%s\": %s"
 msgid "Error changing exported file permissions: %s"
 msgstr "Greška promene ovlašćenja izvezene datoteke: %s"
 
@@ -600,80 +599,7 @@ msgstr[3] "Pronašao sam jednu stavku:"
 msgid "Searching…"
 msgstr "Tražim…"
 
-#: ../src/storage-manager.c:276
-#, c-format
-msgid "GPGME is not at least version %s"
-msgstr "GPGME nije najnovije izdanje %s"
-
-#: ../src/storage-manager.c:285
-#, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "GPGME ne podržava OpenPGP: %s"
-
-#: ../src/storage-manager.c:294
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Greška prilikom stvaranja konteksta šifrovanja: %s"
-
-#: ../src/storage-manager.c:323
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Greška prilikom otvaranja šifrovane datoteke baze podataka „%s“: %s"
-
-#: ../src/storage-manager.c:342
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Greška prilikom otvaranja obične datoteke baze podataka „%s“: %s"
-
-#: ../src/storage-manager.c:390
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"Šifrovana baza podataka je prazna. Datoteka obične baze podataka nije "
-"obrisana prilikom pravljenja rezervne kopije."
-
-#. Delete the plain file
-#: ../src/storage-manager.c:393
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Ne mogu da obrišem datoteku obične baze podataka „%s“."
-
-#: ../src/storage-manager.c:434
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Greška prilikom dešifrovanja baze podataka: %s"
-
-#: ../src/storage-manager.c:468
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Greška prilikom nabavljanja ključa za šifrovanje: %s"
-
-#: ../src/storage-manager.c:489
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Greška prilikom šifrovanja baze podataka: %s"
-
-#: ../src/storage-manager.c:549
-#, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error changing database backup file permissions: %s"
-msgstr "Greška promene ovlašćenja datoteke rezerve baze podataka: %s"
-
-#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
-#, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error changing database file permissions: %s"
-msgstr "Greška promene ovlašćenja datoteke baze podataka: %s"
-
-#. Translators: the first parameter is a filename, the second is an error message.
-#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
-#, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error backing up file ‘%s’: %s"
-msgstr "Greška stvaranja rezerve datoteke „%s“: %s"
-
-#: ../src/storage-manager.c:620
+#: ../src/storage-manager.c:232
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -682,7 +608,7 @@ msgstr ""
 "Ne mogu da otvorim bazu podataka „%s“. SKuLajt je obezbedio sledeću poruku o "
 "grešci: %s"
 
-#: ../src/storage-manager.c:704
+#: ../src/storage-manager.c:274
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -690,13 +616,102 @@ msgstr ""
 "Ne mogu da pokrenem upit „%s“. SKuLajt je obezbedio sledeću poruku o grešci: "
 "%s"
 
-#: ../src/storage-manager.c:1010
+#: ../src/storage-manager.c:580
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Greška u raščlanjivanju unosa u baferu tokom pretraživanja."
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Unesite adresu"
+
+#: ../src/vfs.c:102
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME nije najnovije izdanje %s"
+
+#: ../src/vfs.c:109
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME ne podržava OpenPGP: %s"
+
+#: ../src/vfs.c:116
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Greška prilikom stvaranja konteksta šifrovanja: %s"
+
+#: ../src/vfs.c:136
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Ne mogu da napravim novi GIO kanal za šifrovane baze podataka: %s"
+
+#: ../src/vfs.c:144
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Greška prilikom otvaranja šifrovane datoteke baze podataka „%s“: %s"
+
+#: ../src/vfs.c:151
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Ne mogu da napravim novi GIO kanal za obične baze podataka: %s"
+
+#: ../src/vfs.c:162
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Greška prilikom otvaranja obične datoteke baze podataka „%s“: %s"
+
+#: ../src/vfs.c:214
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Greška prilikom dešifrovanja baze podataka: %s"
+
+#: ../src/vfs.c:246
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Greška prilikom nabavljanja ključa za šifrovanje: %s"
+
+#: ../src/vfs.c:264
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Greška prilikom šifrovanja baze podataka: %s"
+
+#: ../src/vfs.c:276
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Šifrovana baza podataka je prazna. Datoteka obične baze podataka nije "
+"obrisana prilikom pravljenja rezervne kopije."
+
+#. Delete the plain file
+#: ../src/vfs.c:279
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Ne mogu da obrišem datoteku obične baze podataka „%s“."
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: ../src/vfs.c:346
+#, c-format
+#| msgid "Error changing database file permissions: %s"
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Greška umnožavanja datoteke iz „%s“ u „%s“: %s"
+
+#: ../src/vfs.c:352
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Greška promene ovlašćenja datoteke rezerve baze podataka: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename.
+#: ../src/vfs.c:693 ../src/vfs.c:721
+#, c-format
+#| msgid "Error backing up file ‘%s’: %s"
+msgid "Error backing up file ‘%s’"
+msgstr "Greška stvaranja rezerve datoteke „%s“"
+
+#: ../src/vfs.c:739
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Greška promene ovlašćenja datoteke baze podataka: %s"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
@@ -726,7 +741,6 @@ msgid "Write the tag and press enter to save it"
 msgstr "Zapišite oznaku i pritisnite „Unesi“ da je sačuvate"
 
 #: ../src/widgets/tag-accessible.c:165
-#| msgid "Show tags for the current entry"
 msgid "Remove the tag from the entry"
 msgstr "Uklonite oznaku iz tekućeg unosa"
 
@@ -736,6 +750,5 @@ msgid "Remove tag"
 msgstr "Uklonite oznaku"
 
 #: ../src/widgets/tag-entry.c:85
-#| msgid "Search entry"
 msgid "Tag entry"
 msgstr "Unos oznake"
