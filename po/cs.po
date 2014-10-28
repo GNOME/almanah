@@ -1,17 +1,17 @@
 # Czech translation for almanah.
 # Copyright (C) 2009, 2010 the author(s) of almanah.
 # This file is distributed under the same license as the almanah package.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013.
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-11-17 17:58+0000\n"
-"PO-Revision-Date: 2013-12-03 21:57+0100\n"
+"POT-Creation-Date: 2014-09-28 18:07+0000\n"
+"PO-Revision-Date: 2014-10-28 21:54+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +76,7 @@ msgid "Keep a personal diary"
 msgstr "Vést si osobní diář"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Diář"
 
@@ -236,22 +236,22 @@ msgstr "Povolená kontrola pravopisu?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Zda je zapnutá kontrola pravopisu záznamů."
 
-#: ../src/application.c:246
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Chyba při otevírání databáze"
 
 #. Error loading the CSS
-#: ../src/application.c:275
+#: ../src/application.c:272
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr "Nelze načíst soubor CSS „%s“. Rozhraní nemusí být správně ostylováno."
 
-#: ../src/application.c:319
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Zapnout režim ladění"
 
-#: ../src/application.c:336
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -259,16 +259,16 @@ msgstr ""
 "programu."
 
 #. Print an error
-#: ../src/application.c:347
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Nelze zpracovat přepínače příkazového řádku: %s\n"
 
-#: ../src/application.c:366
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Chyba při šifrování databáze"
 
-#: ../src/application.c:419 ../src/date-entry-dialog.c:129
+#: ../src/application.c:424 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -276,7 +276,7 @@ msgstr "Chyba při šifrování databáze"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
 
-#: ../src/application.c:542
+#: ../src/application.c:547
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -288,7 +288,7 @@ msgstr ""
 "Free Software Foundation, a to buď ve verzi 3 této licence nebo (dle vaší "
 "volby) v libovolné novější verzi."
 
-#: ../src/application.c:546
+#: ../src/application.c:551
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -300,7 +300,7 @@ msgstr ""
 "KONKRÉTNÍ ÚČEL. Více podrobností najdete přímo v licenci GNU General Public "
 "License."
 
-#: ../src/application.c:550
+#: ../src/application.c:555
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -309,12 +309,12 @@ msgstr ""
 "License. Pokud se tak nestalo, podívejte se na <http://www.gnu.org/licenses/"
 ">."
 
-#: ../src/application.c:565
+#: ../src/application.c:570
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Užitečný diář na hlídání termínů, uloženo %u záznamů."
 
-#: ../src/application.c:569
+#: ../src/application.c:574
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -323,11 +323,11 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:577
+#: ../src/application.c:582
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
-#: ../src/application.c:581
+#: ../src/application.c:586
 msgid "Almanah Website"
 msgstr "Webové stránky Almanah"
 
@@ -603,77 +603,7 @@ msgstr[2] "Nalezeno %d záznamů:"
 msgid "Searching…"
 msgstr "Hledá se…"
 
-#: ../src/storage-manager.c:276
-#, c-format
-msgid "GPGME is not at least version %s"
-msgstr "GPGME není v minimální potřebné verzi %s"
-
-#: ../src/storage-manager.c:285
-#, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "GPGME nepodporuje OpenPGP: %s"
-
-#: ../src/storage-manager.c:294
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Chyba při vytváření kontextu šifry: %s"
-
-#: ../src/storage-manager.c:323
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Chyba při otevírání šifrovaného databázového souboru „%s“: %s"
-
-#: ../src/storage-manager.c:342
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Chyba při otevírání prostého databázového souboru „%s“: %s"
-
-#: ../src/storage-manager.c:390
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"Šifrovaná databáze je prázdná. Prostý databázový soubor byl ponechán jako "
-"záloha."
-
-#. Delete the plain file
-#: ../src/storage-manager.c:393
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Nelze smazat prostý databázový soubor „%s“."
-
-#: ../src/storage-manager.c:434
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Chyba při dešifrování databáze: %s"
-
-#: ../src/storage-manager.c:468
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Chyba při získávání šifrovacího klíče: %s"
-
-#: ../src/storage-manager.c:489
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Chyba při šifrování databáze: %s"
-
-#: ../src/storage-manager.c:549
-#, c-format
-msgid "Error changing database backup file permissions: %s"
-msgstr "Chyba při změně oprávnění souboru se zálohou databáze: %s"
-
-#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
-#, c-format
-msgid "Error changing database file permissions: %s"
-msgstr "Chyba při změně oprávnění databázového souboru: %s"
-
-#. Translators: the first parameter is a filename, the second is an error message.
-#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
-#, c-format
-msgid "Error backing up file ‘%s’: %s"
-msgstr "Chyba při zálohování souboru „%s“: %s"
-
-#: ../src/storage-manager.c:620
+#: ../src/storage-manager.c:232
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -682,7 +612,7 @@ msgstr ""
 "Nelze otevřít databázi „%s“. Aplikace SQLite poskytla následující chybovou "
 "zprávu: %s"
 
-#: ../src/storage-manager.c:704
+#: ../src/storage-manager.c:274
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -690,13 +620,100 @@ msgstr ""
 "Nelze spustit dotaz „%s“. Aplikace SQLite poskytla následující chybovou "
 "zprávu: %s"
 
-#: ../src/storage-manager.c:1010
+#: ../src/storage-manager.c:580
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledání."
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Zadání adresy URI"
+
+#: ../src/vfs.c:102
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME není v minimální potřebné verzi %s"
+
+#: ../src/vfs.c:109
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME nepodporuje OpenPGP: %s"
+
+#: ../src/vfs.c:116
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Chyba při vytváření kontextu šifry: %s"
+
+#: ../src/vfs.c:136
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Nelze vytvořit nový GIOChannel pro šifrovanou databázi: %s"
+
+#: ../src/vfs.c:144
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Chyba při otevírání šifrovaného databázového souboru „%s“: %s"
+
+#: ../src/vfs.c:151
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Nelze vytvořit nový GIOChannel pro prostou databázi: %s"
+
+#: ../src/vfs.c:162
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Chyba při otevírání prostého databázového souboru „%s“: %s"
+
+#: ../src/vfs.c:214
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Chyba při dešifrování databáze: %s"
+
+#: ../src/vfs.c:246
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Chyba při získávání šifrovacího klíče: %s"
+
+#: ../src/vfs.c:264
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Chyba při šifrování databáze: %s"
+
+#: ../src/vfs.c:276
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"Šifrovaná databáze je prázdná. Prostý databázový soubor byl ponechán jako "
+"záloha."
+
+#. Delete the plain file
+#: ../src/vfs.c:279
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Nelze smazat prostý databázový soubor „%s“."
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: ../src/vfs.c:346
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Chyba při kopírování souboru z %s do %s: %s"
+
+#: ../src/vfs.c:352
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Chyba při změně oprávnění souboru se zálohou databáze: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename.
+#: ../src/vfs.c:693 ../src/vfs.c:721
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "Chyba při zálohování souboru „%s“"
+
+#: ../src/vfs.c:739
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Chyba při změně oprávnění databázového souboru: %s"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
