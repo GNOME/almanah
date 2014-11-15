@@ -1,171 +1,318 @@
 # Finnish messages for diary.
 # Copyright (C) 2008 Free Software Foundation Inc.
-# Suomennos: http://gnome.fi/
+# Suomennos: https://l10n.gnome.org/teams/fi/
 #
 # Ilkka Tuohela <hile@iki.fi>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: diary\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-22 08:57+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=almanah&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-28 18:07+0000\n"
 "PO-Revision-Date: 2008-10-04 08:00+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.2\n"
 
-#: ../data/almanah.desktop.in.h:1 ../data/almanah.ui.h:2 ../src/main.c:82
+#: ../data/almanah.appdata.xml.in.h:1
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+
+#: ../data/almanah.appdata.xml.in.h:2
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+
+#: ../data/almanah-app-menu.ui.h:1
+msgid "_Search"
+msgstr "_Etsi"
+
+#: ../data/almanah-app-menu.ui.h:2
+msgid "Pr_eferences"
+msgstr ""
+
+#. Set the button label
+#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+msgid "_Import"
+msgstr ""
+
+#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+msgid "_Export"
+msgstr ""
+
+#: ../data/almanah-app-menu.ui.h:5
+msgid "_Print diary"
+msgstr ""
+
+#: ../data/almanah-app-menu.ui.h:6
+#, fuzzy
+#| msgid "Almanah Diary"
+msgid "_About Almanah Diary"
+msgstr "Almanah-kalenteri"
+
+#: ../data/almanah-app-menu.ui.h:7
+msgid "_Quit"
+msgstr ""
+
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
+#: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Almanah-kalenteri"
 
 #: ../data/almanah.desktop.in.h:2
-msgid "Diary"
-msgstr "Kalenteri"
-
-#: ../data/almanah.desktop.in.h:3
 msgid "Keep a personal diary"
 msgstr "Järjestele henkilökohtaista kalenteriasi"
 
-#: ../data/almanah.ui.h:1
-msgid "Add Link"
-msgstr "Lisää linkki"
-
-#: ../data/almanah.ui.h:3
-msgid "Attached Links"
-msgstr "Liitetyt linkit"
-
-#: ../data/almanah.ui.h:4
-msgid "Calendar"
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+msgid "Diary"
 msgstr "Kalenteri"
 
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/almanah.desktop.in.h:5
+msgid "diary;journal;"
+msgstr ""
+
+#: ../data/almanah.ui.h:1
+#, fuzzy
+#| msgid "Select File"
+msgid "Select Date…"
+msgstr "Valitse tiedosto"
+
+#: ../data/almanah.ui.h:2
+msgid "F_ormat"
+msgstr ""
+
+#: ../data/almanah.ui.h:3
+msgid "Toggle whether the currently selected text is bold."
+msgstr ""
+
+#: ../data/almanah.ui.h:4
+msgid "Toggle whether the currently selected text is italic."
+msgstr ""
+
 #: ../data/almanah.ui.h:5
-msgid "Go To Today"
-msgstr "Siirry tähän päivään"
+msgid "Toggle whether the currently selected text is underlined."
+msgstr ""
 
 #: ../data/almanah.ui.h:6
-msgid "Link Type"
-msgstr "Linkin tyyppi"
-
-#: ../data/almanah.ui.h:7
-msgid "Remove Link"
+#, fuzzy
+#| msgid "Remove Link"
+msgid "Add/Remove _Hyperlink"
 msgstr "Poista linkki"
 
+#: ../data/almanah.ui.h:7
+msgid ""
+"Add or remove a hyperlink from the currently selected text to a specified "
+"URI."
+msgstr ""
+
 #: ../data/almanah.ui.h:8
-msgid "Results"
-msgstr "Tulokset"
+msgid "Insert _Time"
+msgstr ""
 
 #: ../data/almanah.ui.h:9
-msgid "Search"
-msgstr "Etsi"
+msgid "I_mportant"
+msgstr ""
 
 #: ../data/almanah.ui.h:10
-msgid "View"
-msgstr "Näytä"
+msgid "Toggle whether the current entry is marked as important."
+msgstr ""
 
 #: ../data/almanah.ui.h:11
-msgid "View Entry"
-msgstr "Näytä merkintä"
+msgid "Show tags"
+msgstr ""
 
 #: ../data/almanah.ui.h:12
-msgid "_Edit"
-msgstr "_Muokkaa"
+msgid "Show tags for the current entry"
+msgstr ""
 
 #: ../data/almanah.ui.h:13
-msgid "_File"
-msgstr "_Tiedosto"
-
-#: ../data/almanah.ui.h:14
 msgid "_Help"
 msgstr "O_hje"
 
-#: ../data/almanah.ui.h:15
-msgid "_Search"
-msgstr "_Etsi"
+#: ../data/almanah.ui.h:14
+#, fuzzy
+#| msgid "Go To Today"
+msgid "Go to _Today"
+msgstr "Siirry tähän päivään"
 
-#: ../src/interface.c:45
+#: ../data/almanah.ui.h:15
+msgid "Jump to the current date in the diary."
+msgstr ""
+
+#: ../data/almanah.ui.h:16
+msgid "Calendar"
+msgstr "Kalenteri"
+
+#: ../data/almanah.ui.h:17
+msgid "Entry editing area"
+msgstr ""
+
+#: ../data/almanah.ui.h:18
+msgid "Past events"
+msgstr ""
+
+#: ../data/almanah.ui.h:19
+msgid "Past Event List"
+msgstr ""
+
+#: ../data/almanah.ui.h:20
+#, fuzzy
+#| msgid "Search"
+msgid "Search entry"
+msgstr "Etsi"
+
+#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
+msgid "Search"
+msgstr "Etsi"
+
+#: ../data/almanah.ui.h:22
+#, fuzzy
+#| msgid "Results"
+msgid "Result List"
+msgstr "Tulokset"
+
+#: ../data/almanah.ui.h:23
+msgid "View Entry"
+msgstr "Näytä merkintä"
+
+#: ../data/almanah.ui.h:24
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr ""
+
+#: ../data/almanah.ui.h:25
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr ""
+
+#: ../data/almanah.ui.h:26
+msgid "Successful Entries"
+msgstr ""
+
+#: ../data/almanah.ui.h:27
+msgid "Merged Entries"
+msgstr ""
+
+#: ../data/almanah.ui.h:28
+msgid "Failed Entries"
+msgstr ""
+
+#: ../data/almanah.ui.h:29
+msgid "Import Results List"
+msgstr ""
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+msgid "Database encryption key ID"
+msgstr ""
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+msgid "Spell checking language"
+msgstr ""
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr ""
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+msgid "Spell checking enabled?"
+msgstr ""
+
+#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+msgid "Whether spell checking of entries is enabled."
+msgstr ""
+
+#: ../src/application.c:243
+#, fuzzy
+#| msgid "Error encrypting database: %s"
+msgid "Error opening database"
+msgstr "Virhe salattaessa tietokantaa: %s"
+
+#. Error loading the CSS
+#: ../src/application.c:272
 #, c-format
-msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
+msgid ""
+"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
+msgstr ""
+
+#: ../src/application.c:316
+msgid "Enable debug mode"
+msgstr "Käytä vianetsintätilaa"
+
+#: ../src/application.c:333
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+
+#. Print an error
+#: ../src/application.c:344
+#, fuzzy, c-format
+#| msgid "Command-line options could not be parsed. Error: %s"
+msgid "Command line options could not be parsed: %s\n"
+msgstr "Komentorivivalitsimia ei voitu tulkita. Virhe: %s"
+
+#: ../src/application.c:363
+#, fuzzy
+#| msgid "Error encrypting database: %s"
+msgid "Error encrypting database"
+msgstr "Virhe salattaessa tietokantaa: %s"
+
+#: ../src/application.c:424 ../src/date-entry-dialog.c:129
+#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
+#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
+#, fuzzy, c-format
+#| msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
+msgid "UI file \"%s\" could not be loaded"
 msgstr "Käyttöliittymätiedostoa \"%s/almanah/almanah.ui\" ei voitu ladata."
 
-#. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
-#. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
-#. Translators: These are the names and descriptions of the different link types.
-#: ../src/link.c:52
-msgid "File"
-msgstr "Tiedosto"
-
-#: ../src/link.c:52
-msgid "An attached file."
-msgstr "Liitetiedosto."
-
-#: ../src/link.c:53
-msgid "Note"
-msgstr "Huomautus"
-
-#: ../src/link.c:53
-msgid "A note about an important event."
-msgstr "Huomautus tärkeästä tapahtumasta."
-
-#: ../src/link.c:54 ../src/links/uri.c:50
-msgid "URI"
-msgstr "URI"
-
-#: ../src/link.c:54
-msgid "A URI of a file or web page."
-msgstr "Tiedoston tai www-sivun URI."
-
-#: ../src/links/file.c:39
-msgid "Due to an unknown error the file cannot be opened."
-msgstr "Tuntemattoman virheen takia tiedostoa ei voi avata."
-
-#: ../src/links/file.c:50
-msgid "Select File"
-msgstr "Valitse tiedosto"
-
-#: ../src/links/uri.c:39
-msgid "Due to an unknown error the URI cannot be opened."
-msgstr "URIa ei voi avata tuntemattomasta syystä."
-
-#: ../src/main-window.c:178
-#, c-format
-msgid "The spelling checker could not be initialized: %s"
-msgstr "Oikolukua ei voitu alustaa: %s"
-
-#: ../src/main-window.c:265
+#: ../src/application.c:547
 msgid ""
-"Diary is free software: you can redistribute it and/or modify it under the "
+"Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
 "Foundation, either version 3 of the License, or (at your option) any later "
 "version."
 msgstr ""
 
-#: ../src/main-window.c:269
+#: ../src/application.c:551
 msgid ""
-"Diary is distributed in the hope that it will be useful, but WITHOUT ANY "
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
 "details."
 msgstr ""
 
-#: ../src/main-window.c:273
+#: ../src/application.c:555
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
-"Diary.  If not, see <http://www.gnu.org/licenses/>."
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
-#: ../src/main-window.c:284
+#: ../src/application.c:570
 #, c-format
-msgid ""
-"A helpful diary keeper, storing %u entries with %u links and a total of %u "
-"characters."
+msgid "A helpful diary keeper, storing %u entries."
 msgstr ""
 
-#: ../src/main-window.c:291
-msgid "Copyright © 2008 Philip Withnall"
+#: ../src/application.c:574
+#, fuzzy
+#| msgid "Copyright © 2008 Philip Withnall"
+msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Tekijänoikeudet © 2008 Philip Withnall"
 
 #. Translators: please include your names here to be credited for your hard work!
@@ -173,133 +320,491 @@ msgstr "Tekijänoikeudet © 2008 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:299
+#: ../src/application.c:582
 msgid "translator-credits"
 msgstr ""
 "Ilkka Tuohela, 2008.\n"
 "\n"
-"http://gnome.fi/"
+"https://l10n.gnome.org/teams/fi/"
 
-#: ../src/main-window.c:303
+#: ../src/application.c:586
 msgid "Almanah Website"
 msgstr "Almanahin www-sivut"
 
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#: ../src/date-entry-dialog.c:72
+#, fuzzy
+#| msgid "Select File"
+msgid "Select Date"
+msgstr "Valitse tiedosto"
+
+#: ../src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr ""
+
+#: ../src/events/calendar-appointment.c:51
+msgid "Calendar Appointment"
+msgstr ""
+
+#: ../src/events/calendar-appointment.c:52
+msgid "An appointment on an Evolution calendar."
+msgstr ""
+
+#. Translators: This is a time string with the format hh:mm
+#: ../src/events/calendar-appointment.c:89 ../src/events/calendar-task.c:90
+#, c-format
+msgid "%.2d:%.2d"
+msgstr ""
+
+#: ../src/events/calendar-appointment.c:135 ../src/events/calendar-task.c:125
+msgid "Error launching Evolution"
+msgstr ""
+
+#: ../src/events/calendar-task.c:51
+#, fuzzy
+#| msgid "Calendar"
+msgid "Calendar Task"
+msgstr "Kalenteri"
+
+#: ../src/events/calendar-task.c:52
+msgid "A task on an Evolution calendar."
+msgstr ""
+
+#: ../src/export-operation.c:47 ../src/import-operation.c:45
+#, fuzzy
+#| msgid "Select File"
+msgid "Text Files"
+msgstr "Valitse tiedosto"
+
+#: ../src/export-operation.c:48
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+
+#: ../src/export-operation.c:52 ../src/import-operation.c:50
+msgid "Database"
+msgstr ""
+
+#: ../src/export-operation.c:53
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+
+#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#, fuzzy, c-format
+#| msgid "Error opening encrypted database file \"%s\": %s"
+msgid "Error changing exported file permissions: %s"
+msgstr "Virhe avattaessa salattua tietokantatiedostoa \"%s\": %s"
+
+#: ../src/import-export-dialog.c:202
+msgid "Import _mode: "
+msgstr ""
+
+#: ../src/import-export-dialog.c:202
+msgid "Export _mode: "
+msgstr ""
+
+#. Set the window title
+#: ../src/import-export-dialog.c:205
+msgid "Import Entries"
+msgstr ""
+
+#: ../src/import-export-dialog.c:205
+msgid "Export Entries"
+msgstr ""
+
+#: ../src/import-export-dialog.c:245
+msgid "Import failed"
+msgstr ""
+
+#: ../src/import-export-dialog.c:283
+msgid "Export failed"
+msgstr ""
+
+#: ../src/import-export-dialog.c:296
+msgid "Export successful"
+msgstr ""
+
+#: ../src/import-export-dialog.c:297
+msgid "The diary was successfully exported."
+msgstr ""
+
+#: ../src/import-export-dialog.c:445
+#, fuzzy
+#| msgid "Results"
+msgid "Import Results"
+msgstr "Tulokset"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:349 ../src/printing.c:66 ../src/search-dialog.c:62
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
+#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
+#: ../src/widgets/calendar-button.c:309
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %Bta %Y"
 
-#: ../src/main.c:70
-msgid "Enable debug mode"
-msgstr "Käytä vianetsintätilaa"
-
-#. Options
-#: ../src/main.c:86
-msgid "- Manage your diary"
-msgstr "- hallitse kalenteriasi"
-
-#: ../src/main.c:96
-#, c-format
-msgid "Command-line options could not be parsed. Error: %s"
-msgstr "Komentorivivalitsimia ei voitu tulkita. Virhe: %s"
-
-#: ../src/printing.c:82
-msgid "No entry for this date."
-msgstr "Tänään ei ole merkintöjä."
-
-#: ../src/printing.c:215
-msgid "Start Date"
-msgstr "Aloituspäivä"
-
-#: ../src/printing.c:218
-msgid "End Date"
-msgstr "Päättymispäivä"
-
-#: ../src/storage-manager.c:184
-#, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "GPGME ei tue OpenPGP:tä: %s"
-
-#: ../src/storage-manager.c:193
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Virhe luotaessa sifferikontekstia: %s"
-
-#: ../src/storage-manager.c:222
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Virhe avattaessa salattua tietokantatiedostoa \"%s\": %s"
-
-#: ../src/storage-manager.c:242
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Virhe avattaessa selväkielistä tietokantatiedostoa \"%s\": %s"
-
-#: ../src/storage-manager.c:312
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Virhe purettaessa tietokannan salausta: %s"
-
-#: ../src/storage-manager.c:345
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Virhe haettaessa salausavainta: %s"
-
-#: ../src/storage-manager.c:366
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Virhe salattaessa tietokantaa: %s"
-
-#: ../src/storage-manager.c:377
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Selväkielistä tietokantatiedostoa \"%s\" ei voitu poistaa."
-
-#: ../src/storage-manager.c:425
-#, c-format
+#: ../src/import-operation.c:46
 msgid ""
-"Both an encrypted and plaintext version of the database exist as \"%s\" and "
-"\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
-"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
-"problem will most likely have been caused by Diary being unable to encrypt "
-"the database, so you should move the first file."
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
 msgstr ""
 
-#: ../src/storage-manager.c:450
+#: ../src/import-operation.c:51
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr ""
+
+#: ../src/import-operation.c:248
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr ""
+
+#: ../src/import-operation.c:264
 #, c-format
 msgid ""
-"Could not open database \"%s\". SQLite provided the following error message: "
-"%s"
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
 msgstr ""
-"Tietokantaa \"%s\" ei voitu avata. SQLite antoi seuraavan virhee: %s"
 
-#: ../src/storage-manager.c:482
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: ../src/import-operation.c:305
 #, c-format
 msgid ""
-"Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary "
-"will not be encrypted; please install Seahorse and set up a default key, or "
-"ignore this message."
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
 msgstr ""
-"Virhe noudettaessa salausavainta: GConf-avain \"%s\" on viallinen tai tyhjä. "
-"Kalenterisi ei ole salattu; asenna Seahorse ja aseta oletusavain, tai "
-"jätä tämä viesti huomioimatta."
 
-#: ../src/storage-manager.c:526 ../src/storage-manager.c:559
-#, c-format
-msgid ""
-"Could not run query \"%s\". SQLite provided the following error message: %s"
-msgstr ""
-"Kyselyä \"%s\" ei voitu suorittaa. SQLite antoi seuraavan virheen: %s"
-
-#: ../src/storage-manager.c:707
+#: ../src/main-window.c:571
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Haluatko varmasti muokata tätä kalenterimerkintää %s?"
 
-#: ../src/storage-manager.c:734
+#: ../src/main-window.c:601
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Haluatko varmasti poistaa tämän kalenterimerkinnän %s?"
 
+#. Print a warning about the unknown tag
+#: ../src/main-window.c:710
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr ""
+
+#: ../src/main-window.c:918
+msgid "Error opening URI"
+msgstr ""
+
+#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#: ../src/main-window.c:1092
+#, c-format
+msgid "%s @ %s"
+msgstr ""
+
+#: ../src/main-window.c:1171
+msgid "Entry content could not be loaded"
+msgstr ""
+
+#: ../src/main-window.c:1348
+#, fuzzy
+#| msgid "The spelling checker could not be initialized: %s"
+msgid "Spelling checker could not be initialized"
+msgstr "Oikolukua ei voitu alustaa: %s"
+
+#: ../src/preferences-dialog.c:91
+msgid "Almanah Preferences"
+msgstr ""
+
+#. Grab our child widgets
+#: ../src/preferences-dialog.c:217
+#, fuzzy
+#| msgid "Error getting encryption key: %s"
+msgid "Encryption key: "
+msgstr "Virhe haettaessa salausavainta: %s"
+
+#: ../src/preferences-dialog.c:222
+msgid "None (don't encrypt)"
+msgstr ""
+
+#: ../src/preferences-dialog.c:246
+msgid "New _Key"
+msgstr ""
+
+#. Set up the "Enable spell checking" check button
+#: ../src/preferences-dialog.c:253
+msgid "Enable _spell checking"
+msgstr ""
+
+#: ../src/preferences-dialog.c:279
+#, fuzzy
+#| msgid "Error getting encryption key: %s"
+msgid "Error saving the encryption key"
+msgstr "Virhe haettaessa salausavainta: %s"
+
+#: ../src/preferences-dialog.c:298
+msgid "Error opening Seahorse"
+msgstr ""
+
+#: ../src/printing.c:277
+msgid "This entry is marked as important."
+msgstr ""
+
+#: ../src/printing.c:298
+msgid "No entry for this date."
+msgstr "Tänään ei ole merkintöjä."
+
+#: ../src/printing.c:453
+#, fuzzy
+#| msgid "Start Date"
+msgid "Start date:"
+msgstr "Aloituspäivä"
+
+#: ../src/printing.c:455
+#, fuzzy
+#| msgid "End Date"
+msgid "End date:"
+msgstr "Päättymispäivä"
+
+#. Line spacing
+#: ../src/printing.c:471
+msgid "Line spacing:"
+msgstr ""
+
+#: ../src/search-dialog.c:223
+msgid "Search canceled."
+msgstr ""
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: ../src/search-dialog.c:226
+#, c-format
+msgid "Error: %s"
+msgstr ""
+
+#. Success!
+#: ../src/search-dialog.c:231
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/search-dialog.c:280
+#, fuzzy
+#| msgid "Search"
+msgid "Searching…"
+msgstr "Etsi"
+
+#: ../src/storage-manager.c:232
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr "Tietokantaa \"%s\" ei voitu avata. SQLite antoi seuraavan virhee: %s"
+
+#: ../src/storage-manager.c:274
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr "Kyselyä \"%s\" ei voitu suorittaa. SQLite antoi seuraavan virheen: %s"
+
+#: ../src/storage-manager.c:580
+msgid "Error deserializing entry into buffer while searching."
+msgstr ""
+
+#: ../src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr ""
+
+#: ../src/vfs.c:102
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr ""
+
+#: ../src/vfs.c:109
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME ei tue OpenPGP:tä: %s"
+
+#: ../src/vfs.c:116
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Virhe luotaessa sifferikontekstia: %s"
+
+#: ../src/vfs.c:136
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr ""
+
+#: ../src/vfs.c:144
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Virhe avattaessa salattua tietokantatiedostoa \"%s\": %s"
+
+#: ../src/vfs.c:151
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr ""
+
+#: ../src/vfs.c:162
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Virhe avattaessa selväkielistä tietokantatiedostoa \"%s\": %s"
+
+#: ../src/vfs.c:214
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Virhe purettaessa tietokannan salausta: %s"
+
+#: ../src/vfs.c:246
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Virhe haettaessa salausavainta: %s"
+
+#: ../src/vfs.c:264
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Virhe salattaessa tietokantaa: %s"
+
+#: ../src/vfs.c:276
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+
+#. Delete the plain file
+#: ../src/vfs.c:279
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "Selväkielistä tietokantatiedostoa \"%s\" ei voitu poistaa."
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: ../src/vfs.c:346
+#, fuzzy, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Virhe avattaessa selväkielistä tietokantatiedostoa \"%s\": %s"
+
+#: ../src/vfs.c:352
+#, fuzzy, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database backup file permissions: %s"
+msgstr "Virhe avattaessa selväkielistä tietokantatiedostoa \"%s\": %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename.
+#: ../src/vfs.c:693 ../src/vfs.c:721
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr ""
+
+#: ../src/vfs.c:739
+#, fuzzy, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database file permissions: %s"
+msgstr "Virhe avattaessa selväkielistä tietokantatiedostoa \"%s\": %s"
+
+#: ../src/widgets/calendar-button.c:140
+#, fuzzy, c-format
+#| msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
+msgid "UI file \"%s\" could not be loaded: %s"
+msgstr "Käyttöliittymätiedostoa \"%s/almanah/almanah.ui\" ei voitu ladata."
+
+#: ../src/widgets/calendar-button.c:150
+msgid "Can't load calendar window object from UI file"
+msgstr ""
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: ../src/widgets/calendar.c:176
+msgid "Important!"
+msgstr ""
+
+#: ../src/widgets/calendar-window.c:80
+msgid "Unknown input device"
+msgstr ""
+
+#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
+msgid "add tag"
+msgstr ""
+
+#: ../src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr ""
+
+#: ../src/widgets/tag-accessible.c:165
+msgid "Remove the tag from the entry"
+msgstr ""
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: ../src/widgets/tag.c:416
+#, fuzzy
+#| msgid "Remove Link"
+msgid "Remove tag"
+msgstr "Poista linkki"
+
+#: ../src/widgets/tag-entry.c:85
+msgid "Tag entry"
+msgstr ""
+
+#~ msgid "Add Link"
+#~ msgstr "Lisää linkki"
+
+#~ msgid "Attached Links"
+#~ msgstr "Liitetyt linkit"
+
+#~ msgid "Link Type"
+#~ msgstr "Linkin tyyppi"
+
+#~ msgid "View"
+#~ msgstr "Näytä"
+
+#~ msgid "_Edit"
+#~ msgstr "_Muokkaa"
+
+#~ msgid "_File"
+#~ msgstr "_Tiedosto"
+
+#~ msgid "File"
+#~ msgstr "Tiedosto"
+
+#~ msgid "An attached file."
+#~ msgstr "Liitetiedosto."
+
+#~ msgid "Note"
+#~ msgstr "Huomautus"
+
+#~ msgid "A note about an important event."
+#~ msgstr "Huomautus tärkeästä tapahtumasta."
+
+#~ msgid "URI"
+#~ msgstr "URI"
+
+#~ msgid "A URI of a file or web page."
+#~ msgstr "Tiedoston tai www-sivun URI."
+
+#~ msgid "Due to an unknown error the file cannot be opened."
+#~ msgstr "Tuntemattoman virheen takia tiedostoa ei voi avata."
+
+#~ msgid "Due to an unknown error the URI cannot be opened."
+#~ msgstr "URIa ei voi avata tuntemattomasta syystä."
+
+#~ msgid "- Manage your diary"
+#~ msgstr "- hallitse kalenteriasi"
+
+#~ msgid ""
+#~ "Error getting encryption key: GConf key \"%s\" invalid or empty. Your "
+#~ "diary will not be encrypted; please install Seahorse and set up a default "
+#~ "key, or ignore this message."
+#~ msgstr ""
+#~ "Virhe noudettaessa salausavainta: GConf-avain \"%s\" on viallinen tai "
+#~ "tyhjä. Kalenterisi ei ole salattu; asenna Seahorse ja aseta oletusavain, "
+#~ "tai jätä tämä viesti huomioimatta."
