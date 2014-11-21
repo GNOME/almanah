@@ -1,8 +1,10 @@
 AC_PREREQ(2.63)
 AC_INIT([almanah],[0.12.0],[https://bugzilla.gnome.org/enter_bug.cgi?product=almanah],[almanah],[http://wiki.gnome.org/Apps/Almanah_Diary])
 
-AC_CONFIG_SRCDIR([src/main.c])
+AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_SRCDIR([src])
 AC_USE_SYSTEM_EXTENSIONS
 
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 no-dist-gzip check-news subdir-objects])
@@ -10,7 +12,7 @@ AM_INIT_AUTOMAKE([1.9 dist-bzip2 no-dist-gzip check-news subdir-objects])
 # Enable silent build when available (Automake 1.11)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
-GETTEXT_PACKAGE=almanah
+GETTEXT_PACKAGE=AC_PACKAGE_TARNAME
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"], [Define to the Gettext package name])
 AC_SUBST(GETTEXT_PACKAGE)
 IT_PROG_INTLTOOL([0.35.0])
