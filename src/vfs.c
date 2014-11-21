@@ -44,6 +44,8 @@
 #include <config.h>
 
 #ifdef ENABLE_ENCRYPTION
+#define GCR_API_SUBJECT_TO_CHANGE
+#include <gcr/gcr-base.h>
 #include <gpgme.h>
 #define ENCRYPTED_SUFFIX ".encrypted"
 #endif /* ENABLE_ENCRYPTION */
@@ -64,8 +66,10 @@
 ** When using this VFS, the sqlite3_file* handles that SQLite uses are
 ** actually pointers to instances of type DemoFile.
 */
-typedef struct AlmanahSQLiteVFS AlmanahSQLiteVFS;
-struct AlmanahSQLiteVFS
+
+typedef struct _AlmanahSQLiteVFS AlmanahSQLiteVFS;
+
+struct _AlmanahSQLiteVFS
 {
 	sqlite3_file base;              /* Base class. Must be first. */
 	int fd;                         /* File descriptor */
@@ -78,19 +82,144 @@ struct AlmanahSQLiteVFS
 #ifdef ENABLE_ENCRYPTION
 	gchar *encrypted_filename;
 	gboolean decrypted;
+
+	gpointer plain_buffer;
+	gsize    plain_buffer_size;     /* Reserved memory size */
+	goffset  plain_offset;
+	gsize    plain_size;            /* Data size (plain_size <= plain_buffer_size) */
 #endif /* ENABLE_ENCRYPTION */
 };
 
 #ifdef ENABLE_ENCRYPTION
 
-typedef struct {
+typedef struct _CipherOperation CipherOperation;
+typedef struct _GpgmeNpmClosure GpgmeNpmClosure;
+
+struct _GpgmeNpmClosure {
+	gpointer buffer;
+	gsize    buffer_size;
+	goffset  offset;
+	gsize    size;
+};
+
+struct _CipherOperation {
 	GIOChannel *cipher_io_channel;
 	GIOChannel *plain_io_channel;
 	gpgme_data_t gpgme_cipher;
 	gpgme_data_t gpgme_plain;
 	gpgme_ctx_t context;
 	AlmanahSQLiteVFS *vfs;
-} CipherOperation;
+	struct gpgme_data_cbs *gpgme_cbs;
+	GpgmeNpmClosure *npm_closure;
+};
+
+enum {
+	ALMANAH_VFS_ERROR_DECRYPT = 1
+};
+
+#define ALMANAH_VFS_ERROR almanah_vfs_error_quark ()
+
+GQuark
+almanah_vfs_error_quark (void)
+{
+  return g_quark_from_static_string ("almanah-vfs-error-quark");
+}
+
+/* Callback based data buffer functions for GPGME */
+ssize_t _gpgme_read_cb    (void *handle, void *buffer, size_t size);
+ssize_t _gpgme_write_cb   (void *handle, const void *buffer, size_t size);
+off_t   _gpgme_seek_cb    (void *handle, off_t offset, int whence);
+
+ssize_t
+_gpgme_read_cb (void *handle, void *buffer, size_t size)
+{
+        GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;
+	gsize read_size;
+
+	read_size = npm_closure->size - npm_closure->offset;
+	if (!read_size)
+		return 0;
+	if (size < read_size)
+		read_size = size;
+
+	memcpy (buffer, npm_closure->buffer + npm_closure->offset, read_size);
+	npm_closure->offset += read_size;
+
+	return (ssize_t) read_size;
+}
+
+ssize_t
+_gpgme_write_cb (void *handle, const void *buffer, size_t size)
+{
+	GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;
+	gsize unused;
+
+	unused = npm_closure->buffer_size - npm_closure->offset;
+	if (unused < size) {
+		gsize new_size;
+		gsize exponential_size;
+		gsize required_size;
+		gpointer new_buffer;
+
+		exponential_size = npm_closure->size ? (2 * npm_closure->size) : 512;
+		required_size = npm_closure->offset + size;
+
+		new_size = MAX (exponential_size, required_size);
+		new_buffer = gcr_secure_memory_try_realloc (npm_closure->buffer, new_size);
+		if (!new_buffer && (new_size > required_size)) {
+			new_size = required_size;
+			new_buffer = gcr_secure_memory_realloc (npm_closure->buffer, new_size);
+		}
+
+		if (!new_buffer)
+			return -1;
+
+		npm_closure->buffer = new_buffer;
+		npm_closure->buffer_size = new_size;
+	}
+
+	memcpy (npm_closure->buffer + npm_closure->offset, buffer, size);
+	npm_closure->offset += (gsize) size;
+	npm_closure->size = MAX(npm_closure->size, (gsize) npm_closure->offset);
+
+	return size;
+}
+
+off_t
+_gpgme_seek_cb (void *handle, off_t offset, int whence)
+{
+	GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;
+
+	switch (whence) {
+	case SEEK_SET:
+		if (offset < 0 || (gsize) offset > npm_closure->size) {
+			errno = EINVAL;
+			return -1;
+		}
+		npm_closure->offset = (goffset) offset;
+		break;
+	case SEEK_CUR:
+		if ((offset > 0 && (npm_closure->size - npm_closure->offset) < (gsize) offset)
+		    || (offset < 0 && npm_closure->offset < -offset)) {
+			errno = EINVAL;
+			return -1;
+		}
+		npm_closure->offset += offset;
+		break;
+	case SEEK_END:
+		if (offset > 0 || -offset > npm_closure->size) {
+			errno = EINVAL;
+			return -1;
+		}
+		npm_closure->offset = npm_closure->size + offset;
+		break;
+	default:
+		errno = EINVAL;
+		return -1;
+	}
+
+	return (off_t) npm_closure->offset;
+}
 
 static gboolean
 prepare_gpgme (CipherOperation *operation)
@@ -145,21 +274,19 @@ open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *ope
 		return FALSE;
 	}
 
-	/* Open/Create the plain file */
-	operation->plain_io_channel = g_io_channel_new_file (self->plain_filename, encrypting ? "r" : "w", &io_error);
-	if (operation->plain_io_channel == NULL) {
-		g_critical (_("Can't create a new GIOChannel for the plain database: %s"), io_error->message);
-		g_propagate_error (error, io_error);
-		return FALSE;
-	}
-
-	/* Ensure the permissions are restricted to only the current user */
-	fchmod (g_io_channel_unix_get_fd (operation->plain_io_channel), S_IRWXU);
-
-	/* Pass it to GPGME */
-	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
+	/* Pass the non-pageable memory to GPGME as a Callback Base Data Buffer, 
+	 * see: http://www.gnupg.org/documentation/manuals/gpgme/Callback-Based-Data-Buffers.html
+	 */
+	operation->npm_closure = g_new0 (GpgmeNpmClosure, 1);
+	operation->gpgme_cbs = g_new0 (struct gpgme_data_cbs, 1);
+	operation->gpgme_cbs->read =_gpgme_read_cb;
+	operation->gpgme_cbs->write =_gpgme_write_cb;
+	operation->gpgme_cbs->seek =_gpgme_seek_cb;
+	error_gpgme = gpgme_data_new_from_cbs (&(operation->gpgme_plain), operation->gpgme_cbs, operation->npm_closure);
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		g_critical (_("Error opening plain database file \"%s\": %s"), self->plain_filename, gpgme_strerror (error_gpgme));
+		g_set_error (error, 0, 0,
+			     _("Error creating Callback base data buffer: %s"),
+			     gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -188,6 +315,9 @@ cipher_operation_free (CipherOperation *operation)
 		gpgme_release (operation->context);
 	}
 
+	if (operation->npm_closure != NULL)
+		g_free (operation->npm_closure);
+
 	g_free (operation);
 }
 
@@ -211,9 +341,17 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 	error_gpgme = gpgme_op_decrypt_verify (operation->context, operation->gpgme_cipher, operation->gpgme_plain);
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		cipher_operation_free (operation);
-		g_critical (_("Error decrypting database: %s"), gpgme_strerror (error_gpgme));
+		g_set_error (error,
+			     ALMANAH_VFS_ERROR,
+			     ALMANAH_VFS_ERROR_DECRYPT,
+			     "%s: %s", gpgme_strsource (error_gpgme), gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
+
+	/* Setup the database content in memory */
+	self->plain_buffer = operation->npm_closure->buffer;
+	self->plain_offset = 0;
+	self->plain_size = operation->npm_closure->size;
 
 	/* Do this one synchronously */
 	cipher_operation_free (operation);
@@ -255,6 +393,10 @@ encrypt_database (AlmanahSQLiteVFS *self,  const gchar *encryption_key, GError *
 		return FALSE;
 	}
 
+	operation->npm_closure->buffer = self->plain_buffer;
+	operation->npm_closure->offset = 0;
+	operation->npm_closure->size = self->plain_size;
+
 	/* Encrypt and sign! */
 	error_gpgme = gpgme_op_encrypt_sign_start (operation->context, gpgme_keys, 0, operation->gpgme_plain, operation->gpgme_cipher);
 	gpgme_key_unref (gpgme_keys[0]);
@@ -289,8 +431,6 @@ encrypt_database (AlmanahSQLiteVFS *self,  const gchar *encryption_key, GError *
 
 		return FALSE;
 	}
-
-	return TRUE;
 
 	return TRUE;
 }
@@ -364,22 +504,54 @@ back_up_file (const gchar *filename)
 ** file has a write-buffer (AlmanahSQLiteVFS.aBuffer), ignore it.
 */
 static int
-demoDirectWrite (AlmanahSQLiteVFS *p,            /* File handle */
-		 const void *zBuf,               /* Buffer containing data to write */
-		 int iAmt,                       /* Size of data to write in bytes */
-		 sqlite_int64 iOfst              /* File offset to write to */
+demoDirectWrite (AlmanahSQLiteVFS *self,            /* File handle */
+		 const void *buffer,               /* Buffer containing data to write */
+		 int len,                       /* Size of data to write in bytes */
+		 sqlite_int64 offset              /* File offset to write to */
 		 )
 {
-	off_t ofst;                     /* Return value from lseek() */
-	size_t nWrite;                  /* Return value from write() */
+	off_t ofst;
+	size_t nWrite;
 
-	ofst = lseek (p->fd, iOfst, SEEK_SET);
-	if (ofst!=iOfst) {
+#ifdef ENABLE_ENCRYPTION
+	if (self->decrypted) {
+		if ((gsize) (offset + len) > self->plain_buffer_size) {
+			gsize new_size;
+			gsize exponential_size;
+			gsize required_size;
+			gpointer new_buffer = NULL;
+
+			exponential_size = self->plain_size ? (2 * self->plain_size) : 512;
+			required_size = offset + len;
+
+			new_size = MAX (exponential_size, required_size);
+			new_buffer = gcr_secure_memory_try_realloc (self->plain_buffer, new_size);
+			if (new_buffer == NULL && (new_size > required_size)) {
+				new_size = required_size;
+				new_buffer = gcr_secure_memory_realloc (self->plain_buffer, new_size);
+			}
+
+			if (new_buffer == NULL)
+				return SQLITE_NOMEM;
+
+			self->plain_buffer = new_buffer;
+			self->plain_buffer_size = new_size;
+		}
+
+		memcpy (self->plain_buffer + offset, buffer, len);
+		self->plain_size = MAX(self->plain_size, (gsize) (offset + len));
+
+		return SQLITE_OK;
+	}
+#endif /* ENABLE_ENCRYPTION */
+
+	ofst = lseek (self->fd, offset, SEEK_SET);
+	if (ofst != offset) {
 		return SQLITE_IOERR_WRITE;
 	}
 
-	nWrite = write (p->fd, zBuf, iAmt);
-	if (nWrite != iAmt){
+	nWrite = write (self->fd, buffer, len);
+	if (nWrite != (size_t) len){
 		return SQLITE_IOERR_WRITE;
 	}
 
@@ -391,9 +563,16 @@ demoDirectWrite (AlmanahSQLiteVFS *p,            /* File handle */
 ** no-op if this particular file does not have a buffer (i.e. it is not
 ** a journal file) or if the buffer is currently empty.
 */
-static int demoFlushBuffer(AlmanahSQLiteVFS *p){
+static int
+demoFlushBuffer (AlmanahSQLiteVFS *p)
+{
+#ifdef ENABLE_ENCRYPTION
+	if (p->decrypted)
+		return SQLITE_OK;
+#endif /* ENABLE_ENCRYPTION */
 	int rc = SQLITE_OK;
-	if( p->nBuffer ){
+
+	if (p->nBuffer) {
 		rc = demoDirectWrite(p, p->aBuffer, p->nBuffer, p->iBufferOfst);
 		p->nBuffer = 0;
 	}
@@ -406,37 +585,45 @@ static int demoFlushBuffer(AlmanahSQLiteVFS *p){
 static int
 demoClose (sqlite3_file *pFile)
 {
-	int rc;
+	int rc = SQLITE_OK;
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
 #ifdef ENABLE_ENCRYPTION
 	gchar *encryption_key;
 	GError *child_error = NULL;
+
+	/* TODO: This code is not completed */
+
+	if (self->decrypted == FALSE)
+		goto close_db;
+
+	/* Get the encryption key */
+	encryption_key = get_encryption_key ();
+	if (encryption_key == NULL) {
+		/* TODO: No encryption key, so save in plain file from DB in memory,
+		   this happends when the user has changed from encrypted to no encrypted */
+		if (self->plain_buffer)
+			gcr_secure_memory_free (self->plain_buffer);
+		goto delete_encrypted_db;
+	}
+
+	/* Encrypt the plain in memory DB to a file */
+	if (encrypt_database (self, encryption_key, &child_error) != TRUE)
+		return SQLITE_IOERR;
+
+	if (self->plain_buffer)
+		gcr_secure_memory_free (self->plain_buffer);
+
+	if (encryption_key)
+		g_free (encryption_key);
+
+ close_db:
 #endif /* ENABLE_ENCRYPTION */
 
 	rc = demoFlushBuffer (self);
 	sqlite3_free (self->aBuffer);
 	close (self->fd);
 
-#ifdef ENABLE_ENCRYPTION
-	/* If the database wasn't encrypted before we opened it, we won't encrypt it when closing. In fact, we'll go so far as to delete the old
-	 * encrypted database file. */
-	if (self->decrypted == FALSE)
-		goto delete_encrypted_db;
-
-	/* Get the encryption key */
-	encryption_key = get_encryption_key ();
-	if (encryption_key == NULL)
-		goto delete_encrypted_db;
-
-	/* Encrypt the plain DB file */
-	if (encrypt_database (self, encryption_key, &child_error) != TRUE) {
-		rc = SQLITE_IOERR;
-	}
-
-	g_free (encryption_key);
-#endif /* ENABLE_ENCRYPTION */
-
-	return rc;
+	return SQLITE_OK;
 
 #ifdef ENABLE_ENCRYPTION
  delete_encrypted_db:
@@ -450,12 +637,23 @@ demoClose (sqlite3_file *pFile)
 ** Read data from a file.
 */
 static int
-demoRead (sqlite3_file *pFile,  void *zBuf,  int iAmt,  sqlite_int64 iOfst)
+demoRead (sqlite3_file *pFile,  void *buffer,  int len,  sqlite_int64 offset)
 {
-	AlmanahSQLiteVFS *p = (AlmanahSQLiteVFS*)pFile;
-	off_t ofst;                     /* Return value from lseek() */
-	int nRead;                      /* Return value from read() */
-	int rc;                         /* Return code from demoFlushBuffer() */
+	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
+	off_t ofst;
+	int nRead;
+	int rc;
+
+#ifdef ENABLE_ENCRYPTION
+	if (self->decrypted) {
+		if ((gsize) (offset + len) > self->plain_size)
+			return SQLITE_IOERR_SHORT_READ;
+
+		memcpy (buffer, self->plain_buffer + offset, len);
+
+		return SQLITE_OK;
+	}
+#endif /* ENABLE_ENCRYPTION */
 
 	/* Flush any data in the write buffer to disk in case this operation
 	** is trying to read data the file-region currently cached in the buffer.
@@ -463,20 +661,20 @@ demoRead (sqlite3_file *pFile,  void *zBuf,  int iAmt,  sqlite_int64 iOfst)
 	** unnecessary write here, but in practice SQLite will rarely read from
 	** a journal file when there is data cached in the write-buffer.
 	*/
-	rc = demoFlushBuffer (p);
-	if (rc!=SQLITE_OK) {
+	rc = demoFlushBuffer (self);
+	if (rc != SQLITE_OK) {
 		return rc;
 	}
 
-	ofst = lseek (p->fd, iOfst, SEEK_SET);
-	if (ofst!=iOfst) {
+	ofst = lseek (self->fd, offset, SEEK_SET);
+	if (ofst != offset) {
 		return SQLITE_IOERR_READ;
 	}
-	nRead = read (p->fd, zBuf, iAmt);
+	nRead = read (self->fd, buffer, len);
 
-	if (nRead==iAmt) {
+	if (nRead == len) {
 		return SQLITE_OK;
-	} else if (nRead>=0) {
+	} else if (nRead >= 0) {
 		return SQLITE_IOERR_SHORT_READ;
 	}
 
@@ -487,14 +685,19 @@ demoRead (sqlite3_file *pFile,  void *zBuf,  int iAmt,  sqlite_int64 iOfst)
 ** Write data to a crash-file.
 */
 static int
-demoWrite (sqlite3_file *pFile,  const void *zBuf, int iAmt, sqlite_int64 iOfst)
+demoWrite (sqlite3_file *pFile,  const void *buffer, int len, sqlite_int64 offset)
 {
-	AlmanahSQLiteVFS *p = (AlmanahSQLiteVFS*)pFile;
-  
-	if (p->aBuffer) {
-		char *z = (char *)zBuf;       /* Pointer to remaining data to write */
-		int n = iAmt;                 /* Number of bytes at z */
-		sqlite3_int64 i = iOfst;      /* File offset to write to */
+	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*)pFile;
+
+#ifdef ENABLE_ENCRYPTION
+	if (self->decrypted)
+		return demoDirectWrite (self, buffer, len, offset);
+#endif /* ENABLE_ENCRYPTION */
+
+	if (self->aBuffer) {
+		char *z = (char *)buffer;       /* Pointer to remaining data to write */
+		int n = len;                 /* Number of bytes at z */
+		sqlite3_int64 i = offset;      /* File offset to write to */
 
 		while (n > 0) {
 			int nCopy;                  /* Number of bytes to copy into buffer */
@@ -503,29 +706,29 @@ demoWrite (sqlite3_file *pFile,  const void *zBuf, int iAmt, sqlite_int64 iOfst)
 			** following the data already buffered, flush the buffer. Flushing
 			** the buffer is a no-op if it is empty.  
 			*/
-			if (p->nBuffer==SQLITE_DEMOVFS_BUFFERSZ || p->iBufferOfst+p->nBuffer!=i) {
-				int rc = demoFlushBuffer (p);
+			if (self->nBuffer==SQLITE_DEMOVFS_BUFFERSZ || self->iBufferOfst+self->nBuffer!=i) {
+				int rc = demoFlushBuffer (self);
 				if (rc!=SQLITE_OK) {
 					return rc;
 				}
 			}
-			assert (p->nBuffer==0 || p->iBufferOfst+p->nBuffer==i);
-			p->iBufferOfst = i - p->nBuffer;
+			assert (self->nBuffer==0 || self->iBufferOfst+self->nBuffer==i);
+			self->iBufferOfst = i - self->nBuffer;
 
 			/* Copy as much data as possible into the buffer. */
-			nCopy = SQLITE_DEMOVFS_BUFFERSZ - p->nBuffer;
+			nCopy = SQLITE_DEMOVFS_BUFFERSZ - self->nBuffer;
 			if (nCopy>n) {
 				nCopy = n;
 			}
-			memcpy (&p->aBuffer[p->nBuffer], z, nCopy);
-			p->nBuffer += nCopy;
+			memcpy (&self->aBuffer[self->nBuffer], z, nCopy);
+			self->nBuffer += nCopy;
 
 			n -= nCopy;
 			i += nCopy;
 			z += nCopy;
 		}
 	} else {
-		return demoDirectWrite (p, zBuf, iAmt, iOfst);
+		return demoDirectWrite (self, buffer, len, offset);
 	}
 
 	return SQLITE_OK;
@@ -549,17 +752,22 @@ demoTruncate(sqlite3_file *pFile, sqlite_int64 size)
 ** Sync the contents of the file to the persistent media.
 */
 static int
-demoSync (sqlite3_file *pFile, int flags)
+demoSync (sqlite3_file *pFile, __attribute__ ((unused)) int flags)
 {
-	AlmanahSQLiteVFS *p = (AlmanahSQLiteVFS*) pFile;
+	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
+
+#ifdef ENABLE_ENCRYPTION
+	if (self->decrypted)
+		return SQLITE_OK;
+#endif
 	int rc;
 
-	rc = demoFlushBuffer (p);
+	rc = demoFlushBuffer (self);
 	if (rc!=SQLITE_OK) {
 		return rc;
 	}
 
-	rc = fsync (p->fd);
+	rc = fsync (self->fd);
 	return (rc==0 ? SQLITE_OK : SQLITE_IOERR_FSYNC);
 }
 
@@ -569,23 +777,31 @@ demoSync (sqlite3_file *pFile, int flags)
 static int
 demoFileSize (sqlite3_file *pFile, sqlite_int64 *pSize)
 {
-	AlmanahSQLiteVFS *p = (AlmanahSQLiteVFS*)pFile;
+	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*)pFile;
 	int rc;                         /* Return code from fstat() call */
 	struct stat sStat;              /* Output of fstat() call */
+
+#ifdef ENABLE_ENCRYPTION
+	if (self->decrypted) {
+		*pSize = self->plain_size;
+		return SQLITE_OK;
+	}
+#endif
 
 	/* Flush the contents of the buffer to disk. As with the flush in the
 	** demoRead() method, it would be possible to avoid this and save a write
 	** here and there. But in practice this comes up so infrequently it is
 	** not worth the trouble.
 	*/
-	rc = demoFlushBuffer(p);
+	rc = demoFlushBuffer(self);
 	if (rc != SQLITE_OK) {
 		return rc;
 	}
 
-	rc = fstat (p->fd, &sStat);
-	if (rc!=0)
+	rc = fstat (self->fd, &sStat);
+	if (rc != 0)
 		return SQLITE_IOERR_FSTAT;
+
 	*pSize = sStat.st_size;
 	return SQLITE_OK;
 }
@@ -655,13 +871,17 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile; /* Populate this structure */
 	int oflags = 0;                 /* flags to pass to open() call */
-	char *aBuf = 0;
+	char *aBuf = NULL;
+#ifdef ENABLE_ENCRYPTION
+	struct stat encrypted_db_stat, plaintext_db_stat;
+	GError *child_error = NULL;
+#endif
 
 	if (zName == 0) {
 		return SQLITE_IOERR;
 	}
 
-	if (flags & SQLITE_OPEN_MAIN_JOURNAL){
+	if (flags & SQLITE_OPEN_MAIN_JOURNAL) {
 		aBuf = (char *) sqlite3_malloc(SQLITE_DEMOVFS_BUFFERSZ);
 		if(!aBuf) {
 			return SQLITE_NOMEM;
@@ -671,57 +891,67 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 	memset(self, 0, sizeof(AlmanahSQLiteVFS));
 
 	self->plain_filename = g_strdup (zName);
+	self->decrypted = FALSE;
 
 #ifdef ENABLE_ENCRYPTION
-	struct stat encrypted_db_stat, plaintext_db_stat;
-	GError *child_error = NULL;
+	if (flags & SQLITE_OPEN_MAIN_DB) {
+		self->encrypted_filename = g_strdup_printf ("%s%s", self->plain_filename, ENCRYPTED_SUFFIX);
 
-	self->encrypted_filename = g_strdup_printf ("%s%s", self->plain_filename, ENCRYPTED_SUFFIX);
-
-	if (g_chmod (self->encrypted_filename, 0600) != 0 && errno != ENOENT) {
-		return SQLITE_IOERR;
-	}
-
-	g_stat (self->encrypted_filename, &encrypted_db_stat);
-
-	/* If we're decrypting, don't bother if the cipher file doesn't exist (i.e. the database hasn't yet been created), or is empty
-	 * (i.e. corrupt). */
-	if (g_file_test (self->encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
-		/* Make a backup of the encrypted database file */
-		if (back_up_file (self->encrypted_filename) != FALSE) {
-			/* Translators: the first parameter is a filename, the second is an error message. */
-			g_warning (_("Error backing up file ‘%s’"), self->encrypted_filename);
-			g_clear_error (&child_error);
+		if (g_chmod (self->encrypted_filename, 0600) != 0 && errno != ENOENT) {
+			return SQLITE_IOERR;
 		}
 
-		g_stat (self->plain_filename, &plaintext_db_stat);
+		g_stat (self->encrypted_filename, &encrypted_db_stat);
 
-		/* Only decrypt the database if the plaintext database doesn't exist or is empty. If the plaintext database exists and is non-empty,
-		 * don't decrypt — just use that database. */
-		if (g_file_test (self->plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
-			/* Decrypt the database, or display an error if that fails (but not if it fails due to a missing encrypted DB file — just
-			 * fall through and try to open the plain DB file in that case). */
-			if (decrypt_database (self, &child_error) != TRUE) {
-				if (child_error->code != G_FILE_ERROR_NOENT) {
-					g_free (self->plain_filename);
-					g_free (self->encrypted_filename);
-					return SQLITE_IOERR;
-				}
+		/* If we're decrypting, don't bother if the cipher file doesn't exist (i.e. the database hasn't yet been created), or is empty
+		 * (i.e. corrupt). */
+		if (g_file_test (self->encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
+			/* Make a backup of the encrypted database file */
+			if (back_up_file (self->encrypted_filename) == FALSE) {
+				/* Translators: the first parameter is a filename, the second is an error message. */
+				g_warning (_("Error backing up file ‘%s’"), self->encrypted_filename);
+				g_clear_error (&child_error);
+			}
 
-				g_error_free (child_error);
+			g_stat (self->plain_filename, &plaintext_db_stat);
+
+			/* Only decrypt the database if the plaintext database doesn't exist or is empty. If the plaintext database exists and is non-empty,
+			 * don't decrypt — just use that database. */
+			if (g_file_test (self->plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
+				/* Decrypt the database, or display an error if that fails (but not if it fails due to a missing encrypted DB file — just
+				 * fall through and try to open the plain DB file in that case). */
+				if (decrypt_database (self, &child_error) != TRUE) {
+					if (child_error != NULL && child_error->code != G_FILE_ERROR_NOENT) {
+						g_warning (_("Error decrypting database: %s"), child_error->message);
+						g_free (self->plain_filename);
+						g_free (self->encrypted_filename);
+						return SQLITE_IOERR;
+					}
+
+					g_error_free (child_error);
+				} else
+					self->decrypted = TRUE;
 			}
 		}
 	}
 
-	self->decrypted = TRUE;
 #else
-	/* Make a backup of the plaintext database file */
-	if (back_up_file (self->plain_filename) != TRUE) {
-		/* Translators: the first parameter is a filename. */
-		g_warning (_("Error backing up file ‘%s’"), self->priv->plain_filename);
-		g_clear_error (&child_error);
+	if (flags & SQLITE_OPEN_MAIN_DB) {
+		/* Make a backup of the plaintext database file */
+		if (back_up_file (self->plain_filename) != TRUE) {
+			/* Translators: the first parameter is a filename. */
+			g_warning (_("Error backing up file ‘%s’"), self->priv->plain_filename);
+			g_clear_error (&child_error);
+		}
 	}
 	self->decrypted = FALSE;
+#endif /* ENABLE_ENCRYPTION */
+
+#ifdef ENABLE_ENCRYPTION
+	if (self->decrypted) {
+		sqlite3_free (aBuf);
+		*pOutFlags = 0;
+	} else {
 #endif /* ENABLE_ENCRYPTION */
 
 	if (flags & SQLITE_OPEN_EXCLUSIVE) oflags |= O_EXCL;
@@ -750,6 +980,10 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 		*pOutFlags = flags;
 	}
 
+#ifdef ENABLE_ENCRYPTION
+	}
+#endif /* ENABLE_ENCRYPTION */
+
 	self->base.pMethods = &demoio;
 
 	return SQLITE_OK;
@@ -760,7 +994,9 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 ** is non-zero, then ensure the file-system modification to delete the
 ** file has been synced to disk before returning.
 */
-static int demoDelete(sqlite3_vfs *pVfs, const char *zPath, int dirSync){
+static int
+demoDelete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int dirSync)
+{
 	int rc;                         /* Return code */
 
 	rc = unlink(zPath);
@@ -803,12 +1039,9 @@ static int demoDelete(sqlite3_vfs *pVfs, const char *zPath, int dirSync){
 ** Query the file-system to see if the named file exists, is readable or
 ** is both readable and writable.
 */
-static int demoAccess(
-		      sqlite3_vfs *pVfs, 
-		      const char *zPath, 
-		      int flags, 
-		      int *pResOut
-		      ){
+static int
+demoAccess (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int flags, int *pResOut)
+{
 	int rc;                         /* access() return code */
 	int eAccess = F_OK;             /* Second argument to access() */
 
@@ -836,12 +1069,9 @@ static int demoAccess(
 **   1. Path components are separated by a '/'. and 
 **   2. Full paths begin with a '/' character.
 */
-static int demoFullPathname(
-			    sqlite3_vfs *pVfs,              /* VFS */
-			    const char *zPath,              /* Input path (possibly a relative path) */
-			    int nPathOut,                   /* Size of output buffer in bytes */
-			    char *zPathOut                  /* Pointer to output buffer */
-			    ){
+static int
+demoFullPathname (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int nPathOut, char *zPathOut)
+{
 	char zDir[MAXPATHNAME+1];
 	if( zPath[0]=='/' ){
 		zDir[0] = '\0';
@@ -868,17 +1098,28 @@ static int demoFullPathname(
 ** extensions compiled as shared objects. This simple VFS does not support
 ** this functionality, so the following functions are no-ops.
 */
-static void *demoDlOpen(sqlite3_vfs *pVfs, const char *zPath){
+static void*
+demoDlOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) const char *zPath)
+{
 	return 0;
 }
-static void demoDlError(sqlite3_vfs *pVfs, int nByte, char *zErrMsg){
+
+static void
+demoDlError(__attribute__ ((unused)) sqlite3_vfs *pVfs, int nByte, char *zErrMsg)
+{
 	sqlite3_snprintf(nByte, zErrMsg, "Loadable extensions are not supported");
 	zErrMsg[nByte-1] = '\0';
 }
-static void (*demoDlSym(sqlite3_vfs *pVfs, void *pH, const char *z))(void){
+
+static void
+(*demoDlSym(__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) void *pH, __attribute__ ((unused)) const char *z)) (void)
+{
 	return 0;
 }
-static void demoDlClose(sqlite3_vfs *pVfs, void *pHandle){
+
+static void
+demoDlClose (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) void *pHandle)
+{
 	return;
 }
 
@@ -886,7 +1127,9 @@ static void demoDlClose(sqlite3_vfs *pVfs, void *pHandle){
 ** Parameter zByte points to a buffer nByte bytes in size. Populate this
 ** buffer with pseudo-random data.
 */
-static int demoRandomness(sqlite3_vfs *pVfs, int nByte, char *zByte){
+static int
+demoRandomness (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) int nByte, __attribute__ ((unused)) char *zByte)
+{
 	return SQLITE_OK;
 }
 
@@ -894,7 +1137,9 @@ static int demoRandomness(sqlite3_vfs *pVfs, int nByte, char *zByte){
 ** Sleep for at least nMicro microseconds. Return the (approximate) number 
 ** of microseconds slept for.
 */
-static int demoSleep(sqlite3_vfs *pVfs, int nMicro){
+static int
+demoSleep (__attribute__ ((unused)) sqlite3_vfs *pVfs, int nMicro)
+{
 	sleep(nMicro / 1000000);
 	usleep(nMicro % 1000000);
 	return nMicro;
@@ -911,7 +1156,9 @@ static int demoSleep(sqlite3_vfs *pVfs, int nMicro){
 ** value, it will stop working some time in the year 2038 AD (the so-called
 ** "year 2038" problem that afflicts systems that store time this way). 
 */
-static int demoCurrentTime(sqlite3_vfs *pVfs, double *pTime){
+static int
+demoCurrentTime (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pTime)
+{
 	time_t t = time(0);
 	*pTime = t/86400.0 + 2440587.5; 
 	return SQLITE_OK;

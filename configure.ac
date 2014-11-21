@@ -106,7 +106,7 @@ fi
 
 dnl Encryption support
 if test $encryption = "true"; then
-	PKG_CHECK_MODULES(ENCRYPTION, cryptui-0.0)
+	PKG_CHECK_MODULES(ENCRYPTION, cryptui-0.0 gcr-base-3)
 
 	dnl Check for GPGME, which doesn't provide a pkgconfig file
 	dnl This code courtesy of seahorse
