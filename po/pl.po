@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-28 20:07+0200\n"
-"PO-Revision-Date: 2014-09-28 20:08+0200\n"
+"POT-Creation-Date: 2014-11-23 15:50+0100\n"
+"PO-Revision-Date: 2014-11-23 15:51+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -642,57 +642,47 @@ msgstr "Błąd podczas rozszeregowywania wpisu do bufora podczas wyszukiwania."
 msgid "Enter URI"
 msgstr "Wprowadzanie adresu URI"
 
-#: ../src/vfs.c:102
+#: ../src/vfs.c:231
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "Biblioteka GPGME nie jest w wersji co najmniej %s"
 
-#: ../src/vfs.c:109
+#: ../src/vfs.c:238
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "Biblioteka GPGME nie obsługuje standardu OpenPGP: %s"
 
-#: ../src/vfs.c:116
+#: ../src/vfs.c:245
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Błąd podczas tworzenia kontekstu szyfrowania: %s"
 
-#: ../src/vfs.c:136
+#: ../src/vfs.c:265
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Nie można utworzyć nowego GIOChannel dla zaszyfrowanej bazy danych: %s"
 
-#: ../src/vfs.c:144
+#: ../src/vfs.c:273
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Błąd podczas otwierania zaszyfrowanego pliku bazy danych \"%s\": %s"
 
-#: ../src/vfs.c:151
+#: ../src/vfs.c:288
 #, c-format
-msgid "Can't create a new GIOChannel for the plain database: %s"
-msgstr "Nie można utworzyć nowego GIOChannel dla zwykłej bazy danych: %s"
+msgid "Error creating Callback base data buffer: %s"
+msgstr "Błąd podczas tworzenia bufora danych podstawy Callback: %s"
 
-#: ../src/vfs.c:162
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Błąd podczas otwierania pliku bazy danych \"%s\": %s"
-
-#: ../src/vfs.c:214
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Błąd podczas deszyfrowania bazy danych: %s"
-
-#: ../src/vfs.c:246
+#: ../src/vfs.c:384
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Błąd podczas pobierania klucza szyfrującego: %s"
 
-#: ../src/vfs.c:264
+#: ../src/vfs.c:406
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Błąd podczas szyfrowania bazy danych: %s"
 
-#: ../src/vfs.c:276
+#: ../src/vfs.c:418
 msgid ""
 "The encrypted database is empty. The plain database file has been left "
 "undeleted as backup."
@@ -701,18 +691,18 @@ msgstr ""
 "pozostawiono jako kopię zapasową."
 
 #. Delete the plain file
-#: ../src/vfs.c:279
+#: ../src/vfs.c:421
 #, c-format
 msgid "Could not delete plain database file \"%s\"."
 msgstr "Nie można usunąć pliku bazy danych \"%s\"."
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:346
+#: ../src/vfs.c:486
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Błąd podczas kopiowania pliku z %s do %s: %s"
 
-#: ../src/vfs.c:352
+#: ../src/vfs.c:492
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr ""
@@ -720,12 +710,17 @@ msgstr ""
 
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:693 ../src/vfs.c:721
+#: ../src/vfs.c:912 ../src/vfs.c:943
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Błąd podczas tworzenia kopii zapasowej pliku \"%s\""
 
-#: ../src/vfs.c:739
+#: ../src/vfs.c:925
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Błąd podczas deszyfrowania bazy danych: %s"
+
+#: ../src/vfs.c:969
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Błąd podczas zmieniania uprawnień pliku bazy danych: %s"
