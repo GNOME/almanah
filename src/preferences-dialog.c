@@ -22,13 +22,11 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <gio/gio.h>
-#ifdef ENABLE_ENCRYPTION
 #define LIBCRYPTUI_API_SUBJECT_TO_CHANGE
 #include <cryptui-key-combo.h>
 #include <cryptui-keyset.h>
 #include <cryptui.h>
 #include <atk/atk.h>
-#endif /* ENABLE_ENCRYPTION */
 
 #include "preferences-dialog.h"
 #include "interface.h"
@@ -37,19 +35,15 @@
 static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_preferences_dialog_dispose (GObject *object);
-#ifdef ENABLE_ENCRYPTION
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
 static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
-#endif /* ENABLE_ENCRYPTION */
 static void pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog);
 
 struct _AlmanahPreferencesDialogPrivate {
 	GSettings *settings;
-#ifdef ENABLE_ENCRYPTION
 	CryptUIKeyset *keyset;
 	CryptUIKeyStore *key_store;
 	GtkComboBox *key_combo;
-#endif /* ENABLE_ENCRYPTION */
 #ifdef ENABLE_SPELL_CHECKING
 	guint spell_checking_enabled_id;
 	GtkCheckButton *spell_checking_enabled_check_button;
@@ -98,7 +92,6 @@ almanah_preferences_dialog_dispose (GObject *object)
 {
 	AlmanahPreferencesDialogPrivate *priv = ALMANAH_PREFERENCES_DIALOG (object)->priv;
 
-#ifdef ENABLE_ENCRYPTION
 	if (priv->keyset != NULL) {
 		g_object_unref (priv->keyset);
 		priv->keyset = NULL;
@@ -108,7 +101,6 @@ almanah_preferences_dialog_dispose (GObject *object)
 		g_object_unref (priv->key_store);
 		priv->key_store = NULL;
 	}
-#endif /* ENABLE_ENCRYPTION */
 
 	if (priv->settings != NULL)
 		g_object_unref (priv->settings);
@@ -163,11 +155,9 @@ almanah_preferences_dialog_new (GSettings *settings)
 {
 	GtkBuilder *builder;
 	GtkTable *table;
-#ifdef ENABLE_ENCRYPTION
 	GtkWidget *label, *button;
 	AtkObject *a11y_label, *a11y_key_combo;
 	gchar *key;
-#endif /* ENABLE_ENCRYPTION */
 	AlmanahPreferencesDialog *preferences_dialog;
 	AlmanahPreferencesDialogPrivate *priv;
 	GError *error = NULL;
@@ -212,7 +202,6 @@ almanah_preferences_dialog_new (GSettings *settings)
 	priv->settings = g_object_ref (settings);
 	table = GTK_TABLE (gtk_builder_get_object (builder, "almanah_pd_table"));
 
-#ifdef ENABLE_ENCRYPTION
 	/* Grab our child widgets */
 	label = gtk_label_new (_("Encryption key: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -246,7 +235,6 @@ almanah_preferences_dialog_new (GSettings *settings)
 	button = gtk_button_new_with_mnemonic (_("New _Key"));
 	gtk_table_attach (table, button, 3, 4, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
 	g_signal_connect (button, "clicked", G_CALLBACK (pd_new_key_button_clicked_cb), preferences_dialog);
-#endif /* ENABLE_ENCRYPTION */
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up the "Enable spell checking" check button */
@@ -261,7 +249,6 @@ almanah_preferences_dialog_new (GSettings *settings)
 	return preferences_dialog;
 }
 
-#ifdef ENABLE_ENCRYPTION
 static void
 pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog)
 {
@@ -303,7 +290,6 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 		g_error_free (error);
 	}
 }
-#endif /* ENABLE_ENCRYPTION */
 
 static void
 pd_response_cb (GtkDialog *dialog, gint response_id, AlmanahPreferencesDialog *preferences_dialog)

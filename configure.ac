@@ -47,21 +47,6 @@ fi
 
 AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
 
-dnl Encryption support
-AC_ARG_ENABLE([encryption],
-	AS_HELP_STRING([--enable-encryption],[enable database encryption support]),
-	[case "${enableval}" in
-		yes) encryption=true ;;
-		no)  encryption=false ;;
-		*) AC_MSG_ERROR([bad value ${enableval} for --enable-encryption]) ;;
-	esac],[encryption=true])
-
-if test $encryption = "true"; then
-	AC_DEFINE([ENABLE_ENCRYPTION],[1],[Define if you want database encryption support])
-fi
-
-AM_CONDITIONAL([ENCRYPTION], [test x$encryption = xtrue])
-
 dnl Spell checking
 AC_ARG_ENABLE([spell-checking],
 	AS_HELP_STRING([--enable-spell-checking],[enable spell checking support]),
@@ -82,7 +67,56 @@ dnl Dependencies
 dnl ***************************************************************************
 
 dnl Required dependencies
-PKG_CHECK_MODULES(STANDARD, glib-2.0 gtk+-3.0 >= 3.6 gmodule-2.0 gthread-2.0 gio-2.0 >= 2.28.0 sqlite3 cairo atk)
+PKG_CHECK_MODULES(STANDARD, glib-2.0
+                            gtk+-3.0 >= 3.6
+                            gmodule-2.0
+                            gthread-2.0
+                            gio-2.0 >= 2.28.0
+                            sqlite3
+                            cairo
+                            atk
+                            gcr-base-3
+                            cryptui-0.0)
+
+dnl Check for GPGME, which doesn't provide a pkgconfig file
+dnl This code courtesy of seahorse
+min_gpgme_version=1.0.0
+AC_PATH_PROG(GPGME_CONFIG, gpgme-config, "failed")
+if test $GPGME_CONFIG != "failed" ; then
+        AC_MSG_CHECKING(for GPGME)
+        req_major=`echo $min_gpgme_version | \
+                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
+        req_minor=`echo $min_gpgme_version | \
+                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
+        req_micro=`echo $min_gpgme_version | \
+                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
+        gpgme_config_version=`$GPGME_CONFIG --version`
+        major=`echo $gpgme_config_version | \
+                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\1/'`
+        minor=`echo $gpgme_config_version | \
+                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\2/'`
+        micro=`echo $gpgme_config_version | \
+                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\3/'`
+
+        if test "$major" -eq "$req_major"; then
+                if test "$minor" -ge "$req_minor"; then
+                        if test "$micro" -ge "$req_micro"; then
+                                ok="yes"
+                        fi
+                fi
+        fi
+fi
+
+AC_DEFINE_UNQUOTED([MIN_GPGME_VERSION],"${min_gpgme_version}",[The minimum required version of GPGME])
+
+if test $ok = "yes"; then
+        STANDARD_CFLAGS="$STANDARD_CFLAGS `$GPGME_CONFIG --cflags`"
+        STANDARD_LIBS="$STANDARD_LIBS `$GPGME_CONFIG --libs`"
+        AC_MSG_RESULT(yes)
+else
+        AC_MSG_ERROR(GPGME $min_gpgme_version or later needed)
+fi
+
 AC_SUBST(STANDARD_CFLAGS)
 AC_SUBST(STANDARD_LIBS)
 
@@ -103,56 +137,6 @@ if test $spell_checking = "true"; then
 	AC_SUBST(SPELL_CHECKING_CFLAGS)
 	AC_SUBST(SPELL_CHECKING_LIBS)
 fi
-
-dnl Encryption support
-if test $encryption = "true"; then
-	PKG_CHECK_MODULES(ENCRYPTION, cryptui-0.0 gcr-base-3)
-
-	dnl Check for GPGME, which doesn't provide a pkgconfig file
-	dnl This code courtesy of seahorse
-	min_gpgme_version=1.0.0
-	AC_PATH_PROG(GPGME_CONFIG, gpgme-config, "failed")
-	if test $GPGME_CONFIG != "failed" ; then
-		AC_MSG_CHECKING(for GPGME)
-		req_major=`echo $min_gpgme_version | \
-			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\1/'`
-		req_minor=`echo $min_gpgme_version | \
-			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\2/'`
-		req_micro=`echo $min_gpgme_version | \
-			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
-		gpgme_config_version=`$GPGME_CONFIG --version`
-		major=`echo $gpgme_config_version | \
-			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\1/'`
-		minor=`echo $gpgme_config_version | \
-			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\2/'`
-		micro=`echo $gpgme_config_version | \
-			sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\).*/\3/'`
-
-		if test "$major" -eq "$req_major"; then
-			if test "$minor" -ge "$req_minor"; then
-				if test "$micro" -ge "$req_micro"; then
-					ok="yes"
-				fi
-			fi
-		fi
-	fi
-
-	AC_DEFINE_UNQUOTED([MIN_GPGME_VERSION],"${min_gpgme_version}",[The minimum required version of GPGME])
-
-	if test $ok = "yes"; then
-		ENCRYPTION_CFLAGS="$ENCRYPTION_CFLAGS `$GPGME_CONFIG --cflags`"
-		ENCRYPTION_LIBS="$ENCRYPTION_LIBS `$GPGME_CONFIG --libs`"
-		AC_MSG_RESULT(yes)
-	else
-		AC_MSG_ERROR(GPGME $min_gpgme_version or later needed)
-	fi
-else
-	ENCRYPTION_CFLAGS=""
-	ENCRYPTION_LIBS=""
-fi
-
-AC_SUBST(ENCRYPTION_CFLAGS)
-AC_SUBST(ENCRYPTION_LIBS)
 
 # Various required functions and headers
 AC_CHECK_HEADERS([libintl.h])

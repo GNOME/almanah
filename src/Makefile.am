@@ -14,6 +14,8 @@ almanah_SOURCES = \
 	storage-manager.h			\
 	search-dialog.c				\
 	search-dialog.h				\
+	preferences-dialog.c			\
+	preferences-dialog.h			\
 	printing.c				\
 	printing.h				\
 	entry.c					\
@@ -76,12 +78,6 @@ almanah_SOURCES += \
 	events/calendar-task.h
 endif
 
-if ENCRYPTION
-almanah_SOURCES += \
-	preferences-dialog.c	\
-	preferences-dialog.h
-endif
-
 almanah_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(datadir)/locale"\"	\
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"		\
@@ -93,7 +89,6 @@ almanah_CPPFLAGS = \
 almanah_CFLAGS = \
 	$(STANDARD_CFLAGS)		\
 	$(EVO_CFLAGS)			\
-	$(ENCRYPTION_CFLAGS)		\
 	$(SPELL_CHECKING_CFLAGS)	\
 	$(WARN_CFLAGS)			\
 	$(AM_CFLAGS)
@@ -101,7 +96,6 @@ almanah_CFLAGS = \
 almanah_LDADD = \
 	$(STANDARD_LIBS)	\
 	$(EVO_LIBS)		\
-	$(ENCRYPTION_LIBS)	\
 	$(SPELL_CHECKING_LIBS)	\
 	$(AM_LDADD)
 

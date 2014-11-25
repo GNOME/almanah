@@ -435,13 +435,6 @@ almanah_application_init_actions (AlmanahApplication *self)
 	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
 	gtk_application_set_app_menu (GTK_APPLICATION (self), G_MENU_MODEL (gtk_builder_get_object (builder, "almanah_app_menu")));
 
-#ifndef ENABLE_ENCRYPTION
-#ifndef ENABLE_SPELL_CHECKING
-	/* Remove the "Preferences" entry from the menu */
-	g_action_map_remove_action (G_ACTION_MAP (self), "preferences");
-#endif /* !ENABLE_SPELL_CHECKING */
-#endif /* !ENABLE_ENCRYPTION */
-
 	g_object_unref (builder);
 }
 
@@ -463,7 +456,6 @@ action_search_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 static void
 action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-#if defined(ENABLE_ENCRYPTION) || defined(ENABLE_SPELL_CHECKING)
 	AlmanahApplication *application;
 	GSettings *settings;
 	AlmanahPreferencesDialog *dialog;
@@ -477,7 +469,6 @@ action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user
 	gtk_dialog_run (GTK_DIALOG (dialog));
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
-#endif /* ENABLE_ENCRYPTION || ENABLE_SPELL_CHECKING */
 }
 
 static void

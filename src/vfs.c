@@ -36,19 +36,17 @@
 #include <errno.h>
 #include <fcntl.h>
 
+#define GCR_API_SUBJECT_TO_CHANGE
+#include <gcr/gcr-base.h>
 #include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
+#include <gpgme.h>
 
 #include <config.h>
 
-#ifdef ENABLE_ENCRYPTION
-#define GCR_API_SUBJECT_TO_CHANGE
-#include <gcr/gcr-base.h>
-#include <gpgme.h>
 #define ENCRYPTED_SUFFIX ".encrypted"
-#endif /* ENABLE_ENCRYPTION */
 
 /*
 ** Size of the write buffer used by journal files in bytes.
@@ -78,19 +76,17 @@ struct _AlmanahSQLiteVFS
 	int nBuffer;                    /* Valid bytes of data in zBuffer */
 	sqlite3_int64 iBufferOfst;      /* Offset in file of zBuffer[0] */
 
+	/* TODO: Unify in just one file */
 	gchar *plain_filename;
-#ifdef ENABLE_ENCRYPTION
 	gchar *encrypted_filename;
+
 	gboolean decrypted;
 
 	gpointer plain_buffer;
 	gsize    plain_buffer_size;     /* Reserved memory size */
 	goffset  plain_offset;
 	gsize    plain_size;            /* Data size (plain_size <= plain_buffer_size) */
-#endif /* ENABLE_ENCRYPTION */
 };
-
-#ifdef ENABLE_ENCRYPTION
 
 typedef struct _CipherOperation CipherOperation;
 typedef struct _GpgmeNpmClosure GpgmeNpmClosure;
@@ -465,8 +461,6 @@ get_encryption_key (void)
 	return encryption_key;
 }
 
-#endif /* ENABLE_ENCRYPTION */
-
 static gboolean
 back_up_file (const gchar *filename)
 {
@@ -513,7 +507,6 @@ demoDirectWrite (AlmanahSQLiteVFS *self,            /* File handle */
 	off_t ofst;
 	size_t nWrite;
 
-#ifdef ENABLE_ENCRYPTION
 	if (self->decrypted) {
 		if ((gsize) (offset + len) > self->plain_buffer_size) {
 			gsize new_size;
@@ -542,20 +535,19 @@ demoDirectWrite (AlmanahSQLiteVFS *self,            /* File handle */
 		self->plain_size = MAX(self->plain_size, (gsize) (offset + len));
 
 		return SQLITE_OK;
-	}
-#endif /* ENABLE_ENCRYPTION */
+	} else {
+		ofst = lseek (self->fd, offset, SEEK_SET);
+		if (ofst != offset) {
+			return SQLITE_IOERR_WRITE;
+		}
 
-	ofst = lseek (self->fd, offset, SEEK_SET);
-	if (ofst != offset) {
-		return SQLITE_IOERR_WRITE;
-	}
+		nWrite = write (self->fd, buffer, len);
+		if (nWrite != (size_t) len){
+			return SQLITE_IOERR_WRITE;
+		}
 
-	nWrite = write (self->fd, buffer, len);
-	if (nWrite != (size_t) len){
-		return SQLITE_IOERR_WRITE;
+		return SQLITE_OK;
 	}
-
-	return SQLITE_OK;
 }
 
 /*
@@ -566,16 +558,16 @@ demoDirectWrite (AlmanahSQLiteVFS *self,            /* File handle */
 static int
 demoFlushBuffer (AlmanahSQLiteVFS *p)
 {
-#ifdef ENABLE_ENCRYPTION
-	if (p->decrypted)
-		return SQLITE_OK;
-#endif /* ENABLE_ENCRYPTION */
 	int rc = SQLITE_OK;
+
+	if (p->decrypted)
+		return rc;
 
 	if (p->nBuffer) {
 		rc = demoDirectWrite(p, p->aBuffer, p->nBuffer, p->iBufferOfst);
 		p->nBuffer = 0;
 	}
+
 	return rc;
 }
 
@@ -585,11 +577,10 @@ demoFlushBuffer (AlmanahSQLiteVFS *p)
 static int
 demoClose (sqlite3_file *pFile)
 {
-	int rc = SQLITE_OK;
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
-#ifdef ENABLE_ENCRYPTION
 	gchar *encryption_key;
 	GError *child_error = NULL;
+	int rc;
 
 	/* TODO: This code is not completed */
 
@@ -600,7 +591,7 @@ demoClose (sqlite3_file *pFile)
 	encryption_key = get_encryption_key ();
 	if (encryption_key == NULL) {
 		/* TODO: No encryption key, so save in plain file from DB in memory,
-		   this happends when the user has changed from encrypted to no encrypted */
+		   this happends when the user has changed from encrypted to non encrypted */
 		if (self->plain_buffer)
 			gcr_secure_memory_free (self->plain_buffer);
 		goto delete_encrypted_db;
@@ -616,21 +607,21 @@ demoClose (sqlite3_file *pFile)
 	if (encryption_key)
 		g_free (encryption_key);
 
- close_db:
-#endif /* ENABLE_ENCRYPTION */
+	return SQLITE_OK;
 
+ close_db:
 	rc = demoFlushBuffer (self);
+	if (rc != SQLITE_OK)
+		return rc;
 	sqlite3_free (self->aBuffer);
 	close (self->fd);
 
 	return SQLITE_OK;
 
-#ifdef ENABLE_ENCRYPTION
  delete_encrypted_db:
 	/* Delete the old encrypted database and return */
 	g_unlink (self->encrypted_filename);
-	return rc;
-#endif /* ENABLE_ENCRYPTION */
+	return SQLITE_OK;
 }
 
 /*
@@ -644,7 +635,6 @@ demoRead (sqlite3_file *pFile,  void *buffer,  int len,  sqlite_int64 offset)
 	int nRead;
 	int rc;
 
-#ifdef ENABLE_ENCRYPTION
 	if (self->decrypted) {
 		if ((gsize) (offset + len) > self->plain_size)
 			return SQLITE_IOERR_SHORT_READ;
@@ -653,7 +643,6 @@ demoRead (sqlite3_file *pFile,  void *buffer,  int len,  sqlite_int64 offset)
 
 		return SQLITE_OK;
 	}
-#endif /* ENABLE_ENCRYPTION */
 
 	/* Flush any data in the write buffer to disk in case this operation
 	** is trying to read data the file-region currently cached in the buffer.
@@ -689,10 +678,8 @@ demoWrite (sqlite3_file *pFile,  const void *buffer, int len, sqlite_int64 offse
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*)pFile;
 
-#ifdef ENABLE_ENCRYPTION
 	if (self->decrypted)
 		return demoDirectWrite (self, buffer, len, offset);
-#endif /* ENABLE_ENCRYPTION */
 
 	if (self->aBuffer) {
 		char *z = (char *)buffer;       /* Pointer to remaining data to write */
@@ -727,11 +714,11 @@ demoWrite (sqlite3_file *pFile,  const void *buffer, int len, sqlite_int64 offse
 			i += nCopy;
 			z += nCopy;
 		}
+
+		return SQLITE_OK;
 	} else {
 		return demoDirectWrite (self, buffer, len, offset);
 	}
-
-	return SQLITE_OK;
 }
 
 /*
@@ -754,16 +741,14 @@ demoTruncate(sqlite3_file *pFile, sqlite_int64 size)
 static int
 demoSync (sqlite3_file *pFile, __attribute__ ((unused)) int flags)
 {
+	int rc;
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
 
-#ifdef ENABLE_ENCRYPTION
 	if (self->decrypted)
 		return SQLITE_OK;
-#endif
-	int rc;
 
 	rc = demoFlushBuffer (self);
-	if (rc!=SQLITE_OK) {
+	if (rc != SQLITE_OK) {
 		return rc;
 	}
 
@@ -781,12 +766,10 @@ demoFileSize (sqlite3_file *pFile, sqlite_int64 *pSize)
 	int rc;                         /* Return code from fstat() call */
 	struct stat sStat;              /* Output of fstat() call */
 
-#ifdef ENABLE_ENCRYPTION
 	if (self->decrypted) {
 		*pSize = self->plain_size;
 		return SQLITE_OK;
 	}
-#endif
 
 	/* Flush the contents of the buffer to disk. As with the flush in the
 	** demoRead() method, it would be possible to avoid this and save a write
@@ -803,6 +786,7 @@ demoFileSize (sqlite3_file *pFile, sqlite_int64 *pSize)
 		return SQLITE_IOERR_FSTAT;
 
 	*pSize = sStat.st_size;
+
 	return SQLITE_OK;
 }
 
@@ -872,10 +856,8 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile; /* Populate this structure */
 	int oflags = 0;                 /* flags to pass to open() call */
 	char *aBuf = NULL;
-#ifdef ENABLE_ENCRYPTION
 	struct stat encrypted_db_stat, plaintext_db_stat;
 	GError *child_error = NULL;
-#endif
 
 	if (zName == 0) {
 		return SQLITE_IOERR;
@@ -893,7 +875,6 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 	self->plain_filename = g_strdup (zName);
 	self->decrypted = FALSE;
 
-#ifdef ENABLE_ENCRYPTION
 	if (flags & SQLITE_OPEN_MAIN_DB) {
 		self->encrypted_filename = g_strdup_printf ("%s%s", self->plain_filename, ENCRYPTED_SUFFIX);
 
@@ -932,57 +913,46 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 				} else
 					self->decrypted = TRUE;
 			}
+		} else {
+			/* Make a backup of the plaintext database file */
+			if (back_up_file (self->plain_filename) != TRUE) {
+				/* Translators: the first parameter is a filename. */
+				g_warning (_("Error backing up file ‘%s’"), self->plain_filename);
+				g_clear_error (&child_error);
+			}
 		}
 	}
 
-#else
-	if (flags & SQLITE_OPEN_MAIN_DB) {
-		/* Make a backup of the plaintext database file */
-		if (back_up_file (self->plain_filename) != TRUE) {
-			/* Translators: the first parameter is a filename. */
-			g_warning (_("Error backing up file ‘%s’"), self->priv->plain_filename);
-			g_clear_error (&child_error);
-		}
-	}
-	self->decrypted = FALSE;
-#endif /* ENABLE_ENCRYPTION */
-
-#ifdef ENABLE_ENCRYPTION
 	if (self->decrypted) {
 		sqlite3_free (aBuf);
 		*pOutFlags = 0;
 	} else {
-#endif /* ENABLE_ENCRYPTION */
+		if (flags & SQLITE_OPEN_EXCLUSIVE) oflags |= O_EXCL;
+		if (flags & SQLITE_OPEN_CREATE)    oflags |= O_CREAT;
+		if (flags & SQLITE_OPEN_READONLY)  oflags |= O_RDONLY;
+		if (flags & SQLITE_OPEN_READWRITE) oflags |= O_RDWR;
 
-	if (flags & SQLITE_OPEN_EXCLUSIVE) oflags |= O_EXCL;
-	if (flags & SQLITE_OPEN_CREATE)    oflags |= O_CREAT;
-	if (flags & SQLITE_OPEN_READONLY)  oflags |= O_RDONLY;
-	if (flags & SQLITE_OPEN_READWRITE) oflags |= O_RDWR;
+		self->fd = open (self->plain_filename, oflags, 0600);
+		if (self->fd < 0) {
+			sqlite3_free (aBuf);
+			return SQLITE_CANTOPEN;
+		}
 
-	self->fd = open (self->plain_filename, oflags, 0600);
-	if (self->fd < 0) {
-		sqlite3_free (aBuf);
-		return SQLITE_CANTOPEN;
+		if (g_chmod (self->plain_filename, 0600) != 0 && errno != ENOENT) {
+			g_critical (_("Error changing database file permissions: %s"), g_strerror (errno));
+			sqlite3_free (aBuf);
+			g_free (self->plain_filename);
+			g_free (self->encrypted_filename);
+			close (self->fd);
+			return SQLITE_IOERR;
+		}
+
+		self->aBuffer = aBuf;
+
+		if (pOutFlags) {
+			*pOutFlags = flags;
+		}
 	}
-
-	if (g_chmod (self->plain_filename, 0600) != 0 && errno != ENOENT) {
-		g_critical (_("Error changing database file permissions: %s"), g_strerror (errno));
-		sqlite3_free (aBuf);
-		g_free (self->plain_filename);
-		g_free (self->encrypted_filename);
-		close (self->fd);
-		return SQLITE_IOERR;
-	}
-
-	self->aBuffer = aBuf;
-
-	if (pOutFlags) {
-		*pOutFlags = flags;
-	}
-
-#ifdef ENABLE_ENCRYPTION
-	}
-#endif /* ENABLE_ENCRYPTION */
 
 	self->base.pMethods = &demoio;
 
@@ -1045,16 +1015,17 @@ demoAccess (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int f
 	int rc;                         /* access() return code */
 	int eAccess = F_OK;             /* Second argument to access() */
 
-	assert( flags==SQLITE_ACCESS_EXISTS       /* access(zPath, F_OK) */
+	assert (flags==SQLITE_ACCESS_EXISTS       /* access(zPath, F_OK) */
 		|| flags==SQLITE_ACCESS_READ         /* access(zPath, R_OK) */
 		|| flags==SQLITE_ACCESS_READWRITE    /* access(zPath, R_OK|W_OK) */
 		);
 
-	if( flags==SQLITE_ACCESS_READWRITE ) eAccess = R_OK|W_OK;
-	if( flags==SQLITE_ACCESS_READ )      eAccess = R_OK;
+	if (flags==SQLITE_ACCESS_READWRITE) eAccess = R_OK|W_OK;
+	if (flags==SQLITE_ACCESS_READ)      eAccess = R_OK;
 
-	rc = access(zPath, eAccess);
+	rc = access (zPath, eAccess);
 	*pResOut = (rc==0);
+
 	return SQLITE_OK;
 }
 
@@ -1073,14 +1044,15 @@ static int
 demoFullPathname (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int nPathOut, char *zPathOut)
 {
 	char zDir[MAXPATHNAME+1];
-	if( zPath[0]=='/' ){
+
+	if (zPath[0] == '/') {
 		zDir[0] = '\0';
-	}else{
-		getcwd(zDir, sizeof(zDir));
+	} else {
+		getcwd (zDir, sizeof (zDir));
 	}
 	zDir[MAXPATHNAME] = '\0';
 
-	sqlite3_snprintf(nPathOut, zPathOut, "%s/%s", zDir, zPath);
+	sqlite3_snprintf (nPathOut, zPathOut, "%s/%s", zDir, zPath);
 	zPathOut[nPathOut-1] = '\0';
 
 	return SQLITE_OK;
@@ -1107,7 +1079,7 @@ demoDlOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused))
 static void
 demoDlError(__attribute__ ((unused)) sqlite3_vfs *pVfs, int nByte, char *zErrMsg)
 {
-	sqlite3_snprintf(nByte, zErrMsg, "Loadable extensions are not supported");
+	sqlite3_snprintf (nByte, zErrMsg, "Loadable extensions are not supported");
 	zErrMsg[nByte-1] = '\0';
 }
 
