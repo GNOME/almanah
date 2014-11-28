@@ -76,7 +76,6 @@ struct _AlmanahSQLiteVFS
 	int nBuffer;                    /* Valid bytes of data in zBuffer */
 	sqlite3_int64 iBufferOfst;      /* Offset in file of zBuffer[0] */
 
-	/* TODO: Unify in just one file */
 	gchar *plain_filename;
 	gchar *encrypted_filename;
 
@@ -250,7 +249,7 @@ prepare_gpgme (CipherOperation *operation)
 }
 
 static gboolean
-open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *operation, GError **error)
+open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *operation, gboolean use_memory, GError **error)
 {
 	GError *io_error = NULL;
 	gpgme_error_t error_gpgme;
@@ -270,20 +269,37 @@ open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *ope
 		return FALSE;
 	}
 
-	/* Pass the non-pageable memory to GPGME as a Callback Base Data Buffer, 
-	 * see: http://www.gnupg.org/documentation/manuals/gpgme/Callback-Based-Data-Buffers.html
-	 */
-	operation->npm_closure = g_new0 (GpgmeNpmClosure, 1);
-	operation->gpgme_cbs = g_new0 (struct gpgme_data_cbs, 1);
-	operation->gpgme_cbs->read =_gpgme_read_cb;
-	operation->gpgme_cbs->write =_gpgme_write_cb;
-	operation->gpgme_cbs->seek =_gpgme_seek_cb;
-	error_gpgme = gpgme_data_new_from_cbs (&(operation->gpgme_plain), operation->gpgme_cbs, operation->npm_closure);
-	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		g_set_error (error, 0, 0,
-			     _("Error creating Callback base data buffer: %s"),
-			     gpgme_strerror (error_gpgme));
-		return FALSE;
+	if (use_memory) {
+		/* Pass the non-pageable memory to GPGME as a Callback Base Data Buffer, 
+		 * see: http://www.gnupg.org/documentation/manuals/gpgme/Callback-Based-Data-Buffers.html
+		 */
+		operation->npm_closure = g_new0 (GpgmeNpmClosure, 1);
+		operation->gpgme_cbs = g_new0 (struct gpgme_data_cbs, 1);
+		operation->gpgme_cbs->read =_gpgme_read_cb;
+		operation->gpgme_cbs->write =_gpgme_write_cb;
+		operation->gpgme_cbs->seek =_gpgme_seek_cb;
+		error_gpgme = gpgme_data_new_from_cbs (&(operation->gpgme_plain), operation->gpgme_cbs, operation->npm_closure);
+		if (error_gpgme != GPG_ERR_NO_ERROR) {
+			g_set_error (error, 0, 0,
+				     _("Error creating Callback base data buffer: %s"),
+				     gpgme_strerror (error_gpgme));
+			return FALSE;
+		}
+	} else {
+		/* Open the encrypted file */
+		operation->plain_io_channel = g_io_channel_new_file (self->plain_filename, encrypting ? "r" : "w", &io_error);
+		if (operation->plain_io_channel == NULL) {
+			g_critical (_("Can't create a new GIOChannel for the plain database: %s"), io_error->message);
+			g_propagate_error (error, io_error);
+			return FALSE;
+		}
+
+		/* Pass it to GPGME */
+		error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
+		if (error_gpgme != GPG_ERR_NO_ERROR) {
+			g_critical (_("Error opening plain database file \"%s\": %s"), self->plain_filename, gpgme_strerror (error_gpgme));
+			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -326,8 +342,8 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 
 	operation = g_new0 (CipherOperation, 1);
 
-	/* Set up */
-	if (prepare_gpgme (operation) != TRUE || open_db_files (self, FALSE, operation, &preparation_error) != TRUE) {
+	/* Set up, decrypting to memory */
+	if (prepare_gpgme (operation) != TRUE || open_db_files (self, FALSE, operation, TRUE, &preparation_error) != TRUE) {
 		cipher_operation_free (operation);
 		g_propagate_error (error, preparation_error);
 		return FALSE;
@@ -356,7 +372,7 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 }
 
 static gboolean
-encrypt_database (AlmanahSQLiteVFS *self,  const gchar *encryption_key, GError **error)
+encrypt_database (AlmanahSQLiteVFS *self,  const gchar *encryption_key, gboolean from_memory, GError **error)
 {
 	GError *preparation_error = NULL;
 	CipherOperation *operation;
@@ -383,15 +399,17 @@ encrypt_database (AlmanahSQLiteVFS *self,  const gchar *encryption_key, GError *
 
 	gpgme_signers_add (operation->context, gpgme_keys[0]);
 
-	if (open_db_files (self, TRUE, operation, &preparation_error) != TRUE) {
+	if (open_db_files (self, TRUE, operation, from_memory, &preparation_error) != TRUE) {
 		cipher_operation_free (operation);
 		g_propagate_error (error, preparation_error);
 		return FALSE;
 	}
 
-	operation->npm_closure->buffer = self->plain_buffer;
-	operation->npm_closure->offset = 0;
-	operation->npm_closure->size = self->plain_size;
+	if (from_memory) {
+		operation->npm_closure->buffer = self->plain_buffer;
+		operation->npm_closure->offset = 0;
+		operation->npm_closure->size = self->plain_size;
+	}
 
 	/* Encrypt and sign! */
 	error_gpgme = gpgme_op_encrypt_sign_start (operation->context, gpgme_keys, 0, operation->gpgme_plain, operation->gpgme_cipher);
@@ -403,31 +421,14 @@ encrypt_database (AlmanahSQLiteVFS *self,  const gchar *encryption_key, GError *
 		return FALSE;
 	}
 
-	if (gpgme_wait (operation->context, &error_gpgme, TRUE) != NULL || error_gpgme != GPG_ERR_NO_ERROR) {
-		struct stat db_stat;
-		gchar *warning_message = NULL;
-
-		/* Check to see if the encrypted file is 0B in size, which isn't good. Not much we can do about it except quit without deleting the
-		 * plaintext database. */
-		g_stat (operation->vfs->encrypted_filename, &db_stat);
-		if (g_file_test (operation->vfs->encrypted_filename, G_FILE_TEST_IS_REGULAR) == FALSE || db_stat.st_size == 0) {
-			warning_message = g_strdup (_("The encrypted database is empty. The plain database file has been left undeleted as backup."));
-		} else if (g_unlink (operation->vfs->plain_filename) != 0) {
-			/* Delete the plain file */
-			warning_message = g_strdup_printf (_("Could not delete plain database file \"%s\"."), operation->vfs->plain_filename);
-		}
-
-		if (warning_message) {
-			g_critical (warning_message);
-			g_free (warning_message);
-		}
-
-		/* Finished! */
+	gpgme_wait (operation->context, &error_gpgme, TRUE);
+	if (error_gpgme != GPG_ERR_NO_ERROR) {
+		g_critical (_("Error encrypting database: %s"), gpgme_strerror (error_gpgme));
 		cipher_operation_free (operation);
-
 		return FALSE;
 	}
 
+	cipher_operation_free (operation);
 	return TRUE;
 }
 
@@ -571,6 +572,18 @@ demoFlushBuffer (AlmanahSQLiteVFS *p)
 	return rc;
 }
 
+static int
+almanah_vfs_close_simple_file (AlmanahSQLiteVFS *self)
+{
+	int rc;
+
+	rc = demoFlushBuffer (self);
+	if (rc != SQLITE_OK)
+		return rc;
+	sqlite3_free (self->aBuffer);
+	close (self->fd);
+}
+
 /*
 ** Close a file.
 */
@@ -582,46 +595,96 @@ demoClose (sqlite3_file *pFile)
 	GError *child_error = NULL;
 	int rc;
 
-	/* TODO: This code is not completed */
-
-	if (self->decrypted == FALSE)
-		goto close_db;
-
-	/* Get the encryption key */
 	encryption_key = get_encryption_key ();
 	if (encryption_key == NULL) {
-		/* TODO: No encryption key, so save in plain file from DB in memory,
-		   this happends when the user has changed from encrypted to non encrypted */
-		if (self->plain_buffer)
-			gcr_secure_memory_free (self->plain_buffer);
-		goto delete_encrypted_db;
-	}
+		if (self->decrypted) {
+			/* Save the data from memory to file */
+			GFile *plain_file;
+			GFileOutputStream *plain_output_stream;
+			gsize bytes_written;
 
-	/* Encrypt the plain in memory DB to a file */
-	if (encrypt_database (self, encryption_key, &child_error) != TRUE)
-		return SQLITE_IOERR;
+			plain_file = g_file_new_for_path (self->plain_filename);
+			plain_output_stream = g_file_create (plain_file,
+							     G_FILE_CREATE_PRIVATE & G_FILE_CREATE_REPLACE_DESTINATION,
+							     NULL,
+							     &child_error);
+			if (child_error != NULL) {
+				g_warning ("Error opening plain file %s: %s\n", self->plain_filename, child_error->message);
+				g_object_unref (plain_file);
+				return SQLITE_IOERR;
+			}
+
+			if (g_output_stream_write_all (G_OUTPUT_STREAM (plain_output_stream),
+						       self->plain_buffer,
+						       self->plain_size,
+						       &bytes_written,
+						       NULL,
+						       &child_error) == FALSE) {
+				g_warning ("Error writting data to plain file %s: %s\n", self->plain_filename, child_error->message);
+				g_object_unref (plain_file);
+				g_object_unref (plain_output_stream);
+				g_unlink (self->plain_filename);
+				return SQLITE_IOERR;
+			}
+
+			if (bytes_written != self->plain_size) {
+				g_warning ("Error writting data to plain file %s: Not all the data has been written to the file\n", self->plain_filename);
+				g_object_unref (plain_file);
+				g_object_unref (plain_output_stream);
+				g_unlink (self->plain_filename);
+				return SQLITE_IOERR;
+			}
+
+			if (g_output_stream_close (G_OUTPUT_STREAM (plain_output_stream), NULL, &child_error) == FALSE) {
+				g_warning ("Error closing the plain file %s: %s\n", self->plain_filename, child_error->message);
+				g_object_unref (plain_file);
+				g_object_unref (plain_output_stream);
+				g_unlink (self->plain_filename);
+				return SQLITE_IOERR;
+			}
+
+			g_object_unref (plain_file);
+			g_object_unref (plain_output_stream);
+			g_unlink (self->encrypted_filename);
+
+			rc = SQLITE_OK;
+		} else {
+			rc = almanah_vfs_close_simple_file (self);
+		}
+	} else {
+		if (self->aBuffer != NULL)
+			rc = almanah_vfs_close_simple_file (self);
+		else {
+			gboolean from_memory;
+
+			if (self->decrypted)
+				from_memory = TRUE;
+			else {
+				rc = almanah_vfs_close_simple_file (self);
+				if (rc != SQLITE_OK) {
+					g_critical ("Error closing plain file");
+					return rc;
+				}
+				from_memory = FALSE;
+			}
+
+			if (encrypt_database (self, encryption_key, from_memory, &child_error) != TRUE) {
+				if (child_error != NULL)
+					g_critical ("Error encrypting the database from the plain file %s: %s\n", self->plain_filename, child_error->message);
+				return SQLITE_IOERR;
+			}
+
+			g_unlink (self->plain_filename);
+
+			g_free (encryption_key);
+			rc = SQLITE_OK;
+		}
+	}
 
 	if (self->plain_buffer)
 		gcr_secure_memory_free (self->plain_buffer);
 
-	if (encryption_key)
-		g_free (encryption_key);
-
-	return SQLITE_OK;
-
- close_db:
-	rc = demoFlushBuffer (self);
-	if (rc != SQLITE_OK)
-		return rc;
-	sqlite3_free (self->aBuffer);
-	close (self->fd);
-
-	return SQLITE_OK;
-
- delete_encrypted_db:
-	/* Delete the old encrypted database and return */
-	g_unlink (self->encrypted_filename);
-	return SQLITE_OK;
+	return rc;
 }
 
 /*
