@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-18 13:50+0000\n"
-"PO-Revision-Date: 2014-02-23 15:35+0100\n"
-"Last-Translator: Balázs Úr <urbalazs at gmail dot com>\n"
+"POT-Creation-Date: 2014-11-21 20:05+0000\n"
+"PO-Revision-Date: 2014-11-28 23:22+0100\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgid "Keep a personal diary"
 msgstr "Személyes napló vezetése"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
 msgid "Diary"
 msgstr "Napló"
 
@@ -238,12 +238,12 @@ msgstr "Helyesírás-ellenőrzés engedélyezve?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "A bejegyzések helyesírás-ellenőrzése engedélyezve legyen-e?"
 
-#: ../src/application.c:246
+#: ../src/application.c:243
 msgid "Error opening database"
 msgstr "Hiba történt az adatbázis megnyitásakor"
 
 #. Error loading the CSS
-#: ../src/application.c:275
+#: ../src/application.c:272
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
@@ -251,27 +251,27 @@ msgstr ""
 "Nem tölthető be a CSS fájl: „%s”. A felület valószínűleg nem megfelelő "
 "stílusú"
 
-#: ../src/application.c:319
+#: ../src/application.c:316
 msgid "Enable debug mode"
 msgstr "Hibakereső üzemmód bekapcsolása"
 
-#: ../src/application.c:336
+#: ../src/application.c:333
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
 "Személyes napló kezelése. Egyszerre csak egy példányban futtatható a program."
 
 #. Print an error
-#: ../src/application.c:347
+#: ../src/application.c:344
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "A parancssori kapcsolók nem értelmezhetők: %s\n"
 
-#: ../src/application.c:366
+#: ../src/application.c:363
 msgid "Error encrypting database"
 msgstr "Hiba az adatbázis titkosításakor"
 
-#: ../src/application.c:419 ../src/date-entry-dialog.c:129
+#: ../src/application.c:424 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
 #: ../src/main-window.c:195 ../src/preferences-dialog.c:191
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
@@ -279,7 +279,7 @@ msgstr "Hiba az adatbázis titkosításakor"
 msgid "UI file \"%s\" could not be loaded"
 msgstr "A(z) „%s” UI fájl nem tölthető be"
 
-#: ../src/application.c:542
+#: ../src/application.c:547
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -290,7 +290,7 @@ msgstr ""
 "Software Foundation által kiadott GNU General Public License harmadik (vagy "
 "bármely későbbi) változatában foglaltak alapján."
 
-#: ../src/application.c:546
+#: ../src/application.c:551
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -302,7 +302,7 @@ msgstr ""
 "alkalmas-e a KÖZREADÁSRA vagy EGY BIZONYOS FELADAT ELVÉGZÉSÉRE. További "
 "részletekért tanulmányozza a GNU GPL licencet."
 
-#: ../src/application.c:550
+#: ../src/application.c:555
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -310,12 +310,12 @@ msgstr ""
 "Az Almanah programhoz a GNU General Public License egy példánya is jár, ha "
 "nem kapta meg, itt elolvashatja: <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:565
+#: ../src/application.c:570
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Egy hasznos naplóíró, amely %u bejegyzést tárol."
 
-#: ../src/application.c:569
+#: ../src/application.c:574
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -324,11 +324,11 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:577
+#: ../src/application.c:582
 msgid "translator-credits"
 msgstr "Balló György <ballogy at freestart dot hu>"
 
-#: ../src/application.c:581
+#: ../src/application.c:586
 msgid "Almanah Website"
 msgstr "Az Almanah webhelye"
 
@@ -396,7 +396,6 @@ msgstr ""
 
 #: ../src/export-operation.c:256 ../src/export-operation.c:313
 #, c-format
-#| msgid "Error opening encrypted database file \"%s\": %s"
 msgid "Error changing exported file permissions: %s"
 msgstr "Hiba az exportált fájl jogosultságainak módosításakor: %s"
 
@@ -604,81 +603,7 @@ msgstr[1] "%d bejegyzés található:"
 msgid "Searching…"
 msgstr "Keresés…"
 
-#: ../src/storage-manager.c:276
-#, c-format
-msgid "GPGME is not at least version %s"
-msgstr "A GPGME verziója nincs legalább %s"
-
-#: ../src/storage-manager.c:285
-#, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "A GPGME nem támogatja az OpenPGP-t: %s"
-
-#: ../src/storage-manager.c:294
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Hiba a rejtjelező kontextus létrehozásakor: %s"
-
-#: ../src/storage-manager.c:323
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Hiba a(z) „%s” titkosított adatbázisfájl megnyitásakor: %s"
-
-#: ../src/storage-manager.c:342
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Hiba a(z) „%s” sima adatbázisfájl megnyitásakor: %s"
-
-#: ../src/storage-manager.c:390
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"A titkosított adatbázis üres. A sima adatbázisfájl – biztonsági mentésként – "
-"nem került törlésre."
-
-#. Delete the plain file
-#: ../src/storage-manager.c:393
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "A(z) „%s” sima adatbázisfájl nem törölhető."
-
-#: ../src/storage-manager.c:434
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Hiba az adatbázis visszafejtésekor: %s"
-
-#: ../src/storage-manager.c:468
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Hiba a titkosítási kulcs lekérésekor: %s"
-
-#: ../src/storage-manager.c:489
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Hiba az adatbázis titkosításakor: %s"
-
-#: ../src/storage-manager.c:549
-#, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error changing database backup file permissions: %s"
-msgstr ""
-"Hiba az adatbázis biztonsági mentés fájl jogosultságainak módosításakor: %s"
-
-#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
-#, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error changing database file permissions: %s"
-msgstr "Hiba az adatbázisfájl jogosultságainak módosításakor: %s"
-
-#. Translators: the first parameter is a filename, the second is an error message.
-#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
-#, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error backing up file ‘%s’: %s"
-msgstr "Hiba a(z) „%s” fájl biztonsági mentésekor: %s"
-
-#: ../src/storage-manager.c:620
+#: ../src/storage-manager.c:232
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -687,7 +612,7 @@ msgstr ""
 "A(z) „%s” adatbázis nem nyitható meg. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:704
+#: ../src/storage-manager.c:274
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -695,13 +620,99 @@ msgstr ""
 "A(z) „%s” lekérdezés nem futtatható. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:1010
+#: ../src/storage-manager.c:580
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Hiba a bejegyzés pufferbe történő visszafejtésekor keresés közben."
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Adjon meg egy URI-t"
+
+#: ../src/vfs.c:231
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "A GPGME verziója nincs legalább %s"
+
+#: ../src/vfs.c:238
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "A GPGME nem támogatja az OpenPGP-t: %s"
+
+#: ../src/vfs.c:245
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Hiba a rejtjelező kontextus létrehozásakor: %s"
+
+#: ../src/vfs.c:265
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Nem lehet létrehozni új GIOChannel-t a titkosított adatbázishoz: %s"
+
+#: ../src/vfs.c:273
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Hiba a(z) „%s” titkosított adatbázisfájl megnyitásakor: %s"
+
+#: ../src/vfs.c:288
+#, c-format
+#| msgid "Error decrypting database: %s"
+msgid "Error creating Callback base data buffer: %s"
+msgstr "Hiba a visszahívás alapadatpuffer létrehozásakor: %s"
+
+#: ../src/vfs.c:384
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Hiba a titkosítási kulcs lekérésekor: %s"
+
+#: ../src/vfs.c:406
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Hiba az adatbázis titkosításakor: %s"
+
+#: ../src/vfs.c:418
+msgid ""
+"The encrypted database is empty. The plain database file has been left "
+"undeleted as backup."
+msgstr ""
+"A titkosított adatbázis üres. A sima adatbázisfájl – biztonsági mentésként – "
+"nem került törlésre."
+
+#. Delete the plain file
+#: ../src/vfs.c:421
+#, c-format
+msgid "Could not delete plain database file \"%s\"."
+msgstr "A(z) „%s” sima adatbázisfájl nem törölhető."
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: ../src/vfs.c:486
+#, c-format
+#| msgid "Error changing database file permissions: %s"
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Hiba a fájl másolásakor: %s -> %s: %s"
+
+#: ../src/vfs.c:492
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr ""
+"Hiba az adatbázis biztonsági mentés fájl jogosultságainak módosításakor: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename.
+#: ../src/vfs.c:912 ../src/vfs.c:943
+#, c-format
+#| msgid "Error backing up file ‘%s’: %s"
+msgid "Error backing up file ‘%s’"
+msgstr "Hiba a(z) „%s” fájl biztonsági mentésekor"
+
+#: ../src/vfs.c:925
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Hiba az adatbázis visszafejtésekor: %s"
+
+#: ../src/vfs.c:969
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Hiba az adatbázisfájl jogosultságainak módosításakor: %s"
 
 #: ../src/widgets/calendar-button.c:140
 #, c-format
@@ -730,7 +741,6 @@ msgid "Write the tag and press enter to save it"
 msgstr "Írja be a címkét és nyomja meg az entert a mentéshez"
 
 #: ../src/widgets/tag-accessible.c:165
-#| msgid "Show tags for the current entry"
 msgid "Remove the tag from the entry"
 msgstr "Címke eltávolítása a bejegyzésből"
 
@@ -740,9 +750,11 @@ msgid "Remove tag"
 msgstr "Címke eltávolítása"
 
 #: ../src/widgets/tag-entry.c:85
-#| msgid "Search entry"
 msgid "Tag entry"
 msgstr "Címke bejegyzés"
+
+#~ msgid "Error opening plain database file \"%s\": %s"
+#~ msgstr "Hiba a(z) „%s” sima adatbázisfájl megnyitásakor: %s"
 
 #~ msgid "Change font style for selected text"
 #~ msgstr "A kijelölt szöveg betűkészletének megváltoztatása"
