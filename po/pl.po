@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-23 15:50+0100\n"
-"PO-Revision-Date: 2014-11-23 15:51+0100\n"
+"POT-Creation-Date: 2014-11-30 18:14+0100\n"
+"PO-Revision-Date: 2014-11-30 18:15+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -278,13 +278,13 @@ msgstr "Błąd podczas szyfrowania bazy danych"
 
 #: ../src/application.c:424 ../src/date-entry-dialog.c:129
 #: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
+#: ../src/main-window.c:195 ../src/preferences-dialog.c:181
 #: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
 #, c-format
 msgid "UI file \"%s\" could not be loaded"
 msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\""
 
-#: ../src/application.c:547
+#: ../src/application.c:538
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -296,7 +296,7 @@ msgstr ""
 "przez Fundację Wolnego Oprogramowania (Free Software Foundation) - według "
 "wersji trzeciej tej Licencji lub którejś z późniejszych wersji."
 
-#: ../src/application.c:551
+#: ../src/application.c:542
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -308,7 +308,7 @@ msgstr ""
 "HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
 "bliższych informacji należy zapoznać się z Powszechną Licencją Publiczną GNU."
 
-#: ../src/application.c:555
+#: ../src/application.c:546
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -317,12 +317,12 @@ msgstr ""
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
 "- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:570
+#: ../src/application.c:561
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Pomocny zarządca pamiętnika, przechowuje %u wpisów."
 
-#: ../src/application.c:574
+#: ../src/application.c:565
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -331,14 +331,14 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:582
+#: ../src/application.c:573
 msgid "translator-credits"
 msgstr ""
 "Mateusz Kacprzak <mateusz.kacprzak@yandex.ru>, 2011\n"
 "Piotr Drąg <piotrdrag@gmail.com>, 2012-2014\n"
 "Aviary.pl <gnomepl@aviary.pl>, 2011-2014"
 
-#: ../src/application.c:586
+#: ../src/application.c:577
 msgid "Almanah Website"
 msgstr "Witryna programu Almanah"
 
@@ -542,33 +542,33 @@ msgstr "Nie można wczytać treści wpisu"
 msgid "Spelling checker could not be initialized"
 msgstr "Nie można uruchomić sprawdzania pisowni"
 
-#: ../src/preferences-dialog.c:91
+#: ../src/preferences-dialog.c:85
 msgid "Almanah Preferences"
 msgstr "Preferencje programu Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:217
+#: ../src/preferences-dialog.c:206
 msgid "Encryption key: "
 msgstr "Klucz szyfrowania: "
 
-#: ../src/preferences-dialog.c:222
+#: ../src/preferences-dialog.c:211
 msgid "None (don't encrypt)"
 msgstr "Brak (bez szyfrowania)"
 
-#: ../src/preferences-dialog.c:246
+#: ../src/preferences-dialog.c:235
 msgid "New _Key"
 msgstr "Nowy _klucz"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:253
+#: ../src/preferences-dialog.c:241
 msgid "Enable _spell checking"
 msgstr "_Sprawdzanie pisowni"
 
-#: ../src/preferences-dialog.c:279
+#: ../src/preferences-dialog.c:266
 msgid "Error saving the encryption key"
 msgstr "Błąd podczas zapisywania klucza szyfrującego"
 
-#: ../src/preferences-dialog.c:298
+#: ../src/preferences-dialog.c:285
 msgid "Error opening Seahorse"
 msgstr "Błąd podczas otwierania programu Seahorse"
 
@@ -642,67 +642,63 @@ msgstr "Błąd podczas rozszeregowywania wpisu do bufora podczas wyszukiwania."
 msgid "Enter URI"
 msgstr "Wprowadzanie adresu URI"
 
-#: ../src/vfs.c:231
+#: ../src/vfs.c:226
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "Biblioteka GPGME nie jest w wersji co najmniej %s"
 
-#: ../src/vfs.c:238
+#: ../src/vfs.c:233
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "Biblioteka GPGME nie obsługuje standardu OpenPGP: %s"
 
-#: ../src/vfs.c:245
+#: ../src/vfs.c:240
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Błąd podczas tworzenia kontekstu szyfrowania: %s"
 
-#: ../src/vfs.c:265
+#: ../src/vfs.c:260
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Nie można utworzyć nowego GIOChannel dla zaszyfrowanej bazy danych: %s"
 
-#: ../src/vfs.c:273
+#: ../src/vfs.c:268
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Błąd podczas otwierania zaszyfrowanego pliku bazy danych \"%s\": %s"
 
-#: ../src/vfs.c:288
+#: ../src/vfs.c:284
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Błąd podczas tworzenia bufora danych podstawy Callback: %s"
 
-#: ../src/vfs.c:384
+#: ../src/vfs.c:292
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Nie można utworzyć nowego GIOChannel dla prostej bazy danych: %s"
+
+#: ../src/vfs.c:300
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Błąd podczas otwierania pliku prostej bazy danych \"%s\": %s"
+
+#: ../src/vfs.c:396
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Błąd podczas pobierania klucza szyfrującego: %s"
 
-#: ../src/vfs.c:406
+#: ../src/vfs.c:420 ../src/vfs.c:426
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Błąd podczas szyfrowania bazy danych: %s"
 
-#: ../src/vfs.c:418
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"Zaszyfrowany plik bazy danych jest pusty. Zwykły plik bazy danych "
-"pozostawiono jako kopię zapasową."
-
-#. Delete the plain file
-#: ../src/vfs.c:421
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Nie można usunąć pliku bazy danych \"%s\"."
-
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:486
+#: ../src/vfs.c:481
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Błąd podczas kopiowania pliku z %s do %s: %s"
 
-#: ../src/vfs.c:492
+#: ../src/vfs.c:487
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr ""
@@ -710,17 +706,17 @@ msgstr ""
 
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:912 ../src/vfs.c:943
+#: ../src/vfs.c:956 ../src/vfs.c:983
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Błąd podczas tworzenia kopii zapasowej pliku \"%s\""
 
-#: ../src/vfs.c:925
+#: ../src/vfs.c:969
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Błąd podczas deszyfrowania bazy danych: %s"
 
-#: ../src/vfs.c:969
+#: ../src/vfs.c:1005
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Błąd podczas zmieniania uprawnień pliku bazy danych: %s"
