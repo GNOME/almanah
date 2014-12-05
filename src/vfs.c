@@ -600,7 +600,7 @@ demoClose (sqlite3_file *pFile)
 	encryption_key = get_encryption_key ();
 	if (encryption_key == NULL) {
 		if (self->decrypted) {
-			/* Save the data from memory to file */
+			/* Save the data from memory to plain file */
 			GFile *plain_file;
 			GFileOutputStream *plain_output_stream;
 			gsize bytes_written;
@@ -654,6 +654,7 @@ demoClose (sqlite3_file *pFile)
 			rc = almanah_vfs_close_simple_file (self);
 		}
 	} else {
+		/* SQLITE_OPEN_MAIN_JOURNAL */
 		if (self->aBuffer != NULL)
 			rc = almanah_vfs_close_simple_file (self);
 		else {
