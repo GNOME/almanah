@@ -1058,14 +1058,14 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 	sqlite3_bind_int (statement, 3, g_date_get_day (&date));
 
 	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		tags = g_list_append (tags, g_strdup (sqlite3_column_text (statement, 0)));
+		tags = g_list_append (tags, g_strdup ((const gchar*) sqlite3_column_text (statement, 0)));
 	}
 
 	sqlite3_finalize (statement);
 
 	if (result != SQLITE_DONE) {
 		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (self->priv->connection));
-		g_free (tags);
+		g_list_free_full (tags, (GDestroyNotify) g_free);
 		tags = NULL;
 	}
 
