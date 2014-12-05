@@ -582,6 +582,8 @@ almanah_vfs_close_simple_file (AlmanahSQLiteVFS *self)
 		return rc;
 	sqlite3_free (self->aBuffer);
 	close (self->fd);
+
+	return rc;
 }
 
 /*
