@@ -453,11 +453,9 @@ get_encryption_key (void)
 
 	for (i = 0; key_parts[i] != NULL; i++) {
 		if (strcmp (key_parts[i], "openpgp") != 0)
-			encryption_key = key_parts[i];
-		else
-			g_free (key_parts[i]);
+			encryption_key = strdup (key_parts[i]);
 	}
-	g_free (key_parts);
+	g_strfreev (key_parts);
 
 	return encryption_key;
 }
@@ -474,7 +472,6 @@ back_up_file (const gchar *filename)
 	original_file = g_file_new_for_path (filename);
 	backup_filename = g_strdup_printf ("%s~", filename);
 	backup_file = g_file_new_for_path (backup_filename);
-	g_free (backup_filename);
 
 	if (g_file_copy (original_file, backup_file, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error) == FALSE) {
 		/* Translators: The first and second params are file paths, the last param is an error message.  */
@@ -488,6 +485,7 @@ back_up_file (const gchar *filename)
 		retval = FALSE;
 	}
 
+	g_free (backup_filename);
 	g_object_unref (original_file);
 	g_object_unref (backup_file);
 
