@@ -685,6 +685,12 @@ demoClose (sqlite3_file *pFile)
 	if (self->plain_buffer)
 		gcr_secure_memory_free (self->plain_buffer);
 
+	if (self->plain_filename)
+		g_free (self->plain_filename);
+
+	if (self->encrypted_filename)
+		g_free (self->encrypted_filename);
+
 	return rc;
 }
 
@@ -999,14 +1005,20 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 		self->fd = open (self->plain_filename, oflags, 0600);
 		if (self->fd < 0) {
 			sqlite3_free (aBuf);
+			if (self->plain_filename)
+				g_free (self->plain_filename);
+			if (self->encrypted_filename)
+				g_free (self->encrypted_filename);
 			return SQLITE_CANTOPEN;
 		}
 
 		if (g_chmod (self->plain_filename, 0600) != 0 && errno != ENOENT) {
 			g_critical (_("Error changing database file permissions: %s"), g_strerror (errno));
 			sqlite3_free (aBuf);
-			g_free (self->plain_filename);
-			g_free (self->encrypted_filename);
+			if (self->plain_filename)
+				g_free (self->plain_filename);
+			if (self->encrypted_filename)
+				g_free (self->encrypted_filename);
 			close (self->fd);
 			return SQLITE_IOERR;
 		}
