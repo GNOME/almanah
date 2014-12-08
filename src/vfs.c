@@ -574,12 +574,16 @@ static int
 almanah_vfs_close_simple_file (AlmanahSQLiteVFS *self)
 {
 	int rc;
+	GError *error = NULL;
 
 	rc = demoFlushBuffer (self);
 	if (rc != SQLITE_OK)
 		return rc;
 	sqlite3_free (self->aBuffer);
-	close (self->fd);
+	if (g_close (self->fd, &error) == FALSE) {
+		g_critical (_("Error closing file: %s"), error->message);
+		rc = SQLITE_IOERR;
+	}
 
 	return rc;
 }
@@ -1002,7 +1006,7 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 		if (flags & SQLITE_OPEN_READONLY)  oflags |= O_RDONLY;
 		if (flags & SQLITE_OPEN_READWRITE) oflags |= O_RDWR;
 
-		self->fd = open (self->plain_filename, oflags, 0600);
+		self->fd = g_open (self->plain_filename, oflags, 0600);
 		if (self->fd < 0) {
 			sqlite3_free (aBuf);
 			if (self->plain_filename)
