@@ -4,7 +4,7 @@ data/almanah.appdata.xml.in
 [type: gettext/glade]data/almanah-app-menu.ui
 data/almanah.desktop.in
 [type: gettext/glade]data/almanah.ui
-data/org.gnome.almanah.gschema.xml.in.in
+[type: gettext/gsettings]data/org.gnome.almanah.gschema.xml.in
 src/application.c
 src/date-entry-dialog.c
 src/entry.c

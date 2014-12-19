@@ -15,7 +15,7 @@ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 GETTEXT_PACKAGE=AC_PACKAGE_TARNAME
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"], [Define to the Gettext package name])
 AC_SUBST(GETTEXT_PACKAGE)
-IT_PROG_INTLTOOL([0.35.0])
+IT_PROG_INTLTOOL([0.50.1])
 
 AC_PROG_CXX
 AM_PROG_CC_C_O
@@ -157,6 +157,6 @@ data/icons/32x32/Makefile
 data/icons/48x48/Makefile
 data/icons/256x256/Makefile
 data/icons/scalable/Makefile
-data/org.gnome.almanah.gschema.xml.in
+data/org.gnome.almanah.gschema.xml
 ])
 AC_OUTPUT

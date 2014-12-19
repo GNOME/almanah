@@ -49,20 +49,15 @@ CLEANFILES += $(desktop_DATA)
 # GSettings schemas
 ###############################################################################
 
+schemas_in_files = org.gnome.almanah.gschema.xml.in
 gsettings_SCHEMAS = org.gnome.almanah.gschema.xml
 
 @GSETTINGS_RULES@
-@INTLTOOL_XML_NOMERGE_RULE@
 
 # Data migration tool
 convertdir = $(datadir)/GConf/gsettings
 convert_DATA = almanah.convert
-
-EXTRA_DIST += \
-	$(schemas_in_files) \
-	$(convert_DATA) \
-	$(NULL)
-CLEANFILES += $(gsettings_SCHEMAS)
+EXTRA_DIST += $(convert_DATA)
 
 ###############################################################################
 # AppData file
