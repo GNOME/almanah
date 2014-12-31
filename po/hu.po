@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-11-28 23:03+0000\n"
-"PO-Revision-Date: 2014-12-07 11:06+0100\n"
+"POT-Creation-Date: 2014-12-31 11:38+0000\n"
+"PO-Revision-Date: 2014-12-31 16:46+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: \n"
@@ -208,11 +208,11 @@ msgstr "Sikertelen bejegyzések"
 msgid "Import Results List"
 msgstr "Eredmények listájának importálása"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+#: ../data/org.gnome.almanah.gschema.xml.in.h:1
 msgid "Database encryption key ID"
 msgstr "Adatbázis-titkosítási kulcs azonosítója"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+#: ../data/org.gnome.almanah.gschema.xml.in.h:2
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -222,19 +222,19 @@ msgstr ""
 "ha az Almanah titkosítási támogatással került fordításra. Az adatbázis "
 "titkosításának letiltásához hagyja ezt a mezőt üresen."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+#: ../data/org.gnome.almanah.gschema.xml.in.h:3
 msgid "Spell checking language"
 msgstr "Helyesírás-ellenőrzés nyelve"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+#: ../data/org.gnome.almanah.gschema.xml.in.h:4
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "A nyelv, amin a bejegyzések helyesírása ellenőrzésre kerül."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+#: ../data/org.gnome.almanah.gschema.xml.in.h:5
 msgid "Spell checking enabled?"
 msgstr "Helyesírás-ellenőrzés engedélyezve?"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+#: ../data/org.gnome.almanah.gschema.xml.in.h:6
 msgid "Whether spell checking of entries is enabled."
 msgstr "A bejegyzések helyesírás-ellenőrzése engedélyezve legyen-e?"
 
@@ -628,83 +628,88 @@ msgstr "Hiba a bejegyzés pufferbe történő visszafejtésekor keresés közben
 msgid "Enter URI"
 msgstr "Adjon meg egy URI-t"
 
-#: ../src/vfs.c:226
+#: ../src/vfs.c:233
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "A GPGME verziója nincs legalább %s"
 
-#: ../src/vfs.c:233
+#: ../src/vfs.c:240
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "A GPGME nem támogatja az OpenPGP-t: %s"
 
-#: ../src/vfs.c:240
+#: ../src/vfs.c:247
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Hiba a rejtjelező kontextus létrehozásakor: %s"
 
-#: ../src/vfs.c:260
+#: ../src/vfs.c:267
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr ""
 "Nem sikerült az új GIOChannel létrehozása a titkosított adatbázishoz: %s"
 
-#: ../src/vfs.c:268
+#: ../src/vfs.c:275
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” titkosított adatbázisfájl megnyitásakor: %s"
 
-#: ../src/vfs.c:284
+#: ../src/vfs.c:291
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Hiba a visszahívás alapadatpuffer létrehozásakor: %s"
 
-#: ../src/vfs.c:292
+#: ../src/vfs.c:299
 #, c-format
-#| msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Nem sikerült az új GIOChannel létrehozása az egyszerű adatbázishoz: %s"
 
-#: ../src/vfs.c:300
+#: ../src/vfs.c:307
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” sima adatbázisfájl megnyitásakor: %s"
 
-#: ../src/vfs.c:396
+#: ../src/vfs.c:403
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Hiba a titkosítási kulcs lekérésekor: %s"
 
-#: ../src/vfs.c:420 ../src/vfs.c:426
+#: ../src/vfs.c:427 ../src/vfs.c:433
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Hiba az adatbázis titkosításakor: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:481
+#: ../src/vfs.c:485
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Hiba a fájl másolásakor: %s -> %s: %s"
 
-#: ../src/vfs.c:487
+#: ../src/vfs.c:491
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr ""
 "Hiba az adatbázis biztonsági mentés fájl jogosultságainak módosításakor: %s"
 
+#: ../src/vfs.c:591
+#, c-format
+#| msgid "Error backing up file ‘%s’"
+msgid "Error closing file: %s"
+msgstr "Hiba a fájl lezárásakor: %s"
+
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:956 ../src/vfs.c:983
+#: ../src/vfs.c:990 ../src/vfs.c:1017
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Hiba a(z) „%s” fájl biztonsági mentésekor"
 
-#: ../src/vfs.c:969
+#: ../src/vfs.c:1003
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Hiba az adatbázis visszafejtésekor: %s"
 
-#: ../src/vfs.c:1005
+#: ../src/vfs.c:1043
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Hiba az adatbázisfájl jogosultságainak módosításakor: %s"
