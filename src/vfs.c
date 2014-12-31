@@ -23,6 +23,13 @@
  * So, many thanks to the SQLite guys!
  */
 
+/*
+ * Some important things about this VFS:
+ * - Not locking allowed, so no more than one process using the same
+ *   database.
+ * - See more documentation in the demovfs link.
+ */
+
 #include <sqlite3.h>
 
 #include <assert.h>
@@ -592,7 +599,7 @@ almanah_vfs_close_simple_file (AlmanahSQLiteVFS *self)
 ** Close a file.
 */
 static int
-demoClose (sqlite3_file *pFile)
+almanah_vfs_io_close (sqlite3_file *pFile)
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
 	gchar *encryption_key;
@@ -702,7 +709,7 @@ demoClose (sqlite3_file *pFile)
 ** Read data from a file.
 */
 static int
-demoRead (sqlite3_file *pFile,  void *buffer,  int len,  sqlite_int64 offset)
+almanah_vfs_io_read (sqlite3_file *pFile,  void *buffer,  int len,  sqlite_int64 offset)
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
 	off_t ofst;
@@ -748,7 +755,7 @@ demoRead (sqlite3_file *pFile,  void *buffer,  int len,  sqlite_int64 offset)
 ** Write data to a crash-file.
 */
 static int
-demoWrite (sqlite3_file *pFile,  const void *buffer, int len, sqlite_int64 offset)
+almanah_vfs_io_write (sqlite3_file *pFile,  const void *buffer, int len, sqlite_int64 offset)
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*)pFile;
 
@@ -800,7 +807,8 @@ demoWrite (sqlite3_file *pFile,  const void *buffer, int len, sqlite_int64 offse
 ** the top of the file).
 */
 static int
-demoTruncate(sqlite3_file *pFile, sqlite_int64 size)
+almanah_vfs_io_truncate (__attribute__ ((unused)) sqlite3_file *pFile,
+			 __attribute__ ((unused)) sqlite_int64 size)
 {
 #if 0
 	if (ftruncate(((AlmanahSQLiteVFS *)pFile)->fd, size))
@@ -813,7 +821,7 @@ demoTruncate(sqlite3_file *pFile, sqlite_int64 size)
 ** Sync the contents of the file to the persistent media.
 */
 static int
-demoSync (sqlite3_file *pFile, __attribute__ ((unused)) int flags)
+almanah_vfs_io_sync (sqlite3_file *pFile, __attribute__ ((unused)) int flags)
 {
 	int rc;
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
@@ -834,7 +842,7 @@ demoSync (sqlite3_file *pFile, __attribute__ ((unused)) int flags)
 ** Write the size of the file in bytes to *pSize.
 */
 static int
-demoFileSize (sqlite3_file *pFile, sqlite_int64 *pSize)
+almanah_vfs_io_file_size (sqlite3_file *pFile, sqlite_int64 *pSize)
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*)pFile;
 	int rc;                         /* Return code from fstat() call */
@@ -846,7 +854,7 @@ demoFileSize (sqlite3_file *pFile, sqlite_int64 *pSize)
 	}
 
 	/* Flush the contents of the buffer to disk. As with the flush in the
-	** demoRead() method, it would be possible to avoid this and save a write
+	** almanah_vfs_io_read() method, it would be possible to avoid this and save a write
 	** here and there. But in practice this comes up so infrequently it is
 	** not worth the trouble.
 	*/
@@ -870,13 +878,21 @@ demoFileSize (sqlite3_file *pFile, sqlite_int64 *pSize)
 ** a reserved lock on the database file. This ensures that if a hot-journal
 ** file is found in the file-system it is rolled back.
 */
-static int demoLock(sqlite3_file *pFile, int eLock){
+static int
+almanah_vfs_io_lock (__attribute__ ((unused)) sqlite3_file *pFile,
+		     __attribute__ ((unused)) int eLock)
+{
 	return SQLITE_OK;
 }
-static int demoUnlock(sqlite3_file *pFile, int eLock){
+static int
+almanah_vfs_io_unlock (__attribute__ ((unused)) sqlite3_file *pFile,
+		       __attribute__ ((unused)) int eLock)
+{
 	return SQLITE_OK;
 }
-static int demoCheckReservedLock(sqlite3_file *pFile, int *pResOut){
+static int
+almanah_vfs_io_reserved_lock (__attribute__ ((unused)) sqlite3_file *pFile, int *pResOut)
+{
 	*pResOut = 0;
 	return SQLITE_OK;
 }
@@ -884,19 +900,27 @@ static int demoCheckReservedLock(sqlite3_file *pFile, int *pResOut){
 /*
 ** No xFileControl() verbs are implemented by this VFS.
 */
-static int demoFileControl(sqlite3_file *pFile, int op, void *pArg){
+static int
+almanah_vfs_io_file_control (__attribute__ ((unused)) sqlite3_file *pFile,
+			     __attribute__ ((unused)) int op,
+			     __attribute__ ((unused)) void *pArg)
+{
 	return SQLITE_OK;
 }
 
 /*
 ** The xSectorSize() and xDeviceCharacteristics() methods. These two
-** may return special values allowing SQLite to optimize file-system 
+** may return special values allowing SQLite to optimize file-system
 ** access to some extent. But it is also safe to simply return 0.
 */
-static int demoSectorSize(sqlite3_file *pFile){
+static int
+almanah_vfs_io_sector_size (__attribute__ ((unused)) sqlite3_file *pFile)
+{
 	return 0;
 }
-static int demoDeviceCharacteristics(sqlite3_file *pFile){
+static int
+almanah_vfs_io_device_characteristis(__attribute__ ((unused)) sqlite3_file *pFile)
+{
 	return 0;
 }
 
@@ -904,31 +928,30 @@ static int demoDeviceCharacteristics(sqlite3_file *pFile){
 ** Open a file handle.
 */
 static int
-demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
-	  const char *zName,                          /* File to open, or 0 for a temp file */
-	  sqlite3_file *pFile,                        /* Pointer to AlmanahSQLiteVFS struct to populate */
-	  int flags,                                  /* Input SQLITE_OPEN_XXX flags */
-	  int *pOutFlags                              /* Output SQLITE_OPEN_XXX flags (or NULL) */
-	 )
+almanah_vfs_open (__attribute__ ((unused)) sqlite3_vfs *pVfs,
+	  const char *zName,
+	  sqlite3_file *pFile,
+	  int flags,
+	  int *pOutFlags)
 {
-	static const sqlite3_io_methods demoio = {
+	static const sqlite3_io_methods almanah_vfs_io = {
 		1,                            /* iVersion */
-		demoClose,                    /* xClose */
-		demoRead,                     /* xRead */
-		demoWrite,                    /* xWrite */
-		demoTruncate,                 /* xTruncate */
-		demoSync,                     /* xSync */
-		demoFileSize,                 /* xFileSize */
-		demoLock,                     /* xLock */
-		demoUnlock,                   /* xUnlock */
-		demoCheckReservedLock,        /* xCheckReservedLock */
-		demoFileControl,              /* xFileControl */
-		demoSectorSize,               /* xSectorSize */
-		demoDeviceCharacteristics     /* xDeviceCharacteristics */
+		almanah_vfs_io_close,                    /* xClose */
+		almanah_vfs_io_read,                     /* xRead */
+		almanah_vfs_io_write,                    /* xWrite */
+		almanah_vfs_io_truncate,                 /* xTruncate */
+		almanah_vfs_io_sync,                     /* xSync */
+		almanah_vfs_io_file_size,                 /* xFileSize */
+		almanah_vfs_io_lock,                     /* xLock */
+		almanah_vfs_io_unlock,                   /* xUnlock */
+		almanah_vfs_io_reserved_lock,        /* xCheckReservedLock */
+		almanah_vfs_io_file_control,              /* xFileControl */
+		almanah_vfs_io_sector_size,               /* xSectorSize */
+		almanah_vfs_io_device_characteristis     /* xDeviceCharacteristics */
 	};
 
-	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile; /* Populate this structure */
-	int oflags = 0;                 /* flags to pass to open() call */
+	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
+	int oflags = 0;
 	char *aBuf = NULL;
 	struct stat encrypted_db_stat, plaintext_db_stat;
 	GError *child_error = NULL;
@@ -1034,7 +1057,7 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 		}
 	}
 
-	self->base.pMethods = &demoio;
+	self->base.pMethods = &almanah_vfs_io;
 
 	return SQLITE_OK;
 }
@@ -1045,7 +1068,7 @@ demoOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, /* VFS */
 ** file has been synced to disk before returning.
 */
 static int
-demoDelete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int dirSync)
+almanah_vfs_delete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int dirSync)
 {
 	int rc;                         /* Return code */
 
@@ -1090,12 +1113,12 @@ demoDelete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int d
 ** is both readable and writable.
 */
 static int
-demoAccess (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int flags, int *pResOut)
+almanah_vfs_access (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int flags, int *pResOut)
 {
-	int rc;                         /* access() return code */
-	int eAccess = F_OK;             /* Second argument to access() */
+	int rc;
+	int eAccess = F_OK;
 
-	assert (flags==SQLITE_ACCESS_EXISTS       /* access(zPath, F_OK) */
+	assert (flags==SQLITE_ACCESS_EXISTS          /* access(zPath, F_OK) */
 		|| flags==SQLITE_ACCESS_READ         /* access(zPath, R_OK) */
 		|| flags==SQLITE_ACCESS_READWRITE    /* access(zPath, R_OK|W_OK) */
 		);
@@ -1121,7 +1144,7 @@ demoAccess (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int f
 **   2. Full paths begin with a '/' character.
 */
 static int
-demoFullPathname (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int nPathOut, char *zPathOut)
+almanah_vfs_full_pathname (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int nPathOut, char *zPathOut)
 {
 	char zDir[MAXPATHNAME+1];
 
@@ -1151,26 +1174,26 @@ demoFullPathname (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath,
 ** this functionality, so the following functions are no-ops.
 */
 static void*
-demoDlOpen (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) const char *zPath)
+almanah_vfs_dl_open (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) const char *zPath)
 {
 	return 0;
 }
 
 static void
-demoDlError(__attribute__ ((unused)) sqlite3_vfs *pVfs, int nByte, char *zErrMsg)
+almanah_vfs_dl_error (__attribute__ ((unused)) sqlite3_vfs *pVfs, int nByte, char *zErrMsg)
 {
 	sqlite3_snprintf (nByte, zErrMsg, "Loadable extensions are not supported");
 	zErrMsg[nByte-1] = '\0';
 }
 
 static void
-(*demoDlSym(__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) void *pH, __attribute__ ((unused)) const char *z)) (void)
+(*almanah_vfs_dl_sym (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) void *pH, __attribute__ ((unused)) const char *z)) (void)
 {
 	return 0;
 }
 
 static void
-demoDlClose (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) void *pHandle)
+almanah_vfs_dl_close (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) void *pHandle)
 {
 	return;
 }
@@ -1180,7 +1203,7 @@ demoDlClose (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)
 ** buffer with pseudo-random data.
 */
 static int
-demoRandomness (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) int nByte, __attribute__ ((unused)) char *zByte)
+almanah_vfs_randomness (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unused)) int nByte, __attribute__ ((unused)) char *zByte)
 {
 	return SQLITE_OK;
 }
@@ -1190,7 +1213,7 @@ demoRandomness (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute__ ((unus
 ** of microseconds slept for.
 */
 static int
-demoSleep (__attribute__ ((unused)) sqlite3_vfs *pVfs, int nMicro)
+almanah_vfs_sleep (__attribute__ ((unused)) sqlite3_vfs *pVfs, int nMicro)
 {
 	sleep(nMicro / 1000000);
 	usleep(nMicro % 1000000);
@@ -1209,7 +1232,7 @@ demoSleep (__attribute__ ((unused)) sqlite3_vfs *pVfs, int nMicro)
 ** "year 2038" problem that afflicts systems that store time this way). 
 */
 static int
-demoCurrentTime (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pTime)
+almanah_vfs_current_time (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pTime)
 {
 	time_t t = time(0);
 	*pTime = t/86400.0 + 2440587.5; 
@@ -1223,33 +1246,33 @@ demoCurrentTime (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pTime)
 **   sqlite3_vfs_register(sqlite3_demovfs(), 0);
 */
 sqlite3_vfs*
-sqlite3_demovfs (void)
+sqlite3_almanah_vfs (void)
 {
-	static sqlite3_vfs demovfs = {
+	static sqlite3_vfs almanah_vfs = {
 		1,                            /* iVersion */
 		sizeof(AlmanahSQLiteVFS),     /* szOsFile */
 		MAXPATHNAME,                  /* mxPathname */
 		0,                            /* pNext */
 		"almanah",                    /* zName */
 		0,                            /* pAppData */
-		demoOpen,                     /* xOpen */
-		demoDelete,                   /* xDelete */
-		demoAccess,                   /* xAccess */
-		demoFullPathname,             /* xFullPathname */
-		demoDlOpen,                   /* xDlOpen */
-		demoDlError,                  /* xDlError */
-		demoDlSym,                    /* xDlSym */
-		demoDlClose,                  /* xDlClose */
-		demoRandomness,               /* xRandomness */
-		demoSleep,                    /* xSleep */
-		demoCurrentTime,              /* xCurrentTime */
+		almanah_vfs_open,                     /* xOpen */
+		almanah_vfs_delete,                   /* xDelete */
+		almanah_vfs_access,                   /* xAccess */
+		almanah_vfs_full_pathname,             /* xFullPathname */
+		almanah_vfs_dl_open,                   /* xDlOpen */
+		almanah_vfs_dl_error,                  /* xDlError */
+		almanah_vfs_dl_sym,                    /* xDlSym */
+		almanah_vfs_dl_close,                  /* xDlClose */
+		almanah_vfs_randomness,               /* xRandomness */
+		almanah_vfs_sleep,                    /* xSleep */
+		almanah_vfs_current_time,              /* xCurrentTime */
 	};
 
-	return &demovfs;
+	return &almanah_vfs;
 }
 
 int
 almanah_vfs_init (void)
 {
-	return sqlite3_vfs_register (sqlite3_demovfs(), 0);
+	return sqlite3_vfs_register (sqlite3_almanah_vfs(), 0);
 }
