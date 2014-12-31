@@ -135,7 +135,7 @@ off_t   _gpgme_seek_cb    (void *handle, off_t offset, int whence);
 ssize_t
 _gpgme_read_cb (void *handle, void *buffer, size_t size)
 {
-        GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;
+	GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;
 	gsize read_size;
 
 	read_size = npm_closure->size - npm_closure->offset;
@@ -277,7 +277,7 @@ open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *ope
 	}
 
 	if (use_memory) {
-		/* Pass the non-pageable memory to GPGME as a Callback Base Data Buffer, 
+		/* Pass the non-pageable memory to GPGME as a Callback Base Data Buffer,
 		 * see: http://www.gnupg.org/documentation/manuals/gpgme/Callback-Based-Data-Buffers.html
 		 */
 		operation->npm_closure = g_new0 (GpgmeNpmClosure, 1);
@@ -504,7 +504,7 @@ back_up_file (const gchar *filename)
 ** file has a write-buffer (AlmanahSQLiteVFS.aBuffer), ignore it.
 */
 static int
-demoDirectWrite (AlmanahSQLiteVFS *self,            /* File handle */
+almanah_vfs_direct_write (AlmanahSQLiteVFS *self,            /* File handle */
 		 const void *buffer,               /* Buffer containing data to write */
 		 int len,                       /* Size of data to write in bytes */
 		 sqlite_int64 offset              /* File offset to write to */
@@ -562,7 +562,7 @@ demoDirectWrite (AlmanahSQLiteVFS *self,            /* File handle */
 ** a journal file) or if the buffer is currently empty.
 */
 static int
-demoFlushBuffer (AlmanahSQLiteVFS *p)
+almanah_vfs_flush_buffer (AlmanahSQLiteVFS *p)
 {
 	int rc = SQLITE_OK;
 
@@ -570,7 +570,7 @@ demoFlushBuffer (AlmanahSQLiteVFS *p)
 		return rc;
 
 	if (p->nBuffer) {
-		rc = demoDirectWrite(p, p->aBuffer, p->nBuffer, p->iBufferOfst);
+		rc = almanah_vfs_direct_write(p, p->aBuffer, p->nBuffer, p->iBufferOfst);
 		p->nBuffer = 0;
 	}
 
@@ -583,7 +583,7 @@ almanah_vfs_close_simple_file (AlmanahSQLiteVFS *self)
 	int rc;
 	GError *error = NULL;
 
-	rc = demoFlushBuffer (self);
+	rc = almanah_vfs_flush_buffer (self);
 	if (rc != SQLITE_OK)
 		return rc;
 	sqlite3_free (self->aBuffer);
@@ -727,11 +727,11 @@ almanah_vfs_io_read (sqlite3_file *pFile,  void *buffer,  int len,  sqlite_int64
 
 	/* Flush any data in the write buffer to disk in case this operation
 	** is trying to read data the file-region currently cached in the buffer.
-	** It would be possible to detect this case and possibly save an 
+	** It would be possible to detect this case and possibly save an
 	** unnecessary write here, but in practice SQLite will rarely read from
 	** a journal file when there is data cached in the write-buffer.
 	*/
-	rc = demoFlushBuffer (self);
+	rc = almanah_vfs_flush_buffer (self);
 	if (rc != SQLITE_OK) {
 		return rc;
 	}
@@ -760,7 +760,7 @@ almanah_vfs_io_write (sqlite3_file *pFile,  const void *buffer, int len, sqlite_
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*)pFile;
 
 	if (self->decrypted)
-		return demoDirectWrite (self, buffer, len, offset);
+		return almanah_vfs_direct_write (self, buffer, len, offset);
 
 	if (self->aBuffer) {
 		char *z = (char *)buffer;       /* Pointer to remaining data to write */
@@ -772,11 +772,11 @@ almanah_vfs_io_write (sqlite3_file *pFile,  const void *buffer, int len, sqlite_
 
 			/* If the buffer is full, or if this data is not being written directly
 			** following the data already buffered, flush the buffer. Flushing
-			** the buffer is a no-op if it is empty.  
+			** the buffer is a no-op if it is empty.
 			*/
-			if (self->nBuffer==SQLITE_DEMOVFS_BUFFERSZ || self->iBufferOfst+self->nBuffer!=i) {
-				int rc = demoFlushBuffer (self);
-				if (rc!=SQLITE_OK) {
+			if (self->nBuffer == SQLITE_DEMOVFS_BUFFERSZ || self->iBufferOfst+self->nBuffer != i) {
+				int rc = almanah_vfs_flush_buffer (self);
+				if (rc != SQLITE_OK) {
 					return rc;
 				}
 			}
@@ -785,7 +785,7 @@ almanah_vfs_io_write (sqlite3_file *pFile,  const void *buffer, int len, sqlite_
 
 			/* Copy as much data as possible into the buffer. */
 			nCopy = SQLITE_DEMOVFS_BUFFERSZ - self->nBuffer;
-			if (nCopy>n) {
+			if (nCopy > n) {
 				nCopy = n;
 			}
 			memcpy (&self->aBuffer[self->nBuffer], z, nCopy);
@@ -798,7 +798,7 @@ almanah_vfs_io_write (sqlite3_file *pFile,  const void *buffer, int len, sqlite_
 
 		return SQLITE_OK;
 	} else {
-		return demoDirectWrite (self, buffer, len, offset);
+		return almanah_vfs_direct_write (self, buffer, len, offset);
 	}
 }
 
@@ -811,7 +811,7 @@ almanah_vfs_io_truncate (__attribute__ ((unused)) sqlite3_file *pFile,
 			 __attribute__ ((unused)) sqlite_int64 size)
 {
 #if 0
-	if (ftruncate(((AlmanahSQLiteVFS *)pFile)->fd, size))
+	if (ftruncate ( ((AlmanahSQLiteVFS *) pFile)->fd, size))
 		return SQLITE_IOERR_TRUNCATE;
 #endif
 	return SQLITE_OK;
@@ -829,13 +829,13 @@ almanah_vfs_io_sync (sqlite3_file *pFile, __attribute__ ((unused)) int flags)
 	if (self->decrypted)
 		return SQLITE_OK;
 
-	rc = demoFlushBuffer (self);
+	rc = almanah_vfs_flush_buffer (self);
 	if (rc != SQLITE_OK) {
 		return rc;
 	}
 
 	rc = fsync (self->fd);
-	return (rc==0 ? SQLITE_OK : SQLITE_IOERR_FSYNC);
+	return (rc == 0 ? SQLITE_OK : SQLITE_IOERR_FSYNC);
 }
 
 /*
@@ -845,8 +845,8 @@ static int
 almanah_vfs_io_file_size (sqlite3_file *pFile, sqlite_int64 *pSize)
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*)pFile;
-	int rc;                         /* Return code from fstat() call */
-	struct stat sStat;              /* Output of fstat() call */
+	int rc;
+	struct stat sStat;
 
 	if (self->decrypted) {
 		*pSize = self->plain_size;
@@ -858,7 +858,7 @@ almanah_vfs_io_file_size (sqlite3_file *pFile, sqlite_int64 *pSize)
 	** here and there. But in practice this comes up so infrequently it is
 	** not worth the trouble.
 	*/
-	rc = demoFlushBuffer(self);
+	rc = almanah_vfs_flush_buffer (self);
 	if (rc != SQLITE_OK) {
 		return rc;
 	}
@@ -935,19 +935,19 @@ almanah_vfs_open (__attribute__ ((unused)) sqlite3_vfs *pVfs,
 	  int *pOutFlags)
 {
 	static const sqlite3_io_methods almanah_vfs_io = {
-		1,                            /* iVersion */
-		almanah_vfs_io_close,                    /* xClose */
-		almanah_vfs_io_read,                     /* xRead */
-		almanah_vfs_io_write,                    /* xWrite */
-		almanah_vfs_io_truncate,                 /* xTruncate */
-		almanah_vfs_io_sync,                     /* xSync */
-		almanah_vfs_io_file_size,                 /* xFileSize */
-		almanah_vfs_io_lock,                     /* xLock */
-		almanah_vfs_io_unlock,                   /* xUnlock */
-		almanah_vfs_io_reserved_lock,        /* xCheckReservedLock */
-		almanah_vfs_io_file_control,              /* xFileControl */
-		almanah_vfs_io_sector_size,               /* xSectorSize */
-		almanah_vfs_io_device_characteristis     /* xDeviceCharacteristics */
+		1,
+		almanah_vfs_io_close,
+		almanah_vfs_io_read,
+		almanah_vfs_io_write,
+		almanah_vfs_io_truncate,
+		almanah_vfs_io_sync,
+		almanah_vfs_io_file_size,
+		almanah_vfs_io_lock,
+		almanah_vfs_io_unlock,
+		almanah_vfs_io_reserved_lock,
+		almanah_vfs_io_file_control,
+		almanah_vfs_io_sector_size,
+		almanah_vfs_io_device_characteristis
 	};
 
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS*) pFile;
@@ -1070,32 +1070,32 @@ almanah_vfs_open (__attribute__ ((unused)) sqlite3_vfs *pVfs,
 static int
 almanah_vfs_delete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPath, int dirSync)
 {
-	int rc;                         /* Return code */
+	int rc;
 
-	rc = unlink(zPath);
-	if( rc!=0 && errno==ENOENT ) return SQLITE_OK;
+	rc = unlink (zPath);
+	if (rc!=0 && errno==ENOENT ) return SQLITE_OK;
 
-	if( rc==0 && dirSync ){
-		int dfd;                      /* File descriptor open on directory */
-		int i;                        /* Iterator variable */
-		char zDir[MAXPATHNAME+1];     /* Name of directory containing file zPath */
+	if( rc==0 && dirSync) {
+		int dfd;
+		int i;
+		char zDir[MAXPATHNAME + 1];
 
 		/* Figure out the directory name from the path of the file deleted. */
-		sqlite3_snprintf(MAXPATHNAME, zDir, "%s", zPath);
+		sqlite3_snprintf (MAXPATHNAME, zDir, "%s", zPath);
 		zDir[MAXPATHNAME] = '\0';
-		for(i=strlen(zDir); i>1 && zDir[i]!='/'; i++);
+		for (i = strlen(zDir); i > 1 && zDir[i] != '/'; i++);
 		zDir[i] = '\0';
 
 		/* Open a file-descriptor on the directory. Sync. Close. */
-		dfd = open(zDir, O_RDONLY, 0);
-		if( dfd<0 ){
+		dfd = open (zDir, O_RDONLY, 0);
+		if (dfd < 0) {
 			rc = -1;
-		}else{
-			rc = fsync(dfd);
-			close(dfd);
+		} else {
+			rc = fsync (dfd);
+			close (dfd);
 		}
 	}
-	return (rc==0 ? SQLITE_OK : SQLITE_IOERR_DELETE);
+	return (rc == 0 ? SQLITE_OK : SQLITE_IOERR_DELETE);
 }
 
 #ifndef F_OK
@@ -1118,29 +1118,29 @@ almanah_vfs_access (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPat
 	int rc;
 	int eAccess = F_OK;
 
-	assert (flags==SQLITE_ACCESS_EXISTS          /* access(zPath, F_OK) */
-		|| flags==SQLITE_ACCESS_READ         /* access(zPath, R_OK) */
-		|| flags==SQLITE_ACCESS_READWRITE    /* access(zPath, R_OK|W_OK) */
+	assert (flags == SQLITE_ACCESS_EXISTS          /* access(zPath, F_OK) */
+		|| flags == SQLITE_ACCESS_READ         /* access(zPath, R_OK) */
+		|| flags == SQLITE_ACCESS_READWRITE    /* access(zPath, R_OK|W_OK) */
 		);
 
-	if (flags==SQLITE_ACCESS_READWRITE) eAccess = R_OK|W_OK;
-	if (flags==SQLITE_ACCESS_READ)      eAccess = R_OK;
+	if (flags == SQLITE_ACCESS_READWRITE) eAccess = R_OK|W_OK;
+	if (flags == SQLITE_ACCESS_READ)      eAccess = R_OK;
 
 	rc = access (zPath, eAccess);
-	*pResOut = (rc==0);
+	*pResOut = (rc == 0);
 
 	return SQLITE_OK;
 }
 
 /*
 ** Argument zPath points to a nul-terminated string containing a file path.
-** If zPath is an absolute path, then it is copied as is into the output 
+** If zPath is an absolute path, then it is copied as is into the output
 ** buffer. Otherwise, if it is a relative path, then the equivalent full
 ** path is written to the output buffer.
 **
 ** This function assumes that paths are UNIX style. Specifically, that:
 **
-**   1. Path components are separated by a '/'. and 
+**   1. Path components are separated by a '/'. and
 **   2. Full paths begin with a '/' character.
 */
 static int
@@ -1209,14 +1209,14 @@ almanah_vfs_randomness (__attribute__ ((unused)) sqlite3_vfs *pVfs, __attribute_
 }
 
 /*
-** Sleep for at least nMicro microseconds. Return the (approximate) number 
+** Sleep for at least nMicro microseconds. Return the (approximate) number
 ** of microseconds slept for.
 */
 static int
 almanah_vfs_sleep (__attribute__ ((unused)) sqlite3_vfs *pVfs, int nMicro)
 {
-	sleep(nMicro / 1000000);
-	usleep(nMicro % 1000000);
+	sleep (nMicro / 1000000);
+	usleep (nMicro % 1000000);
 	return nMicro;
 }
 
@@ -1227,15 +1227,15 @@ almanah_vfs_sleep (__attribute__ ((unused)) sqlite3_vfs *pVfs, int nMicro)
 **   http://en.wikipedia.org/wiki/Julian_day
 **
 ** This implementation is not very good. The current time is rounded to
-** an integer number of seconds. Also, assuming time_t is a signed 32-bit 
+** an integer number of seconds. Also, assuming time_t is a signed 32-bit
 ** value, it will stop working some time in the year 2038 AD (the so-called
-** "year 2038" problem that afflicts systems that store time this way). 
+** "year 2038" problem that afflicts systems that store time this way).
 */
 static int
 almanah_vfs_current_time (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pTime)
 {
-	time_t t = time(0);
-	*pTime = t/86400.0 + 2440587.5; 
+	time_t t = time (0);
+	*pTime = t / 86400.0 + 2440587.5;
 	return SQLITE_OK;
 }
 
@@ -1249,23 +1249,23 @@ sqlite3_vfs*
 sqlite3_almanah_vfs (void)
 {
 	static sqlite3_vfs almanah_vfs = {
-		1,                            /* iVersion */
-		sizeof(AlmanahSQLiteVFS),     /* szOsFile */
-		MAXPATHNAME,                  /* mxPathname */
-		0,                            /* pNext */
-		"almanah",                    /* zName */
-		0,                            /* pAppData */
-		almanah_vfs_open,                     /* xOpen */
-		almanah_vfs_delete,                   /* xDelete */
-		almanah_vfs_access,                   /* xAccess */
-		almanah_vfs_full_pathname,             /* xFullPathname */
-		almanah_vfs_dl_open,                   /* xDlOpen */
-		almanah_vfs_dl_error,                  /* xDlError */
-		almanah_vfs_dl_sym,                    /* xDlSym */
-		almanah_vfs_dl_close,                  /* xDlClose */
-		almanah_vfs_randomness,               /* xRandomness */
-		almanah_vfs_sleep,                    /* xSleep */
-		almanah_vfs_current_time,              /* xCurrentTime */
+		1,
+		sizeof(AlmanahSQLiteVFS),
+		MAXPATHNAME,
+		0,
+		"almanah",
+		0,
+		almanah_vfs_open,
+		almanah_vfs_delete,
+		almanah_vfs_access,
+		almanah_vfs_full_pathname,
+		almanah_vfs_dl_open,
+		almanah_vfs_dl_error,
+		almanah_vfs_dl_sym,
+		almanah_vfs_dl_close,
+		almanah_vfs_randomness,
+		almanah_vfs_sleep,
+		almanah_vfs_current_time,
 	};
 
 	return &almanah_vfs;
@@ -1274,5 +1274,5 @@ sqlite3_almanah_vfs (void)
 int
 almanah_vfs_init (void)
 {
-	return sqlite3_vfs_register (sqlite3_almanah_vfs(), 0);
+	return sqlite3_vfs_register (sqlite3_almanah_vfs (), 0);
 }
