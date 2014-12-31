@@ -1073,7 +1073,7 @@ almanah_vfs_delete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPat
 	int rc;
 
 	rc = unlink (zPath);
-	if (rc!=0 && errno==ENOENT ) return SQLITE_OK;
+	if (rc != 0 && errno == ENOENT) return SQLITE_OK;
 
 	if( rc==0 && dirSync) {
 		int dfd;
@@ -1087,12 +1087,12 @@ almanah_vfs_delete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPat
 		zDir[i] = '\0';
 
 		/* Open a file-descriptor on the directory. Sync. Close. */
-		dfd = open (zDir, O_RDONLY, 0);
+		dfd = g_open (zDir, O_RDONLY, 0);
 		if (dfd < 0) {
 			rc = -1;
 		} else {
 			rc = fsync (dfd);
-			close (dfd);
+			g_close (dfd, NULL);
 		}
 	}
 	return (rc == 0 ? SQLITE_OK : SQLITE_IOERR_DELETE);
