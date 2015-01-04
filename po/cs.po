@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-11-28 23:03+0000\n"
+"POT-Creation-Date: 2014-12-31 11:38+0000\n"
 "PO-Revision-Date: 2014-12-26 07:08+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
@@ -205,11 +205,11 @@ msgstr "Neúspěšné zázmamy"
 msgid "Import Results List"
 msgstr "Seznam výsledků importu"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+#: ../data/org.gnome.almanah.gschema.xml.in.h:1
 msgid "Database encryption key ID"
 msgstr "ID šifrovacího klíče databáze"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+#: ../data/org.gnome.almanah.gschema.xml.in.h:2
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -219,20 +219,20 @@ msgstr ""
 "aplikace Almanah sestavená s podporou šifrování. Pokud chcete šifrování "
 "databáze zakázat, ponechte pole prázdné."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+#: ../data/org.gnome.almanah.gschema.xml.in.h:3
 msgid "Spell checking language"
 msgstr "Jazyk kontroly pravopisu"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+#: ../data/org.gnome.almanah.gschema.xml.in.h:4
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr ""
 "Národní identifikátor jazyka, pro který se má provádět kontrola pravopisu."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+#: ../data/org.gnome.almanah.gschema.xml.in.h:5
 msgid "Spell checking enabled?"
 msgstr "Povolená kontrola pravopisu?"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+#: ../data/org.gnome.almanah.gschema.xml.in.h:6
 msgid "Whether spell checking of entries is enabled."
 msgstr "Zda je zapnutá kontrola pravopisu záznamů."
 
@@ -628,81 +628,86 @@ msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledá
 msgid "Enter URI"
 msgstr "Zadání adresy URI"
 
-#: ../src/vfs.c:226
+#: ../src/vfs.c:233
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME není v minimální potřebné verzi %s"
 
-#: ../src/vfs.c:233
+#: ../src/vfs.c:240
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME nepodporuje OpenPGP: %s"
 
-#: ../src/vfs.c:240
+#: ../src/vfs.c:247
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Chyba při vytváření kontextu šifry: %s"
 
-#: ../src/vfs.c:260
+#: ../src/vfs.c:267
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Nelze vytvořit nový GIOChannel pro šifrovanou databázi: %s"
 
-#: ../src/vfs.c:268
+#: ../src/vfs.c:275
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Chyba při otevírání šifrovaného databázového souboru „%s“: %s"
 
-#: ../src/vfs.c:284
+#: ../src/vfs.c:291
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr ""
 "Chyba při vytváření vyrovnávací paměti pro základní data zpětných volání: %s"
 
-#: ../src/vfs.c:292
+#: ../src/vfs.c:299
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Nelze vytvořit nový GIOChannel pro prostou databázi: %s"
 
-#: ../src/vfs.c:300
+#: ../src/vfs.c:307
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Chyba při otevírání prostého databázového souboru „%s“: %s"
 
-#: ../src/vfs.c:396
+#: ../src/vfs.c:403
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Chyba při získávání šifrovacího klíče: %s"
 
-#: ../src/vfs.c:420 ../src/vfs.c:426
+#: ../src/vfs.c:427 ../src/vfs.c:433
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Chyba při šifrování databáze: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:481
+#: ../src/vfs.c:485
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Chyba při kopírování souboru z %s do %s: %s"
 
-#: ../src/vfs.c:487
+#: ../src/vfs.c:491
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr "Chyba při změně oprávnění souboru se zálohou databáze: %s"
 
+#: ../src/vfs.c:591
+#, c-format
+msgid "Error closing file: %s"
+msgstr "Chyba při zavírání souboru: %s"
+
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:956 ../src/vfs.c:983
+#: ../src/vfs.c:990 ../src/vfs.c:1017
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Chyba při zálohování souboru „%s“"
 
-#: ../src/vfs.c:969
+#: ../src/vfs.c:1003
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Chyba při dešifrování databáze: %s"
 
-#: ../src/vfs.c:1005
+#: ../src/vfs.c:1043
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Chyba při změně oprávnění databázového souboru: %s"
