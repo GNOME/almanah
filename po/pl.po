@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-30 18:14+0100\n"
-"PO-Revision-Date: 2014-11-30 18:15+0100\n"
+"POT-Creation-Date: 2015-01-05 09:17+0100\n"
+"PO-Revision-Date: 2015-01-05 09:18+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -213,11 +213,11 @@ msgstr "Nie powiodło się importowanie wpisów"
 msgid "Import Results List"
 msgstr "Lista wyników importowania"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+#: ../data/org.gnome.almanah.gschema.xml.in.h:1
 msgid "Database encryption key ID"
 msgstr "Identyfikator klucza szyfrującego bazy danych"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+#: ../data/org.gnome.almanah.gschema.xml.in.h:2
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -227,19 +227,19 @@ msgstr ""
 "program Almanah został utworzony z obsługą szyfrowania. Pozostawienie "
 "pustego pola wyłączy szyfrowanie baz danych."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+#: ../data/org.gnome.almanah.gschema.xml.in.h:3
 msgid "Spell checking language"
 msgstr "Język sprawdzania pisowni"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+#: ../data/org.gnome.almanah.gschema.xml.in.h:4
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "Określa język, który będzie użyty do sprawdzania pisowni we wpisach."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+#: ../data/org.gnome.almanah.gschema.xml.in.h:5
 msgid "Spell checking enabled?"
 msgstr "Sprawdzanie pisowni włączone?"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+#: ../data/org.gnome.almanah.gschema.xml.in.h:6
 msgid "Whether spell checking of entries is enabled."
 msgstr "Określa, czy sprawdzanie pisowni we wpisach jest włączone."
 
@@ -642,81 +642,86 @@ msgstr "Błąd podczas rozszeregowywania wpisu do bufora podczas wyszukiwania."
 msgid "Enter URI"
 msgstr "Wprowadzanie adresu URI"
 
-#: ../src/vfs.c:226
+#: ../src/vfs.c:233
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "Biblioteka GPGME nie jest w wersji co najmniej %s"
 
-#: ../src/vfs.c:233
+#: ../src/vfs.c:240
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "Biblioteka GPGME nie obsługuje standardu OpenPGP: %s"
 
-#: ../src/vfs.c:240
+#: ../src/vfs.c:247
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Błąd podczas tworzenia kontekstu szyfrowania: %s"
 
-#: ../src/vfs.c:260
+#: ../src/vfs.c:267
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Nie można utworzyć nowego GIOChannel dla zaszyfrowanej bazy danych: %s"
 
-#: ../src/vfs.c:268
+#: ../src/vfs.c:275
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Błąd podczas otwierania zaszyfrowanego pliku bazy danych \"%s\": %s"
 
-#: ../src/vfs.c:284
+#: ../src/vfs.c:291
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Błąd podczas tworzenia bufora danych podstawy Callback: %s"
 
-#: ../src/vfs.c:292
+#: ../src/vfs.c:299
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Nie można utworzyć nowego GIOChannel dla prostej bazy danych: %s"
 
-#: ../src/vfs.c:300
+#: ../src/vfs.c:307
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Błąd podczas otwierania pliku prostej bazy danych \"%s\": %s"
 
-#: ../src/vfs.c:396
+#: ../src/vfs.c:403
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Błąd podczas pobierania klucza szyfrującego: %s"
 
-#: ../src/vfs.c:420 ../src/vfs.c:426
+#: ../src/vfs.c:427 ../src/vfs.c:433
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Błąd podczas szyfrowania bazy danych: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:481
+#: ../src/vfs.c:485
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Błąd podczas kopiowania pliku z %s do %s: %s"
 
-#: ../src/vfs.c:487
+#: ../src/vfs.c:491
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr ""
 "Błąd podczas zmieniania uprawnień pliku kopii zapasowej bazy danych: %s"
 
+#: ../src/vfs.c:591
+#, c-format
+msgid "Error closing file: %s"
+msgstr "Błąd podczas zamykania pliku: %s"
+
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:956 ../src/vfs.c:983
+#: ../src/vfs.c:990 ../src/vfs.c:1017
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Błąd podczas tworzenia kopii zapasowej pliku \"%s\""
 
-#: ../src/vfs.c:969
+#: ../src/vfs.c:1003
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Błąd podczas deszyfrowania bazy danych: %s"
 
-#: ../src/vfs.c:1005
+#: ../src/vfs.c:1043
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Błąd podczas zmieniania uprawnień pliku bazy danych: %s"
