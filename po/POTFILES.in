@@ -1,7 +1,7 @@
 # List of source files containing translatable strings.
 [encoding: UTF-8]
 data/almanah.appdata.xml.in
-[type: gettext/glade]data/almanah-app-menu.ui
+[type: gettext/glade]data/gtk/menus.ui
 data/almanah.desktop.in
 [type: gettext/glade]data/almanah.ui
 [type: gettext/gsettings]data/org.gnome.almanah.gschema.xml.in
