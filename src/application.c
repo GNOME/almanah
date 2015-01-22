@@ -43,9 +43,7 @@ static void activate (GApplication *application);
 static gint handle_command_line (GApplication *application, GApplicationCommandLine *command_line);
 static void window_removed (GtkApplication *application, GtkWindow *window);
 
-static void almanah_application_init_actions (AlmanahApplication *self);
-
-/* GMenu application actions */
+/* Application actions */
 static void action_search_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 static void action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 static void action_import_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
@@ -57,6 +55,7 @@ static void action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer
 struct _AlmanahApplicationPrivate {
 	gboolean debug;
 
+	GResource *resource;
 	GSettings *settings;
 	AlmanahStorageManager *storage_manager;
 	AlmanahEventManager *event_manager;
@@ -113,8 +112,16 @@ almanah_application_class_init (AlmanahApplicationClass *klass)
 static void
 almanah_application_init (AlmanahApplication *self)
 {
+	GError *error = NULL;
+
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_APPLICATION, AlmanahApplicationPrivate);
 	self->priv->debug = FALSE;
+	self->priv->resource = g_resource_load (almanah_get_resource_filename (), &error);
+	if (error == NULL) {
+		g_resources_register (self->priv->resource);
+	} else {
+		g_error (_("Error loading resources file: %s"), error->message);
+	}
 }
 
 static void
@@ -164,6 +171,12 @@ dispose (GObject *object)
 	if (priv->print_settings != NULL)
 		g_object_unref (priv->print_settings);
 	priv->print_settings = NULL;
+
+	if (priv->resource) {
+                g_resources_unregister (priv->resource);
+                g_resource_unref (priv->resource);
+        }
+	priv->resource = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_application_parent_class)->dispose (object);
@@ -262,8 +275,8 @@ startup (GApplication *application)
 
 	priv->page_setup = gtk_page_setup_new ();
 
-	/* Load GMenu application actions */
-	almanah_application_init_actions (ALMANAH_APPLICATION (application));
+	/* Application actions */
+	g_action_map_add_action_entries (G_ACTION_MAP (application), app_entries, G_N_ELEMENTS (app_entries), application);
 
 	css_path = g_build_filename (almanah_get_css_path (), "almanah.css", NULL);
 	style_provider = gtk_css_provider_new ();
@@ -403,39 +416,6 @@ window_removed (GtkApplication *application, GtkWindow *window)
 	}
 
 	GTK_APPLICATION_CLASS (almanah_application_parent_class)->window_removed (application, window);
-}
-
-static void
-almanah_application_init_actions (AlmanahApplication *self)
-{
-	GtkBuilder *builder;
-	GError *error = NULL;
-	const gchar *interface_filename = almanah_get_interface_app_menu_filename ();
-
-	g_action_map_add_action_entries (G_ACTION_MAP (self), app_entries, G_N_ELEMENTS (app_entries), self);
-
-	builder = gtk_builder_new ();
-	if (gtk_builder_add_from_file (builder, interface_filename, &error) == FALSE) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-							    _("UI file \"%s\" could not be loaded"), interface_filename);
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		exit (1);
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	gtk_application_set_app_menu (GTK_APPLICATION (self), G_MENU_MODEL (gtk_builder_get_object (builder, "almanah_app_menu")));
-
-	g_object_unref (builder);
 }
 
 static void

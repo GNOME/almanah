@@ -145,6 +145,10 @@ AC_FUNC_MKTIME
 AC_TYPE_SIZE_T
 AC_SYS_LARGEFILE
 
+dnl GResource
+GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable glib_compile_resources gio-2.0`
+AC_SUBST(GLIB_COMPILE_RESOURCES)
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile

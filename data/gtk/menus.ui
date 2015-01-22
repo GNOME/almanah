@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-	<menu id="almanah_app_menu">
+	<menu id="app-menu">
 		<section>
 			<item>
 				<attribute name="label" translatable="yes">_Search</attribute>

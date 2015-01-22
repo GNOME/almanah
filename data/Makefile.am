@@ -4,6 +4,20 @@ EXTRA_DIST =
 CLEANFILES =
 
 ###############################################################################
+# GResource
+###############################################################################
+
+resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/almanah.gresource.xml)
+almanah.gresource: almanah.gresource.xml $(resource_files)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) $<
+
+resourcedir = $(pkgdatadir)
+resource_DATA = almanah.gresource
+
+EXTRA_DIST += $(resource_files)
+CLEANFILES += almanah.gresource
+
+###############################################################################
 # Icons
 ###############################################################################
 
@@ -27,7 +41,6 @@ update-icon-cache:
 uidir = $(datadir)/almanah
 ui_DATA = \
 	almanah.ui		\
-	almanah-app-menu.ui	\
 	almanah.css
 
 EXTRA_DIST += $(ui_DATA)

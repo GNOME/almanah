@@ -52,6 +52,15 @@ almanah_get_css_path (void)
 		return PACKAGE_DATA_DIR"/almanah";
 }
 
+const gchar *
+almanah_get_resource_filename(void)
+{
+	if (g_file_test ("./data/almanah.gresource", G_FILE_TEST_EXISTS) == TRUE)
+		return "./data/almanah.gresource";
+	else
+		return PACKAGE_DATA_DIR"/almanah/almanah.gresource";
+}
+
 void
 almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)
 {
