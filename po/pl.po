@@ -5,14 +5,14 @@
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Mateusz Kacprzak <mateusz.kacprzak@yandex.ru>, 2011.
-# Piotr Drąg <piotrdrag@gmail.com>, 2012-2014.
-# Aviary.pl <gnomepl@aviary.pl>, 2011-2014.
+# Piotr Drąg <piotrdrag@gmail.com>, 2012-2015.
+# Aviary.pl <gnomepl@aviary.pl>, 2011-2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-05 09:17+0100\n"
-"PO-Revision-Date: 2015-01-05 09:18+0100\n"
+"POT-Creation-Date: 2015-01-25 17:17+0100\n"
+"PO-Revision-Date: 2015-01-25 17:18+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -42,36 +42,36 @@ msgstr ""
 "takie jak formatowanie tekstu i drukowanie. Można także zaszyfrować "
 "pamiętnik, aby strzec swojej prywatności."
 
-#: ../data/almanah-app-menu.ui.h:1
+#: ../data/gtk/menus.ui.h:1
 msgid "_Search"
 msgstr "Wy_szukaj"
 
-#: ../data/almanah-app-menu.ui.h:2
+#: ../data/gtk/menus.ui.h:2
 msgid "Pr_eferences"
 msgstr "_Preferencje"
 
 #. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+#: ../data/gtk/menus.ui.h:3 ../src/import-export-dialog.c:208
 msgid "_Import"
 msgstr "Zai_mportuj"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+#: ../data/gtk/menus.ui.h:4 ../src/import-export-dialog.c:208
 msgid "_Export"
 msgstr "Wy_eksportuj"
 
-#: ../data/almanah-app-menu.ui.h:5
+#: ../data/gtk/menus.ui.h:5
 msgid "_Print diary"
 msgstr "Wy_drukuj pamiętnik"
 
-#: ../data/almanah-app-menu.ui.h:6
+#: ../data/gtk/menus.ui.h:6
 msgid "_About Almanah Diary"
 msgstr "_O pamiętniku Almanah"
 
-#: ../data/almanah-app-menu.ui.h:7
+#: ../data/gtk/menus.ui.h:7
 msgid "_Quit"
 msgstr "Za_kończ"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:139
 #: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Pamiętnik Almanah"
@@ -81,7 +81,7 @@ msgid "Keep a personal diary"
 msgstr "Prowadzenie osobistego pamiętnika"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:273
 msgid "Diary"
 msgstr "Pamiętnik"
 
@@ -243,23 +243,28 @@ msgstr "Sprawdzanie pisowni włączone?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Określa, czy sprawdzanie pisowni we wpisach jest włączone."
 
-#: ../src/application.c:243
+#: ../src/application.c:123
+#, c-format
+msgid "Error loading resources file: %s"
+msgstr "Błąd podczas wczytywania pliku zasobów: %s"
+
+#: ../src/application.c:256
 msgid "Error opening database"
 msgstr "Błąd podczas otwierania bazy danych"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:285
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr ""
 "Nie można wczytać pliku CSS \"%s\". Interfejs może wyglądać niepoprawnie"
 
-#: ../src/application.c:316
+#: ../src/application.c:329
 msgid "Enable debug mode"
 msgstr "Włącza tryb debugowania"
 
-#: ../src/application.c:333
+#: ../src/application.c:346
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -267,24 +272,16 @@ msgstr ""
 "otwarta w danym momencie."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:357
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Opcje wiersza poleceń nie mogły zostać przetworzone: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:376
 msgid "Error encrypting database"
 msgstr "Błąd podczas szyfrowania bazy danych"
 
-#: ../src/application.c:424 ../src/date-entry-dialog.c:129
-#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:195 ../src/preferences-dialog.c:181
-#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\""
-
-#: ../src/application.c:538
+#: ../src/application.c:518
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -296,7 +293,7 @@ msgstr ""
 "przez Fundację Wolnego Oprogramowania (Free Software Foundation) - według "
 "wersji trzeciej tej Licencji lub którejś z późniejszych wersji."
 
-#: ../src/application.c:542
+#: ../src/application.c:522
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -308,7 +305,7 @@ msgstr ""
 "HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
 "bliższych informacji należy zapoznać się z Powszechną Licencją Publiczną GNU."
 
-#: ../src/application.c:546
+#: ../src/application.c:526
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -317,12 +314,12 @@ msgstr ""
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
 "- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:561
+#: ../src/application.c:541
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Pomocny zarządca pamiętnika, przechowuje %u wpisów."
 
-#: ../src/application.c:565
+#: ../src/application.c:545
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -331,20 +328,28 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:573
+#: ../src/application.c:553
 msgid "translator-credits"
 msgstr ""
 "Mateusz Kacprzak <mateusz.kacprzak@yandex.ru>, 2011\n"
-"Piotr Drąg <piotrdrag@gmail.com>, 2012-2014\n"
-"Aviary.pl <gnomepl@aviary.pl>, 2011-2014"
+"Piotr Drąg <piotrdrag@gmail.com>, 2012-2015\n"
+"Aviary.pl <gnomepl@aviary.pl>, 2011-2015"
 
-#: ../src/application.c:577
+#: ../src/application.c:557
 msgid "Almanah Website"
 msgstr "Witryna programu Almanah"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Wybór daty"
+
+#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
+#: ../src/import-export-dialog.c:472 ../src/main-window.c:195
+#: ../src/preferences-dialog.c:181 ../src/search-dialog.c:97
+#: ../src/uri-entry-dialog.c:128
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Nie można wczytać pliku interfejsu użytkownika \"%s\""
 
 #: ../src/entry.c:303
 #, c-format
