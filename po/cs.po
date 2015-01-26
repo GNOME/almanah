@@ -1,15 +1,16 @@
 # Czech translation for almanah.
 # Copyright (C) 2009, 2010 the author(s) of almanah.
 # This file is distributed under the same license as the almanah package.
-# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014.
+#
+# Marek Černocký <marek@manet.cz>, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-12-31 11:38+0000\n"
-"PO-Revision-Date: 2014-12-26 07:08+0100\n"
+"POT-Creation-Date: 2015-01-22 18:35+0000\n"
+"PO-Revision-Date: 2015-01-26 21:05+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -37,36 +38,36 @@ msgstr ""
 "událostí, které se staly, den po dni (podobně jako se zobrazují úkoly a "
 "schůzky v aplikaci Evolution)."
 
-#: ../data/almanah-app-menu.ui.h:1
+#: ../data/gtk/menus.ui.h:1
 msgid "_Search"
 msgstr "_Hledat"
 
-#: ../data/almanah-app-menu.ui.h:2
+#: ../data/gtk/menus.ui.h:2
 msgid "Pr_eferences"
 msgstr "Př_edvolby"
 
 #. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
+#: ../data/gtk/menus.ui.h:3 ../src/import-export-dialog.c:208
 msgid "_Import"
 msgstr "_Importovat"
 
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
+#: ../data/gtk/menus.ui.h:4 ../src/import-export-dialog.c:208
 msgid "_Export"
 msgstr "_Exportovat"
 
-#: ../data/almanah-app-menu.ui.h:5
+#: ../data/gtk/menus.ui.h:5
 msgid "_Print diary"
 msgstr "Vy_tisknout diář"
 
-#: ../data/almanah-app-menu.ui.h:6
+#: ../data/gtk/menus.ui.h:6
 msgid "_About Almanah Diary"
 msgstr "O diáři _Almanah"
 
-#: ../data/almanah-app-menu.ui.h:7
+#: ../data/gtk/menus.ui.h:7
 msgid "_Quit"
 msgstr "U_končit"
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:139
 #: ../src/main-window.c:136
 msgid "Almanah Diary"
 msgstr "Diář Almanah"
@@ -76,7 +77,7 @@ msgid "Keep a personal diary"
 msgstr "Vést si osobní diář"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:273
 msgid "Diary"
 msgstr "Diář"
 
@@ -236,22 +237,27 @@ msgstr "Povolená kontrola pravopisu?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "Zda je zapnutá kontrola pravopisu záznamů."
 
-#: ../src/application.c:243
+#: ../src/application.c:123
+#, c-format
+msgid "Error loading resources file: %s"
+msgstr "Chyba při načítání souboru s prostředky: %s"
+
+#: ../src/application.c:256
 msgid "Error opening database"
 msgstr "Chyba při otevírání databáze"
 
 #. Error loading the CSS
-#: ../src/application.c:272
+#: ../src/application.c:285
 #, c-format
 msgid ""
 "Couldn't load the CSS file '%s'. The interface might not be styled correctly"
 msgstr "Nelze načíst soubor CSS „%s“. Rozhraní nemusí být správně ostylováno."
 
-#: ../src/application.c:316
+#: ../src/application.c:329
 msgid "Enable debug mode"
 msgstr "Zapnout režim ladění"
 
-#: ../src/application.c:333
+#: ../src/application.c:346
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -259,24 +265,16 @@ msgstr ""
 "programu."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:357
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Nelze zpracovat přepínače příkazového řádku: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:376
 msgid "Error encrypting database"
 msgstr "Chyba při šifrování databáze"
 
-#: ../src/application.c:424 ../src/date-entry-dialog.c:129
-#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:195 ../src/preferences-dialog.c:181
-#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
-
-#: ../src/application.c:538
+#: ../src/application.c:518
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -288,7 +286,7 @@ msgstr ""
 "Free Software Foundation, a to buď ve verzi 3 této licence nebo (dle vaší "
 "volby) v libovolné novější verzi."
 
-#: ../src/application.c:542
+#: ../src/application.c:522
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -300,7 +298,7 @@ msgstr ""
 "KONKRÉTNÍ ÚČEL. Více podrobností najdete přímo v licenci GNU General Public "
 "License."
 
-#: ../src/application.c:546
+#: ../src/application.c:526
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -309,12 +307,12 @@ msgstr ""
 "License. Pokud se tak nestalo, podívejte se na <http://www.gnu.org/licenses/"
 ">."
 
-#: ../src/application.c:561
+#: ../src/application.c:541
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Užitečný diář na hlídání termínů, uloženo %u záznamů."
 
-#: ../src/application.c:565
+#: ../src/application.c:545
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -323,17 +321,25 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:573
+#: ../src/application.c:553
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
-#: ../src/application.c:577
+#: ../src/application.c:557
 msgid "Almanah Website"
 msgstr "Webové stránky Almanah"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Výběr data"
+
+#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
+#: ../src/import-export-dialog.c:472 ../src/main-window.c:195
+#: ../src/preferences-dialog.c:181 ../src/search-dialog.c:97
+#: ../src/uri-entry-dialog.c:128
+#, c-format
+msgid "UI file \"%s\" could not be loaded"
+msgstr "Nelze načíst soubor „%s“ s uživatelským rozhraním"
 
 #: ../src/entry.c:303
 #, c-format
