@@ -223,6 +223,18 @@ debug_handler (const char *log_domain, GLogLevelFlags log_level, const char *mes
 	}
 }
 
+/* This function is taken from the Gedit code, so thanks guys! */
+static void
+add_accelerator (GtkApplication *app, const gchar *action_name, const gchar *accel)
+{
+	const gchar *vaccels[] = {
+		accel,
+		NULL
+	};
+
+	gtk_application_set_accels_for_action (app, action_name, vaccels);
+}
+
 static void
 startup (GApplication *application)
 {
@@ -289,6 +301,15 @@ startup (GApplication *application)
 	}
 	g_free (css_path);
 	g_object_unref (style_provider);
+
+	/* Shortcuts */
+	add_accelerator(GTK_APPLICATION (application), "win.select-date", "<Primary>D");
+	add_accelerator(GTK_APPLICATION (application), "win.bold", "<Primary>B");
+	add_accelerator(GTK_APPLICATION (application), "win.italic", "<Primary>I");
+	add_accelerator(GTK_APPLICATION (application), "win.underline", "<Primary>U");
+	add_accelerator(GTK_APPLICATION (application), "win.hyperlink", "<Primary>H");
+	add_accelerator(GTK_APPLICATION (application), "win.insert-time", "<Primary>T");
+	add_accelerator(GTK_APPLICATION (application), "win.important", "<Primary>M");
 }
 
 /* Nullify our pointer to the main window when it gets destroyed (e.g. when we quit) so that we don't then try

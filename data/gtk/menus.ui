@@ -36,4 +36,50 @@
 			</item>
 		</section>
 	</menu>
+	<menu id="gear-menu">
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_Cut</attribute>
+				<attribute name="action">win.cut</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Copy</attribute>
+				<attribute name="action">win.copy</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Paste</attribute>
+				<attribute name="action">win.paste</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Delete</attribute>
+				<attribute name="action">win.cut</attribute>
+			</item>
+		</section>
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">Insert _Time</attribute>
+				<attribute name="action">win.insert-time</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">Add/Remove _Hyperlink</attribute>
+				<attribute name="action">win.hyperlink</attribute>
+			</item>
+		</section>
+	</menu>
+	<menu id="font-menu">
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_Bold</attribute>
+				<attribute name="action">win.bold</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Italic</attribute>
+				<attribute name="action">win.italic</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Underline</attribute>
+				<attribute name="action">win.underline</attribute>
+			</item>
+		</section>
+	</menu>
 </interface>
