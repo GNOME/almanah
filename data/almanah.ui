@@ -52,7 +52,7 @@
 							<object class="GtkButton" id="almanah_cw_select_date_button">
 								<property name="visible">True</property>
 								<property name="can_focus">True</property>
-                                                                <property name="label" translatable="yes">Select Date...</property>
+                                                                <property name="label" translatable="yes">Select Date…</property>
 							</object>
 							<packing>
 								<property name="expand">False</property>
