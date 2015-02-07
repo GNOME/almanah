@@ -55,7 +55,6 @@ static void action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer
 struct _AlmanahApplicationPrivate {
 	gboolean debug;
 
-	GResource *resource;
 	GSettings *settings;
 	AlmanahStorageManager *storage_manager;
 	AlmanahEventManager *event_manager;
@@ -112,16 +111,8 @@ almanah_application_class_init (AlmanahApplicationClass *klass)
 static void
 almanah_application_init (AlmanahApplication *self)
 {
-	GError *error = NULL;
-
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_APPLICATION, AlmanahApplicationPrivate);
 	self->priv->debug = FALSE;
-	self->priv->resource = g_resource_load (almanah_get_resource_filename (), &error);
-	if (error == NULL) {
-		g_resources_register (self->priv->resource);
-	} else {
-		g_error (_("Error loading resources file: %s"), error->message);
-	}
 }
 
 static void
@@ -171,12 +162,6 @@ dispose (GObject *object)
 	if (priv->print_settings != NULL)
 		g_object_unref (priv->print_settings);
 	priv->print_settings = NULL;
-
-	if (priv->resource) {
-                g_resources_unregister (priv->resource);
-                g_resource_unref (priv->resource);
-        }
-	priv->resource = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_application_parent_class)->dispose (object);
