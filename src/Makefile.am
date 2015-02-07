@@ -1,5 +1,8 @@
 bin_PROGRAMS = almanah
 
+EXTRA_DIST =
+CLEANFILES =
+
 almanah_SOURCES = \
 	$(ALMANAH_MARSHAL_FILES)		\
 	$(ALMANAH_ENUM_FILES)			\
@@ -98,6 +101,17 @@ almanah_LDADD = \
 	$(EVO_LIBS)		\
 	$(SPELL_CHECKING_LIBS)	\
 	$(AM_LDADD)
+
+# GResource
+
+almanah_SOURCES += resources.c
+
+resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/almanah.gresource.xml)
+resources.c: almanah.gresource.xml $(resource_files)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name almanah $(srcdir)/almanah.gresource.xml
+
+EXTRA_DIST += almanah.gresource.xml
+CLEANFILES += resources.c
 
 # Marshalling
 ALMANAH_MARSHAL_FILES = \
