@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/org/gnome/Almanah">
     <file preprocess="xml-stripblanks">gtk/menus.ui</file>
+    <file>css/almanah.css</file>
   </gresource>
 </gresources>

@@ -43,15 +43,6 @@ almanah_get_interface_app_menu_filename (void)
 		return PACKAGE_DATA_DIR"/almanah/almanah-app-menu.ui";
 }
 
-const gchar *
-almanah_get_css_path (void)
-{
-	if (g_file_test ("./data", G_FILE_TEST_IS_DIR) == TRUE)
-		return "./data";
-	else
-		return PACKAGE_DATA_DIR"/almanah";
-}
-
 void
 almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)
 {

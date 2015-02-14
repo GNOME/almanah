@@ -52,6 +52,9 @@ static void action_print_cb (GSimpleAction *action, GVariant *parameter, gpointe
 static void action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 static void action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
+/* Some callbacks */
+void almanah_application_style_provider_parsing_error_cb (GtkCssProvider *provider, GtkCssSection *section, GError *error, gpointer user_data);
+
 struct _AlmanahApplicationPrivate {
 	gboolean debug;
 
@@ -227,7 +230,6 @@ startup (GApplication *application)
 	gchar *db_filename;
 	GError *error = NULL;
 	GtkCssProvider *style_provider;
-	gchar *css_path;
 
 	/* Chain up. */
 	G_APPLICATION_CLASS (almanah_application_parent_class)->startup (application);
@@ -275,16 +277,11 @@ startup (GApplication *application)
 	/* Application actions */
 	g_action_map_add_action_entries (G_ACTION_MAP (application), app_entries, G_N_ELEMENTS (app_entries), application);
 
-	css_path = g_build_filename (almanah_get_css_path (), "almanah.css", NULL);
+	/* Application CSS styles */
 	style_provider = gtk_css_provider_new ();
-	if (!gtk_css_provider_load_from_path (style_provider, css_path, NULL)) {
-		/* Error loading the CSS */
-		g_warning (_("Couldn't load the CSS file '%s'. The interface might not be styled correctly"), css_path);
-		g_error_free (error);
-	} else {
-		gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	}
-	g_free (css_path);
+	g_signal_connect (G_OBJECT (style_provider), "parsing-error", G_CALLBACK (almanah_application_style_provider_parsing_error_cb), NULL);
+	gtk_css_provider_load_from_resource (style_provider, "/org/gnome/Almanah/css/almanah.css");
+	gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	g_object_unref (style_provider);
 
 	/* Shortcuts */
@@ -580,6 +577,15 @@ action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 
 	almanah_main_window_save_current_entry (main_window, TRUE);
 	gtk_widget_destroy (GTK_WIDGET (main_window));
+}
+
+void
+almanah_application_style_provider_parsing_error_cb (__attribute__ ((unused)) GtkCssProvider *provider,
+						     __attribute__ ((unused)) GtkCssSection  *section,
+						     GError         *error,
+						     __attribute__ ((unused)) gpointer        user_data)
+{
+	g_warning (_("Couldn't load the CSS resources. The interface might not be styled correctly: %s"), error->message);
 }
 
 AlmanahApplication *

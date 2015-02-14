@@ -26,8 +26,7 @@ update-icon-cache:
 
 uidir = $(datadir)/almanah
 ui_DATA = \
-	almanah.ui		\
-	almanah.css
+	almanah.ui
 
 EXTRA_DIST += $(ui_DATA)
 
