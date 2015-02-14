@@ -2,7 +2,7 @@
 [encoding: UTF-8]
 data/almanah.appdata.xml.in
 data/almanah.desktop.in
-[type: gettext/glade]data/almanah.ui
+[type: gettext/glade]src/ui/almanah.ui
 [type: gettext/gsettings]data/org.gnome.almanah.gschema.xml.in
 src/application.c
 src/date-entry-dialog.c

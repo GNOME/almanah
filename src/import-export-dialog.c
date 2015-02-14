@@ -150,7 +150,6 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 	AlmanahImportExportDialog *import_export_dialog;
 	AlmanahImportExportDialogPrivate *priv;
 	GError *error = NULL;
-	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_ied_mode_store",
 		"almanah_import_export_dialog",
@@ -162,10 +161,13 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_file (builder, interface_filename, (gchar**) object_names, &error) == FALSE) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
 		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-		                                            _("UI file \"%s\" could not be loaded"), interface_filename);
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
+							    GTK_DIALOG_MODAL,
+							    GTK_MESSAGE_ERROR,
+							    GTK_BUTTONS_OK,
+		                                            _("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -454,7 +456,6 @@ almanah_import_results_dialog_new (void)
 	AlmanahImportResultsDialog *results_dialog;
 	AlmanahImportResultsDialogPrivate *priv;
 	GError *error = NULL;
-	const gchar *interface_filename = almanah_get_interface_filename ();
 	const gchar *object_names[] = {
 		"almanah_ird_view_store",
 		"almanah_ird_results_store",
@@ -466,10 +467,13 @@ almanah_import_results_dialog_new (void)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_file (builder, interface_filename, (gchar**) object_names, &error) == FALSE) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
 		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-		                                            _("UI file \"%s\" could not be loaded"), interface_filename);
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
+							    GTK_DIALOG_MODAL,
+							    GTK_MESSAGE_ERROR,
+							    GTK_BUTTONS_OK,
+		                                            _("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

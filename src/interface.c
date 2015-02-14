@@ -26,15 +26,6 @@
 #include "interface.h"
 
 const gchar *
-almanah_get_interface_filename (void)
-{
-	if (g_file_test ("./data/almanah.ui", G_FILE_TEST_EXISTS) == TRUE)
-		return "./data/almanah.ui";
-	else
-		return PACKAGE_DATA_DIR"/almanah/almanah.ui";
-}
-
-const gchar *
 almanah_get_interface_app_menu_filename (void)
 {
 	if (g_file_test ("./data/almanah-app-menu.ui", G_FILE_TEST_EXISTS) == TRUE)
