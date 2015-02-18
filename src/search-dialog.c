@@ -81,7 +81,6 @@ almanah_search_dialog_new (void)
 		"almanah_sd_search_button_image",
 		"almanah_sd_cancel_button_image",
 		"almanah_sd_results_store",
-		"almanah_ui_manager", /* HACK: work around bgo#672789 */
 		NULL
 	};
 

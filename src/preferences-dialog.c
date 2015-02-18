@@ -163,7 +163,6 @@ almanah_preferences_dialog_new (GSettings *settings)
 	GError *error = NULL;
 	const gchar *object_names[] = {
 		"almanah_preferences_dialog",
-		"almanah_ui_manager", /* HACK: work around bgo#672789 */
 		NULL
 	};
 

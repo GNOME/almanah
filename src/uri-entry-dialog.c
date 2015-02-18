@@ -112,7 +112,6 @@ almanah_uri_entry_dialog_new (void)
 	GError *error = NULL;
 	const gchar *object_names[] = {
 		"almanah_uri_entry_dialog",
-		"almanah_ui_manager", /* HACK: work around bgo#672789 */
 		NULL
 	};
 
