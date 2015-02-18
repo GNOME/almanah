@@ -70,7 +70,7 @@ GIO_MIN_VERSION=2.32
 
 dnl Required dependencies
 PKG_CHECK_MODULES(STANDARD, glib-2.0
-                            gtk+-3.0 >= 3.6
+                            gtk+-3.0 >= 3.16
                             gmodule-2.0
                             gthread-2.0
                             gio-2.0 >= $GIO_MIN_VERSION
