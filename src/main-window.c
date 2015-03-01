@@ -62,8 +62,7 @@ static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec
 
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static gboolean save_entry_timeout_cb (AlmanahMainWindow *self);
-static gint get_icon_margin (void);
-static void mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *application, GtkBuilder *builder);
+static void mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application);
 
 /* GActions callbacks */
 void mw_cut_activate_cb           (GSimpleAction *action, GVariant *parameter, gpointer user_data);
@@ -86,6 +85,7 @@ void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWi
 void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 
 struct _AlmanahMainWindowPrivate {
+	GtkWidget *header_bar;
 	GtkTextView *entry_view;
 	GtkTextBuffer *entry_buffer;
 	AlmanahEntryTagsArea *entry_tags_area;
@@ -148,6 +148,10 @@ almanah_main_window_init (AlmanahMainWindow *self)
 	                                 win_entries,
 	                                 G_N_ELEMENTS (win_entries),
 	                                 self);
+
+	self->priv->header_bar = gtk_header_bar_new ();
+	gtk_window_set_titlebar (GTK_WINDOW (self), self->priv->header_bar);
+	gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->header_bar), TRUE);
 }
 
 static void
@@ -278,7 +282,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	g_object_unref (event_manager);
 
 	/* Set up the main toolbar */
-	mw_setup_toolbar (main_window, application, builder);
+	mw_setup_headerbar (main_window, application);
 
 	/* Select the current day and month */
 	almanah_calendar_button_select_today(main_window->priv->calendar_button);
@@ -1182,6 +1186,7 @@ mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar_button, AlmanahMain
 		NULL
 	};
 	guint i = 0;
+	gchar calendar_string[100];
 
 	/* Set up */
 	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
@@ -1191,6 +1196,9 @@ mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar_button, AlmanahMain
 
 	/* Update the date label */
 	almanah_calendar_button_get_date (main_window->priv->calendar_button, &calendar_date);
+	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
+	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
+	gtk_header_bar_set_title (GTK_HEADER_BAR (main_window->priv->header_bar), calendar_string);
 
 	/* Update the entry */
 	storage_manager = almanah_application_dup_storage_manager (application);
@@ -1283,49 +1291,12 @@ mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path,
 	almanah_event_view (event, GTK_WINDOW (main_window));
 }
 
-static gint
-get_icon_margin (void)
-{
-  gint toolbar_size, menu_size;
-
-  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &menu_size, NULL);
-  gtk_icon_size_lookup (GTK_ICON_SIZE_LARGE_TOOLBAR, &toolbar_size, NULL);
-  return (gint) ((toolbar_size - menu_size) / 2);
-}
-
 static void
-mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *application, GtkBuilder *builder)
+mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application)
 {
-	GtkToolbar *toolbar;
-	GtkToolItem *tool_item;
 	GtkWidget *button, *button_image;
 	GMenu *menu;
 	AlmanahStorageManager *storage_manager;
-
-	toolbar = GTK_TOOLBAR (gtk_builder_get_object (builder, "almanah_mw_toolbar"));
-
-	/* Allow drag the window using the toolbar */
-	gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (toolbar)), GTK_STYLE_CLASS_MENUBAR);
-	gtk_toolbar_set_icon_size (toolbar, GTK_ICON_SIZE_MENU);
-
-	/* The text style button */
-	tool_item = gtk_tool_item_new ();
-	button = gtk_menu_button_new ();
-	menu = gtk_application_get_menu_by_id (gtk_window_get_application (GTK_WINDOW (main_window)), "font-menu");
-	gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), G_MENU_MODEL (menu));
-	button_image = gtk_image_new_from_icon_name ("gtk-select-font", GTK_ICON_SIZE_MENU);
-	g_object_set (button_image, "margin", get_icon_margin (), NULL);
-	gtk_button_set_image (GTK_BUTTON (button), button_image);
-	gtk_container_add (GTK_CONTAINER (tool_item), button);
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
-
-	/* Insert a dynamic space between the insert link and calendar & important.
-	 * This can't be done using the <tool_item/> in the UI file at the moment
-	 */
-	tool_item = gtk_separator_tool_item_new ();
-	gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (tool_item), FALSE);
-	gtk_tool_item_set_expand (tool_item, TRUE);
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
 
 	/* Setup the calendar button */
 	storage_manager = almanah_application_dup_storage_manager (application);
@@ -1333,45 +1304,33 @@ mw_setup_toolbar (AlmanahMainWindow *main_window, AlmanahApplication *applicatio
 	g_object_unref (storage_manager);
 	g_signal_connect (main_window->priv->calendar_button, "day-selected", G_CALLBACK (mw_calendar_day_selected_cb), main_window);
 	g_signal_connect (main_window->priv->calendar_button, "select-date-clicked", G_CALLBACK (mw_calendar_select_date_clicked_cb), main_window);
-	/* Insert the calendar button into the toolbar through a GtkToolItem but button style */
-	tool_item = gtk_tool_item_new ();
-	gtk_container_add (GTK_CONTAINER (tool_item), GTK_WIDGET (main_window->priv->calendar_button));
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
+	gtk_style_context_add_class (gtk_widget_get_style_context (main_window->priv->header_bar), "image-button");
+	button_image = gtk_image_new_from_icon_name ("x-office-calendar-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_button_set_image (GTK_BUTTON (main_window->priv->calendar_button), button_image);
+	gtk_header_bar_pack_start (GTK_HEADER_BAR (main_window->priv->header_bar), GTK_WIDGET (main_window->priv->calendar_button));
+
+	/* Hamburger menu  */
+	button = gtk_menu_button_new ();
+	menu = gtk_application_get_menu_by_id (gtk_window_get_application (GTK_WINDOW (main_window)), "main-window-menu");
+	gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), G_MENU_MODEL (menu));
+	button_image = gtk_image_new_from_icon_name ("open-menu-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_button_set_image (GTK_BUTTON (button), button_image);
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
 
 	/* Important entry */
-	tool_item = gtk_separator_tool_item_new ();
-	gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (tool_item), FALSE);
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
-	tool_item = gtk_toggle_tool_button_new ();
-	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (tool_item), "starred-symbolic");
-	gtk_actionable_set_action_name (GTK_ACTIONABLE (tool_item), "win.important");
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
-
-	/* Another dynamic tool_item */
-	tool_item = gtk_separator_tool_item_new ();
-	gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (tool_item), FALSE);
-	gtk_tool_item_set_expand (tool_item, TRUE);
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
+	button = gtk_toggle_button_new ();
+	gtk_style_context_add_class (gtk_widget_get_style_context (button), "image-button");
+	button_image = gtk_image_new_from_icon_name ("starred-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_button_set_image (GTK_BUTTON (button), button_image);
+	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.important");
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
 
 	/* Show/hide tags: future "side pane", for photos and other elements */
-	tool_item = gtk_toggle_tool_button_new ();
-	gtk_tool_button_set_icon_name (GTK_TOOL_BUTTON (tool_item), "almanah-tags-symbolic");
-	gtk_actionable_set_action_name (GTK_ACTIONABLE (tool_item), "win.show-tags");
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
-
-	/* Gear menu  */
-	tool_item = gtk_separator_tool_item_new ();
-	gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (tool_item), FALSE);
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
-	tool_item = gtk_tool_item_new ();
-	button = gtk_menu_button_new ();
-	menu = gtk_application_get_menu_by_id (gtk_window_get_application (GTK_WINDOW (main_window)), "gear-menu");
-	gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), G_MENU_MODEL (menu));
-	button_image = gtk_image_new_from_icon_name ("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
-	g_object_set (button_image, "margin", get_icon_margin (), NULL);
+	button = gtk_toggle_button_new ();
+	button_image = gtk_image_new_from_icon_name ("almanah-tags-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_button_set_image (GTK_BUTTON (button), button_image);
-	gtk_container_add (GTK_CONTAINER (tool_item), button);
-	gtk_container_add (GTK_CONTAINER (toolbar), GTK_WIDGET (tool_item));
+	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.show-tags");
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
 }
 
 #ifdef ENABLE_SPELL_CHECKING

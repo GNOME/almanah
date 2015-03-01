@@ -22,7 +22,6 @@
 
 #include "calendar-button.h"
 #include "calendar.h"
-#include "calendar-window.h"
 #include "interface.h"
 
 /* This enum allows to know the reason why the calendar date has been changed */
@@ -47,7 +46,6 @@ enum {
 static guint calendar_button_signals[LAST_SIGNAL] = { 0 };
 
 struct _AlmanahCalendarButtonPrivate {
-	GtkWidget *label;
 	GtkWidget *dock;
 	guchar user_event;
 	AlmanahCalendar *calendar;
@@ -60,7 +58,7 @@ static void almanah_calendar_button_get_property (GObject *object, guint propert
 static void almanah_calendar_button_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_calendar_button_finalize (GObject *object);
 
-static void almanah_calendar_button_dock_hiden (GtkWidget *dock, AlmanahCalendarButton *self);
+static void almanah_calendar_button_dock_closed (GtkWidget *dock, AlmanahCalendarButton *self);
 
 static void almanah_calendar_button_toggled (GtkToggleButton *togglebutton);
 static void almanah_calendar_button_day_selected_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
@@ -126,8 +124,6 @@ almanah_calendar_button_class_init (AlmanahCalendarButtonClass *klass)
 static void
 almanah_calendar_button_init (AlmanahCalendarButton *self)
 {
-	GtkWidget *arrow;
-	GtkBox *main_box;
 	GtkBuilder *builder;
 	GError *error = NULL;
 	const gchar *object_names[] = {
@@ -139,16 +135,6 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 	self->priv->user_event = FIRST_EVENT;
 
 	gtk_button_set_focus_on_click (GTK_BUTTON (self), TRUE);
-
-	/* The button elements */
-	self->priv->label = gtk_label_new (NULL);
-
-	arrow = gtk_arrow_new (GTK_ARROW_DOWN, GTK_SHADOW_NONE);
-
-	main_box = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6));
-	gtk_box_pack_start (main_box, self->priv->label, TRUE, TRUE, 0);
-	gtk_box_pack_start (main_box, arrow, FALSE, TRUE, 0);
-	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (main_box));
 
 	/* Calendar dock window from the UI file */
 	builder = gtk_builder_new ();
@@ -168,9 +154,9 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 
 		return;
 	}
-	gtk_window_set_type_hint (GTK_WINDOW (self->priv->dock), GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU);
+	gtk_popover_set_relative_to (GTK_POPOVER (self->priv->dock), GTK_WIDGET (self));
 
-	g_signal_connect (self->priv->dock, "hide", G_CALLBACK (almanah_calendar_button_dock_hiden), self);
+	g_signal_connect (self->priv->dock, "hide", G_CALLBACK (almanah_calendar_button_dock_closed), self);
 
 	/* The calendar widget */
 	self->priv->calendar = ALMANAH_CALENDAR (gtk_builder_get_object (builder, "almanah_cw_calendar"));
@@ -234,67 +220,8 @@ almanah_calendar_button_finalize (GObject *object)
 	G_OBJECT_CLASS (almanah_calendar_button_parent_class)->finalize (object);
 }
 
-/**
- * Calculate the window position
- */
 static void
-dock_position_func (AlmanahCalendarButton *self, gint *x, gint *y)
-{
-	GdkScreen *screen;
-	GdkRectangle monitor;
-	GtkAllocation allocation;
-	GtkRequisition dock_req;
-	gint new_x, new_y, monitor_num;
-	AlmanahCalendarWindow *calendar_window = ALMANAH_CALENDAR_WINDOW (self->priv->dock);
-
-	/* Get the screen and monitor geometry */
-	screen = gtk_widget_get_screen (GTK_WIDGET (self));
-	monitor_num = gdk_screen_get_monitor_at_window (screen, gtk_widget_get_window (GTK_WIDGET (self)));
-	if (monitor_num < 0)
-		monitor_num = 0;
-	gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
-
-	/* Get the AlmanahCalendarButton position */
-	gtk_widget_get_allocation (GTK_WIDGET (self), &allocation);
-	gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (self)), &new_x, &new_y);
-	/* The dock window starting position is over the calendar button widget */
-	new_x += allocation.x;
-	new_y += allocation.y;
-
-	gtk_widget_get_preferred_size (GTK_WIDGET (calendar_window), &dock_req, NULL);
-	if (new_x + dock_req.width > monitor.x + monitor.width) {
-		/* Move the required pixels to the left if the dock don't showed complety
-		 * in the screen
-		 */
-		new_x -= (new_x + dock_req.width) - (monitor.x + monitor.width);
-	}
-
-	if ((new_y + allocation.height + dock_req.height) <= monitor.y + monitor.height) {
-		/*The dock window height isn't bigger than the monitor size */
-		new_y += allocation.height;
-	} else if (new_y - dock_req.height >= monitor.y) {
-		/* If the dock window height can't showed complety in the monitor,
-		 * and the dock height isn't to bigg to show on top the calendar button
-		 * move it on top of the calendar button
-		 */
-		new_y -= dock_req.height;
-	} else if (monitor.y + monitor.height - (new_y + allocation.height) > new_y) {
-		/* in other case, we show under the calendar button if the space is enought */
-		new_y += allocation.height;
-	} else {
-		/* we need to put the dock in somewhere... even the monitor is to small */
-		new_y -= dock_req.height;
-	}
-
-	/* Put the dock window in the correct screen */
-	gtk_window_set_screen (GTK_WINDOW (calendar_window), screen);
-
-	*x = new_x;
-	*y = new_y;
-}
-
-static void
-almanah_calendar_button_dock_hiden (GtkWidget *dock, AlmanahCalendarButton *self)
+almanah_calendar_button_dock_closed (GtkWidget *dock, AlmanahCalendarButton *self)
 {
 	/* Reset the calendar user event and toggle off the button */
 	ALMANAH_CALENDAR_BUTTON (self)->priv->user_event = NONE_EVENT;
@@ -304,32 +231,22 @@ almanah_calendar_button_dock_hiden (GtkWidget *dock, AlmanahCalendarButton *self
 static void
 almanah_calendar_button_toggled (GtkToggleButton *togglebutton)
 {
-	gint x, y;
 	AlmanahCalendarButton *self;
 
 	self = ALMANAH_CALENDAR_BUTTON (togglebutton);
 	if (gtk_toggle_button_get_active (togglebutton)) {
 		/* Show the dock */
-		dock_position_func (self, &x, &y);
-		gtk_window_move (GTK_WINDOW (self->priv->dock), x, y);
-		almanah_calendar_window_popup (ALMANAH_CALENDAR_WINDOW (self->priv->dock));
+		gtk_widget_show_all (GTK_WIDGET (self->priv->dock));
 	}
 }
 
 static void
 almanah_calendar_button_day_selected_cb (GtkCalendar *calendar, AlmanahCalendarButton *self)
 {
-	GDate calendar_date;
-	gchar calendar_string[100];
-
-	almanah_calendar_get_date (self->priv->calendar, &calendar_date);
-	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
-	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
-	gtk_label_set_text (GTK_LABEL (self->priv->label), calendar_string);
 	if (self->priv->user_event < DAY_EVENT) {
 		/* Only hide the dock window when the user has clicked in a calendar day */
 		self->priv->user_event = DAY_EVENT;
-		almanah_calendar_window_popdown (ALMANAH_CALENDAR_WINDOW (self->priv->dock));
+		gtk_widget_hide (GTK_WIDGET (self->priv->dock));
 	}
 
 	self->priv->user_event = NONE_EVENT;
@@ -426,7 +343,7 @@ almanah_calendar_button_popdown (AlmanahCalendarButton *self)
 {
 	g_return_if_fail (ALMANAH_IS_CALENDAR_BUTTON (self));
 
-	almanah_calendar_window_popdown (ALMANAH_CALENDAR_WINDOW (self->priv->dock));
+	gtk_widget_hide (GTK_WIDGET (self->priv->dock));
 }
 
 void

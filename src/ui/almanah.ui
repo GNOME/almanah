@@ -10,10 +10,8 @@
 		</columns>
 	</object>
 
-	<object class="AlmanahCalendarWindow" id="almanah_calendar_window">
+	<object class="GtkPopover" id="almanah_calendar_window">
 		<property name="border-width">12</property>
-		<property name="can-focus">True</property>
-		<property name="type">GTK_WINDOW_POPUP</property>
 		<child>
 			<object class="GtkBox" id="almanah_cw_vbox">
 				<property name="orientation">GTK_ORIENTATION_VERTICAL</property>
@@ -38,6 +36,9 @@
 					<object class="GtkButtonBox" id="almanah_cw_button_box">
 						<property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
 						<property name="homogeneous">True</property>
+						<style>
+							<class name="linked" />
+						</style>
 						<child>
 							<object class="GtkButton" id="almanah_cw_today_button">
 								<property name="visible">True</property>
@@ -69,15 +70,10 @@
 
 	<object class="AlmanahMainWindow" id="almanah_main_window">
 		<property name="hide-titlebar-when-maximized">True</property>
+                <property name="default-width">640</property>
+                <property name="default-height">480</property>
 		<child>
 			<object class="GtkVBox" id="vbox1">
-				<child>
-					<object class="GtkToolbar" id="almanah_mw_toolbar">
-					</object>
-					<packing>
-						<property name="expand">False</property>
-					</packing>
-				</child>
 				<child>
 					<object class="GtkVBox" id="vbox3">
 						<property name="spacing">6</property>

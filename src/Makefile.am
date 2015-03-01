@@ -43,8 +43,6 @@ almanah_SOURCES = \
 	widgets/calendar.h			\
 	widgets/calendar-button.h		\
 	widgets/calendar-button.c		\
-	widgets/calendar-window.h		\
-	widgets/calendar-window.c		\
 	widgets/eggwrapbox.h			\
 	widgets/eggwrapbox.c			\
 	widgets/eggwrapbox-enums.h		\
