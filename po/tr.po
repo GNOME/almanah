@@ -1,72 +1,50 @@
 # Turkish translation for almanah.
 # Copyright (C) 2011 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
-# Muhammet Kara <muhammetk@gmail.com>, 2011, 2014.
+# İşbaran Akçayır <isbaran@gmail.com>, 2015.
+# Muhammet Kara <muhammetk@gmail.com>, 2011, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-18 13:50+0000\n"
-"PO-Revision-Date: 2014-06-19 15:47+0300\n"
+"POT-Creation-Date: 2015-03-07 19:56+0000\n"
+"PO-Revision-Date: 2015-03-10 21:30+0200\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
-"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Gtranslator 2.91.6\n"
+"X-POOTLE-MTIME: 1425020097.000000\n"
 
 #: ../data/almanah.appdata.xml.in.h:1
+msgid "Keep a diary of your life"
+msgstr "Hayatınızın günlüğünü tutun"
+
+#: ../data/almanah.appdata.xml.in.h:2
 msgid ""
 "Almanah Diary is an application to allow you to keep a diary of your life."
 msgstr ""
 "Almanak Günlüğü, size hayatınızın günlüğünü tutma olanağı sağlayan bir "
 "uygulamadır."
 
-#: ../data/almanah.appdata.xml.in.h:2
+#: ../data/almanah.appdata.xml.in.h:3
 msgid ""
 "You can encrypt the diary to preserve your privacy. It has editing "
 "abilities, including text formatting and printing and shows you a lists of "
 "events which happened (on your computer) for each day (such as tasks and "
 "appointments from Evolution)."
 msgstr ""
+"Gizliliğinizi korumak için günlüğü şifreleyebilirsiniz. Metin biçimleme ve "
+"yazdırma ve gerçekleşen olayları (bilgisayarınızda) her gün (Evolution'dan "
+"görevler veya randevular gibi) gösterme gibi düzenleme yetenekleri vardır."
 
-#: ../data/almanah-app-menu.ui.h:1
-#| msgid "Search"
-msgid "_Search"
-msgstr "_Ara"
-
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "T_ercihler"
-
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_İçe Aktar"
-
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Dışa Aktar"
-
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "Güzlüğü _yazdır"
-
-#: ../data/almanah-app-menu.ui.h:6
-#| msgid "Almanah Diary"
-msgid "_About Almanah Diary"
-msgstr "Almanak Günlüğü _Hakkında"
-
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "_Çıkış"
-
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
-#: ../src/main-window.c:136
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:133
+#: ../src/main-window.c:144
 msgid "Almanah Diary"
 msgstr "Almanah Günlüğü"
 
@@ -75,7 +53,7 @@ msgid "Keep a personal diary"
 msgstr "Kişisel bir günlük tutun"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:263
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:272
 msgid "Diary"
 msgstr "Günlük"
 
@@ -84,134 +62,78 @@ msgstr "Günlük"
 msgid "diary;journal;"
 msgstr "günlük;jurnal;"
 
-#: ../data/almanah.ui.h:1
-msgid "Select Date…"
-msgstr "Tarih Seç..."
-
-#: ../data/almanah.ui.h:2
-msgid "F_ormat"
-msgstr "B_içim"
-
-#: ../data/almanah.ui.h:3
-msgid "Toggle whether the currently selected text is bold."
-msgstr "Geçerli olarak seçili metni kalın yap/geri al."
-
-#: ../data/almanah.ui.h:4
-msgid "Toggle whether the currently selected text is italic."
-msgstr "Geçerli olarak seçili metni eğik yap/geri al."
-
-#: ../data/almanah.ui.h:5
-msgid "Toggle whether the currently selected text is underlined."
-msgstr "Geçerli olarak seçili metni altı çizili yap/geri al."
-
-#: ../data/almanah.ui.h:6
-msgid "Add/Remove _Hyperlink"
-msgstr "_Köprü Ekle/Kaldır"
-
-#: ../data/almanah.ui.h:7
-msgid ""
-"Add or remove a hyperlink from the currently selected text to a specified "
-"URI."
-msgstr ""
-"Şu anda seçili olan metinden belirtilen bir URI'ye köprü ekle ya da kaldır."
-
-#: ../data/almanah.ui.h:8
-msgid "Insert _Time"
-msgstr "_Saat Ekle"
-
-#: ../data/almanah.ui.h:9
-msgid "I_mportant"
-msgstr "Ö_nemli"
-
-#: ../data/almanah.ui.h:10
-msgid "Toggle whether the current entry is marked as important."
-msgstr "Geçerli girdinin önemli olarak işaretlenmesini aç/kapat."
-
-#: ../data/almanah.ui.h:11
-msgid "Show tags"
-msgstr "Etiketleri göster"
-
-#: ../data/almanah.ui.h:12
-#| msgid "Jump to the current date in the diary."
-msgid "Show tags for the current entry"
-msgstr "Geçerli girdinin etiketlerini göster"
-
-#: ../data/almanah.ui.h:13
-msgid "_Help"
-msgstr "_Yardım"
-
-#: ../data/almanah.ui.h:14
-msgid "Go to _Today"
-msgstr "_Bugüne Git"
-
-#: ../data/almanah.ui.h:15
-msgid "Jump to the current date in the diary."
-msgstr "Günlükte geçerli güne atla."
-
-#: ../data/almanah.ui.h:16
+#: ../src/ui/almanah.ui.h:1
 msgid "Calendar"
 msgstr "Takvim"
 
-#: ../data/almanah.ui.h:17
+#: ../src/ui/almanah.ui.h:2
+#| msgid "Go to _Today"
+msgid "Go to Today"
+msgstr "Bugüne Git"
+
+#: ../src/ui/almanah.ui.h:3
+msgid "Select Date…"
+msgstr "Tarih Seç..."
+
+#: ../src/ui/almanah.ui.h:4
 msgid "Entry editing area"
 msgstr "Girdi düzenleme alanı"
 
-#: ../data/almanah.ui.h:18
-#| msgid "Past Events"
+#: ../src/ui/almanah.ui.h:5
 msgid "Past events"
 msgstr "Eski olaylar"
 
-#: ../data/almanah.ui.h:19
+#: ../src/ui/almanah.ui.h:6
 msgid "Past Event List"
 msgstr "Eski Olay Listesi"
 
-#: ../data/almanah.ui.h:20
+#: ../src/ui/almanah.ui.h:7
 msgid "Search entry"
 msgstr "Girdi ara"
 
-#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
+#: ../src/ui/almanah.ui.h:8 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Ara"
 
-#: ../data/almanah.ui.h:22
+#: ../src/ui/almanah.ui.h:9
 msgid "Result List"
 msgstr "Sonuç Listesi"
 
-#: ../data/almanah.ui.h:23
+#: ../src/ui/almanah.ui.h:10
 msgid "View Entry"
 msgstr "Girdi Görüntüle"
 
-#: ../data/almanah.ui.h:24
+#: ../src/ui/almanah.ui.h:11
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "örneğin \"14/03/2009\" ya da \"14 Mart 2009\"."
 
-#: ../data/almanah.ui.h:25
+#: ../src/ui/almanah.ui.h:12
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr ""
 "örneğin “http://google.com.tr/” ya da “file:///home/ben/Fotoğraflar/fotograf."
 "jpg”."
 
-#: ../data/almanah.ui.h:26
+#: ../src/ui/almanah.ui.h:13
 msgid "Successful Entries"
 msgstr "Başarılı Girdiler"
 
-#: ../data/almanah.ui.h:27
+#: ../src/ui/almanah.ui.h:14
 msgid "Merged Entries"
 msgstr "Birleştirilen Girdiler"
 
-#: ../data/almanah.ui.h:28
+#: ../src/ui/almanah.ui.h:15
 msgid "Failed Entries"
 msgstr "Başarısız Girdiler"
 
-#: ../data/almanah.ui.h:29
+#: ../src/ui/almanah.ui.h:16
 msgid "Import Results List"
 msgstr "Sonuç Listesini İçe Aktar"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+#: ../data/org.gnome.almanah.gschema.xml.in.h:1
 msgid "Database encryption key ID"
 msgstr "Veri tabanı şifreleme anahtarı kimliği"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+#: ../data/org.gnome.almanah.gschema.xml.in.h:2
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -221,39 +143,31 @@ msgstr ""
 "açmak için kullanılacak anahtarın kimliği. Veri tabanı şifrelemeyi devre "
 "dışı bırakmak için bu alanı boş bırakın."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+#: ../data/org.gnome.almanah.gschema.xml.in.h:3
 msgid "Spell checking language"
 msgstr "İmla denetimi dili"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+#: ../data/org.gnome.almanah.gschema.xml.in.h:4
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "Girdi yazım denetimi yapılacak dilin yerel belirteci (locale)"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+#: ../data/org.gnome.almanah.gschema.xml.in.h:5
 msgid "Spell checking enabled?"
 msgstr "İmla denetimi etkinleştirilsin mi?"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+#: ../data/org.gnome.almanah.gschema.xml.in.h:6
 msgid "Whether spell checking of entries is enabled."
 msgstr "Girdilerde yazım denetiminin etkin olup olmadığı."
 
-#: ../src/application.c:246
+#: ../src/application.c:255
 msgid "Error opening database"
 msgstr "Veri tabanı açılırken hata"
 
-#. Error loading the CSS
-#: ../src/application.c:275
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
-msgstr ""
-"CSS dosyası '%s' yüklenemedi. Arayüz düzgün biçemlendirilmemiş olabilir."
-
-#: ../src/application.c:319
+#: ../src/application.c:332
 msgid "Enable debug mode"
 msgstr "Hata ayıklama kipini etkinleştir"
 
-#: ../src/application.c:336
+#: ../src/application.c:349
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -261,24 +175,16 @@ msgstr ""
 "olabilir."
 
 #. Print an error
-#: ../src/application.c:347
+#: ../src/application.c:360
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Komut satırı seçenekleri ayrıştırılamadı: %s\n"
 
-#: ../src/application.c:366
+#: ../src/application.c:379
 msgid "Error encrypting database"
 msgstr "Veri tabanı şifrelenirken hata"
 
-#: ../src/application.c:419 ../src/date-entry-dialog.c:129
-#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:195 ../src/preferences-dialog.c:191
-#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Kullanıcı arayüzü (UI) dosyası \"%s\" yüklenemedi"
-
-#: ../src/application.c:542
+#: ../src/application.c:521
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -289,7 +195,7 @@ msgstr ""
 "Genel Kamu Lisansı üçüncü sürüm ya da (seçiminize istinaden) sonraki bir "
 "sürüm şartlarınca değiştirilebilir ve dağıtılabilir."
 
-#: ../src/application.c:546
+#: ../src/application.c:525
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -300,7 +206,7 @@ msgstr ""
 "GARANTİSİ YOKTUR; aynı zamanda BİR AMACA UYGUNLUĞU ya da SATILABİLİRLİĞİ "
 "garanti etmez. Daha fazla ayrıntı için GNU Genel Kamu Lisansını inceleyin."
 
-#: ../src/application.c:550
+#: ../src/application.c:529
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -309,12 +215,12 @@ msgstr ""
 "olmalısınız. Eğer almadıysanız, <http://www.gnu.org/licenses/> adresini "
 "ziyaret ediniz."
 
-#: ../src/application.c:565
+#: ../src/application.c:544
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
-msgstr ""
+msgstr "Kullanışlı bir günlük tutucu, %u girdi tutuyor."
 
-#: ../src/application.c:569
+#: ../src/application.c:548
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Telif Hakkı © 2008-2009 Philip Withnall"
 
@@ -323,17 +229,36 @@ msgstr "Telif Hakkı © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:577
+#: ../src/application.c:556
 msgid "translator-credits"
-msgstr "Muhammet Kara <muhammet.k@gmail.com>"
+msgstr "Muhammet Kara <muhammetk@gmail.com>"
 
-#: ../src/application.c:581
+#: ../src/application.c:560
 msgid "Almanah Website"
 msgstr "Almanah Web Sitesi"
+
+#: ../src/application.c:588
+#, c-format
+#| msgid ""
+#| "Couldn't load the CSS file '%s'. The interface might not be styled "
+#| "correctly"
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"CSS kaynakları yüklenemedi. Arayüz düzgün biçemlendirilmemiş olabilir: %s"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Tarih Seç"
+
+#: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
+#: ../src/import-export-dialog.c:474 ../src/main-window.c:210
+#: ../src/preferences-dialog.c:179 ../src/search-dialog.c:95
+#: ../src/uri-entry-dialog.c:126
+#| msgid "UI file \"%s\" could not be loaded"
+msgid "UI data could not be loaded"
+msgstr "Kullanıcı arayüzü (UI) verileri yüklenemedi"
 
 #: ../src/entry.c:303
 #, c-format
@@ -394,56 +319,120 @@ msgstr ""
 
 #: ../src/export-operation.c:256 ../src/export-operation.c:313
 #, c-format
-#| msgid "Error opening encrypted database file \"%s\": %s"
 msgid "Error changing exported file permissions: %s"
 msgstr "Dışa aktarılan dosyanın izinleri değiştirilirken hata oluştu: %s"
 
-#: ../src/import-export-dialog.c:202
+#: ../src/gtk/menus.ui.h:1
+msgid "_Search"
+msgstr "_Ara"
+
+#: ../src/gtk/menus.ui.h:2
+msgid "Pr_eferences"
+msgstr "T_ercihler"
+
+#. Set the button label
+#: ../src/gtk/menus.ui.h:3 ../src/import-export-dialog.c:209
+msgid "_Import"
+msgstr "_İçe Aktar"
+
+#: ../src/gtk/menus.ui.h:4 ../src/import-export-dialog.c:209
+msgid "_Export"
+msgstr "_Dışa Aktar"
+
+#: ../src/gtk/menus.ui.h:5
+msgid "_Print diary"
+msgstr "Güzlüğü _yazdır"
+
+#: ../src/gtk/menus.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "Almanak Günlüğü _Hakkında"
+
+#: ../src/gtk/menus.ui.h:7
+msgid "_Quit"
+msgstr "_Çıkış"
+
+#: ../src/gtk/menus.ui.h:8
+msgid "_Bold"
+msgstr "_Kalın"
+
+#: ../src/gtk/menus.ui.h:9
+msgid "_Italic"
+msgstr "_Eğik"
+
+#: ../src/gtk/menus.ui.h:10
+msgid "_Underline"
+msgstr "_Altı Çizili"
+
+#: ../src/gtk/menus.ui.h:11
+msgid "_Cut"
+msgstr "_Kes"
+
+#: ../src/gtk/menus.ui.h:12
+msgid "_Copy"
+msgstr "Ko_pyala"
+
+#: ../src/gtk/menus.ui.h:13
+msgid "_Paste"
+msgstr "_Yapıştır"
+
+#: ../src/gtk/menus.ui.h:14
+msgid "_Delete"
+msgstr "_Sil"
+
+#: ../src/gtk/menus.ui.h:15
+msgid "Insert _Time"
+msgstr "_Saat Ekle"
+
+#: ../src/gtk/menus.ui.h:16
+msgid "Add/Remove _Hyperlink"
+msgstr "_Köprü Ekle/Kaldır"
+
+#: ../src/import-export-dialog.c:203
 msgid "Import _mode: "
 msgstr "İçe aktarma _kipi: "
 
-#: ../src/import-export-dialog.c:202
+#: ../src/import-export-dialog.c:203
 msgid "Export _mode: "
 msgstr "Dışa aktarma _kipi:"
 
 #. Set the window title
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:206
 msgid "Import Entries"
 msgstr "Girdileri İçe Aktar"
 
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:206
 msgid "Export Entries"
 msgstr "Girdileri Dışa Aktar"
 
-#: ../src/import-export-dialog.c:245
+#: ../src/import-export-dialog.c:246
 msgid "Import failed"
 msgstr "İçe aktarma başarısız oldu"
 
-#: ../src/import-export-dialog.c:283
+#: ../src/import-export-dialog.c:284
 msgid "Export failed"
 msgstr "Dışa aktarma başarısız oldu"
 
-#: ../src/import-export-dialog.c:296
+#: ../src/import-export-dialog.c:297
 msgid "Export successful"
 msgstr "Dışa aktarma başarılı"
 
-#: ../src/import-export-dialog.c:297
+#: ../src/import-export-dialog.c:298
 msgid "The diary was successfully exported."
 msgstr "Günlük başarıyla dışa aktarıldı."
 
-#: ../src/import-export-dialog.c:445
+#: ../src/import-export-dialog.c:446
 msgid "Import Results"
 msgstr "Sonuçları İçe Aktar"
 
 #. Translators: This is a strftime()-format string for the dates displayed in import results.
 #. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
 #. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
-#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:309
+#: ../src/import-export-dialog.c:541 ../src/main-window.c:568
+#: ../src/main-window.c:598 ../src/main-window.c:1200 ../src/printing.c:263
+#: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -453,6 +442,9 @@ msgid ""
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
 "imported."
 msgstr ""
+"Her biri bir girdiye karşılık gelen metin dosyaları içeren bir _klasör "
+"seçin, isimleri 'yyyy-mm-dd' biçiminde ve uzantısız. Tüm bu şekildeki "
+"dosyalar içe aktarılacaktır."
 
 #: ../src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
@@ -463,7 +455,7 @@ msgstr ""
 #: ../src/import-operation.c:248
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
-msgstr ""
+msgstr "İçe aktarılan girdinin tampon belleğe seri çözümünde hata: %s"
 
 #: ../src/import-operation.c:264
 #, c-format
@@ -471,6 +463,8 @@ msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
 "entry: %s"
 msgstr ""
+"Mevcut girdinin tampon belleğe seri çözümünde hata; içe aktarılan girdiyle "
+"üzerine yazılıyor: %s"
 
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
@@ -488,67 +482,68 @@ msgstr ""
 "\"%s\"den içe aktarılmış girdi:\n"
 "\n"
 
-#: ../src/main-window.c:571
+#: ../src/main-window.c:572
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
-msgstr ""
+msgstr "%s için bu günlük girdisini düzenlemek istediğinize emin misiniz?"
 
-#: ../src/main-window.c:601
+#: ../src/main-window.c:602
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
-msgstr ""
+msgstr "%s için bu günlük girdisini silmek istediğinize emin misiniz?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:710
+#: ../src/main-window.c:711
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
+"Girdide bilinmeyen ya da kopya metin etiketi \"%s\". Göz ardı ediliyor."
 
-#: ../src/main-window.c:918
+#: ../src/main-window.c:948
 msgid "Error opening URI"
 msgstr "URI açılırken hata"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1092
+#: ../src/main-window.c:1127
 #, c-format
 msgid "%s @ %s"
-msgstr ""
+msgstr "%s @ %s"
 
-#: ../src/main-window.c:1171
+#: ../src/main-window.c:1233
 msgid "Entry content could not be loaded"
 msgstr "Girdi içeriği yüklenemedi"
 
-#: ../src/main-window.c:1348
+#: ../src/main-window.c:1352
 msgid "Spelling checker could not be initialized"
 msgstr "Yazım denetçisi ilklendirilemedi"
 
-#: ../src/preferences-dialog.c:91
+#: ../src/preferences-dialog.c:85
 msgid "Almanah Preferences"
 msgstr "Almanah Tercihleri"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:217
+#: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Şifreleme anahtarı: "
 
-#: ../src/preferences-dialog.c:222
+#: ../src/preferences-dialog.c:209
 msgid "None (don't encrypt)"
 msgstr "Hiçbiri (şifreleme)"
 
-#: ../src/preferences-dialog.c:246
+#: ../src/preferences-dialog.c:233
 msgid "New _Key"
 msgstr "Yeni _Anahtar"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:253
+#: ../src/preferences-dialog.c:239
 msgid "Enable _spell checking"
 msgstr "_Yazım denetimini etkinleştir"
 
-#: ../src/preferences-dialog.c:279
+#: ../src/preferences-dialog.c:264
 msgid "Error saving the encryption key"
 msgstr "Şifreleme anahtarı kaydedilirken hata"
 
-#: ../src/preferences-dialog.c:298
+#: ../src/preferences-dialog.c:283
 msgid "Error opening Seahorse"
 msgstr "Seahorse açılırken hata"
 
@@ -573,137 +568,145 @@ msgstr "Bitiş tarihi:"
 msgid "Line spacing:"
 msgstr "Satır aralığı:"
 
-#: ../src/search-dialog.c:223
+#: ../src/search-dialog.c:221
 msgid "Search canceled."
 msgstr "Arama iptal edildi."
 
 #. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
-#: ../src/search-dialog.c:226
+#: ../src/search-dialog.c:224
 #, c-format
 msgid "Error: %s"
 msgstr "Hata: %s"
 
 #. Success!
-#: ../src/search-dialog.c:231
+#: ../src/search-dialog.c:229
 #, c-format
 msgid "Found %d entry:"
 msgid_plural "Found %d entries:"
 msgstr[0] "%d girdi bulundu:"
 
-#: ../src/search-dialog.c:280
+#: ../src/search-dialog.c:278
 msgid "Searching…"
 msgstr "Arıyor..."
 
-#: ../src/storage-manager.c:276
-#, c-format
-msgid "GPGME is not at least version %s"
-msgstr "GPGME en az %s sürümünde değil"
-
-#: ../src/storage-manager.c:285
-#, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "GPGME, OpenPGP'i desteklemiyor: %s"
-
-#: ../src/storage-manager.c:294
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Şifreleme bağlamı oluşturulurken hata: %s"
-
-#: ../src/storage-manager.c:323
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Şifrelenmiş veri tabanı dosyası \"%s\" açılırken hata: %s"
-
-#: ../src/storage-manager.c:342
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Düz veri tabanı dosyası \"%s\" açılırken hata: %s"
-
-#: ../src/storage-manager.c:390
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-
-#. Delete the plain file
-#: ../src/storage-manager.c:393
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Düz veri tabanı dosyası \"%s\" silinemedi."
-
-#: ../src/storage-manager.c:434
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Veri tabanı açılırken hata: %s"
-
-#: ../src/storage-manager.c:468
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Şifreleme anahtarı alınırken hata: %s"
-
-#: ../src/storage-manager.c:489
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Veri tabanı şifrelenirken hata: %s"
-
-#: ../src/storage-manager.c:549
-#, fuzzy, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error changing database backup file permissions: %s"
-msgstr "Düz veri tabanı dosyası \"%s\" açılırken hata: %s"
-
-#: ../src/storage-manager.c:571 ../src/storage-manager.c:627
-#, fuzzy, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error changing database file permissions: %s"
-msgstr "Düz veri tabanı dosyası \"%s\" açılırken hata: %s"
-
-#. Translators: the first parameter is a filename, the second is an error message.
-#: ../src/storage-manager.c:583 ../src/storage-manager.c:611
-#, fuzzy, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
-msgid "Error backing up file ‘%s’: %s"
-msgstr "Düz veri tabanı dosyası \"%s\" açılırken hata: %s"
-
-#: ../src/storage-manager.c:620
+#: ../src/storage-manager.c:232
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
-msgstr ""
+msgstr "Veri tabanı \"%s\" açılamadı. SQLite şu hata iletisini verdi: %s"
 
-#: ../src/storage-manager.c:704
+#: ../src/storage-manager.c:274
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
-msgstr ""
+msgstr "Sorgu \"%s\" çalıştırılamadı. SQLite şu hata iletisini verdi: %s"
 
-#: ../src/storage-manager.c:1010
+#: ../src/storage-manager.c:580
 msgid "Error deserializing entry into buffer while searching."
-msgstr ""
+msgstr "Arama yaparken girdinin tampon belleğe seri çözümünde hata."
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "URI Girin"
 
-#: ../src/widgets/calendar-button.c:140
-#, fuzzy, c-format
-#| msgid "UI file \"%s\" could not be loaded"
-msgid "UI file \"%s\" could not be loaded: %s"
-msgstr "Kullanıcı arayüzü (UI) dosyası \"%s\" yüklenemedi"
+#: ../src/vfs.c:233
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME en az %s sürümünde değil"
 
-#: ../src/widgets/calendar-button.c:150
+#: ../src/vfs.c:240
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME, OpenPGP'i desteklemiyor: %s"
+
+#: ../src/vfs.c:247
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Şifreleme bağlamı oluşturulurken hata: %s"
+
+#: ../src/vfs.c:267
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Şifreli veri tabanı için yeni GIOChannel oluşturulamıyor: %s"
+
+#: ../src/vfs.c:275
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Şifrelenmiş veri tabanı dosyası \"%s\" açılırken hata: %s"
+
+#: ../src/vfs.c:291
+#, c-format
+msgid "Error creating Callback base data buffer: %s"
+msgstr "Geriçağrı taban veri tampon belleği oluşturmada hata: %s"
+
+#: ../src/vfs.c:299
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Düz veri tabanı için yeni GIOChannel oluşturulamıyor: %s"
+
+#: ../src/vfs.c:307
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Düz veri tabanı dosyası \"%s\" açılırken hata: %s"
+
+#: ../src/vfs.c:403
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Şifreleme anahtarı alınırken hata: %s"
+
+#: ../src/vfs.c:427 ../src/vfs.c:433
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Veri tabanı şifrelenirken hata: %s"
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: ../src/vfs.c:485
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Dosyanın %s konumundan %s konumuna kopyalanmasında hata: %s"
+
+#: ../src/vfs.c:491
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Veri tabanı yedek dosyası izinleri değiştirmede hata: %s"
+
+#: ../src/vfs.c:591
+#, c-format
+msgid "Error closing file: %s"
+msgstr "Dosyanın kapatılmasında hata: %s"
+
+#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename.
+#: ../src/vfs.c:990 ../src/vfs.c:1017
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "‘%s’ dosyasının yedeklenmesinde hata"
+
+#: ../src/vfs.c:1003
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Veri tabanı açılırken hata: %s"
+
+#: ../src/vfs.c:1043
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Veri tabanı dosya izinleri değiştirilirken hata: %s"
+
+#: ../src/widgets/calendar-button.c:142
+#, c-format
+#| msgid "UI file \"%s\" could not be loaded: %s"
+msgid "UI data could not be loaded: %s"
+msgstr "Kullanıcı arayüzü (UI) verileri yüklenemedi: %s"
+
+#: ../src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
-msgstr ""
+msgstr "Takvim pencere nesnesi UI dosyasından yüklenemiyor"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Önemli!"
-
-#: ../src/widgets/calendar-window.c:80
-msgid "Unknown input device"
-msgstr "Bilinmeyen giriş aygıtı"
 
 #: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
@@ -723,9 +726,51 @@ msgid "Remove tag"
 msgstr "Etiketi kaldır"
 
 #: ../src/widgets/tag-entry.c:85
-#| msgid "Search entry"
 msgid "Tag entry"
 msgstr "Etiket girişi"
+
+#~ msgid "F_ormat"
+#~ msgstr "B_içim"
+
+#~ msgid "Toggle whether the currently selected text is bold."
+#~ msgstr "Geçerli olarak seçili metni kalın yap/geri al."
+
+#~ msgid "Toggle whether the currently selected text is italic."
+#~ msgstr "Geçerli olarak seçili metni eğik yap/geri al."
+
+#~ msgid "Toggle whether the currently selected text is underlined."
+#~ msgstr "Geçerli olarak seçili metni altı çizili yap/geri al."
+
+#~ msgid ""
+#~ "Add or remove a hyperlink from the currently selected text to a specified "
+#~ "URI."
+#~ msgstr ""
+#~ "Şu anda seçili olan metinden belirtilen bir URI'ye köprü ekle ya da "
+#~ "kaldır."
+
+#~ msgid "I_mportant"
+#~ msgstr "Ö_nemli"
+
+#~ msgid "Toggle whether the current entry is marked as important."
+#~ msgstr "Geçerli girdinin önemli olarak işaretlenmesini aç/kapat."
+
+#~ msgid "Show tags"
+#~ msgstr "Etiketleri göster"
+
+#~ msgid "Show tags for the current entry"
+#~ msgstr "Geçerli girdinin etiketlerini göster"
+
+#~ msgid "_Help"
+#~ msgstr "_Yardım"
+
+#~ msgid "Jump to the current date in the diary."
+#~ msgstr "Günlükte geçerli güne atla."
+
+#~ msgid "Unknown input device"
+#~ msgstr "Bilinmeyen giriş aygıtı"
+
+#~ msgid "Could not delete plain database file \"%s\"."
+#~ msgstr "Düz veri tabanı dosyası \"%s\" silinemedi."
 
 #~ msgid "Change font style for selected text"
 #~ msgstr "Seçilen metin için yazıtipi biçemini değiştir"
