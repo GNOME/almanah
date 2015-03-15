@@ -1012,7 +1012,7 @@ almanah_vfs_open (__attribute__ ((unused)) sqlite3_vfs *pVfs,
 			}
 		} else {
 			/* Make a backup of the plaintext database file */
-			if (back_up_file (self->plain_filename) != TRUE) {
+			if (g_file_test (self->encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && back_up_file (self->plain_filename) != TRUE) {
 				/* Translators: the first parameter is a filename. */
 				g_warning (_("Error backing up file ‘%s’"), self->plain_filename);
 				g_clear_error (&child_error);
