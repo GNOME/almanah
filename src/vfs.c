@@ -482,7 +482,7 @@ back_up_file (const gchar *filename)
 
 	if (g_file_copy (original_file, backup_file, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error) == FALSE) {
 		/* Translators: The first and second params are file paths, the last param is an error message.  */
-		g_warning (_("Error copying the file from %s to %s: %s"), original_file, backup_file, error->message);
+		g_warning (_("Error copying the file from %s to %s: %s"), filename, backup_filename, error->message);
 		retval = FALSE;
 	}
 
