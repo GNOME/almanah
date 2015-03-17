@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-22 18:35+0000\n"
-"PO-Revision-Date: 2015-01-23 10:20+0100\n"
+"POT-Creation-Date: 2015-03-07 19:56+0000\n"
+"PO-Revision-Date: 2015-03-17 19:15+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -23,13 +23,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/almanah.appdata.xml.in.h:1
+msgid "Keep a diary of your life"
+msgstr "Mantiene un diario de su vida"
+
+#: ../data/almanah.appdata.xml.in.h:2
 msgid ""
 "Almanah Diary is an application to allow you to keep a diary of your life."
 msgstr ""
 "Diario Almanah es una aplicación que le permite mantener un diario de su "
 "vida."
 
-#: ../data/almanah.appdata.xml.in.h:2
+#: ../data/almanah.appdata.xml.in.h:3
 msgid ""
 "You can encrypt the diary to preserve your privacy. It has editing "
 "abilities, including text formatting and printing and shows you a lists of "
@@ -41,37 +45,8 @@ msgstr ""
 "eventos que han ocurrido (en su equipo) para cada día (igual que las tareas "
 "y las citas de Evolution)."
 
-#: ../data/gtk/menus.ui.h:1
-msgid "_Search"
-msgstr "_Buscar"
-
-#: ../data/gtk/menus.ui.h:2
-msgid "Pr_eferences"
-msgstr "Prefere_ncias"
-
-#. Set the button label
-#: ../data/gtk/menus.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Importar"
-
-#: ../data/gtk/menus.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Exportar"
-
-#: ../data/gtk/menus.ui.h:5
-msgid "_Print diary"
-msgstr "_imprimir diario"
-
-#: ../data/gtk/menus.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "A_cerca del Diario Almanah"
-
-#: ../data/gtk/menus.ui.h:7
-msgid "_Quit"
-msgstr "_Salir"
-
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:139
-#: ../src/main-window.c:136
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:133
+#: ../src/main-window.c:144
 msgid "Almanah Diary"
 msgstr "Diario Almanah"
 
@@ -80,7 +55,7 @@ msgid "Keep a personal diary"
 msgstr "Mantenga un diario personal"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:273
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:272
 msgid "Diary"
 msgstr "Diario"
 
@@ -89,123 +64,68 @@ msgstr "Diario"
 msgid "diary;journal;"
 msgstr "diario;"
 
-#: ../data/almanah.ui.h:1
-msgid "Select Date…"
-msgstr "Seleccionar fecha…"
-
-#: ../data/almanah.ui.h:2
-msgid "F_ormat"
-msgstr "F_ormato"
-
-#: ../data/almanah.ui.h:3
-msgid "Toggle whether the currently selected text is bold."
-msgstr "Cambiar si el texto seleccionado actualmente está en negrita."
-
-#: ../data/almanah.ui.h:4
-msgid "Toggle whether the currently selected text is italic."
-msgstr "Cambiar si el texto seleccionado actualmente está en cursiva."
-
-#: ../data/almanah.ui.h:5
-msgid "Toggle whether the currently selected text is underlined."
-msgstr "Cambiar si el texto seleccionado actualmente está subrayado."
-
-#: ../data/almanah.ui.h:6
-msgid "Add/Remove _Hyperlink"
-msgstr "Añadir/Quitar _hiperenlace"
-
-#: ../data/almanah.ui.h:7
-msgid ""
-"Add or remove a hyperlink from the currently selected text to a specified "
-"URI."
-msgstr ""
-"Añadir o quitar un hiperenlace desde el texto actualmente seleccionado a un "
-"URI especificado."
-
-#: ../data/almanah.ui.h:8
-msgid "Insert _Time"
-msgstr "Insertar _hora"
-
-#: ../data/almanah.ui.h:9
-msgid "I_mportant"
-msgstr "I_mportante"
-
-#: ../data/almanah.ui.h:10
-msgid "Toggle whether the current entry is marked as important."
-msgstr "Cambiar si la entrada actual es marcada como importante."
-
-#: ../data/almanah.ui.h:11
-msgid "Show tags"
-msgstr "Mostrar etiquetas"
-
-#: ../data/almanah.ui.h:12
-msgid "Show tags for the current entry"
-msgstr "Mostrar etiquetas para la entrada actual"
-
-#: ../data/almanah.ui.h:13
-msgid "_Help"
-msgstr "Ay_uda"
-
-#: ../data/almanah.ui.h:14
-msgid "Go to _Today"
-msgstr "Ir a _hoy"
-
-#: ../data/almanah.ui.h:15
-msgid "Jump to the current date in the diary."
-msgstr "Saltar a la fecha actual en el diario."
-
-#: ../data/almanah.ui.h:16
+#: ../src/ui/almanah.ui.h:1
 msgid "Calendar"
 msgstr "Calendario"
 
-#: ../data/almanah.ui.h:17
+#: ../src/ui/almanah.ui.h:2
+#| msgid "Go to _Today"
+msgid "Go to Today"
+msgstr "Ir a hoy"
+
+#: ../src/ui/almanah.ui.h:3
+msgid "Select Date…"
+msgstr "Seleccionar fecha…"
+
+#: ../src/ui/almanah.ui.h:4
 msgid "Entry editing area"
 msgstr "Área de edición de entrada"
 
-#: ../data/almanah.ui.h:18
+#: ../src/ui/almanah.ui.h:5
 msgid "Past events"
 msgstr "Eventos pasados"
 
-#: ../data/almanah.ui.h:19
+#: ../src/ui/almanah.ui.h:6
 msgid "Past Event List"
 msgstr "Lista de eventos pasados"
 
-#: ../data/almanah.ui.h:20
+#: ../src/ui/almanah.ui.h:7
 msgid "Search entry"
 msgstr "Buscar"
 
-#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
+#: ../src/ui/almanah.ui.h:8 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Buscar"
 
-#: ../data/almanah.ui.h:22
+#: ../src/ui/almanah.ui.h:9
 msgid "Result List"
 msgstr "Lista de resultados"
 
-#: ../data/almanah.ui.h:23
+#: ../src/ui/almanah.ui.h:10
 msgid "View Entry"
 msgstr "Ver entrada"
 
-#: ../data/almanah.ui.h:24
+#: ../src/ui/almanah.ui.h:11
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "ej. «14/03/2009» o «14 de marzo 2009»."
 
-#: ../data/almanah.ui.h:25
+#: ../src/ui/almanah.ui.h:12
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "ej. “http://google.com/” o “file:///home/yo/Fotos/foto.jpg”."
 
-#: ../data/almanah.ui.h:26
+#: ../src/ui/almanah.ui.h:13
 msgid "Successful Entries"
 msgstr "Entradas exitosas"
 
-#: ../data/almanah.ui.h:27
+#: ../src/ui/almanah.ui.h:14
 msgid "Merged Entries"
 msgstr "Entradas combinadas"
 
-#: ../data/almanah.ui.h:28
+#: ../src/ui/almanah.ui.h:15
 msgid "Failed Entries"
 msgstr "Entradas fallidas"
 
-#: ../data/almanah.ui.h:29
+#: ../src/ui/almanah.ui.h:16
 msgid "Import Results List"
 msgstr "Importar lista de resultados"
 
@@ -241,30 +161,15 @@ msgstr "¿Activar revisión ortográfica?"
 msgid "Whether spell checking of entries is enabled."
 msgstr "La corrección ortográfica de las entradas está activada."
 
-#: ../src/application.c:123
-#, c-format
-#| msgid "Error closing file: %s"
-msgid "Error loading resources file: %s"
-msgstr "Error al cargar el archivo de recursos: %s"
-
-#: ../src/application.c:256
+#: ../src/application.c:255
 msgid "Error opening database"
 msgstr "Error al abrir la base de datos"
 
-#. Error loading the CSS
-#: ../src/application.c:285
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
-msgstr ""
-"No se pudo cargar el archivo CSS «%s». Es posible que la interfaz no se "
-"muestre correctamente."
-
-#: ../src/application.c:329
+#: ../src/application.c:332
 msgid "Enable debug mode"
 msgstr "Activar modo de depuración"
 
-#: ../src/application.c:346
+#: ../src/application.c:349
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -272,16 +177,16 @@ msgstr ""
 "tiempo."
 
 #. Print an error
-#: ../src/application.c:357
+#: ../src/application.c:360
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "No se pudieron analizar las opciones de la línea de comandos: %s\n"
 
-#: ../src/application.c:376
+#: ../src/application.c:379
 msgid "Error encrypting database"
 msgstr "Error al cifrar la base de datos: %s"
 
-#: ../src/application.c:518
+#: ../src/application.c:521
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -293,7 +198,7 @@ msgstr ""
 "Software Foundation; tanto en la versión 3 de la Licencia como (a su "
 "elección) cualquier versión posterior."
 
-#: ../src/application.c:522
+#: ../src/application.c:525
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -305,7 +210,7 @@ msgstr ""
 "PARA UN PROPÓSITO PARTICULAR. Vea la Licencia Publica General para más "
 "detalles."
 
-#: ../src/application.c:526
+#: ../src/application.c:529
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -313,12 +218,12 @@ msgstr ""
 "Debería haber recibido una copia de la Licencia Pública General GNU junto "
 "con Almanah. Si no la recibió, consulte <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:541
+#: ../src/application.c:544
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Un diario útil, almacenando %u entradas."
 
-#: ../src/application.c:545
+#: ../src/application.c:548
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -327,27 +232,39 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:553
+#: ../src/application.c:556
 msgid "translator-credits"
 msgstr ""
 "Jorge González <jorgegonz@svn.gnome.org>, 2008, 2010\n"
 "Carlos Albornoz <carlos@debianchile.cl>, 2009"
 
-#: ../src/application.c:557
+#: ../src/application.c:560
 msgid "Almanah Website"
 msgstr "Página web de Almanah"
+
+#: ../src/application.c:588
+#, c-format
+#| msgid ""
+#| "Couldn't load the CSS file '%s'. The interface might not be styled "
+#| "correctly"
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"No se pudo cargar el recurso CSS. Es posible que la interfaz no se muestre "
+"correctamente: %s"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Seleccionar fecha"
 
-#: ../src/date-entry-dialog.c:129 ../src/import-export-dialog.c:168
-#: ../src/import-export-dialog.c:472 ../src/main-window.c:195
-#: ../src/preferences-dialog.c:181 ../src/search-dialog.c:97
-#: ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "No se pudo cargar el archivo de interfaz de usuario «%s»"
+#: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
+#: ../src/import-export-dialog.c:474 ../src/main-window.c:210
+#: ../src/preferences-dialog.c:179 ../src/search-dialog.c:95
+#: ../src/uri-entry-dialog.c:126
+#| msgid "UI file \"%s\" could not be loaded"
+msgid "UI data could not be loaded"
+msgstr "No se pudieron cargar los datos de la interfaz de usuario"
 
 #: ../src/entry.c:303
 #, c-format
@@ -411,52 +328,117 @@ msgstr ""
 msgid "Error changing exported file permissions: %s"
 msgstr "Error al cambiar los permisos del archivo exportado: %s"
 
-#: ../src/import-export-dialog.c:202
+#: ../src/gtk/menus.ui.h:1
+msgid "_Search"
+msgstr "_Buscar"
+
+#: ../src/gtk/menus.ui.h:2
+msgid "Pr_eferences"
+msgstr "Prefere_ncias"
+
+#. Set the button label
+#: ../src/gtk/menus.ui.h:3 ../src/import-export-dialog.c:209
+msgid "_Import"
+msgstr "_Importar"
+
+#: ../src/gtk/menus.ui.h:4 ../src/import-export-dialog.c:209
+msgid "_Export"
+msgstr "_Exportar"
+
+#: ../src/gtk/menus.ui.h:5
+msgid "_Print diary"
+msgstr "_imprimir diario"
+
+#: ../src/gtk/menus.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "A_cerca del Diario Almanah"
+
+#: ../src/gtk/menus.ui.h:7
+msgid "_Quit"
+msgstr "_Salir"
+
+#: ../src/gtk/menus.ui.h:8
+msgid "_Bold"
+msgstr "_Negrita"
+
+#: ../src/gtk/menus.ui.h:9
+msgid "_Italic"
+msgstr "_Cursiva"
+
+#: ../src/gtk/menus.ui.h:10
+msgid "_Underline"
+msgstr "S_ubrayado"
+
+#: ../src/gtk/menus.ui.h:11
+msgid "_Cut"
+msgstr "_Cortar"
+
+#: ../src/gtk/menus.ui.h:12
+msgid "_Copy"
+msgstr "_Copiar"
+
+#: ../src/gtk/menus.ui.h:13
+msgid "_Paste"
+msgstr "_Pegar"
+
+#: ../src/gtk/menus.ui.h:14
+msgid "_Delete"
+msgstr "_Eliminar"
+
+#: ../src/gtk/menus.ui.h:15
+msgid "Insert _Time"
+msgstr "Insertar _hora"
+
+#: ../src/gtk/menus.ui.h:16
+msgid "Add/Remove _Hyperlink"
+msgstr "Añadir/Quitar _hiperenlace"
+
+#: ../src/import-export-dialog.c:203
 msgid "Import _mode: "
 msgstr "_Modo importar: "
 
-#: ../src/import-export-dialog.c:202
+#: ../src/import-export-dialog.c:203
 msgid "Export _mode: "
 msgstr "_Modo exportar: "
 
 #. Set the window title
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:206
 msgid "Import Entries"
 msgstr "Importar entradas"
 
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:206
 msgid "Export Entries"
 msgstr "Exportar entradas"
 
-#: ../src/import-export-dialog.c:245
+#: ../src/import-export-dialog.c:246
 msgid "Import failed"
 msgstr "Falló la importación"
 
-#: ../src/import-export-dialog.c:283
+#: ../src/import-export-dialog.c:284
 msgid "Export failed"
 msgstr "Falló la exportación"
 
-#: ../src/import-export-dialog.c:296
+#: ../src/import-export-dialog.c:297
 msgid "Export successful"
 msgstr "Exportación satisfactoria"
 
-#: ../src/import-export-dialog.c:297
+#: ../src/import-export-dialog.c:298
 msgid "The diary was successfully exported."
 msgstr "El diario se exportó de forma satisfactoria."
 
-#: ../src/import-export-dialog.c:445
+#: ../src/import-export-dialog.c:446
 msgid "Import Results"
 msgstr "Importar resultados"
 
 #. Translators: This is a strftime()-format string for the dates displayed in import results.
 #. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
 #. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
-#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:309
+#: ../src/import-export-dialog.c:541 ../src/main-window.c:568
+#: ../src/main-window.c:598 ../src/main-window.c:1200 ../src/printing.c:263
+#: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
 
@@ -506,38 +488,38 @@ msgstr ""
 "Entrada importada desde \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:571
+#: ../src/main-window.c:572
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "¿Está seguro de que quiere editar esta entrada del diario para %s?"
 
-#: ../src/main-window.c:601
+#: ../src/main-window.c:602
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "¿Está seguro de que quiere borrar esta entrada del diario para %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:710
+#: ../src/main-window.c:711
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Etiqueta de texto «%s» desconocida o duplicada en la entrada. Ignorando."
 
-#: ../src/main-window.c:918
+#: ../src/main-window.c:948
 msgid "Error opening URI"
 msgstr "Error abriendo URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1092
+#: ../src/main-window.c:1127
 #, c-format
 msgid "%s @ %s"
 msgstr "%s - %s"
 
-#: ../src/main-window.c:1171
+#: ../src/main-window.c:1233
 msgid "Entry content could not be loaded"
 msgstr "No se pudo cargar el contenido de la entrada: %s"
 
-#: ../src/main-window.c:1348
+#: ../src/main-window.c:1352
 msgid "Spelling checker could not be initialized"
 msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
@@ -546,28 +528,28 @@ msgid "Almanah Preferences"
 msgstr "Preferencias de Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:206
+#: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Clave de cifrado: "
 
-#: ../src/preferences-dialog.c:211
+#: ../src/preferences-dialog.c:209
 msgid "None (don't encrypt)"
 msgstr "Ninguna (no cifrar)"
 
-#: ../src/preferences-dialog.c:235
+#: ../src/preferences-dialog.c:233
 msgid "New _Key"
 msgstr "_Clave nueva"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:241
+#: ../src/preferences-dialog.c:239
 msgid "Enable _spell checking"
 msgstr "Activar la corrección ortográfica"
 
-#: ../src/preferences-dialog.c:266
+#: ../src/preferences-dialog.c:264
 msgid "Error saving the encryption key"
 msgstr "Error al guardar la clave de cifrado: %s"
 
-#: ../src/preferences-dialog.c:285
+#: ../src/preferences-dialog.c:283
 msgid "Error opening Seahorse"
 msgstr "Error al abrir Seahorse: %s"
 
@@ -592,25 +574,25 @@ msgstr "Fecha de finalización:"
 msgid "Line spacing:"
 msgstr "Espaciado de líneas:"
 
-#: ../src/search-dialog.c:223
+#: ../src/search-dialog.c:221
 msgid "Search canceled."
 msgstr "Búsqueda cancelada"
 
 #. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
-#: ../src/search-dialog.c:226
+#: ../src/search-dialog.c:224
 #, c-format
 msgid "Error: %s"
 msgstr "Error: %s"
 
 #. Success!
-#: ../src/search-dialog.c:231
+#: ../src/search-dialog.c:229
 #, c-format
 msgid "Found %d entry:"
 msgid_plural "Found %d entries:"
 msgstr[0] "Encontrada %d entrada:"
 msgstr[1] "Encontradas %d entradas:"
 
-#: ../src/search-dialog.c:280
+#: ../src/search-dialog.c:278
 msgid "Searching…"
 msgstr "Buscando…"
 
@@ -724,12 +706,13 @@ msgstr "Error al descifrar la base de datos: %s"
 msgid "Error changing database file permissions: %s"
 msgstr "Error al cambiar los permisos del archivo de la base de datos: %s"
 
-#: ../src/widgets/calendar-button.c:140
+#: ../src/widgets/calendar-button.c:142
 #, c-format
-msgid "UI file \"%s\" could not be loaded: %s"
-msgstr "No se pudo cargar el archivo de interfaz de usuario «%s»: %s"
+#| msgid "UI file \"%s\" could not be loaded: %s"
+msgid "UI data could not be loaded: %s"
+msgstr "No se pudieron cargar los datos de la interfaz de usuario: %s"
 
-#: ../src/widgets/calendar-button.c:150
+#: ../src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
 msgstr ""
 "No se puede cargar el objeto de ventana de calendario desde el archivo de IU"
@@ -738,10 +721,6 @@ msgstr ""
 #: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Importante"
-
-#: ../src/widgets/calendar-window.c:80
-msgid "Unknown input device"
-msgstr "Dispositivo de entrada desconocido"
 
 #: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
@@ -763,6 +742,50 @@ msgstr "Quitar etiqueta"
 #: ../src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Etiquetar entrada"
+
+#~ msgid "F_ormat"
+#~ msgstr "F_ormato"
+
+#~ msgid "Toggle whether the currently selected text is bold."
+#~ msgstr "Cambiar si el texto seleccionado actualmente está en negrita."
+
+#~ msgid "Toggle whether the currently selected text is italic."
+#~ msgstr "Cambiar si el texto seleccionado actualmente está en cursiva."
+
+#~ msgid "Toggle whether the currently selected text is underlined."
+#~ msgstr "Cambiar si el texto seleccionado actualmente está subrayado."
+
+#~ msgid ""
+#~ "Add or remove a hyperlink from the currently selected text to a specified "
+#~ "URI."
+#~ msgstr ""
+#~ "Añadir o quitar un hiperenlace desde el texto actualmente seleccionado a "
+#~ "un URI especificado."
+
+#~ msgid "I_mportant"
+#~ msgstr "I_mportante"
+
+#~ msgid "Toggle whether the current entry is marked as important."
+#~ msgstr "Cambiar si la entrada actual es marcada como importante."
+
+#~ msgid "Show tags"
+#~ msgstr "Mostrar etiquetas"
+
+#~ msgid "Show tags for the current entry"
+#~ msgstr "Mostrar etiquetas para la entrada actual"
+
+#~ msgid "_Help"
+#~ msgstr "Ay_uda"
+
+#~ msgid "Jump to the current date in the diary."
+#~ msgstr "Saltar a la fecha actual en el diario."
+
+#~| msgid "Error closing file: %s"
+#~ msgid "Error loading resources file: %s"
+#~ msgstr "Error al cargar el archivo de recursos: %s"
+
+#~ msgid "Unknown input device"
+#~ msgstr "Dispositivo de entrada desconocido"
 
 #~ msgid ""
 #~ "The encrypted database is empty. The plain database file has been left "
