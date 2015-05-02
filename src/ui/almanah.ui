@@ -93,8 +93,8 @@
 										<property name="horizontal-spacing">6</property>
 										<property name="vertical-spacing">6</property>
 										<property name="margin_top">0</property>
-										<property name="margin_left">0</property>
-										<property name="margin_right">0</property>
+										<property name="margin_start">0</property>
+										<property name="margin_end">0</property>
 										<property name="margin_bottom">0</property>
 										<property name="border-width">6</property>
 									</object>
@@ -124,8 +124,8 @@
 												<property name="has-focus">True</property>
 												<property name="wrap-mode">GTK_WRAP_WORD</property>
 												<property name="margin_top">6</property>
-												<property name="margin_left">10</property>
-												<property name="margin_right">10</property>
+												<property name="margin_start">10</property>
+												<property name="margin_end">10</property>
 												<property name="margin_top">4</property>
 												<child internal-child="accessible">
 													<object class="AtkObject" id="a11y-almanah_mw_entry_view">
