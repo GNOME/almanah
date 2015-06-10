@@ -293,7 +293,7 @@ open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *ope
 			return FALSE;
 		}
 	} else {
-		/* Open the encrypted file */
+		/* Open the plain file */
 		operation->plain_io_channel = g_io_channel_new_file (self->plain_filename, encrypting ? "r" : "w", &io_error);
 		if (operation->plain_io_channel == NULL) {
 			g_critical (_("Can't create a new GIOChannel for the plain database: %s"), io_error->message);
