@@ -165,5 +165,6 @@ data/icons/48x48/Makefile
 data/icons/256x256/Makefile
 data/icons/scalable/Makefile
 data/org.gnome.almanah.gschema.xml
+tests/Makefile
 ])
 AC_OUTPUT
