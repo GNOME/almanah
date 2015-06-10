@@ -437,6 +437,7 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 	AlmanahStorageManager *database;
 	AlmanahStorageManagerIter iter;
 	gboolean success = FALSE;
+	GSettings *settings;
 
 	/* Get the display name for use with set_entry(), below */
 	file_info = g_file_query_info (source, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NONE, cancellable, error);
@@ -448,7 +449,9 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 
 	/* Open the database */
 	path = g_file_get_path (source);
-	database = almanah_storage_manager_new (path);
+	settings = g_settings_new ("org.gnome.almanah");
+	database = almanah_storage_manager_new (path, settings);
+	g_object_unref (settings);
 	g_free (path);
 
 	/* Connect to the database */

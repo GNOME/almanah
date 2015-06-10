@@ -92,6 +92,8 @@ struct _AlmanahSQLiteVFS
 	gsize    plain_buffer_size;     /* Reserved memory size */
 	goffset  plain_offset;
 	gsize    plain_size;            /* Data size (plain_size <= plain_buffer_size) */
+
+	GSettings *settings;
 };
 
 typedef struct _CipherOperation CipherOperation;
@@ -440,15 +442,13 @@ encrypt_database (AlmanahSQLiteVFS *self,  const gchar *encryption_key, gboolean
 }
 
 static gchar *
-get_encryption_key (void)
+get_encryption_key (AlmanahSQLiteVFS *self)
 {
-	GSettings *settings;
 	gchar *encryption_key;
 	gchar **key_parts;
 	guint i;
 
-	settings = g_settings_new ("org.gnome.almanah");
-	encryption_key = g_settings_get_string (settings, "encryption-key");
+	encryption_key = g_settings_get_string (self->settings, "encryption-key");
 	if (encryption_key == NULL || encryption_key[0] == '\0') {
 		g_free (encryption_key);
 		return NULL;
@@ -606,7 +606,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 	GError *child_error = NULL;
 	int rc;
 
-	encryption_key = get_encryption_key ();
+	encryption_key = get_encryption_key (self);
 	if (encryption_key == NULL) {
 		if (self->decrypted) {
 			/* Save the data from memory to plain file */
@@ -928,11 +928,11 @@ almanah_vfs_io_device_characteristis(__attribute__ ((unused)) sqlite3_file *pFil
 ** Open a file handle.
 */
 static int
-almanah_vfs_open (__attribute__ ((unused)) sqlite3_vfs *pVfs,
-	  const char *zName,
-	  sqlite3_file *pFile,
-	  int flags,
-	  int *pOutFlags)
+almanah_vfs_open (sqlite3_vfs *pVfs,
+		  const char *zName,
+		  sqlite3_file *pFile,
+		  int flags,
+		  int *pOutFlags)
 {
 	static const sqlite3_io_methods almanah_vfs_io = {
 		1,
@@ -1057,6 +1057,7 @@ almanah_vfs_open (__attribute__ ((unused)) sqlite3_vfs *pVfs,
 		}
 	}
 
+	self->settings = (GSettings *) pVfs->pAppData;
 	self->base.pMethods = &almanah_vfs_io;
 
 	return SQLITE_OK;
@@ -1246,33 +1247,33 @@ almanah_vfs_current_time (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pT
 **   sqlite3_vfs_register(sqlite3_demovfs(), 0);
 */
 sqlite3_vfs*
-sqlite3_almanah_vfs (void)
+sqlite3_almanah_vfs (GSettings *settings)
 {
-	static sqlite3_vfs almanah_vfs = {
-		1,
-		sizeof(AlmanahSQLiteVFS),
-		MAXPATHNAME,
-		0,
-		"almanah",
-		0,
-		almanah_vfs_open,
-		almanah_vfs_delete,
-		almanah_vfs_access,
-		almanah_vfs_full_pathname,
-		almanah_vfs_dl_open,
-		almanah_vfs_dl_error,
-		almanah_vfs_dl_sym,
-		almanah_vfs_dl_close,
-		almanah_vfs_randomness,
-		almanah_vfs_sleep,
-		almanah_vfs_current_time,
-	};
+	sqlite3_vfs *almanah_vfs;
 
-	return &almanah_vfs;
+	almanah_vfs = (sqlite3_vfs *) g_new0(sqlite3_vfs, 1);
+	almanah_vfs->iVersion = 1;
+	almanah_vfs->szOsFile = sizeof(AlmanahSQLiteVFS);
+	almanah_vfs->mxPathname = MAXPATHNAME;
+	almanah_vfs->zName = "almanah";
+	almanah_vfs->pAppData = settings;
+	almanah_vfs->xOpen = almanah_vfs_open;
+	almanah_vfs->xDelete = almanah_vfs_delete;
+	almanah_vfs->xAccess = almanah_vfs_access;
+	almanah_vfs->xFullPathname = almanah_vfs_full_pathname;
+	almanah_vfs->xDlOpen = almanah_vfs_dl_open;
+	almanah_vfs->xDlError = almanah_vfs_dl_error;
+	almanah_vfs->xDlSym  = almanah_vfs_dl_sym;
+	almanah_vfs->xDlClose = almanah_vfs_dl_close;
+	almanah_vfs->xRandomness = almanah_vfs_randomness;
+	almanah_vfs->xSleep = almanah_vfs_sleep;
+	almanah_vfs->xCurrentTime = almanah_vfs_current_time;
+
+	return almanah_vfs;
 }
 
 int
-almanah_vfs_init (void)
+almanah_vfs_init (GSettings *settings)
 {
-	return sqlite3_vfs_register (sqlite3_almanah_vfs (), 0);
+	return sqlite3_vfs_register (sqlite3_almanah_vfs (settings), 0);
 }

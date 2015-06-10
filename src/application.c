@@ -247,7 +247,7 @@ startup (GApplication *application)
 
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
-	priv->storage_manager = almanah_storage_manager_new (db_filename);
+	priv->storage_manager = almanah_storage_manager_new (db_filename, priv->settings);
 	g_free (db_filename);
 
 	if (almanah_storage_manager_connect (priv->storage_manager, &error) == FALSE) {

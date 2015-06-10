@@ -42,10 +42,12 @@ static gboolean simple_query (AlmanahStorageManager *self, const gchar *query, G
 struct _AlmanahStorageManagerPrivate {
 	gchar *filename;
 	sqlite3 *connection;
+	GSettings *settings;
 };
 
 enum {
 	PROP_FILENAME = 1,
+	PROP_SETTINGS
 };
 
 enum {
@@ -85,6 +87,12 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                      "Database filename", "The path and filename for the unencrypted SQLite database.",
 	                                                      NULL,
 	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	g_object_class_install_property (gobject_class, PROP_SETTINGS,
+	                                 g_param_spec_object ("settings",
+	                                                      "The application settings object", "The application settings object to retrieve encryption key.",
+	                                                      G_TYPE_SETTINGS,
+	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
 	storage_manager_signals[SIGNAL_DISCONNECTED] = g_signal_new ("disconnected",
 	                                                             G_TYPE_FROM_CLASS (klass),
@@ -134,20 +142,22 @@ almanah_storage_manager_init (AlmanahStorageManager *self)
 /**
  * almanah_storage_manager_new:
  * @filename: database filename to open
+ * @settings: the %GSettings used to retrieve encryption key
  *
- * Creates a new #AlmanahStorageManager, connected to the given database @filename.
- *
- * If @encryption_key is %NULL, encryption will be disabled.
+ * Creates a new #AlmanahStorageManager, connected to the given database @filename, using
+ * GSettings to retrieve the encryption key configured by the user in order to encrypt
+ * the database.
  *
  * Return value: the new #AlmanahStorageManager
  **/
 AlmanahStorageManager *
-almanah_storage_manager_new (const gchar *filename)
+almanah_storage_manager_new (const gchar *filename, GSettings *settings)
 {
 	AlmanahStorageManager *sm;
 
 	sm = g_object_new (ALMANAH_TYPE_STORAGE_MANAGER,
 	                   "filename", filename,
+			   "settings", settings,
 	                   NULL);
 
 	return sm;
@@ -173,6 +183,9 @@ almanah_storage_manager_get_property (GObject *object, guint property_id, GValue
 		case PROP_FILENAME:
 			g_value_set_string (value, g_strdup (priv->filename));
 			break;
+		case PROP_SETTINGS:
+			g_value_set_object (value, priv->settings);
+			break;
 		default:
 			/* We don't have any other property... */
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -190,6 +203,10 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 			if (priv->filename)
 				g_free (priv->filename);
 			priv->filename = g_strdup (g_value_get_string (value));
+			break;
+		case PROP_SETTINGS:
+			g_clear_object (&priv->settings);
+			g_set_object (&priv->settings, g_value_get_object (value));
 			break;
 		default:
 			/* We don't have any other property... */
@@ -224,7 +241,7 @@ gboolean
 almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 {
 	/* Our beautiful SQLite VFS */
-	almanah_vfs_init();
+	almanah_vfs_init(self->priv->settings);
 
 	/* Open the plain database */
 	if (sqlite3_open_v2 (self->priv->filename, &(self->priv->connection), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah") != SQLITE_OK) {

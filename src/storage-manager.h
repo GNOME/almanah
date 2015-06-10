@@ -22,6 +22,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <gio/gio.h>
 
 #include "entry.h"
 
@@ -68,7 +69,7 @@ typedef void (*AlmanahStorageManagerSearchCallback) (AlmanahStorageManager *stor
 
 GType almanah_storage_manager_get_type (void);
 GQuark almanah_storage_manager_error_quark (void);
-AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
+AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename, GSettings *settings) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 gboolean almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error);
 gboolean almanah_storage_manager_disconnect (AlmanahStorageManager *self, GError **error);
