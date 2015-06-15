@@ -28,7 +28,8 @@
 
 #include "../src/vfs.h"
 
-#define ALMANAH_TEST_VFS_DATABASE "/tmp/almanah_tests.db"
+#define ALMANAH_TEST_VFS_DATABASE           "almanah_tests.db"
+#define ALMANAH_TEST_VFS_DATABASE_ENCRYPTED "almanah_tests.db.encrypted"
 
 struct AlmanahTestVfsFixture {
 	sqlite3 *db;
@@ -36,6 +37,8 @@ struct AlmanahTestVfsFixture {
 	GSettings *settings;
 	gpgme_ctx_t gpgme_context;
 	gchar *key_fpr;
+	gchar *tmp_dir;
+	gchar *db_file;
 };
 
 static GSettings*
@@ -55,7 +58,11 @@ almanah_test_setup_memory_gsettings (void)
 static void
 almanah_test_vfs_plain_setup (struct AlmanahTestVfsFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
-	g_unlink (ALMANAH_TEST_VFS_DATABASE);
+	GError *error = NULL;
+
+	fixture->tmp_dir = g_dir_make_tmp ("almanah_XXXXXX", &error);
+	g_assert_no_error (error);
+	fixture->db_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE, NULL);
 
 	fixture->settings = almanah_test_setup_memory_gsettings ();
 	g_settings_set_string (fixture->settings, "encryption-key" , "");
@@ -70,6 +77,7 @@ almanah_test_vfs_plain_setup (struct AlmanahTestVfsFixture *fixture, __attribute
 static void
 almanah_test_vfs_enc_setup (struct AlmanahTestVfsFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
+	GError *error = NULL;
 	gpgme_error_t gpgme_error;
 	gchar *encryption_key;
 	const char parms[] =
@@ -88,8 +96,9 @@ almanah_test_vfs_enc_setup (struct AlmanahTestVfsFixture *fixture, __attribute__
                 "</GnupgKeyParms>\n";
         gpgme_genkey_result_t gpgme_key_result = NULL;
 
-	g_unlink (ALMANAH_TEST_VFS_DATABASE);
-	g_unlink (ALMANAH_TEST_VFS_DATABASE".encrypted");
+	fixture->tmp_dir = g_dir_make_tmp ("almanah_XXXXXX", &error);
+	g_assert_no_error (error);
+	fixture->db_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE, NULL);
 
 	fixture->settings = almanah_test_setup_memory_gsettings ();
 
@@ -149,14 +158,31 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 
 	almanah_vfs_finish ();
 
-	g_unlink (ALMANAH_TEST_VFS_DATABASE);
-	g_unlink (ALMANAH_TEST_VFS_DATABASE".encrypted");
+	if (fixture->db_file) {
+		gchar *enc_file;
+
+		/* Encrypted DB */
+		enc_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE_ENCRYPTED, NULL);
+		g_unlink (enc_file);
+		g_free (enc_file);
+
+		/* Backup encrypted DB */
+		enc_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE_ENCRYPTED"~", NULL);
+		g_unlink (enc_file);
+		g_free (enc_file);
+
+		g_unlink (fixture->db_file);
+		g_free (fixture->db_file);
+	}
+	if (fixture->tmp_dir) {
+		g_rmdir (fixture->tmp_dir);
+		g_free (fixture->tmp_dir);
+	}
 }
 
 static void
 almanah_test_vfs_plain_teardown (struct AlmanahTestVfsFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
-
 	if (fixture->statement != NULL)
 		sqlite3_finalize (fixture->statement);
 
@@ -165,7 +191,15 @@ almanah_test_vfs_plain_teardown (struct AlmanahTestVfsFixture *fixture, __attrib
 
 	almanah_vfs_finish ();
 
-	g_unlink (ALMANAH_TEST_VFS_DATABASE);
+	if (fixture->db_file) {
+		g_unlink (fixture->db_file);
+		g_free (fixture->db_file);
+	}
+
+	if (fixture->tmp_dir) {
+		g_rmdir (fixture->tmp_dir);
+		g_free (fixture->tmp_dir);
+	}
 }
 
 static void
@@ -174,9 +208,10 @@ almanah_test_vfs_encrypted (struct AlmanahTestVfsFixture *fixture, __attribute__
 	gint rc;
 	gchar *error_msg = 0;
 	const guchar *entry_content = NULL;
+	gchar *enc_file;
 
 	/* Create the database */
-	rc = sqlite3_open_v2 (ALMANAH_TEST_VFS_DATABASE, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
+	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
 	if (rc != SQLITE_OK)
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
 	g_assert_cmpint (rc, ==, SQLITE_OK);
@@ -201,10 +236,12 @@ almanah_test_vfs_encrypted (struct AlmanahTestVfsFixture *fixture, __attribute__
 	fixture->db = NULL;
 
 	/* Ensure the encrypted file */
-	g_assert (g_file_test (ALMANAH_TEST_VFS_DATABASE".encrypted", G_FILE_TEST_IS_REGULAR));
+	enc_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE_ENCRYPTED, NULL);
+	g_assert (g_file_test (enc_file, G_FILE_TEST_IS_REGULAR));
+	g_free (enc_file);
 
 	/* Reopen the database */
-	rc = sqlite3_open_v2 (ALMANAH_TEST_VFS_DATABASE, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
+	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
 	if (rc != SQLITE_OK)
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
 	g_assert_cmpint (rc, ==, SQLITE_OK);
@@ -234,7 +271,7 @@ almanah_test_vfs_plain_open (struct AlmanahTestVfsFixture *fixture, __attribute_
 {
 	gint rc;
 
-	rc = sqlite3_open_v2 (ALMANAH_TEST_VFS_DATABASE, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
+	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
 	if (rc != SQLITE_OK)
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
 	g_assert_cmpint (rc, ==, SQLITE_OK);
@@ -250,7 +287,7 @@ almanah_test_vfs_plain_data (struct AlmanahTestVfsFixture *fixture, __attribute_
 	gchar *error_msg = 0;
 	const guchar *entry_content = NULL;
 
-	rc = sqlite3_open_v2 (ALMANAH_TEST_VFS_DATABASE, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
+	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
 	if (rc != SQLITE_OK)
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
 	g_assert_cmpint (rc, ==, SQLITE_OK);
@@ -272,7 +309,7 @@ almanah_test_vfs_plain_data (struct AlmanahTestVfsFixture *fixture, __attribute_
 	sqlite3_close(fixture->db);
 	fixture->db = NULL;
 
-	rc = sqlite3_open_v2 (ALMANAH_TEST_VFS_DATABASE, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
+	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
 	if (rc != SQLITE_OK)
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
 	g_assert_cmpint (rc, ==, SQLITE_OK);
