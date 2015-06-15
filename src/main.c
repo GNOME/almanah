@@ -32,7 +32,6 @@ main (int argc, char *argv[])
 #if !GLIB_CHECK_VERSION (2, 31, 0)
 	g_thread_init (NULL);
 #endif
-	g_type_init ();
 
 	application = almanah_application_new ();
 	status = g_application_run (G_APPLICATION (application), argc, argv);
