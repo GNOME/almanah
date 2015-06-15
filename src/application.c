@@ -446,6 +446,7 @@ action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user
 	application = ALMANAH_APPLICATION (user_data);
 	settings = almanah_application_dup_settings (application);
 	dialog = almanah_preferences_dialog_new (settings);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (application->priv->main_window));
 	g_object_unref (settings);
 
 	gtk_widget_show_all (GTK_WIDGET (dialog));
