@@ -575,6 +575,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 					_("_Cancel"), GTK_RESPONSE_REJECT,
 					_("_Edit"), GTK_RESPONSE_ACCEPT,
 					NULL);
+		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
 		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
@@ -605,6 +606,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 					_("_Cancel"), GTK_RESPONSE_REJECT,
 					_("_Delete"), GTK_RESPONSE_ACCEPT,
 					NULL);
+		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
 		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
