@@ -147,6 +147,8 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 		gpgme_release (fixture->gpgme_context);
 	}
 
+	almanah_vfs_finish ();
+
 	g_unlink (ALMANAH_TEST_VFS_DATABASE);
 	g_unlink (ALMANAH_TEST_VFS_DATABASE".encrypted");
 }
@@ -160,6 +162,8 @@ almanah_test_vfs_plain_teardown (struct AlmanahTestVfsFixture *fixture, __attrib
 
 	if (fixture->db != NULL)
 		sqlite3_close (fixture->db);
+
+	almanah_vfs_finish ();
 
 	g_unlink (ALMANAH_TEST_VFS_DATABASE);
 }

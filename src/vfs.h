@@ -19,4 +19,5 @@
 
 #include <gio/gio.h>
 
-int almanah_vfs_init(GSettings *settings);
+int  almanah_vfs_init   (GSettings *settings);
+void almanah_vfs_finish (void);

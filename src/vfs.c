@@ -53,6 +53,10 @@
 
 #include <config.h>
 
+/* VFS singleton and not a sqlite3_vfs static struct
+   due GSettings is setup in initialization time */
+static sqlite3_vfs *almanah_vfs_singleton = NULL;
+
 #define ENCRYPTED_SUFFIX ".encrypted"
 
 /*
@@ -1244,36 +1248,46 @@ almanah_vfs_current_time (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pT
 ** This function returns a pointer to the VFS implemented in this file.
 ** To make the VFS available to SQLite:
 **
-**   sqlite3_vfs_register(sqlite3_demovfs(), 0);
+**   sqlite3_vfs_register(sqlite3_almanah_vfs(settings), 0);
 */
 sqlite3_vfs*
 sqlite3_almanah_vfs (GSettings *settings)
 {
-	sqlite3_vfs *almanah_vfs;
+	if (almanah_vfs_singleton == NULL) {
+		almanah_vfs_singleton = (sqlite3_vfs *) g_new0(sqlite3_vfs, 1);
+		almanah_vfs_singleton->iVersion = 1;
+		almanah_vfs_singleton->szOsFile = sizeof(AlmanahSQLiteVFS);
+		almanah_vfs_singleton->mxPathname = MAXPATHNAME;
+		almanah_vfs_singleton->zName = "almanah";
+		almanah_vfs_singleton->pAppData = settings;
+		almanah_vfs_singleton->xOpen = almanah_vfs_open;
+		almanah_vfs_singleton->xDelete = almanah_vfs_delete;
+		almanah_vfs_singleton->xAccess = almanah_vfs_access;
+		almanah_vfs_singleton->xFullPathname = almanah_vfs_full_pathname;
+		almanah_vfs_singleton->xDlOpen = almanah_vfs_dl_open;
+		almanah_vfs_singleton->xDlError = almanah_vfs_dl_error;
+		almanah_vfs_singleton->xDlSym  = almanah_vfs_dl_sym;
+		almanah_vfs_singleton->xDlClose = almanah_vfs_dl_close;
+		almanah_vfs_singleton->xRandomness = almanah_vfs_randomness;
+		almanah_vfs_singleton->xSleep = almanah_vfs_sleep;
+		almanah_vfs_singleton->xCurrentTime = almanah_vfs_current_time;
+	}
 
-	almanah_vfs = (sqlite3_vfs *) g_new0(sqlite3_vfs, 1);
-	almanah_vfs->iVersion = 1;
-	almanah_vfs->szOsFile = sizeof(AlmanahSQLiteVFS);
-	almanah_vfs->mxPathname = MAXPATHNAME;
-	almanah_vfs->zName = "almanah";
-	almanah_vfs->pAppData = settings;
-	almanah_vfs->xOpen = almanah_vfs_open;
-	almanah_vfs->xDelete = almanah_vfs_delete;
-	almanah_vfs->xAccess = almanah_vfs_access;
-	almanah_vfs->xFullPathname = almanah_vfs_full_pathname;
-	almanah_vfs->xDlOpen = almanah_vfs_dl_open;
-	almanah_vfs->xDlError = almanah_vfs_dl_error;
-	almanah_vfs->xDlSym  = almanah_vfs_dl_sym;
-	almanah_vfs->xDlClose = almanah_vfs_dl_close;
-	almanah_vfs->xRandomness = almanah_vfs_randomness;
-	almanah_vfs->xSleep = almanah_vfs_sleep;
-	almanah_vfs->xCurrentTime = almanah_vfs_current_time;
-
-	return almanah_vfs;
+	return almanah_vfs_singleton;
 }
 
 int
 almanah_vfs_init (GSettings *settings)
 {
 	return sqlite3_vfs_register (sqlite3_almanah_vfs (settings), 0);
+}
+
+void
+almanah_vfs_finish (void)
+{
+	if (almanah_vfs_singleton)
+		sqlite3_vfs_unregister (almanah_vfs_singleton);
+
+	g_free (almanah_vfs_singleton);
+	almanah_vfs_singleton = NULL;
 }

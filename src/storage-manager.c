@@ -268,6 +268,7 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, __attribute__ (
 	else
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 
+	almanah_vfs_finish();
 
 	return TRUE;
 }
