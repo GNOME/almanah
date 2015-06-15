@@ -572,8 +572,8 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 						 _("Are you sure you want to edit this diary entry for %s?"),
 						 date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-					GTK_STOCK_EDIT, GTK_RESPONSE_ACCEPT,
+					_("_Cancel"), GTK_RESPONSE_REJECT,
+					_("_Edit"), GTK_RESPONSE_ACCEPT,
 					NULL);
 
 		gtk_widget_show_all (dialog);
@@ -602,8 +602,8 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 						 _("Are you sure you want to delete this diary entry for %s?"),
 						 date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-					GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
+					_("_Cancel"), GTK_RESPONSE_REJECT,
+					_("_Delete"), GTK_RESPONSE_ACCEPT,
 					NULL);
 
 		gtk_widget_show_all (dialog);
