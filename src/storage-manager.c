@@ -205,7 +205,6 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 			priv->filename = g_strdup (g_value_get_string (value));
 			break;
 		case PROP_SETTINGS:
-			g_clear_object (&priv->settings);
 			g_set_object (&priv->settings, g_value_get_object (value));
 			break;
 		default:
