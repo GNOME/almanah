@@ -1,4 +1,5 @@
-TESTS = almanah_gtests
+TESTS = \
+	vfs
 
 
 CFLAGS = \
@@ -10,7 +11,7 @@ LDADD = \
 
 noinst_PROGRAMS = $(TESTS)
 
-almanah_gtests_SOURCES = \
+vfs_SOURCES = \
 	../src/vfs.h \
 	../src/vfs.c \
-	gtests_vfs.c
+	vfs.c
