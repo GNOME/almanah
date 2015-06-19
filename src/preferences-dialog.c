@@ -80,7 +80,7 @@ almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogPrivate);
 
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
-	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Preferences"));
+	gtk_window_set_title (GTK_WINDOW (self), _("Preferences"));
 	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
 	gtk_window_set_resizable (GTK_WINDOW (self), TRUE); /* needs to be resizeable so long keys can be made visible in the list */
 }
