@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-07 19:56+0000\n"
-"PO-Revision-Date: 2015-03-08 18:40+0100\n"
+"POT-Creation-Date: 2015-06-15 10:49+0000\n"
+"PO-Revision-Date: 2015-06-23 00:07+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at gmail dot com>\n"
 "Language: \n"
@@ -370,7 +370,7 @@ msgstr "_Másolás"
 msgid "_Paste"
 msgstr "_Beillesztés"
 
-#: ../src/gtk/menus.ui.h:14
+#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:607
 msgid "_Delete"
 msgstr "_Törlés"
 
@@ -426,7 +426,7 @@ msgstr "Importálás eredménye"
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
 #: ../src/import-export-dialog.c:541 ../src/main-window.c:568
-#: ../src/main-window.c:598 ../src/main-window.c:1200 ../src/printing.c:263
+#: ../src/main-window.c:599 ../src/main-window.c:1202 ../src/printing.c:263
 #: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%Y. %B %e. %A"
@@ -482,34 +482,42 @@ msgstr ""
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Biztosan szeretné szerkeszteni ezt a naplóbejegyzést ehhez: %s?"
 
-#: ../src/main-window.c:602
+#: ../src/main-window.c:575 ../src/main-window.c:606
+msgid "_Cancel"
+msgstr "_Mégse"
+
+#: ../src/main-window.c:576
+msgid "_Edit"
+msgstr "S_zerkesztés"
+
+#: ../src/main-window.c:603
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Biztosan szeretné törölni ezt a naplóbejegyzést ehhez: %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:711
+#: ../src/main-window.c:713
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Ismeretlen vagy kettőzött szövegcímke a bejegyzésben: „%s”. Figyelmen kívül "
 "hagyva."
 
-#: ../src/main-window.c:948
+#: ../src/main-window.c:950
 msgid "Error opening URI"
 msgstr "Hiba az URI megnyitásakor"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1127
+#: ../src/main-window.c:1129
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1233
+#: ../src/main-window.c:1235
 msgid "Entry content could not be loaded"
 msgstr "A bejegyzés tartalma nem tölthető be"
 
-#: ../src/main-window.c:1352
+#: ../src/main-window.c:1354
 msgid "Spelling checker could not be initialized"
 msgstr "Nem sikerült inicializálni a helyesírás-ellenőrzőt"
 
@@ -586,7 +594,7 @@ msgstr[1] "%d bejegyzés található:"
 msgid "Searching…"
 msgstr "Keresés…"
 
-#: ../src/storage-manager.c:232
+#: ../src/storage-manager.c:248
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -595,7 +603,7 @@ msgstr ""
 "A(z) „%s” adatbázis nem nyitható meg. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:274
+#: ../src/storage-manager.c:291
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -603,7 +611,7 @@ msgstr ""
 "A(z) „%s” lekérdezés nem futtatható. Az SQLite a következő hibaüzenetet "
 "szolgáltatta: %s"
 
-#: ../src/storage-manager.c:580
+#: ../src/storage-manager.c:597
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Hiba a bejegyzés pufferbe történő visszafejtésekor keresés közben."
 
@@ -611,87 +619,87 @@ msgstr "Hiba a bejegyzés pufferbe történő visszafejtésekor keresés közben
 msgid "Enter URI"
 msgstr "Adjon meg egy URI-t"
 
-#: ../src/vfs.c:233
+#: ../src/vfs.c:239
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "A GPGME verziója nincs legalább %s"
 
-#: ../src/vfs.c:240
+#: ../src/vfs.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "A GPGME nem támogatja az OpenPGP-t: %s"
 
-#: ../src/vfs.c:247
+#: ../src/vfs.c:253
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Hiba a rejtjelező kontextus létrehozásakor: %s"
 
-#: ../src/vfs.c:267
+#: ../src/vfs.c:273
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr ""
 "Nem sikerült az új GIOChannel létrehozása a titkosított adatbázishoz: %s"
 
-#: ../src/vfs.c:275
+#: ../src/vfs.c:281
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” titkosított adatbázisfájl megnyitásakor: %s"
 
-#: ../src/vfs.c:291
+#: ../src/vfs.c:297
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Hiba a visszahívás alapadatpuffer létrehozásakor: %s"
 
-#: ../src/vfs.c:299
+#: ../src/vfs.c:305
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Nem sikerült az új GIOChannel létrehozása az egyszerű adatbázishoz: %s"
 
-#: ../src/vfs.c:307
+#: ../src/vfs.c:313
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Hiba a(z) „%s” sima adatbázisfájl megnyitásakor: %s"
 
-#: ../src/vfs.c:403
+#: ../src/vfs.c:409
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Hiba a titkosítási kulcs lekérésekor: %s"
 
-#: ../src/vfs.c:427 ../src/vfs.c:433
+#: ../src/vfs.c:433 ../src/vfs.c:439
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Hiba az adatbázis titkosításakor: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:485
+#: ../src/vfs.c:489
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Hiba a fájl másolásakor: %s -> %s: %s"
 
-#: ../src/vfs.c:491
+#: ../src/vfs.c:495
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr ""
 "Hiba az adatbázis biztonsági mentés fájl jogosultságainak módosításakor: %s"
 
-#: ../src/vfs.c:591
+#: ../src/vfs.c:595
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Hiba a fájl lezárásakor: %s"
 
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:990 ../src/vfs.c:1017
+#: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Hiba a(z) „%s” fájl biztonsági mentésekor"
 
-#: ../src/vfs.c:1003
+#: ../src/vfs.c:1007
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Hiba az adatbázis visszafejtésekor: %s"
 
-#: ../src/vfs.c:1043
+#: ../src/vfs.c:1047
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Hiba az adatbázisfájl jogosultságainak módosításakor: %s"
@@ -792,9 +800,6 @@ msgstr "Címke bejegyzés"
 
 #~ msgid "View Event"
 #~ msgstr "Esemény megjelenítése"
-
-#~ msgid "_Edit"
-#~ msgstr "S_zerkesztés"
 
 #~ msgid "_Export…"
 #~ msgstr "_Exportálás…"
