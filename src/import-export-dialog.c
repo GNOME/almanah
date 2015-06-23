@@ -205,8 +205,9 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 	/* Set the window title */
 	gtk_window_set_title (GTK_WINDOW (import_export_dialog), (import == TRUE) ? _("Import Entries") : _("Export Entries"));
 
-	/* Set the button label */
-	gtk_button_set_label (GTK_BUTTON (priv->import_export_button), (import == TRUE) ? _("_Import") : _("_Export"));
+	/* Set the button label. Translators: These are verbs. */
+	gtk_button_set_label (GTK_BUTTON (priv->import_export_button),
+	                      (import == TRUE) ? C_("Dialog button", "_Import") : C_("Dialog button", "_Export"));
 
 	/* Populate the mode combo box */
 	if (import == TRUE)

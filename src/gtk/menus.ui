@@ -13,11 +13,11 @@
 				<attribute name="action">app.preferences</attribute>
 			</item>
 			<item>
-				<attribute name="label" translatable="yes">_Import</attribute>
+				<attribute name="label" translatable="yes" context="Main menu">_Import</attribute>
 				<attribute name="action">app.import</attribute>
 			</item>
 			<item>
-				<attribute name="label" translatable="yes">_Export</attribute>
+				<attribute name="label" translatable="yes" context="Main menu">_Export</attribute>
 				<attribute name="action">app.export</attribute>
 			</item>
 			<item>
