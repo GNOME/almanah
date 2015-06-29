@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-16 17:31+0200\n"
-"PO-Revision-Date: 2015-06-16 17:32+0200\n"
+"POT-Creation-Date: 2015-06-29 22:54+0200\n"
+"PO-Revision-Date: 2015-06-29 22:55+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -187,7 +187,7 @@ msgstr "Opcje wiersza poleceń nie mogły zostać przetworzone: %s\n"
 msgid "Error encrypting database"
 msgstr "Błąd podczas szyfrowania bazy danych"
 
-#: ../src/application.c:521
+#: ../src/application.c:522
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -199,7 +199,7 @@ msgstr ""
 "przez Fundację Wolnego Oprogramowania (Free Software Foundation) - według "
 "wersji trzeciej tej Licencji lub którejś z późniejszych wersji."
 
-#: ../src/application.c:525
+#: ../src/application.c:526
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -211,7 +211,7 @@ msgstr ""
 "HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
 "bliższych informacji należy zapoznać się z Powszechną Licencją Publiczną GNU."
 
-#: ../src/application.c:529
+#: ../src/application.c:530
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -220,12 +220,12 @@ msgstr ""
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
 "- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:544
+#: ../src/application.c:545
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Pomocny zarządca pamiętnika, przechowuje %u wpisów."
 
-#: ../src/application.c:548
+#: ../src/application.c:549
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -234,18 +234,18 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:556
+#: ../src/application.c:557
 msgid "translator-credits"
 msgstr ""
 "Mateusz Kacprzak <mateusz.kacprzak@yandex.ru>, 2011\n"
 "Piotr Drąg <piotrdrag@gmail.com>, 2012-2015\n"
 "Aviary.pl <gnomepl@aviary.pl>, 2011-2015"
 
-#: ../src/application.c:560
+#: ../src/application.c:561
 msgid "Almanah Website"
 msgstr "Witryna programu Almanah"
 
-#: ../src/application.c:588
+#: ../src/application.c:589
 #, c-format
 msgid ""
 "Couldn't load the CSS resources. The interface might not be styled "
@@ -258,8 +258,8 @@ msgid "Select Date"
 msgstr "Wybór daty"
 
 #: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
-#: ../src/import-export-dialog.c:474 ../src/main-window.c:210
-#: ../src/preferences-dialog.c:179 ../src/search-dialog.c:95
+#: ../src/import-export-dialog.c:475 ../src/main-window.c:210
+#: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
 #: ../src/uri-entry-dialog.c:126
 msgid "UI data could not be loaded"
 msgstr "Nie można wczytać danych interfejsu użytkownika"
@@ -337,12 +337,13 @@ msgstr "Wy_szukaj"
 msgid "Pr_eferences"
 msgstr "_Preferencje"
 
-#. Set the button label
-#: ../src/gtk/menus.ui.h:3 ../src/import-export-dialog.c:209
+#: ../src/gtk/menus.ui.h:3
+msgctxt "Main menu"
 msgid "_Import"
 msgstr "Zai_mportuj"
 
-#: ../src/gtk/menus.ui.h:4 ../src/import-export-dialog.c:209
+#: ../src/gtk/menus.ui.h:4
+msgctxt "Main menu"
 msgid "_Export"
 msgstr "Wy_eksportuj"
 
@@ -411,23 +412,33 @@ msgstr "Import wpisów"
 msgid "Export Entries"
 msgstr "Eksport wpisów"
 
-#: ../src/import-export-dialog.c:246
+#: ../src/import-export-dialog.c:210
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "Zai_mportuj"
+
+#: ../src/import-export-dialog.c:210
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "Wy_eksportuj"
+
+#: ../src/import-export-dialog.c:247
 msgid "Import failed"
 msgstr "Importowanie się nie powiodło"
 
-#: ../src/import-export-dialog.c:284
+#: ../src/import-export-dialog.c:285
 msgid "Export failed"
 msgstr "Eksportowanie się nie powiodło"
 
-#: ../src/import-export-dialog.c:297
+#: ../src/import-export-dialog.c:298
 msgid "Export successful"
 msgstr "Eksportowanie się powiodło"
 
-#: ../src/import-export-dialog.c:298
+#: ../src/import-export-dialog.c:299
 msgid "The diary was successfully exported."
 msgstr "Pamiętnik został pomyślnie wyeksportowany."
 
-#: ../src/import-export-dialog.c:446
+#: ../src/import-export-dialog.c:447
 msgid "Import Results"
 msgstr "Wyniki importowania"
 
@@ -437,7 +448,7 @@ msgstr "Wyniki importowania"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:541 ../src/main-window.c:568
+#: ../src/import-export-dialog.c:542 ../src/main-window.c:568
 #: ../src/main-window.c:599 ../src/main-window.c:1202 ../src/printing.c:263
 #: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
@@ -533,33 +544,33 @@ msgstr "Nie można wczytać treści wpisu"
 msgid "Spelling checker could not be initialized"
 msgstr "Nie można uruchomić sprawdzania pisowni"
 
-#: ../src/preferences-dialog.c:85
+#: ../src/preferences-dialog.c:83
 msgid "Almanah Preferences"
 msgstr "Preferencje programu Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:204
+#: ../src/preferences-dialog.c:202
 msgid "Encryption key: "
 msgstr "Klucz szyfrowania: "
 
-#: ../src/preferences-dialog.c:209
+#: ../src/preferences-dialog.c:207
 msgid "None (don't encrypt)"
 msgstr "Brak (bez szyfrowania)"
 
-#: ../src/preferences-dialog.c:233
+#: ../src/preferences-dialog.c:231
 msgid "New _Key"
 msgstr "Nowy _klucz"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:239
+#: ../src/preferences-dialog.c:237
 msgid "Enable _spell checking"
 msgstr "_Sprawdzanie pisowni"
 
-#: ../src/preferences-dialog.c:264
+#: ../src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
 msgstr "Błąd podczas zapisywania klucza szyfrującego"
 
-#: ../src/preferences-dialog.c:283
+#: ../src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
 msgstr "Błąd podczas otwierania programu Seahorse"
 
