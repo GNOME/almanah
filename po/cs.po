@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-07 19:56+0000\n"
-"PO-Revision-Date: 2015-03-08 22:17+0100\n"
+"POT-Creation-Date: 2015-06-24 11:15+0000\n"
+"PO-Revision-Date: 2015-07-21 15:24+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -180,7 +180,7 @@ msgstr "Nelze zpracovat přepínače příkazového řádku: %s\n"
 msgid "Error encrypting database"
 msgstr "Chyba při šifrování databáze"
 
-#: ../src/application.c:521
+#: ../src/application.c:522
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -192,7 +192,7 @@ msgstr ""
 "Free Software Foundation, a to buď ve verzi 3 této licence nebo (dle vaší "
 "volby) v libovolné novější verzi."
 
-#: ../src/application.c:525
+#: ../src/application.c:526
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -204,7 +204,7 @@ msgstr ""
 "KONKRÉTNÍ ÚČEL. Více podrobností najdete přímo v licenci GNU General Public "
 "License."
 
-#: ../src/application.c:529
+#: ../src/application.c:530
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -213,12 +213,12 @@ msgstr ""
 "License. Pokud se tak nestalo, podívejte se na <http://www.gnu.org/licenses/"
 ">."
 
-#: ../src/application.c:544
+#: ../src/application.c:545
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Užitečný diář na hlídání termínů, uloženo %u záznamů."
 
-#: ../src/application.c:548
+#: ../src/application.c:549
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -227,15 +227,15 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:556
+#: ../src/application.c:557
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
-#: ../src/application.c:560
+#: ../src/application.c:561
 msgid "Almanah Website"
 msgstr "Webové stránky Almanah"
 
-#: ../src/application.c:588
+#: ../src/application.c:589
 #, c-format
 msgid ""
 "Couldn't load the CSS resources. The interface might not be styled "
@@ -248,8 +248,8 @@ msgid "Select Date"
 msgstr "Výběr data"
 
 #: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
-#: ../src/import-export-dialog.c:474 ../src/main-window.c:210
-#: ../src/preferences-dialog.c:179 ../src/search-dialog.c:95
+#: ../src/import-export-dialog.c:475 ../src/main-window.c:210
+#: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
 #: ../src/uri-entry-dialog.c:126
 msgid "UI data could not be loaded"
 msgstr "Nelze načíst data uživatelského rozhraní"
@@ -325,12 +325,13 @@ msgstr "_Hledat"
 msgid "Pr_eferences"
 msgstr "Př_edvolby"
 
-#. Set the button label
-#: ../src/gtk/menus.ui.h:3 ../src/import-export-dialog.c:209
+#: ../src/gtk/menus.ui.h:3
+msgctxt "Main menu"
 msgid "_Import"
 msgstr "_Importovat"
 
-#: ../src/gtk/menus.ui.h:4 ../src/import-export-dialog.c:209
+#: ../src/gtk/menus.ui.h:4
+msgctxt "Main menu"
 msgid "_Export"
 msgstr "_Exportovat"
 
@@ -370,7 +371,7 @@ msgstr "_Kopírovat"
 msgid "_Paste"
 msgstr "V_ložit"
 
-#: ../src/gtk/menus.ui.h:14
+#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:607
 msgid "_Delete"
 msgstr "_Smazat"
 
@@ -399,23 +400,33 @@ msgstr "Import záznamů"
 msgid "Export Entries"
 msgstr "Export záznamů"
 
-#: ../src/import-export-dialog.c:246
+#: ../src/import-export-dialog.c:210
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "_Importovat"
+
+#: ../src/import-export-dialog.c:210
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "_Exportovat"
+
+#: ../src/import-export-dialog.c:247
 msgid "Import failed"
 msgstr "Import selhal"
 
-#: ../src/import-export-dialog.c:284
+#: ../src/import-export-dialog.c:285
 msgid "Export failed"
 msgstr "Export selhal"
 
-#: ../src/import-export-dialog.c:297
+#: ../src/import-export-dialog.c:298
 msgid "Export successful"
 msgstr "Export úspěšný"
 
-#: ../src/import-export-dialog.c:298
+#: ../src/import-export-dialog.c:299
 msgid "The diary was successfully exported."
 msgstr "Diář byl úspěšně vyexportován."
 
-#: ../src/import-export-dialog.c:446
+#: ../src/import-export-dialog.c:447
 msgid "Import Results"
 msgstr "Výsledky importu"
 
@@ -425,8 +436,8 @@ msgstr "Výsledky importu"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:541 ../src/main-window.c:568
-#: ../src/main-window.c:598 ../src/main-window.c:1200 ../src/printing.c:263
+#: ../src/import-export-dialog.c:542 ../src/main-window.c:568
+#: ../src/main-window.c:599 ../src/main-window.c:1202 ../src/printing.c:263
 #: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e. %B %Y"
@@ -483,63 +494,71 @@ msgstr ""
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Opravdu chcete upravit tento záznam v diáři na %s?"
 
-#: ../src/main-window.c:602
+#: ../src/main-window.c:575 ../src/main-window.c:606
+msgid "_Cancel"
+msgstr "_Zrušit"
+
+#: ../src/main-window.c:576
+msgid "_Edit"
+msgstr "_Upravit"
+
+#: ../src/main-window.c:603
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Opravdu chcete smazat tento záznam v diáři na %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:711
+#: ../src/main-window.c:713
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Neznámá nebo duplicitní textová značka „%s“ v záznamu. Bude se ignorovat."
 
-#: ../src/main-window.c:948
+#: ../src/main-window.c:950
 msgid "Error opening URI"
 msgstr "Chyba při otevírání URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1127
+#: ../src/main-window.c:1129
 #, c-format
 msgid "%s @ %s"
 msgstr "%s v %s"
 
-#: ../src/main-window.c:1233
+#: ../src/main-window.c:1235
 msgid "Entry content could not be loaded"
 msgstr "Obsah záznamu nelze načíst"
 
-#: ../src/main-window.c:1352
+#: ../src/main-window.c:1354
 msgid "Spelling checker could not be initialized"
 msgstr "Nelze inicializovat kontrolu pravopisu"
 
-#: ../src/preferences-dialog.c:85
+#: ../src/preferences-dialog.c:83
 msgid "Almanah Preferences"
 msgstr "Předvolby Almanah"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:204
+#: ../src/preferences-dialog.c:202
 msgid "Encryption key: "
 msgstr "Šifrovací klíč:"
 
-#: ../src/preferences-dialog.c:209
+#: ../src/preferences-dialog.c:207
 msgid "None (don't encrypt)"
 msgstr "Žádný (nešifrovat)"
 
-#: ../src/preferences-dialog.c:233
+#: ../src/preferences-dialog.c:231
 msgid "New _Key"
 msgstr "Nový _klíč"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:239
+#: ../src/preferences-dialog.c:237
 msgid "Enable _spell checking"
 msgstr "Zapnout kontrolu pravopi_su"
 
-#: ../src/preferences-dialog.c:264
+#: ../src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
 msgstr "Chyba při ukládání šifrovacího klíče"
 
-#: ../src/preferences-dialog.c:283
+#: ../src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
 msgstr "Chyba při otevírání aplikace Seahorse"
 
@@ -587,7 +606,7 @@ msgstr[2] "Nalezeno %d záznamů:"
 msgid "Searching…"
 msgstr "Hledá se…"
 
-#: ../src/storage-manager.c:232
+#: ../src/storage-manager.c:248
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -596,7 +615,7 @@ msgstr ""
 "Nelze otevřít databázi „%s“. Aplikace SQLite poskytla následující chybovou "
 "zprávu: %s"
 
-#: ../src/storage-manager.c:274
+#: ../src/storage-manager.c:291
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -604,7 +623,7 @@ msgstr ""
 "Nelze spustit dotaz „%s“. Aplikace SQLite poskytla následující chybovou "
 "zprávu: %s"
 
-#: ../src/storage-manager.c:580
+#: ../src/storage-manager.c:597
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledání."
 
@@ -612,86 +631,86 @@ msgstr "Chyba při deserializaci záznamu do vyrovnávací paměti během hledá
 msgid "Enter URI"
 msgstr "Zadání adresy URI"
 
-#: ../src/vfs.c:233
+#: ../src/vfs.c:239
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME není v minimální potřebné verzi %s"
 
-#: ../src/vfs.c:240
+#: ../src/vfs.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME nepodporuje OpenPGP: %s"
 
-#: ../src/vfs.c:247
+#: ../src/vfs.c:253
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Chyba při vytváření kontextu šifry: %s"
 
-#: ../src/vfs.c:267
+#: ../src/vfs.c:273
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Nelze vytvořit nový GIOChannel pro šifrovanou databázi: %s"
 
-#: ../src/vfs.c:275
+#: ../src/vfs.c:281
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Chyba při otevírání šifrovaného databázového souboru „%s“: %s"
 
-#: ../src/vfs.c:291
+#: ../src/vfs.c:297
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr ""
 "Chyba při vytváření vyrovnávací paměti pro základní data zpětných volání: %s"
 
-#: ../src/vfs.c:299
+#: ../src/vfs.c:305
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Nelze vytvořit nový GIOChannel pro prostou databázi: %s"
 
-#: ../src/vfs.c:307
+#: ../src/vfs.c:313
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Chyba při otevírání prostého databázového souboru „%s“: %s"
 
-#: ../src/vfs.c:403
+#: ../src/vfs.c:409
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Chyba při získávání šifrovacího klíče: %s"
 
-#: ../src/vfs.c:427 ../src/vfs.c:433
+#: ../src/vfs.c:433 ../src/vfs.c:439
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Chyba při šifrování databáze: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:485
+#: ../src/vfs.c:489
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Chyba při kopírování souboru z %s do %s: %s"
 
-#: ../src/vfs.c:491
+#: ../src/vfs.c:495
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr "Chyba při změně oprávnění souboru se zálohou databáze: %s"
 
-#: ../src/vfs.c:591
+#: ../src/vfs.c:595
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Chyba při zavírání souboru: %s"
 
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:990 ../src/vfs.c:1017
+#: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Chyba při zálohování souboru „%s“"
 
-#: ../src/vfs.c:1003
+#: ../src/vfs.c:1007
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Chyba při dešifrování databáze: %s"
 
-#: ../src/vfs.c:1043
+#: ../src/vfs.c:1047
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Chyba při změně oprávnění databázového souboru: %s"
@@ -731,6 +750,3 @@ msgstr "Odebrat štítek"
 #: ../src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Záznam štítku"
-
-#~ msgid "Unknown input device"
-#~ msgstr "Neznámé vstupní zařízení"
