@@ -152,7 +152,7 @@ AlmanahPreferencesDialog *
 almanah_preferences_dialog_new (GSettings *settings)
 {
 	GtkBuilder *builder;
-	GtkTable *table;
+	GtkGrid *grid;
 	GtkWidget *label, *button;
 	AtkObject *a11y_label, *a11y_key_combo;
 	gchar *key;
@@ -196,19 +196,23 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 	priv = ALMANAH_PREFERENCES_DIALOG (preferences_dialog)->priv;
 	priv->settings = g_object_ref (settings);
-	table = GTK_TABLE (gtk_builder_get_object (builder, "almanah_pd_table"));
+	grid = GTK_GRID (gtk_builder_get_object (builder, "almanah_pd_grid"));
+	gtk_widget_set_halign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
+	gtk_widget_set_valign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
 
 	/* Grab our child widgets */
 	label = gtk_label_new (_("Encryption key: "));
-	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-	gtk_table_attach (table, label, 1, 2, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
+	gtk_grid_attach (grid, label, 0, 0, 1, 1);
 
 	priv->keyset = cryptui_keyset_new ("openpgp", FALSE);
 	priv->key_store = cryptui_key_store_new (priv->keyset, FALSE, _("None (don't encrypt)"));
 	cryptui_key_store_set_filter (priv->key_store, key_store_filter_cb, NULL);
 	priv->key_combo = cryptui_key_combo_new (priv->key_store);
+	gtk_grid_attach (grid, GTK_WIDGET (priv->key_combo), 1, 0, 1, 1);
 
-	gtk_table_attach_defaults (table, GTK_WIDGET (priv->key_combo), 2, 3, 1, 2);
+	button = gtk_button_new_with_mnemonic (_("New _Key"));
+	gtk_grid_attach (grid, button, 2, 0, 1, 1);
+	g_signal_connect (button, "clicked", G_CALLBACK (pd_new_key_button_clicked_cb), preferences_dialog);
 
 	/* Set up the accessibility relationships */
 	a11y_label = gtk_widget_get_accessible (GTK_WIDGET (label));
@@ -228,14 +232,10 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 	g_signal_connect (priv->key_combo, "changed", G_CALLBACK (pd_key_combo_changed_cb), preferences_dialog);
 
-	button = gtk_button_new_with_mnemonic (_("New _Key"));
-	gtk_table_attach (table, button, 3, 4, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
-	g_signal_connect (button, "clicked", G_CALLBACK (pd_new_key_button_clicked_cb), preferences_dialog);
-
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up the "Enable spell checking" check button */
 	priv->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_("Enable _spell checking")));
-	gtk_table_attach_defaults (table, GTK_WIDGET (priv->spell_checking_enabled_check_button), 1, 4, 2, 3);
+	gtk_grid_attach (grid, GTK_WIDGET (priv->spell_checking_enabled_check_button), 0, 2, 2, 1);
 
 	g_settings_bind (priv->settings, "spell-checking-enabled", priv->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
 #endif /* ENABLE_SPELL_CHECKING */

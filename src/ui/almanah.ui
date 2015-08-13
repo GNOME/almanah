@@ -463,22 +463,16 @@
 
 	<object class="AlmanahPreferencesDialog" id="almanah_preferences_dialog">
 		<property name="use-header-bar">1</property>
-		<property name="border-width">5</property>
+		<property name="resizable">False</property>
 		<child internal-child="vbox">
-			<object class="GtkVBox" id="vbox4">
-				<property name="spacing">6</property>
+			<object class="GtkBox" id="box4">
 				<child>
-					<object class="GtkTable" id="almanah_pd_table">
-						<property name="n-rows">1</property>
-						<property name="n-columns">3</property>
-						<property name="column-spacing">6</property>
-						<property name="row-spacing">6</property>
-						<property name="border-width">5</property>
+					<object class="GtkGrid" id="almanah_pd_grid">
+						<property name="column-spacing">12</property>
+						<property name="row-spacing">18</property>
+						<property name="border-width">18</property>
 						<!-- Encryption key chooser and label go here, programmatically -->
 					</object>
-					<packing>
-						<property name="expand">False</property>
-					</packing>
 				</child>
 			</object>
 		</child>
