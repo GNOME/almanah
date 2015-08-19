@@ -2,16 +2,16 @@
 # Copyright (C) 2014 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
 # Tiagosdot <almosthumane@portugalmail.pt>, 2014.
-# Pedro Albuquerque <palbuquerque73@gmail.com>, 2015.
+# Pedro Albuquerque <palbuquerque73o@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-06-24 11:15+0000\n"
-"PO-Revision-Date: 2015-08-16 11:29+0100\n"
-"Last-Translator: Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"POT-Creation-Date: 2015-08-18 18:09+0000\n"
+"PO-Revision-Date: 2015-08-19 09:15+0100\n"
+"Last-Translator: Pedro Albuquerque <palbuquerque73o@gmail.com>\n"
 "Language-Team: Português <palbuquerque73@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,6 @@ msgid "Calendar"
 msgstr "Calendário"
 
 #: ../src/ui/almanah.ui.h:2
-#| msgid "Go to _Today"
 msgid "Go to Today"
 msgstr "Ir para Hoje"
 
@@ -240,9 +239,6 @@ msgstr "Site do Almanah"
 
 #: ../src/application.c:589
 #, c-format
-#| msgid ""
-#| "Couldn't load the CSS file '%s'. The interface might not be styled "
-#| "correctly"
 msgid ""
 "Couldn't load the CSS resources. The interface might not be styled "
 "correctly: %s"
@@ -258,7 +254,6 @@ msgstr "Selecionar data"
 #: ../src/import-export-dialog.c:475 ../src/main-window.c:210
 #: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
 #: ../src/uri-entry-dialog.c:126
-#| msgid "UI file \"%s\" could not be loaded"
 msgid "UI data could not be loaded"
 msgstr "Impossível carregar dados de UI"
 
@@ -333,13 +328,11 @@ msgid "Pr_eferences"
 msgstr "Pr_Eferências"
 
 #: ../src/gtk/menus.ui.h:3
-#| msgid "_Import"
 msgctxt "Main menu"
 msgid "_Import"
 msgstr "_Importar"
 
 #: ../src/gtk/menus.ui.h:4
-#| msgid "_Export"
 msgctxt "Main menu"
 msgid "_Export"
 msgstr "_Exportar"
@@ -410,13 +403,11 @@ msgid "Export Entries"
 msgstr "Exportar entradas"
 
 #: ../src/import-export-dialog.c:210
-#| msgid "_Import"
 msgctxt "Dialog button"
 msgid "_Import"
 msgstr "_Importar"
 
 #: ../src/import-export-dialog.c:210
-#| msgid "_Export"
 msgctxt "Dialog button"
 msgid "_Export"
 msgstr "_Exportar"
@@ -543,19 +534,20 @@ msgid "Spelling checker could not be initialized"
 msgstr "Impossível inicializar a verificação ortográfica"
 
 #: ../src/preferences-dialog.c:83
-msgid "Almanah Preferences"
-msgstr "Preferências do Almanah"
+#| msgid "Pr_eferences"
+msgid "Preferences"
+msgstr "Preferências"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:202
+#: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Chave de encriptação: "
 
-#: ../src/preferences-dialog.c:207
+#: ../src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Nenhuma (não encriptar)"
 
-#: ../src/preferences-dialog.c:231
+#: ../src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "Nova _Chave"
 
@@ -668,7 +660,6 @@ msgstr "Erro ao abrir o ficheiro de base de dados encriptado \"%s\": %s"
 
 #: ../src/vfs.c:297
 #, c-format
-#| msgid "Error decrypting database: %s"
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Erro ao criar buffer de dados base de recurso: %s"
 
@@ -695,7 +686,6 @@ msgstr "Erro ao encriptar a base de dados: %s"
 #. Translators: The first and second params are file paths, the last param is an error message.
 #: ../src/vfs.c:489
 #, c-format
-#| msgid "Error changing database file permissions: %s"
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Erro ao copiar o ficheiro de %s para %s: %s"
 
@@ -708,7 +698,6 @@ msgstr ""
 
 #: ../src/vfs.c:595
 #, c-format
-#| msgid "Error backing up file ‘%s’: %s"
 msgid "Error closing file: %s"
 msgstr "Erro ao fechar o ficheiro: %s"
 
@@ -716,7 +705,6 @@ msgstr "Erro ao fechar o ficheiro: %s"
 #. Translators: the first parameter is a filename.
 #: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
-#| msgid "Error backing up file ‘%s’: %s"
 msgid "Error backing up file ‘%s’"
 msgstr "Erro ao fazer cópia de segurança do ficheiro \"%s\""
 
@@ -732,7 +720,6 @@ msgstr "Erro ao alterar permissões do ficheiro da base de dados: %s"
 
 #: ../src/widgets/calendar-button.c:142
 #, c-format
-#| msgid "UI file \"%s\" could not be loaded: %s"
 msgid "UI data could not be loaded: %s"
 msgstr "Impossível carregar dados do UI: %s"
 
@@ -765,6 +752,9 @@ msgstr "Remover etiqueta"
 #: ../src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Entrada da etiqueta"
+
+#~ msgid "Almanah Preferences"
+#~ msgstr "Preferências do Almanah"
 
 #~ msgid "F_ormat"
 #~ msgstr "F_ormatar"
