@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-29 22:54+0200\n"
-"PO-Revision-Date: 2015-06-29 22:55+0200\n"
+"POT-Creation-Date: 2015-08-19 11:12+0200\n"
+"PO-Revision-Date: 2015-08-19 11:13+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -545,19 +545,19 @@ msgid "Spelling checker could not be initialized"
 msgstr "Nie można uruchomić sprawdzania pisowni"
 
 #: ../src/preferences-dialog.c:83
-msgid "Almanah Preferences"
-msgstr "Preferencje programu Almanah"
+msgid "Preferences"
+msgstr "Preferencje"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:202
+#: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Klucz szyfrowania: "
 
-#: ../src/preferences-dialog.c:207
+#: ../src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Brak (bez szyfrowania)"
 
-#: ../src/preferences-dialog.c:231
+#: ../src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "Nowy _klucz"
 
