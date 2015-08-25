@@ -11,10 +11,10 @@ msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-06-24 11:15+0000\n"
-"PO-Revision-Date: 2015-07-13 \n"
+"POT-Creation-Date: 2015-08-18 18:09+0000\n"
+"PO-Revision-Date: 2015-08-25 \n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"Language-Team: Spanish <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -332,13 +332,11 @@ msgid "Pr_eferences"
 msgstr "Prefere_ncias"
 
 #: ../src/gtk/menus.ui.h:3
-#| msgid "_Import"
 msgctxt "Main menu"
 msgid "_Import"
 msgstr "_Importar"
 
 #: ../src/gtk/menus.ui.h:4
-#| msgid "_Export"
 msgctxt "Main menu"
 msgid "_Export"
 msgstr "_Exportar"
@@ -409,13 +407,11 @@ msgid "Export Entries"
 msgstr "Exportar entradas"
 
 #: ../src/import-export-dialog.c:210
-#| msgid "_Import"
 msgctxt "Dialog button"
 msgid "_Import"
 msgstr "_Importar"
 
 #: ../src/import-export-dialog.c:210
-#| msgid "_Export"
 msgctxt "Dialog button"
 msgid "_Export"
 msgstr "_Exportar"
@@ -542,19 +538,20 @@ msgid "Spelling checker could not be initialized"
 msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
 #: ../src/preferences-dialog.c:83
-msgid "Almanah Preferences"
-msgstr "Preferencias de Almanah"
+#| msgid "Pr_eferences"
+msgid "Preferences"
+msgstr "Preferencias"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:202
+#: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Clave de cifrado: "
 
-#: ../src/preferences-dialog.c:207
+#: ../src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Ninguna (no cifrar)"
 
-#: ../src/preferences-dialog.c:231
+#: ../src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "_Clave nueva"
 
@@ -759,6 +756,9 @@ msgstr "Quitar etiqueta"
 #: ../src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Etiquetar entrada"
+
+#~ msgid "Almanah Preferences"
+#~ msgstr "Preferencias de Almanah"
 
 #~ msgid "F_ormat"
 #~ msgstr "F_ormato"
