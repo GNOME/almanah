@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-06-24 11:15+0000\n"
-"PO-Revision-Date: 2015-06-24 19:51+0200\n"
+"POT-Creation-Date: 2015-08-18 18:09+0000\n"
+"PO-Revision-Date: 2015-08-31 17:14+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at gmail dot com>\n"
 "Language: \n"
@@ -326,13 +326,11 @@ msgid "Pr_eferences"
 msgstr "Beá_llítások"
 
 #: ../src/gtk/menus.ui.h:3
-#| msgid "_Import"
 msgctxt "Main menu"
 msgid "_Import"
 msgstr "_Importálás"
 
 #: ../src/gtk/menus.ui.h:4
-#| msgid "_Export"
 msgctxt "Main menu"
 msgid "_Export"
 msgstr "_Exportálás"
@@ -403,13 +401,11 @@ msgid "Export Entries"
 msgstr "Bejegyzések exportálása"
 
 #: ../src/import-export-dialog.c:210
-#| msgid "_Import"
 msgctxt "Dialog button"
 msgid "_Import"
 msgstr "_Importálás"
 
 #: ../src/import-export-dialog.c:210
-#| msgid "_Export"
 msgctxt "Dialog button"
 msgid "_Export"
 msgstr "_Exportálás"
@@ -537,19 +533,20 @@ msgid "Spelling checker could not be initialized"
 msgstr "Nem sikerült inicializálni a helyesírás-ellenőrzőt"
 
 #: ../src/preferences-dialog.c:83
-msgid "Almanah Preferences"
-msgstr "Almanah beállításai"
+#| msgid "Pr_eferences"
+msgid "Preferences"
+msgstr "Beállítások"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:202
+#: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Titkosítási kulcs:"
 
-#: ../src/preferences-dialog.c:207
+#: ../src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Nincs (ne titkosítson)"
 
-#: ../src/preferences-dialog.c:231
+#: ../src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "Ú_j kulcs"
 
@@ -753,6 +750,9 @@ msgstr "Címke eltávolítása"
 #: ../src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Címke bejegyzés"
+
+#~ msgid "Almanah Preferences"
+#~ msgstr "Almanah beállításai"
 
 #~ msgid "Unknown input device"
 #~ msgstr "Ismeretlen beviteli eszköz"
