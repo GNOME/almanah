@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-19 11:12+0200\n"
-"PO-Revision-Date: 2015-08-19 11:13+0200\n"
+"POT-Creation-Date: 2015-09-02 02:45+0200\n"
+"PO-Revision-Date: 2015-09-02 02:47+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -107,11 +107,11 @@ msgstr "Wyświetl wpis"
 
 #: ../src/ui/almanah.ui.h:11
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "np. \"14/03/2009\" lub \"14 marca 2009\"."
+msgstr "np. „14/03/2009” lub „14 marca 2009”."
 
 #: ../src/ui/almanah.ui.h:12
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
-msgstr "np. \"http://google.pl/\" lub \"file:///home/ja/Zdjęcia/zdjęcie.jpg\"."
+msgstr "np. „http://google.pl/” lub „file:///home/ja/Zdjęcia/zdjęcie.jpg”."
 
 # pozycja na liście wyników importowania
 #: ../src/ui/almanah.ui.h:13
@@ -196,7 +196,7 @@ msgid ""
 msgstr ""
 "Program Almanah jest wolnym oprogramowaniem; można go rozprowadzać dalej i/"
 "lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
-"przez Fundację Wolnego Oprogramowania (Free Software Foundation) - według "
+"przez Fundację Wolnego Oprogramowania (Free Software Foundation) — według "
 "wersji trzeciej tej Licencji lub którejś z późniejszych wersji."
 
 #: ../src/application.c:526
@@ -206,7 +206,7 @@ msgid ""
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
 "details."
 msgstr ""
-"Program Almanah rozpowszechniany jest z nadzieją, iż będzie on użyteczny - "
+"Program Almanah rozpowszechniany jest z nadzieją, iż będzie on użyteczny — "
 "jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI "
 "HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
 "bliższych informacji należy zapoznać się z Powszechną Licencją Publiczną GNU."
@@ -218,12 +218,12 @@ msgid ""
 msgstr ""
 "Z pewnością wraz z programem Almanah dostarczono także egzemplarz "
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
-"- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
+"— proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
 #: ../src/application.c:545
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
-msgstr "Pomocny zarządca pamiętnika, przechowuje %u wpisów."
+msgstr "Pomocny zarządca pamiętnika, liczba wpisów: %u."
 
 #: ../src/application.c:549
 msgid "Copyright © 2008-2009 Philip Withnall"
@@ -307,7 +307,7 @@ msgid ""
 "exported, unencrypted in plain text format."
 msgstr ""
 "Proszę wybrać _katalog, aby wyeksportować wpisy jako pliki tekstowe, osobny "
-"plik dla każdego wpisu, nazwany według formatu \"rrrr-mm-dd\", bez "
+"plik dla każdego wpisu, nazwany według formatu „rrrr-mm-dd”, bez "
 "rozszerzenia. Wszystkie wpisy zostaną wyeksportowane, niezaszyfrowane, jako "
 "zwykłe pliki tekstowe."
 
@@ -462,7 +462,7 @@ msgid ""
 "imported."
 msgstr ""
 "Proszę wybrać _katalog zawierający pliki tekstowe, osobny plik dla każdego "
-"wpisu, nazwany według formatu \"rrrr-mm-dd\", bez rozszerzenia. Wszystkie "
+"wpisu, nazwany według formatu „rrrr-mm-dd”, bez rozszerzenia. Wszystkie "
 "pliki w tym formacie zostaną zaimportowane."
 
 # instrukcja w oknie importu
@@ -499,7 +499,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Wpis zaimportowany z \"%s\":\n"
+"Wpis zaimportowany z „%s”:\n"
 "\n"
 
 #: ../src/main-window.c:572
@@ -524,7 +524,7 @@ msgstr "Na pewno usunąć ten wpis pamiętnika z %s?"
 #: ../src/main-window.c:713
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
-msgstr "Nieznana lub powtarzająca się etykieta \"%s\" we wpisie. Ignorowanie."
+msgstr "Nieznana lub powtarzająca się etykieta „%s” we wpisie. Ignorowanie."
 
 #: ../src/main-window.c:950
 msgid "Error opening URI"
@@ -624,7 +624,7 @@ msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr ""
-"Nie można otworzyć bazy danych \"%s\". Biblioteka SQLite wysłała następujący "
+"Nie można otworzyć bazy danych „%s”. Biblioteka SQLite wysłała następujący "
 "komunikat o błędzie: %s"
 
 #: ../src/storage-manager.c:291
@@ -632,7 +632,7 @@ msgstr ""
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
-"Nie można wykonać zapytania \"%s\". Biblioteka SQLite wysłała następujący "
+"Nie można wykonać zapytania „%s”. Biblioteka SQLite wysłała następujący "
 "komunikat o błędzie: %s"
 
 #: ../src/storage-manager.c:597
@@ -667,7 +667,7 @@ msgstr "Nie można utworzyć nowego GIOChannel dla zaszyfrowanej bazy danych: %s
 #: ../src/vfs.c:281
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Błąd podczas otwierania zaszyfrowanego pliku bazy danych \"%s\": %s"
+msgstr "Błąd podczas otwierania zaszyfrowanego pliku bazy danych „%s”: %s"
 
 #: ../src/vfs.c:297
 #, c-format
@@ -682,7 +682,7 @@ msgstr "Nie można utworzyć nowego GIOChannel dla prostej bazy danych: %s"
 #: ../src/vfs.c:313
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
-msgstr "Błąd podczas otwierania pliku prostej bazy danych \"%s\": %s"
+msgstr "Błąd podczas otwierania pliku prostej bazy danych „%s”: %s"
 
 #: ../src/vfs.c:409
 #, c-format
@@ -716,7 +716,7 @@ msgstr "Błąd podczas zamykania pliku: %s"
 #: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
 msgid "Error backing up file ‘%s’"
-msgstr "Błąd podczas tworzenia kopii zapasowej pliku \"%s\""
+msgstr "Błąd podczas tworzenia kopii zapasowej pliku „%s”"
 
 #: ../src/vfs.c:1007
 #, c-format
