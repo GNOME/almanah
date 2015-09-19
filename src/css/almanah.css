@@ -8,11 +8,9 @@ AlmanahTagEntry:focused {
    color: @theme_fg_color;
 }
 
-.almanah-mw-main-content GtkScrolledWindow {
-    border-style: solid;
-    border-radius: 0px;
-    border-width: 0px;
+.almanah-mw-scrolled {
     border-bottom-width: 1px;
     border-top-width: 0px;
-    background-color: #fff;
+    border-left-width: 0px;
+    border-right-width: 0px;
 }
