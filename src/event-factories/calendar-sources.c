@@ -449,7 +449,7 @@ calendar_sources_load_sources (CalendarSources    *sources,
   dprintf ("Loading sources:\n");
   dprintf ("  sources_extension: %s\n", sources_extension);
 
-  source_data->esource_selector = E_SOURCE_SELECTOR (e_source_selector_new (sources->priv->esource_registry, sources_extension));
+  source_data->esource_selector = E_SOURCE_SELECTOR (g_object_ref_sink (e_source_selector_new (sources->priv->esource_registry, sources_extension)));
   g_signal_connect (source_data->esource_selector, "selection-changed",
 		    G_CALLBACK (calendar_sources_selection_changed_cb),
 		    source_data);
