@@ -298,7 +298,7 @@ almanah_main_window_new (AlmanahApplication *application)
 }
 
 static void
-current_entry_notify_cb (AlmanahEntry *entry, GParamSpec *pspec, AlmanahMainWindow *self)
+current_entry_notify_cb (__attribute__ ((unused)) AlmanahEntry *entry, __attribute__ ((unused)) GParamSpec *pspec, AlmanahMainWindow *self)
 {
 	/* As the entry's been changed, mark it as edited so that it has to be saved */
 	gtk_text_buffer_set_modified (self->priv->entry_buffer, TRUE);
@@ -737,7 +737,11 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 }
 
 static void
-mw_entry_buffer_insert_text_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window)
+mw_entry_buffer_insert_text_cb (__attribute__ ((unused)) GtkTextBuffer *text_buffer,
+				__attribute__ ((unused)) GtkTextIter *start,
+				__attribute__ ((unused)) gchar *text,
+				__attribute__ ((unused)) gint len,
+				AlmanahMainWindow *main_window)
 {
 	AlmanahMainWindowPrivate *priv = main_window->priv;
 	GVariant *action_state;
@@ -755,7 +759,7 @@ mw_entry_buffer_insert_text_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, 
 }
 
 static void
-mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *end, gchar *text, gint len, AlmanahMainWindow *main_window)
+mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *end, __attribute__ ((unused)) gchar *text, gint len, AlmanahMainWindow *main_window)
 {
 	GtkTextIter start;
 	AlmanahMainWindowPrivate *priv = main_window->priv;
@@ -774,7 +778,7 @@ mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *e
 }
 
 static void
-mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window)
+mw_entry_buffer_has_selection_cb (GObject *object, __attribute__ ((unused)) GParamSpec *pspec, AlmanahMainWindow *main_window)
 {
 	gboolean has_selection = gtk_text_buffer_get_has_selection (GTK_TEXT_BUFFER (object));
 	GAction *action;
@@ -790,7 +794,7 @@ mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMai
 }
 
 static gboolean
-mw_delete_event_cb (GtkWindow *window, gpointer user_data)
+mw_delete_event_cb (GtkWindow *window, __attribute__ ((unused)) gpointer user_data)
 {
 	almanah_main_window_save_current_entry (ALMANAH_MAIN_WINDOW (window), TRUE);
 	save_window_state (ALMANAH_MAIN_WINDOW (window));
@@ -929,7 +933,7 @@ mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 }
 
 static gboolean
-hyperlink_tag_event_cb (GtkTextTag *tag, GObject *object, GdkEvent *event, GtkTextIter *iter, AlmanahMainWindow *self)
+hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *object, GdkEvent *event, __attribute__ ((unused)) GtkTextIter *iter, AlmanahMainWindow *self)
 {
 	AlmanahHyperlinkTag *hyperlink_tag = ALMANAH_HYPERLINK_TAG (tag);
 
@@ -1160,7 +1164,7 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 }
 
 void
-mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar_button, AlmanahMainWindow *main_window)
+mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *calendar_button, AlmanahMainWindow *main_window)
 {
 	AlmanahApplication *application;
 	AlmanahStorageManager *storage_manager;
@@ -1279,7 +1283,7 @@ mw_calendar_select_date_clicked_cb (__attribute__ ((unused)) AlmanahCalendarButt
 
 
 void
-mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window)
+mw_events_tree_view_row_activated_cb (__attribute__ ((unused)) GtkTreeView *tree_view, GtkTreePath *path, __attribute__ ((unused)) GtkTreeViewColumn *column, AlmanahMainWindow *main_window)
 {
 	AlmanahEvent *event;
 	GtkTreeIter iter;
@@ -1337,7 +1341,7 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 
 #ifdef ENABLE_SPELL_CHECKING
 static void
-spell_checking_enabled_changed_cb (GSettings *settings, gchar *key, AlmanahMainWindow *self)
+spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused)) gchar *key, AlmanahMainWindow *self)
 {
 	gboolean enabled = g_settings_get_boolean (settings, "spell-checking-enabled");
 
