@@ -45,6 +45,10 @@
 /* Interval for automatically saving the current entry. Currently an arbitrary 10 minutes. */
 #define SAVE_ENTRY_INTERVAL 10 * 60 /* seconds */
 
+#define ALMANAH_MAIN_WINDOW_DESKTOP_INTERFACE_SETTINGS_SCHEMA "org.gnome.desktop.interface"
+#define ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME "document-font-name"
+#define ALMANAH_MAIN_WINDOW_FIXED_MARGIN_FONT 20
+
 static void almanah_main_window_dispose (GObject *object);
 #ifdef ENABLE_SPELL_CHECKING
 static void spell_checking_enabled_changed_cb (GSettings *settings, gchar *key, AlmanahMainWindow *self);
@@ -63,6 +67,9 @@ static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static gboolean save_entry_timeout_cb (AlmanahMainWindow *self);
 static void mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application);
+
+static void mw_setup_size_text_view (AlmanahMainWindow *self);
+static int mw_get_font_width (GtkWidget *widget, const gchar *font_name);
 
 /* GActions callbacks */
 void mw_cut_activate_cb           (GSimpleAction *action, GVariant *parameter, gpointer user_data);
@@ -83,6 +90,7 @@ void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *
 /* Other callbacks */
 void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
+void mw_desktop_interface_settings_changed (GSettings *settings, gchar *key, gpointer user_data);
 
 struct _AlmanahMainWindowPrivate {
 	GtkWidget *header_bar;
@@ -94,6 +102,7 @@ struct _AlmanahMainWindowPrivate {
 	GtkWidget *events_expander;
 	GtkLabel *events_count_label;
 	GtkTreeSelection *events_selection;
+	GtkWidget *entry_scrolled;
 
 	gboolean updating_formatting;
 	gboolean pending_bold_active;
@@ -103,6 +112,8 @@ struct _AlmanahMainWindowPrivate {
 	AlmanahEntry *current_entry; /* whether it's been modified is stored as gtk_text_buffer_get_modified (priv->entry_buffer) */
 	gulong current_entry_notify_id; /* signal handler for current_entry::notify */
 	guint save_entry_timeout_id; /* source ID for timer to save current entry periodically */
+
+	GSettings *desktop_interface_settings;
 
 #ifdef ENABLE_SPELL_CHECKING
 	GSettings *settings;
@@ -152,6 +163,8 @@ almanah_main_window_init (AlmanahMainWindow *self)
 	self->priv->header_bar = gtk_header_bar_new ();
 	gtk_window_set_titlebar (GTK_WINDOW (self), self->priv->header_bar);
 	gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->header_bar), TRUE);
+
+	self->priv->desktop_interface_settings;
 }
 
 static void
@@ -165,6 +178,8 @@ almanah_main_window_dispose (GObject *object)
 	}
 
 	set_current_entry (ALMANAH_MAIN_WINDOW (object), NULL);
+
+	g_clear_object (&priv->desktop_interface_settings);
 
 #ifdef ENABLE_SPELL_CHECKING
 	if (priv->settings != NULL) {
@@ -233,6 +248,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	priv = ALMANAH_MAIN_WINDOW (main_window)->priv;
 
 	/* Grab our child widgets */
+	priv->entry_scrolled = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_main_content_scrolled_window"));
 	priv->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
 	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
 	priv->entry_tags_area = ALMANAH_ENTRY_TAGS_AREA (gtk_builder_get_object (builder, "almanah_mw_entry_tags_area"));
@@ -283,6 +299,9 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Set up the main toolbar */
 	mw_setup_headerbar (main_window, application);
+
+	/* Setting up the diary entry text view */
+	mw_setup_size_text_view (main_window);
 
 	/* Select the current day and month */
 	almanah_calendar_button_select_today(main_window->priv->calendar_button);
@@ -1338,6 +1357,79 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.show-tags");
 	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
 }
+
+
+static void
+mw_setup_size_text_view (AlmanahMainWindow *self)
+{
+	gchar *font_name = NULL;
+	gchar *css_font = NULL;
+	GtkStyleContext *style_context;
+	GtkCssProvider *css_provider;
+	int fixed_width;
+
+	g_return_if_fail (ALMANAH_IS_MAIN_WINDOW (self));
+
+	/* Read the document font name & size, calculate the size of a randome sentence
+	   with 15 words and change the minimum size for the text view. */
+
+	if (self->priv->desktop_interface_settings == NULL) {
+		self->priv->desktop_interface_settings = g_settings_new (ALMANAH_MAIN_WINDOW_DESKTOP_INTERFACE_SETTINGS_SCHEMA);
+		g_signal_connect (self->priv->desktop_interface_settings, "changed", G_CALLBACK (mw_desktop_interface_settings_changed), self);
+	}
+	font_name = g_settings_get_string (self->priv->desktop_interface_settings, ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME);
+	css_font = g_strdup_printf (".almanah-mw-entry-view { font: %s; }", font_name);
+	css_provider = gtk_css_provider_get_default ();
+	gtk_css_provider_load_from_data (css_provider, css_font, strlen(css_font), NULL);
+	style_context = gtk_widget_get_style_context (GTK_WIDGET (self->priv->entry_view));
+	gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+
+	/* Setting up entry GtkTextView size based on font size plus a margin */
+	fixed_width = mw_get_font_width (GTK_WIDGET (self->priv->entry_view), font_name) + ALMANAH_MAIN_WINDOW_FIXED_MARGIN_FONT;
+	/* The ScrolledWindow (parent container for the text view) must be at
+	   least the new width plus the text view margin */
+	gtk_widget_set_size_request(GTK_WIDGET (self->priv->entry_scrolled),
+				    fixed_width + gtk_widget_get_margin_start (GTK_WIDGET (self->priv->entry_view)) + gtk_widget_get_margin_end (GTK_WIDGET (self->priv->entry_view)),
+				    -1);
+	gtk_widget_set_size_request(GTK_WIDGET (self->priv->entry_view), fixed_width, -1);
+
+	g_free (font_name);
+	g_free (css_font);
+}
+
+
+int
+mw_get_font_width (GtkWidget *widget, const gchar *font_name)
+{
+	int width, height;
+	PangoFontDescription *desc;
+	PangoLayout *layout;
+
+	desc = pango_font_description_from_string (font_name);
+	layout = pango_layout_new (gtk_widget_get_pango_context (widget));
+	pango_layout_set_font_description (layout, desc);
+	/* Translators: this sentence is just used in startup to estimate the width
+	   of a 15 words sentence. Translate with some randome sentences with just 15 words.
+	   See: https://bugzilla.gnome.org/show_bug.cgi?id=754841 */
+	pango_layout_set_text (layout, _("This is just a fifteen words sentence to calculate the diary entry text view size"), -1);
+
+	pango_layout_get_pixel_size (layout, &width, &height);
+
+	g_object_unref (layout);
+
+	return width;
+}
+
+
+void
+mw_desktop_interface_settings_changed (__attribute__ ((unused)) GSettings *settings, gchar *key, gpointer user_data)
+{
+	if (g_ascii_strcasecmp (ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME, key) != 0)
+		return;
+
+	mw_setup_size_text_view (ALMANAH_MAIN_WINDOW (user_data));
+}
+
 
 #ifdef ENABLE_SPELL_CHECKING
 static void

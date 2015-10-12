@@ -126,6 +126,9 @@
 										<property name="vexpand">True</property>
 										<property name="margin-start">20</property>
 										<property name="margin-end">20</property>
+										<style>
+											<class name="almanah-mw-entry-view"/>
+										</style>
 										<child internal-child="accessible">
 											<object class="AtkObject" id="a11y-almanah_mw_entry_view">
 												<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>
