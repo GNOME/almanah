@@ -1370,7 +1370,7 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 
 	g_return_if_fail (ALMANAH_IS_MAIN_WINDOW (self));
 
-	/* Read the document font name & size, calculate the size of a randome sentence
+	/* Read the document font name & size, calculate the size of a random sentence
 	   with 15 words and change the minimum size for the text view. */
 
 	if (self->priv->desktop_interface_settings == NULL) {
@@ -1409,7 +1409,7 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 	layout = pango_layout_new (gtk_widget_get_pango_context (widget));
 	pango_layout_set_font_description (layout, desc);
 	/* Translators: this sentence is just used in startup to estimate the width
-	   of a 15 words sentence. Translate with some randome sentences with just 15 words.
+	   of a 15 words sentence. Translate with some random sentences with just 15 words.
 	   See: https://bugzilla.gnome.org/show_bug.cgi?id=754841 */
 	pango_layout_set_text (layout, _("This is just a fifteen words sentence to calculate the diary entry text view size"), -1);
 
