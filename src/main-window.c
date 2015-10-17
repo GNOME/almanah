@@ -90,7 +90,7 @@ void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *
 /* Other callbacks */
 void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
-void mw_desktop_interface_settings_changed (GSettings *settings, gchar *key, gpointer user_data);
+void mw_desktop_interface_settings_changed (GSettings *settings, const gchar *key, gpointer user_data);
 
 struct _AlmanahMainWindowPrivate {
 	GtkWidget *header_bar;
@@ -114,6 +114,7 @@ struct _AlmanahMainWindowPrivate {
 	guint save_entry_timeout_id; /* source ID for timer to save current entry periodically */
 
 	GSettings *desktop_interface_settings;
+	GtkCssProvider *css_provider;
 
 #ifdef ENABLE_SPELL_CHECKING
 	GSettings *settings;
@@ -164,7 +165,8 @@ almanah_main_window_init (AlmanahMainWindow *self)
 	gtk_window_set_titlebar (GTK_WINDOW (self), self->priv->header_bar);
 	gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->header_bar), TRUE);
 
-	self->priv->desktop_interface_settings;
+	self->priv->desktop_interface_settings = NULL;
+	self->priv->css_provider = NULL;
 }
 
 static void
@@ -180,6 +182,7 @@ almanah_main_window_dispose (GObject *object)
 	set_current_entry (ALMANAH_MAIN_WINDOW (object), NULL);
 
 	g_clear_object (&priv->desktop_interface_settings);
+	g_clear_object (&priv->css_provider);
 
 #ifdef ENABLE_SPELL_CHECKING
 	if (priv->settings != NULL) {
@@ -1364,8 +1367,6 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 {
 	gchar *font_name = NULL;
 	gchar *css_font = NULL;
-	GtkStyleContext *style_context;
-	GtkCssProvider *css_provider;
 	int fixed_width;
 
 	g_return_if_fail (ALMANAH_IS_MAIN_WINDOW (self));
@@ -1379,18 +1380,19 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 	}
 	font_name = g_settings_get_string (self->priv->desktop_interface_settings, ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME);
 	css_font = g_strdup_printf (".almanah-mw-entry-view { font: %s; }", font_name);
-	css_provider = gtk_css_provider_get_default ();
-	gtk_css_provider_load_from_data (css_provider, css_font, strlen(css_font), NULL);
-	style_context = gtk_widget_get_style_context (GTK_WIDGET (self->priv->entry_view));
-	gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	if (self->priv->css_provider == NULL) {
+		GtkStyleContext *style_context;
+
+		self->priv->css_provider = gtk_css_provider_new ();
+		style_context = gtk_widget_get_style_context (GTK_WIDGET (self->priv->entry_view));
+		gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (self->priv->css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	}
+	gtk_css_provider_load_from_data (self->priv->css_provider, css_font, strlen(css_font), NULL);
 
 	/* Setting up entry GtkTextView size based on font size plus a margin */
 	fixed_width = mw_get_font_width (GTK_WIDGET (self->priv->entry_view), font_name) + ALMANAH_MAIN_WINDOW_FIXED_MARGIN_FONT;
 	/* The ScrolledWindow (parent container for the text view) must be at
 	   least the new width plus the text view margin */
-	gtk_widget_set_size_request(GTK_WIDGET (self->priv->entry_scrolled),
-				    fixed_width + gtk_widget_get_margin_start (GTK_WIDGET (self->priv->entry_view)) + gtk_widget_get_margin_end (GTK_WIDGET (self->priv->entry_view)),
-				    -1);
 	gtk_widget_set_size_request(GTK_WIDGET (self->priv->entry_view), fixed_width, -1);
 
 	g_free (font_name);
@@ -1398,7 +1400,7 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 }
 
 
-int
+static int
 mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 {
 	int width, height;
@@ -1416,15 +1418,16 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 	pango_layout_get_pixel_size (layout, &width, &height);
 
 	g_object_unref (layout);
+	pango_font_description_free (desc);
 
 	return width;
 }
 
 
 void
-mw_desktop_interface_settings_changed (__attribute__ ((unused)) GSettings *settings, gchar *key, gpointer user_data)
+mw_desktop_interface_settings_changed (G_GNUC_UNUSED GSettings *settings, const gchar *key, gpointer user_data)
 {
-	if (g_ascii_strcasecmp (ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME, key) != 0)
+	if (strcmp (ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME, key) != 0)
 		return;
 
 	mw_setup_size_text_view (ALMANAH_MAIN_WINDOW (user_data));
