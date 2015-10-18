@@ -8,26 +8,26 @@
 # Antonio Fernandes C. Neto <fernandesn@gnome.org>, 2009,2013.
 # Carlos José Pereira <carlao2005@gmail.com>, 2010.
 # Gabriel Speckhahn <gabspeck@gmail.com>, 2011.
-# Rafael Fontenelle <rfontenelle@gmail.com>, 2012, 2013, 2015.
 # Adorilson Bezerra <adorilson@gmail.com>, 2013.
 # Ramon Brandão <rcbdesigner@gmail.com>, 2013.
 # Enrico Nicoletto <liverig@gmail.com>, 2013, 2015.
+# Rafael Fontenelle <rfontenelle@gmail.com>, 2012, 2013, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-18 18:09+0000\n"
-"PO-Revision-Date: 2015-09-29 16:54-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2015-10-14 17:59+0000\n"
+"PO-Revision-Date: 2015-10-18 17:20-0200\n"
+"Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/almanah.appdata.xml.in.h:1
@@ -54,7 +54,7 @@ msgstr ""
 "cada dia (como tarefas e compromissos do Evolution)."
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:133
-#: ../src/main-window.c:144
+#: ../src/main-window.c:155
 msgid "Almanah Diary"
 msgstr "Diário Almanah"
 
@@ -269,7 +269,7 @@ msgid "Select Date"
 msgstr "Selecionar data"
 
 #: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
-#: ../src/import-export-dialog.c:475 ../src/main-window.c:210
+#: ../src/import-export-dialog.c:475 ../src/main-window.c:225
 #: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
 #: ../src/uri-entry-dialog.c:126
 msgid "UI data could not be loaded"
@@ -391,7 +391,7 @@ msgstr "_Copiar"
 msgid "_Paste"
 msgstr "Co_lar"
 
-#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:607
+#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:626
 msgid "_Delete"
 msgstr "E_xcluir"
 
@@ -456,8 +456,8 @@ msgstr "Resultados da importação"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:542 ../src/main-window.c:568
-#: ../src/main-window.c:599 ../src/main-window.c:1202 ../src/printing.c:263
+#: ../src/import-export-dialog.c:542 ../src/main-window.c:587
+#: ../src/main-window.c:618 ../src/main-window.c:1225 ../src/printing.c:263
 #: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
@@ -508,46 +508,57 @@ msgstr ""
 "Entrada importada para \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:572
+#: ../src/main-window.c:591
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Você tem certeza que quer editar essa entrada de diário para %s?"
 
-#: ../src/main-window.c:575 ../src/main-window.c:606
+#: ../src/main-window.c:594 ../src/main-window.c:625
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: ../src/main-window.c:576
+#: ../src/main-window.c:595
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/main-window.c:603
+#: ../src/main-window.c:622
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Você tem certeza que quer excluir essa entrada de diário para %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:713
+#: ../src/main-window.c:732
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Etiqueta de texto \"%s\" desconhecida ou duplicada na entrada. Ignorando."
 
-#: ../src/main-window.c:950
+#: ../src/main-window.c:973
 msgid "Error opening URI"
 msgstr "Erro ao abrir a URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1129
+#: ../src/main-window.c:1152
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1235
+#: ../src/main-window.c:1258
 msgid "Entry content could not be loaded"
 msgstr "Não foi possível carregar o conteúdo de entrada"
 
-#: ../src/main-window.c:1354
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some randome sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: ../src/main-window.c:1414
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr ""
+"Esta é apenas uma frase de quinze palavras para calcular o tamanho de "
+"exibição de texto de entrada de diário"
+
+#: ../src/main-window.c:1450
 msgid "Spelling checker could not be initialized"
 msgstr "Não foi possível inicializar a verificação ortográfica"
 
