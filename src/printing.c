@@ -440,29 +440,33 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 {
 	GtkWidget *start_calendar, *end_calendar, *line_spacing_spin_button;
 	GtkLabel *start_label, *end_label, *line_spacing_label;
-	GtkTable *table;
+	GtkGrid *grid;
 	GtkBox *vbox, *hbox;
 
 	/* Start and end calendars */
 	start_calendar = almanah_calendar_new (almanah_operation->storage_manager);
+	gtk_widget_set_hexpand (start_calendar, TRUE);
+	gtk_widget_set_vexpand (start_calendar, TRUE);
 	end_calendar = almanah_calendar_new (almanah_operation->storage_manager);
+	gtk_widget_set_hexpand (end_calendar, TRUE);
+	gtk_widget_set_vexpand (end_calendar, TRUE);
 
 	g_object_set (G_OBJECT (start_calendar), "show-details", FALSE, NULL);
 	g_object_set (G_OBJECT (end_calendar), "show-details", FALSE, NULL);
 
 	start_label = GTK_LABEL (gtk_label_new (_("Start date:")));
-	gtk_misc_set_alignment (GTK_MISC (start_label), 0.0, 0.5);
+	gtk_widget_set_halign (GTK_WIDGET (start_label), GTK_ALIGN_START);
 	end_label = GTK_LABEL (gtk_label_new (_("End date:")));
-	gtk_misc_set_alignment (GTK_MISC (end_label), 0.0, 0.5);
+	gtk_widget_set_halign (GTK_WIDGET (end_label), GTK_ALIGN_START);
 
-	table = GTK_TABLE (gtk_table_new (2, 2, FALSE));
-	gtk_table_set_row_spacings (table, 6);
-	gtk_table_set_col_spacings (table, 6);
-	gtk_container_set_border_width (GTK_CONTAINER (table), 6);
-	gtk_table_attach (table, start_calendar, 0, 1, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_table_attach (table, end_calendar, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
-	gtk_table_attach (table, GTK_WIDGET (start_label), 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
-	gtk_table_attach (table, GTK_WIDGET (end_label), 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+	grid = GTK_GRID (gtk_grid_new ());
+	gtk_grid_set_row_spacing (grid, 6);
+	gtk_grid_set_column_spacing (grid, 6);
+	gtk_container_set_border_width (GTK_CONTAINER (grid), 6);
+	gtk_grid_attach (grid, GTK_WIDGET (start_label), 0, 0, 1, 1);
+	gtk_grid_attach (grid, start_calendar, 0, 1, 1, 1);
+	gtk_grid_attach (grid, GTK_WIDGET (end_label), 1, 0, 1, 1);
+	gtk_grid_attach (grid, end_calendar, 1, 1, 1, 1);
 
 	almanah_operation->start_calendar = ALMANAH_CALENDAR (start_calendar);
 	almanah_operation->end_calendar = ALMANAH_CALENDAR (end_calendar);
@@ -478,7 +482,7 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	gtk_box_pack_start (hbox, line_spacing_spin_button, TRUE, TRUE, 6);
 
 	vbox = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, 12));
-	gtk_box_pack_start (vbox, GTK_WIDGET (table), TRUE, TRUE, 6);
+	gtk_box_pack_start (vbox, GTK_WIDGET (grid), TRUE, TRUE, 6);
 	gtk_box_pack_start (vbox, GTK_WIDGET (hbox), FALSE, TRUE, 6);
 
 	gtk_widget_show_all (GTK_WIDGET (vbox));
