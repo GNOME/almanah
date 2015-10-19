@@ -270,7 +270,7 @@ source_selector_update_row (ESourceSelector *selector,
 		extension = e_source_get_extension (source, extension_name);
 
 	if (extension != NULL) {
-		GdkColor color;
+		GdkRGBA color;
 		const gchar *color_spec = NULL;
 		gboolean show_color = FALSE;
 		gboolean show_toggle;
@@ -284,7 +284,7 @@ source_selector_update_row (ESourceSelector *selector,
 				E_SOURCE_SELECTABLE (extension));
 
 		if (color_spec != NULL && *color_spec != '\0')
-			show_color = gdk_color_parse (color_spec, &color);
+			show_color = gdk_rgba_parse (&color, color_spec);
 
 		show_toggle = e_source_selector_get_show_toggles (selector);
 

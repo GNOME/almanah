@@ -86,20 +86,20 @@ get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
 
 		if (bg_set)
 		{
-			GdkColor *color = NULL;
+			GdkRGBA *color = NULL;
 			if (bg) pango_attribute_destroy (bg);
-			g_object_get (tag, "background-gdk", &color, NULL);
+			g_object_get (tag, "background-rgba", &color, NULL);
 			bg = pango_attr_background_new (color->red, color->green, color->blue);
-			gdk_color_free (color);
+			gdk_rgba_free (color);
 		}
 
 		if (fg_set)
 		{
-			GdkColor *color = NULL;
+			GdkRGBA *color = NULL;
 			if (fg) pango_attribute_destroy (fg);
-			g_object_get (tag, "foreground-gdk", &color, NULL);
+			g_object_get (tag, "foreground-rgba", &color, NULL);
 			fg = pango_attr_foreground_new (color->red, color->green, color->blue);
-			gdk_color_free (color);
+			gdk_rgba_free (color);
 		}
 
 		if (style_set)

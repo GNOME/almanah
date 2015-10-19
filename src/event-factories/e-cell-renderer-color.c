@@ -35,7 +35,7 @@ enum {
 };
 
 struct _ECellRendererColorPrivate {
-	GdkColor *color;
+	GdkRGBA *color;
 };
 
 G_DEFINE_TYPE (
@@ -127,7 +127,7 @@ cell_renderer_color_render (GtkCellRenderer *cell,
 	if (!gdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect))
 		return;
 
-	gdk_cairo_set_source_color (cr, priv->color);
+	gdk_cairo_set_source_rgba (cr, priv->color);
 	cairo_rectangle (cr, pix_rect.x, pix_rect.y, draw_rect.width, draw_rect.height);
 
 	cairo_fill (cr);
@@ -146,7 +146,7 @@ cell_renderer_color_set_property (GObject *object,
 	switch (property_id) {
 		case PROP_COLOR:
 			if (priv->color != NULL)
-				gdk_color_free (priv->color);
+				gdk_rgba_free (priv->color);
 			priv->color = g_value_dup_boxed (value);
 			return;
 	}
@@ -181,7 +181,7 @@ cell_renderer_color_finalize (GObject *object)
 	priv = E_CELL_RENDERER_COLOR_GET_PRIVATE (object);
 
 	if (priv->color != NULL)
-		gdk_color_free (priv->color);
+		gdk_rgba_free (priv->color);
 
 	/* Chain up to parent's finalize() method. */
 	G_OBJECT_CLASS (e_cell_renderer_color_parent_class)->finalize (object);
