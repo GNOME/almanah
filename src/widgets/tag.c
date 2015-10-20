@@ -191,7 +191,7 @@ almanah_tag_ensure_layout (AlmanahTag *self)
 
 		self->priv->layout = gtk_widget_create_pango_layout (GTK_WIDGET (self), self->priv->tag);
 		style_context = gtk_widget_get_style_context (GTK_WIDGET (self));
-		font_desc = (PangoFontDescription *) gtk_style_context_get_font (style_context, GTK_STATE_FLAG_NORMAL);
+		gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL, "font", &font_desc, NULL);
 		pango_font_description_set_size (font_desc, (pango_font_description_get_size (font_desc) * 0.8));
 		pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
 		pango_layout_set_font_description (self->priv->layout, font_desc);
