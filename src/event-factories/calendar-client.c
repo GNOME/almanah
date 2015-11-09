@@ -1,5 +1,7 @@
+/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2-*- */
 /*
  * Copyright (C) 2004 Free Software Foundation, Inc.
+ * Copyright (C) 2015 Álvaro Peña <alvaropg@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,6 +21,9 @@
  *     William Jon McCann  <mccann@jhu.edu>
  *     Martin Grimme  <martin@pycage.de>
  *     Christian Kellner  <gicmo@xatom.net>
+ *
+ * Modified by:
+ *     Álvaro Peña <alvaropg@gmail.com>
  */
 
 #include <config.h>
@@ -77,8 +82,7 @@ struct _CalendarClientPrivate
 
   icaltimezone        *zone;
 
-  guint                zone_listener;
-  GSettings           *settings;
+  GFileMonitor        *tz_monitor;
 
   guint                day;
   guint                month;
@@ -225,45 +229,29 @@ calendar_client_class_init (CalendarClientClass *klass)
 		  0);
 }
 
-/* Timezone code adapted from evolution/calendar/gui/calendar-config.c */
-/* The current timezone, e.g. "Europe/London". It may be NULL, in which case
-   you should assume UTC. */
-static gchar *
-calendar_client_config_get_timezone (GSettings *settings)
-{
-  char *location;
-
-  if (g_settings_get_boolean (settings, "use-system-timezone"))
-    location = e_cal_util_get_system_timezone_location ();
-  else
-    location = g_settings_get_string (settings, "timezone");
-
-  return location;
-}
-
 static icaltimezone *
-calendar_client_config_get_icaltimezone (GSettings *settings)
+calendar_client_config_get_icaltimezone (void)
 {
   char         *location;
   icaltimezone *zone = NULL;
-	
-  location = calendar_client_config_get_timezone (settings);
+
+  location = e_cal_util_get_system_timezone_location ();
   if (!location)
     return icaltimezone_get_utc_timezone ();
 
   zone = icaltimezone_get_builtin_timezone (location);
   g_free (location);
-	
+
   return zone;
 }
 
 static void
-calendar_client_set_timezone (CalendarClient *client) 
+calendar_client_set_timezone (CalendarClient *client)
 {
   GSList *l;
   GSList *esources;
 
-  client->priv->zone = calendar_client_config_get_icaltimezone (client->priv->settings);
+  client->priv->zone = calendar_client_config_get_icaltimezone ();
 
   esources = calendar_sources_get_appointment_sources (client->priv->calendar_sources);
   for (l = esources; l; l = l->next) {
@@ -274,13 +262,13 @@ calendar_client_set_timezone (CalendarClient *client)
 }
 
 static void
-calendar_client_timezone_changed_cb (GSettings *settings,
-				     const gchar *key,
-                                     CalendarClient *client)
+calendar_client_timezone_changed_cb (G_GNUC_UNUSED GFileMonitor      *monitor,
+                                     G_GNUC_UNUSED GFile             *file,
+                                     G_GNUC_UNUSED GFile             *other_file,
+                                     G_GNUC_UNUSED GFileMonitorEvent *event,
+                                     gpointer                         user_data)
 {
-  if (g_strcmp0 (key, "timezone") == 0 ||
-      g_strcmp0 (key, "use-system-timezone") == 0)
-    calendar_client_set_timezone (client);
+  calendar_client_set_timezone (CALENDAR_CLIENT (user_data));
 }
 
 static void
@@ -365,11 +353,11 @@ static void
 calendar_client_init (CalendarClient *client)
 {
   GSList *esources;
+  GFile *tz;
 
   client->priv = CALENDAR_CLIENT_GET_PRIVATE (client);
 
   client->priv->calendar_sources = calendar_sources_get ();
-  client->priv->settings = g_settings_new ("org.gnome.evolution.calendar");
 
   esources = calendar_sources_get_appointment_sources (client->priv->calendar_sources);
   client->priv->appointment_sources =
@@ -393,9 +381,13 @@ calendar_client_init (CalendarClient *client)
 			    G_CALLBACK (calendar_client_task_sources_changed),
 			    client);
 
-  client->priv->zone_listener = g_signal_connect (client->priv->settings, "changed",
-						  G_CALLBACK (calendar_client_timezone_changed_cb),
-						  client);
+  tz = g_file_new_for_path ("/etc/localtime");
+  client->priv->tz_monitor = g_file_monitor_file (tz, G_FILE_MONITOR_NONE, NULL, NULL);
+  g_object_unref (tz);
+  if (client->priv->tz_monitor == NULL)
+    g_warning ("Can't monitor /etc/localtime for changes");
+  else
+    g_signal_connect (client->priv->tz_monitor, "changed", G_CALLBACK (calendar_client_timezone_changed_cb), client);
 
   client->priv->day   = G_MAXUINT;
   client->priv->month = G_MAXUINT;
@@ -408,16 +400,7 @@ calendar_client_finalize (GObject *object)
   CalendarClient *client = CALENDAR_CLIENT (object);
   GSList         *l;
 
-  if (client->priv->zone_listener)
-    {
-      g_signal_handler_disconnect (client->priv->settings,
-                                  client->priv->zone_listener);
-      client->priv->zone_listener = 0;
-    }
-
-  if (client->priv->settings)
-    g_object_unref (client->priv->settings);
-  client->priv->settings = NULL;
+  g_clear_object (&client->priv->tz_monitor);
 
   for (l = client->priv->appointment_sources; l; l = l->next)
     {
