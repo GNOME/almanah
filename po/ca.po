@@ -9,24 +9,27 @@ msgstr ""
 "Project-Id-Version: diary\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-07 19:56+0000\n"
-"PO-Revision-Date: 2010-12-25 21:53+0100\n"
-"Last-Translator: Jordi Estrada <jordi.estrada@gmail.com>\n"
+"POT-Creation-Date: 2015-11-30 15:36+0000\n"
+"PO-Revision-Date: 2015-11-30 18:11+0100\n"
+"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.ord>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: ../data/almanah.appdata.xml.in.h:1
 msgid "Keep a diary of your life"
-msgstr ""
+msgstr "Manté una agenda de la vostra vida"
 
 #: ../data/almanah.appdata.xml.in.h:2
 msgid ""
 "Almanah Diary is an application to allow you to keep a diary of your life."
 msgstr ""
+"L'agenda Almanah és una aplicació que us permetrà mantenir una agenda de la "
+"vostra vida."
 
 #: ../data/almanah.appdata.xml.in.h:3
 msgid ""
@@ -35,35 +38,37 @@ msgid ""
 "events which happened (on your computer) for each day (such as tasks and "
 "appointments from Evolution)."
 msgstr ""
+"Podeu xifrar l'agenda per preservar la vostra privacitat. Té les habilitats "
+"d'edició, que inclouen la formatació de text i la impressió de text, i també "
+"us mostra una llista dels esdeveniments que van succeir (en l'ordinador "
+"actual) per a cada dia (com ara les tasques i les cites d'Evolution)."
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:133
-#: ../src/main-window.c:144
+#: ../src/main-window.c:156
 msgid "Almanah Diary"
-msgstr "Diari Almanah"
+msgstr "Agenda Almanah"
 
 #: ../data/almanah.desktop.in.h:2
 msgid "Keep a personal diary"
-msgstr "Manteniu un diari personal"
+msgstr "Manteniu una agenda personal"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
 #: ../data/almanah.desktop.in.h:3 ../src/application.c:272
 msgid "Diary"
-msgstr "Diari"
+msgstr "Agenda"
 
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: ../data/almanah.desktop.in.h:5
 msgid "diary;journal;"
-msgstr ""
+msgstr "agenda;diari;"
 
 #: ../src/ui/almanah.ui.h:1
 msgid "Calendar"
 msgstr "Calendari"
 
 #: ../src/ui/almanah.ui.h:2
-#, fuzzy
-#| msgid "Go to _Today"
 msgid "Go to Today"
-msgstr "Ves a _avui"
+msgstr "Vés a avui"
 
 #: ../src/ui/almanah.ui.h:3
 msgid "Select Date…"
@@ -74,10 +79,8 @@ msgid "Entry editing area"
 msgstr "Àrea d'edició de l'entrada"
 
 #: ../src/ui/almanah.ui.h:5
-#, fuzzy
-#| msgid "Past Events"
 msgid "Past events"
-msgstr "Esdeveniments passats"
+msgstr "Esdeveniments anteriors"
 
 #: ../src/ui/almanah.ui.h:6
 msgid "Past Event List"
@@ -101,11 +104,11 @@ msgstr "Visualitza l'entrada"
 
 #: ../src/ui/almanah.ui.h:11
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "per exemple «14/03/2009» o «14 de març de 2009»."
+msgstr "p. ex. «14/03/2009» o «14 de març de 2009»."
 
 #: ../src/ui/almanah.ui.h:12
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
-msgstr ""
+msgstr "p. ex. «http://google.cat/» o «file:///home/jo/Imatges/imatge.jpg»."
 
 #: ../src/ui/almanah.ui.h:13
 msgid "Successful Entries"
@@ -125,7 +128,7 @@ msgstr "Importa la llista de resultats"
 
 #: ../data/org.gnome.almanah.gschema.xml.in.h:1
 msgid "Database encryption key ID"
-msgstr "Identificador de la clau d'encriptació de la base de dades"
+msgstr "Id. de la clau de xifratge de la base de dades"
 
 #: ../data/org.gnome.almanah.gschema.xml.in.h:2
 msgid ""
@@ -133,9 +136,9 @@ msgid ""
 "been built with encryption support. Leave blank to disable database "
 "encryption."
 msgstr ""
-"L'identificador de la clau a utilitzar per encriptar i desencriptar la base "
-"de dades, si l'Almanah s'ha muntat amb compatibilitat d'encriptació. Deixeu-"
-"lo en blanc per inhabilitar l'encriptació de la base de dades."
+"L'id. de la clau a utilitzar per xifrar i desxifrar la base de dades, si "
+"Almanah es va construir amb compatibilitat per al xifratge. Deixeu-ho en "
+"blanc per inhabilitar el xifratge de la base de dades."
 
 #: ../data/org.gnome.almanah.gschema.xml.in.h:3
 msgid "Spell checking language"
@@ -144,7 +147,7 @@ msgstr "Idioma de la verificació de l'ortografia"
 #: ../data/org.gnome.almanah.gschema.xml.in.h:4
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr ""
-"La configuració local específica de l'idioma en la qual es verificarà "
+"La configuració regional específica de l'idioma en la qual es verificarà "
 "l'ortografia de les entrades."
 
 #: ../data/org.gnome.almanah.gschema.xml.in.h:5
@@ -167,43 +170,44 @@ msgstr "Habilita el mode de depuració"
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
+"Gestioneu la vostra agenda. Només una instància del programa pot obrir-se en "
+"qualsevol instant."
 
 #. Print an error
 #: ../src/application.c:360
-#, fuzzy, c-format
-#| msgid "Command-line options could not be parsed"
+#, c-format
 msgid "Command line options could not be parsed: %s\n"
-msgstr "No s'han pogut analitzar les opcions de la línia d'ordres"
+msgstr "No s'han pogut analitzar les opcions de la línia d'ordres: %s\n"
 
 #: ../src/application.c:379
 msgid "Error encrypting database"
-msgstr "S'ha produït un error en encriptar la base de dades"
+msgstr "S'ha produït un error en xifrar la base de dades"
 
-#: ../src/application.c:521
+#: ../src/application.c:522
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
 "Foundation, either version 3 of the License, or (at your option) any later "
 "version."
 msgstr ""
-"L'Almanah és programari lliure; podeu redistribuir-lo i/o modificar-lo sota "
+"Almanah és programari lliure; podeu redistribuir-ho i/o modificar-ho sota "
 "els termes de la Llicència Pública General GNU tal com ha estat publicada "
 "per la Free Software Foundation; ja sigui la versió 3 de la Llicència o bé "
 "(si ho preferiu) qualsevol altra versió posterior."
 
-#: ../src/application.c:525
+#: ../src/application.c:526
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
 "details."
 msgstr ""
-"L'Almanah es distribueix amb l'expectativa que serà útil, però SENSE CAP "
+"Almanah es distribueix amb l'expectativa que serà útil, però SENSE CAP "
 "GARANTIA; ni tan sols la garantia implícita de COMERCIABILITAT o ADEQUACIÓ "
 "PER UN PROPÒSIT PARTICULAR. Vegeu la Llicència Pública General GNU per "
 "obtenir-ne més detalls."
 
-#: ../src/application.c:529
+#: ../src/application.c:530
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -212,14 +216,12 @@ msgstr ""
 "juntament amb aquest programa; en cas contrari, consulteu <http://www.gnu."
 "org/licenses/>."
 
-#: ../src/application.c:544
-#, fuzzy, c-format
-#| msgid "A helpful diary keeper, storing %u entries and %u definitions."
+#: ../src/application.c:545
+#, c-format
 msgid "A helpful diary keeper, storing %u entries."
-msgstr ""
-"Un programa útil per mantenir un diari. Hi ha %u entrades i %u definicions."
+msgstr "Un arxivador útil d'agenda, que emmagatzema %u entrades."
 
-#: ../src/application.c:548
+#: ../src/application.c:549
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -228,40 +230,41 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:556
+#: ../src/application.c:557
 msgid "translator-credits"
 msgstr ""
 "Gil Forcada <gilforcada@guifi.net>\n"
-"Jordi Estrada <jordi.estrada@gmail.com>"
+"Jordi Estrada <jordi.estrada@gmail.com>\n"
+"Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>"
 
-#: ../src/application.c:560
+#: ../src/application.c:561
 msgid "Almanah Website"
-msgstr "Lloc web de l'Almanah"
+msgstr "Lloc web d'Almanah"
 
-#: ../src/application.c:588
+#: ../src/application.c:589
 #, c-format
 msgid ""
 "Couldn't load the CSS resources. The interface might not be styled "
 "correctly: %s"
 msgstr ""
+"No s'han pogut carregar els recursos CSS. La interfície podria no estar "
+"estilitzada correctament: %s"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Seleccioneu una data"
 
 #: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
-#: ../src/import-export-dialog.c:474 ../src/main-window.c:210
-#: ../src/preferences-dialog.c:179 ../src/search-dialog.c:95
+#: ../src/import-export-dialog.c:475 ../src/main-window.c:228
+#: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
 #: ../src/uri-entry-dialog.c:126
-#, fuzzy
-#| msgid "UI file \"%s\" could not be loaded"
 msgid "UI data could not be loaded"
-msgstr "No s'ha pogut carregar el fitxer d'interfície gràfica «%s»"
+msgstr "No s'han pogut carregar les dades de la interfície gràfica"
 
 #: ../src/entry.c:303
 #, c-format
 msgid "Invalid data version number %u."
-msgstr ""
+msgstr "Dades no vàlides del número de versió %u."
 
 #: ../src/events/calendar-appointment.c:51
 msgid "Calendar Appointment"
@@ -269,17 +272,17 @@ msgstr "Cita de calendari"
 
 #: ../src/events/calendar-appointment.c:52
 msgid "An appointment on an Evolution calendar."
-msgstr "Una cita en un calendari de l'Evolution."
+msgstr "Una cita en un calendari d'Evolution."
 
 #. Translators: This is a time string with the format hh:mm
 #: ../src/events/calendar-appointment.c:89 ../src/events/calendar-task.c:90
 #, c-format
 msgid "%.2d:%.2d"
-msgstr ""
+msgstr "%.2d:%.2d"
 
 #: ../src/events/calendar-appointment.c:135 ../src/events/calendar-task.c:125
 msgid "Error launching Evolution"
-msgstr "S'ha produït un error en executar l'Evolution"
+msgstr "S'ha produït un error en executar Evolution"
 
 #: ../src/events/calendar-task.c:51
 msgid "Calendar Task"
@@ -287,7 +290,7 @@ msgstr "Tasca de calendari"
 
 #: ../src/events/calendar-task.c:52
 msgid "A task on an Evolution calendar."
-msgstr "Una tasca en un calendari de l'Evolution."
+msgstr "Una tasca en un calendari d'Evolution."
 
 #: ../src/export-operation.c:47 ../src/import-operation.c:45
 msgid "Text Files"
@@ -301,7 +304,7 @@ msgid ""
 msgstr ""
 "Seleccioneu una _carpeta on exportar les entrades com a fitxers de text, un "
 "per entrada, amb els noms en el format «yyyy-mm-dd» i sense extensió. "
-"S'exportaran totes les entrades en format de text net sense encriptar."
+"S'exportaran totes les entrades en format de text senzill sense xifrar."
 
 #: ../src/export-operation.c:52 ../src/import-operation.c:50
 msgid "Database"
@@ -312,76 +315,71 @@ msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
-"Seleccioneu un nom de _fitxer per la còpia completa de la base de dades del "
-"diari Almanah sense encriptar a donar."
+"Seleccioneu el nom a donar al fitxer amb una còpia completa de la base de "
+"dades de l'agenda Almanah sense xifrar."
 
 #: ../src/export-operation.c:256 ../src/export-operation.c:313
-#, fuzzy, c-format
-#| msgid "Error opening encrypted database file \"%s\": %s"
+#, c-format
 msgid "Error changing exported file permissions: %s"
-msgstr ""
-"S'ha produït un error en obrir el fitxer de base de dades encriptat «%s»: %s"
+msgstr "S'ha produït un error en canviar els permisos del fitxer exportat: %s"
 
 #: ../src/gtk/menus.ui.h:1
-#, fuzzy
-#| msgid "Search"
 msgid "_Search"
-msgstr "Cerca"
+msgstr "_Cerca"
 
 #: ../src/gtk/menus.ui.h:2
 msgid "Pr_eferences"
 msgstr "Pr_eferències"
 
-#. Set the button label
-#: ../src/gtk/menus.ui.h:3 ../src/import-export-dialog.c:209
+#: ../src/gtk/menus.ui.h:3
+msgctxt "Main menu"
 msgid "_Import"
 msgstr "_Importa"
 
-#: ../src/gtk/menus.ui.h:4 ../src/import-export-dialog.c:209
+#: ../src/gtk/menus.ui.h:4
+msgctxt "Main menu"
 msgid "_Export"
 msgstr "_Exporta"
 
 #: ../src/gtk/menus.ui.h:5
 msgid "_Print diary"
-msgstr ""
+msgstr "Im_primeix l'agenda"
 
 #: ../src/gtk/menus.ui.h:6
-#, fuzzy
-#| msgid "Almanah Diary"
 msgid "_About Almanah Diary"
-msgstr "Diari Almanah"
+msgstr "Quant _a l'agenda Almanah"
 
 #: ../src/gtk/menus.ui.h:7
 msgid "_Quit"
-msgstr ""
+msgstr "_Surt"
 
 #: ../src/gtk/menus.ui.h:8
 msgid "_Bold"
-msgstr ""
+msgstr "_Negreta"
 
 #: ../src/gtk/menus.ui.h:9
 msgid "_Italic"
-msgstr ""
+msgstr "_Itàlica"
 
 #: ../src/gtk/menus.ui.h:10
 msgid "_Underline"
-msgstr ""
+msgstr "_Subratlla"
 
 #: ../src/gtk/menus.ui.h:11
 msgid "_Cut"
-msgstr ""
+msgstr "_Retalla"
 
 #: ../src/gtk/menus.ui.h:12
 msgid "_Copy"
-msgstr ""
+msgstr "_Copia"
 
 #: ../src/gtk/menus.ui.h:13
 msgid "_Paste"
-msgstr ""
+msgstr "_Enganxa"
 
-#: ../src/gtk/menus.ui.h:14
+#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:629
 msgid "_Delete"
-msgstr ""
+msgstr "_Suprimeix"
 
 #: ../src/gtk/menus.ui.h:15
 msgid "Insert _Time"
@@ -389,7 +387,7 @@ msgstr "Insereix l'_hora"
 
 #: ../src/gtk/menus.ui.h:16
 msgid "Add/Remove _Hyperlink"
-msgstr ""
+msgstr "Afegeix o suprimeix un _hipervíncle"
 
 #: ../src/import-export-dialog.c:203
 msgid "Import _mode: "
@@ -408,23 +406,33 @@ msgstr "Importa entrades"
 msgid "Export Entries"
 msgstr "Exporta entrades"
 
-#: ../src/import-export-dialog.c:246
+#: ../src/import-export-dialog.c:210
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "_Importa"
+
+#: ../src/import-export-dialog.c:210
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "_Exporta"
+
+#: ../src/import-export-dialog.c:247
 msgid "Import failed"
 msgstr "Ha fallat la importació"
 
-#: ../src/import-export-dialog.c:284
+#: ../src/import-export-dialog.c:285
 msgid "Export failed"
 msgstr "Ha fallat l'exportació"
 
-#: ../src/import-export-dialog.c:297
+#: ../src/import-export-dialog.c:298
 msgid "Export successful"
 msgstr "Exportació correcta"
 
-#: ../src/import-export-dialog.c:298
+#: ../src/import-export-dialog.c:299
 msgid "The diary was successfully exported."
-msgstr "El diari s'ha exportat correctament."
+msgstr "L'agenda s'ha exportat correctament."
 
-#: ../src/import-export-dialog.c:446
+#: ../src/import-export-dialog.c:447
 msgid "Import Results"
 msgstr "Resultats de la importació"
 
@@ -434,8 +442,8 @@ msgstr "Resultats de la importació"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:541 ../src/main-window.c:568
-#: ../src/main-window.c:598 ../src/main-window.c:1200 ../src/printing.c:263
+#: ../src/import-export-dialog.c:542 ../src/main-window.c:590
+#: ../src/main-window.c:621 ../src/main-window.c:1228 ../src/printing.c:263
 #: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
@@ -446,14 +454,15 @@ msgid ""
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
 "imported."
 msgstr ""
-"Seleccioneu una _carpeta que contingui fitxers de text, un per entrada, amb "
-"noms en el format «yyyy-mm-dd» i sense extensió. S'importaran tots i "
-"qualsevol d'aquests fitxers."
+"Seleccioneu una _carpeta que contingui els fitxers de text, un per entrada, "
+"amb els noms en el format «yyyy-mm-dd» i sense extensió. S'importaran tots "
+"aquests fitxers."
 
 #: ../src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
-"Seleccioneu un _fitxer de base de dades creat pel diari Almanah per importar."
+"Seleccioneu un _fitxer de base de dades que s'hagi creat amb l'agenda "
+"Almanah per importar-ho."
 
 #: ../src/import-operation.c:248
 #, c-format
@@ -487,69 +496,86 @@ msgstr ""
 "S'ha importat l'entrada de «%s»:\n"
 "\n"
 
-#: ../src/main-window.c:572
+#: ../src/main-window.c:594
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
-msgstr "Segur que voleu editar aquesta entrada del diari per a %s?"
+msgstr "Segur que voleu editar aquesta entrada de l'agenda per %s?"
 
-#: ../src/main-window.c:602
+#: ../src/main-window.c:597 ../src/main-window.c:628
+msgid "_Cancel"
+msgstr "_Cancel·la"
+
+#: ../src/main-window.c:598
+msgid "_Edit"
+msgstr "_Edita"
+
+#: ../src/main-window.c:625
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
-msgstr "Segur que voleu suprimir aquesta entrada del diari per a %s?"
+msgstr "Segur que voleu suprimir aquesta entrada de l'agenda per %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:711
+#: ../src/main-window.c:735
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
-"L'etiqueta de text «%s» està duplicada o és desconeguda en l'entrada. "
-"S'ignorarà."
+"L'etiqueta de text «%s» està duplicada a l'entrada o es desconeix, s'ignora."
 
-#: ../src/main-window.c:948
+#: ../src/main-window.c:976
 msgid "Error opening URI"
 msgstr "S'ha produït un error en obrir l'URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1127
+#: ../src/main-window.c:1155
 #, c-format
 msgid "%s @ %s"
-msgstr ""
+msgstr "%s @ %s"
 
-#: ../src/main-window.c:1233
+#: ../src/main-window.c:1261
 msgid "Entry content could not be loaded"
 msgstr "No s'ha pogut carregar el contingut de l'entrada"
 
-#: ../src/main-window.c:1352
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: ../src/main-window.c:1416
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr ""
+"Això tan sols és una frase de quinze paraules per calcular la mida del text"
+
+#: ../src/main-window.c:1453
 msgid "Spelling checker could not be initialized"
 msgstr "No s'ha pogut inicialitzar el verificador ortogràfic"
 
-#: ../src/preferences-dialog.c:85
-msgid "Almanah Preferences"
-msgstr "Preferències de l'Almanah"
+#: ../src/preferences-dialog.c:83
+msgid "Preferences"
+msgstr "Preferències"
 
 #. Grab our child widgets
 #: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
-msgstr "Clau d'encriptació: "
+msgstr "Clau de xifratge: "
 
-#: ../src/preferences-dialog.c:209
+#: ../src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
-msgstr "Cap (no encriptis)"
+msgstr "Cap (no xifris)"
 
-#: ../src/preferences-dialog.c:233
+#: ../src/preferences-dialog.c:213
 msgid "New _Key"
-msgstr "_Clau nova"
+msgstr "Nova _clau"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:239
+#: ../src/preferences-dialog.c:237
 msgid "Enable _spell checking"
 msgstr "Habilita la _verificació de l'ortografia"
 
-#: ../src/preferences-dialog.c:264
+#: ../src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
-msgstr "S'ha produït un error en desar la clau d'encriptació"
+msgstr "S'ha produït un error en desar la clau de xifratge"
 
-#: ../src/preferences-dialog.c:283
+#: ../src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
 msgstr "S'ha produït un error en obrir el Seahorse"
 
@@ -561,61 +587,59 @@ msgstr "Aquesta entrada està marcada com a important."
 msgid "No entry for this date."
 msgstr "No hi ha cap entrada en aquesta data."
 
-#: ../src/printing.c:453
+#: ../src/printing.c:457
 msgid "Start date:"
 msgstr "Data d'inici:"
 
-#: ../src/printing.c:455
+#: ../src/printing.c:459
 msgid "End date:"
 msgstr "Data final:"
 
 #. Line spacing
-#: ../src/printing.c:471
+#: ../src/printing.c:475
 msgid "Line spacing:"
 msgstr "Espai entre línies:"
 
 #: ../src/search-dialog.c:221
 msgid "Search canceled."
-msgstr ""
+msgstr "S'ha cancel·lat la cerca."
 
 #. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
 #: ../src/search-dialog.c:224
 #, c-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Error: %s"
 
 #. Success!
 #: ../src/search-dialog.c:229
 #, c-format
 msgid "Found %d entry:"
 msgid_plural "Found %d entries:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ha trobat %d entrada:"
+msgstr[1] "Ha trobat %d entrades:"
 
 #: ../src/search-dialog.c:278
-#, fuzzy
-#| msgid "_Search…"
 msgid "Searching…"
-msgstr "_Cerca…"
+msgstr "_S'està cercant…"
 
-#: ../src/storage-manager.c:232
+#: ../src/storage-manager.c:248
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr ""
-"No s'ha pogut obrir la base de dades «%s». L'SQLite ha proporcionat el "
+"No s'ha pogut obrir la base de dades «%s». SQLite ha proporcionat el "
 "missatge d'error següent: %s"
 
-#: ../src/storage-manager.c:274
+#: ../src/storage-manager.c:291
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr ""
-"No s'ha pogut executar la consulta «%s». L'SQLite ha proporcionat el "
-"missatge d'error següent: %s"
+"No s'ha pogut executar la consulta «%s». SQLite ha proporcionat el missatge "
+"d'error següent: %s"
 
-#: ../src/storage-manager.c:580
+#: ../src/storage-manager.c:597
 msgid "Error deserializing entry into buffer while searching."
 msgstr ""
 "S'ha produït un error en desserialitzar l'entrada a la memòria intermèdia "
@@ -623,106 +647,109 @@ msgstr ""
 
 #: ../src/uri-entry-dialog.c:71
 msgid "Enter URI"
-msgstr ""
+msgstr "Introduïu l'URI"
 
-#: ../src/vfs.c:233
+#: ../src/vfs.c:239
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "La versió del GPGME no és almenys la %s"
 
-#: ../src/vfs.c:240
+#: ../src/vfs.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "El GPGME no permet l'ús de l'OpenPGP: %s"
+msgstr "GPGME no és compatible amb OpenPGP: %s"
 
-#: ../src/vfs.c:247
+#: ../src/vfs.c:253
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "S'ha produït un error en crear el context per al criptògraf: %s"
 
-#: ../src/vfs.c:267
+#: ../src/vfs.c:273
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
-msgstr ""
+msgstr "No es pot crear un nou GIOChannel per a la base de dades xifrada: %s"
 
-#: ../src/vfs.c:275
+#: ../src/vfs.c:281
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr ""
-"S'ha produït un error en obrir el fitxer de base de dades encriptat «%s»: %s"
+"S'ha produït un error en obrir el fitxer de la base de dades xifrada «%s»: %s"
 
-#: ../src/vfs.c:291
-#, fuzzy, c-format
-#| msgid "Error decrypting database: %s"
+#: ../src/vfs.c:297
+#, c-format
 msgid "Error creating Callback base data buffer: %s"
-msgstr "S'ha produït un error en desencriptar la base de dades: %s"
+msgstr ""
+"S'ha produït un error en crear l'àrea de memòria temporal amb el codi "
+"executable passat com argument: %s"
 
-#: ../src/vfs.c:299
+#: ../src/vfs.c:305
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
-msgstr ""
+msgstr "No es pot crear un nou GIOChannel per a la base de dades senzilla: %s"
 
-#: ../src/vfs.c:307
+#: ../src/vfs.c:313
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
-msgstr "S'ha produït un error en obrir el fitxer de bases de dades «%s»: %s"
+msgstr ""
+"S'ha produït un error en obrir el fitxer de base de dades senzilla «%s»: %s"
 
-#: ../src/vfs.c:403
+#: ../src/vfs.c:409
 #, c-format
 msgid "Error getting encryption key: %s"
-msgstr "S'ha produït un error en obtenir la clau d'encriptació: %s"
+msgstr "S'ha produït un error en obtenir la clau de xifratge: %s"
 
-#: ../src/vfs.c:427 ../src/vfs.c:433
+#: ../src/vfs.c:433 ../src/vfs.c:439
 #, c-format
 msgid "Error encrypting database: %s"
-msgstr "S'ha produït un error en encriptar la base de dades: %s"
+msgstr "S'ha produït un error en xifrar la base de dades: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:485
-#, fuzzy, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
+#: ../src/vfs.c:489
+#, c-format
 msgid "Error copying the file from %s to %s: %s"
-msgstr "S'ha produït un error en obrir el fitxer de bases de dades «%s»: %s"
+msgstr "S'ha produït un error en copiar el fitxer de %s a %s: %s"
 
-#: ../src/vfs.c:491
-#, fuzzy, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
+#: ../src/vfs.c:495
+#, c-format
 msgid "Error changing database backup file permissions: %s"
-msgstr "S'ha produït un error en obrir el fitxer de bases de dades «%s»: %s"
+msgstr ""
+"S'ha produït un error en canviar els permisos del fitxer de la còpia de "
+"seguretat de la base de dades: %s"
 
-#: ../src/vfs.c:591
-#, fuzzy, c-format
-#| msgid "Error opening file"
+#: ../src/vfs.c:595
+#, c-format
 msgid "Error closing file: %s"
-msgstr "S'ha produït un error en obrir el fitxer"
+msgstr "S'ha produït un error en tancar el fitxer: %s"
 
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:990 ../src/vfs.c:1017
+#: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
 msgid "Error backing up file ‘%s’"
-msgstr ""
+msgstr "S'ha produït un error en fer la còpia de seguretat del fitxer «%s»"
 
-#: ../src/vfs.c:1003
+#: ../src/vfs.c:1007
 #, c-format
 msgid "Error decrypting database: %s"
-msgstr "S'ha produït un error en desencriptar la base de dades: %s"
+msgstr "S'ha produït un error en desxifrar la base de dades: %s"
 
-#: ../src/vfs.c:1043
-#, fuzzy, c-format
-#| msgid "Error opening plain database file \"%s\": %s"
+#: ../src/vfs.c:1047
+#, c-format
 msgid "Error changing database file permissions: %s"
-msgstr "S'ha produït un error en obrir el fitxer de bases de dades «%s»: %s"
+msgstr ""
+"S'ha produït un error en canviar els permisos del fitxer de la base de "
+"dades: %s"
 
 #: ../src/widgets/calendar-button.c:142
-#, fuzzy, c-format
-#| msgid "UI file \"%s\" could not be loaded"
+#, c-format
 msgid "UI data could not be loaded: %s"
-msgstr "No s'ha pogut carregar el fitxer d'interfície gràfica «%s»"
+msgstr "No s'han pogut carregar les dades de la interfície gràfica: %s"
 
 #: ../src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
 msgstr ""
+"No es pot carregar l'objecte de finestra del calendari sense un fitxer "
+"d'interfície gràfica"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: ../src/widgets/calendar.c:176
@@ -731,34 +758,33 @@ msgstr "Important"
 
 #: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
-msgstr ""
+msgstr "afegeix l'etiqueta"
 
 #: ../src/widgets/entry-tags-area.c:101
 msgid "Write the tag and press enter to save it"
-msgstr ""
+msgstr "Escriviu l'etiqueta i premeu la tecla de retorn per desar-la"
 
 #: ../src/widgets/tag-accessible.c:165
-#, fuzzy
-#| msgid "Remove the definition from the currently selected text."
 msgid "Remove the tag from the entry"
-msgstr "Suprimeix la definició del text seleccionat."
+msgstr "Suprimeix l'etiqueta de l'entrada."
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:416
 msgid "Remove tag"
-msgstr ""
+msgstr "Suprimeix l'etiqueta"
 
 #: ../src/widgets/tag-entry.c:85
-#, fuzzy
-#| msgid "Search entry"
 msgid "Tag entry"
-msgstr "Entrada de la cerca"
+msgstr "Etiqueta l'entrada"
+
+#~ msgid "Almanah Preferences"
+#~ msgstr "Preferències de l'Almanah"
 
 #~ msgid "Main window X position"
 #~ msgstr "Posició X de la finestra principal"
 
 #~ msgid "Main window Y position"
-#~ msgstr "Posició Y de la finestra principal"
+#~ msgstr "Posició Y de la finestra principal"
 
 #~ msgid "Main window height"
 #~ msgstr "Alçada de la finestra principal"
@@ -773,7 +799,7 @@ msgstr "Entrada de la cerca"
 #~ msgstr "La posició X de la finestra principal."
 
 #~ msgid "The Y position of the main window."
-#~ msgstr "La posició Y de la finestra principal."
+#~ msgstr "La posició Y de la finestra principal."
 
 #~ msgid "The height of the main window."
 #~ msgstr "L'alçada de la finestra principal."
@@ -837,9 +863,6 @@ msgstr "Entrada de la cerca"
 
 #~ msgid "_Definitions"
 #~ msgstr "_Definicions"
-
-#~ msgid "_Edit"
-#~ msgstr "_Edita"
 
 #~ msgid "_Export…"
 #~ msgstr "_Exporta…"
