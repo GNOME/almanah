@@ -186,6 +186,10 @@
 								<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 								<property name="shadow-type">GTK_SHADOW_IN</property>
+								<property name="height-request">150</property>
+                                                                <style>
+                                                                  <class name="almanah-events-scrolled"/>
+                                                                </style>
 								<child>
 									<object class="GtkTreeView" id="almanah_mw_events_tree_view">
 										<property name="model">almanah_mw_event_store</property>
