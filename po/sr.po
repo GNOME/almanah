@@ -1,14 +1,14 @@
 # Serbian translations for almanah.
 # Copyright (C) 2014 THE F'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2014.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=almanah"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-11-28 23:03+0000\n"
-"PO-Revision-Date: 2014-12-27 12:18+0200\n"
+"POT-Creation-Date: 2015-10-14 17:59+0000\n"
+"PO-Revision-Date: 2015-12-28 11:24+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -20,11 +20,15 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #: ../data/almanah.appdata.xml.in.h:1
+msgid "Keep a diary of your life"
+msgstr "Водите дневник вашег живота"
+
+#: ../data/almanah.appdata.xml.in.h:2
 msgid ""
 "Almanah Diary is an application to allow you to keep a diary of your life."
 msgstr "Алманах је програм који вам омогућава да водите дневник вашег живота."
 
-#: ../data/almanah.appdata.xml.in.h:2
+#: ../data/almanah.appdata.xml.in.h:3
 msgid ""
 "You can encrypt the diary to preserve your privacy. It has editing "
 "abilities, including text formatting and printing and shows you a lists of "
@@ -36,37 +40,8 @@ msgstr ""
 "вам спискове догађаја (на вашем рачунару) за сваки дан (као што су задаци и "
 "састанци из Еволуције)."
 
-#: ../data/almanah-app-menu.ui.h:1
-msgid "_Search"
-msgstr "_Тражи"
-
-#: ../data/almanah-app-menu.ui.h:2
-msgid "Pr_eferences"
-msgstr "_Поставке"
-
-#. Set the button label
-#: ../data/almanah-app-menu.ui.h:3 ../src/import-export-dialog.c:208
-msgid "_Import"
-msgstr "_Увези"
-
-#: ../data/almanah-app-menu.ui.h:4 ../src/import-export-dialog.c:208
-msgid "_Export"
-msgstr "_Извези"
-
-#: ../data/almanah-app-menu.ui.h:5
-msgid "_Print diary"
-msgstr "_Штампај дневник"
-
-#: ../data/almanah-app-menu.ui.h:6
-msgid "_About Almanah Diary"
-msgstr "_О дневнику Алманах"
-
-#: ../data/almanah-app-menu.ui.h:7
-msgid "_Quit"
-msgstr "_Изађи"
-
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:132
-#: ../src/main-window.c:136
+#: ../data/almanah.desktop.in.h:1 ../src/application.c:133
+#: ../src/main-window.c:155
 msgid "Almanah Diary"
 msgstr "Дневник Алманах"
 
@@ -75,7 +50,7 @@ msgid "Keep a personal diary"
 msgstr "Водите лични дневник"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:260
+#: ../data/almanah.desktop.in.h:3 ../src/application.c:272
 msgid "Diary"
 msgstr "Дневник"
 
@@ -84,132 +59,78 @@ msgstr "Дневник"
 msgid "diary;journal;"
 msgstr "дневник;записник;"
 
-#: ../data/almanah.ui.h:1
-msgid "Select Date…"
-msgstr "Изабери датум…"
-
-#: ../data/almanah.ui.h:2
-msgid "F_ormat"
-msgstr "_Формат"
-
-#: ../data/almanah.ui.h:3
-msgid "Toggle whether the currently selected text is bold."
-msgstr "Одредите да ли је тренутно изабрани текст подебљан."
-
-#: ../data/almanah.ui.h:4
-msgid "Toggle whether the currently selected text is italic."
-msgstr "Одредите да ли је тренутно изабрани текст искошен."
-
-#: ../data/almanah.ui.h:5
-msgid "Toggle whether the currently selected text is underlined."
-msgstr "Одредите да ли је тренутно изабрани текст подвучен."
-
-#: ../data/almanah.ui.h:6
-msgid "Add/Remove _Hyperlink"
-msgstr "Додај/уклони _хипервезу"
-
-#: ../data/almanah.ui.h:7
-msgid ""
-"Add or remove a hyperlink from the currently selected text to a specified "
-"URI."
-msgstr ""
-"Додајте или уклоните хипервезу из тренутно изабраног текста у задату адресу."
-
-#: ../data/almanah.ui.h:8
-msgid "Insert _Time"
-msgstr "Уметни _време"
-
-#: ../data/almanah.ui.h:9
-msgid "I_mportant"
-msgstr "_Важно"
-
-#: ../data/almanah.ui.h:10
-msgid "Toggle whether the current entry is marked as important."
-msgstr "Одредите да ли је тренутни унос означен као важан."
-
-#: ../data/almanah.ui.h:11
-msgid "Show tags"
-msgstr "Прикажи ознаке"
-
-#: ../data/almanah.ui.h:12
-msgid "Show tags for the current entry"
-msgstr "Прикажите ознаке за текући унос"
-
-#: ../data/almanah.ui.h:13
-msgid "_Help"
-msgstr "По_моћ"
-
-#: ../data/almanah.ui.h:14
-msgid "Go to _Today"
-msgstr "_Иди на данашње"
-
-#: ../data/almanah.ui.h:15
-msgid "Jump to the current date in the diary."
-msgstr "Пребаците се на текући датум у дневнику."
-
-#: ../data/almanah.ui.h:16
+#: ../src/ui/almanah.ui.h:1
 msgid "Calendar"
 msgstr "Календар"
 
-#: ../data/almanah.ui.h:17
+#: ../src/ui/almanah.ui.h:2
+#| msgid "Go to _Today"
+msgid "Go to Today"
+msgstr "Иди на данашње"
+
+#: ../src/ui/almanah.ui.h:3
+msgid "Select Date…"
+msgstr "Изабери датум…"
+
+#: ../src/ui/almanah.ui.h:4
 msgid "Entry editing area"
 msgstr "Област за уређивање уноса"
 
-#: ../data/almanah.ui.h:18
+#: ../src/ui/almanah.ui.h:5
 msgid "Past events"
 msgstr "Прошли догађаји"
 
-#: ../data/almanah.ui.h:19
+#: ../src/ui/almanah.ui.h:6
 msgid "Past Event List"
 msgstr "Списак прошлих догађаја"
 
-#: ../data/almanah.ui.h:20
+#: ../src/ui/almanah.ui.h:7
 msgid "Search entry"
 msgstr "Унос претраге"
 
-#: ../data/almanah.ui.h:21 ../src/search-dialog.c:69
+#: ../src/ui/almanah.ui.h:8 ../src/search-dialog.c:69
 msgid "Search"
 msgstr "Потражи"
 
-#: ../data/almanah.ui.h:22
+#: ../src/ui/almanah.ui.h:9
 msgid "Result List"
 msgstr "Списак резултата"
 
-#: ../data/almanah.ui.h:23
+#: ../src/ui/almanah.ui.h:10
 msgid "View Entry"
 msgstr "Прикажи унос"
 
-#: ../data/almanah.ui.h:24
+#: ../src/ui/almanah.ui.h:11
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "нпр. „16.07.2033“ или „16. јул 2033.“."
 
-#: ../data/almanah.ui.h:25
+#: ../src/ui/almanah.ui.h:12
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr ""
-"нпр. „http://google.com/“ или "
-"„датотека:///лична_фасцикла/Марко/фотографије/слика.jpg“."
+"нпр. „http://google.com/“ или „датотека:///лична_фасцикла/Марко/фотографије/"
+"слика.jpg“."
 
-#: ../data/almanah.ui.h:26
+#: ../src/ui/almanah.ui.h:13
 msgid "Successful Entries"
 msgstr "Успешни уноси"
 
-#: ../data/almanah.ui.h:27
+#: ../src/ui/almanah.ui.h:14
 msgid "Merged Entries"
 msgstr "Спојени уноси"
 
-#: ../data/almanah.ui.h:28
+#: ../src/ui/almanah.ui.h:15
 msgid "Failed Entries"
 msgstr "Неуспели уноси"
 
-#: ../data/almanah.ui.h:29
+#: ../src/ui/almanah.ui.h:16
 msgid "Import Results List"
 msgstr "Списак резултата увожења"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+#: ../data/org.gnome.almanah.gschema.xml.in.h:1
 msgid "Database encryption key ID"
 msgstr "ИБ кључа шифровања базе података"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
+#: ../data/org.gnome.almanah.gschema.xml.in.h:2
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -219,40 +140,31 @@ msgstr ""
 "Алманах изграђен са подршком за шифровање. Оставите празно да онемогућите "
 "шифровање базе података."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
+#: ../data/org.gnome.almanah.gschema.xml.in.h:3
 msgid "Spell checking language"
 msgstr "Језик провере писања"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+#: ../data/org.gnome.almanah.gschema.xml.in.h:4
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "Шифра језика за који ће се вршити провера писања."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+#: ../data/org.gnome.almanah.gschema.xml.in.h:5
 msgid "Spell checking enabled?"
 msgstr "Провера писања је укључена?"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+#: ../data/org.gnome.almanah.gschema.xml.in.h:6
 msgid "Whether spell checking of entries is enabled."
 msgstr "Ако је изабрано, вршиће се провера приликом писања."
 
-#: ../src/application.c:243
+#: ../src/application.c:255
 msgid "Error opening database"
 msgstr "Грешка приликом отварања базе података"
 
-#. Error loading the CSS
-#: ../src/application.c:272
-#, c-format
-msgid ""
-"Couldn't load the CSS file '%s'. The interface might not be styled correctly"
-msgstr ""
-"Не могу да учитам ЦСС датотеку „%s“. Сучеље не може бити исправно "
-"стилизовано."
-
-#: ../src/application.c:316
+#: ../src/application.c:332
 msgid "Enable debug mode"
 msgstr "Укључује режим за исправљање грешака"
 
-#: ../src/application.c:333
+#: ../src/application.c:349
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -260,24 +172,16 @@ msgstr ""
 "исто време."
 
 #. Print an error
-#: ../src/application.c:344
+#: ../src/application.c:360
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Опције линије наредби не могу бити обрађене: %s\n"
 
-#: ../src/application.c:363
+#: ../src/application.c:379
 msgid "Error encrypting database"
 msgstr "Грешка приликом шифровања базе података"
 
-#: ../src/application.c:424 ../src/date-entry-dialog.c:129
-#: ../src/import-export-dialog.c:168 ../src/import-export-dialog.c:472
-#: ../src/main-window.c:195 ../src/preferences-dialog.c:181
-#: ../src/search-dialog.c:97 ../src/uri-entry-dialog.c:128
-#, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Не могу да учитам датотеку корисничког сучеља „%s“"
-
-#: ../src/application.c:538
+#: ../src/application.c:522
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -289,7 +193,7 @@ msgstr ""
 "софтвера, било верзије 3 лиценце или (по вашем избору) било које новије "
 "верзије."
 
-#: ../src/application.c:542
+#: ../src/application.c:526
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -300,7 +204,7 @@ msgstr ""
 "чак и без примењене гаранције ТРЖИШНЕ ВРЕДНОСТИ или ПРИЛАГОЂЕНОСТИ ОДРЕЂЕНОЈ "
 "НАМЕНИ. Погледајте Гнуову општу јавну лиценцу за више детаља."
 
-#: ../src/application.c:546
+#: ../src/application.c:530
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -308,12 +212,12 @@ msgstr ""
 "Треба да сте примили примерак Гнуове опште јавне лиценце уз Алманах. Ако "
 "нисте, погледајте <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:561
+#: ../src/application.c:545
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Користан чувар дневника, садржи %u уносa."
 
-#: ../src/application.c:565
+#: ../src/application.c:549
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Ауторска права © 2008-2009 Филип Витнал"
 
@@ -322,20 +226,39 @@ msgstr "Ауторска права © 2008-2009 Филип Витнал"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:573
+#: ../src/application.c:557
 msgid "translator-credits"
 msgstr ""
 "Мирослав Николић, miroslavnikolic@rocketmail.com\n"
 "\n"
 "http://prevod.org — превод на српски језик"
 
-#: ../src/application.c:577
+#: ../src/application.c:561
 msgid "Almanah Website"
 msgstr "Веб страница Алманаха"
+
+#: ../src/application.c:589
+#, c-format
+#| msgid ""
+#| "Couldn't load the CSS file '%s'. The interface might not be styled "
+#| "correctly"
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"Не могу да учитам ЦСС изворишта. Сучеље не може бити исправно стилизовано: %s"
 
 #: ../src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Изаберите датум"
+
+#: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
+#: ../src/import-export-dialog.c:475 ../src/main-window.c:225
+#: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
+#: ../src/uri-entry-dialog.c:126
+#| msgid "UI file \"%s\" could not be loaded"
+msgid "UI data could not be loaded"
+msgstr "Не могу да учитам податке корисничког сучеља"
 
 #: ../src/entry.c:303
 #, c-format
@@ -399,52 +322,132 @@ msgstr ""
 msgid "Error changing exported file permissions: %s"
 msgstr "Грешка промене овлашћења извезене датотеке: %s"
 
-#: ../src/import-export-dialog.c:202
+#: ../src/gtk/menus.ui.h:1
+msgid "_Search"
+msgstr "_Тражи"
+
+#: ../src/gtk/menus.ui.h:2
+msgid "Pr_eferences"
+msgstr "_Поставке"
+
+#: ../src/gtk/menus.ui.h:3
+#| msgid "_Import"
+msgctxt "Main menu"
+msgid "_Import"
+msgstr "_Увези"
+
+#: ../src/gtk/menus.ui.h:4
+#| msgid "_Export"
+msgctxt "Main menu"
+msgid "_Export"
+msgstr "_Извези"
+
+#: ../src/gtk/menus.ui.h:5
+msgid "_Print diary"
+msgstr "_Штампај дневник"
+
+#: ../src/gtk/menus.ui.h:6
+msgid "_About Almanah Diary"
+msgstr "_О дневнику Алманах"
+
+#: ../src/gtk/menus.ui.h:7
+msgid "_Quit"
+msgstr "_Изађи"
+
+#: ../src/gtk/menus.ui.h:8
+msgid "_Bold"
+msgstr "_Подебљано"
+
+#: ../src/gtk/menus.ui.h:9
+msgid "_Italic"
+msgstr "_Искошено"
+
+#: ../src/gtk/menus.ui.h:10
+msgid "_Underline"
+msgstr "Под_вучено"
+
+#: ../src/gtk/menus.ui.h:11
+msgid "_Cut"
+msgstr "_Исеци"
+
+#: ../src/gtk/menus.ui.h:12
+msgid "_Copy"
+msgstr "У_множи"
+
+#: ../src/gtk/menus.ui.h:13
+msgid "_Paste"
+msgstr "У_баци"
+
+#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:626
+msgid "_Delete"
+msgstr "_Обриши"
+
+#: ../src/gtk/menus.ui.h:15
+msgid "Insert _Time"
+msgstr "Уметни _време"
+
+#: ../src/gtk/menus.ui.h:16
+msgid "Add/Remove _Hyperlink"
+msgstr "Додај/уклони _хипервезу"
+
+#: ../src/import-export-dialog.c:203
 msgid "Import _mode: "
 msgstr "Режим _увоза: "
 
-#: ../src/import-export-dialog.c:202
+#: ../src/import-export-dialog.c:203
 msgid "Export _mode: "
 msgstr "Режим _извоза: "
 
 #. Set the window title
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:206
 msgid "Import Entries"
 msgstr "Уноси за увоз"
 
-#: ../src/import-export-dialog.c:205
+#: ../src/import-export-dialog.c:206
 msgid "Export Entries"
 msgstr "Уноси за извоз"
 
-#: ../src/import-export-dialog.c:245
+#: ../src/import-export-dialog.c:210
+#| msgid "_Import"
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "_Увези"
+
+#: ../src/import-export-dialog.c:210
+#| msgid "_Export"
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "_Извези"
+
+#: ../src/import-export-dialog.c:247
 msgid "Import failed"
 msgstr "Увоз није успео"
 
-#: ../src/import-export-dialog.c:283
+#: ../src/import-export-dialog.c:285
 msgid "Export failed"
 msgstr "Извоз није успео"
 
-#: ../src/import-export-dialog.c:296
+#: ../src/import-export-dialog.c:298
 msgid "Export successful"
 msgstr "Извоз је успео"
 
-#: ../src/import-export-dialog.c:297
+#: ../src/import-export-dialog.c:299
 msgid "The diary was successfully exported."
 msgstr "Дневник је успешно извежен."
 
-#: ../src/import-export-dialog.c:445
+#: ../src/import-export-dialog.c:447
 msgid "Import Results"
 msgstr "Резултати увожења"
 
 #. Translators: This is a strftime()-format string for the dates displayed in import results.
 #. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
 #. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#: ../src/import-export-dialog.c:539 ../src/main-window.c:567
-#: ../src/main-window.c:597 ../src/printing.c:263 ../src/search-dialog.c:182
-#: ../src/widgets/calendar-button.c:309
+#: ../src/import-export-dialog.c:542 ../src/main-window.c:587
+#: ../src/main-window.c:618 ../src/main-window.c:1225 ../src/printing.c:263
+#: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
@@ -493,67 +496,87 @@ msgstr ""
 "Унос је увежен из „%s“:\n"
 "\n"
 
-#: ../src/main-window.c:571
+#: ../src/main-window.c:591
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Да ли сте сигурни да желите да уредите овај унос дневника за „%s“?"
 
-#: ../src/main-window.c:601
+#: ../src/main-window.c:594 ../src/main-window.c:625
+msgid "_Cancel"
+msgstr "_Откажи"
+
+#: ../src/main-window.c:595
+msgid "_Edit"
+msgstr "_Уреди"
+
+#: ../src/main-window.c:622
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Да ли сте сигурни да желите да обришете овај унос дневника за „%s“?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:710
+#: ../src/main-window.c:732
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Непозната или дуплирана ознака текста „%s“ у уносу. Занемарујем."
 
-#: ../src/main-window.c:918
+#: ../src/main-window.c:973
 msgid "Error opening URI"
 msgstr "Грешка приликом отварања адресе"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1092
+#: ../src/main-window.c:1152
 #, c-format
 msgid "%s @ %s"
 msgstr "%s у %s"
 
-#: ../src/main-window.c:1171
+#: ../src/main-window.c:1258
 msgid "Entry content could not be loaded"
 msgstr "Садржај уноса не може бити учитан"
 
-#: ../src/main-window.c:1348
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some randome sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: ../src/main-window.c:1414
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr ""
+"Ово је само реченица од петнаест речи за израчунавање величине прегледа "
+"текста за унос дневника"
+
+#: ../src/main-window.c:1450
 msgid "Spelling checker could not be initialized"
 msgstr "Провера писања не може бити започета"
 
-#: ../src/preferences-dialog.c:85
-msgid "Almanah Preferences"
-msgstr "Поставке Алманаха"
+#: ../src/preferences-dialog.c:83
+#| msgid "Pr_eferences"
+msgid "Preferences"
+msgstr "Поставке"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:206
+#: ../src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Кључ шифровања: "
 
-#: ../src/preferences-dialog.c:211
+#: ../src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Ништа (не шифруј)"
 
-#: ../src/preferences-dialog.c:235
+#: ../src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "_Нови кључ"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:241
+#: ../src/preferences-dialog.c:237
 msgid "Enable _spell checking"
 msgstr "Укључи _проверу писања"
 
-#: ../src/preferences-dialog.c:266
+#: ../src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
 msgstr "Грешка приликом чувања кључа за шифровање"
 
-#: ../src/preferences-dialog.c:285
+#: ../src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
 msgstr "Грешка приликом отварања привеска кључева"
 
@@ -578,18 +601,18 @@ msgstr "Крајњи датум:"
 msgid "Line spacing:"
 msgstr "Размак реда:"
 
-#: ../src/search-dialog.c:223
+#: ../src/search-dialog.c:221
 msgid "Search canceled."
 msgstr "Претрага је отказана."
 
 #. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
-#: ../src/search-dialog.c:226
+#: ../src/search-dialog.c:224
 #, c-format
 msgid "Error: %s"
 msgstr "Грешка: %s"
 
 #. Success!
-#: ../src/search-dialog.c:231
+#: ../src/search-dialog.c:229
 #, c-format
 msgid "Found %d entry:"
 msgid_plural "Found %d entries:"
@@ -598,11 +621,11 @@ msgstr[1] "Пронашао сам %d ставке:"
 msgstr[2] "Пронашао сам %d ставки:"
 msgstr[3] "Пронашао сам једну ставку:"
 
-#: ../src/search-dialog.c:280
+#: ../src/search-dialog.c:278
 msgid "Searching…"
 msgstr "Тражим…"
 
-#: ../src/storage-manager.c:232
+#: ../src/storage-manager.c:248
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -611,7 +634,7 @@ msgstr ""
 "Не могу да отворим базу података „%s“. СКуЛајт је обезбедио следећу поруку о "
 "грешци: %s"
 
-#: ../src/storage-manager.c:274
+#: ../src/storage-manager.c:291
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -619,7 +642,7 @@ msgstr ""
 "Не могу да покренем упит „%s“. СКуЛајт је обезбедио следећу поруку о грешци: "
 "%s"
 
-#: ../src/storage-manager.c:580
+#: ../src/storage-manager.c:597
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Грешка у рашчлањивању уноса у баферу током претраживања."
 
@@ -627,91 +650,97 @@ msgstr "Грешка у рашчлањивању уноса у баферу то
 msgid "Enter URI"
 msgstr "Унесите адресу"
 
-#: ../src/vfs.c:226
+#: ../src/vfs.c:239
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "ГПГМЕ није најновије издање %s"
 
-#: ../src/vfs.c:233
+#: ../src/vfs.c:246
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "ГПГМЕ не подржава ОпенПГП: %s"
 
-#: ../src/vfs.c:240
+#: ../src/vfs.c:253
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Грешка приликом стварања контекста шифровања: %s"
 
-#: ../src/vfs.c:260
+#: ../src/vfs.c:273
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Не могу да направим нови ГИО канал за шифроване базе података: %s"
 
-#: ../src/vfs.c:268
+#: ../src/vfs.c:281
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Грешка приликом отварања шифроване датотеке базе података „%s“: %s"
 
-#: ../src/vfs.c:284
+#: ../src/vfs.c:297
 #, c-format
-#| msgid "Error decrypting database: %s"
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Грешка стварања међумеморије података базе опозива: %s"
 
-#: ../src/vfs.c:292
+#: ../src/vfs.c:305
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Не могу да направим нови ГИО канал за обичне базе података: %s"
 
-#: ../src/vfs.c:300
+#: ../src/vfs.c:313
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Грешка приликом отварања обичне датотеке базе података „%s“: %s"
 
-#: ../src/vfs.c:396
+#: ../src/vfs.c:409
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Грешка приликом набављања кључа за шифровање: %s"
 
-#: ../src/vfs.c:420 ../src/vfs.c:426
+#: ../src/vfs.c:433 ../src/vfs.c:439
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Грешка приликом шифровања базе података: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:481
+#: ../src/vfs.c:489
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Грешка умножавања датотеке из „%s“ у „%s“: %s"
 
-#: ../src/vfs.c:487
+#: ../src/vfs.c:495
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr "Грешка промене овлашћења датотеке резерве базе података: %s"
 
+#: ../src/vfs.c:595
+#, c-format
+#| msgid "Error backing up file ‘%s’"
+msgid "Error closing file: %s"
+msgstr "Грешка затварања датотеке: %s"
+
 #. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:956 ../src/vfs.c:983
+#: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Грешка стварања резерве датотеке „%s“"
 
-#: ../src/vfs.c:969
+#: ../src/vfs.c:1007
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Грешка приликом дешифровања базе података: %s"
 
-#: ../src/vfs.c:1005
+#: ../src/vfs.c:1047
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Грешка промене овлашћења датотеке базе података: %s"
 
-#: ../src/widgets/calendar-button.c:140
+#: ../src/widgets/calendar-button.c:142
 #, c-format
-msgid "UI file \"%s\" could not be loaded: %s"
-msgstr "Не могу да учитам датотеку корисничког сучеља „%s“: %s"
+#| msgid "UI file \"%s\" could not be loaded: %s"
+msgid "UI data could not be loaded: %s"
+msgstr "Не могу да учитам податке корисничког сучеља: %s"
 
-#: ../src/widgets/calendar-button.c:150
+#: ../src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
 msgstr ""
 "Не могу да учитам објекат прозора календара из датотеке корисничког сучеља"
@@ -720,10 +749,6 @@ msgstr ""
 #: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Важно!"
-
-#: ../src/widgets/calendar-window.c:80
-msgid "Unknown input device"
-msgstr "Непознат улазни уређај"
 
 #: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
 msgid "add tag"
@@ -745,6 +770,49 @@ msgstr "Уклоните ознаку"
 #: ../src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Унос ознаке"
+
+#~ msgid "F_ormat"
+#~ msgstr "_Формат"
+
+#~ msgid "Toggle whether the currently selected text is bold."
+#~ msgstr "Одредите да ли је тренутно изабрани текст подебљан."
+
+#~ msgid "Toggle whether the currently selected text is italic."
+#~ msgstr "Одредите да ли је тренутно изабрани текст искошен."
+
+#~ msgid "Toggle whether the currently selected text is underlined."
+#~ msgstr "Одредите да ли је тренутно изабрани текст подвучен."
+
+#~ msgid ""
+#~ "Add or remove a hyperlink from the currently selected text to a specified "
+#~ "URI."
+#~ msgstr ""
+#~ "Додајте или уклоните хипервезу из тренутно изабраног текста у задату "
+#~ "адресу."
+
+#~ msgid "I_mportant"
+#~ msgstr "_Важно"
+
+#~ msgid "Toggle whether the current entry is marked as important."
+#~ msgstr "Одредите да ли је тренутни унос означен као важан."
+
+#~ msgid "Show tags"
+#~ msgstr "Прикажи ознаке"
+
+#~ msgid "Show tags for the current entry"
+#~ msgstr "Прикажите ознаке за текући унос"
+
+#~ msgid "_Help"
+#~ msgstr "По_моћ"
+
+#~ msgid "Jump to the current date in the diary."
+#~ msgstr "Пребаците се на текући датум у дневнику."
+
+#~ msgid "Almanah Preferences"
+#~ msgstr "Поставке Алманаха"
+
+#~ msgid "Unknown input device"
+#~ msgstr "Непознат улазни уређај"
 
 #~ msgid ""
 #~ "The encrypted database is empty. The plain database file has been left "
