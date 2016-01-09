@@ -502,8 +502,7 @@
 						<child>
 							<object class="GtkLabel" id="almanah_ded_description_label">
 								<property name="xalign">0</property>
-								<!-- Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function --> 
-								<property name="label" translatable="yes">e.g. "14/03/2009" or "14th March 2009".</property>
+								<property name="label" translatable="yes" comments="Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.">e.g. "14/03/2009" or "14th March 2009".</property>
 								<accessibility>
 									<relation target="almanah_ded_date_entry" type="description-for"/>
 								</accessibility>
@@ -568,8 +567,7 @@
 						<child>
 							<object class="GtkLabel" id="almanah_ued_description_label">
 								<property name="xalign">0</property>
-								<!-- Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file. -->
-								<property name="label" translatable="yes">e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”.</property>
+								<property name="label" translatable="yes" comments="Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.">e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”.</property>
 								<accessibility>
 									<relation target="almanah_ued_uri_entry" type="description-for"/>
 								</accessibility>

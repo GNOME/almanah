@@ -990,7 +990,7 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 		if (g_file_test (self->encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
 			/* Make a backup of the encrypted database file */
 			if (back_up_file (self->encrypted_filename) == FALSE) {
-				/* Translators: the first parameter is a filename, the second is an error message. */
+				/* Translators: the first parameter is a filename. */
 				g_warning (_("Error backing up file ‘%s’"), self->encrypted_filename);
 				g_clear_error (&child_error);
 			}
