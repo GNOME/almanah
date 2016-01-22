@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2014 Álvaro Peña <alvaropg@gmail.com> -->
-<application>
-  <id type="desktop">almanah.desktop</id>
+<component type="desktop">
+  <id>almanah.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
-  <name>Almanah Diary</name>
+  <_name>Almanah Diary</_name>
   <_summary>Keep a diary of your life</_summary>
   <description>
     <_p>
@@ -18,8 +18,17 @@
     </_p>
   </description>
   <screenshots>
-    <screenshot type="default" width="800" height="450">https://wiki.gnome.org/Apps/Almanah_Diary?action=AttachFile&amp;do=get&amp;target=screenshot-almanah-diary.png</screenshot>
+    <screenshot height="450" width="800" type="default">
+      <image>https://wiki.gnome.org/Apps/Almanah_Diary?action=AttachFile&amp;do=get&amp;target=screenshot-almanah-diary.png</image>
+    </screenshot>
   </screenshots>
   <url type="homepage">https://wiki.gnome.org/Apps/Almanah_Diary</url>
-  <updatecontact>alvaropg_at_gmail.com</updatecontact>
-</application>
+  <url type="bugtracker">https://bugzilla.gnome.org/enter_bug.cgi?product=almanah</url>
+  <url type="donation">http://www.gnome.org/friends/</url>
+  <update_contact>alvaropg_at_gmail.com</update_contact>
+  <project_group>GNOME</project_group>
+  <kudos>
+    <kudo>AppMenu</kudo>
+    <kudo>ModernToolkit</kudo>
+  </kudos>
+</component>
