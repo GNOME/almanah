@@ -531,6 +531,7 @@ get_time_from_property (icalcomponent         *ical,
   icalproperty        *prop;
   struct icaltimetype  ical_time;
   icalparameter       *param;
+  icaltimezone        *time_zone = NULL;
 
   prop = icalcomponent_get_first_property (ical, prop_kind);
   if (!prop)
@@ -539,11 +540,14 @@ get_time_from_property (icalcomponent         *ical,
   ical_time = get_prop_func (prop);
 
   param = icalproperty_get_first_parameter (prop, ICAL_TZID_PARAMETER);
-  /* Use default timezone if the event doesn't provide its own timezone */
-  if (!param && !icaltime_is_utc (ical_time))
-    icaltime_set_timezone(&ical_time, default_zone);
+  if (param)
+    time_zone = icaltimezone_get_builtin_timezone_from_tzid (icalparameter_get_tzid (param));
+  else if (icaltime_is_utc (ical_time))
+    time_zone = icaltimezone_get_utc_timezone ();
+  else
+    time_zone = default_zone;
 
-  return icaltime_as_timet (ical_time);
+  return icaltime_as_timet_with_zone (ical_time, time_zone);
 }
 
 static char *
@@ -840,6 +844,69 @@ calendar_appointment_init (CalendarAppointment  *appointment,
                                                    default_zone);
 }
 
+static icaltimezone *
+resolve_timezone_id (const char *tzid,
+                     gpointer user_data)
+{
+  icaltimezone *retval;
+  ECalClient *source = user_data;
+
+  retval = icaltimezone_get_builtin_timezone_from_tzid (tzid);
+  if (!retval)
+    {
+      e_cal_client_get_timezone_sync (source, tzid, &retval, NULL, NULL);
+    }
+
+  return retval;
+}
+
+static gboolean
+calendar_appointment_collect_occurrence (ECalComponent  *component,
+                                         time_t          occurrence_start,
+                                         time_t          occurrence_end,
+                                         gpointer        data)
+{
+  CalendarOccurrence *occurrence;
+  GSList **collect_loc = data;
+
+  occurrence             = g_new0 (CalendarOccurrence, 1);
+  occurrence->start_time = occurrence_start;
+  occurrence->end_time   = occurrence_end;
+
+  *collect_loc = g_slist_prepend (*collect_loc, occurrence);
+
+  return TRUE;
+}
+
+static void
+calendar_appointment_generate_ocurrences (CalendarAppointment *appointment,
+                                          icalcomponent       *ical,
+                                          ECalClient          *source,
+                                          time_t               start,
+                                          time_t               end,
+                                          icaltimezone        *default_zone)
+{
+  ECalComponent *ecal;
+
+  g_assert (appointment->occurrences == NULL);
+
+  ecal = e_cal_component_new ();
+  e_cal_component_set_icalcomponent (ecal,
+                                     icalcomponent_new_clone (ical));
+
+  e_cal_recur_generate_instances (ecal,
+                                  start,
+                                  end,
+                                  calendar_appointment_collect_occurrence,
+                                  &appointment->occurrences,
+                                  resolve_timezone_id,
+                                  source,
+                                  default_zone);
+
+  g_object_unref (ecal);
+
+  appointment->occurrences = g_slist_reverse (appointment->occurrences);
+}
 
 static inline gboolean
 calendar_task_equal (CalendarTask *a,
@@ -1071,6 +1138,24 @@ calendar_event_equal (CalendarEvent *a,
   return FALSE;
 }
 
+static void
+calendar_event_generate_ocurrences (CalendarEvent *event,
+                                    icalcomponent *ical,
+                                    ECalClient    *source,
+                                    time_t         start,
+                                    time_t         end,
+                                    icaltimezone  *default_zone)
+{
+  if (event->type != CALENDAR_EVENT_APPOINTMENT)
+    return;
+
+  calendar_appointment_generate_ocurrences (CALENDAR_APPOINTMENT (event),
+                                            ical,
+                                            source,
+                                            start,
+                                            end,
+                                            default_zone);
+}
 
 static inline void
 calendar_event_debug_dump (CalendarEvent *event)
@@ -1258,6 +1343,13 @@ calendar_client_handle_query_result (CalendarClientSource *source,
       event = calendar_event_new (ical, source, client->priv->zone);
       if (!event)
         continue;
+
+      calendar_event_generate_ocurrences (event,
+                                          ical,
+                                          source->cal_client,
+                                          month_begin,
+                                          month_end,
+                                          client->priv->zone);
 
       uid = calendar_event_get_uid (event);
 
@@ -1742,23 +1834,41 @@ typedef void (* CalendarEventFilterFunc) (const char    *uid,
                                           FilterData    *filter_data);
 
 static void
-filter_appointment (G_GNUC_UNUSED const char *uid,
-                    CalendarEvent            *event,
-                    FilterData               *filter_data)
+filter_appointment (const char    *uid,
+                    CalendarEvent *event,
+                    FilterData    *filter_data)
 {
+  GSList *occurrences, *l;
+
   if (event->type != CALENDAR_EVENT_APPOINTMENT)
     return;
 
-  if ((CALENDAR_APPOINTMENT(event)->start_time >= filter_data->start_time &&
-       CALENDAR_APPOINTMENT(event)->start_time < filter_data->end_time) ||
-      (CALENDAR_APPOINTMENT(event)->start_time <= filter_data->start_time &&
-       (CALENDAR_APPOINTMENT(event)->end_time - 1) > filter_data->start_time))
-    {
-      CalendarEvent *new_event;
+  occurrences = CALENDAR_APPOINTMENT (event)->occurrences;
+  CALENDAR_APPOINTMENT (event)->occurrences = NULL;
 
-      new_event = calendar_event_copy (event);
-      filter_data->events = g_slist_prepend (filter_data->events, new_event);
+  for (l = occurrences; l; l = l->next)
+    {
+      CalendarOccurrence *occurrence = l->data;
+      time_t start_time = occurrence->start_time;
+      time_t end_time   = occurrence->end_time;
+
+      if ((start_time >= filter_data->start_time &&
+           start_time < filter_data->end_time) ||
+          (start_time <= filter_data->start_time &&
+           (end_time - 1) > filter_data->start_time))
+        {
+          CalendarEvent *new_event;
+
+          new_event = calendar_event_copy (event);
+
+          CALENDAR_APPOINTMENT (new_event)->start_time = occurrence->start_time;
+          CALENDAR_APPOINTMENT (new_event)->end_time   = occurrence->end_time;
+
+          filter_data->events = g_slist_prepend (filter_data->events, new_event);
+        }
     }
+
+  CALENDAR_APPOINTMENT (event)->occurrences = occurrences;
 }
 
 static void
