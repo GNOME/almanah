@@ -79,14 +79,14 @@ AlmanahCalendarAppointmentEvent *
 almanah_calendar_appointment_event_new (const gchar *summary, GTime start_time)
 {
 	AlmanahCalendarAppointmentEvent *event = g_object_new (ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, NULL);
-	struct tm utc_date_tm;
+	struct tm date_tm;
 
 	event->priv->summary = g_strdup (summary);
 	event->priv->start_time = start_time;
 
-	gmtime_r ((const time_t*) &(ALMANAH_CALENDAR_APPOINTMENT_EVENT (event)->priv->start_time), &utc_date_tm);
+	localtime_r ((const time_t*) &(ALMANAH_CALENDAR_APPOINTMENT_EVENT (event)->priv->start_time), &date_tm);
 	/* Translators: This is a time string with the format hh:mm */
-	event->priv->time = g_strdup_printf (_("%.2d:%.2d"), utc_date_tm.tm_hour, utc_date_tm.tm_min);
+	event->priv->time = g_strdup_printf (_("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
 
 	return event;
 }
