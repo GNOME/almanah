@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-Generator: Poedit 1.5.4\n"
-"Language: Fr\n"
+"Language: fr\n"
 
 #: ../data/almanah.appdata.xml.in.h:1
 msgid ""
