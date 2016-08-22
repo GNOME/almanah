@@ -292,6 +292,8 @@ startup (GApplication *application)
 	add_accelerator(GTK_APPLICATION (application), "win.hyperlink", "<Primary>H");
 	add_accelerator(GTK_APPLICATION (application), "win.insert-time", "<Primary>T");
 	add_accelerator(GTK_APPLICATION (application), "win.important", "<Primary>M");
+	add_accelerator(GTK_APPLICATION (application), "win.undo", "<Primary>Z");
+	add_accelerator(GTK_APPLICATION (application), "win.redo", "<Primary><Shift>Z");
 }
 
 /* Nullify our pointer to the main window when it gets destroyed (e.g. when we quit) so that we don't then try

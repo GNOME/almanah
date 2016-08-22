@@ -116,7 +116,7 @@
 									<class name="view"/>
 								</style>
 								<child>
-									<object class="GtkTextView" id="almanah_mw_entry_view">
+									<object class="GtkSourceView" id="almanah_mw_entry_view">
 										<property name="width-request">500</property>
 										<property name="can-focus">True</property>
 										<property name="has-focus">True</property>

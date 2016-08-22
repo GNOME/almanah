@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <gio/gio.h>
+#include <gtksourceview/gtksource.h>
 #ifdef ENABLE_SPELL_CHECKING
 #include <gtkspell/gtkspell.h>
 #endif /* ENABLE_SPELL_CHECKING */
@@ -60,8 +61,8 @@ static void save_window_state (AlmanahMainWindow *self);
 static void restore_window_state (AlmanahMainWindow *self);
 static gboolean mw_delete_event_cb (GtkWindow *window, gpointer user_data);
 static void mw_entry_buffer_cursor_position_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
-static void mw_entry_buffer_insert_text_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
-static void mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
+static void mw_entry_buffer_insert_text_cb (GtkSourceBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
+static void mw_entry_buffer_insert_text_after_cb (GtkSourceBuffer *text_buffer, GtkTextIter *start, gchar *text, gint len, AlmanahMainWindow *main_window);
 static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec, AlmanahMainWindow *main_window);
 
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
@@ -84,6 +85,10 @@ void mw_bold_toggle_cb            (GSimpleAction *action, GVariant *parameter, g
 void mw_italic_toggle_cb          (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 void mw_underline_toggle_cb       (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 void mw_hyperlink_toggle_cb       (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_undo_cb            (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_redo_cb            (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+
+static void mw_source_buffer_notify_can_undo_redo_cb (GObject *obj, GParamSpec *pspec, gpointer user_data);
 
 void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
 
@@ -94,8 +99,8 @@ void mw_desktop_interface_settings_changed (GSettings *settings, const gchar *ke
 
 struct _AlmanahMainWindowPrivate {
 	GtkWidget *header_bar;
-	GtkTextView *entry_view;
-	GtkTextBuffer *entry_buffer;
+	GtkSourceView *entry_view;
+	GtkSourceBuffer *entry_buffer;
 	AlmanahEntryTagsArea *entry_tags_area;
 	AlmanahCalendarButton *calendar_button;
 	GtkListStore *event_store;
@@ -137,7 +142,9 @@ static GActionEntry win_entries[] = {
 	{ "bold", NULL, NULL, "false", mw_bold_toggle_cb },
 	{ "italic", NULL, NULL, "false", mw_italic_toggle_cb },
 	{ "underline", NULL, NULL, "false", mw_underline_toggle_cb },
-	{ "hyperlink", NULL, NULL, "false", mw_hyperlink_toggle_cb }
+	{ "hyperlink", NULL, NULL, "false", mw_hyperlink_toggle_cb },
+	{ "undo", mw_undo_cb },
+	{ "redo", mw_redo_cb }
 };
 
 static void
@@ -287,6 +294,10 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Similarly, make sure we're notified when there's a selection so we can change the status of cut/copy/paste actions */
 	g_signal_connect (priv->entry_buffer, "notify::has-selection", G_CALLBACK (mw_entry_buffer_has_selection_cb), main_window);
+
+	/* Update the undo/redo actions when the undo/redo stack changes. */
+	g_signal_connect (priv->entry_buffer, "notify::can-undo", G_CALLBACK (mw_source_buffer_notify_can_undo_redo_cb), main_window);
+	g_signal_connect (priv->entry_buffer, "notify::can-redo", G_CALLBACK (mw_source_buffer_notify_can_undo_redo_cb), main_window);
 
 	/* Set the storage to the tags area */
 	storage_manager = almanah_application_dup_storage_manager (application);
@@ -759,7 +770,7 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 }
 
 static void
-mw_entry_buffer_insert_text_cb (__attribute__ ((unused)) GtkTextBuffer *text_buffer,
+mw_entry_buffer_insert_text_cb (__attribute__ ((unused)) GtkSourceBuffer *text_buffer,
 				__attribute__ ((unused)) GtkTextIter *start,
 				__attribute__ ((unused)) gchar *text,
 				__attribute__ ((unused)) gint len,
@@ -781,7 +792,7 @@ mw_entry_buffer_insert_text_cb (__attribute__ ((unused)) GtkTextBuffer *text_buf
 }
 
 static void
-mw_entry_buffer_insert_text_after_cb (GtkTextBuffer *text_buffer, GtkTextIter *end, __attribute__ ((unused)) gchar *text, gint len, AlmanahMainWindow *main_window)
+mw_entry_buffer_insert_text_after_cb (GtkSourceBuffer *text_buffer, GtkTextIter *end, __attribute__ ((unused)) gchar *text, gint len, AlmanahMainWindow *main_window)
 {
 	GtkTextIter start;
 	AlmanahMainWindowPrivate *priv = main_window->priv;
@@ -1093,6 +1104,38 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
  finish:
 	if (update_state)
 		g_simple_action_set_state (action, parameter);
+}
+
+static void
+mw_undo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+
+	gtk_source_buffer_undo (main_window->priv->entry_buffer);
+}
+
+static void
+mw_redo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+
+	gtk_source_buffer_redo (main_window->priv->entry_buffer);
+}
+
+static void
+mw_source_buffer_notify_can_undo_redo_cb (GObject *obj, GParamSpec *pspec, gpointer user_data)
+{
+	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	GAction *action;
+
+	/* Update whether the undo and redo actions are enabled. */
+	action = g_action_map_lookup_action (G_ACTION_MAP (main_window), "undo");
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
+	                             gtk_source_buffer_can_undo (main_window->priv->entry_buffer));
+
+	action = g_action_map_lookup_action (G_ACTION_MAP (main_window), "redo");
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
+	                             gtk_source_buffer_can_redo (main_window->priv->entry_buffer));
 }
 
 static void
