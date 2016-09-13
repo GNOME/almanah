@@ -5,14 +5,14 @@
 # Carlos Albornoz <carlos@debianchile.cl>, 2009.
 # Jorge González <jorgegonz@svn.gnome.org>, 2008, 2009, 2010.
 # 
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2015., 2015.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2015, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: diary.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-14 17:59+0000\n"
+"POT-Creation-Date: 2016-07-14 15:50+0000\n"
 "PO-Revision-Date: 2015-12-01 13:17+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
@@ -23,18 +23,23 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/almanah.appdata.xml.in.h:1
+#: ../data/almanah.appdata.xml.in.h:1 ../data/almanah.desktop.in.h:1
+#: ../src/application.c:133 ../src/main-window.c:156
+msgid "Almanah Diary"
+msgstr "Diario Almanah"
+
+#: ../data/almanah.appdata.xml.in.h:2
 msgid "Keep a diary of your life"
 msgstr "Mantiene un diario de su vida"
 
-#: ../data/almanah.appdata.xml.in.h:2
+#: ../data/almanah.appdata.xml.in.h:3
 msgid ""
 "Almanah Diary is an application to allow you to keep a diary of your life."
 msgstr ""
 "Diario Almanah es una aplicación que le permite mantener un diario de su "
 "vida."
 
-#: ../data/almanah.appdata.xml.in.h:3
+#: ../data/almanah.appdata.xml.in.h:4
 msgid ""
 "You can encrypt the diary to preserve your privacy. It has editing "
 "abilities, including text formatting and printing and shows you a lists of "
@@ -45,11 +50,6 @@ msgstr ""
 "edición, incluyendo formateado del texto e impresión y muestra una lista de "
 "eventos que han ocurrido (en su equipo) para cada día (igual que las tareas "
 "y las citas de Evolution)."
-
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:133
-#: ../src/main-window.c:155
-msgid "Almanah Diary"
-msgstr "Diario Almanah"
 
 #: ../data/almanah.desktop.in.h:2
 msgid "Keep a personal diary"
@@ -105,27 +105,29 @@ msgstr "Lista de resultados"
 msgid "View Entry"
 msgstr "Ver entrada"
 
-#: ../src/ui/almanah.ui.h:11
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib
+#: ../src/ui/almanah.ui.h:12
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "ej. «14/03/2009» o «14 de marzo 2009»."
 
-#: ../src/ui/almanah.ui.h:12
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: ../src/ui/almanah.ui.h:14
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr "ej. “http://google.com/” o “file:///home/yo/Fotos/foto.jpg”."
 
-#: ../src/ui/almanah.ui.h:13
+#: ../src/ui/almanah.ui.h:15
 msgid "Successful Entries"
 msgstr "Entradas exitosas"
 
-#: ../src/ui/almanah.ui.h:14
+#: ../src/ui/almanah.ui.h:16
 msgid "Merged Entries"
 msgstr "Entradas combinadas"
 
-#: ../src/ui/almanah.ui.h:15
+#: ../src/ui/almanah.ui.h:17
 msgid "Failed Entries"
 msgstr "Entradas fallidas"
 
-#: ../src/ui/almanah.ui.h:16
+#: ../src/ui/almanah.ui.h:18
 msgid "Import Results List"
 msgstr "Importar lista de resultados"
 
@@ -256,7 +258,7 @@ msgid "Select Date"
 msgstr "Seleccionar fecha"
 
 #: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
-#: ../src/import-export-dialog.c:475 ../src/main-window.c:225
+#: ../src/import-export-dialog.c:475 ../src/main-window.c:228
 #: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
 #: ../src/uri-entry-dialog.c:126
 msgid "UI data could not be loaded"
@@ -378,7 +380,7 @@ msgstr "_Copiar"
 msgid "_Paste"
 msgstr "_Pegar"
 
-#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:626
+#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:629
 msgid "_Delete"
 msgstr "_Eliminar"
 
@@ -443,8 +445,8 @@ msgstr "Importar resultados"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:542 ../src/main-window.c:587
-#: ../src/main-window.c:618 ../src/main-window.c:1225 ../src/printing.c:263
+#: ../src/import-export-dialog.c:542 ../src/main-window.c:590
+#: ../src/main-window.c:621 ../src/main-window.c:1228 ../src/printing.c:263
 #: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e de %B de %Y"
@@ -495,49 +497,49 @@ msgstr ""
 "Entrada importada desde \"%s\":\n"
 "\n"
 
-#: ../src/main-window.c:591
+#: ../src/main-window.c:594
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "¿Está seguro de que quiere editar esta entrada del diario para %s?"
 
-#: ../src/main-window.c:594 ../src/main-window.c:625
+#: ../src/main-window.c:597 ../src/main-window.c:628
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: ../src/main-window.c:595
+#: ../src/main-window.c:598
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/main-window.c:622
+#: ../src/main-window.c:625
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "¿Está seguro de que quiere borrar esta entrada del diario para %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:732
+#: ../src/main-window.c:735
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr ""
 "Etiqueta de texto «%s» desconocida o duplicada en la entrada. Ignorando."
 
-#: ../src/main-window.c:973
+#: ../src/main-window.c:976
 msgid "Error opening URI"
 msgstr "Error abriendo URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1152
+#: ../src/main-window.c:1155
 #, c-format
 msgid "%s @ %s"
 msgstr "%s - %s"
 
-#: ../src/main-window.c:1258
+#: ../src/main-window.c:1261
 msgid "Entry content could not be loaded"
 msgstr "No se pudo cargar el contenido de la entrada: %s"
 
 #. Translators: this sentence is just used in startup to estimate the width
-#. of a 15 words sentence. Translate with some randome sentences with just 15 words.
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
 #. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
-#: ../src/main-window.c:1414
+#: ../src/main-window.c:1416
 msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
@@ -545,7 +547,7 @@ msgstr ""
 "Una frase de quince palabras para calcular el tamaño de la vista de una "
 "entrada"
 
-#: ../src/main-window.c:1450
+#: ../src/main-window.c:1453
 msgid "Spelling checker could not be initialized"
 msgstr "No se pudo inicializar el corrector ortográfico: %s"
 
@@ -587,16 +589,16 @@ msgstr "Esta entrada está marcada como importante."
 msgid "No entry for this date."
 msgstr "No hay entradas para esta fecha."
 
-#: ../src/printing.c:453
+#: ../src/printing.c:457
 msgid "Start date:"
 msgstr "Fecha de inicio:"
 
-#: ../src/printing.c:455
+#: ../src/printing.c:459
 msgid "End date:"
 msgstr "Fecha de finalización:"
 
 #. Line spacing
-#: ../src/printing.c:471
+#: ../src/printing.c:475
 msgid "Line spacing:"
 msgstr "Espaciado de líneas:"
 
@@ -715,7 +717,6 @@ msgstr ""
 msgid "Error closing file: %s"
 msgstr "Error al cerrar el archivo: %s"
 
-#. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
 #: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
