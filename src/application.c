@@ -17,6 +17,8 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <config.h>
+
 #include <stdlib.h>
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -561,7 +563,7 @@ action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 				"license", license,
 				"wrap-license", TRUE,
 				"website-label", _("Almanah Website"),
-				"website", "http://live.gnome.org/Almanah_Diary",
+				"website", PACKAGE_URL,
 				NULL);
 
 	g_free (license);
