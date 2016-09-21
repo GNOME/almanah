@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([almanah],[0.12.0],[https://bugzilla.gnome.org/enter_bug.cgi?product=almanah],[almanah],[http://wiki.gnome.org/Apps/Almanah_Diary])
+AC_INIT([almanah],[0.12.0],[https://bugzilla.gnome.org/enter_bug.cgi?product=almanah],[almanah],[https://wiki.gnome.org/Apps/Almanah_Diary])
 
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_HEADERS([config.h])
