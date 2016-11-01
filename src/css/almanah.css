@@ -4,7 +4,7 @@ AlmanahTagEntry {
    transition: none;
 }
 
-AlmanahTagEntry:focused {
+AlmanahTagEntry:focus {
    color: @theme_fg_color;
 }
 
