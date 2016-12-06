@@ -181,8 +181,10 @@ _gpgme_write_cb (void *handle, const void *buffer, size_t size)
 			new_buffer = gcr_secure_memory_realloc (npm_closure->buffer, new_size);
 		}
 
-		if (!new_buffer)
+		if (!new_buffer) {
+			errno = ENOMEM;
 			return -1;
+		}
 
 		npm_closure->buffer = new_buffer;
 		npm_closure->buffer_size = new_size;
