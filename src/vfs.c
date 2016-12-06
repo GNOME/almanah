@@ -219,7 +219,7 @@ _gpgme_seek_cb (void *handle, off_t offset, int whence)
 		npm_closure->offset += offset;
 		break;
 	case SEEK_END:
-		if (offset > 0 || -offset > npm_closure->size) {
+		if (offset > 0 || (gsize) -offset > npm_closure->size) {
 			errno = EINVAL;
 			return -1;
 		}
