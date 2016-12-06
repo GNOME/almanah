@@ -94,7 +94,7 @@ struct _AlmanahSQLiteVFS
 
 	gboolean decrypted;
 
-	gpointer plain_buffer;
+	guint8  *plain_buffer;
 	gsize    plain_buffer_size;     /* Reserved memory size */
 	goffset  plain_offset;
 	gsize    plain_size;            /* Data size (plain_size <= plain_buffer_size) */
@@ -106,7 +106,7 @@ typedef struct _CipherOperation CipherOperation;
 typedef struct _GpgmeNpmClosure GpgmeNpmClosure;
 
 struct _GpgmeNpmClosure {
-	gpointer buffer;
+	guint8  *buffer;
 	gsize    buffer_size;
 	goffset  offset;
 	gsize    size;
