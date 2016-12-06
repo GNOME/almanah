@@ -53,6 +53,8 @@
 
 #include <config.h>
 
+#include "vfs.h"
+
 /* VFS singleton and not a sqlite3_vfs static struct
    due GSettings is setup in initialization time */
 static sqlite3_vfs *almanah_vfs_singleton = NULL;
@@ -127,7 +129,7 @@ enum {
 
 #define ALMANAH_VFS_ERROR almanah_vfs_error_quark ()
 
-GQuark
+static GQuark
 almanah_vfs_error_quark (void)
 {
   return g_quark_from_static_string ("almanah-vfs-error-quark");
@@ -1250,7 +1252,7 @@ almanah_vfs_current_time (__attribute__ ((unused)) sqlite3_vfs *pVfs, double *pT
 **
 **   sqlite3_vfs_register(sqlite3_almanah_vfs(settings), 0);
 */
-sqlite3_vfs*
+static sqlite3_vfs *
 sqlite3_almanah_vfs (GSettings *settings)
 {
 	if (almanah_vfs_singleton == NULL) {
