@@ -192,7 +192,7 @@ _gpgme_write_cb (void *handle, const void *buffer, size_t size)
 
 	memcpy (npm_closure->buffer + npm_closure->offset, buffer, size);
 	npm_closure->offset += (gsize) size;
-	npm_closure->size = MAX(npm_closure->size, (gsize) npm_closure->offset);
+	npm_closure->size = MAX (npm_closure->size, (gsize) npm_closure->offset);
 
 	return size;
 }
