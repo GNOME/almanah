@@ -135,6 +135,54 @@ almanah_vfs_error_quark (void)
   return g_quark_from_static_string ("almanah-vfs-error-quark");
 }
 
+/* Some wrappers around the libgcr secure memory functionality which fall back
+ * to normal malloc() if secure memory fails. It will typically fail because
+ * rlimit_secmem is low (64KiB by default) which prevents unprivileged
+ * processes from allocating large amounts of secure memory. This typically
+ * means that we can’t keep the entire decrypted database in secure memory.
+ *
+ * Because keeping it in normal memory is better than leaving it on disk (even
+ * with the risk of normal memory being paged out at some point), do that
+ * instead of failing completely.
+ */
+static gpointer
+maybe_secure_memory_try_realloc (gpointer memory,
+                                 gsize    size)
+{
+	gpointer buffer = NULL;
+
+	if (gcr_secure_memory_is_secure (memory))
+		buffer = gcr_secure_memory_try_realloc (memory, size);
+	if (buffer == NULL)
+		buffer = g_try_realloc (memory, size);
+
+	return buffer;
+}
+
+static gpointer
+maybe_secure_memory_realloc (gpointer memory,
+                             gsize    size)
+{
+	gpointer buffer = NULL;
+
+	if (gcr_secure_memory_is_secure (memory))
+		buffer = gcr_secure_memory_try_realloc (memory, size);
+	if (buffer == NULL)
+		buffer = g_realloc (memory, size);
+
+	g_assert (buffer != NULL);
+	return buffer;
+}
+
+static void
+maybe_secure_memory_free (gpointer memory)
+{
+	if (gcr_secure_memory_is_secure (memory))
+		gcr_secure_memory_free (memory);
+	else
+		g_free (memory);
+}
+
 /* Callback based data buffer functions for GPGME */
 ssize_t _gpgme_read_cb    (void *handle, void *buffer, size_t size);
 ssize_t _gpgme_write_cb   (void *handle, const void *buffer, size_t size);
@@ -175,10 +223,10 @@ _gpgme_write_cb (void *handle, const void *buffer, size_t size)
 		required_size = npm_closure->offset + size;
 
 		new_size = MAX (exponential_size, required_size);
-		new_buffer = gcr_secure_memory_try_realloc (npm_closure->buffer, new_size);
+		new_buffer = maybe_secure_memory_try_realloc (npm_closure->buffer, new_size);
 		if (!new_buffer && (new_size > required_size)) {
 			new_size = required_size;
-			new_buffer = gcr_secure_memory_realloc (npm_closure->buffer, new_size);
+			new_buffer = maybe_secure_memory_realloc (npm_closure->buffer, new_size);
 		}
 
 		if (!new_buffer) {
@@ -532,10 +580,10 @@ almanah_vfs_direct_write (AlmanahSQLiteVFS *self,            /* File handle */
 			required_size = offset + len;
 
 			new_size = MAX (exponential_size, required_size);
-			new_buffer = gcr_secure_memory_try_realloc (self->plain_buffer, new_size);
+			new_buffer = maybe_secure_memory_try_realloc (self->plain_buffer, new_size);
 			if (new_buffer == NULL && (new_size > required_size)) {
 				new_size = required_size;
-				new_buffer = gcr_secure_memory_realloc (self->plain_buffer, new_size);
+				new_buffer = maybe_secure_memory_realloc (self->plain_buffer, new_size);
 			}
 
 			if (new_buffer == NULL)
@@ -702,7 +750,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 	}
 
 	if (self->plain_buffer)
-		gcr_secure_memory_free (self->plain_buffer);
+		maybe_secure_memory_free (self->plain_buffer);
 
 	if (self->plain_filename)
 		g_free (self->plain_filename);
