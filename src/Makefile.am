@@ -1,11 +1,11 @@
 bin_PROGRAMS = almanah
 
+BUILT_SOURCES =
 EXTRA_DIST =
 CLEANFILES =
 
 almanah_SOURCES = \
 	$(ALMANAH_MARSHAL_FILES)		\
-	$(ALMANAH_ENUM_FILES)			\
 	main.c					\
 	application.c				\
 	application.h				\
@@ -79,6 +79,11 @@ almanah_SOURCES += \
 	events/calendar-task.h
 endif
 
+nodist_almanah_SOURCES = \
+	$(almanah_enum_header_file) \
+	$(almanah_enum_source_file) \
+	$(NULL)
+
 almanah_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(datadir)/locale"\"	\
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"		\
@@ -122,31 +127,36 @@ almanah-marshal.c: almanah-marshal.list almanah-marshal.h
 	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=almanah_marshal --header --body $< > $@
 
 # Enums
-ALMANAH_ENUM_FILES = \
-	event-factory-builtins.h	\
-	event-factory-builtins.c
+almanah_enum_header_file = enums.h
+almanah_enum_source_file = enums.c
+almanah_enum_prerequisites = event-factory.h
 
-event-factory-builtins.h: event-factory.h Makefile
-	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
-			--fhead "#ifndef __ALMANAH_EVENT_FACTORY_BUILTINS_H__\n#define __ALMANAH_EVENT_FACTORY_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
-			--fprod "/* enumerations from \"@filename@\" */\n" \
-			--vhead "GType @enum_name@_get_type (void) G_GNUC_CONST;\n#define ALMANAH_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
-			--ftail "G_END_DECLS\n\n#endif /* __ALMANAH_EVENT_FACTORY_BUILTINS_H__ */" \
-		event-factory.h) > $(@F)
+$(almanah_enum_header_file): $(almanah_enum_header_file:%=%.template) $(almanah_enum_prerequisites)
+	$(AM_V_GEN)$(GLIB_MKENUMS) --template $< \
+		$(patsubst %,$(srcdir)/%,$(almanah_enum_prerequisites)) \
+		> $@.tmp && mv $@.tmp $@
 
-event-factory-builtins.c: event-factory.h Makefile event-factory-builtins.h
-	$(AM_V_GEN)(cd $(srcdir) && $(GLIB_MKENUMS) \
-			--fhead "#include \"event-factory.h\"\n#include \"event-factory-builtins.h\"" \
-			--fprod "\n/* enumerations from \"@filename@\" */" \
-			--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
-			--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
-			--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		event-factory.h) > $(@F)
+$(almanah_enum_source_file): $(almanah_enum_source_file:%=%.template) $(almanah_enum_prerequisites)
+	$(AM_V_GEN)$(GLIB_MKENUMS) --template $< \
+		$(patsubst %,$(srcdir)/%,$(almanah_enum_prerequisites)) \
+		> $@.tmp && mv $@.tmp $@
 
-CLEANFILES = \
-	$(ALMANAH_MARSHAL_FILES)	\
-	$(ALMANAH_ENUM_FILES)
+EXTRA_DIST += \
+	$(almanah_enum_header_file:%=%.template) \
+	$(almanah_enum_source_file:%=%.template) \
+	$(NULL)
+BUILT_SOURCES += \
+	$(almanah_enum_header_file) \
+	$(almanah_enum_source_file) \
+	$(NULL)
+CLEANFILES += \
+	$(almanah_enum_header_file) \
+	$(almanah_enum_source_file) \
+	$(NULL)
 
-EXTRA_DIST = almanah-marshal.list
+CLEANFILES += \
+	$(ALMANAH_MARSHAL_FILES)
+
+EXTRA_DIST += almanah-marshal.list
 
 -include $(top_srcdir)/git.mk

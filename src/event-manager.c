@@ -21,7 +21,7 @@
 
 #include "event-manager.h"
 #include "event-factory.h"
-#include "event-factory-builtins.h"
+#include "enums.h"
 
 typedef struct {
 	AlmanahEventFactoryType type_id;

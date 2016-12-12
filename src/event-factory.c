@@ -20,7 +20,7 @@
 #include <glib.h>
 
 #include "event-factory.h"
-#include "event-factory-builtins.h"
+#include "enums.h"
 
 static void almanah_event_factory_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 
