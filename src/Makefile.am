@@ -105,14 +105,16 @@ almanah_LDADD = \
 	$(AM_LDADD)
 
 # GResource
+almanah_gresource_xml_deps = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir)/src $(top_srcdir)/src/almanah.gresource.xml)
+resources.c: $(almanah_gresource_xml_deps)
+	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --c-name almanah --sourcedir=$(top_srcdir)/src --generate-source $(top_srcdir)/src/almanah.gresource.xml
 
-almanah_SOURCES += resources.c
-
-resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/almanah.gresource.xml)
-resources.c: almanah.gresource.xml $(resource_files)
-	$(AM_V_GEN)$(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name almanah $(srcdir)/almanah.gresource.xml
-
-EXTRA_DIST += almanah.gresource.xml
+BUILT_SOURCES += resources.c
+nodist_almanah_SOURCES += resources.c
+EXTRA_DIST += \
+	almanah.gresource.xml \
+	$(almanah_gresource_xml_deps) \
+	$(NULL)
 CLEANFILES += resources.c
 
 # Enums
