@@ -31,7 +31,6 @@
 
 #include "entry.h"
 #include "storage-manager.h"
-#include "almanah-marshal.h"
 #include "vfs.h"
 
 static void almanah_storage_manager_finalize (GObject *object);
@@ -98,7 +97,7 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                             G_TYPE_FROM_CLASS (klass),
 	                                                             G_SIGNAL_RUN_LAST,
 	                                                             0, NULL, NULL,
-	                                                             almanah_marshal_VOID__STRING_STRING,
+	                                                             NULL,
 	                                                             G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_STRING);
 	storage_manager_signals[SIGNAL_ENTRY_ADDED] = g_signal_new ("entry-added",
 	                                                            G_TYPE_FROM_CLASS (klass),
@@ -122,13 +121,13 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 									G_TYPE_FROM_CLASS (klass),
 									G_SIGNAL_RUN_LAST,
 									0, NULL, NULL,
-									almanah_marshal_VOID__OBJECT_STRING,
+									NULL,
 									G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
 	storage_manager_signals[SIGNAL_ENTRY_TAG_REMOVED] = g_signal_new ("entry-tag-removed",
 									  G_TYPE_FROM_CLASS (klass),
 									  G_SIGNAL_RUN_LAST,
 									  0, NULL, NULL,
-									  almanah_marshal_VOID__OBJECT_STRING,
+									  NULL,
 									  G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
 }
 

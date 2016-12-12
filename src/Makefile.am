@@ -5,7 +5,6 @@ EXTRA_DIST =
 CLEANFILES =
 
 almanah_SOURCES = \
-	$(ALMANAH_MARSHAL_FILES)		\
 	main.c					\
 	application.c				\
 	application.h				\
@@ -116,16 +115,6 @@ resources.c: almanah.gresource.xml $(resource_files)
 EXTRA_DIST += almanah.gresource.xml
 CLEANFILES += resources.c
 
-# Marshalling
-ALMANAH_MARSHAL_FILES = \
-	almanah-marshal.c	\
-	almanah-marshal.h
-
-almanah-marshal.h: almanah-marshal.list
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=almanah_marshal --header $< > $@
-almanah-marshal.c: almanah-marshal.list almanah-marshal.h
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=almanah_marshal --header --body $< > $@
-
 # Enums
 almanah_enum_header_file = enums.h
 almanah_enum_source_file = enums.c
@@ -153,10 +142,5 @@ CLEANFILES += \
 	$(almanah_enum_header_file) \
 	$(almanah_enum_source_file) \
 	$(NULL)
-
-CLEANFILES += \
-	$(ALMANAH_MARSHAL_FILES)
-
-EXTRA_DIST += almanah-marshal.list
 
 -include $(top_srcdir)/git.mk
