@@ -65,7 +65,7 @@ msgstr "Jornal"
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: ../data/almanah.desktop.in.h:5
 msgid "diary;journal;"
-msgstr "jornal"
+msgstr "jornal;"
 
 #: ../data/almanah.ui.h:1
 msgid "Select Date…"
