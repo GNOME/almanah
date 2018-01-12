@@ -1,6 +1,11 @@
-icondir = $(datadir)/icons/hicolor/scalable/actions
-icon_DATA = almanah-tags-symbolic.svg
+actionsdir = $(datadir)/icons/hicolor/scalable/actions
+actions_DATA = almanah-tags-symbolic.svg
 
-EXTRA_DIST = $(icon_DATA)
+appsdir = $(datadir)/icons/hicolor/scalable/apps
+apps_DATA = almanah-symbolic.svg
+
+EXTRA_DIST = \
+	$(actions_DATA) \
+	$(apps_DATA)
 
 -include ($top_srcdir)/git.mk
