@@ -446,7 +446,7 @@ msgstr "Resultats de la importació"
 #: ../src/main-window.c:621 ../src/main-window.c:1228 ../src/printing.c:263
 #: ../src/search-dialog.c:180
 msgid "%A, %e %B %Y"
-msgstr "%A, %e de %B de %Y"
+msgstr "%A, %e %B de %Y"
 
 #: ../src/import-operation.c:46
 msgid ""
@@ -598,7 +598,7 @@ msgstr "Data final:"
 #. Line spacing
 #: ../src/printing.c:475
 msgid "Line spacing:"
-msgstr "Interlineat:"
+msgstr "Illnterlineat:"
 
 #: ../src/search-dialog.c:221
 msgid "Search canceled."
