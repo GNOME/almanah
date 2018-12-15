@@ -10,7 +10,7 @@
 	</description>
 	<homepage rdf:resource="https://wiki.gnome.org/Apps/Almanah_Diary"/>
 	<download-page rdf:resource="https://download.gnome.org/sources/almanah/"/>
-	<bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=almanah"/>
+	<bug-database rdf:resource="https://gitlab.gnome.org/GNOME/almanah/issues/" />
 	<maintainer>
 		<foaf:Person>
 			<foaf:name>Philip Withnall</foaf:name>
