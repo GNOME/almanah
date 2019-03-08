@@ -38,10 +38,14 @@ static void almanah_storage_manager_get_property (GObject *object, guint propert
 static void almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static gboolean simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...);
 
-struct _AlmanahStorageManagerPrivate {
+typedef struct {
 	gchar *filename;
 	sqlite3 *connection;
 	GSettings *settings;
+} AlmanahStorageManagerPrivate;
+
+struct _AlmanahStorageManager {
+	GObject parent;
 };
 
 enum {
@@ -61,8 +65,7 @@ enum {
 
 static guint storage_manager_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT)
-#define ALMANAH_STORAGE_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT)
 
 GQuark
 almanah_storage_manager_error_quark (void)
@@ -74,8 +77,6 @@ static void
 almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahStorageManagerPrivate));
 
 	gobject_class->set_property = almanah_storage_manager_set_property;
 	gobject_class->get_property = almanah_storage_manager_get_property;
@@ -134,8 +135,9 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 static void
 almanah_storage_manager_init (AlmanahStorageManager *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerPrivate);
-	self->priv->filename = NULL;
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+
+	priv->filename = NULL;
 }
 
 /**
@@ -165,7 +167,7 @@ almanah_storage_manager_new (const gchar *filename, GSettings *settings)
 static void
 almanah_storage_manager_finalize (GObject *object)
 {
-	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (ALMANAH_STORAGE_MANAGER (object));
 
 	g_free (priv->filename);
 
@@ -176,7 +178,7 @@ almanah_storage_manager_finalize (GObject *object)
 static void
 almanah_storage_manager_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (ALMANAH_STORAGE_MANAGER (object));
 
 	switch (property_id) {
 		case PROP_FILENAME:
@@ -195,7 +197,7 @@ almanah_storage_manager_get_property (GObject *object, guint property_id, GValue
 static void
 almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	AlmanahStorageManagerPrivate *priv = ALMANAH_STORAGE_MANAGER (object)->priv;
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (ALMANAH_STORAGE_MANAGER (object));
 
 	switch (property_id) {
 		case PROP_FILENAME:
@@ -238,14 +240,16 @@ create_tables (AlmanahStorageManager *self)
 gboolean
 almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+
 	/* Our beautiful SQLite VFS */
-	almanah_vfs_init(self->priv->settings);
+	almanah_vfs_init(priv->settings);
 
 	/* Open the plain database */
-	if (sqlite3_open_v2 (self->priv->filename, &(self->priv->connection), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah") != SQLITE_OK) {
+	if (sqlite3_open_v2 (priv->filename, &(priv->connection), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah") != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
 		             _("Could not open database \"%s\". SQLite provided the following error message: %s"),
-		             self->priv->filename, sqlite3_errmsg (self->priv->connection));
+		             priv->filename, sqlite3_errmsg (priv->connection));
 		return FALSE;
 	}
 
@@ -258,9 +262,10 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 gboolean
 almanah_storage_manager_disconnect (AlmanahStorageManager *self, __attribute__ ((unused)) GError **error)
 {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	int sqlite_ret;
 
-	sqlite_ret = sqlite3_close (self->priv->connection);
+	sqlite_ret = sqlite3_close (priv->connection);
 
 	if (sqlite_ret != SQLITE_OK)
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, "Something goes wrong closing the database");
@@ -275,7 +280,7 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, __attribute__ (
 static gboolean
 simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...)
 {
-	AlmanahStorageManagerPrivate *priv = self->priv;
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	gchar *new_query;
 	va_list params;
 
@@ -301,12 +306,13 @@ simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, .
 gboolean
 almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entry_count)
 {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	sqlite3_stmt *statement;
 
 	*entry_count = 0;
 
 	/* Get the number of entries and the number of letters */
-	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT COUNT (year) FROM entries", -1, &statement, NULL) != SQLITE_OK)
+	if (sqlite3_prepare_v2 (priv->connection, "SELECT COUNT (year) FROM entries", -1, &statement, NULL) != SQLITE_OK)
 		return FALSE;
 
 	if (sqlite3_step (statement) != SQLITE_ROW) {
@@ -323,10 +329,11 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 gboolean
 almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	sqlite3_stmt *statement;
 	gboolean exists = FALSE;
 
-	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ? AND day = ? LIMIT 1", -1,
+	if (sqlite3_prepare_v2 (priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ? AND day = ? LIMIT 1", -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		return FALSE;
 	}
@@ -390,11 +397,12 @@ build_entry_from_statement (sqlite3_stmt *statement)
 AlmanahEntry *
 almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	AlmanahEntry *entry;
 	sqlite3_stmt *statement;
 
 	/* Prepare the statement */
-	if (sqlite3_prepare_v2 (self->priv->connection,
+	if (sqlite3_prepare_v2 (priv->connection,
 	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version FROM entries "
 	                        "WHERE year = ? AND month = ? AND day = ?", -1,
 	                        &statement, NULL) != SQLITE_OK) {
@@ -449,6 +457,7 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 
 		return success;
 	} else {
+		AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 		const guint8 *data;
 		gsize length;
 		sqlite3_stmt *statement;
@@ -459,7 +468,7 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		existed_before = almanah_storage_manager_entry_exists (self, &date);
 
 		/* Prepare the statement */
-		if (sqlite3_prepare_v2 (self->priv->connection,
+		if (sqlite3_prepare_v2 (priv->connection,
 		                        "REPLACE INTO entries "
 		                        "(year, month, day, content, is_important, edited_day, edited_month, edited_year, version) "
 		                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", -1,
@@ -558,10 +567,11 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 		return NULL;
 
 	if (iter->statement == NULL) {
+		AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 		SearchData *data;
 
 		/* Prepare the statement. */
-		if (sqlite3_prepare_v2 (self->priv->connection,
+		if (sqlite3_prepare_v2 (priv->connection,
 					"SELECT e.content, e.is_important, e.day, e.month, e.year, e.edited_day, e.edited_month, e.edited_year, e.version, GROUP_CONCAT(et.tag) AS tags FROM entries AS e "
 					"LEFT JOIN entry_tag AS et ON (e.day=et.day AND e.month=et.month AND e.year=et.year) "
 					"GROUP BY e.year, e.month, e.day "
@@ -826,8 +836,9 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 		return NULL;
 
 	if (iter->statement == NULL) {
+		AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 		/* Prepare the statement */
-		if (sqlite3_prepare_v2 (self->priv->connection,
+		if (sqlite3_prepare_v2 (priv->connection,
 		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version "
 		                        "FROM entries", -1,
 		                        (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
@@ -865,6 +876,7 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 gboolean *
 almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
 {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	sqlite3_stmt *statement;
 	gint i, result;
 	gboolean *days;
@@ -876,7 +888,7 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 	days = g_malloc0 (sizeof (gboolean) * i);
 
 	/* Prepare and run the query */
-	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ?", -1, &statement, NULL) != SQLITE_OK) {
+	if (sqlite3_prepare_v2 (priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ?", -1, &statement, NULL) != SQLITE_OK) {
 		g_free (days);
 		return NULL;
 	}
@@ -903,6 +915,7 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 gboolean *
 almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, GDateYear year, GDateMonth month, guint *num_days)
 {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	sqlite3_stmt *statement;
 	gint i, result;
 	gboolean *days;
@@ -914,7 +927,7 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 	days = g_malloc0 (sizeof (gboolean) * i);
 
 	/* Prepare and run the query */
-	if (sqlite3_prepare_v2 (self->priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ? AND is_important = 1", -1,
+	if (sqlite3_prepare_v2 (priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ? AND is_important = 1", -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		g_free (days);
 		return NULL;
@@ -941,7 +954,9 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 const gchar *
 almanah_storage_manager_get_filename (AlmanahStorageManager *self)
 {
-	return self->priv->filename;
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+
+	return priv->filename;
 }
 
 /**
@@ -977,7 +992,9 @@ almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry
 		return FALSE;
 	}
 
-	if ((result_error = sqlite3_prepare_v2 (self->priv->connection,
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+
+	if ((result_error = sqlite3_prepare_v2 (priv->connection,
 						"INSERT INTO entry_tag (year, month, day, tag) VALUES (?, ?, ?, ?)",
 						-1, &statement, NULL)) != SQLITE_OK) {
 		g_debug ("Can't prepare statement. SQLite error code: %d", result_error);
@@ -1061,7 +1078,9 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 		return NULL;
 	}
 
-	if (sqlite3_prepare_v2 (self->priv->connection,
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+
+	if (sqlite3_prepare_v2 (priv->connection,
 				"SELECT DISTINCT tag FROM entry_tag WHERE year = ? AND month = ? AND day = ?",
 				-1, &statement, NULL) != SQLITE_OK) {
 		g_debug ("Can't prepare statement");
@@ -1079,7 +1098,7 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 	sqlite3_finalize (statement);
 
 	if (result != SQLITE_DONE) {
-		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (priv->connection));
 		g_list_free_full (tags, (GDestroyNotify) g_free);
 		tags = NULL;
 	}
@@ -1116,7 +1135,9 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
 		return FALSE;
 	}
 
-	if (sqlite3_prepare_v2 (self->priv->connection, 
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+
+	if (sqlite3_prepare_v2 (priv->connection, 
 				"SELECT count(1) FROM entry_tag WHERE year = ? AND month = ? AND day = ? AND tag = ?",
 				-1, &statement, NULL) != SQLITE_OK) {
 		g_debug ("Can't prepare statement");
@@ -1134,7 +1155,7 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
 	}
 
 	if (q_result != SQLITE_DONE) {
-		g_debug ("Error querying for a tag from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_debug ("Error querying for a tag from database: %s", sqlite3_errmsg (priv->connection));
 	}
 
 	sqlite3_finalize (statement);
@@ -1160,7 +1181,9 @@ almanah_storage_manager_get_tags (AlmanahStorageManager *self)
 
 	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), FALSE);
 
-	if ((result = sqlite3_prepare_v2 (self->priv->connection, "SELECT DISTINCT tag FROM entry_tag", -1, &statement, NULL)) != SQLITE_OK) {
+	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+
+	if ((result = sqlite3_prepare_v2 (priv->connection, "SELECT DISTINCT tag FROM entry_tag", -1, &statement, NULL)) != SQLITE_OK) {
 		g_debug ("Can't prepare statement, error code: %d", result);
 		return NULL;
 	}
@@ -1172,7 +1195,7 @@ almanah_storage_manager_get_tags (AlmanahStorageManager *self)
 	sqlite3_finalize (statement);
 
 	if (result != SQLITE_DONE) {
-		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (self->priv->connection));
+		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (priv->connection));
 		g_free (tags);
 		tags = NULL;
 	}
