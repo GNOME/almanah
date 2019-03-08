@@ -1,9 +1,9 @@
 [Desktop Entry]
-_Name=Almanah Diary
-_Comment=Keep a personal diary
-_GenericName=Diary
+Name=Almanah Diary
+Comment=Keep a personal diary
+GenericName=Diary
 # TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-_Keywords=diary;journal;
+Keywords=diary;journal;
 Exec=almanah
 Icon=almanah
 Terminal=false

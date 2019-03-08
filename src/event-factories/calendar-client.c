@@ -2145,5 +2145,5 @@ calendar_client_set_task_completed (CalendarClient *client,
                                   icalproperty_new_status (status));
     }
 
-  e_cal_client_modify_object_sync (esource, ical, CALOBJ_MOD_ALL, NULL, NULL);
+  e_cal_client_modify_object_sync (esource, ical, E_CAL_OBJ_MOD_ALL, NULL, NULL);
 }
