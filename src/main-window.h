@@ -35,11 +35,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_MAIN_WINDOW_CLASS(k)		(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_MAIN_WINDOW))
 #define ALMANAH_MAIN_WINDOW_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_MAIN_WINDOW, AlmanahMainWindowClass))
 
-typedef struct _AlmanahMainWindowPrivate	AlmanahMainWindowPrivate;
-
 typedef struct {
 	GtkApplicationWindow parent;
-	AlmanahMainWindowPrivate *priv;
 } AlmanahMainWindow;
 
 typedef struct {

@@ -97,7 +97,7 @@ void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWi
 void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 void mw_desktop_interface_settings_changed (GSettings *settings, const gchar *key, gpointer user_data);
 
-struct _AlmanahMainWindowPrivate {
+typedef struct {
 	GtkWidget *header_bar;
 	GtkSourceView *entry_view;
 	GtkSourceBuffer *entry_buffer;
@@ -125,10 +125,13 @@ struct _AlmanahMainWindowPrivate {
 	GSettings *settings;
 	gulong spell_checking_enabled_changed_id; /* signal handler for application->settings::changed::spell-checking-enabled */
 #endif /* ENABLE_SPELL_CHECKING */
+} AlmanahMainWindowPrivate;
+
+struct _AlmanahMainWindow {
+	GtkApplicationWindow parent;
 };
 
-G_DEFINE_TYPE (AlmanahMainWindow, almanah_main_window, GTK_TYPE_APPLICATION_WINDOW)
-#define ALMANAH_MAIN_WINDOW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_MAIN_WINDOW, AlmanahMainWindowPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahMainWindow, almanah_main_window, GTK_TYPE_APPLICATION_WINDOW)
 
 static GActionEntry win_entries[] = {
 	{ "cut", mw_cut_activate_cb },
@@ -151,14 +154,13 @@ static void
 almanah_main_window_class_init (AlmanahMainWindowClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-	g_type_class_add_private (klass, sizeof (AlmanahMainWindowPrivate));
 	gobject_class->dispose = almanah_main_window_dispose;
 }
 
 static void
 almanah_main_window_init (AlmanahMainWindow *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_MAIN_WINDOW, AlmanahMainWindowPrivate);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 
 	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Diary"));
 	g_signal_connect (self, "delete-event", G_CALLBACK (mw_delete_event_cb), NULL);
@@ -168,18 +170,18 @@ almanah_main_window_init (AlmanahMainWindow *self)
 	                                 G_N_ELEMENTS (win_entries),
 	                                 self);
 
-	self->priv->header_bar = gtk_header_bar_new ();
-	gtk_window_set_titlebar (GTK_WINDOW (self), self->priv->header_bar);
-	gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (self->priv->header_bar), TRUE);
+	priv->header_bar = gtk_header_bar_new ();
+	gtk_window_set_titlebar (GTK_WINDOW (self), priv->header_bar);
+	gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (priv->header_bar), TRUE);
 
-	self->priv->desktop_interface_settings = NULL;
-	self->priv->css_provider = NULL;
+	priv->desktop_interface_settings = NULL;
+	priv->css_provider = NULL;
 }
 
 static void
 almanah_main_window_dispose (GObject *object)
 {
-	AlmanahMainWindowPrivate *priv = ALMANAH_MAIN_WINDOW (object)->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (ALMANAH_MAIN_WINDOW (object));
 
 	if (priv->save_entry_timeout_id != 0) {
 		g_source_remove (priv->save_entry_timeout_id);
@@ -255,7 +257,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	/* Set up the application */
 	gtk_window_set_application (GTK_WINDOW (main_window), GTK_APPLICATION (application));
 
-	priv = ALMANAH_MAIN_WINDOW (main_window)->priv;
+	priv = almanah_main_window_get_instance_private (ALMANAH_MAIN_WINDOW (main_window));
 
 	/* Grab our child widgets */
 	priv->entry_scrolled = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_main_content_scrolled_window"));
@@ -318,7 +320,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	mw_setup_size_text_view (main_window);
 
 	/* Select the current day and month */
-	almanah_calendar_button_select_today(main_window->priv->calendar_button);
+	almanah_calendar_button_select_today(priv->calendar_button);
 
 	/* Set up a timeout for saving the current entry every so often. */
 	priv->save_entry_timeout_id = g_timeout_add_seconds (SAVE_ENTRY_INTERVAL, (GSourceFunc) save_entry_timeout_cb, main_window);
@@ -333,14 +335,15 @@ almanah_main_window_new (AlmanahApplication *application)
 static void
 current_entry_notify_cb (__attribute__ ((unused)) AlmanahEntry *entry, __attribute__ ((unused)) GParamSpec *pspec, AlmanahMainWindow *self)
 {
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	/* As the entry's been changed, mark it as edited so that it has to be saved */
-	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (self->priv->entry_buffer), TRUE);
+	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 }
 
 static void
 set_current_entry (AlmanahMainWindow *self, AlmanahEntry *entry)
 {
-	AlmanahMainWindowPrivate *priv = self->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 
 	/* Disconnect from and unref the old entry */
 	if (priv->current_entry != NULL) {
@@ -562,7 +565,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	gboolean entry_exists, existing_entry_is_empty, entry_is_empty;
 	GDate date, last_edited;
 	AlmanahStorageManager *storage_manager;
-	AlmanahMainWindowPrivate *priv = self->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	AlmanahEntryEditability editability;
 
 	g_assert (priv->entry_buffer != NULL);
@@ -680,14 +683,16 @@ save_entry_timeout_cb (AlmanahMainWindow *self)
 void
 almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date)
 {
-	almanah_calendar_button_select_date (self->priv->calendar_button, date);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
+
+	almanah_calendar_button_select_date (priv->calendar_button, date);
 }
 
 static void
 mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __attribute__ ((unused)) GParamSpec *pspec, AlmanahMainWindow *main_window)
 {
 	GtkTextIter iter;
-	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GSList *_tag_list = NULL, *tag_list = NULL;
 	gboolean range_selected = FALSE;
 	gboolean bold_toggled = FALSE, italic_toggled = FALSE, underline_toggled = FALSE, hyperlink_toggled = FALSE;
@@ -776,7 +781,7 @@ mw_entry_buffer_insert_text_cb (__attribute__ ((unused)) GtkSourceBuffer *text_b
 				__attribute__ ((unused)) gint len,
 				AlmanahMainWindow *main_window)
 {
-	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GVariant *action_state;
 
 	priv->updating_formatting = TRUE;
@@ -795,7 +800,7 @@ static void
 mw_entry_buffer_insert_text_after_cb (GtkSourceBuffer *text_buffer, GtkTextIter *end, __attribute__ ((unused)) gchar *text, gint len, AlmanahMainWindow *main_window)
 {
 	GtkTextIter start;
-	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 
 	start = *end;
 	gtk_text_iter_backward_chars (&start, len);
@@ -841,51 +846,57 @@ void
 mw_cut_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
-	gtk_text_buffer_cut_clipboard (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), clipboard, TRUE);
+	gtk_text_buffer_cut_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard, TRUE);
 }
 
 void
 mw_copy_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
-	gtk_text_buffer_copy_clipboard (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), clipboard);
+	gtk_text_buffer_copy_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard);
 }
 
 void
 mw_paste_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
-	gtk_text_buffer_paste_clipboard (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), clipboard, NULL, TRUE);
+	gtk_text_buffer_paste_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard, NULL, TRUE);
 }
 
 void
 mw_delete_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
-	gtk_text_buffer_delete_selection (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), TRUE, TRUE);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
+	gtk_text_buffer_delete_selection (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE, TRUE);
 }
 
 void
 mw_insert_time_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	gchar time_string[100];
 	time_t time_struct;
 
 	time_struct = time (NULL);
 	strftime (time_string, sizeof (time_string), "%X", localtime (&time_struct));
-	gtk_text_buffer_insert_at_cursor (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), time_string, -1);
+	gtk_text_buffer_insert_at_cursor (GTK_TEXT_BUFFER (priv->entry_buffer), time_string, -1);
 }
 
 void
 mw_important_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 
-	almanah_entry_set_is_important (main_window->priv->current_entry, g_variant_get_boolean (parameter));
+	almanah_entry_set_is_important (priv->current_entry, g_variant_get_boolean (parameter));
 	g_simple_action_set_state (action, parameter);
 }
 
@@ -893,8 +904,9 @@ void
 mw_show_tags_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 
-	gtk_widget_set_visible (GTK_WIDGET (main_window->priv->entry_tags_area), g_variant_get_boolean (parameter));
+	gtk_widget_set_visible (GTK_WIDGET (priv->entry_tags_area), g_variant_get_boolean (parameter));
 	g_simple_action_set_state (action, parameter);
 }
 
@@ -902,9 +914,10 @@ void
 mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	AlmanahDateEntryDialog *dialog = almanah_date_entry_dialog_new ();
 
-	almanah_calendar_button_popdown (main_window->priv->calendar_button);
+	almanah_calendar_button_popdown (priv->calendar_button);
 
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
 	gtk_widget_show_all (GTK_WIDGET (dialog));
@@ -922,7 +935,7 @@ mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __at
 static void
 apply_formatting (AlmanahMainWindow *self, const gchar *tag_name, gboolean applying)
 {
-	AlmanahMainWindowPrivate *priv = self->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	GtkTextIter start, end;
 
 	/* Make sure we don't muck up the formatting when the actions are having
@@ -1002,7 +1015,7 @@ void
 mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *self = ALMANAH_MAIN_WINDOW (user_data);
-	AlmanahMainWindowPrivate *priv = self->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	GtkTextIter start, end;
 	gboolean update_state = FALSE;
 
@@ -1110,39 +1123,43 @@ static void
 mw_undo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 
-	gtk_source_buffer_undo (main_window->priv->entry_buffer);
+	gtk_source_buffer_undo (priv->entry_buffer);
 }
 
 static void
 mw_redo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 
-	gtk_source_buffer_redo (main_window->priv->entry_buffer);
+	gtk_source_buffer_redo (priv->entry_buffer);
 }
 
 static void
 mw_source_buffer_notify_can_undo_redo_cb (GObject *obj, GParamSpec *pspec, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GAction *action;
 
 	/* Update whether the undo and redo actions are enabled. */
 	action = g_action_map_lookup_action (G_ACTION_MAP (main_window), "undo");
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
-	                             gtk_source_buffer_can_undo (main_window->priv->entry_buffer));
+	                             gtk_source_buffer_can_undo (priv->entry_buffer));
 
 	action = g_action_map_lookup_action (G_ACTION_MAP (main_window), "redo");
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
-	                             gtk_source_buffer_can_redo (main_window->priv->entry_buffer));
+	                             gtk_source_buffer_can_redo (priv->entry_buffer));
 }
 
 static void
 clear_factory_events (AlmanahMainWindow *self, AlmanahEventFactoryType type_id)
 {
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	GtkTreeIter iter;
-	GtkTreeModel *model = GTK_TREE_MODEL (self->priv->event_store);
+	GtkTreeModel *model = GTK_TREE_MODEL (priv->event_store);
 
 	g_debug ("Removing events belonging to factory %u from the list store...", type_id);
 
@@ -1173,13 +1190,13 @@ clear_factory_events (AlmanahMainWindow *self, AlmanahEventFactoryType type_id)
 static void
 mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window)
 {
-	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GSList *_events, *events;
 	GDate date;
 	guint events_count = 0;
 	gchar *events_text;
 
-	almanah_calendar_button_get_date (main_window->priv->calendar_button, &date);
+	almanah_calendar_button_get_date (priv->calendar_button, &date);
 	_events = almanah_event_manager_get_events (event_manager, type_id, &date);
 
 	/* Clear all the events generated by this factory out of the list store first */
@@ -1238,7 +1255,7 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 #ifdef ENABLE_SPELL_CHECKING
 	GtkSpellChecker *gtkspell;
 #endif /* ENABLE_SPELL_CHECKING */
-	AlmanahMainWindowPrivate *priv = main_window->priv;
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	AlmanahEntry *entry;
 	GAction *action;
 	gboolean future_entry;
@@ -1266,10 +1283,10 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	almanah_main_window_save_current_entry (main_window, TRUE);
 
 	/* Update the date label */
-	almanah_calendar_button_get_date (main_window->priv->calendar_button, &calendar_date);
+	almanah_calendar_button_get_date (priv->calendar_button, &calendar_date);
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
 	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
-	gtk_header_bar_set_title (GTK_HEADER_BAR (main_window->priv->header_bar), calendar_string);
+	gtk_header_bar_set_title (GTK_HEADER_BAR (priv->header_bar), calendar_string);
 
 	/* Update the entry */
 	storage_manager = almanah_application_dup_storage_manager (application);
@@ -1350,11 +1367,12 @@ mw_calendar_select_date_clicked_cb (__attribute__ ((unused)) AlmanahCalendarButt
 void
 mw_events_tree_view_row_activated_cb (__attribute__ ((unused)) GtkTreeView *tree_view, GtkTreePath *path, __attribute__ ((unused)) GtkTreeViewColumn *column, AlmanahMainWindow *main_window)
 {
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	AlmanahEvent *event;
 	GtkTreeIter iter;
 
-	gtk_tree_model_get_iter (GTK_TREE_MODEL (main_window->priv->event_store), &iter, path);
-	gtk_tree_model_get (GTK_TREE_MODEL (main_window->priv->event_store), &iter,
+	gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->event_store), &iter, path);
+	gtk_tree_model_get (GTK_TREE_MODEL (priv->event_store), &iter,
 			    0, &event,
 			    -1);
 
@@ -1365,20 +1383,21 @@ mw_events_tree_view_row_activated_cb (__attribute__ ((unused)) GtkTreeView *tree
 static void
 mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application)
 {
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GtkWidget *button, *button_image;
 	GMenu *menu;
 	AlmanahStorageManager *storage_manager;
 
 	/* Setup the calendar button */
 	storage_manager = almanah_application_dup_storage_manager (application);
-	main_window->priv->calendar_button = ALMANAH_CALENDAR_BUTTON (almanah_calendar_button_new (storage_manager));
+	priv->calendar_button = ALMANAH_CALENDAR_BUTTON (almanah_calendar_button_new (storage_manager));
 	g_object_unref (storage_manager);
-	g_signal_connect (main_window->priv->calendar_button, "day-selected", G_CALLBACK (mw_calendar_day_selected_cb), main_window);
-	g_signal_connect (main_window->priv->calendar_button, "select-date-clicked", G_CALLBACK (mw_calendar_select_date_clicked_cb), main_window);
-	gtk_style_context_add_class (gtk_widget_get_style_context (main_window->priv->header_bar), "image-button");
+	g_signal_connect (priv->calendar_button, "day-selected", G_CALLBACK (mw_calendar_day_selected_cb), main_window);
+	g_signal_connect (priv->calendar_button, "select-date-clicked", G_CALLBACK (mw_calendar_select_date_clicked_cb), main_window);
+	gtk_style_context_add_class (gtk_widget_get_style_context (priv->header_bar), "image-button");
 	button_image = gtk_image_new_from_icon_name ("x-office-calendar-symbolic", GTK_ICON_SIZE_MENU);
-	gtk_button_set_image (GTK_BUTTON (main_window->priv->calendar_button), button_image);
-	gtk_header_bar_pack_start (GTK_HEADER_BAR (main_window->priv->header_bar), GTK_WIDGET (main_window->priv->calendar_button));
+	gtk_button_set_image (GTK_BUTTON (priv->calendar_button), button_image);
+	gtk_header_bar_pack_start (GTK_HEADER_BAR (priv->header_bar), GTK_WIDGET (priv->calendar_button));
 
 	/* Hamburger menu  */
 	button = gtk_menu_button_new ();
@@ -1386,7 +1405,7 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 	gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), G_MENU_MODEL (menu));
 	button_image = gtk_image_new_from_icon_name ("open-menu-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_button_set_image (GTK_BUTTON (button), button_image);
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
 
 	/* Important entry */
 	button = gtk_toggle_button_new ();
@@ -1394,14 +1413,14 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 	button_image = gtk_image_new_from_icon_name ("starred-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_button_set_image (GTK_BUTTON (button), button_image);
 	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.important");
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
 
 	/* Show/hide tags: future "side pane", for photos and other elements */
 	button = gtk_toggle_button_new ();
 	button_image = gtk_image_new_from_icon_name ("org.gnome.Almanah-tags-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_button_set_image (GTK_BUTTON (button), button_image);
 	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.show-tags");
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
 }
 
 /* Taken from pango_font_description_to_css() in GTK, licensed under GPLv2+
@@ -1528,30 +1547,32 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 
 	g_return_if_fail (ALMANAH_IS_MAIN_WINDOW (self));
 
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
+
 	/* Read the document font name & size, calculate the size of a random sentence
 	   with 15 words and change the minimum size for the text view. */
 
-	if (self->priv->desktop_interface_settings == NULL) {
-		self->priv->desktop_interface_settings = g_settings_new (ALMANAH_MAIN_WINDOW_DESKTOP_INTERFACE_SETTINGS_SCHEMA);
-		g_signal_connect (self->priv->desktop_interface_settings, "changed", G_CALLBACK (mw_desktop_interface_settings_changed), self);
+	if (priv->desktop_interface_settings == NULL) {
+		priv->desktop_interface_settings = g_settings_new (ALMANAH_MAIN_WINDOW_DESKTOP_INTERFACE_SETTINGS_SCHEMA);
+		g_signal_connect (priv->desktop_interface_settings, "changed", G_CALLBACK (mw_desktop_interface_settings_changed), self);
 	}
-	font_desc_string = g_settings_get_string (self->priv->desktop_interface_settings, ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME);
+	font_desc_string = g_settings_get_string (priv->desktop_interface_settings, ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME);
 	font_desc = pango_font_description_from_string (font_desc_string);
 	css_font = font_description_to_css (font_desc, ".almanah-mw-entry-view");
-	if (self->priv->css_provider == NULL) {
+	if (priv->css_provider == NULL) {
 		GtkStyleContext *style_context;
 
-		self->priv->css_provider = gtk_css_provider_new ();
-		style_context = gtk_widget_get_style_context (GTK_WIDGET (self->priv->entry_view));
-		gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (self->priv->css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+		priv->css_provider = gtk_css_provider_new ();
+		style_context = gtk_widget_get_style_context (GTK_WIDGET (priv->entry_view));
+		gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (priv->css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	}
-	gtk_css_provider_load_from_data (self->priv->css_provider, css_font, strlen(css_font), NULL);
+	gtk_css_provider_load_from_data (priv->css_provider, css_font, strlen(css_font), NULL);
 
 	/* Setting up entry GtkTextView size based on font size plus a margin */
-	fixed_width = mw_get_font_width (GTK_WIDGET (self->priv->entry_view), font_desc_string) + ALMANAH_MAIN_WINDOW_FIXED_MARGIN_FONT;
+	fixed_width = mw_get_font_width (GTK_WIDGET (priv->entry_view), font_desc_string) + ALMANAH_MAIN_WINDOW_FIXED_MARGIN_FONT;
 	/* The ScrolledWindow (parent container for the text view) must be at
 	   least the new width plus the text view margin */
-	gtk_widget_set_size_request(GTK_WIDGET (self->priv->entry_view), fixed_width, -1);
+	gtk_widget_set_size_request(GTK_WIDGET (priv->entry_view), fixed_width, -1);
 
 	g_free (font_desc_string);
 	pango_font_description_free (font_desc);
@@ -1624,6 +1645,7 @@ spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused))
 static gboolean
 enable_spell_checking (AlmanahMainWindow *self, GError **error)
 {
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	AlmanahApplication *application;
 	GSettings *settings;
 	GtkSpellChecker *gtkspell;
@@ -1632,11 +1654,11 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 	GtkTextTag *tag;
 
 	/* Bail out if spell checking's already enabled */
-	if (gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (self->priv->entry_view)) != NULL)
+	if (gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (priv->entry_view)) != NULL)
 		return TRUE;
 
 	/* If spell checking wasn't already enabled, we have a dummy gtkspell-misspelled text tag to destroy */
-	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (self->priv->entry_buffer));
+	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (priv->entry_buffer));
 	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
 	if (tag != NULL)
 		gtk_text_tag_table_remove (table, tag);
@@ -1655,7 +1677,7 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 
 	gtkspell = gtk_spell_checker_new ();
 	gtk_spell_checker_set_language (gtkspell, spelling_language, error);
-	gtk_spell_checker_attach (gtkspell, GTK_TEXT_VIEW (self->priv->entry_view));
+	gtk_spell_checker_attach (gtkspell, GTK_TEXT_VIEW (priv->entry_view));
 	g_free (spelling_language);
 
 	if (gtkspell == NULL)
@@ -1666,21 +1688,22 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 static void
 disable_spell_checking (AlmanahMainWindow *self)
 {
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	GtkSpellChecker *gtkspell;
 	GtkTextTagTable *table;
 	GtkTextTag *tag;
 
-	gtkspell = gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (self->priv->entry_view));
+	gtkspell = gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (priv->entry_view));
 	if (gtkspell != NULL)
 		gtk_spell_checker_detach (gtkspell);
 
 	/* Remove the old gtkspell-misspelling text tag */
-	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (self->priv->entry_buffer));
+	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (priv->entry_buffer));
 	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
 	if (tag != NULL)
 		gtk_text_tag_table_remove (table, tag);
 
 	/* Create a dummy gtkspell-misspelling text tag */
-	gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (self->priv->entry_buffer), "gtkspell-misspelled", NULL);
+	gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (priv->entry_buffer), "gtkspell-misspelled", NULL);
 }
 #endif /* ENABLE_SPELL_CHECKING */
