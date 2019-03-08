@@ -49,7 +49,7 @@ static guint8 *serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextB
 static gboolean deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data,
                                            gsize length, gboolean create_tags, gpointer user_data, GError **error);
 
-struct _AlmanahEntryPrivate {
+typedef struct {
 	GDate date;
 	guint8 *data;
 	gsize length;
@@ -57,6 +57,10 @@ struct _AlmanahEntryPrivate {
 	gboolean is_empty;
 	gboolean is_important;
 	GDate last_edited; /* date the entry was last edited *in the database*; e.g. this isn't updated when almanah_entry_set_content() is called */
+} AlmanahEntryPrivate;
+
+struct _AlmanahEntry {
+	GObject parent;
 };
 
 enum {
@@ -69,15 +73,12 @@ enum {
 	PROP_LAST_EDITED_YEAR
 };
 
-G_DEFINE_TYPE (AlmanahEntry, almanah_entry, G_TYPE_OBJECT)
-#define ALMANAH_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_ENTRY, AlmanahEntryPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEntry, almanah_entry, G_TYPE_OBJECT)
 
 static void
 almanah_entry_class_init (AlmanahEntryClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahEntryPrivate));
 
 	gobject_class->set_property = almanah_entry_set_property;
 	gobject_class->get_property = almanah_entry_get_property;
@@ -122,18 +123,18 @@ almanah_entry_class_init (AlmanahEntryClass *klass)
 static void
 almanah_entry_init (AlmanahEntry *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_ENTRY, AlmanahEntryPrivate);
-	self->priv->data = NULL;
-	self->priv->length = 0;
-	self->priv->version = DATA_FORMAT_UNSET;
-	g_date_clear (&(self->priv->date), 1);
-	g_date_clear (&(self->priv->last_edited), 1);
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+	priv->data = NULL;
+	priv->length = 0;
+	priv->version = DATA_FORMAT_UNSET;
+	g_date_clear (&(priv->date), 1);
+	g_date_clear (&(priv->last_edited), 1);
 }
 
 static void
 almanah_entry_finalize (GObject *object)
 {
-	AlmanahEntryPrivate *priv = ALMANAH_ENTRY (object)->priv;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (ALMANAH_ENTRY (object));
 
 	g_free (priv->data);
 
@@ -144,7 +145,7 @@ almanah_entry_finalize (GObject *object)
 static void
 almanah_entry_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahEntryPrivate *priv = ALMANAH_ENTRY (object)->priv;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (ALMANAH_ENTRY (object));
 
 	switch (property_id) {
 		case PROP_DAY:
@@ -178,7 +179,8 @@ almanah_entry_get_property (GObject *object, guint property_id, GValue *value, G
 static void
 almanah_entry_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	AlmanahEntryPrivate *priv = ALMANAH_ENTRY (object)->priv;
+	AlmanahEntry *entry = ALMANAH_ENTRY (object);
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (entry);
 
 	switch (property_id) {
 		case PROP_DAY:
@@ -191,7 +193,7 @@ almanah_entry_set_property (GObject *object, guint property_id, const GValue *va
 			g_date_set_year (&(priv->date), g_value_get_uint (value));
 			break;
 		case PROP_IS_IMPORTANT:
-			almanah_entry_set_is_important (ALMANAH_ENTRY (object), g_value_get_boolean (value));
+			almanah_entry_set_is_important (entry, g_value_get_boolean (value));
 			break;
 		case PROP_LAST_EDITED_DAY:
 			g_date_set_day (&(priv->last_edited), g_value_get_uint (value));
@@ -226,20 +228,22 @@ almanah_entry_new (GDate *date)
 const guint8 *
 almanah_entry_get_data (AlmanahEntry *self, gsize *length, guint *version)
 {
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+
 	if (length != NULL)
-		*length = self->priv->length;
+		*length = priv->length;
 
 	if (version != NULL) {
-		*version = self->priv->version;
+		*version = priv->version;
 	}
 
-	return self->priv->data;
+	return priv->data;
 }
 
 void
 almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length, guint version)
 {
-	AlmanahEntryPrivate *priv = self->priv;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 
 	g_free (priv->data);
 
@@ -252,7 +256,7 @@ almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length, gu
 gboolean
 almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gboolean create_tags, GError **error)
 {
-	AlmanahEntryPrivate *priv = self->priv;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 
 	/* Deserialise the data according to the version of the data format attached to the entry */
 	switch (priv->version) {
@@ -312,10 +316,10 @@ almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer)
 {
 	GtkTextIter start, end;
 	GdkAtom format_atom;
-	AlmanahEntryPrivate *priv = self->priv;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 
 	/* Update our cached empty status */
-	self->priv->is_empty = (gtk_text_buffer_get_char_count (text_buffer) == 0) ? TRUE : FALSE;
+	priv->is_empty = (gtk_text_buffer_get_char_count (text_buffer) == 0) ? TRUE : FALSE;
 
 	g_free (priv->data);
 
@@ -333,22 +337,25 @@ almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer)
 void
 almanah_entry_get_date (AlmanahEntry *self, GDate *date)
 {
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+
 	g_date_set_dmy (date,
-			g_date_get_day (&(self->priv->date)),
-			g_date_get_month (&(self->priv->date)),
-			g_date_get_year (&(self->priv->date)));
+			g_date_get_day (&(priv->date)),
+			g_date_get_month (&(priv->date)),
+			g_date_get_year (&(priv->date)));
 }
 
 AlmanahEntryEditability
 almanah_entry_get_editability (AlmanahEntry *self)
 {
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 	GDate current_date;
 	gint days_between;
 
 	g_date_set_time_t (&current_date, time (NULL));
 
 	/* Entries can't be edited before they've happened */
-	days_between = g_date_days_between (&(self->priv->date), &current_date);
+	days_between = g_date_days_between (&(priv->date), &current_date);
 
 	if (days_between < 0)
 		return ALMANAH_ENTRY_FUTURE;
@@ -361,24 +368,30 @@ almanah_entry_get_editability (AlmanahEntry *self)
 gboolean
 almanah_entry_is_empty (AlmanahEntry *self)
 {
-	return (self->priv->is_empty == TRUE ||
-		self->priv->length == 0 ||
-		self->priv->data == NULL ||
-		self->priv->data[0] == '\0') ? TRUE : FALSE;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+
+	return (priv->is_empty == TRUE ||
+		priv->length == 0 ||
+		priv->data == NULL ||
+		priv->data[0] == '\0') ? TRUE : FALSE;
 }
 
 gboolean
 almanah_entry_is_important (AlmanahEntry *self)
 {
-	return self->priv->is_important;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+
+	return priv->is_important;
 }
 
 void
 almanah_entry_set_is_important (AlmanahEntry *self, gboolean is_important)
 {
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+
 	/* Make sure we only notify if the property value really has changed */
-	if (self->priv->is_important != is_important) {
-		self->priv->is_important = is_important;
+	if (priv->is_important != is_important) {
+		priv->is_important = is_important;
 		g_object_notify (G_OBJECT (self), "is-important");
 	}
 }
@@ -390,7 +403,9 @@ almanah_entry_get_last_edited (AlmanahEntry *self, GDate *last_edited)
 	g_return_if_fail (ALMANAH_IS_ENTRY (self));
 	g_return_if_fail (last_edited != NULL);
 
-	*last_edited = self->priv->last_edited;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+
+	*last_edited = priv->last_edited;
 }
 
 /* NOTE: Designed for use on the stack */
@@ -400,7 +415,9 @@ almanah_entry_set_last_edited (AlmanahEntry *self, GDate *last_edited)
 	g_return_if_fail (ALMANAH_IS_ENTRY (self));
 	g_return_if_fail (last_edited != NULL && g_date_valid (last_edited) == TRUE);
 
-	self->priv->last_edited = *last_edited;
+	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
+
+	priv->last_edited = *last_edited;
 }
 
 /* Copied from GTK+'s gtktextbufferserialize.c, LGPLv2.1+:
