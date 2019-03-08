@@ -34,11 +34,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_CALENDAR_EVENT_FACTORY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY))
 #define ALMANAH_CALENDAR_EVENT_FACTORY_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY, AlmanahCalendarEventFactoryClass))
 
-typedef struct _AlmanahCalendarEventFactoryPrivate	AlmanahCalendarEventFactoryPrivate;
-
 typedef struct {
 	AlmanahEventFactory parent;
-	AlmanahCalendarEventFactoryPrivate *priv;
 } AlmanahCalendarEventFactory;
 
 typedef struct {

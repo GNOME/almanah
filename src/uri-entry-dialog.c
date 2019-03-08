@@ -31,25 +31,26 @@ static void almanah_uri_entry_dialog_set_property (GObject *object, guint proper
 /* GtkBuilder callbacks */
 G_MODULE_EXPORT void ued_uri_entry_notify_text_cb (GObject *gobject, GParamSpec *pspec, AlmanahUriEntryDialog *self);
 
-struct _AlmanahUriEntryDialogPrivate {
+typedef struct {
 	gchar *uri;
 	GtkWidget *ok_button;
 	GtkEntry *uri_entry;
+} AlmanahUriEntryDialogPrivate;
+
+struct _AlmanahUriEntryDialog {
+	GtkDialog parent;
 };
 
 enum {
 	PROP_URI = 1
 };
 
-G_DEFINE_TYPE (AlmanahUriEntryDialog, almanah_uri_entry_dialog, GTK_TYPE_DIALOG)
-#define ALMANAH_URI_ENTRY_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_URI_ENTRY_DIALOG, AlmanahUriEntryDialogPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahUriEntryDialog, almanah_uri_entry_dialog, GTK_TYPE_DIALOG)
 
 static void
 almanah_uri_entry_dialog_class_init (AlmanahUriEntryDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahUriEntryDialogPrivate));
 
 	gobject_class->set_property = almanah_uri_entry_dialog_set_property;
 	gobject_class->get_property = almanah_uri_entry_dialog_get_property;
@@ -64,8 +65,6 @@ almanah_uri_entry_dialog_class_init (AlmanahUriEntryDialogClass *klass)
 static void
 almanah_uri_entry_dialog_init (AlmanahUriEntryDialog *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_URI_ENTRY_DIALOG, AlmanahUriEntryDialogPrivate);
-
 	g_signal_connect (self, "response", (GCallback) gtk_widget_hide, self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Enter URI"));
@@ -74,7 +73,7 @@ almanah_uri_entry_dialog_init (AlmanahUriEntryDialog *self)
 static void
 almanah_uri_entry_dialog_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahUriEntryDialogPrivate *priv = ALMANAH_URI_ENTRY_DIALOG (object)->priv;
+	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (ALMANAH_URI_ENTRY_DIALOG (object));
 
 	switch (property_id) {
 		case PROP_URI:
@@ -143,7 +142,7 @@ almanah_uri_entry_dialog_new (void)
 		return NULL;
 	}
 
-	priv = uri_entry_dialog->priv;
+	priv = almanah_uri_entry_dialog_get_instance_private (uri_entry_dialog);
 
 	/* Grab widgets */
 	priv->ok_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_ued_ok_button"));
@@ -157,10 +156,12 @@ almanah_uri_entry_dialog_new (void)
 gboolean
 almanah_uri_entry_dialog_run (AlmanahUriEntryDialog *self)
 {
+	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (self);
+
 	/* Reset the URI entry and consequently the OK button */
-	gtk_entry_set_text (self->priv->uri_entry, "");
-	g_free (self->priv->uri);
-	self->priv->uri = NULL;
+	gtk_entry_set_text (priv->uri_entry, "");
+	g_free (priv->uri);
+	priv->uri = NULL;
 
 	return (gtk_dialog_run (GTK_DIALOG (self)) == GTK_RESPONSE_OK) ? TRUE : FALSE;
 }
@@ -180,7 +181,7 @@ is_uri_valid (const gchar *uri)
 void
 ued_uri_entry_notify_text_cb (GObject *gobject, GParamSpec *param_spec, AlmanahUriEntryDialog *self)
 {
-	AlmanahUriEntryDialogPrivate *priv = self->priv;
+	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (self);
 
 	/* Enable/Disable the OK button based on whether the current URI is valid. */
 	if (is_uri_valid (gtk_entry_get_text (priv->uri_entry)) == TRUE) {
@@ -197,7 +198,10 @@ const gchar *
 almanah_uri_entry_dialog_get_uri (AlmanahUriEntryDialog *self)
 {
 	g_return_val_if_fail (ALMANAH_IS_URI_ENTRY_DIALOG (self), NULL);
-	return self->priv->uri;
+
+	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (self);
+
+	return priv->uri;
 }
 
 void
@@ -206,8 +210,10 @@ almanah_uri_entry_dialog_set_uri (AlmanahUriEntryDialog *self, const gchar *uri)
 	g_return_if_fail (ALMANAH_IS_URI_ENTRY_DIALOG (self));
 	g_return_if_fail (uri == NULL || is_uri_valid (uri) == TRUE);
 
-	g_free (self->priv->uri);
-	self->priv->uri = g_strdup (uri);
+	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (self);
+
+	g_free (priv->uri);
+	priv->uri = g_strdup (uri);
 
 	g_object_notify (G_OBJECT (self), "uri");
 }

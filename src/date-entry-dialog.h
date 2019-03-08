@@ -33,11 +33,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_DATE_ENTRY_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_DATE_ENTRY_DIALOG))
 #define ALMANAH_DATE_ENTRY_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_DATE_ENTRY_DIALOG, AlmanahDateEntryDialogClass))
 
-typedef struct _AlmanahDateEntryDialogPrivate	AlmanahDateEntryDialogPrivate;
-
 typedef struct {
 	GtkDialog parent;
-	AlmanahDateEntryDialogPrivate *priv;
 } AlmanahDateEntryDialog;
 
 typedef struct {

@@ -38,11 +38,8 @@ typedef enum {
 #define ALMANAH_IS_EVENT_FACTORY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_EVENT_FACTORY))
 #define ALMANAH_EVENT_FACTORY_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_EVENT_FACTORY, AlmanahEventFactoryClass))
 
-typedef struct _AlmanahEventFactoryPrivate	AlmanahEventFactoryPrivate;
-
 typedef struct {
 	GObject parent;
-	AlmanahEventFactoryPrivate *priv;
 } AlmanahEventFactory;
 
 typedef struct {

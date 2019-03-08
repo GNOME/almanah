@@ -32,12 +32,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_TAG_ACCESSIBLE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_TAG_ACCESSIBLE))
 #define ALMANAH_TAG_ACCESSIBLE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_TAG_ACCESSIBLE, AlmanahTagAccessibleClass))
 
-typedef struct _AlmanahTagAccessiblePrivate AlmanahTagAccessiblePrivate;
-
 typedef struct {
 	GtkWidgetAccessible parent;
-
-	AlmanahTagAccessiblePrivate *priv;
 } AlmanahTagAccessible;
 
 typedef struct {

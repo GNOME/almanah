@@ -34,11 +34,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_CALENDAR_APPOINTMENT_EVENT_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT))
 #define ALMANAH_CALENDAR_APPOINTMENT_EVENT_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, AlmanahCalendarAppointmentEventClass))
 
-typedef struct _AlmanahCalendarAppointmentEventPrivate	AlmanahCalendarAppointmentEventPrivate;
-
 typedef struct {
 	AlmanahEvent parent;
-	AlmanahCalendarAppointmentEventPrivate *priv;
 } AlmanahCalendarAppointmentEvent;
 
 typedef struct {

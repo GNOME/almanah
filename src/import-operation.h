@@ -46,11 +46,8 @@ typedef void (*AlmanahImportProgressCallback) (const GDate *date, AlmanahImportS
 #define ALMANAH_IS_IMPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_IMPORT_OPERATION))
 #define ALMANAH_IMPORT_OPERATION_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_IMPORT_OPERATION, AlmanahImportOperationClass))
 
-typedef struct _AlmanahImportOperationPrivate	AlmanahImportOperationPrivate;
-
 typedef struct {
 	GObject parent;
-	AlmanahImportOperationPrivate *priv;
 } AlmanahImportOperation;
 
 typedef struct {

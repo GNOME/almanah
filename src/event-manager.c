@@ -43,8 +43,12 @@ const EventFactoryType event_factory_types[] = {
 static void almanah_event_manager_dispose (GObject *object);
 static void events_updated_cb (AlmanahEventFactory *factory, AlmanahEventManager *self);
 
-struct _AlmanahEventManagerPrivate {
+typedef struct {
 	AlmanahEventFactory **factories;
+} AlmanahEventManagerPrivate;
+
+struct _AlmanahEventManager {
+	GObject parent;
 };
 
 enum {
@@ -54,15 +58,12 @@ enum {
 
 static guint event_manager_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE (AlmanahEventManager, almanah_event_manager, G_TYPE_OBJECT)
-#define ALMANAH_EVENT_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_EVENT_MANAGER, AlmanahEventManagerPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEventManager, almanah_event_manager, G_TYPE_OBJECT)
 
 static void
 almanah_event_manager_class_init (AlmanahEventManagerClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahEventManagerPrivate));
 
 	gobject_class->dispose = almanah_event_manager_dispose;
 
@@ -77,24 +78,23 @@ almanah_event_manager_class_init (AlmanahEventManagerClass *klass)
 static void
 almanah_event_manager_init (AlmanahEventManager *self)
 {
+	AlmanahEventManagerPrivate *priv = almanah_event_manager_get_instance_private (self);
 	guint i;
 
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_EVENT_MANAGER, AlmanahEventManagerPrivate);
-
 	/* Set up the list of AlmanahEventFactories */
-	self->priv->factories = g_new (AlmanahEventFactory*, G_N_ELEMENTS (event_factory_types) + 1);
+	priv->factories = g_new (AlmanahEventFactory*, G_N_ELEMENTS (event_factory_types) + 1);
 	for (i = 0; i < G_N_ELEMENTS (event_factory_types); i++) {
-		self->priv->factories[i] = g_object_new (event_factory_types[i].type_function (), NULL);
-		g_signal_connect (self->priv->factories[i], "events-updated", G_CALLBACK (events_updated_cb), self);
+		priv->factories[i] = g_object_new (event_factory_types[i].type_function (), NULL);
+		g_signal_connect (priv->factories[i], "events-updated", G_CALLBACK (events_updated_cb), self);
 	}
-	self->priv->factories[i] = NULL;
+	priv->factories[i] = NULL;
 }
 
 static void
 almanah_event_manager_dispose (GObject *object)
 {
+	AlmanahEventManagerPrivate *priv = almanah_event_manager_get_instance_private (ALMANAH_EVENT_MANAGER (object));
 	guint i = 0;
-	AlmanahEventManagerPrivate *priv = ALMANAH_EVENT_MANAGER_GET_PRIVATE (object);
 
 	/* Free the factories */
 	if (priv->factories != NULL) {
@@ -123,7 +123,7 @@ events_updated_cb (AlmanahEventFactory *factory, AlmanahEventManager *self)
 void
 almanah_event_manager_query_events (AlmanahEventManager *self, AlmanahEventFactoryType type_id, GDate *date)
 {
-	AlmanahEventManagerPrivate *priv = ALMANAH_EVENT_MANAGER_GET_PRIVATE (self);
+	AlmanahEventManagerPrivate *priv = almanah_event_manager_get_instance_private (self);
 	guint i;
 
 	g_debug ("almanah_event_manager_query_events called for factory %u and date %u-%u-%u.", type_id,
@@ -147,7 +147,7 @@ almanah_event_manager_query_events (AlmanahEventManager *self, AlmanahEventFacto
 GSList *
 almanah_event_manager_get_events (AlmanahEventManager *self, AlmanahEventFactoryType type_id, GDate *date)
 {
-	AlmanahEventManagerPrivate *priv = ALMANAH_EVENT_MANAGER_GET_PRIVATE (self);
+	AlmanahEventManagerPrivate *priv = almanah_event_manager_get_instance_private (self);
 	GSList *list = NULL, *end = NULL;
 	guint i;
 

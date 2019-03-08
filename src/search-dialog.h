@@ -32,11 +32,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_SEARCH_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_SEARCH_DIALOG))
 #define ALMANAH_SEARCH_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_SEARCH_DIALOG, AlmanahSearchDialogClass))
 
-typedef struct _AlmanahSearchDialogPrivate	AlmanahSearchDialogPrivate;
-
 typedef struct {
 	GtkDialog parent;
-	AlmanahSearchDialogPrivate *priv;
 } AlmanahSearchDialog;
 
 typedef struct {
