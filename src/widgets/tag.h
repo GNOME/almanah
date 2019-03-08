@@ -31,11 +31,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_TAG_CLASS(k)	 (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_TAG))
 #define ALMANAH_TAG_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_TAG, AlmanahTagClass))
 
-typedef struct _AlmanahTagPrivate AlmanahTagPrivate;
-
 typedef struct {
 	GtkDrawingArea parent;
-	AlmanahTagPrivate *priv;
 } AlmanahTag;
 
 typedef struct {
