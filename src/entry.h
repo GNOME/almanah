@@ -48,11 +48,8 @@ GQuark almanah_entry_error_quark (void) G_GNUC_CONST;
 #define ALMANAH_IS_ENTRY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_ENTRY))
 #define ALMANAH_ENTRY_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_ENTRY, AlmanahEntryClass))
 
-typedef struct _AlmanahEntryPrivate	AlmanahEntryPrivate;
-
 typedef struct {
 	GObject parent;
-	AlmanahEntryPrivate *priv;
 } AlmanahEntry;
 
 typedef struct {
