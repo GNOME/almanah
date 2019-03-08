@@ -21,7 +21,6 @@
 #define ALMANAH_ENTRY_TAGS_AREA_H
 
 #include <gtk/gtk.h>
-#include "eggwrapbox.h"
 #include "entry.h"
 #include "storage-manager.h"
 
@@ -29,7 +28,7 @@ G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_ENTRY_TAGS_AREA         (almanah_entry_tags_area_get_type ())
 
-G_DECLARE_FINAL_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, ALMANAH, ENTRY_TAGS_AREA, EggWrapBox)
+G_DECLARE_FINAL_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, ALMANAH, ENTRY_TAGS_AREA, GtkFlowBox)
 
 void  almanah_entry_tags_area_set_entry (AlmanahEntryTagsArea *entry_tags_area, AlmanahEntry *entry);
 void  almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_tags_area, AlmanahStorageManager *storage_manager);

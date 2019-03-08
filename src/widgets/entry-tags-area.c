@@ -40,7 +40,7 @@ typedef struct {
 } AlmanahEntryTagsAreaPrivate;
 
 struct _AlmanahEntryTagsArea {
-	EggWrapBox parent;
+	GtkFlowBox parent;
 };
 
 static void almanah_entry_tags_area_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
@@ -56,7 +56,7 @@ void        tag_entry_activate_cb              (GtkEntry *entry, AlmanahEntryTag
 void        entry_tags_area_remove_foreach_cb  (GtkWidget *tag_widget, AlmanahEntryTagsArea *self);
 static void tag_remove                         (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
-G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEntryTagsArea, almanah_entry_tags_area, EGG_TYPE_WRAP_BOX)
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_FLOW_BOX)
 
 static void
 almanah_entry_tags_area_class_init (AlmanahEntryTagsAreaClass *klass)

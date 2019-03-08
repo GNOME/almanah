@@ -22,8 +22,6 @@ sources = [
   'uri-entry-dialog.c',
   'widgets/calendar.c',
   'widgets/calendar-button.c',
-  'widgets/eggwrapbox.c',
-  'widgets/eggwrapbox-enums.c',
   'widgets/entry-tags-area.c',
   'widgets/hyperlink-tag.c',
   'widgets/tag-accessible.c',
