@@ -60,11 +60,6 @@ sources += gnome.mkenums_simple(
   sources: enum_headers,
 )
 
-cflags = [
-  # TODO: get rid of this with autotools
-  '-DHAVE_CONFIG_H=1',
-]
-
 inc = include_directories(
   '..',
   'events',
@@ -76,6 +71,5 @@ almanah = executable(
   sources,
   dependencies: almanah_deps,
   include_directories: inc,
-  c_args: cflags,
   install: true,
 )
