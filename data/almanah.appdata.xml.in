@@ -4,18 +4,18 @@
   <id>almanah.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
-  <_name>Almanah Diary</_name>
-  <_summary>Keep a diary of your life</_summary>
+  <name>Almanah Diary</name>
+  <summary>Keep a diary of your life</summary>
   <description>
-    <_p>
+    <p>
       Almanah Diary is an application to allow you to keep a diary of your life.
-    </_p>
-    <_p>
+    </p>
+    <p>
       You can encrypt the diary to preserve your privacy. It has editing
       abilities, including text formatting and printing and shows you a lists
       of events which happened (on your computer) for each day (such as tasks
       and appointments from Evolution).
-    </_p>
+    </p>
   </description>
   <screenshots>
     <screenshot height="450" width="800" type="default">
