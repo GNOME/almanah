@@ -67,8 +67,7 @@ enum
   CHILD_PROP_PACKING
 };
 
-struct _EggWrapBoxPrivate
-{
+typedef struct {
   GtkOrientation        orientation;
   EggWrapAllocationMode mode;
   EggWrapBoxSpreading   horizontal_spreading;
@@ -81,7 +80,7 @@ struct _EggWrapBoxPrivate
   guint16               natural_line_children;
 
   GList                *children;
-};
+} EggWrapBoxPrivate;
 
 struct _EggWrapBoxChild
 {
@@ -145,18 +144,25 @@ static void egg_wrap_box_get_preferred_width_for_height (GtkWidget           *bo
 
 
 G_DEFINE_TYPE_WITH_CODE (EggWrapBox, egg_wrap_box, GTK_TYPE_CONTAINER,
-                         G_IMPLEMENT_INTERFACE (GTK_TYPE_ORIENTABLE, NULL))
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_ORIENTABLE, NULL) \
+                         G_ADD_PRIVATE (EggWrapBox))
 
 
-#define ORIENTATION_SPREADING(box)					\
-  (((EggWrapBox *)(box))->priv->orientation == GTK_ORIENTATION_HORIZONTAL ? \
-   ((EggWrapBox *)(box))->priv->horizontal_spreading :			\
-   ((EggWrapBox *)(box))->priv->vertical_spreading)
+guint16 egg_wrap_box_get_orientation_spreading (EggWrapBox *box) {
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private(box);
 
-#define OPPOSING_ORIENTATION_SPREADING(box)				\
-  (((EggWrapBox *)(box))->priv->orientation == GTK_ORIENTATION_HORIZONTAL ? \
-   ((EggWrapBox *)(box))->priv->vertical_spreading :			\
-   ((EggWrapBox *)(box))->priv->horizontal_spreading)
+  return priv->orientation == GTK_ORIENTATION_HORIZONTAL ?
+   priv->horizontal_spreading :
+   priv->vertical_spreading;
+}
+
+guint16 egg_wrap_box_get_opposing_orientation_spreading (EggWrapBox *box) {
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private(box);
+
+  return priv->orientation == GTK_ORIENTATION_HORIZONTAL ?
+   priv->vertical_spreading :
+   priv->horizontal_spreading;
+}
 
 
 
@@ -318,17 +324,12 @@ egg_wrap_box_class_init (EggWrapBoxClass *class)
                                                P_("The packing options to use for this child"),
                                                EGG_TYPE_WRAP_BOX_PACKING, 0,
                                                GTK_PARAM_READWRITE));
-
-  g_type_class_add_private (class, sizeof (EggWrapBoxPrivate));
 }
 
 static void
 egg_wrap_box_init (EggWrapBox *box)
 {
-  EggWrapBoxPrivate *priv;
-
-  box->priv = priv =
-    G_TYPE_INSTANCE_GET_PRIVATE (box, EGG_TYPE_WRAP_BOX, EggWrapBoxPrivate);
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
 
   priv->orientation          = GTK_ORIENTATION_HORIZONTAL;
   priv->mode                 = EGG_WRAP_ALLOCATE_FREE;
@@ -351,7 +352,7 @@ egg_wrap_box_get_property (GObject      *object,
                            GParamSpec   *pspec)
 {
   EggWrapBox        *box  = EGG_WRAP_BOX (object);
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
 
   switch (prop_id)
     {
@@ -392,7 +393,7 @@ egg_wrap_box_set_property (GObject      *object,
                            GParamSpec   *pspec)
 {
   EggWrapBox        *box = EGG_WRAP_BOX (object);
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
 
   switch (prop_id)
     {
@@ -436,7 +437,7 @@ egg_wrap_box_set_property (GObject      *object,
 static gint
 get_visible_children (EggWrapBox  *box)
 {
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GList             *list;
   gint               i = 0;
 
@@ -488,7 +489,7 @@ get_average_item_size (EggWrapBox      *box,
                        gint            *min_size,
                        gint            *nat_size)
 {
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GList             *list;
   gint               max_min_size = 0;
   gint               max_nat_size = 0;
@@ -527,7 +528,7 @@ get_largest_size_for_opposing_orientation (EggWrapBox         *box,
                                            gint               *min_item_size,
                                            gint               *nat_item_size)
 {
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GList             *list;
   gint               max_min_size = 0;
   gint               max_nat_size = 0;
@@ -590,7 +591,7 @@ get_largest_size_for_line_in_opposing_orientation (EggWrapBox       *box,
       /* Distribute the extra pixels to the first children in the line
        * (could be fancier and spread them out more evenly) */
       this_item_size = item_sizes[i].minimum_size;
-      if (extra_pixels > 0 && ORIENTATION_SPREADING (box) == EGG_WRAP_BOX_SPREAD_EXPAND)
+      if (extra_pixels > 0 && egg_wrap_box_get_orientation_spreading (box) == EGG_WRAP_BOX_SPREAD_EXPAND)
         {
           this_item_size++;
           extra_pixels--;
@@ -636,7 +637,7 @@ get_largest_size_for_free_line_in_opposing_orientation (EggWrapBox      *box,
                                                         gint            *extra_pixels,
                                                         GArray         **ret_array)
 {
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GtkRequestedSize  *sizes;
   GList             *list;
   GArray            *array;
@@ -719,7 +720,7 @@ get_largest_size_for_free_line_in_opposing_orientation (EggWrapBox      *box,
     *extra_pixels = size;
 
   /* Cut out any expand space if we're not distributing any */
-  if (ORIENTATION_SPREADING (box) != EGG_WRAP_BOX_SPREAD_EXPAND)
+  if (egg_wrap_box_get_orientation_spreading (box) != EGG_WRAP_BOX_SPREAD_EXPAND)
     size = 0;
 
   /* Count how many children are going to expand... */
@@ -800,7 +801,7 @@ allocate_child (EggWrapBox      *box,
                 gint             item_size,
                 gint             line_size)
 {
-  EggWrapBoxPrivate  *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GtkAllocation       widget_allocation;
   GtkAllocation       child_allocation;
 
@@ -833,7 +834,7 @@ gather_aligned_item_requests (EggWrapBox       *box,
                               gint              n_children,
                               GtkRequestedSize *item_sizes)
 {
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GList             *list;
   gint               i;
   gint               extra_items, natural_line_size = 0;
@@ -859,7 +860,7 @@ gather_aligned_item_requests (EggWrapBox       *box,
       /* Get the index and push it over for the last line when spreading to the end */
       position = i % line_length;
 
-      if (ORIENTATION_SPREADING (box) == EGG_WRAP_BOX_SPREAD_END && i >= n_children - extra_items)
+      if (egg_wrap_box_get_orientation_spreading (box) == EGG_WRAP_BOX_SPREAD_END && i >= n_children - extra_items)
         position += line_length - extra_items;
 
       /* Round up the size of every column/row */
@@ -929,7 +930,7 @@ egg_wrap_box_size_allocate (GtkWidget     *widget,
                             GtkAllocation *allocation)
 {
   EggWrapBox         *box  = EGG_WRAP_BOX (widget);
-  EggWrapBoxPrivate  *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   gint                avail_size, avail_other_size, min_items, item_spacing, line_spacing;
   EggWrapBoxSpreading item_spreading;
   EggWrapBoxSpreading line_spreading;
@@ -953,8 +954,8 @@ egg_wrap_box_size_allocate (GtkWidget     *widget,
       line_spacing     = priv->horizontal_spacing;
     }
 
-  item_spreading = ORIENTATION_SPREADING (box);
-  line_spreading    = OPPOSING_ORIENTATION_SPREADING (box);
+  item_spreading = egg_wrap_box_get_orientation_spreading (box);
+  line_spreading = egg_wrap_box_get_opposing_orientation_spreading (box);
 
 
   /*********************************************************
@@ -1428,7 +1429,7 @@ egg_wrap_box_remove (GtkContainer *container,
                      GtkWidget    *widget)
 {
   EggWrapBox        *box = EGG_WRAP_BOX (container);
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GList             *list;
 
   list = g_list_find_custom (priv->children, widget,
@@ -1456,7 +1457,7 @@ egg_wrap_box_forall (GtkContainer *container,
                      gpointer      callback_data)
 {
   EggWrapBox        *box = EGG_WRAP_BOX (container);
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   EggWrapBoxChild   *child;
   GList             *list;
 
@@ -1485,7 +1486,7 @@ egg_wrap_box_set_child_property (GtkContainer    *container,
                                  GParamSpec      *pspec)
 {
   EggWrapBox        *box  = EGG_WRAP_BOX (container);
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   EggWrapBoxChild   *child;
   GList             *list;
 
@@ -1518,7 +1519,7 @@ egg_wrap_box_get_child_property (GtkContainer    *container,
                                  GParamSpec      *pspec)
 {
   EggWrapBox        *box = EGG_WRAP_BOX (container);
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   EggWrapBoxChild   *child;
   GList             *list;
 
@@ -1548,7 +1549,7 @@ static GtkSizeRequestMode
 egg_wrap_box_get_request_mode (GtkWidget      *widget)
 {
   EggWrapBox        *box = EGG_WRAP_BOX (widget);
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
 
   return (priv->orientation == GTK_ORIENTATION_HORIZONTAL) ?
     GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH : GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT;
@@ -1563,7 +1564,7 @@ get_largest_line_length (EggWrapBox      *box,
                          gint            *min_size,
                          gint            *nat_size)
 {
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GList             *list, *l;
   gint               max_min_size = 0;
   gint               max_nat_size = 0;
@@ -1626,7 +1627,7 @@ get_largest_aligned_line_length (EggWrapBox      *box,
 				 gint            *min_size,
 				 gint            *nat_size)
 {
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   GList             *list;
   gint               max_min_size = 0;
   gint               max_nat_size = 0;
@@ -1692,7 +1693,7 @@ egg_wrap_box_get_preferred_width (GtkWidget           *widget,
                                   gint                *natural_size)
 {
   EggWrapBox        *box  = EGG_WRAP_BOX (widget);
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   gint               min_item_width, nat_item_width;
   gint               min_items, nat_items;
   gint               min_width, nat_width;
@@ -1783,7 +1784,7 @@ egg_wrap_box_get_preferred_height (GtkWidget           *widget,
                                    gint                *natural_size)
 {
   EggWrapBox        *box  = EGG_WRAP_BOX (widget);
-  EggWrapBoxPrivate *priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   gint               min_item_height, nat_item_height;
   gint               min_items, nat_items;
   gint               min_height, nat_height;
@@ -1875,7 +1876,7 @@ egg_wrap_box_get_preferred_height_for_width (GtkWidget           *widget,
                                              gint                *natural_height)
 {
   EggWrapBox        *box = EGG_WRAP_BOX (widget);
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   gint               min_item_width, nat_item_width;
   gint               min_items;
   gint               min_height, nat_height;
@@ -2051,7 +2052,7 @@ egg_wrap_box_get_preferred_width_for_height (GtkWidget           *widget,
                                              gint                *natural_width)
 {
   EggWrapBox        *box = EGG_WRAP_BOX (widget);
-  EggWrapBoxPrivate *priv   = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
   gint               min_item_height, nat_item_height;
   gint               min_items;
   gint               min_width, nat_width;
@@ -2266,7 +2267,7 @@ egg_wrap_box_set_allocation_mode (EggWrapBox           *box,
 
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   if (priv->mode != mode)
     {
@@ -2291,7 +2292,9 @@ egg_wrap_box_get_allocation_mode (EggWrapBox *box)
 {
   g_return_val_if_fail (EGG_IS_WRAP_BOX (box), FALSE);
 
-  return box->priv->mode;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
+
+  return priv->mode;
 }
 
 
@@ -2310,7 +2313,7 @@ egg_wrap_box_set_horizontal_spreading (EggWrapBox          *box,
 
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   if (priv->horizontal_spreading != spreading)
     {
@@ -2335,7 +2338,9 @@ egg_wrap_box_get_horizontal_spreading (EggWrapBox *box)
 {
   g_return_val_if_fail (EGG_IS_WRAP_BOX (box), FALSE);
 
-  return box->priv->horizontal_spreading;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
+
+  return priv->horizontal_spreading;
 }
 
 
@@ -2354,7 +2359,7 @@ egg_wrap_box_set_vertical_spreading (EggWrapBox          *box,
 
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   if (priv->vertical_spreading != spreading)
     {
@@ -2377,9 +2382,13 @@ egg_wrap_box_set_vertical_spreading (EggWrapBox          *box,
 EggWrapBoxSpreading
 egg_wrap_box_get_vertical_spreading (EggWrapBox *box)
 {
+  EggWrapBoxPrivate *priv;
+
   g_return_val_if_fail (EGG_IS_WRAP_BOX (box), FALSE);
 
-  return box->priv->vertical_spreading;
+  priv = egg_wrap_box_get_instance_private (box);
+
+  return priv->vertical_spreading;
 }
 
 
@@ -2398,7 +2407,7 @@ egg_wrap_box_set_vertical_spacing  (EggWrapBox    *box,
 
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   if (priv->vertical_spacing != spacing)
     {
@@ -2423,7 +2432,9 @@ egg_wrap_box_get_vertical_spacing  (EggWrapBox *box)
 {
   g_return_val_if_fail (EGG_IS_WRAP_BOX (box), FALSE);
 
-  return box->priv->vertical_spacing;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
+
+  return priv->vertical_spacing;
 }
 
 /**
@@ -2441,7 +2452,7 @@ egg_wrap_box_set_horizontal_spacing (EggWrapBox    *box,
 
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   if (priv->horizontal_spacing != spacing)
     {
@@ -2466,7 +2477,9 @@ egg_wrap_box_get_horizontal_spacing (EggWrapBox *box)
 {
   g_return_val_if_fail (EGG_IS_WRAP_BOX (box), FALSE);
 
-  return box->priv->horizontal_spacing;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
+
+  return priv->horizontal_spacing;
 }
 
 /**
@@ -2485,7 +2498,7 @@ egg_wrap_box_set_minimum_line_children (EggWrapBox *box,
 
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   if (priv->minimum_line_children != n_children)
     {
@@ -2510,7 +2523,9 @@ egg_wrap_box_get_minimum_line_children (EggWrapBox *box)
 {
   g_return_val_if_fail (EGG_IS_WRAP_BOX (box), FALSE);
 
-  return box->priv->minimum_line_children;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
+
+  return priv->minimum_line_children;
 }
 
 /**
@@ -2529,11 +2544,9 @@ void
 egg_wrap_box_set_natural_line_children (EggWrapBox *box,
                                         guint       n_children)
 {
-  EggWrapBoxPrivate *priv;
-
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
 
-  priv = box->priv;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
 
   if (priv->natural_line_children != n_children)
     {
@@ -2558,7 +2571,9 @@ egg_wrap_box_get_natural_line_children (EggWrapBox *box)
 {
   g_return_val_if_fail (EGG_IS_WRAP_BOX (box), FALSE);
 
-  return box->priv->natural_line_children;
+  EggWrapBoxPrivate *priv = egg_wrap_box_get_instance_private (box);
+
+  return priv->natural_line_children;
 }
 
 
@@ -2585,7 +2600,7 @@ egg_wrap_box_insert_child (EggWrapBox        *box,
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   list = g_list_find_custom (priv->children, widget,
                              (GCompareFunc)find_child_in_list);
@@ -2620,7 +2635,7 @@ egg_wrap_box_reorder_child (EggWrapBox *box,
   g_return_if_fail (EGG_IS_WRAP_BOX (box));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  priv = box->priv;
+  priv = egg_wrap_box_get_instance_private (box);
 
   list = g_list_find_custom (priv->children, widget,
                              (GCompareFunc)find_child_in_list);
