@@ -50,11 +50,9 @@ G_BEGIN_DECLS
 
 typedef struct _ESourceSelector ESourceSelector;
 typedef struct _ESourceSelectorClass ESourceSelectorClass;
-typedef struct _ESourceSelectorPrivate ESourceSelectorPrivate;
 
 struct _ESourceSelector {
 	GtkTreeView parent;
-	ESourceSelectorPrivate *priv;
 };
 
 struct _ESourceSelectorClass {
