@@ -36,11 +36,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_STORAGE_MANAGER_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_STORAGE_MANAGER))
 #define ALMANAH_STORAGE_MANAGER_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerClass))
 
-typedef struct _AlmanahStorageManagerPrivate	AlmanahStorageManagerPrivate;
-
 typedef struct {
 	GObject parent;
-	AlmanahStorageManagerPrivate *priv;
 } AlmanahStorageManager;
 
 typedef struct {
