@@ -41,22 +41,10 @@ typedef enum {
 GQuark almanah_entry_error_quark (void) G_GNUC_CONST;
 #define ALMANAH_ENTRY_ERROR		(almanah_entry_error_quark ())
 
-#define ALMANAH_TYPE_ENTRY		(almanah_entry_get_type ())
-#define ALMANAH_ENTRY(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_ENTRY, AlmanahEntry))
-#define ALMANAH_ENTRY_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_ENTRY, AlmanahEntryClass))
-#define ALMANAH_IS_ENTRY(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_ENTRY))
-#define ALMANAH_IS_ENTRY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_ENTRY))
-#define ALMANAH_ENTRY_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_ENTRY, AlmanahEntryClass))
+#define ALMANAH_TYPE_ENTRY      (almanah_entry_get_type ())
 
-typedef struct {
-	GObject parent;
-} AlmanahEntry;
+G_DECLARE_FINAL_TYPE (AlmanahEntry, almanah_entry, ALMANAH, ENTRY, GObject)
 
-typedef struct {
-	GObjectClass parent;
-} AlmanahEntryClass;
-
-GType almanah_entry_get_type (void);
 AlmanahEntry *almanah_entry_new (GDate *date);
 
 const guint8 *almanah_entry_get_data (AlmanahEntry *self, gsize *length, guint *version);

@@ -28,22 +28,9 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_CALENDAR		(almanah_calendar_get_type ())
-#define ALMANAH_CALENDAR(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_CALENDAR, AlmanahCalendar))
-#define ALMANAH_CALENDAR_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_CALENDAR, AlmanahCalendarClass))
-#define ALMANAH_IS_CALENDAR(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_CALENDAR))
-#define ALMANAH_IS_CALENDAR_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR))
-#define ALMANAH_CALENDAR_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR, AlmanahCalendarClass))
+#define ALMANAH_TYPE_CALENDAR       (almanah_calendar_get_type ())
 
-typedef struct {
-	GtkCalendar parent;
-} AlmanahCalendar;
-
-typedef struct {
-	GtkCalendarClass parent;
-} AlmanahCalendarClass;
-
-GType almanah_calendar_get_type (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (AlmanahCalendar, almanah_calendar, ALMANAH, CALENDAR, GtkCalendar)
 
 GtkWidget *almanah_calendar_new (AlmanahStorageManager *storage_manager) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 

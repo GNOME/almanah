@@ -27,21 +27,9 @@
 G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_TAG_ENTRY         (almanah_tag_entry_get_type ())
-#define ALMANAH_TAG_ENTRY(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_TAG_ENTRY, AlmanahTagEntry))
-#define ALMANAH_TAG_ENTRY_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_TAG_ENTRY, AlmanahTagEntryClass))
-#define ALMANAH_IS_TAG_ENTRY(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_TAG_ENTRY))
-#define ALMANAH_IS_TAG_ENTRY_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_TAG_ENTRY))
-#define ALMANAH_TAG_ENTRY_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_TAG_ENTRY, AlmanahTagEntryClass))
 
-typedef struct {
-        GtkEntry parent;
-} AlmanahTagEntry;
+G_DECLARE_FINAL_TYPE (AlmanahTagEntry, almanah_tag_entry, ALMANAH, TAG_ENTRY, GtkEntry)
 
-typedef struct {
-	GtkEntryClass parent;
-} AlmanahTagEntryClass;
-
-GType almanah_tag_entry_get_type            (void) G_GNUC_CONST;
 void  almanah_tag_entry_set_storage_manager (AlmanahTagEntry *tag_entry, AlmanahStorageManager *storage_manager);
 
 G_END_DECLS

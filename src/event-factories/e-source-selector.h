@@ -27,33 +27,12 @@
 #include <gtk/gtk.h>
 #include <libedataserver/libedataserver.h>
 
-/* Standard GObject macros */
-#define E_TYPE_SOURCE_SELECTOR \
-	(e_source_selector_get_type ())
-#define E_SOURCE_SELECTOR(obj) \
-	(G_TYPE_CHECK_INSTANCE_CAST \
-	((obj), E_TYPE_SOURCE_SELECTOR, ESourceSelector))
-#define E_SOURCE_SELECTOR_CLASS(cls) \
-	(G_TYPE_CHECK_CLASS_CAST \
-	((cls), E_TYPE_SOURCE_SELECTOR, ESourceSelectorClass))
-#define E_IS_SOURCE_SELECTOR(obj) \
-	(G_TYPE_CHECK_INSTANCE_TYPE \
-	((obj), E_TYPE_SOURCE_SELECTOR))
-#define E_IS_SOURCE_SELECTOR_CLASS(cls) \
-	(G_TYPE_CHECK_CLASS_TYPE \
-	((cls), E_TYPE_SOURCE_SELECTOR))
-#define E_SOURCE_SELECTOR_GET_CLASS(obj) \
-	(G_TYPE_INSTANCE_GET_CLASS \
-	((obj), E_TYPE_SOURCE_SELECTOR, ESourceSelectorClass))
-
 G_BEGIN_DECLS
 
-typedef struct _ESourceSelector ESourceSelector;
-typedef struct _ESourceSelectorClass ESourceSelectorClass;
+/* Standard GObject macros */
+#define E_TYPE_SOURCE_SELECTOR (e_source_selector_get_type ())
 
-struct _ESourceSelector {
-	GtkTreeView parent;
-};
+G_DECLARE_DERIVABLE_TYPE (ESourceSelector, e_source_selector, E, SOURCE_SELECTOR, GtkTreeView)
 
 struct _ESourceSelectorClass {
 	GtkTreeViewClass parent_class;
@@ -83,7 +62,6 @@ struct _ESourceSelectorClass {
 	gpointer padding3;
 };
 
-GType		e_source_selector_get_type	(void);
 GtkWidget *	e_source_selector_new		(ESourceRegistry *registry,
 						 const gchar *extension_name);
 ESourceRegistry *

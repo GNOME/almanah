@@ -27,15 +27,8 @@ G_BEGIN_DECLS
 
 
 #define EGG_TYPE_WRAP_BOX                  (egg_wrap_box_get_type ())
-#define EGG_WRAP_BOX(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), EGG_TYPE_WRAP_BOX, EggWrapBox))
-#define EGG_WRAP_BOX_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), EGG_TYPE_WRAP_BOX, EggWrapBoxClass))
-#define EGG_IS_WRAP_BOX(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EGG_TYPE_WRAP_BOX))
-#define EGG_IS_WRAP_BOX_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), EGG_TYPE_WRAP_BOX))
-#define EGG_WRAP_BOX_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), EGG_TYPE_WRAP_BOX, EggWrapBoxClass))
 
-typedef struct _EggWrapBox            EggWrapBox;
-typedef struct _EggWrapBoxClass       EggWrapBoxClass;
-
+G_DECLARE_DERIVABLE_TYPE (EggWrapBox, egg_wrap_box, EGG, WRAP_BOX, GtkContainer)
 
 /**
  * EggWrapAllocationMode:
@@ -90,18 +83,10 @@ typedef enum
   EGG_WRAP_BOX_V_EXPAND = 1 << 1
 } EggWrapBoxPacking;
 
-
-struct _EggWrapBox
-{
-  GtkContainer container;
-};
-
 struct _EggWrapBoxClass
 {
   GtkContainerClass parent_class;
 };
-
-GType                 egg_wrap_box_get_type                  (void) G_GNUC_CONST;
 
 GtkWidget            *egg_wrap_box_new                       (EggWrapAllocationMode mode,
                                                               EggWrapBoxSpreading   horizontal_spreading,

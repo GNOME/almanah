@@ -26,22 +26,9 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_URI_ENTRY_DIALOG		(almanah_uri_entry_dialog_get_type ())
-#define ALMANAH_URI_ENTRY_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_URI_ENTRY_DIALOG, AlmanahUriEntryDialog))
-#define ALMANAH_URI_ENTRY_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_URI_ENTRY_DIALOG, AlmanahUriEntryDialogClass))
-#define ALMANAH_IS_URI_ENTRY_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_URI_ENTRY_DIALOG))
-#define ALMANAH_IS_URI_ENTRY_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_URI_ENTRY_DIALOG))
-#define ALMANAH_URI_ENTRY_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_URI_ENTRY_DIALOG, AlmanahUriEntryDialogClass))
+#define ALMANAH_TYPE_URI_ENTRY_DIALOG       (almanah_uri_entry_dialog_get_type ())
 
-typedef struct {
-	GtkDialog parent;
-} AlmanahUriEntryDialog;
-
-typedef struct {
-	GtkDialogClass parent;
-} AlmanahUriEntryDialogClass;
-
-GType almanah_uri_entry_dialog_get_type (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (AlmanahUriEntryDialog, almanah_uri_entry_dialog, ALMANAH, URI_ENTRY_DIALOG, GtkDialog)
 
 AlmanahUriEntryDialog *almanah_uri_entry_dialog_new (void) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 gboolean almanah_uri_entry_dialog_run (AlmanahUriEntryDialog *self);

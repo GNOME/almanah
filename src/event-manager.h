@@ -27,22 +27,9 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_EVENT_MANAGER		(almanah_event_manager_get_type ())
-#define ALMANAH_EVENT_MANAGER(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_EVENT_MANAGER, AlmanahEventManager))
-#define ALMANAH_EVENT_MANAGER_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_EVENT_MANAGER, AlmanahEventManagerClass))
-#define ALMANAH_IS_EVENT_MANAGER(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_EVENT_MANAGER))
-#define ALMANAH_IS_EVENT_MANAGER_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_EVENT_MANAGER))
-#define ALMANAH_EVENT_MANAGER_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_EVENT_MANAGER, AlmanahEventManagerClass))
+#define ALMANAH_TYPE_EVENT_MANAGER      (almanah_event_manager_get_type ())
 
-typedef struct {
-	GObject parent;
-} AlmanahEventManager;
-
-typedef struct {
-	GObjectClass parent;
-} AlmanahEventManagerClass;
-
-GType almanah_event_manager_get_type (void);
+G_DECLARE_FINAL_TYPE (AlmanahEventManager, almanah_event_manager, ALMANAH, EVENT_MANAGER, GObject)
 
 AlmanahEventManager *almanah_event_manager_new (void);
 

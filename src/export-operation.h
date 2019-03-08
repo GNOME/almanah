@@ -31,22 +31,9 @@ typedef guint AlmanahExportOperationType;
 
 typedef void (*AlmanahExportProgressCallback) (const GDate *date, gpointer user_data);
 
-#define ALMANAH_TYPE_EXPORT_OPERATION		(almanah_export_operation_get_type ())
-#define ALMANAH_EXPORT_OPERATION(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperation))
-#define ALMANAH_EXPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationClass))
-#define ALMANAH_IS_EXPORT_OPERATION(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_EXPORT_OPERATION))
-#define ALMANAH_IS_EXPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_EXPORT_OPERATION))
-#define ALMANAH_EXPORT_OPERATION_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationClass))
+#define ALMANAH_TYPE_EXPORT_OPERATION       (almanah_export_operation_get_type ())
 
-typedef struct {
-	GObject parent;
-} AlmanahExportOperation;
-
-typedef struct {
-	GObjectClass parent;
-} AlmanahExportOperationClass;
-
-GType almanah_export_operation_get_type (void) G_GNUC_CONST;
+G_DECLARE_FINAL_TYPE (AlmanahExportOperation, almanah_export_operation, ALMANAH, EXPORT_OPERATION, GObject)
 
 AlmanahExportOperation *almanah_export_operation_new (AlmanahExportOperationType type_id, AlmanahStorageManager *source_storage_manager,
                                                       GFile *destination) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;

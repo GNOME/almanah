@@ -26,18 +26,11 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_EVENT		(almanah_event_get_type ())
-#define ALMANAH_EVENT(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_EVENT, AlmanahEvent))
-#define ALMANAH_EVENT_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_EVENT, AlmanahEventClass))
-#define ALMANAH_IS_EVENT(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_EVENT))
-#define ALMANAH_IS_EVENT_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_EVENT))
-#define ALMANAH_EVENT_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_EVENT, AlmanahEventClass))
+#define ALMANAH_TYPE_EVENT      (almanah_event_get_type ())
 
-typedef struct {
-	GObject parent;
-} AlmanahEvent;
+G_DECLARE_DERIVABLE_TYPE (AlmanahEvent, almanah_event, ALMANAH, EVENT, GObject)
 
-typedef struct {
+struct _AlmanahEventClass {
 	GObjectClass parent;
 
 	const gchar *name;
@@ -47,9 +40,7 @@ typedef struct {
 	const gchar *(*format_value) (AlmanahEvent *event);
 	const gchar *(*format_time) (AlmanahEvent *event);
 	gboolean (*view) (AlmanahEvent *event, GtkWindow *parent_window);
-} AlmanahEventClass;
-
-GType almanah_event_get_type (void);
+};
 
 const gchar *almanah_event_format_value (AlmanahEvent *self);
 const gchar *almanah_event_format_time (AlmanahEvent *self);

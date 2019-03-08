@@ -27,22 +27,9 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_CALENDAR_EVENT_FACTORY		(almanah_calendar_event_factory_get_type ())
-#define ALMANAH_CALENDAR_EVENT_FACTORY(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY, AlmanahCalendarEventFactory))
-#define ALMANAH_CALENDAR_EVENT_FACTORY_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY, AlmanahCalendarEventFactoryClass))
-#define ALMANAH_IS_CALENDAR_EVENT_FACTORY(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY))
-#define ALMANAH_IS_CALENDAR_EVENT_FACTORY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY))
-#define ALMANAH_CALENDAR_EVENT_FACTORY_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY, AlmanahCalendarEventFactoryClass))
+#define ALMANAH_TYPE_CALENDAR_EVENT_FACTORY     (almanah_calendar_event_factory_get_type ())
 
-typedef struct {
-	AlmanahEventFactory parent;
-} AlmanahCalendarEventFactory;
-
-typedef struct {
-	AlmanahEventFactoryClass parent;
-} AlmanahCalendarEventFactoryClass;
-
-GType almanah_calendar_event_factory_get_type (void);
+G_DECLARE_FINAL_TYPE (AlmanahCalendarEventFactory, almanah_calendar_event_factory, ALMANAH, CALENDAR_EVENT_FACTORY, AlmanahEventFactory)
 
 G_END_DECLS
 
