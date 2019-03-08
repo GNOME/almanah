@@ -33,11 +33,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_HYPERLINK_TAG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_HYPERLINK_TAG))
 #define ALMANAH_HYPERLINK_TAG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_HYPERLINK_TAG, AlmanahHyperlinkTagClass))
 
-typedef struct _AlmanahHyperlinkTagPrivate	AlmanahHyperlinkTagPrivate;
-
 typedef struct {
 	GtkTextTag parent;
-	AlmanahHyperlinkTagPrivate *priv;
 } AlmanahHyperlinkTag;
 
 typedef struct {

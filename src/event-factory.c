@@ -24,9 +24,9 @@
 
 static void almanah_event_factory_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 
-struct _AlmanahEventFactoryPrivate {
+typedef struct {
 	GDate date;
-};
+} AlmanahEventFactoryPrivate;
 
 enum {
 	PROP_TYPE_ID = 1
@@ -39,15 +39,12 @@ enum {
 
 static guint event_factory_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_ABSTRACT_TYPE (AlmanahEventFactory, almanah_event_factory, G_TYPE_OBJECT)
-#define ALMANAH_EVENT_FACTORY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_EVENT_FACTORY, AlmanahEventFactoryPrivate))
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (AlmanahEventFactory, almanah_event_factory, G_TYPE_OBJECT)
 
 static void
 almanah_event_factory_class_init (AlmanahEventFactoryClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahEventFactoryPrivate));
 
 	gobject_class->get_property = almanah_event_factory_get_property;
 
@@ -68,7 +65,6 @@ almanah_event_factory_class_init (AlmanahEventFactoryClass *klass)
 static void
 almanah_event_factory_init (AlmanahEventFactory *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_EVENT_FACTORY, AlmanahEventFactoryPrivate);
 }
 
 static void

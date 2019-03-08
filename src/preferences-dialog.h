@@ -32,11 +32,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_PREFERENCES_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_PREFERENCES_DIALOG))
 #define ALMANAH_PREFERENCES_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogClass))
 
-typedef struct _AlmanahPreferencesDialogPrivate	AlmanahPreferencesDialogPrivate;
-
 typedef struct {
 	GtkDialog parent;
-	AlmanahPreferencesDialogPrivate *priv;
 } AlmanahPreferencesDialog;
 
 typedef struct {

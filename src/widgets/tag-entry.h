@@ -33,11 +33,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_TAG_ENTRY_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_TAG_ENTRY))
 #define ALMANAH_TAG_ENTRY_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_TAG_ENTRY, AlmanahTagEntryClass))
 
-typedef struct _AlmanahTagEntryPrivate AlmanahTagEntryPrivate;
-
 typedef struct {
         GtkEntry parent;
-	AlmanahTagEntryPrivate *priv;
 } AlmanahTagEntry;
 
 typedef struct {

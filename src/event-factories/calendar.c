@@ -31,20 +31,22 @@ static void query_events (AlmanahEventFactory *event_factory, GDate *date);
 static GSList *get_events (AlmanahEventFactory *event_factory, GDate *date);
 static void events_changed_cb (CalendarClient *client, AlmanahCalendarEventFactory *self);
 
-struct _AlmanahCalendarEventFactoryPrivate {
+typedef struct {
 	CalendarClient *client;
+} AlmanahCalendarEventFactoryPrivate;
+
+struct _AlmanahCalendarEventFactory {
+	AlmanahEventFactory parent;
+	AlmanahCalendarEventFactoryPrivate *priv;
 };
 
-G_DEFINE_TYPE (AlmanahCalendarEventFactory, almanah_calendar_event_factory, ALMANAH_TYPE_EVENT_FACTORY)
-#define ALMANAH_CALENDAR_EVENT_FACTORY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_CALENDAR_EVENT_FACTORY, AlmanahCalendarEventFactoryPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendarEventFactory, almanah_calendar_event_factory, ALMANAH_TYPE_EVENT_FACTORY)
 
 static void
 almanah_calendar_event_factory_class_init (AlmanahCalendarEventFactoryClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	AlmanahEventFactoryClass *event_factory_class = ALMANAH_EVENT_FACTORY_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahCalendarEventFactoryPrivate));
 
 	gobject_class->dispose = almanah_calendar_event_factory_dispose;
 
@@ -56,17 +58,18 @@ almanah_calendar_event_factory_class_init (AlmanahCalendarEventFactoryClass *kla
 static void
 almanah_calendar_event_factory_init (AlmanahCalendarEventFactory *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_CALENDAR_EVENT_FACTORY, AlmanahCalendarEventFactoryPrivate);
-	self->priv->client = calendar_client_new ();
+	AlmanahCalendarEventFactoryPrivate *priv = almanah_calendar_event_factory_get_instance_private (self);
 
-	g_signal_connect (self->priv->client, "tasks-changed", G_CALLBACK (events_changed_cb), self);
-	g_signal_connect (self->priv->client, "appointments-changed", G_CALLBACK (events_changed_cb), self);
+	priv->client = calendar_client_new ();
+
+	g_signal_connect (priv->client, "tasks-changed", G_CALLBACK (events_changed_cb), self);
+	g_signal_connect (priv->client, "appointments-changed", G_CALLBACK (events_changed_cb), self);
 }
 
 static void
 almanah_calendar_event_factory_dispose (GObject *object)
 {
-	AlmanahCalendarEventFactoryPrivate *priv = ALMANAH_CALENDAR_EVENT_FACTORY_GET_PRIVATE (object);
+	AlmanahCalendarEventFactoryPrivate *priv = almanah_calendar_event_factory_get_instance_private (ALMANAH_CALENDAR_EVENT_FACTORY (object));
 
 	if (priv->client != NULL)
 		g_object_unref (priv->client);
@@ -80,9 +83,10 @@ static void
 query_events (AlmanahEventFactory *event_factory, GDate *date)
 {
 	AlmanahCalendarEventFactory *self = ALMANAH_CALENDAR_EVENT_FACTORY (event_factory);
+	AlmanahCalendarEventFactoryPrivate *priv = almanah_calendar_event_factory_get_instance_private (self);
 
-	calendar_client_select_day (self->priv->client, g_date_get_day (date));
-	calendar_client_select_month (self->priv->client, g_date_get_month (date) - 1, g_date_get_year (date));
+	calendar_client_select_day (priv->client, g_date_get_day (date));
+	calendar_client_select_month (priv->client, g_date_get_month (date) - 1, g_date_get_year (date));
 	g_signal_emit_by_name (self, "events-updated");
 }
 
@@ -109,7 +113,7 @@ static GSList *
 get_events (AlmanahEventFactory *event_factory, GDate *date)
 {
 	GSList *calendar_events, *e, *events = NULL;
-	AlmanahCalendarEventFactoryPrivate *priv = ALMANAH_CALENDAR_EVENT_FACTORY_GET_PRIVATE (event_factory);
+	AlmanahCalendarEventFactoryPrivate *priv = almanah_calendar_event_factory_get_instance_private (ALMANAH_CALENDAR_EVENT_FACTORY (event_factory));
 
 	calendar_events = calendar_client_get_events (priv->client, CALENDAR_EVENT_ALL);
 

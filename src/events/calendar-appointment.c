@@ -29,22 +29,23 @@ static const gchar *almanah_calendar_appointment_event_format_value (AlmanahEven
 static const gchar *almanah_calendar_appointment_event_format_time (AlmanahEvent *event);
 static gboolean almanah_calendar_appointment_event_view (AlmanahEvent *event, GtkWindow *parent_window);
 
-struct _AlmanahCalendarAppointmentEventPrivate {
+typedef struct {
 	gchar *summary;
 	gchar *time;
 	GTime start_time;
+} AlmanahCalendarAppointmentEventPrivate;
+
+struct _AlmanahCalendarAppointmentEvent {
+	AlmanahEvent parent;
 };
 
-G_DEFINE_TYPE (AlmanahCalendarAppointmentEvent, almanah_calendar_appointment_event, ALMANAH_TYPE_EVENT)
-#define ALMANAH_CALENDAR_APPOINTMENT_EVENT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, AlmanahCalendarAppointmentEventPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendarAppointmentEvent, almanah_calendar_appointment_event, ALMANAH_TYPE_EVENT)
 
 static void
 almanah_calendar_appointment_event_class_init (AlmanahCalendarAppointmentEventClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	AlmanahEventClass *event_class = ALMANAH_EVENT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahCalendarAppointmentEventPrivate));
 
 	gobject_class->finalize = almanah_calendar_appointment_event_finalize;
 
@@ -60,13 +61,12 @@ almanah_calendar_appointment_event_class_init (AlmanahCalendarAppointmentEventCl
 static void
 almanah_calendar_appointment_event_init (AlmanahCalendarAppointmentEvent *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, AlmanahCalendarAppointmentEventPrivate);
 }
 
 static void
 almanah_calendar_appointment_event_finalize (GObject *object)
 {
-	AlmanahCalendarAppointmentEventPrivate *priv = ALMANAH_CALENDAR_APPOINTMENT_EVENT_GET_PRIVATE (object);
+	AlmanahCalendarAppointmentEventPrivate *priv = almanah_calendar_appointment_event_get_instance_private (ALMANAH_CALENDAR_APPOINTMENT_EVENT (object));
 
 	g_free (priv->summary);
 	g_free (priv->time);
@@ -79,14 +79,15 @@ AlmanahCalendarAppointmentEvent *
 almanah_calendar_appointment_event_new (const gchar *summary, GTime start_time)
 {
 	AlmanahCalendarAppointmentEvent *event = g_object_new (ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, NULL);
+	AlmanahCalendarAppointmentEventPrivate *priv = almanah_calendar_appointment_event_get_instance_private (event);
 	struct tm date_tm;
 
-	event->priv->summary = g_strdup (summary);
-	event->priv->start_time = start_time;
+	priv->summary = g_strdup (summary);
+	priv->start_time = start_time;
 
-	localtime_r ((const time_t*) &(ALMANAH_CALENDAR_APPOINTMENT_EVENT (event)->priv->start_time), &date_tm);
+	localtime_r ((const time_t*) &priv->start_time, &date_tm);
 	/* Translators: This is a time string with the format hh:mm */
-	event->priv->time = g_strdup_printf (_("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
+	priv->time = g_strdup_printf (_("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
 
 	return event;
 }
@@ -94,19 +95,23 @@ almanah_calendar_appointment_event_new (const gchar *summary, GTime start_time)
 static const gchar *
 almanah_calendar_appointment_event_format_value (AlmanahEvent *event)
 {
-	return ALMANAH_CALENDAR_APPOINTMENT_EVENT (event)->priv->summary;
+	AlmanahCalendarAppointmentEventPrivate *priv = almanah_calendar_appointment_event_get_instance_private (ALMANAH_CALENDAR_APPOINTMENT_EVENT (event));
+
+	return priv->summary;
 }
 
 static const gchar *
 almanah_calendar_appointment_event_format_time (AlmanahEvent *event)
 {
-	return ALMANAH_CALENDAR_APPOINTMENT_EVENT (event)->priv->time;
+	AlmanahCalendarAppointmentEventPrivate *priv = almanah_calendar_appointment_event_get_instance_private (ALMANAH_CALENDAR_APPOINTMENT_EVENT (event));
+
+	return priv->time;
 }
 
 static gboolean
 almanah_calendar_appointment_event_view (AlmanahEvent *event, GtkWindow *parent_window)
 {
-	AlmanahCalendarAppointmentEventPrivate *priv = ALMANAH_CALENDAR_APPOINTMENT_EVENT (event)->priv;
+	AlmanahCalendarAppointmentEventPrivate *priv = almanah_calendar_appointment_event_get_instance_private (ALMANAH_CALENDAR_APPOINTMENT_EVENT (event));
 	struct tm utc_date_tm;
 	gchar *command_line;
 	gboolean retval;

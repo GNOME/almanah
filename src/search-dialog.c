@@ -38,7 +38,7 @@ void sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dia
 static void sd_search_progress_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahSearchDialog **search_dialog_weak_pointer);
 static void sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, AlmanahSearchDialog **search_dialog_weak_pointer);
 
-struct _AlmanahSearchDialogPrivate {
+typedef struct {
 	GtkEntry *sd_search_entry;
 	GtkWidget *sd_search_button;
 	GtkWidget *sd_cancel_button;
@@ -48,22 +48,22 @@ struct _AlmanahSearchDialogPrivate {
 	GtkListStore *sd_results_store;
 	GtkTreeSelection *sd_results_selection;
 	GCancellable *sd_cancellable;
+} AlmanahSearchDialogPrivate;
+
+struct _AlmanahSearchDialog {
+	GtkDialog parent;
 };
 
-G_DEFINE_TYPE (AlmanahSearchDialog, almanah_search_dialog, GTK_TYPE_DIALOG)
-#define ALMANAH_SEARCH_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_SEARCH_DIALOG, AlmanahSearchDialogPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahSearchDialog, almanah_search_dialog, GTK_TYPE_DIALOG)
 
 static void
 almanah_search_dialog_class_init (AlmanahSearchDialogClass *klass)
 {
-	g_type_class_add_private (klass, sizeof (AlmanahSearchDialogPrivate));
 }
 
 static void
 almanah_search_dialog_init (AlmanahSearchDialog *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_SEARCH_DIALOG, AlmanahSearchDialogPrivate);
-
 	g_signal_connect (self, "response", G_CALLBACK (sd_response_cb), self);
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Search"));
@@ -112,7 +112,7 @@ almanah_search_dialog_new (void)
 		return NULL;
 	}
 
-	priv = ALMANAH_SEARCH_DIALOG (search_dialog)->priv;
+	priv = almanah_search_dialog_get_instance_private (search_dialog);
 
 	priv->sd_cancellable = NULL;
 
@@ -145,13 +145,15 @@ sd_results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkWidget *bu
 static void
 sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search_dialog)
 {
+	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
+
 	/* Ensure everything's tidy before we leave the room */
-	if (search_dialog->priv->sd_cancellable != NULL) {
-		g_cancellable_cancel (search_dialog->priv->sd_cancellable);
+	if (priv->sd_cancellable != NULL) {
+		g_cancellable_cancel (priv->sd_cancellable);
 	}
 
-	gtk_list_store_clear (search_dialog->priv->sd_results_store);
-	gtk_entry_set_text (search_dialog->priv->sd_search_entry, "");
+	gtk_list_store_clear (priv->sd_results_store);
+	gtk_entry_set_text (priv->sd_search_entry, "");
 
 	gtk_widget_hide (GTK_WIDGET (dialog));
 }
@@ -173,7 +175,7 @@ sd_search_progress_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *ent
 	g_return_if_fail (ALMANAH_IS_ENTRY (entry));
 	g_return_if_fail (ALMANAH_IS_SEARCH_DIALOG (*search_dialog_weak_pointer));
 
-	priv = ALMANAH_SEARCH_DIALOG (*search_dialog_weak_pointer)->priv;
+	priv = almanah_search_dialog_get_instance_private (*search_dialog_weak_pointer);
 
 	almanah_entry_get_date (entry, &date);
 	/* Translators: This is a strftime()-format string for the dates displayed in search results. */
@@ -209,7 +211,7 @@ sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, A
 	g_return_if_fail (ALMANAH_IS_SEARCH_DIALOG (*search_dialog_weak_pointer));
 
 	search_dialog = ALMANAH_SEARCH_DIALOG (*search_dialog_weak_pointer);
-	priv = search_dialog->priv;
+	priv = almanah_search_dialog_get_instance_private (search_dialog);
 
 	/* Return the search result count to the user */
 	gtk_spinner_stop (priv->sd_search_spinner);
@@ -238,13 +240,13 @@ sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, A
 	g_slice_free (AlmanahSearchDialog*, search_dialog_weak_pointer);
 
 	g_object_unref (priv->sd_cancellable);
-	search_dialog->priv->sd_cancellable = NULL;
+	priv->sd_cancellable = NULL;
 }
 
 void
 sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
-	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
+	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
 
 	if (priv->sd_cancellable != NULL) {
 		g_cancellable_cancel (priv->sd_cancellable);
@@ -254,9 +256,9 @@ sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 void
 sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
+	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
 	AlmanahApplication *application;
 	AlmanahStorageManager *storage_manager;
-	AlmanahSearchDialogPrivate *priv = search_dialog->priv;
 	const gchar *search_string;
 	AlmanahSearchDialog **search_dialog_weak_pointer;
 
@@ -333,10 +335,11 @@ sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path
 void
 sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
+	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 
-	if (gtk_tree_selection_get_selected (search_dialog->priv->sd_results_selection, &model, &iter) == TRUE) {
+	if (gtk_tree_selection_get_selected (priv->sd_results_selection, &model, &iter) == TRUE) {
 		select_date (search_dialog, model, &iter);
 	}
 }
