@@ -30,19 +30,8 @@ G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_STORAGE_MANAGER		(almanah_storage_manager_get_type ())
 #define ALMANAH_STORAGE_MANAGER_ERROR		(almanah_storage_manager_error_quark ())
-#define ALMANAH_STORAGE_MANAGER(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManager))
-#define ALMANAH_STORAGE_MANAGER_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerClass))
-#define ALMANAH_IS_STORAGE_MANAGER(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_STORAGE_MANAGER))
-#define ALMANAH_IS_STORAGE_MANAGER_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_STORAGE_MANAGER))
-#define ALMANAH_STORAGE_MANAGER_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_STORAGE_MANAGER, AlmanahStorageManagerClass))
 
-typedef struct {
-	GObject parent;
-} AlmanahStorageManager;
-
-typedef struct {
-	GObjectClass parent;
-} AlmanahStorageManagerClass;
+G_DECLARE_FINAL_TYPE (AlmanahStorageManager, almanah_storage_manager, ALMANAH, STORAGE_MANAGER, GObject)
 
 typedef enum {
 	ALMANAH_STORAGE_MANAGER_ERROR_UNSUPPORTED,
@@ -64,7 +53,6 @@ typedef struct {
 
 typedef void (*AlmanahStorageManagerSearchCallback) (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, gpointer user_data);
 
-GType almanah_storage_manager_get_type (void);
 GQuark almanah_storage_manager_error_quark (void);
 AlmanahStorageManager *almanah_storage_manager_new (const gchar *filename, GSettings *settings) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 

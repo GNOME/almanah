@@ -24,46 +24,11 @@
 /* Standard GObject macros */
 #define E_TYPE_CELL_RENDERER_COLOR \
 	(e_cell_renderer_color_get_type ())
-#define E_CELL_RENDERER_COLOR(obj) \
-	(G_TYPE_CHECK_INSTANCE_CAST \
-	((obj), E_TYPE_CELL_RENDERER_COLOR, ECellRendererColor))
-#define E_CELL_RENDERER_COLOR_CLASS(cls) \
-	(G_TYPE_CHECK_CLASS_CAST \
-	((cls), E_TYPE_CELL_RENDERER_COLOR, ECellRendererColorClass))
-#define E_IS_CELL_RENDERER_COLOR(obj) \
-	(G_TYPE_CHECK_INSTANCE_TYPE \
-	((obj), E_TYPE_CELL_RENDERER_COLOR))
-#define E_IS_CELL_RENDERER_COLOR_CLASS(cls) \
-	(G_TYPE_CHECK_CLASS_TYPE ((cls), E_TYPE_CELL_RENDERER_COLOR))
-#define E_CELL_RENDERER_COLOR_GET_CLASS(obj) \
-	(G_TYPE_INSTANCE_GET_CLASS \
-	((obj), E_TYPE_CELL_RENDERER_COLOR, ECellRendererColorClass))
+
+G_DECLARE_FINAL_TYPE (ECellRendererColor, e_cell_renderer_color, E, CELL_RENDERER_COLOR, GtkCellRenderer)
 
 G_BEGIN_DECLS
 
-typedef struct _ECellRendererColor ECellRendererColor;
-typedef struct _ECellRendererColorClass ECellRendererColorClass;
-
-/**
- * ECellRendererColor:
- *
- * Since: 2.22
- **/
-struct _ECellRendererColor {
-	GtkCellRenderer parent;
-};
-
-struct _ECellRendererColorClass {
-	GtkCellRendererClass parent_class;
-
-	/* Padding for future expansion */
-	void (*_gtk_reserved1) (void);
-	void (*_gtk_reserved2) (void);
-	void (*_gtk_reserved3) (void);
-	void (*_gtk_reserved4) (void);
-};
-
-GType            e_cell_renderer_color_get_type	(void);
 GtkCellRenderer *e_cell_renderer_color_new	(void);
 
 G_END_DECLS

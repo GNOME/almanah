@@ -25,21 +25,9 @@
 G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_TAG         (almanah_tag_get_type ())
-#define ALMANAH_TAG(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_TAG, AlmanahTag))
-#define ALMANAH_TAG_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_TAG, AlmanahTagClass))
-#define ALMANAH_IS_TAG(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_TAG))
-#define ALMANAH_IS_TAG_CLASS(k)	 (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_TAG))
-#define ALMANAH_TAG_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_TAG, AlmanahTagClass))
 
-typedef struct {
-	GtkDrawingArea parent;
-} AlmanahTag;
+G_DECLARE_FINAL_TYPE (AlmanahTag, almanah_tag, ALMANAH, TAG, GtkDrawingArea)
 
-typedef struct {
-	GtkDrawingAreaClass parent;
-} AlmanahTagClass;
-
-GType        almanah_tag_get_type (void) G_GNUC_CONST;
 GtkWidget   *almanah_tag_new      (const gchar *tag);
 const gchar *almanah_tag_get_tag  (AlmanahTag *tag_widget);
 void         almanah_tag_remove   (AlmanahTag *tag_widget);

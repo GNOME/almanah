@@ -27,22 +27,10 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_CALENDAR_TASK_EVENT		(almanah_calendar_task_event_get_type ())
-#define ALMANAH_CALENDAR_TASK_EVENT(o)			(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_CALENDAR_TASK_EVENT, AlmanahCalendarTaskEvent))
-#define ALMANAH_CALENDAR_TASK_EVENT_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_CALENDAR_TASK_EVENT, AlmanahCalendarTaskEventClass))
-#define ALMANAH_IS_CALENDAR_TASK_EVENT(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_CALENDAR_TASK_EVENT))
-#define ALMANAH_IS_CALENDAR_TASK_EVENT_CLASS(k)		(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR_TASK_EVENT))
-#define ALMANAH_CALENDAR_TASK_EVENT_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR_TASK_EVENT, AlmanahCalendarTaskEventClass))
+#define ALMANAH_TYPE_CALENDAR_TASK_EVENT        (almanah_calendar_task_event_get_type ())
 
-typedef struct {
-	AlmanahEvent parent;
-} AlmanahCalendarTaskEvent;
+G_DECLARE_FINAL_TYPE (AlmanahCalendarTaskEvent, almanah_calendar_task_event, ALMANAH, CALENDAR_TASK_EVENT, AlmanahEvent)
 
-typedef struct {
-	AlmanahEventClass parent;
-} AlmanahCalendarTaskEventClass;
-
-GType almanah_calendar_task_event_get_type (void);
 AlmanahCalendarTaskEvent *almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, GTime start_time);
 
 G_END_DECLS

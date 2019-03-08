@@ -36,19 +36,8 @@ typedef enum
 } CalendarEventType;
 
 #define CALENDAR_TYPE_CLIENT        (calendar_client_get_type ())
-#define CALENDAR_CLIENT(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), CALENDAR_TYPE_CLIENT, CalendarClient))
-#define CALENDAR_CLIENT_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), CALENDAR_TYPE_CLIENT, CalendarClientClass))
-#define CALENDAR_IS_CLIENT(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), CALENDAR_TYPE_CLIENT))
-#define CALENDAR_IS_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), CALENDAR_TYPE_CLIENT))
-#define CALENDAR_CLIENT_GET_CLASS(o)(G_TYPE_INSTANCE_GET_CLASS ((o), CALENDAR_TYPE_CLIENT, CalendarClientClass))
 
-typedef struct _CalendarClient        CalendarClient;
-typedef struct _CalendarClientClass   CalendarClientClass;
-
-struct _CalendarClient
-{
-  GObject                parent;
-};
+G_DECLARE_DERIVABLE_TYPE (CalendarClient, calendar_client, CALENDAR, CLIENT, GObject)
 
 struct _CalendarClientClass
 {
@@ -114,7 +103,6 @@ typedef void (* CalendarDayIter) (CalendarClient *client,
 				  gpointer        user_data);
 
 
-GType           calendar_client_get_type                (void) G_GNUC_CONST;
 CalendarClient *calendar_client_new                     (void);
 
 void            calendar_client_get_date                (CalendarClient      *client,
