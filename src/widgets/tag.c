@@ -37,7 +37,7 @@ enum {
 	PROP_TAG = 1
 };
 
-struct _AlmanahTagPrivate {
+typedef struct {
 	gchar *tag;
 	PangoLayout *layout;
 
@@ -54,6 +54,10 @@ struct _AlmanahTagPrivate {
 	/* The close button state */
 	gboolean close_highlighted;
 	gboolean close_pressed;
+} AlmanahTagPrivate;
+
+struct _AlmanahTag {
+	GtkDrawingArea parent;
 };
 
 enum {
@@ -75,15 +79,13 @@ gboolean    almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton 
 gboolean    almanah_tag_draw                 (GtkWidget *widget, cairo_t *cr, gpointer data);
 gboolean    almanah_tag_query_tooltip        (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip);
 
-G_DEFINE_TYPE (AlmanahTag, almanah_tag, GTK_TYPE_DRAWING_AREA)
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTag, almanah_tag, GTK_TYPE_DRAWING_AREA)
 
 static void
 almanah_tag_class_init (AlmanahTagClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahTagPrivate));
 
 	gobject_class->get_property = almanah_tag_get_property;
 	gobject_class->set_property = almanah_tag_set_property;
@@ -114,7 +116,8 @@ almanah_tag_class_init (AlmanahTagClass *klass)
 static void
 almanah_tag_init (AlmanahTag *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_TAG, AlmanahTagPrivate);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (self);
+
 	g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (almanah_tag_draw), NULL);
 
 	gtk_widget_add_events (GTK_WIDGET  (self),
@@ -122,15 +125,15 @@ almanah_tag_init (AlmanahTag *self)
 			       | GDK_BUTTON_PRESS_MASK
 			       | GDK_BUTTON_RELEASE_MASK);
 
-	gdk_rgba_parse (&self->priv->text_color, "#936835");
-	gdk_rgba_parse (&self->priv->strock_color, "#ECB447");
-	gdk_rgba_parse (&self->priv->fill_a_color, "#FFDB73");
-	gdk_rgba_parse (&self->priv->fill_b_color, "#FCBC4E");
+	gdk_rgba_parse (&priv->text_color, "#936835");
+	gdk_rgba_parse (&priv->strock_color, "#ECB447");
+	gdk_rgba_parse (&priv->fill_a_color, "#FFDB73");
+	gdk_rgba_parse (&priv->fill_b_color, "#FCBC4E");
 
 	gtk_widget_set_has_tooltip (GTK_WIDGET (self), TRUE);
 
-	self->priv->close_highlighted = FALSE;
-	self->priv->close_pressed = FALSE;
+	priv->close_highlighted = FALSE;
+	priv->close_pressed = FALSE;
 
 	gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 }
@@ -138,7 +141,8 @@ almanah_tag_init (AlmanahTag *self)
 static void
 almanah_tag_finalize (GObject *object)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (object);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 
 	g_free (priv->tag);
 	g_clear_object (&priv->layout);
@@ -149,7 +153,8 @@ almanah_tag_finalize (GObject *object)
 static void
 almanah_tag_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (object);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 
 	switch (property_id) {
 		case PROP_TAG:
@@ -164,7 +169,8 @@ almanah_tag_get_property (GObject *object, guint property_id, GValue *value, GPa
 static void
 almanah_tag_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (object)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (object);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 
 	switch (property_id) {
 		case PROP_TAG:
@@ -185,26 +191,29 @@ almanah_tag_set_property (GObject *object, guint property_id, const GValue *valu
 void
 almanah_tag_ensure_layout (AlmanahTag *self)
 {
-	if (!self->priv->layout) {
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (self);
+
+	if (!priv->layout) {
 		GtkStyleContext *style_context;
 		PangoFontDescription *font_desc;
 
-		self->priv->layout = gtk_widget_create_pango_layout (GTK_WIDGET (self), self->priv->tag);
+		priv->layout = gtk_widget_create_pango_layout (GTK_WIDGET (self), priv->tag);
 		style_context = gtk_widget_get_style_context (GTK_WIDGET (self));
 		gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL, "font", &font_desc, NULL);
 		pango_font_description_set_size (font_desc, (pango_font_description_get_size (font_desc) * 0.8));
 		pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
-		pango_layout_set_font_description (self->priv->layout, font_desc);
+		pango_layout_set_font_description (priv->layout, font_desc);
 	}
 }
 
 void
 almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (widget)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 	gint height;
 
-	almanah_tag_ensure_layout (ALMANAH_TAG (widget));
+	almanah_tag_ensure_layout (tag);
 
 	pango_layout_get_size (priv->layout, NULL, &height);
 	*minimum_height = (height / PANGO_SCALE) + PADDING_TOP + PADDING_BOTTOM + SHADOW_BOTTOM;
@@ -214,10 +223,11 @@ almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint 
 void
 almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *natural_width)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (widget)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 	gint width;
 
-	almanah_tag_ensure_layout (ALMANAH_TAG (widget));
+	almanah_tag_ensure_layout (tag);
 
 	pango_layout_get_size (priv->layout, &width, NULL);
 	*minimum_width = (width / PANGO_SCALE) + CLOSE_BUTTON_SPACING + CLOSE_BUTTON + PADDING_LEFT + PADDING_RIGHT + SHADOW_RIGHT;
@@ -227,8 +237,10 @@ almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *n
 gboolean
 almanah_tag_motion_notify_event  (GtkWidget *widget, GdkEventMotion *event)
 {
-	gint close_x = ALMANAH_TAG (widget)->priv->close_x;
-	gint close_y = ALMANAH_TAG (widget)->priv->close_y;
+	AlmanahTag *tag = ALMANAH_TAG (widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
+	gint close_x = priv->close_x;
+	gint close_y = priv->close_y;
 	gboolean close_highlighted;
 
 	/* Close button */
@@ -239,8 +251,8 @@ almanah_tag_motion_notify_event  (GtkWidget *widget, GdkEventMotion *event)
 		close_highlighted = FALSE;
 	}
 
-	if (ALMANAH_TAG (widget)->priv->close_highlighted != close_highlighted) {
-		ALMANAH_TAG (widget)->priv->close_highlighted = close_highlighted;
+	if (priv->close_highlighted != close_highlighted) {
+		priv->close_highlighted = close_highlighted;
 		gtk_widget_queue_draw (widget);
 	}
 
@@ -250,7 +262,8 @@ almanah_tag_motion_notify_event  (GtkWidget *widget, GdkEventMotion *event)
 gboolean
 almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (widget)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 	gint close_x = priv->close_x;
 	gint close_y = priv->close_y;
 
@@ -268,7 +281,8 @@ almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event)
 gboolean
 almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (widget)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 	gint close_x = priv->close_x;
 	gint close_y = priv->close_y;
 
@@ -276,7 +290,7 @@ almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event)
 	    && event->y >= close_y && event->y <= close_y + CLOSE_BUTTON
 	    && priv->close_pressed
 	    && event->button == 1) {
-		g_signal_emit (ALMANAH_TAG (widget), tag_signals[SIGNAL_REMOVE], 0);
+		g_signal_emit (tag, tag_signals[SIGNAL_REMOVE], 0);
 	}
 	priv->close_pressed = FALSE;
 
@@ -286,11 +300,12 @@ almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event)
 gboolean
 almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 {
-	AlmanahTagPrivate *priv = ALMANAH_TAG (widget)->priv;
+	AlmanahTag *tag = ALMANAH_TAG (widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
 	gint y_origin, allocated_height, width, height, middle_height, middle_padding_left, text_height, text_width;
 	cairo_pattern_t *fill_pattrn;
 
-	almanah_tag_ensure_layout (ALMANAH_TAG (widget));
+	almanah_tag_ensure_layout (tag);
 
 	/* Get the tag dimensions */
 	gtk_widget_get_preferred_width (widget, &width, NULL);
@@ -406,10 +421,12 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 gboolean
 almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip)
 {
-	gint close_x = ALMANAH_TAG (widget)->priv->close_x;
-	gint close_y = ALMANAH_TAG (widget)->priv->close_y;
+	AlmanahTag *tag = ALMANAH_TAG (widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
+	gint close_x = priv->close_x;
+	gint close_y = priv->close_y;
 
-	/* @TODO: Maybe remove all this code and test if ALMANAH_TAG (widget)->priv->close_highlighted == TRUE, or just return it */
+	/* @TODO: Maybe remove all this code and test if priv->close_highlighted == TRUE, or just return it */
 	if (x >= close_x && x <= close_x + CLOSE_BUTTON
 	    && y >= close_y && y <= close_y + CLOSE_BUTTON) {
 		/* Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ? */
@@ -433,7 +450,10 @@ almanah_tag_get_tag (AlmanahTag *tag_widget)
 {
 	g_return_val_if_fail (ALMANAH_IS_TAG (tag_widget), NULL);
 
-	return tag_widget->priv->tag;
+	AlmanahTag *tag = ALMANAH_TAG (tag_widget);
+	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
+
+	return priv->tag;
 }
 
 void
