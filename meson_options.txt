@@ -1,0 +1,2 @@
+option('evolution', type: 'feature', value: 'enabled', description: 'Enable Evolution calendar integration')
+option('spell_checking', type: 'feature', value: 'enabled', description: 'Enable spell checking support')
