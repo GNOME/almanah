@@ -1,16 +1,15 @@
 # List of source files containing translatable strings.
-[encoding: UTF-8]
 data/almanah.appdata.xml.in
 data/almanah.desktop.in
-[type: gettext/glade]src/ui/almanah.ui
-[type: gettext/gsettings]data/org.gnome.almanah.gschema.xml.in
+src/ui/almanah.ui
+data/org.gnome.almanah.gschema.xml.in
 src/application.c
 src/date-entry-dialog.c
 src/entry.c
 src/events/calendar-appointment.c
 src/events/calendar-task.c
 src/export-operation.c
-[type: gettext/glade]src/gtk/menus.ui
+src/gtk/menus.ui
 src/import-export-dialog.c
 src/import-operation.c
 src/interface.c
