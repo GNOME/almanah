@@ -59,7 +59,7 @@ if gpgme_version_check.returncode() != 0
   error('Incompatible version of GPGME. Minimal version required is @0@'.format(min_gpgme_version))
 endif
 
-libecal = dependency('libecal-1.2', version: '>= 3.8', required: evolution_support)
+libecal = dependency('libecal-2.0', version: '>= 3.33', required: evolution_support)
 libedataserver = dependency('libedataserver-1.2', version: '>= 2.28', required: evolution_support)
 have_evolution = libecal.found() and libedataserver.found()
 
