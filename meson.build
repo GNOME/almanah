@@ -104,7 +104,9 @@ if have_spell_check
 endif
 if have_evolution
   conf.set('HAVE_EVO', 1)
-  conf.set('EDS_DISABLE_DEPRECATED', 1)
+  # FIXME: We haven’t kept up to date with the post-3.8 deprecations yet:
+  # https://gitlab.gnome.org/GNOME/almanah/issues/1
+  #conf.set('EDS_DISABLE_DEPRECATED', 1)
 endif
 
 config = vcs_tag(
