@@ -99,9 +99,11 @@ Commit messages
 ===============
 
 Almanah does not use a ChangeLog; it is auto-generated from the git log when packaging a release. Commit messages should follow the GNOME commit
-message guidelines (http://live.gnome.org/Git/CommitMessages), with the exception that when a commit closes a bug, the short explanation of the commit
-should simply be the bug's title, as copied from Bugzilla (e.g. "Bug 579885 – Add code examples to documentation"). The long explanation should then
+message guidelines (https://wiki.gnome.org/Git/CommitMessages), with the exception that when a commit closes a bug, the short explanation of the commit
+should simply be the bug's title, as copied from GitLab (e.g. "Add code examples to documentation"). The long explanation should then
 be used to give details of the changes. If the bug's title is not relevant, it should be changed before committing the changes.
+
+Any commit fixing a bug from GitLab should have “Fixes: #1234” in the long explanation, on a line by itself.
 
 Unless the short explanation of a commit is a bug title, it should always be prefixed by a tag to describe the part of the project it touches, using
 the following format "tag: Short explanation". The following tags are valid:
