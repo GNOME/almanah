@@ -873,8 +873,8 @@ calendar_appointment_generate_ocurrences (CalendarAppointment *appointment,
 
   g_assert (appointment->occurrences == NULL);
 
-  interval_start = i_cal_time_from_timet_with_zone (start, FALSE, NULL);
-  interval_end = i_cal_time_from_timet_with_zone (end, FALSE, NULL);
+  interval_start = i_cal_time_new_from_timet_with_zone (start, FALSE, NULL);
+  interval_end = i_cal_time_new_from_timet_with_zone (end, FALSE, NULL);
 
   e_cal_recur_generate_instances_sync (ical,
                                        interval_start,
@@ -2083,7 +2083,7 @@ calendar_client_set_task_completed (CalendarClient *client,
     {
       ICalTime *completed_time;
 
-      completed_time = i_cal_time_current_time_with_zone (client->priv->zone);
+      completed_time = i_cal_time_new_current_with_zone (client->priv->zone);
       if (!prop)
         {
           i_cal_component_take_property (ical,
