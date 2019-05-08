@@ -262,7 +262,7 @@ get_ecal_from_source (ESource             *esource,
 	{
 	  ECalClient *client = E_CAL_CLIENT (l->data);
 
-	  if (g_strcmp0 (e_source_get_uid (esource), e_source_get_uid (e_client_get_source (E_CLIENT (client)))))
+	  if (g_str_equal (e_source_get_uid (esource), e_source_get_uid (e_client_get_source (E_CLIENT (client)))))
 	    {
 	      dprintf ("        load_esource: found existing source ... returning that\n");
 
