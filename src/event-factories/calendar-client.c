@@ -80,7 +80,7 @@ struct _CalendarClientPrivate
   GSList              *appointment_sources;
   GSList              *task_sources;
 
-  icaltimezone        *zone;
+  ICalTimezone        *zone;
 
   GFileMonitor        *tz_monitor;
 
@@ -229,17 +229,17 @@ calendar_client_class_init (CalendarClientClass *klass)
                   0);
 }
 
-static icaltimezone *
+static ICalTimezone *
 calendar_client_config_get_icaltimezone (void)
 {
   char         *location;
-  icaltimezone *zone = NULL;
+  ICalTimezone *zone = NULL;
 
   location = e_cal_util_get_system_timezone_location ();
   if (!location)
-    return icaltimezone_get_utc_timezone ();
+    return i_cal_timezone_get_utc_timezone ();
 
-  zone = icaltimezone_get_builtin_timezone (location);
+  zone = i_cal_timezone_get_builtin_timezone (location);
   g_free (location);
 
   return zone;
@@ -272,51 +272,6 @@ calendar_client_timezone_changed_cb (G_GNUC_UNUSED GFileMonitor      *monitor,
 }
 
 static void
-cal_opened_cb (GObject *source_object,
-               GAsyncResult *result,
-               gpointer user_data)
-{
-  EClient *ecal = E_CLIENT (source_object);
-  CalendarClientSource *cl_source = user_data;
-  ECalClientSourceType s_type;
-  CalendarClient *client = cl_source->client;
-  GError *error = NULL;
-
-  e_client_open_finish (ecal, result, &error);
-
-  s_type = e_cal_client_get_source_type (E_CAL_CLIENT (ecal));
-
-  if (g_error_matches (error, E_CLIENT_ERROR, E_CLIENT_ERROR_BUSY) &&
-      !e_client_is_opened (ecal))
-    {
-      g_clear_error (&error);
-      e_client_open (ecal, TRUE, NULL, cal_opened_cb, cl_source);
-      return;
-    }
-
-  if (error)
-    {
-      if (s_type == E_CAL_CLIENT_SOURCE_TYPE_EVENTS)
-        client->priv->appointment_sources = g_slist_remove (client->priv->appointment_sources,
-                                                            cl_source);
-      else
-        client->priv->task_sources = g_slist_remove (client->priv->task_sources,
-                                                     cl_source);
-
-      calendar_client_source_finalize (cl_source);
-      g_free (cl_source);
-
-      g_clear_error (&error);
-      return;
-    }
-
-  if (s_type == E_CAL_CLIENT_SOURCE_TYPE_EVENTS)
-    calendar_client_update_appointments (client);
-  else
-    calendar_client_update_tasks (client);
-}
-
-static void
 load_calendars (CalendarClient    *client,
                 CalendarEventType  type)
 {
@@ -337,15 +292,12 @@ load_calendars (CalendarClient    *client,
 
   for (l = clients; l != NULL; l = l->next)
     {
-      EClient *ecal;
       CalendarClientSource *cl_source = l->data;
 
-      ecal = E_CLIENT (cl_source->cal_client);
-
-      if (e_client_is_opened (ecal))
-        continue;
-
-      e_client_open (ecal, TRUE, NULL, cal_opened_cb, cl_source);
+      if (type == CALENDAR_EVENT_APPOINTMENT)
+        calendar_client_update_appointments (cl_source->client);
+      else
+        calendar_client_update_tasks (cl_source->client);
     }
 }
 
@@ -523,113 +475,129 @@ make_isodate_for_day_begin (int day,
 }
 
 static time_t
-get_time_from_property (icalcomponent         *ical,
-                        icalproperty_kind      prop_kind,
-                        struct icaltimetype (* get_prop_func) (const icalproperty *prop),
-                        icaltimezone          *default_zone)
+get_time_from_property (ICalComponent      *ical,
+                        ICalPropertyKind    prop_kind,
+                        ICalTime *       (* get_prop_func) (ICalProperty *prop),
+                        ICalTimezone       *default_zone)
 {
-  icalproperty        *prop;
-  struct icaltimetype  ical_time;
-  icalparameter       *param;
-  icaltimezone        *time_zone = NULL;
+  ICalProperty  *prop;
+  ICalTime      *ical_time;
+  ICalParameter *param;
+  ICalTimezone  *time_zone = NULL;
+  time_t         retval;
 
-  prop = icalcomponent_get_first_property (ical, prop_kind);
+  prop = i_cal_component_get_first_property (ical, prop_kind);
   if (!prop)
     return 0;
 
   ical_time = get_prop_func (prop);
 
-  param = icalproperty_get_first_parameter (prop, ICAL_TZID_PARAMETER);
+  param = i_cal_property_get_first_parameter (prop, I_CAL_TZID_PARAMETER);
   if (param)
-    time_zone = icaltimezone_get_builtin_timezone_from_tzid (icalparameter_get_tzid (param));
-  else if (icaltime_is_utc (ical_time))
-    time_zone = icaltimezone_get_utc_timezone ();
+    time_zone = i_cal_timezone_get_builtin_timezone_from_tzid (i_cal_parameter_get_tzid (param));
+  else if (i_cal_time_is_utc (ical_time))
+    time_zone = i_cal_timezone_get_utc_timezone ();
   else
     time_zone = default_zone;
 
-  return icaltime_as_timet_with_zone (ical_time, time_zone);
+  retval = i_cal_time_as_timet_with_zone (ical_time, time_zone);
+
+  g_clear_object (&ical_time);
+  g_clear_object (&param);
+  g_clear_object (&prop);
+
+  return retval;
 }
 
 static char *
-get_ical_uid (icalcomponent *ical)
+get_ical_uid (ICalComponent *ical)
 {
-  return g_strdup (icalcomponent_get_uid (ical));
+  return g_strdup (i_cal_component_get_uid (ical));
 }
 
 static char *
-get_ical_rid (icalcomponent *ical)
+get_ical_rid (ICalComponent *ical)
 {
-  icalproperty        *prop;
-  struct icaltimetype  ical_time;
+  return e_cal_util_component_get_recurid_as_string (ical);
+}
 
-  prop = icalcomponent_get_first_property (ical, ICAL_RECURRENCEID_PROPERTY);
+static char *
+get_ical_summary (ICalComponent *ical)
+{
+  ICalProperty *prop;
+  char *retval;
+
+  prop = i_cal_component_get_first_property (ical, I_CAL_SUMMARY_PROPERTY);
   if (!prop)
     return NULL;
 
-  ical_time = icalproperty_get_recurrenceid (prop);
+  retval = g_strdup (i_cal_property_get_summary (prop));
 
-  return icaltime_is_valid_time (ical_time) && !icaltime_is_null_time (ical_time) ?
-    g_strdup (icaltime_as_ical_string (ical_time)) : NULL;
+  g_object_unref (prop);
+
+  return retval;
 }
 
 static char *
-get_ical_summary (icalcomponent *ical)
+get_ical_description (ICalComponent *ical)
 {
-  icalproperty *prop;
+  ICalProperty *prop;
+  char *retval;
 
-  prop = icalcomponent_get_first_property (ical, ICAL_SUMMARY_PROPERTY);
+  prop = i_cal_component_get_first_property (ical, I_CAL_DESCRIPTION_PROPERTY);
   if (!prop)
     return NULL;
 
-  return g_strdup (icalproperty_get_summary (prop));
-}
+  retval = g_strdup (i_cal_property_get_description (prop));
 
-static char *
-get_ical_description (icalcomponent *ical)
-{
-  icalproperty *prop;
+  g_object_unref (prop);
 
-  prop = icalcomponent_get_first_property (ical, ICAL_DESCRIPTION_PROPERTY);
-  if (!prop)
-    return NULL;
-
-  return g_strdup (icalproperty_get_description (prop));
+  return retval;
 }
 
 static inline time_t
-get_ical_start_time (icalcomponent *ical,
-                     icaltimezone  *default_zone)
+get_ical_start_time (ICalComponent *ical,
+                     ICalTimezone  *default_zone)
 {
   return get_time_from_property (ical,
-                                 ICAL_DTSTART_PROPERTY,
-                                 icalproperty_get_dtstart,
+                                 I_CAL_DTSTART_PROPERTY,
+                                 i_cal_property_get_dtstart,
                                  default_zone);
 }
 
 static inline time_t
-get_ical_end_time (icalcomponent *ical,
-                   icaltimezone  *default_zone)
+get_ical_end_time (ICalComponent *ical,
+                   ICalTimezone  *default_zone)
 {
   return get_time_from_property (ical,
-                                 ICAL_DTEND_PROPERTY,
-                                 icalproperty_get_dtend,
+                                 I_CAL_DTEND_PROPERTY,
+                                 i_cal_property_get_dtend,
                                  default_zone);
 }
 
 static gboolean
-get_ical_is_all_day (icalcomponent *ical,
+get_ical_is_all_day (ICalComponent *ical,
                      time_t         start_time,
-                     icaltimezone  *default_zone)
+                     ICalTimezone  *default_zone)
 {
-  icalproperty            *prop;
-  struct tm               *start_tm;
-  time_t                   end_time;
-  struct icaldurationtype  duration;
-  struct icaltimetype      start_icaltime;
+  ICalProperty *prop;
+  struct tm    *start_tm;
+  time_t        end_time;
+  ICalDuration *duration;
+  ICalTime     *start_icaltime;
+  gboolean      retval;
 
-  start_icaltime = icalcomponent_get_dtstart (ical);
-  if (start_icaltime.is_date)
-    return TRUE;
+  start_icaltime = i_cal_component_get_dtstart (ical);
+  if (!start_icaltime)
+    return FALSE;
+
+  if (i_cal_time_is_date (start_icaltime))
+    {
+      g_object_unref (start_icaltime);
+      return TRUE;
+    }
+
+  g_clear_object (&start_icaltime);
 
   start_tm = gmtime (&start_time);
   if (start_tm->tm_sec  != 0 ||
@@ -640,69 +608,80 @@ get_ical_is_all_day (icalcomponent *ical,
   if ((end_time = get_ical_end_time (ical, default_zone)))
     return (end_time - start_time) % 86400 == 0;
 
-  prop = icalcomponent_get_first_property (ical, ICAL_DURATION_PROPERTY);
+  prop = i_cal_component_get_first_property (ical, I_CAL_DURATION_PROPERTY);
   if (!prop)
     return FALSE;
 
-  duration = icalproperty_get_duration (prop);
+  duration = i_cal_property_get_duration (prop);
 
-  return icaldurationtype_as_int (duration) % 86400 == 0;
+  retval = i_cal_duration_as_int (duration) % 86400 == 0;
+
+  g_object_unref (duration);
+  g_object_unref (prop);
+
+  return retval;
 }
 
 static inline time_t
-get_ical_due_time (icalcomponent *ical,
-                   icaltimezone  *default_zone)
+get_ical_due_time (ICalComponent *ical,
+                   ICalTimezone  *default_zone)
 {
   return get_time_from_property (ical,
-                                 ICAL_DUE_PROPERTY,
-                                 icalproperty_get_due,
+                                 I_CAL_DUE_PROPERTY,
+                                 i_cal_property_get_due,
                                  default_zone);
 }
 
 static guint
-get_ical_percent_complete (icalcomponent *ical)
+get_ical_percent_complete (ICalComponent *ical)
 {
-  icalproperty *prop;
-  icalproperty_status status;
+  ICalProperty *prop;
+  ICalPropertyStatus status;
   int           percent_complete;
 
-  status = icalcomponent_get_status (ical);
-  if (status == ICAL_STATUS_COMPLETED)
+  status = i_cal_component_get_status (ical);
+  if (status == I_CAL_STATUS_COMPLETED)
     return 100;
 
-  prop = icalcomponent_get_first_property (ical, ICAL_COMPLETED_PROPERTY);
-  if (prop)
+  if (e_cal_util_component_has_property (ical, I_CAL_COMPLETED_PROPERTY))
     return 100;
 
-  prop = icalcomponent_get_first_property (ical, ICAL_PERCENTCOMPLETE_PROPERTY);
+  prop = i_cal_component_get_first_property (ical, I_CAL_PERCENTCOMPLETE_PROPERTY);
   if (!prop)
     return 0;
 
-  percent_complete = icalproperty_get_percentcomplete (prop);
+  percent_complete = i_cal_property_get_percentcomplete (prop);
+
+  g_object_unref (prop);
 
   return CLAMP (percent_complete, 0, 100);
 }
 
 static inline time_t
-get_ical_completed_time (icalcomponent *ical,
-                         icaltimezone  *default_zone)
+get_ical_completed_time (ICalComponent *ical,
+                         ICalTimezone  *default_zone)
 {
   return get_time_from_property (ical,
-                                 ICAL_COMPLETED_PROPERTY,
-                                 icalproperty_get_completed,
+                                 I_CAL_COMPLETED_PROPERTY,
+                                 i_cal_property_get_completed,
                                  default_zone);
 }
 
 static int
-get_ical_priority (icalcomponent *ical)
+get_ical_priority (ICalComponent *ical)
 {
-  icalproperty *prop;
+  ICalProperty *prop;
+  int           retval;
 
-  prop = icalcomponent_get_first_property (ical, ICAL_PRIORITY_PROPERTY);
+  prop = i_cal_component_get_first_property (ical, I_CAL_PRIORITY_PROPERTY);
   if (!prop)
     return -1;
 
-  return icalproperty_get_priority (prop);
+  retval = i_cal_property_get_priority (prop);
+
+  g_object_unref (prop);
+
+  return retval;
 }
 
 static char *
@@ -827,9 +806,9 @@ calendar_appointment_finalize (CalendarAppointment *appointment)
 
 static void
 calendar_appointment_init (CalendarAppointment  *appointment,
-                           icalcomponent        *ical,
+                           ICalComponent        *ical,
                            CalendarClientSource *source,
-                           icaltimezone         *default_zone)
+                           ICalTimezone         *default_zone)
 {
   appointment->uid          = get_ical_uid (ical);
   appointment->rid          = get_ical_rid (ical);
@@ -844,34 +823,38 @@ calendar_appointment_init (CalendarAppointment  *appointment,
                                                    default_zone);
 }
 
-static icaltimezone *
+static ICalTimezone *
 resolve_timezone_id (const char *tzid,
-                     gpointer user_data)
+                     gpointer user_data,
+                     GCancellable *cancellable,
+                     GError **error)
 {
-  icaltimezone *retval;
+  ICalTimezone *retval;
   ECalClient *source = user_data;
 
-  retval = icaltimezone_get_builtin_timezone_from_tzid (tzid);
+  retval = i_cal_timezone_get_builtin_timezone_from_tzid (tzid);
   if (!retval)
     {
-      e_cal_client_get_timezone_sync (source, tzid, &retval, NULL, NULL);
+      retval = e_cal_client_tzlookup_cb (tzid, source, cancellable, error);
     }
 
   return retval;
 }
 
 static gboolean
-calendar_appointment_collect_occurrence (ECalComponent  *component,
-                                         time_t          occurrence_start,
-                                         time_t          occurrence_end,
-                                         gpointer        data)
+calendar_appointment_collect_occurrence (ICalComponent  *component,
+                                         ICalTime       *occurrence_start,
+                                         ICalTime       *occurrence_end,
+                                         gpointer        data,
+                                         GCancellable   *cancellable,
+                                         GError        **error)
 {
   CalendarOccurrence *occurrence;
   GSList **collect_loc = data;
 
   occurrence             = g_new0 (CalendarOccurrence, 1);
-  occurrence->start_time = occurrence_start;
-  occurrence->end_time   = occurrence_end;
+  occurrence->start_time = i_cal_time_as_timet (occurrence_start);
+  occurrence->end_time   = i_cal_time_as_timet (occurrence_end);
 
   *collect_loc = g_slist_prepend (*collect_loc, occurrence);
 
@@ -880,30 +863,32 @@ calendar_appointment_collect_occurrence (ECalComponent  *component,
 
 static void
 calendar_appointment_generate_ocurrences (CalendarAppointment *appointment,
-                                          icalcomponent       *ical,
+                                          ICalComponent       *ical,
                                           ECalClient          *source,
                                           time_t               start,
                                           time_t               end,
-                                          icaltimezone        *default_zone)
+                                          ICalTimezone        *default_zone)
 {
-  ECalComponent *ecal;
+  ICalTime *interval_start, *interval_end;
 
   g_assert (appointment->occurrences == NULL);
 
-  ecal = e_cal_component_new ();
-  e_cal_component_set_icalcomponent (ecal,
-                                     icalcomponent_new_clone (ical));
+  interval_start = i_cal_time_new_from_timet_with_zone (start, FALSE, NULL);
+  interval_end = i_cal_time_new_from_timet_with_zone (end, FALSE, NULL);
 
-  e_cal_recur_generate_instances (ecal,
-                                  start,
-                                  end,
-                                  calendar_appointment_collect_occurrence,
-                                  &appointment->occurrences,
-                                  resolve_timezone_id,
-                                  source,
-                                  default_zone);
+  e_cal_recur_generate_instances_sync (ical,
+                                       interval_start,
+                                       interval_end,
+                                       calendar_appointment_collect_occurrence,
+                                       &appointment->occurrences,
+                                       resolve_timezone_id,
+                                       source,
+                                       default_zone,
+                                       NULL,
+                                       NULL);
 
-  g_object_unref (ecal);
+  g_clear_object (&interval_start);
+  g_clear_object (&interval_end);
 
   appointment->occurrences = g_slist_reverse (appointment->occurrences);
 }
@@ -962,9 +947,9 @@ calendar_task_finalize (CalendarTask *task)
 
 static void
 calendar_task_init (CalendarTask         *task,
-                    icalcomponent        *ical,
+                    ICalComponent        *ical,
                     CalendarClientSource *source,
-                    icaltimezone         *default_zone)
+                    ICalTimezone         *default_zone)
 {
   task->uid              = get_ical_uid (ical);
   task->summary          = get_ical_summary (ical);
@@ -998,57 +983,57 @@ calendar_event_free (CalendarEvent *event)
 }
 
 static CalendarEvent *
-calendar_event_new (icalcomponent        *ical,
+calendar_event_new (ICalComponent        *ical,
                     CalendarClientSource *source,
-                    icaltimezone         *default_zone)
+                    ICalTimezone         *default_zone)
 {
   CalendarEvent *event;
 
   event = g_new0 (CalendarEvent, 1);
 
-  switch (icalcomponent_isa (ical))
+  switch (i_cal_component_isa (ical))
     {
-    case ICAL_VEVENT_COMPONENT:
+    case I_CAL_VEVENT_COMPONENT:
       event->type = CALENDAR_EVENT_APPOINTMENT;
       calendar_appointment_init (CALENDAR_APPOINTMENT (event),
                                  ical,
                                  source,
                                  default_zone);
       break;
-    case ICAL_VTODO_COMPONENT:
+    case I_CAL_VTODO_COMPONENT:
       event->type = CALENDAR_EVENT_TASK;
       calendar_task_init (CALENDAR_TASK (event),
                           ical,
                           source,
                           default_zone);
       break;
-    case ICAL_NO_COMPONENT:
-    case ICAL_ANY_COMPONENT:
-    case ICAL_XROOT_COMPONENT:
-    case ICAL_XATTACH_COMPONENT:
-    case ICAL_VJOURNAL_COMPONENT:
-    case ICAL_VCALENDAR_COMPONENT:
-    case ICAL_VAGENDA_COMPONENT:
-    case ICAL_VFREEBUSY_COMPONENT:
-    case ICAL_VALARM_COMPONENT:
-    case ICAL_XAUDIOALARM_COMPONENT:
-    case ICAL_XDISPLAYALARM_COMPONENT:
-    case ICAL_XEMAILALARM_COMPONENT:
-    case ICAL_XPROCEDUREALARM_COMPONENT:
-    case ICAL_VTIMEZONE_COMPONENT:
-    case ICAL_XSTANDARD_COMPONENT:
-    case ICAL_XDAYLIGHT_COMPONENT:
-    case ICAL_X_COMPONENT:
-    case ICAL_VSCHEDULE_COMPONENT:
-    case ICAL_VQUERY_COMPONENT:
-    case ICAL_VREPLY_COMPONENT:
-    case ICAL_VCAR_COMPONENT:
-    case ICAL_VCOMMAND_COMPONENT:
-    case ICAL_XLICINVALID_COMPONENT:
-    case ICAL_XLICMIMEPART_COMPONENT:
+    case I_CAL_NO_COMPONENT:
+    case I_CAL_ANY_COMPONENT:
+    case I_CAL_XROOT_COMPONENT:
+    case I_CAL_XATTACH_COMPONENT:
+    case I_CAL_VJOURNAL_COMPONENT:
+    case I_CAL_VCALENDAR_COMPONENT:
+    case I_CAL_VAGENDA_COMPONENT:
+    case I_CAL_VFREEBUSY_COMPONENT:
+    case I_CAL_VALARM_COMPONENT:
+    case I_CAL_XAUDIOALARM_COMPONENT:
+    case I_CAL_XDISPLAYALARM_COMPONENT:
+    case I_CAL_XEMAILALARM_COMPONENT:
+    case I_CAL_XPROCEDUREALARM_COMPONENT:
+    case I_CAL_VTIMEZONE_COMPONENT:
+    case I_CAL_XSTANDARD_COMPONENT:
+    case I_CAL_XDAYLIGHT_COMPONENT:
+    case I_CAL_X_COMPONENT:
+    case I_CAL_VSCHEDULE_COMPONENT:
+    case I_CAL_VQUERY_COMPONENT:
+    case I_CAL_VREPLY_COMPONENT:
+    case I_CAL_VCAR_COMPONENT:
+    case I_CAL_VCOMMAND_COMPONENT:
+    case I_CAL_XLICINVALID_COMPONENT:
+    case I_CAL_XLICMIMEPART_COMPONENT:
     default:
       g_warning ("Unknown calendar component type: %d\n",
-                 icalcomponent_isa (ical));
+                 i_cal_component_isa (ical));
       g_free (event);
       return NULL;
     }
@@ -1140,11 +1125,11 @@ calendar_event_equal (CalendarEvent *a,
 
 static void
 calendar_event_generate_ocurrences (CalendarEvent *event,
-                                    icalcomponent *ical,
+                                    ICalComponent *ical,
                                     ECalClient    *source,
                                     time_t         start,
                                     time_t         end,
-                                    icaltimezone  *default_zone)
+                                    ICalTimezone  *default_zone)
 {
   if (event->type != CALENDAR_EVENT_APPOINTMENT)
     return;
@@ -1337,7 +1322,7 @@ calendar_client_handle_query_result (CalendarClientSource *source,
     {
       CalendarEvent *event;
       CalendarEvent *old_event;
-      icalcomponent *ical = l->data;
+      ICalComponent *ical = l->data;
       char          *uid;
 
       event = calendar_event_new (ical, source, client->priv->zone);
@@ -1416,13 +1401,14 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
     {
       CalendarEvent   *event;
       ECalComponentId *id = l->data;
-      char            *uid = g_strdup_printf ("%s%s", id->uid, id->rid ? id->rid : "");
+      char            *uid = g_strdup_printf ("%s%s", e_cal_component_id_get_uid (id),
+                                                      e_cal_component_id_get_rid (id) ? e_cal_component_id_get_rid (id) : "");
 
-      if (!id->rid || !(*id->rid))
+      if (!e_cal_component_id_get_rid (id) || !(e_cal_component_id_get_rid (id)[0]))
         {
           unsigned int size = g_hash_table_size (query->events);
 
-          g_hash_table_foreach_remove (query->events, check_object_remove, id->uid);
+          g_hash_table_foreach_remove (query->events, check_object_remove, (gpointer) e_cal_component_id_get_uid (id));
 
           if (size != g_hash_table_size (query->events))
             events_changed = TRUE;
@@ -1560,9 +1546,6 @@ calendar_client_update_appointments (CalendarClient *client)
     {
       CalendarClientSource *cs = l->data;
 
-      if (!e_client_is_opened (E_CLIENT (cs->cal_client)))
-        continue;
-
       calendar_client_start_query (client, cs, query);
     }
 
@@ -1626,9 +1609,6 @@ calendar_client_update_tasks (CalendarClient *client)
   for (l = client->priv->task_sources; l; l = l->next)
     {
       CalendarClientSource *cs = l->data;
-
-      if (!e_client_is_opened (E_CLIENT (cs->cal_client)))
-        continue;
 
       calendar_client_start_query (client, cs, query);
     }
@@ -2066,11 +2046,11 @@ calendar_client_set_task_completed (CalendarClient *client,
                                     gboolean        task_completed,
                                     guint           percent_complete)
 {
-  GSList              *l;
-  ECalClient          *esource;
-  icalcomponent       *ical;
-  icalproperty        *prop;
-  icalproperty_status  status;
+  GSList             *l;
+  ECalClient         *esource;
+  ICalComponent      *ical;
+  ICalProperty       *prop;
+  ICalPropertyStatus  status;
 
   g_return_if_fail (CALENDAR_IS_CLIENT (client));
   g_return_if_fail (task_uid != NULL);
@@ -2097,53 +2077,59 @@ calendar_client_set_task_completed (CalendarClient *client,
   g_assert (esource != NULL);
 
   /* Completed time */
-  prop = icalcomponent_get_first_property (ical,
-                                           ICAL_COMPLETED_PROPERTY);
+  prop = i_cal_component_get_first_property (ical,
+                                             I_CAL_COMPLETED_PROPERTY);
   if (task_completed)
     {
-      struct icaltimetype  completed_time;
+      ICalTime *completed_time;
 
-      completed_time = icaltime_current_time_with_zone (client->priv->zone);
+      completed_time = i_cal_time_new_current_with_zone (client->priv->zone);
       if (!prop)
         {
-          icalcomponent_add_property (ical,
-                                      icalproperty_new_completed (completed_time));
+          i_cal_component_take_property (ical,
+                                         i_cal_property_new_completed (completed_time));
         }
       else
         {
-          icalproperty_set_completed (prop, completed_time);
+          i_cal_property_set_completed (prop, completed_time);
         }
+
+      g_clear_object (&completed_time);
     }
   else if (prop)
     {
-      icalcomponent_remove_property (ical, prop);
+      i_cal_component_remove_property (ical, prop);
     }
 
+  g_clear_object (&prop);
+
   /* Percent complete */
-  prop = icalcomponent_get_first_property (ical,
-                                           ICAL_PERCENTCOMPLETE_PROPERTY);
+  prop = i_cal_component_get_first_property (ical,
+                                             I_CAL_PERCENTCOMPLETE_PROPERTY);
   if (!prop)
     {
-      icalcomponent_add_property (ical,
-                                  icalproperty_new_percentcomplete (percent_complete));
+      i_cal_component_take_property (ical,
+                                     i_cal_property_new_percentcomplete (percent_complete));
     }
   else
     {
-      icalproperty_set_percentcomplete (prop, percent_complete);
+      i_cal_property_set_percentcomplete (prop, percent_complete);
+      g_object_unref (prop);
     }
 
   /* Status */
-  status = task_completed ? ICAL_STATUS_COMPLETED : ICAL_STATUS_NEEDSACTION;
-  prop = icalcomponent_get_first_property (ical, ICAL_STATUS_PROPERTY);
+  status = task_completed ? I_CAL_STATUS_COMPLETED : I_CAL_STATUS_NEEDSACTION;
+  prop = i_cal_component_get_first_property (ical, I_CAL_STATUS_PROPERTY);
   if (prop)
     {
-      icalproperty_set_status (prop, status);
+      i_cal_property_set_status (prop, status);
+      g_object_unref (prop);
     }
   else
     {
-      icalcomponent_add_property (ical,
-                                  icalproperty_new_status (status));
+      i_cal_component_take_property (ical,
+                                     i_cal_property_new_status (status));
     }
 
-  e_cal_client_modify_object_sync (esource, ical, E_CAL_OBJ_MOD_ALL, NULL, NULL);
+  e_cal_client_modify_object_sync (esource, ical, E_CAL_OBJ_MOD_ALL, E_CAL_OPERATION_FLAG_NONE, NULL, NULL);
 }

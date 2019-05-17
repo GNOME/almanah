@@ -54,7 +54,7 @@ struct _CalendarSourceData
   CalendarSources *sources;
   guint            changed_signal;
 
-  GSList          *clients;
+  GSList          *clients; /* ECalClient * */
   ESourceSelector *esource_selector;
 
   guint            timeout_id;
@@ -251,7 +251,7 @@ get_ecal_from_source (ESource             *esource,
 		      ECalClientSourceType client_type,
 		      GSList              *existing_clients)
 {
-  ECalClient *retval;
+  EClient *retval;
   GError *error = NULL;
 
   if (existing_clients)
@@ -271,17 +271,20 @@ get_ecal_from_source (ESource             *esource,
 	}
     }
 
-  retval = e_cal_client_new (esource, client_type, &error);
+  /* Basically do not wait for the connected state */
+  retval = e_cal_client_connect_sync (esource, client_type, -1, NULL, &error);
   if (!retval)
     {
       g_warning ("Could not load source '%s' from '%s': %s",
 		 e_source_get_display_name (esource),
 		 e_source_get_uid (esource),
 		 error ? error->message : "Unknown error");
+      g_clear_error (&error);
+
       return NULL;
     }
 
-  return retval;
+  return E_CAL_CLIENT (retval);
 }
 
 /* - Order doesn't matter
