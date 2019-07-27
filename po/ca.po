@@ -387,7 +387,7 @@ msgstr "Insereix l'_hora"
 
 #: ../src/gtk/menus.ui.h:16
 msgid "Add/Remove _Hyperlink"
-msgstr "Afegeix o suprimeix un _hipervíncle"
+msgstr "Afegeix o suprimeix un _enllaç"
 
 #: ../src/import-export-dialog.c:203
 msgid "Import _mode: "
@@ -598,7 +598,7 @@ msgstr "Data final:"
 #. Line spacing
 #: ../src/printing.c:475
 msgid "Line spacing:"
-msgstr "Illnterlineat:"
+msgstr "Interlineat:"
 
 #: ../src/search-dialog.c:221
 msgid "Search canceled."
