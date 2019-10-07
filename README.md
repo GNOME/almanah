@@ -37,5 +37,4 @@ almanah --debug
 Contact
 ---
 
- * Philip Withnall <philip@tecnocode.co.uk>
  * https://wiki.gnome.org/Apps/Almanah_Diary
