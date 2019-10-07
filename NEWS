@@ -1,3 +1,57 @@
+Overview of changes from Almanah 0.11.0 to Almanah 0.12.0
+=========================================================
+
+* Move encryption support to SQLiteVFS to improve performance and reduce the
+  chance of data loss from use of temporary files
+
+* Various GTK version and API updates
+ - Migrated from GtkToolbar to GtkHeaderBar
+
+* Various AppData file updates
+
+* Support undo and redo
+
+* Port to Meson
+
+* Port to libecal-2.0
+
+* Bugs fixed:
+ - #1 Meson build claims implicit function declaration warnings
+ - !1 build: Port to meson
+ - !4 docs: Port README to Markdown and update it
+ - !5 event-factories: Fix an incorrect string comparison
+
+* Translation updates:
+ - Arabic
+ - Bokmål, Norwegian
+ - Bosnian
+ - Catalan
+ - Chinese (China)
+ - Czech
+ - Danish
+ - Dutch
+ - English (United Kingdom)
+ - Esperanto
+ - Finnish
+ - French
+ - Friulian
+ - German
+ - Greek, Modern (1453-)
+ - Hungarian
+ - Indonesian
+ - Occitan (post 1500)
+ - Polish
+ - Portuguese
+ - Portuguese (Brazil)
+ - Russian
+ - Serbian
+ - Slovenian
+ - Spanish
+ - Swedish
+ - Thai
+ - Turkish
+ - Ukrainian
+
 Overview of changes from Almanah 0.10.8 to Almanah 0.11.0
 =========================================================
 

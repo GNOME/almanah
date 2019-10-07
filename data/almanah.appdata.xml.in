@@ -17,6 +17,9 @@
       and appointments from Evolution).
     </p>
   </description>
+  <releases>
+    <release version="0.12.0" date="2019-10-07" type="stable"/>
+  </releases>
   <screenshots>
     <screenshot height="450" width="800" type="default">
       <image>https://wiki.gnome.org/Apps/Almanah_Diary?action=AttachFile&amp;do=get&amp;target=screenshot-almanah-diary.png</image>
