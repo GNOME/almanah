@@ -676,7 +676,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 							     NULL,
 							     &child_error);
 			if (child_error != NULL) {
-				g_warning ("Error opening plain file %s: %s\n", self->plain_filename, child_error->message);
+				g_warning ("Error opening plain file %s: %s", self->plain_filename, child_error->message);
 				g_object_unref (plain_file);
 				return SQLITE_IOERR;
 			}
@@ -687,7 +687,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 						       &bytes_written,
 						       NULL,
 						       &child_error) == FALSE) {
-				g_warning ("Error writing data to plain file %s: %s\n", self->plain_filename, child_error->message);
+				g_warning ("Error writing data to plain file %s: %s", self->plain_filename, child_error->message);
 				g_object_unref (plain_file);
 				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
@@ -695,7 +695,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 			}
 
 			if (bytes_written != self->plain_size) {
-				g_warning ("Error writing data to plain file %s: %s\n", self->plain_filename, "Not all the data has been written to the file");
+				g_warning ("Error writing data to plain file %s: %s", self->plain_filename, "Not all the data has been written to the file");
 				g_object_unref (plain_file);
 				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
@@ -703,7 +703,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 			}
 
 			if (g_output_stream_close (G_OUTPUT_STREAM (plain_output_stream), NULL, &child_error) == FALSE) {
-				g_warning ("Error closing the plain file %s: %s\n", self->plain_filename, child_error->message);
+				g_warning ("Error closing the plain file %s: %s", self->plain_filename, child_error->message);
 				g_object_unref (plain_file);
 				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
@@ -738,7 +738,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 
 			if (encrypt_database (self, encryption_key, from_memory, &child_error) != TRUE) {
 				if (child_error != NULL)
-					g_critical ("Error encrypting the database from the plain file %s: %s\n", self->plain_filename, child_error->message);
+					g_critical ("Error encrypting the database from the plain file %s: %s", self->plain_filename, child_error->message);
 				return SQLITE_IOERR;
 			}
 
