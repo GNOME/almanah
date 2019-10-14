@@ -687,7 +687,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 						       &bytes_written,
 						       NULL,
 						       &child_error) == FALSE) {
-				g_warning ("Error writting data to plain file %s: %s\n", self->plain_filename, child_error->message);
+				g_warning ("Error writing data to plain file %s: %s\n", self->plain_filename, child_error->message);
 				g_object_unref (plain_file);
 				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
@@ -695,7 +695,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 			}
 
 			if (bytes_written != self->plain_size) {
-				g_warning ("Error writting data to plain file %s: Not all the data has been written to the file\n", self->plain_filename);
+				g_warning ("Error writing data to plain file %s: Not all the data has been written to the file\n", self->plain_filename);
 				g_object_unref (plain_file);
 				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
