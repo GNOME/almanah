@@ -564,7 +564,7 @@ msgstr "Cap (no xifris)"
 
 #: ../src/preferences-dialog.c:213
 msgid "New _Key"
-msgstr "Nova _clau"
+msgstr "_Clau nova"
 
 #. Set up the "Enable spell checking" check button
 #: ../src/preferences-dialog.c:237
@@ -766,7 +766,7 @@ msgstr "Escriviu l'etiqueta i premeu la tecla de retorn per desar-la"
 
 #: ../src/widgets/tag-accessible.c:165
 msgid "Remove the tag from the entry"
-msgstr "Suprimeix l'etiqueta de l'entrada."
+msgstr "Suprimeix l'etiqueta de l'entrada"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: ../src/widgets/tag.c:416
