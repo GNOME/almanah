@@ -1,49 +1,140 @@
 # Ukrainian translation for almanah.
 # Copyright (C) 2011 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
-# Sergiy Gavrylov <sergiovana@bigmir.net>, 2011.
 #
+# Sergiy Gavrylov <sergiovana@bigmir.net>, 2011.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-13 19:16+0000\n"
-"PO-Revision-Date: 2011-04-18 00:16+0300\n"
-"Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
+"POT-Creation-Date: 2019-10-07 13:47+0000\n"
+"PO-Revision-Date: 2020-03-28 09:43+0200\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Lokalize 20.03.70\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:144 ../src/main.c:137
+#: data/almanah.appdata.xml.in:7 data/almanah.desktop.in:3
+#: src/application.c:135 src/main-window.c:163
 msgid "Almanah Diary"
 msgstr "Щоденник Almanah"
 
-#: ../data/almanah.desktop.in.h:2
-msgid "Diary"
-msgstr "Щоденник"
+#: data/almanah.appdata.xml.in:8
+msgid "Keep a diary of your life"
+msgstr "Ведіть щоденник вашого життя"
 
-#: ../data/almanah.desktop.in.h:3
+#: data/almanah.appdata.xml.in:10
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Щоденник Almanah — програма, за допомогою якої ви зможете вести щоденник."
+
+#: data/almanah.appdata.xml.in:13
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Ви можете зашифрувати щоденник, щоб зберегти конфіденційність його записів."
+" Передбачено можливість редагування записів, включено із використанням"
+" форматування, а також друк і показ списків подій, які трапилися (на вашому"
+" комп'ютері) кожного дня (зокрема записів завдань і зустрічей з Evolution)."
+
+#: data/almanah.desktop.in:4
 msgid "Keep a personal diary"
 msgstr "Ведення особистого щоденника"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:1
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#: data/almanah.desktop.in:5 src/application.c:274
+msgid "Diary"
+msgstr "Щоденник"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/almanah.desktop.in:7
+msgid "diary;journal;"
+msgstr "diary;journal;щоденник;журнал;"
+
+#: src/ui/almanah.ui:27
+msgid "Calendar"
+msgstr "Календар"
+
+#: src/ui/almanah.ui:46
+#| msgid "Go to _Today"
+msgid "Go to Today"
+msgstr "Перейти до сьогоднішнього дня"
+
+#: src/ui/almanah.ui:56
+msgid "Select Date…"
+msgstr "Вибрати дату…"
+
+#: src/ui/almanah.ui:134
+msgid "Entry editing area"
+msgstr "Поле редагування запису"
+
+#: src/ui/almanah.ui:160
+#| msgid "Past Events"
+msgid "Past events"
+msgstr "Минулі події"
+
+#: src/ui/almanah.ui:204
+msgid "Past Event List"
+msgstr "Список минулих подій"
+
+#: src/ui/almanah.ui:299
+msgid "Search entry"
+msgstr "Шукати запис"
+
+#: src/ui/almanah.ui:307 src/search-dialog.c:69
+msgid "Search"
+msgstr "Шукати"
+
+#: src/ui/almanah.ui:398
+msgid "Result List"
+msgstr "Список результатів"
+
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
+msgid "View Entry"
+msgstr "Перегляд запису"
+
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "тобто «14/03/2009» або «14 березня 2009»."
+
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: src/ui/almanah.ui:570
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr ""
+"наприклад, «http://google.com/» або «file:///home/me/Photos/photo.jpg»."
+
+#: src/ui/almanah.ui:734
+msgid "Successful Entries"
+msgstr "Успішні записи"
+
+#: src/ui/almanah.ui:737
+msgid "Merged Entries"
+msgstr "Об'єднати записи"
+
+#: src/ui/almanah.ui:740
+msgid "Failed Entries"
+msgstr "Помилка записів"
+
+#: src/ui/almanah.ui:802
+msgid "Import Results List"
+msgstr "Імпортувати список результатів"
+
+#: data/org.gnome.almanah.gschema.xml.in:6
 msgid "Database encryption key ID"
 msgstr "Ідентифікатор ключа шифрування бази даних"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:2
-msgid "Spell checking enabled?"
-msgstr "Перевірку правопису увімкнено?"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:3
-msgid "Spell checking language"
-msgstr "Мова перевірки правопису"
-
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:4
+#: data/org.gnome.almanah.gschema.xml.in:7
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -52,299 +143,304 @@ msgstr ""
 "Ідентифікатор ключа для шифрування та дешифрування бази даних, якщо Almanah "
 "створений з підтримкою шифрування. Залиште порожнім, щоб вимкнути шифрування."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:5
+#: data/org.gnome.almanah.gschema.xml.in:11
+msgid "Spell checking language"
+msgstr "Мова перевірки правопису"
+
+#: data/org.gnome.almanah.gschema.xml.in:12
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "Локальний специфікатор мови для перевірки правопису записів."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.in.h:6
+#: data/org.gnome.almanah.gschema.xml.in:16
+msgid "Spell checking enabled?"
+msgstr "Перевірку правопису увімкнено?"
+
+#: data/org.gnome.almanah.gschema.xml.in:17
 msgid "Whether spell checking of entries is enabled."
 msgstr "Перевірку правопису записів увімкнено."
 
-#: ../data/almanah.ui.h:1
-msgid "Add a definition for the currently selected text."
-msgstr "Додати значення для вибраного тексту."
+#: src/application.c:257
+msgid "Error opening database"
+msgstr "Помилка відкривання бази даних"
 
-#: ../data/almanah.ui.h:2
-msgid "Calendar"
-msgstr "Календар"
+#: src/application.c:336
+msgid "Enable debug mode"
+msgstr "Увімкнути режим зневадження"
 
-#: ../data/almanah.ui.h:3
-msgid "Definition Description"
-msgstr "Опис значення"
+#: src/application.c:353
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"Керуйте вашим щоденником. Одночасно може бути запущено лише один екземпляр"
+" програми."
 
-#: ../data/almanah.ui.h:4
-msgid "Definition List"
-msgstr "Список значень"
-
-#: ../data/almanah.ui.h:5
-msgid "Definition Type"
-msgstr "Тип значення"
-
-#: ../data/almanah.ui.h:6
-msgid "Definition type:"
-msgstr "Тип значення:"
-
-#: ../data/almanah.ui.h:7
-msgid "Entry editing area"
-msgstr "Поле редагування запису"
-
-#: ../data/almanah.ui.h:8
-msgid "F_ormat"
-msgstr "Ф_ормат"
-
-#: ../data/almanah.ui.h:9
-msgid "Failed Entries"
-msgstr "Помилка записів"
-
-#: ../data/almanah.ui.h:10
-msgid "Go to _Today"
-msgstr "_Сьогодні"
-
-#: ../data/almanah.ui.h:11
-msgid "I_mportant"
-msgstr "_Важливе"
-
-#: ../data/almanah.ui.h:12
-msgid "Import Results List"
-msgstr "Імпортувати список результатів"
-
-#: ../data/almanah.ui.h:13
-msgid "Insert _Time"
-msgstr "Вставити _час"
-
-#: ../data/almanah.ui.h:14
-msgid "Jump to the current date in the diary."
-msgstr "Перейти до поточної дати в щоденнику."
-
-#: ../data/almanah.ui.h:15
-msgid "Merged Entries"
-msgstr "Об'єднати записи"
-
-#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
-msgid "Nothing selected"
-msgstr "Нічого не вибрано"
-
-#: ../data/almanah.ui.h:17
-msgid "Past Event List"
-msgstr "Список минулих подій"
-
-#: ../data/almanah.ui.h:18
-msgid "Past Events"
-msgstr "Минулі події"
-
-#: ../data/almanah.ui.h:19
-msgid "Pr_eferences"
-msgstr "_Параметри"
-
-#: ../data/almanah.ui.h:20
-msgid "Remove the definition from the currently selected text."
-msgstr "Вилучити значення з вибраного тексту."
-
-#: ../data/almanah.ui.h:21
-msgid "Result List"
-msgstr "Список результатів"
-
-#: ../data/almanah.ui.h:22
-msgid "Results:"
-msgstr "Результати:"
-
-#: ../data/almanah.ui.h:23 ../src/search-dialog.c:60
-msgid "Search"
-msgstr "Шукати"
-
-#: ../data/almanah.ui.h:24
-msgid "Search entry"
-msgstr "Шукати запис"
-
-#: ../data/almanah.ui.h:25
-msgid "Select Date…"
-msgstr "Вибрати дату…"
-
-#: ../data/almanah.ui.h:26
-msgid "Successful Entries"
-msgstr "Успішні записи"
-
-#: ../data/almanah.ui.h:27
-msgid "Toggle whether the current entry is marked as important."
-msgstr "Позначити цей запис, як важливий."
-
-#: ../data/almanah.ui.h:28
-msgid "Toggle whether the currently selected text is bold."
-msgstr "Вибраний текст напівжирний."
-
-#: ../data/almanah.ui.h:29
-msgid "Toggle whether the currently selected text is italic."
-msgstr "Вибраний текст курсивом."
-
-#: ../data/almanah.ui.h:30
-msgid "Toggle whether the currently selected text is underlined."
-msgstr "Вибраний текст підкреслений."
-
-#: ../data/almanah.ui.h:31
-msgid "View"
-msgstr "Перегляд"
-
-#: ../data/almanah.ui.h:32
-msgid "View Entry"
-msgstr "Перегляд запису"
-
-#: ../data/almanah.ui.h:33
-msgid "View Event"
-msgstr "Перегляд події"
-
-#: ../data/almanah.ui.h:34
-msgid "_Add Definition"
-msgstr "_Додати значення"
-
-#: ../data/almanah.ui.h:35
-msgid "_Definitions"
-msgstr "Зна_чення"
-
-#: ../data/almanah.ui.h:36
-msgid "_Edit"
-msgstr "З_міни"
-
-#: ../data/almanah.ui.h:37
-msgid "_Export…"
-msgstr "_Експортувати"
-
-#: ../data/almanah.ui.h:38
-msgid "_File"
-msgstr "_Файл"
-
-#: ../data/almanah.ui.h:39
-msgid "_Help"
-msgstr "_Довідка"
-
-#: ../data/almanah.ui.h:40
-msgid "_Import…"
-msgstr "_Імпортувати…"
-
-#: ../data/almanah.ui.h:41
-msgid "_Print…"
-msgstr "Над_рукувати…"
-
-#: ../data/almanah.ui.h:42
-msgid "_Remove Definition"
-msgstr "В_илучити значення"
-
-#: ../data/almanah.ui.h:43
-msgid "_Search…"
-msgstr "_Пошук…"
-
-#: ../data/almanah.ui.h:44
-msgid "_View Definitions"
-msgstr "П_ерегляд значень"
-
-#: ../data/almanah.ui.h:45
-msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "тобто «14/03/2009» або «14 березня 2009»."
-
-#: ../src/add-definition-dialog.c:81
-msgid "Add Definition"
-msgstr "Додати значення"
-
-#: ../src/add-definition-dialog.c:163 ../src/date-entry-dialog.c:130
-#: ../src/import-export-dialog.c:111 ../src/import-export-dialog.c:413
-#: ../src/definition-manager-window.c:132 ../src/main-window.c:200
-#: ../src/preferences-dialog.c:140 ../src/search-dialog.c:86
+#. Print an error
+#: src/application.c:364
 #, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Не вдалось завантажити UI-файл «%s»"
+#| msgid "Command-line options could not be parsed"
+msgid "Command line options could not be parsed: %s\n"
+msgstr "Не вдалося розібрати параметри командного рядка: %s\n"
 
-#: ../src/date-entry-dialog.c:73
+#: src/application.c:383
+msgid "Error encrypting database"
+msgstr "Помилка шифрування бази даних"
+
+#: src/application.c:526
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah — вільний програмний засіб, ви можете розповсюджувати та/або "
+"змінювати його за умовами ліцензії GNU General Public, що опублікована Free "
+"Software Foundation, або версії 2 Ліцензії, або (на ваш розсуд) будь-якої "
+"старішої версії."
+
+#: src/application.c:530
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah розповсюджується з надією бути корисним, але БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ; "
+"навіть без неявної гарантії ПРИДАТНОСТІ ДО ПРОДАЖУ чи ВІДПОВІДНОСТІ ПЕВНІЙ "
+"МЕТІ.  Докладніше дивіться GNU General Public License."
+
+#: src/application.c:534
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Ви мали отримати копію ліцензії GNU General Public разом з програмою "
+"Almanah. Якщо ні, дивіться <http://www.gnu.org/licenses/>."
+
+#: src/application.c:549
+#, c-format
+#| msgid "A helpful diary keeper, storing %u entries and %u definitions."
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Корисний щоденник, що зберігає %u записів."
+
+#: src/application.c:553
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Авторське право © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: src/application.c:561
+msgid "translator-credits"
+msgstr "Sergiy Gavrylov <sergiovana@bigmir.net>, 2011."
+
+#: src/application.c:565
+msgid "Almanah Website"
+msgstr "Сайт Almanah"
+
+#: src/application.c:593
+#, c-format
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"Не вдалося завантажити ресурси CSS. Можливо, до інтерфейсу буде застосовано"
+" помилковий стиль: %s"
+
+#: src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Вибрати дату"
 
-#: ../src/events/calendar-appointment.c:49
+#: src/date-entry-dialog.c:127 src/import-export-dialog.c:169
+#: src/import-export-dialog.c:476 src/main-window.c:235
+#: src/preferences-dialog.c:177 src/search-dialog.c:95
+#: src/uri-entry-dialog.c:126
+#| msgid "UI file \"%s\" could not be loaded"
+msgid "UI data could not be loaded"
+msgstr "Не вдалося завантажити дані інтерфейсу користувача"
+
+#: src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Некоректний номер версії даних %u."
+
+#: src/events/calendar-appointment.c:51
 msgid "Calendar Appointment"
 msgstr "Календарна зустріч"
 
-#: ../src/events/calendar-appointment.c:50
+#: src/events/calendar-appointment.c:52
 msgid "An appointment on an Evolution calendar."
 msgstr "Зустріч з календаря Evolution."
 
-#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
+#. Translators: This is a time string with the format hh:mm
+#: src/events/calendar-appointment.c:89 src/events/calendar-task.c:90
+#, c-format
+msgid "%.2d:%.2d"
+msgstr "%.2d:%.2d"
+
+#: src/events/calendar-appointment.c:135 src/events/calendar-task.c:125
 msgid "Error launching Evolution"
 msgstr "Помилка запуску Evolution"
 
-#: ../src/events/calendar-task.c:49
+#: src/events/calendar-task.c:51
 msgid "Calendar Task"
 msgstr "Календарне завдання"
 
-#: ../src/events/calendar-task.c:50
+#: src/events/calendar-task.c:52
 msgid "A task on an Evolution calendar."
 msgstr "Завдання з календаря Evolution."
 
-#: ../src/export-operation.c:46 ../src/import-operation.c:46
+#: src/export-operation.c:47 src/import-operation.c:45
 msgid "Text Files"
 msgstr "Текстові файли"
 
-#: ../src/export-operation.c:47
+#: src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
 "exported, unencrypted in plain text format."
 msgstr ""
-"Виберіть _теку для експортування записів як текстових файлів, одну на запис, з "
-"назвами у форматі «дд-мм-рррр», без розширення. Всі записи будуть "
+"Виберіть _теку для експортування записів як текстових файлів, одну на запис, "
+"з назвами у форматі «дд-мм-рррр», без розширення. Всі записи будуть "
 "експортовано незашифрованими у форматі простого тексту."
 
-#: ../src/export-operation.c:51 ../src/import-operation.c:51
+#: src/export-operation.c:52 src/import-operation.c:50
 msgid "Database"
 msgstr "База даних"
 
-#: ../src/export-operation.c:52
+#: src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
-"Виберіть назву _файла для завершення копіювання заданої бази даних «Щоденника "
-"Almanah»."
+"Виберіть назву _файла для завершення копіювання заданої бази даних "
+"«Щоденника Almanah»."
 
-#: ../src/import-export-dialog.c:144
+#: src/export-operation.c:256 src/export-operation.c:313
+#, c-format
+#| msgid "Error opening encrypted database file \"%s\": %s"
+msgid "Error changing exported file permissions: %s"
+msgstr ""
+"Помилка під час спроби змінити права доступу до експортованого файла: %s"
+
+#: src/gtk/menus.ui:6
+#| msgid "Search"
+msgid "_Search"
+msgstr "П_ошук"
+
+#: src/gtk/menus.ui:12
+msgid "Pr_eferences"
+msgstr "_Параметри"
+
+#: src/gtk/menus.ui:16
+#| msgid "_Import"
+msgctxt "Main menu"
+msgid "_Import"
+msgstr "_Імпортувати"
+
+#: src/gtk/menus.ui:20
+#| msgid "_Export"
+msgctxt "Main menu"
+msgid "_Export"
+msgstr "_Експортувати"
+
+#: src/gtk/menus.ui:24
+msgid "_Print diary"
+msgstr "_Надрукувати щоденник"
+
+#: src/gtk/menus.ui:30
+#| msgid "Almanah Diary"
+msgid "_About Almanah Diary"
+msgstr "_Про «Щоденник Almanah»"
+
+#: src/gtk/menus.ui:34
+msgid "_Quit"
+msgstr "Ви_йти"
+
+#: src/gtk/menus.ui:42
+msgid "_Bold"
+msgstr "_Напівжирний"
+
+#: src/gtk/menus.ui:46
+msgid "_Italic"
+msgstr "_Курсив"
+
+#: src/gtk/menus.ui:50
+msgid "_Underline"
+msgstr "_Підкреслений"
+
+#: src/gtk/menus.ui:56
+msgid "_Cut"
+msgstr "_Вирізати"
+
+#: src/gtk/menus.ui:60
+msgid "_Copy"
+msgstr "_Копіювати"
+
+#: src/gtk/menus.ui:64
+msgid "_Paste"
+msgstr "Вст_авити"
+
+#: src/gtk/menus.ui:68 src/main-window.c:640
+msgid "_Delete"
+msgstr "В_илучити"
+
+#: src/gtk/menus.ui:74
+msgid "Insert _Time"
+msgstr "Вставити _час"
+
+#: src/gtk/menus.ui:78
+msgid "Add/Remove _Hyperlink"
+msgstr "Додати або вилучити _гіперпосилання"
+
+#: src/import-export-dialog.c:203
 msgid "Import _mode: "
 msgstr "_Режим імпортування: "
 
-#: ../src/import-export-dialog.c:144
+#: src/import-export-dialog.c:203
 msgid "Export _mode: "
 msgstr "_Режим експортування: "
 
 #. Set the window title
-#: ../src/import-export-dialog.c:147
+#: src/import-export-dialog.c:206
 msgid "Import Entries"
 msgstr "Імпортувати записи"
 
-#: ../src/import-export-dialog.c:147
+#: src/import-export-dialog.c:206
 msgid "Export Entries"
 msgstr "Експортувати записи"
 
-#. Set the button label
-#: ../src/import-export-dialog.c:150
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:211
+#| msgid "_Import"
+msgctxt "Dialog button"
 msgid "_Import"
 msgstr "_Імпортувати"
 
-#: ../src/import-export-dialog.c:150
+#: src/import-export-dialog.c:211
+#| msgid "_Export"
+msgctxt "Dialog button"
 msgid "_Export"
 msgstr "_Експортувати"
 
-#: ../src/import-export-dialog.c:187
+#: src/import-export-dialog.c:248
 msgid "Import failed"
 msgstr "Помилка імпортування"
 
-#: ../src/import-export-dialog.c:225
+#: src/import-export-dialog.c:286
 msgid "Export failed"
 msgstr "Помилка експортування"
 
-#: ../src/import-export-dialog.c:238
+#: src/import-export-dialog.c:299
 msgid "Export successful"
 msgstr "Експорт успішний"
 
-#: ../src/import-export-dialog.c:239
+#: src/import-export-dialog.c:300
 msgid "The diary was successfully exported."
 msgstr "Щоденник успішно експортовано."
 
-#: ../src/import-export-dialog.c:387
+#: src/import-export-dialog.c:448
 msgid "Import Results"
 msgstr "Імпортувати результати"
 
@@ -354,13 +450,12 @@ msgstr "Імпортувати результати"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:480 ../src/main-window.c:558
-#: ../src/main-window.c:583 ../src/main-window.c:1223 ../src/printing.c:263
-#: ../src/search-dialog.c:160
+#: src/import-export-dialog.c:543 src/main-window.c:601 src/main-window.c:632
+#: src/main-window.c:1271 src/printing.c:263 src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/import-operation.c:47
+#: src/import-operation.c:46
 msgid ""
 "Select a _folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
@@ -369,17 +464,17 @@ msgstr ""
 "Виберіть _теку, що містить текстові файли, одну на запис, з назвами у "
 "форматі «дд-мм-рррр», без розширення. Всі такі файли будуть імпортовані."
 
-#: ../src/import-operation.c:52
+#: src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
 "Виберіть _файл бази даних, створений щоденником Almanah для імпортування."
 
-#: ../src/import-operation.c:199
+#: src/import-operation.c:248
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
 msgstr "Помилка десеріалізування імпортованого запису в буфер: %s"
 
-#: ../src/import-operation.c:215
+#: src/import-operation.c:264
 #, c-format
 msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
@@ -391,7 +486,7 @@ msgstr ""
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 #. * The imported entry is appended to this text.
-#: ../src/import-operation.c:256
+#: src/import-operation.c:305
 #, c-format
 msgid ""
 "\n"
@@ -404,297 +499,280 @@ msgstr ""
 "Запис імпортований з «%s»:\n"
 "\n"
 
-#: ../src/definition-manager-window.c:72
-msgid "Definition Manager"
-msgstr "Керування значеннями"
-
-#: ../src/definition-manager-window.c:203
-#, c-format
-msgid "Are you sure you want to delete the definition for \"%s\"?"
-msgstr "Вилучити значення для «%s»?"
-
-#: ../src/definitions/contact.c:53
-msgid "Contact"
-msgstr "Контакт"
-
-#: ../src/definitions/contact.c:54
-msgid "An Evolution contact."
-msgstr "Контакт Evolution."
-
-#: ../src/definitions/contact.c:73
-msgid "Select Contact"
-msgstr "Вибрати контакт"
-
-#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:222
-msgid "Error opening contact"
-msgstr "Помилка відкривання контакту"
-
-#: ../src/definitions/contact.c:136
-msgid "Error opening Evolution"
-msgstr "Помилка відкривання Evolution"
-
-#: ../src/definitions/file.c:48
-msgid "File"
-msgstr "Файл"
-
-#: ../src/definitions/file.c:49
-msgid "An attached file."
-msgstr "Долучений файл."
-
-#: ../src/definitions/file.c:74
-msgid "Error opening file"
-msgstr "Помилка відкривання файла"
-
-#: ../src/definitions/file.c:93
-msgid "Select File"
-msgstr "Вибрати файл"
-
-#: ../src/definitions/note.c:49
-msgid "Note"
-msgstr "Нотатка"
-
-#: ../src/definitions/note.c:50
-msgid "A note about an important event."
-msgstr "Нотатка про важливу подію."
-
-#: ../src/definitions/uri.c:50
-msgid "URI"
-msgstr "URI"
-
-#: ../src/definitions/uri.c:51
-msgid "A URI of a file or web page."
-msgstr "URI файла або веб-сторінки."
-
-#: ../src/definitions/uri.c:76
-msgid "Error opening URI"
-msgstr "Помилка відкривання URI"
-
-#: ../src/definitions/uri.c:99
-msgid "URI: "
-msgstr "URI: "
-
-#: ../src/main-window.c:562
+#: src/main-window.c:605
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Змінити цей запис %s в щоденнику?"
 
-#: ../src/main-window.c:587
+#: src/main-window.c:608 src/main-window.c:639
+msgid "_Cancel"
+msgstr "_Скасувати"
+
+#: src/main-window.c:609
+msgid "_Edit"
+msgstr "З_міни"
+
+#: src/main-window.c:636
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Вилучити цей запис %s з щоденника?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:774
+#: src/main-window.c:746
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Невідома або дубльована мітка тексту «%s» в запису. Пропускаємо."
 
-#: ../src/main-window.c:1056
-msgid ""
-"Almanah is free software: you can redistribute it and/or modify it under the "
-"terms of the GNU General Public License as published by the Free Software "
-"Foundation, either version 3 of the License, or (at your option) any later "
-"version."
-msgstr ""
-"Almanah — вільний програмний засіб, ви можете розповсюджувати та/або "
-"змінювати його за умовами ліцензії GNU General Public, що опублікована Free "
-"Software Foundation, або версії 2 Ліцензії, або (на ваш розсуд) будь-якої "
-"старішої версії."
+#: src/main-window.c:987
+msgid "Error opening URI"
+msgstr "Помилка відкривання URI"
 
-#: ../src/main-window.c:1060
-msgid ""
-"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
-"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-"details."
-msgstr ""
-"Almanah розповсюджується з надією бути корисним, але БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ; "
-"навіть без неявної гарантії ПРИДАТНОСТІ ДО ПРОДАЖУ чи ВІДПОВІДНОСТІ ПЕВНІЙ "
-"МЕТІ.  Докладніше дивіться GNU General Public License."
-
-#: ../src/main-window.c:1064
-msgid ""
-"You should have received a copy of the GNU General Public License along with "
-"Almanah.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Ви мали отримати копію ліцензії GNU General Public разом з програмою "
-"Almanah. Якщо ні, дивіться <http://www.gnu.org/licenses/>."
-
-#: ../src/main-window.c:1075
+#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#: src/main-window.c:1198
 #, c-format
-msgid "A helpful diary keeper, storing %u entries and %u definitions."
-msgstr "Корисний щоденник, що зберігає %u записів та %u значень."
+msgid "%s @ %s"
+msgstr "%s @ %s"
 
-#: ../src/main-window.c:1081
-msgid "Copyright © 2008-2009 Philip Withnall"
-msgstr "Авторське право © 2008-2009 Philip Withnall"
-
-#. Translators: please include your names here to be credited for your hard work!
-#. * Format:
-#. * "Translator name 1 <translator@email.address>\n"
-#. * "Translator name 2 <translator2@email.address>"
-#.
-#: ../src/main-window.c:1089
-msgid "translator-credits"
-msgstr "Sergiy Gavrylov <sergiovana@bigmir.net>, 2011."
-
-#: ../src/main-window.c:1093
-msgid "Almanah Website"
-msgstr "Сайт Almanah"
-
-#: ../src/main-window.c:1250
+#: src/main-window.c:1304
 msgid "Entry content could not be loaded"
 msgstr "Не вдалось завантажити вміст запису"
 
-#: ../src/main-window.c:1372
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: src/main-window.c:1459
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr ""
+"Це випадкове речення із п'ятнадцяти слів для обчислення розміру текстової"
+" панелі запису нашого чудового щоденника"
+
+#: src/main-window.c:1496
 msgid "Spelling checker could not be initialized"
 msgstr "Не вдалося запустити перевірку правопису"
 
-#: ../src/main.c:38
-msgid "Error encrypting database"
-msgstr "Помилка шифрування бази даних"
-
-#: ../src/main.c:125
-msgid "Enable debug mode"
-msgstr "Увімкнути режим зневадження"
-
-#. Options
-#: ../src/main.c:141
-msgid "- Manage your diary"
-msgstr "— Ведення щоденника"
-
-#: ../src/main.c:151
-msgid "Command-line options could not be parsed"
-msgstr "Помилка аналізування параметрів командного рядка"
-
-#: ../src/main.c:181
-msgid "Error opening database"
-msgstr "Помилка відкривання бази даних"
-
-#: ../src/preferences-dialog.c:79
-msgid "Almanah Preferences"
-msgstr "Налаштування Almanah"
+#: src/preferences-dialog.c:83
+#| msgid "Pr_eferences"
+msgid "Preferences"
+msgstr "Налаштування"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:165
+#: src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Ключ шифрування: "
 
-#: ../src/preferences-dialog.c:170
+#: src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Немає (не шифрувати)"
 
-#: ../src/preferences-dialog.c:194
+#: src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "Новий _ключ"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:201
+#: src/preferences-dialog.c:237
 msgid "Enable _spell checking"
 msgstr "Увімкнути _перевірку правопису"
 
-#: ../src/preferences-dialog.c:227
+#: src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
 msgstr "Помилка збереження ключа шифрування"
 
-#: ../src/preferences-dialog.c:246
+#: src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
 msgstr "Помилка відкривання Seahorse"
 
-#: ../src/printing.c:277
+#: src/printing.c:277
 msgid "This entry is marked as important."
 msgstr "Цей запис позначений як важливий."
 
-#: ../src/printing.c:298
+#: src/printing.c:298
 msgid "No entry for this date."
 msgstr "На цю дату записів немає."
 
-#: ../src/printing.c:453
+#: src/printing.c:457
 msgid "Start date:"
 msgstr "Дата початку:"
 
-#: ../src/printing.c:455
+#: src/printing.c:459
 msgid "End date:"
 msgstr "Дата завершення:"
 
 #. Line spacing
-#: ../src/printing.c:471
+#: src/printing.c:475
 msgid "Line spacing:"
 msgstr "Інтервал між рядками:"
 
-#: ../src/storage-manager.c:258
+#: src/search-dialog.c:221
+msgid "Search canceled."
+msgstr "Пошук скасовано."
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: src/search-dialog.c:224
 #, c-format
-msgid "GPGME is not at least version %s"
-msgstr "GPGME не останньої версії %s"
+msgid "Error: %s"
+msgstr "Помилка: %s"
 
-#: ../src/storage-manager.c:267
+#. Success!
+#: src/search-dialog.c:229
 #, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "GPGME не підтримує OpenPGP: %s"
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "Знайдено %d запис:"
+msgstr[1] "Знайдено %d записи:"
+msgstr[2] "Знайдено %d записів:"
+msgstr[3] "Знайдено один запис:"
 
-#: ../src/storage-manager.c:276
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Помилка створення контексту шифру: %s"
+#: src/search-dialog.c:278
+#| msgid "_Search…"
+msgid "Searching…"
+msgstr "Пошук…"
 
-#: ../src/storage-manager.c:305
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Помилка відкривання зашифрованого файла бази даних «%s»: %s"
-
-#: ../src/storage-manager.c:324
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Помилка відкривання простого файла бази даних «%s»: %s"
-
-#: ../src/storage-manager.c:372
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"Зашифрована база даних порожня. Незашифрований файл бази даних буде "
-"відновлено з резервної копії."
-
-#. Delete the plain file
-#: ../src/storage-manager.c:375
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Не вдалось вилучити простий файл бази даних «%s»."
-
-#: ../src/storage-manager.c:416
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Помилка дешифрування бази даних: %s"
-
-#: ../src/storage-manager.c:450
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Помилка отримання ключа шифрування: %s"
-
-#: ../src/storage-manager.c:471
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Помилка шифрування бази даних: %s"
-
-#: ../src/storage-manager.c:573
+#: src/storage-manager.c:247
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
-msgstr ""
-"Не вдалось відкрити базу даних «%s». SQLite повідомив про помилку: %s"
+msgstr "Не вдалось відкрити базу даних «%s». SQLite повідомив про помилку: %s"
 
-#: ../src/storage-manager.c:650
+#: src/storage-manager.c:290
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr "Не вдалось виконати запит «%s». SQLite повідомив про помилку: %s"
 
-#: ../src/storage-manager.c:967
+#: src/storage-manager.c:596
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Помилка десеріалізування запису в буфер під час пошуку."
 
+#: src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Введіть адресу"
+
+#: src/vfs.c:291
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME не останньої версії %s"
+
+#: src/vfs.c:298
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME не підтримує OpenPGP: %s"
+
+#: src/vfs.c:305
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Помилка створення контексту шифру: %s"
+
+#: src/vfs.c:325
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Не вдалося створити GIOChannel для зашифрованої бази даних: %s"
+
+#: src/vfs.c:333
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Помилка відкривання зашифрованого файла бази даних «%s»: %s"
+
+#: src/vfs.c:349
+#, c-format
+#| msgid "Error decrypting database: %s"
+msgid "Error creating Callback base data buffer: %s"
+msgstr "Помилка під час створення буфера даних бази зворотних викликів: %s"
+
+#: src/vfs.c:357
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Не вдалося створити GIOChannel для звичайної бази даних: %s"
+
+#: src/vfs.c:365
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Помилка відкривання простого файла бази даних «%s»: %s"
+
+#: src/vfs.c:461
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Помилка отримання ключа шифрування: %s"
+
+#: src/vfs.c:485 src/vfs.c:491
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Помилка шифрування бази даних: %s"
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: src/vfs.c:541
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Помилка під час копіювання файла з %s до %s: %s"
+
+#: src/vfs.c:547
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database backup file permissions: %s"
+msgstr ""
+"Помилка під час спроби змінити права доступу до файла резервної копії бази"
+" даних: %s"
+
+#: src/vfs.c:647
+#, c-format
+#| msgid "Error opening file"
+msgid "Error closing file: %s"
+msgstr "Помилка при закриванні файла: %s"
+
+#. Translators: the first parameter is a filename.
+#: src/vfs.c:1046 src/vfs.c:1073
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "Помилка під час резервного копіювання файла «%s»"
+
+#: src/vfs.c:1059
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Помилка дешифрування бази даних: %s"
+
+#: src/vfs.c:1099
+#, c-format
+#| msgid "Error opening plain database file \"%s\": %s"
+msgid "Error changing database file permissions: %s"
+msgstr "Помилка під час спроби змінити права доступу до файла бази даних: %s"
+
+#: src/widgets/calendar-button.c:142
+#, c-format
+#| msgid "UI file \"%s\" could not be loaded"
+msgid "UI data could not be loaded: %s"
+msgstr "Не вдалося завантажити дані інтерфейсу користувача: %s"
+
+#: src/widgets/calendar-button.c:152
+msgid "Can't load calendar window object from UI file"
+msgstr "Не вдалося завантажити об'єкт вікна календаря з файла UI"
+
 #. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:116
+#: src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Важливо!"
+
+#: src/widgets/entry-tags-area.c:100 src/widgets/tag-entry.c:166
+msgid "add tag"
+msgstr "додати мітку"
+
+#: src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "Впишіть мітку і натисніть Enter, щоб зберегти її"
+
+#: src/widgets/tag-accessible.c:165
+#| msgid "Remove the definition from the currently selected text."
+msgid "Remove the tag from the entry"
+msgstr "Вилучити мітку з запису"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: src/widgets/tag.c:416
+msgid "Remove tag"
+msgstr "Вилучення мітки"
+
+#: src/widgets/tag-entry.c:85
+#| msgid "Search entry"
+msgid "Tag entry"
+msgstr "Позначити запис"
