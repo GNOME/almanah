@@ -12,10 +12,8 @@ project(
 cc = meson.get_compiler('c')
 gnome = import('gnome')
 i18n = import('i18n')
-python3 = import('python3')
-# TODO: switch to python module once meson 0.50 is released
-# https://github.com/mesonbuild/meson/issues/4070
-python = python3.find_python().path()
+python = import('python')
+python3 = python.find_installation('python3').path()
 data_dir = join_paths(meson.source_root(), 'data')
 po_dir = join_paths(meson.source_root(), 'po')
 
@@ -107,7 +105,7 @@ config = vcs_tag(
 
 # Post-install scripts
 meson.add_install_script(
-  python,
+  python3,
   join_paths(meson.source_root(), 'build-aux', 'post_install.py'),
   icondir,
   schemadir,
