@@ -6,7 +6,7 @@ project(
   default_options: [
     'b_ndebug=if-release',
   ],
-  meson_version: '>= 0.47',
+  meson_version: '>= 0.51',
 )
 
 cc = meson.get_compiler('c')
@@ -44,20 +44,8 @@ cryptui = dependency('cryptui-0.0')
 evolution_support = get_option('evolution')
 spell_checking_support = get_option('spell_checking')
 
-# Check for GPGME, which doesn't provide a pkgconfig file
-# This code courtesy of seahorse
-# TODO: replace this with native meson checking after
-# https://github.com/mesonbuild/meson/pull/5213 is merged
 min_gpgme_version = '1.0.0'
-gpgme = cc.find_library('gpgme')
-gpgme_config = find_program('gpgme-config')
-gpg_check_version = find_program(join_paths('build-aux', 'gpg_check_version.py'))
-gpgme_version_check = run_command([python, gpg_check_version, gpgme_config.path(), 'true', min_gpgme_version ])
-gpgme_version = gpgme_version_check.stdout()
-message('GPGME version: @0@'.format(gpgme_version))
-if gpgme_version_check.returncode() != 0
-  error('Incompatible version of GPGME. Minimal version required is @0@'.format(min_gpgme_version))
-endif
+gpgme = dependency('gpgme', version: '>= @0@'.format(min_gpgme_version))
 
 libecal = dependency('libecal-2.0', version: '>= 3.33.2', required: evolution_support)
 libedataserver = dependency('libedataserver-1.2', version: '>= 2.28', required: evolution_support)
