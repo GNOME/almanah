@@ -15,65 +15,133 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
-"Report-Msgid-Bugs-To: "
-"http://bugzilla.gnome.org/enter_bug.cgi?product=almanah&component=general\n"
-"POT-Creation-Date: 2010-11-22 22:05+0000\n"
-"PO-Revision-Date: 2010-11-30 16:17+0300\n"
-"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
+"POT-Creation-Date: 2020-03-28 07:44+0000\n"
+"PO-Revision-Date: 2020-05-07 15:47+0300\n"
+"Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
+"com>\n"
 "Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
-"20)) ? 1 : 2);;\n"
-"X-Generator: Virtaal 0.6.1\n"
+"20)) ? 1 : 2);\n"
+"X-Generator: Poedit 2.3\n"
 
-#: ../data/almanah.desktop.in.h:1 ../src/main-window.c:134 ../src/main.c:112
+#: data/almanah.appdata.xml.in:7 data/almanah.desktop.in:3
+#: src/application.c:135 src/main-window.c:163
 msgid "Almanah Diary"
 msgstr "Jurnalul Almanah"
 
-#: ../data/almanah.desktop.in.h:2
-msgid "Diary"
-msgstr "Jurnal"
+#: data/almanah.appdata.xml.in:8
+msgid "Keep a diary of your life"
+msgstr "Păstrați un jurnal al vieții"
 
-#: ../data/almanah.desktop.in.h:3
+#: data/almanah.appdata.xml.in:10
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Jurnal Almanah este o aplicație care vă permite să păstrați un jurnal al "
+"vieții."
+
+#: data/almanah.appdata.xml.in:13
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Puteți cripta jurnalul pentru a vă păstra confidențialitatea. Are abilități "
+"de editare, inclusiv formatare de text și tipărire și vă arată o listă de "
+"evenimente care s-au întâmplat (pe calculator) pentru fiecare zi (cum ar fi "
+"sarcini și programări din Evolution)."
+
+#: data/almanah.desktop.in:4
 msgid "Keep a personal diary"
 msgstr "Păstrează un jurnal personal"
 
-#: ../data/almanah.schemas.in.h:1
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#: data/almanah.desktop.in:5 src/application.c:274
+msgid "Diary"
+msgstr "Jurnal"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/almanah.desktop.in:7
+msgid "diary;journal;"
+msgstr "diary;journal;jurnal;"
+
+#: src/ui/almanah.ui:27
+msgid "Calendar"
+msgstr "Calendar"
+
+#: src/ui/almanah.ui:46
+msgid "Go to Today"
+msgstr "Navighează la astăzi"
+
+#: src/ui/almanah.ui:56
+msgid "Select Date…"
+msgstr "Selectează data…"
+
+#: src/ui/almanah.ui:134
+msgid "Entry editing area"
+msgstr "Zona de editare a întrării"
+
+#: src/ui/almanah.ui:160
+msgid "Past events"
+msgstr "Evenimente trecute"
+
+#: src/ui/almanah.ui:204
+msgid "Past Event List"
+msgstr "Lista evenimentelor trecute"
+
+#: src/ui/almanah.ui:299
+msgid "Search entry"
+msgstr "Caută intrarea"
+
+#: src/ui/almanah.ui:307 src/search-dialog.c:69
+msgid "Search"
+msgstr "Căutare"
+
+#: src/ui/almanah.ui:398
+msgid "Result List"
+msgstr "Listă rezultate"
+
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
+msgid "View Entry"
+msgstr "Vizualizează intrarea"
+
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "de ex. „14/03/2009” sau „14 martie 2009”."
+
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: src/ui/almanah.ui:570
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "de ex. „http://google.com/” sau „file:///home/me/Photos/photo.jpg”."
+
+#: src/ui/almanah.ui:734
+msgid "Successful Entries"
+msgstr "Intrări reușite"
+
+#: src/ui/almanah.ui:737
+msgid "Merged Entries"
+msgstr "Intrări fuzionate"
+
+#: src/ui/almanah.ui:740
+msgid "Failed Entries"
+msgstr "Intrări eșuate"
+
+#: src/ui/almanah.ui:802
+msgid "Import Results List"
+msgstr "Importă lista rezultatelor"
+
+#: data/org.gnome.almanah.gschema.xml.in:6
 msgid "Database encryption key ID"
 msgstr "ID-ul cheii de criptare a bazei de date"
 
-#: ../data/almanah.schemas.in.h:2
-msgid "Main window X position"
-msgstr "Poziția X a ferestrei principale"
-
-#: ../data/almanah.schemas.in.h:3
-msgid "Main window Y position"
-msgstr "Poziția Y a ferestrei principale"
-
-#: ../data/almanah.schemas.in.h:4
-msgid "Main window height"
-msgstr "Înălțimea ferestrei principale"
-
-#: ../data/almanah.schemas.in.h:5
-msgid "Main window maximization"
-msgstr "Maximizarea ferestrei principale"
-
-#: ../data/almanah.schemas.in.h:6
-msgid "Main window width"
-msgstr "Lățimea ferestrei principale"
-
-#: ../data/almanah.schemas.in.h:7
-msgid "Spell checking enabled?"
-msgstr "Activați verificarea ortografiei?"
-
-#: ../data/almanah.schemas.in.h:8
-msgid "Spell checking language"
-msgstr "Verificarea ortografiei limbii"
-
-#: ../data/almanah.schemas.in.h:9
+#: data/org.gnome.almanah.gschema.xml.in:7
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -83,255 +151,160 @@ msgstr ""
 "dacă programul Almanah a fost creat cu suportul de criptare. Lăsați "
 "necompletat pentru a dezactiva criptarea bazei de date."
 
-#: ../data/almanah.schemas.in.h:10
-msgid "The X position of the main window."
-msgstr "Poziția X a ferestrei principale."
+#: data/org.gnome.almanah.gschema.xml.in:11
+msgid "Spell checking language"
+msgstr "Verificarea ortografiei limbii"
 
-#: ../data/almanah.schemas.in.h:11
-msgid "The Y position of the main window."
-msgstr "Poziția Y a ferestrei principale."
-
-#: ../data/almanah.schemas.in.h:12
-msgid "The height of the main window."
-msgstr "Înălțimea ferestrei principale."
-
-#: ../data/almanah.schemas.in.h:13
+#: data/org.gnome.almanah.gschema.xml.in:12
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "Specificatorul local al limbii pentru care se va verifica ortografia."
 
-#: ../data/almanah.schemas.in.h:14
-msgid "The width of the main window."
-msgstr "Lățimea ferestrei principale."
+#: data/org.gnome.almanah.gschema.xml.in:16
+msgid "Spell checking enabled?"
+msgstr "Activați verificarea ortografiei?"
 
-#: ../data/almanah.schemas.in.h:15
+#: data/org.gnome.almanah.gschema.xml.in:17
 msgid "Whether spell checking of entries is enabled."
 msgstr "Dacă verificarea ortografiei intrărilor este activată."
 
-#: ../data/almanah.schemas.in.h:16
-msgid "Whether the main window should start maximized."
-msgstr "Dacă fereastra principală ar trebui să pornească maximizată."
+#: src/application.c:257
+msgid "Error opening database"
+msgstr "Eroare la deschiderea bazei de date"
 
-#: ../data/almanah.ui.h:1
-msgid "Add a definition for the currently selected text."
-msgstr "Adăugă o definiție pentru textul selectat."
+#: src/application.c:336
+msgid "Enable debug mode"
+msgstr "Activează modul de depanare"
 
-#: ../data/almanah.ui.h:2
-msgid "Calendar"
-msgstr "Calendar"
+#: src/application.c:353
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"Administrați-vă jurnalul. Doar o instanță a programului se poate deschide la "
+"un moment dat."
 
-#: ../data/almanah.ui.h:3
-msgid "Definition Description"
-msgstr "Descrierea definiției"
-
-#: ../data/almanah.ui.h:4
-msgid "Definition List"
-msgstr "Lista definițiilor"
-
-#: ../data/almanah.ui.h:5
-msgid "Definition Type"
-msgstr "Tipul definiției"
-
-#: ../data/almanah.ui.h:6
-msgid "Definition type:"
-msgstr "Tipul definiției:"
-
-#: ../data/almanah.ui.h:7
-msgid "Entry editing area"
-msgstr "Zona de editare a întrării"
-
-#: ../data/almanah.ui.h:8
-msgid "F_ormat"
-msgstr "F_ormat"
-
-#: ../data/almanah.ui.h:9
-msgid "Failed Entries"
-msgstr "Intrări eșuate"
-
-#: ../data/almanah.ui.h:10
-msgid "Go to _Today"
-msgstr "Navighează la as_tăzi"
-
-#: ../data/almanah.ui.h:11
-msgid "I_mportant"
-msgstr "I_mportant"
-
-#: ../data/almanah.ui.h:12
-msgid "Import Results List"
-msgstr "Importă lista rezultatelor"
-
-#: ../data/almanah.ui.h:13
-msgid "Insert _Time"
-msgstr "In_trodu ora"
-
-#: ../data/almanah.ui.h:14
-msgid "Jump to the current date in the diary."
-msgstr "Salt la data curentă din jurnal."
-
-#: ../data/almanah.ui.h:15
-msgid "Merged Entries"
-msgstr "Intrări fuzionate"
-
-#: ../data/almanah.ui.h:16 ../src/definition-manager-window.c:246
-msgid "Nothing selected"
-msgstr "Nimic selectat"
-
-#: ../data/almanah.ui.h:17
-msgid "Past Event List"
-msgstr "Lista evenimentelor trecute"
-
-#: ../data/almanah.ui.h:18
-msgid "Past Events"
-msgstr "Evenimente trecute"
-
-#: ../data/almanah.ui.h:19
-msgid "Pr_eferences"
-msgstr "Pr_eferințe"
-
-#: ../data/almanah.ui.h:20
-msgid "Remove the definition from the currently selected text."
-msgstr "Elimină definiția din textul selectat curent."
-
-#: ../data/almanah.ui.h:21
-msgid "Result List"
-msgstr "Listă rezultate"
-
-#: ../data/almanah.ui.h:22
-msgid "Results:"
-msgstr "Rezultate:"
-
-#: ../data/almanah.ui.h:23 ../src/search-dialog.c:61
-msgid "Search"
-msgstr "Căutare"
-
-#: ../data/almanah.ui.h:24
-msgid "Search entry"
-msgstr "Caută intrarea"
-
-#: ../data/almanah.ui.h:25
-msgid "Select Date…"
-msgstr "Selectează data…"
-
-#: ../data/almanah.ui.h:26
-msgid "Successful Entries"
-msgstr "Intrări reușite"
-
-#: ../data/almanah.ui.h:27
-msgid "Toggle whether the current entry is marked as important."
-msgstr "Comută dacă intrarea curentă este marcată ca importantă."
-
-#: ../data/almanah.ui.h:28
-msgid "Toggle whether the currently selected text is bold."
-msgstr "Comută dacă textul curent selectat este îngroșat."
-
-#: ../data/almanah.ui.h:29
-msgid "Toggle whether the currently selected text is italic."
-msgstr "Comută dacă textul curent selectat este cursiv."
-
-#: ../data/almanah.ui.h:30
-msgid "Toggle whether the currently selected text is underlined."
-msgstr "Comută dacă textul curent selectat este subliniat."
-
-#: ../data/almanah.ui.h:31
-msgid "View"
-msgstr "Vizualizează"
-
-#: ../data/almanah.ui.h:32
-msgid "View Entry"
-msgstr "Vizualizează intrarea"
-
-#: ../data/almanah.ui.h:33
-msgid "View Event"
-msgstr "Vizualizează evenimentul"
-
-#: ../data/almanah.ui.h:34
-msgid "_Add Definition"
-msgstr "_Adaugă definiție"
-
-#: ../data/almanah.ui.h:35
-msgid "_Definitions"
-msgstr "_Definiții"
-
-#: ../data/almanah.ui.h:36
-msgid "_Edit"
-msgstr "_Editare"
-
-#: ../data/almanah.ui.h:37
-msgid "_Export…"
-msgstr "_Exportă…"
-
-#: ../data/almanah.ui.h:38
-msgid "_File"
-msgstr "_Fișier"
-
-#: ../data/almanah.ui.h:39
-msgid "_Help"
-msgstr "_Ajutor"
-
-#: ../data/almanah.ui.h:40
-msgid "_Import…"
-msgstr "_Importă…"
-
-#: ../data/almanah.ui.h:41
-msgid "_Print…"
-msgstr "_Tipărește…"
-
-#: ../data/almanah.ui.h:42
-msgid "_Remove Definition"
-msgstr "_Elimină definiția"
-
-#: ../data/almanah.ui.h:43
-msgid "_Search…"
-msgstr "_Caută…"
-
-#: ../data/almanah.ui.h:44
-msgid "_View Definitions"
-msgstr "_Verifică definițiile"
-
-#: ../data/almanah.ui.h:45
-msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr "de ex. „14/03/2009” sau „14 martie 2009”."
-
-#: ../src/add-definition-dialog.c:82
-msgid "Add Definition"
-msgstr "Adaugă definiție"
-
-#: ../src/add-definition-dialog.c:164 ../src/date-entry-dialog.c:131
-#: ../src/import-export-dialog.c:112 ../src/import-export-dialog.c:415
-#: ../src/definition-manager-window.c:132 ../src/main-window.c:171
-#: ../src/preferences-dialog.c:143 ../src/search-dialog.c:87
+#. Print an error
+#: src/application.c:364
 #, c-format
-msgid "UI file \"%s\" could not be loaded"
-msgstr "Fișierul UI „%s” nu a putut fi încărcat"
+msgid "Command line options could not be parsed: %s\n"
+msgstr "Opțiunile din linia de comandă nu au putut fi parsate: %s\n"
 
-#: ../src/date-entry-dialog.c:74
+#: src/application.c:383
+msgid "Error encrypting database"
+msgstr "Eroare la criptarea bazei de date"
+
+#: src/application.c:526
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah este un software liber: puteți să îl redistribuiți și/sau modificați "
+"în concordanță cu termenii GNU General Public License ca o publicație a Free "
+"Software Foundation, atât versiunea 3 a licenței, sau (la latitudinea "
+"dumneavoastră) o altă versiune."
+
+#: src/application.c:530
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah este distribuit cu speranța că va fi de folos, dar FĂRĂ NICIO "
+"GARANȚIE; chiar fără garanția impusă de VANDABILITATE sau CONFORMITATE "
+"PENTRU UN ANUMIT SCOP. Vedeți textul licenței GNU General Public License "
+"pentru mai multe detalii."
+
+#: src/application.c:534
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Ar fi trebuit ca împreună cu Almanah să fi primit o copie a Licenței "
+"generale GNU. În caz contrar, consultați <http://www.gnu.org/licenses/>."
+
+#: src/application.c:549
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Un jurnal de ajutor folositor, stocând %u intrări."
+
+#: src/application.c:553
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Drepturi de autor © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: src/application.c:561
+msgid "translator-credits"
+msgstr ""
+"Muraru Costin <muraru.costin@gmail.com>\n"
+"Daniel Șerbănescu <cyber19rider@gmail.com>\n"
+"Florentina Mușat <emryslokadottir [at] gmail [dot] com>, 2020"
+
+#: src/application.c:565
+msgid "Almanah Website"
+msgstr "Pagina web Almanah"
+
+#: src/application.c:593
+#, c-format
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"Nu s-au putut încărca resursele CSS. Interfața poate să nu fie stilizată "
+"corect: %s"
+
+#: src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Selectează data"
 
-#: ../src/events/calendar-appointment.c:49
+#: src/date-entry-dialog.c:127 src/import-export-dialog.c:169
+#: src/import-export-dialog.c:476 src/main-window.c:235
+#: src/preferences-dialog.c:177 src/search-dialog.c:95
+#: src/uri-entry-dialog.c:126
+msgid "UI data could not be loaded"
+msgstr "Datele UI nu au putut fi încărcate"
+
+#: src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Număr de versiune de date nevalid %u."
+
+#: src/events/calendar-appointment.c:51
 msgid "Calendar Appointment"
 msgstr "Programare în calendar"
 
-#: ../src/events/calendar-appointment.c:50
+#: src/events/calendar-appointment.c:52
 msgid "An appointment on an Evolution calendar."
 msgstr "O programare pe un calendar Evolution."
 
-#: ../src/events/calendar-appointment.c:120 ../src/events/calendar-task.c:109
+#. Translators: This is a time string with the format hh:mm
+#: src/events/calendar-appointment.c:89 src/events/calendar-task.c:90
+#, c-format
+msgid "%.2d:%.2d"
+msgstr "%.2d:%.2d"
+
+#: src/events/calendar-appointment.c:135 src/events/calendar-task.c:125
 msgid "Error launching Evolution"
 msgstr "Eroare în rularea Evolution"
 
-#: ../src/events/calendar-task.c:49
+#: src/events/calendar-task.c:51
 msgid "Calendar Task"
 msgstr "Calendar de sarcini"
 
-#: ../src/events/calendar-task.c:50
+#: src/events/calendar-task.c:52
 msgid "A task on an Evolution calendar."
 msgstr "O sarcină pe calendarul în desfășurare."
 
-#: ../src/export-operation.c:46 ../src/import-operation.c:46
+#: src/export-operation.c:47 src/import-operation.c:45
 msgid "Text Files"
 msgstr "Fișiere text"
 
-#: ../src/export-operation.c:47
+#: src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -341,61 +314,134 @@ msgstr ""
 "unul pe intrare, cu numele în format „aaaa-ll-zz”, și fără extensie. Toate "
 "intrările vor fi exportate, decriptate în format de text simplu."
 
-#: ../src/export-operation.c:51 ../src/import-operation.c:51
+#: src/export-operation.c:52 src/import-operation.c:50
 msgid "Database"
 msgstr "Bază de date"
 
-#: ../src/export-operation.c:52
+#: src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
-"Selectează un nume de fișier pentru a completa o copie a bazei de date "
-"Jurnalul Almanah "
+"Selectați un nume de _fișier pentru o copie completă a bazei de date "
+"necriptată a Jurnalului Almanah care urmează să fie dată."
 
-#: ../src/import-export-dialog.c:145
-msgid "Import _mode: "
-msgstr "_Mod de importare:"
+#: src/export-operation.c:256 src/export-operation.c:313
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "Eroare la modificarea permisiunilor fișierului exportat: %s"
 
-#: ../src/import-export-dialog.c:145
-msgid "Export _mode: "
-msgstr "_Mod de exportare:"
+#: src/gtk/menus.ui:6
+msgid "_Search"
+msgstr "_Căutare"
 
-#. Set the window title
-#: ../src/import-export-dialog.c:148
-msgid "Import Entries"
-msgstr "Importare intrări"
+#: src/gtk/menus.ui:12
+msgid "Pr_eferences"
+msgstr "Pr_eferințe"
 
-#: ../src/import-export-dialog.c:148
-msgid "Export Entries"
-msgstr "Exportare intrări"
-
-#. Set the button label
-#: ../src/import-export-dialog.c:151
+#: src/gtk/menus.ui:16
+msgctxt "Main menu"
 msgid "_Import"
 msgstr "_Importă"
 
-#: ../src/import-export-dialog.c:151
+#: src/gtk/menus.ui:20
+msgctxt "Main menu"
 msgid "_Export"
 msgstr "_Exportă"
 
-#: ../src/import-export-dialog.c:188
+#: src/gtk/menus.ui:24
+msgid "_Print diary"
+msgstr "_Tipărește jurnalul"
+
+#: src/gtk/menus.ui:30
+msgid "_About Almanah Diary"
+msgstr "_Despre Jurnal Almanah"
+
+#: src/gtk/menus.ui:34
+msgid "_Quit"
+msgstr "_Ieșire"
+
+#: src/gtk/menus.ui:42
+msgid "_Bold"
+msgstr "_Aldin"
+
+#: src/gtk/menus.ui:46
+msgid "_Italic"
+msgstr "_Cursiv"
+
+#: src/gtk/menus.ui:50
+msgid "_Underline"
+msgstr "_Subliniere"
+
+#: src/gtk/menus.ui:56
+msgid "_Cut"
+msgstr "_Taie"
+
+#: src/gtk/menus.ui:60
+msgid "_Copy"
+msgstr "_Copiază"
+
+#: src/gtk/menus.ui:64
+msgid "_Paste"
+msgstr "_Lipește"
+
+#: src/gtk/menus.ui:68 src/main-window.c:640
+msgid "_Delete"
+msgstr "Ș_terge"
+
+#: src/gtk/menus.ui:74
+msgid "Insert _Time"
+msgstr "In_trodu ora"
+
+#: src/gtk/menus.ui:78
+msgid "Add/Remove _Hyperlink"
+msgstr "Adaugă/Elimină o _hiperlegătură"
+
+#: src/import-export-dialog.c:203
+msgid "Import _mode: "
+msgstr "_Mod de importare: "
+
+#: src/import-export-dialog.c:203
+msgid "Export _mode: "
+msgstr "_Mod de exportare: "
+
+#. Set the window title
+#: src/import-export-dialog.c:206
+msgid "Import Entries"
+msgstr "Importare intrări"
+
+#: src/import-export-dialog.c:206
+msgid "Export Entries"
+msgstr "Exportare intrări"
+
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:211
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "_Importă"
+
+#: src/import-export-dialog.c:211
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "_Exportă"
+
+#: src/import-export-dialog.c:248
 msgid "Import failed"
 msgstr "Importare eșuată"
 
-#: ../src/import-export-dialog.c:226
+#: src/import-export-dialog.c:286
 msgid "Export failed"
 msgstr "Exportare eșuată"
 
-#: ../src/import-export-dialog.c:239
+#: src/import-export-dialog.c:299
 msgid "Export successful"
 msgstr "Exportare reușită"
 
-#: ../src/import-export-dialog.c:240
+#: src/import-export-dialog.c:300
 msgid "The diary was successfully exported."
 msgstr "Jurnalul a fost exportat cu succes."
 
-#: ../src/import-export-dialog.c:389
+#: src/import-export-dialog.c:448
 msgid "Import Results"
 msgstr "Importă rezultate"
 
@@ -405,13 +451,12 @@ msgstr "Importă rezultate"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:482 ../src/main-window.c:394
-#: ../src/main-window.c:419 ../src/main-window.c:1058 ../src/printing.c:263
-#: ../src/search-dialog.c:161
+#: src/import-export-dialog.c:543 src/main-window.c:601 src/main-window.c:632
+#: src/main-window.c:1271 src/printing.c:263 src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/import-operation.c:47
+#: src/import-operation.c:46
 msgid ""
 "Select a _folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
@@ -421,18 +466,19 @@ msgstr ""
 "format „aaaa-ll-zz”, și fără extensie. Toate fișierele de acest tip vor fi "
 "importate."
 
-#: ../src/import-operation.c:52
+#: src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
-"Selectează un _fișier bază de date creată de către Jurnalul Almanah pentru "
-"a-l importa."
+"Selectează un _fișier bază de date creată de către Jurnalul Almanah pentru a-"
+"l importa."
 
-#: ../src/import-operation.c:199
+#: src/import-operation.c:248
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
-msgstr "Deserializarea intrării importate în zona de memorie tampon a eșuat: %s"
+msgstr ""
+"Deserializarea intrării importate în zona de memorie tampon a eșuat: %s"
 
-#: ../src/import-operation.c:215
+#: src/import-operation.c:264
 #, c-format
 msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
@@ -444,7 +490,7 @@ msgstr ""
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 #. * The imported entry is appended to this text.
-#: ../src/import-operation.c:256
+#: src/import-operation.c:305
 #, c-format
 msgid ""
 "\n"
@@ -457,282 +503,134 @@ msgstr ""
 "Intrare importată din „%s”:\n"
 "\n"
 
-#: ../src/definition-manager-window.c:72
-msgid "Definition Manager"
-msgstr "Gestionar de definiții"
-
-#: ../src/definition-manager-window.c:203
-#, c-format
-msgid "Are you sure you want to delete the definition for \"%s\"?"
-msgstr "Sigur doriți să ștergeți definiția pentru „%s”?"
-
-#: ../src/definitions/contact.c:53
-msgid "Contact"
-msgstr "Contact"
-
-#: ../src/definitions/contact.c:54
-msgid "An Evolution contact."
-msgstr "Un contact Evolution."
-
-#: ../src/definitions/contact.c:73
-msgid "Select Contact"
-msgstr "Selectează contactul"
-
-#: ../src/definitions/contact.c:103 ../src/definitions/contact.c:224
-msgid "Error opening contact"
-msgstr "Deschiderea contactului a eșuat"
-
-#: ../src/definitions/contact.c:136
-msgid "Error opening Evolution"
-msgstr "Deschiderea lui Evolution a eșuat"
-
-#: ../src/definitions/file.c:48
-msgid "File"
-msgstr "Fișier"
-
-#: ../src/definitions/file.c:49
-msgid "An attached file."
-msgstr "Un fișier atașat."
-
-#: ../src/definitions/file.c:74
-msgid "Error opening file"
-msgstr "Deschiderea fișierului a eșuat"
-
-#: ../src/definitions/file.c:93
-msgid "Select File"
-msgstr "Selectare fișier"
-
-#: ../src/definitions/note.c:49
-msgid "Note"
-msgstr "Notă"
-
-#: ../src/definitions/note.c:50
-msgid "A note about an important event."
-msgstr "O notă despre un eveniment important."
-
-#: ../src/definitions/uri.c:50
-msgid "URI"
-msgstr "URI"
-
-#: ../src/definitions/uri.c:51
-msgid "A URI of a file or web page."
-msgstr "Un URI al unui fișier sau al unei pagini web."
-
-#: ../src/definitions/uri.c:76
-msgid "Error opening URI"
-msgstr "Deschiderea URI eșuată"
-
-#: ../src/definitions/uri.c:99
-msgid "URI: "
-msgstr "URI:"
-
-#: ../src/main-window.c:398
+#: src/main-window.c:605
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Sigur doriți să editați această intrare a jurnalului pentru %s?"
 
-#: ../src/main-window.c:423
+#: src/main-window.c:608 src/main-window.c:639
+msgid "_Cancel"
+msgstr "_Anulează"
+
+#: src/main-window.c:609
+msgid "_Edit"
+msgstr "_Editare"
+
+#: src/main-window.c:636
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Sigur doriți să ștergeți această intrare a jurnalului pentru %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:610
+#: src/main-window.c:746
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Eticheta textului „%s” este necunoscută sau duplicată. Se ignoră."
 
-#: ../src/main-window.c:891
-msgid ""
-"Almanah is free software: you can redistribute it and/or modify it under the "
-"terms of the GNU General Public License as published by the Free Software "
-"Foundation, either version 3 of the License, or (at your option) any later "
-"version."
-msgstr ""
-"Almanah este un software liber: puteți să îl redistribuiți și/sau modificați "
-"în concordanță cu termenii GNU General Public License ca o publicație a "
-"Free Software Foundation, atât versiunea 3 a licenței, sau (la latitudinea "
-"dumneavoastră) o altă versiune."
+#: src/main-window.c:987
+msgid "Error opening URI"
+msgstr "Deschiderea URI eșuată"
 
-#: ../src/main-window.c:895
-msgid ""
-"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
-"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-"details."
-msgstr ""
-"Almanah este distribuit cu speranța că va fi de folos, dar FĂRĂ NICIO "
-"GARANȚIE; chiar fără garanția impusă de VANDABILITATE sau CONFORMITATE "
-"PENTRU UN ANUMIT SCOP. Vedeți textul licenței GNU General Public License "
-"pentru mai multe detalii."
-
-#: ../src/main-window.c:899
-msgid ""
-"You should have received a copy of the GNU General Public License along with "
-"Almanah.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Ar fi trebuit ca împreună cu Almanah să fi primit o copie a Licenței "
-"generale GNU. În caz contrar, consultați <http://www.gnu.org/licenses/>."
-
-#: ../src/main-window.c:910
+#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#: src/main-window.c:1198
 #, c-format
-msgid "A helpful diary keeper, storing %u entries and %u definitions."
-msgstr "Un jurnal folositor, ce stochează %u intrări și %u definiții."
+msgid "%s @ %s"
+msgstr "%s @ %s"
 
-#: ../src/main-window.c:916
-msgid "Copyright © 2008-2009 Philip Withnall"
-msgstr "Drepturi de autor © 2008-2009 Philip Withnall"
-
-#. Translators: please include your names here to be credited for your hard work!
-#. * Format:
-#. * "Translator name 1 <translator@email.address>\n"
-#. * "Translator name 2 <translator2@email.address>"
-#.
-#: ../src/main-window.c:924
-msgid "translator-credits"
-msgstr ""
-"Muraru Costin <muraru.costin@gmail.com>\n"
-"Daniel Șerbănescu <cyber19rider@gmail.com>"
-
-#: ../src/main-window.c:928
-msgid "Almanah Website"
-msgstr "Pagina web Almanah"
-
-#: ../src/main-window.c:1085
+#: src/main-window.c:1304
 msgid "Entry content could not be loaded"
 msgstr "Conținutul intrării nu a putut fi încărcat"
 
-#: ../src/main.c:38
-msgid "Error encrypting database"
-msgstr "Eroare la criptarea bazei de date"
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: src/main-window.c:1459
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr ""
+"Aceasta este doar o propoziție de cincisprezece cuvinte pentru a calcula "
+"dimensiunea vizualizării textului intrării jurnalului"
 
-#: ../src/main.c:99
-msgid "Enable debug mode"
-msgstr "Activează modul de depanare"
+#: src/main-window.c:1496
+msgid "Spelling checker could not be initialized"
+msgstr "Verificatorul de ortografie nu a putut fi inițializat"
 
-#. Options
-#: ../src/main.c:116
-msgid "- Manage your diary"
-msgstr "- Organizați-vă propriul jurnal"
-
-#: ../src/main.c:126
-msgid "Command-line options could not be parsed"
-msgstr "Opțiunile liniei de comandă nu au putut fi analizate"
-
-#: ../src/main.c:157
-msgid "Error opening database"
-msgstr "Eroare la deschiderea bazei de date"
-
-#: ../src/preferences-dialog.c:79
-msgid "Almanah Preferences"
-msgstr "Preferințe Almanah"
+#: src/preferences-dialog.c:83
+msgid "Preferences"
+msgstr "Preferințe"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:168
+#: src/preferences-dialog.c:204
 msgid "Encryption key: "
-msgstr "Cheie de criptare:"
+msgstr "Cheie de criptare: "
 
-#: ../src/preferences-dialog.c:173
+#: src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Nimic (nu cripta)"
 
-#: ../src/preferences-dialog.c:197
+#: src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "C_heie nouă"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:204
+#: src/preferences-dialog.c:237
 msgid "Enable _spell checking"
 msgstr "Activează verificarea _ortografiei"
 
-#: ../src/preferences-dialog.c:234
+#: src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
 msgstr "Eroare la salvarea cheii de criptare"
 
-#: ../src/preferences-dialog.c:253
+#: src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
 msgstr "Deschiderea Seahorse a eșuat"
 
-#: ../src/preferences-dialog.c:291
-msgid "Spelling checker could not be initialized"
-msgstr "Verificatorul de ortografie nu a putut fi inițializat"
-
-#: ../src/printing.c:277
+#: src/printing.c:277
 msgid "This entry is marked as important."
 msgstr "Această intrare e marcată ca importantă."
 
-#: ../src/printing.c:298
+#: src/printing.c:298
 msgid "No entry for this date."
 msgstr "Nicio intrare pentru această dată."
 
-#: ../src/printing.c:453
+#: src/printing.c:457
 msgid "Start date:"
 msgstr "Data de început:"
 
-#: ../src/printing.c:455
+#: src/printing.c:459
 msgid "End date:"
 msgstr "Data de încheiere:"
 
 #. Line spacing
-#: ../src/printing.c:471
+#: src/printing.c:475
 msgid "Line spacing:"
 msgstr "Spațiere linie:"
 
-#: ../src/storage-manager.c:257
+#: src/search-dialog.c:221
+msgid "Search canceled."
+msgstr "Căutare terminată."
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: src/search-dialog.c:224
 #, c-format
-msgid "GPGME is not at least version %s"
-msgstr "GPCME nu este cel puțin versiunea %s"
+msgid "Error: %s"
+msgstr "Eroare: %s"
 
-#: ../src/storage-manager.c:266
+#. Success!
+#: src/search-dialog.c:229
 #, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "GPCME nu este compatibil cu OpenPGP: %s"
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "S-a găsit %d intrare:"
+msgstr[1] "S-au găsit %d intrări:"
+msgstr[2] "S-au găsit %d de intrări:"
 
-#: ../src/storage-manager.c:275
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr "Crearea cifrului a eșuat: %s"
+#: src/search-dialog.c:278
+msgid "Searching…"
+msgstr "Se caută…"
 
-#: ../src/storage-manager.c:304
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Eroare la deschiderea bazei de date criptate „%s”: %s"
-
-#: ../src/storage-manager.c:323
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr "Eroare la deschiderea bazei de date simple „%s”: %s"
-
-#: ../src/storage-manager.c:371
-msgid ""
-"The encrypted database is empty. The plain database file has been left "
-"undeleted as backup."
-msgstr ""
-"Baza de date criptată este goală. Baza de date simplă a fost lăsată "
-"neștearsă ca o copie de siguranță."
-
-#. Delete the plain file
-#: ../src/storage-manager.c:374
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr "Baza de date simplă „%s” nu a putut fi ștearsă."
-
-#: ../src/storage-manager.c:415
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr "Eroare la decriptarea bazei de date: %s"
-
-#: ../src/storage-manager.c:449
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "Eroare la obținerea cheii de criptare: %s"
-
-#: ../src/storage-manager.c:470
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr "Eroare la criptarea bazei de date: %s"
-
-#: ../src/storage-manager.c:572
+#: src/storage-manager.c:247
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
@@ -741,7 +639,7 @@ msgstr ""
 "Baza de date „%s” nu a putut fi deschisă. SQLite a furnizat următorul mesaj "
 "de eroare: %s"
 
-#: ../src/storage-manager.c:647
+#: src/storage-manager.c:290
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
@@ -749,13 +647,300 @@ msgstr ""
 "Nu s-a putut executa interogarea „%s”. SQLite a furnizat următorul mesaj de "
 "eroare: %s"
 
-#: ../src/storage-manager.c:964
+#: src/storage-manager.c:596
 msgid "Error deserializing entry into buffer while searching."
 msgstr ""
 "Eroare la deserializarea intrării într-o zonă de memorie tampon în timpul "
 "căutării."
 
+#: src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "Introduceți URI"
+
+#: src/vfs.c:291
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPCME nu este cel puțin versiunea %s"
+
+#: src/vfs.c:298
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPCME nu este compatibil cu OpenPGP: %s"
+
+#: src/vfs.c:305
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Crearea cifrului a eșuat: %s"
+
+#: src/vfs.c:325
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Nu se poate crea un nou GIOChannel pentru baza de date criptată: %s"
+
+#: src/vfs.c:333
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Eroare la deschiderea bazei de date criptate „%s”: %s"
+
+#: src/vfs.c:349
+#, c-format
+msgid "Error creating Callback base data buffer: %s"
+msgstr "Eroare la crearea preîncărcării de date de bază Callback: %s"
+
+#: src/vfs.c:357
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Nu se poate crea un nou GIOChannel pentru baza de date simplă: %s"
+
+#: src/vfs.c:365
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Eroare la deschiderea bazei de date simple „%s”: %s"
+
+#: src/vfs.c:461
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Eroare la obținerea cheii de criptare: %s"
+
+#: src/vfs.c:485 src/vfs.c:491
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Eroare la criptarea bazei de date: %s"
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: src/vfs.c:541
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Eroare la copierea fișierului de la %s la %s: %s"
+
+#: src/vfs.c:547
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr ""
+"Eroare la modificarea permisiunilor fișierului copiei de rezervă a bazei de "
+"date: %s"
+
+#: src/vfs.c:647
+#, c-format
+msgid "Error closing file: %s"
+msgstr "Eroare la închiderea fișierului: %s"
+
+#. Translators: the first parameter is a filename.
+#: src/vfs.c:1046 src/vfs.c:1073
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "Eroare la copierea de rezervă a fișierului „%s”"
+
+#: src/vfs.c:1059
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Eroare la decriptarea bazei de date: %s"
+
+#: src/vfs.c:1099
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Eroare la modificarea permisiunilor fișierului bazei de date: %s"
+
+#: src/widgets/calendar-button.c:142
+#, c-format
+msgid "UI data could not be loaded: %s"
+msgstr "Datele UI nu au putut fi încărcate: %s"
+
+#: src/widgets/calendar-button.c:152
+msgid "Can't load calendar window object from UI file"
+msgstr "Nu se poate încărca obiectul ferestrei calendarului din fișierul UI"
+
 #. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:116
+#: src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Important!"
+
+#: src/widgets/entry-tags-area.c:100 src/widgets/tag-entry.c:166
+msgid "add tag"
+msgstr "adaugă o etichetă"
+
+#: src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "Scrie eticheta și apăsați enter pentru a o salva"
+
+#: src/widgets/tag-accessible.c:165
+msgid "Remove the tag from the entry"
+msgstr "Elimină eticheta din intrare"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: src/widgets/tag.c:416
+msgid "Remove tag"
+msgstr "Elimină eticheta"
+
+#: src/widgets/tag-entry.c:85
+msgid "Tag entry"
+msgstr "Etichetează intrarea"
+
+#~ msgid "Main window X position"
+#~ msgstr "Poziția X a ferestrei principale"
+
+#~ msgid "Main window Y position"
+#~ msgstr "Poziția Y a ferestrei principale"
+
+#~ msgid "Main window height"
+#~ msgstr "Înălțimea ferestrei principale"
+
+#~ msgid "Main window maximization"
+#~ msgstr "Maximizarea ferestrei principale"
+
+#~ msgid "Main window width"
+#~ msgstr "Lățimea ferestrei principale"
+
+#~ msgid "The X position of the main window."
+#~ msgstr "Poziția X a ferestrei principale."
+
+#~ msgid "The Y position of the main window."
+#~ msgstr "Poziția Y a ferestrei principale."
+
+#~ msgid "The height of the main window."
+#~ msgstr "Înălțimea ferestrei principale."
+
+#~ msgid "The width of the main window."
+#~ msgstr "Lățimea ferestrei principale."
+
+#~ msgid "Whether the main window should start maximized."
+#~ msgstr "Dacă fereastra principală ar trebui să pornească maximizată."
+
+#~ msgid "Add a definition for the currently selected text."
+#~ msgstr "Adăugă o definiție pentru textul selectat."
+
+#~ msgid "Definition Description"
+#~ msgstr "Descrierea definiției"
+
+#~ msgid "Definition List"
+#~ msgstr "Lista definițiilor"
+
+#~ msgid "Definition Type"
+#~ msgstr "Tipul definiției"
+
+#~ msgid "Definition type:"
+#~ msgstr "Tipul definiției:"
+
+#~ msgid "F_ormat"
+#~ msgstr "F_ormat"
+
+#~ msgid "I_mportant"
+#~ msgstr "I_mportant"
+
+#~ msgid "Jump to the current date in the diary."
+#~ msgstr "Salt la data curentă din jurnal."
+
+#~ msgid "Nothing selected"
+#~ msgstr "Nimic selectat"
+
+#~ msgid "Results:"
+#~ msgstr "Rezultate:"
+
+#~ msgid "Toggle whether the current entry is marked as important."
+#~ msgstr "Comută dacă intrarea curentă este marcată ca importantă."
+
+#~ msgid "Toggle whether the currently selected text is bold."
+#~ msgstr "Comută dacă textul curent selectat este îngroșat."
+
+#~ msgid "Toggle whether the currently selected text is italic."
+#~ msgstr "Comută dacă textul curent selectat este cursiv."
+
+#~ msgid "Toggle whether the currently selected text is underlined."
+#~ msgstr "Comută dacă textul curent selectat este subliniat."
+
+#~ msgid "View"
+#~ msgstr "Vizualizează"
+
+#~ msgid "View Event"
+#~ msgstr "Vizualizează evenimentul"
+
+#~ msgid "_Add Definition"
+#~ msgstr "_Adaugă definiție"
+
+#~ msgid "_Definitions"
+#~ msgstr "_Definiții"
+
+#~ msgid "_Export…"
+#~ msgstr "_Exportă…"
+
+#~ msgid "_File"
+#~ msgstr "_Fișier"
+
+#~ msgid "_Help"
+#~ msgstr "_Ajutor"
+
+#~ msgid "_Import…"
+#~ msgstr "_Importă…"
+
+#~ msgid "_Print…"
+#~ msgstr "_Tipărește…"
+
+#~ msgid "_Remove Definition"
+#~ msgstr "_Elimină definiția"
+
+#~ msgid "_View Definitions"
+#~ msgstr "_Verifică definițiile"
+
+#~ msgid "Add Definition"
+#~ msgstr "Adaugă definiție"
+
+#~ msgid "Definition Manager"
+#~ msgstr "Gestionar de definiții"
+
+#~ msgid "Are you sure you want to delete the definition for \"%s\"?"
+#~ msgstr "Sigur doriți să ștergeți definiția pentru „%s”?"
+
+#~ msgid "Contact"
+#~ msgstr "Contact"
+
+#~ msgid "An Evolution contact."
+#~ msgstr "Un contact Evolution."
+
+#~ msgid "Select Contact"
+#~ msgstr "Selectează contactul"
+
+#~ msgid "Error opening contact"
+#~ msgstr "Deschiderea contactului a eșuat"
+
+#~ msgid "Error opening Evolution"
+#~ msgstr "Deschiderea lui Evolution a eșuat"
+
+#~ msgid "File"
+#~ msgstr "Fișier"
+
+#~ msgid "An attached file."
+#~ msgstr "Un fișier atașat."
+
+#~ msgid "Select File"
+#~ msgstr "Selectare fișier"
+
+#~ msgid "Note"
+#~ msgstr "Notă"
+
+#~ msgid "A note about an important event."
+#~ msgstr "O notă despre un eveniment important."
+
+#~ msgid "URI"
+#~ msgstr "URI"
+
+#~ msgid "A URI of a file or web page."
+#~ msgstr "Un URI al unui fișier sau al unei pagini web."
+
+#~ msgid "URI: "
+#~ msgstr "URI:"
+
+#~ msgid "- Manage your diary"
+#~ msgstr "- Organizați-vă propriul jurnal"
+
+#~ msgid "Almanah Preferences"
+#~ msgstr "Preferințe Almanah"
+
+#~ msgid ""
+#~ "The encrypted database is empty. The plain database file has been left "
+#~ "undeleted as backup."
+#~ msgstr ""
+#~ "Baza de date criptată este goală. Baza de date simplă a fost lăsată "
+#~ "neștearsă ca o copie de siguranță."
+
+#~ msgid "Could not delete plain database file \"%s\"."
+#~ msgstr "Baza de date simplă „%s” nu a putut fi ștearsă."
