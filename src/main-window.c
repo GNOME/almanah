@@ -259,8 +259,8 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Grab our child widgets */
 	priv->entry_scrolled = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_main_content_scrolled_window"));
-	priv->entry_view = GTK_TEXT_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
-	priv->entry_buffer = gtk_text_view_get_buffer (priv->entry_view);
+	priv->entry_view = GTK_SOURCE_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
+	priv->entry_buffer = GTK_SOURCE_BUFFER (gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->entry_view)));
 	priv->entry_tags_area = ALMANAH_ENTRY_TAGS_AREA (gtk_builder_get_object (builder, "almanah_mw_entry_tags_area"));
 	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
 	priv->events_expander = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_events_expander"));
@@ -282,7 +282,7 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Set up text formatting. It's important this is done after setting up GtkSpell, so that we know whether to
 	 * create a dummy gtkspell-misspelled text tag. */
-	almanah_interface_create_text_tags (priv->entry_buffer, TRUE);
+	almanah_interface_create_text_tags (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 
 	/* Make sure we're notified if the cursor moves position so we can check the tag stack */
 	g_signal_connect (priv->entry_buffer, "notify::cursor-position", G_CALLBACK (mw_entry_buffer_cursor_position_cb), main_window);
@@ -334,7 +334,7 @@ static void
 current_entry_notify_cb (__attribute__ ((unused)) AlmanahEntry *entry, __attribute__ ((unused)) GParamSpec *pspec, AlmanahMainWindow *self)
 {
 	/* As the entry's been changed, mark it as edited so that it has to be saved */
-	gtk_text_buffer_set_modified (self->priv->entry_buffer, TRUE);
+	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (self->priv->entry_buffer), TRUE);
 }
 
 static void
@@ -569,8 +569,8 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 
 	/* Don't save if it hasn't been/can't be edited */
 	if (priv->current_entry == NULL ||
-	    gtk_text_view_get_editable (priv->entry_view) == FALSE ||
-	    gtk_text_buffer_get_modified (priv->entry_buffer) == FALSE)
+	    gtk_text_view_get_editable (GTK_TEXT_VIEW (priv->entry_view)) == FALSE ||
+	    gtk_text_buffer_get_modified (GTK_TEXT_BUFFER (priv->entry_buffer)) == FALSE)
 		return;
 
 	storage_manager = almanah_application_dup_storage_manager (ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (self))));
@@ -579,7 +579,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	editability = almanah_entry_get_editability (priv->current_entry);
 	entry_exists = almanah_storage_manager_entry_exists (storage_manager, &date);
 	existing_entry_is_empty = almanah_entry_is_empty (priv->current_entry);
-	entry_is_empty = (gtk_text_buffer_get_char_count (priv->entry_buffer) == 0) ? TRUE : FALSE;
+	entry_is_empty = (gtk_text_buffer_get_char_count (GTK_TEXT_BUFFER (priv->entry_buffer)) == 0) ? TRUE : FALSE;
 
 	/* Make sure they're editable: don't allow entries in the future to be edited,
 	 * but allow entries in the past to be added or edited, as long as permission is given.
@@ -652,8 +652,8 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	}
 
 	/* Save the entry */
-	almanah_entry_set_content (priv->current_entry, priv->entry_buffer);
-	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
+	almanah_entry_set_content (priv->current_entry, GTK_TEXT_BUFFER (priv->entry_buffer));
+	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), FALSE);
 
 	g_date_set_time_t (&last_edited, time (NULL));
 	almanah_entry_set_last_edited (priv->current_entry, &last_edited);
@@ -701,7 +701,7 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 
 	/* Only get the tag list if there's no selection (just an insertion cursor),
 	 * since we want the buttons untoggled if there's a selection. */
-	range_selected = gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &iter, NULL);
+	range_selected = gtk_text_buffer_get_selection_bounds (GTK_TEXT_BUFFER (priv->entry_buffer), &iter, NULL);
 	if (range_selected == FALSE)
 		_tag_list = gtk_text_iter_get_tags (&iter);
 
@@ -801,11 +801,11 @@ mw_entry_buffer_insert_text_after_cb (GtkSourceBuffer *text_buffer, GtkTextIter 
 	gtk_text_iter_backward_chars (&start, len);
 
 	if (priv->pending_bold_active == TRUE)
-		gtk_text_buffer_apply_tag_by_name (text_buffer, "bold", &start, end);
+		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (text_buffer), "bold", &start, end);
 	if (priv->pending_italic_active == TRUE)
-		gtk_text_buffer_apply_tag_by_name (text_buffer, "italic", &start, end);
+		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (text_buffer), "italic", &start, end);
 	if (priv->pending_underline_active == TRUE)
-		gtk_text_buffer_apply_tag_by_name (text_buffer, "underline", &start, end);
+		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (text_buffer), "underline", &start, end);
 
 	priv->updating_formatting = FALSE;
 }
@@ -842,7 +842,7 @@ mw_cut_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute_
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
-	gtk_text_buffer_cut_clipboard (main_window->priv->entry_buffer, clipboard, TRUE);
+	gtk_text_buffer_cut_clipboard (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), clipboard, TRUE);
 }
 
 void
@@ -850,7 +850,7 @@ mw_copy_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
-	gtk_text_buffer_copy_clipboard (main_window->priv->entry_buffer, clipboard);
+	gtk_text_buffer_copy_clipboard (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), clipboard);
 }
 
 void
@@ -858,14 +858,14 @@ mw_paste_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribut
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
-	gtk_text_buffer_paste_clipboard (main_window->priv->entry_buffer, clipboard, NULL, TRUE);
+	gtk_text_buffer_paste_clipboard (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), clipboard, NULL, TRUE);
 }
 
 void
 mw_delete_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
-	gtk_text_buffer_delete_selection (main_window->priv->entry_buffer, TRUE, TRUE);
+	gtk_text_buffer_delete_selection (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), TRUE, TRUE);
 }
 
 void
@@ -877,7 +877,7 @@ mw_insert_time_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __at
 
 	time_struct = time (NULL);
 	strftime (time_string, sizeof (time_string), "%X", localtime (&time_struct));
-	gtk_text_buffer_insert_at_cursor (main_window->priv->entry_buffer, time_string, -1);
+	gtk_text_buffer_insert_at_cursor (GTK_TEXT_BUFFER (main_window->priv->entry_buffer), time_string, -1);
 }
 
 void
@@ -930,12 +930,12 @@ apply_formatting (AlmanahMainWindow *self, const gchar *tag_name, gboolean apply
 	if (priv->updating_formatting == TRUE)
 		return;
 
-	gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start, &end);
+	gtk_text_buffer_get_selection_bounds (GTK_TEXT_BUFFER (priv->entry_buffer), &start, &end);
 	if (applying == TRUE)
-		gtk_text_buffer_apply_tag_by_name (priv->entry_buffer, tag_name, &start, &end);
+		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (priv->entry_buffer), tag_name, &start, &end);
 	else
-		gtk_text_buffer_remove_tag_by_name (priv->entry_buffer, tag_name, &start, &end);
-	gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
+		gtk_text_buffer_remove_tag_by_name (GTK_TEXT_BUFFER (priv->entry_buffer), tag_name, &start, &end);
+	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 }
 
 void
@@ -1019,7 +1019,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 		goto finish;
 	}
 
-	gtk_text_buffer_get_selection_bounds (priv->entry_buffer, &start, &end);
+	gtk_text_buffer_get_selection_bounds (GTK_TEXT_BUFFER (priv->entry_buffer), &start, &end);
 
 	if (g_variant_get_boolean (parameter) == TRUE) {
 		/* Add a new hyperlink on the selected text */
@@ -1037,10 +1037,10 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 			/* Create and apply a new anonymous tag */
 			tag = GTK_TEXT_TAG (almanah_hyperlink_tag_new (almanah_uri_entry_dialog_get_uri (uri_entry_dialog)));
 
-			table = gtk_text_buffer_get_tag_table (priv->entry_buffer);
+			table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (priv->entry_buffer));
 			gtk_text_tag_table_add (table, tag);
 
-			gtk_text_buffer_apply_tag (priv->entry_buffer, tag, &start, &end);
+			gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (priv->entry_buffer), tag, &start, &end);
 
 			/* Connect up events */
 			g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, self);
@@ -1070,7 +1070,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 
 				if (gtk_text_iter_backward_to_tag_toggle (&tag_start, tag) == TRUE &&
 				    gtk_text_iter_forward_to_tag_toggle (&tag_end, tag) == TRUE) {
-					gtk_text_buffer_remove_tag (priv->entry_buffer, tag, &tag_start, &tag_end);
+					gtk_text_buffer_remove_tag (GTK_TEXT_BUFFER (priv->entry_buffer), tag, &tag_start, &tag_end);
 				}
 			}
 		}
@@ -1088,7 +1088,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 
 			for (i = tags; i != NULL; i = i->next) {
 				if (ALMANAH_IS_HYPERLINK_TAG (i->data)) {
-					gtk_text_buffer_remove_tag (priv->entry_buffer, GTK_TEXT_TAG (i->data), &start, &end);
+					gtk_text_buffer_remove_tag (GTK_TEXT_BUFFER (priv->entry_buffer), GTK_TEXT_TAG (i->data), &start, &end);
 				}
 			}
 
@@ -1099,7 +1099,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 		update_state = TRUE;
 	}
 
-	gtk_text_buffer_set_modified (priv->entry_buffer, TRUE);
+	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 
  finish:
 	if (update_state)
@@ -1282,7 +1282,7 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	g_object_unref (entry);
 
 	future_entry = almanah_entry_get_editability (priv->current_entry) == ALMANAH_ENTRY_FUTURE;
-	gtk_text_view_set_editable (priv->entry_view, !future_entry);
+	gtk_text_view_set_editable (GTK_TEXT_VIEW (priv->entry_view), !future_entry);
 	for (i = 0; affected_actions[i] != NULL; i++) {
 		action = g_action_map_lookup_action (G_ACTION_MAP (main_window), affected_actions[i]);
 		g_simple_action_set_enabled (G_SIMPLE_ACTION (action), !future_entry);
@@ -1297,8 +1297,8 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	if (almanah_entry_is_empty (priv->current_entry) == FALSE) {
 		GError *error = NULL;
 
-		gtk_text_buffer_set_text (priv->entry_buffer, "", 0);
-		if (almanah_entry_get_content (priv->current_entry, priv->entry_buffer, FALSE, &error) == FALSE) {
+		gtk_text_buffer_set_text (GTK_TEXT_BUFFER (priv->entry_buffer), "", 0);
+		if (almanah_entry_get_content (priv->current_entry, GTK_TEXT_BUFFER (priv->entry_buffer), FALSE, &error) == FALSE) {
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
 								    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 								    _("Entry content could not be loaded"));
@@ -1309,18 +1309,18 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 			g_error_free (error);
 
 			/* Make sure the interface is left in a decent state before we return */
-			gtk_text_view_set_editable (priv->entry_view, FALSE);
+			gtk_text_view_set_editable (GTK_TEXT_VIEW (priv->entry_view), FALSE);
 
 			return;
 		}
 	} else {
 		/* Set the buffer to be empty */
-		gtk_text_buffer_set_text (priv->entry_buffer, "", -1);
+		gtk_text_buffer_set_text (GTK_TEXT_BUFFER (priv->entry_buffer), "", -1);
 	}
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Ensure the spell-checking is updated */
-	gtkspell = gtk_spell_checker_get_from_text_view (priv->entry_view);
+	gtkspell = gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (priv->entry_view));
 	if (gtkspell != NULL) {
 		gtk_spell_checker_recheck_all (gtkspell);
 		gtk_widget_queue_draw (GTK_WIDGET (priv->entry_view));
@@ -1328,7 +1328,7 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Unset the modification bit on the text buffer last, so that we can be sure it's unset */
-	gtk_text_buffer_set_modified (priv->entry_buffer, FALSE);
+	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), FALSE);
 
 	/* List the entry's events */
 	event_manager = almanah_application_dup_event_manager (application);
@@ -1632,11 +1632,11 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 	GtkTextTag *tag;
 
 	/* Bail out if spell checking's already enabled */
-	if (gtk_spell_checker_get_from_text_view (self->priv->entry_view) != NULL)
+	if (gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (self->priv->entry_view)) != NULL)
 		return TRUE;
 
 	/* If spell checking wasn't already enabled, we have a dummy gtkspell-misspelled text tag to destroy */
-	table = gtk_text_buffer_get_tag_table (self->priv->entry_buffer);
+	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (self->priv->entry_buffer));
 	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
 	if (tag != NULL)
 		gtk_text_tag_table_remove (table, tag);
@@ -1655,7 +1655,7 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 
 	gtkspell = gtk_spell_checker_new ();
 	gtk_spell_checker_set_language (gtkspell, spelling_language, error);
-	gtk_spell_checker_attach (gtkspell, self->priv->entry_view);
+	gtk_spell_checker_attach (gtkspell, GTK_TEXT_VIEW (self->priv->entry_view));
 	g_free (spelling_language);
 
 	if (gtkspell == NULL)
@@ -1670,17 +1670,17 @@ disable_spell_checking (AlmanahMainWindow *self)
 	GtkTextTagTable *table;
 	GtkTextTag *tag;
 
-	gtkspell = gtk_spell_checker_get_from_text_view (self->priv->entry_view);
+	gtkspell = gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (self->priv->entry_view));
 	if (gtkspell != NULL)
 		gtk_spell_checker_detach (gtkspell);
 
 	/* Remove the old gtkspell-misspelling text tag */
-	table = gtk_text_buffer_get_tag_table (self->priv->entry_buffer);
+	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (self->priv->entry_buffer));
 	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
 	if (tag != NULL)
 		gtk_text_tag_table_remove (table, tag);
 
 	/* Create a dummy gtkspell-misspelling text tag */
-	gtk_text_buffer_create_tag (self->priv->entry_buffer, "gtkspell-misspelled", NULL);
+	gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (self->priv->entry_buffer), "gtkspell-misspelled", NULL);
 }
 #endif /* ENABLE_SPELL_CHECKING */
