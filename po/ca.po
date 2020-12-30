@@ -52,12 +52,14 @@ msgstr "Agenda Almanah"
 msgid "Keep a personal diary"
 msgstr "Manteniu una agenda personal"
 
-#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is
+#. printed to if "Print to File" is chosen.
 #: ../data/almanah.desktop.in.h:3 ../src/application.c:272
 msgid "Diary"
 msgstr "Agenda"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: ../data/almanah.desktop.in.h:5
 msgid "diary;journal;"
 msgstr "agenda;diari;"
@@ -68,7 +70,7 @@ msgstr "Calendari"
 
 #: ../src/ui/almanah.ui.h:2
 msgid "Go to Today"
-msgstr "Vés a avui"
+msgstr "Ves a avui"
 
 #: ../src/ui/almanah.ui.h:3
 msgid "Select Date…"
@@ -136,9 +138,9 @@ msgid ""
 "been built with encryption support. Leave blank to disable database "
 "encryption."
 msgstr ""
-"L'id. de la clau a utilitzar per xifrar i desxifrar la base de dades, si "
+"L'id. de la clau a utilitzar per a xifrar i desxifrar la base de dades, si "
 "Almanah es va construir amb compatibilitat per al xifratge. Deixeu-ho en "
-"blanc per inhabilitar el xifratge de la base de dades."
+"blanc per a inhabilitar el xifratge de la base de dades."
 
 #: ../data/org.gnome.almanah.gschema.xml.in.h:3
 msgid "Spell checking language"
@@ -204,7 +206,7 @@ msgid ""
 msgstr ""
 "Almanah es distribueix amb l'expectativa que serà útil, però SENSE CAP "
 "GARANTIA; ni tan sols la garantia implícita de COMERCIABILITAT o ADEQUACIÓ "
-"PER UN PROPÒSIT PARTICULAR. Vegeu la Llicència Pública General GNU per "
+"PER UN PROPÒSIT PARTICULAR. Vegeu la Llicència Pública General GNU per a "
 "obtenir-ne més detalls."
 
 #: ../src/application.c:530
@@ -225,11 +227,11 @@ msgstr "Un arxivador útil d'agenda, que emmagatzema %u entrades."
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
-#. Translators: please include your names here to be credited for your hard work!
+#. Translators: please include your names here to be credited for your hard
+#. work!
 #. * Format:
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
-#.
 #: ../src/application.c:557
 msgid "translator-credits"
 msgstr ""
@@ -315,7 +317,7 @@ msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
-"Seleccioneu el nom a donar al fitxer amb una còpia completa de la base de "
+"S_eleccioneu el nom a donar al fitxer amb una còpia completa de la base de "
 "dades de l'agenda Almanah sense xifrar."
 
 #: ../src/export-operation.c:256 ../src/export-operation.c:313
@@ -436,12 +438,18 @@ msgstr "L'agenda s'ha exportat correctament."
 msgid "Import Results"
 msgstr "Resultats de la importació"
 
-#. Translators: This is a strftime()-format string for the dates displayed in import results.
-#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
-#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
-#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
-#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
-#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#. Translators: This is a strftime()-format string for the dates displayed in
+#. import results.
+#. Translators: This is a strftime()-format string for the date to display when
+#. asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when
+#. asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at
+#. the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above
+#. each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in
+#. search results.
 #: ../src/import-export-dialog.c:542 ../src/main-window.c:590
 #: ../src/main-window.c:621 ../src/main-window.c:1228 ../src/printing.c:263
 #: ../src/search-dialog.c:180
@@ -462,7 +470,7 @@ msgstr ""
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
 "Seleccioneu un _fitxer de base de dades que s'hagi creat amb l'agenda "
-"Almanah per importar-ho."
+"Almanah per a importar-ho."
 
 #: ../src/import-operation.c:248
 #, c-format
@@ -481,7 +489,8 @@ msgstr ""
 "intermèdia. S'està sobreescrivint amb l'entrada importada: %s"
 
 #. Append some header text for the imported entry
-#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. Translators: This text is appended to an existing entry when an entry is
+#. being imported to the same date.
 #. * The imported entry is appended to this text.
 #: ../src/import-operation.c:305
 #, c-format
@@ -525,7 +534,8 @@ msgstr ""
 msgid "Error opening URI"
 msgstr "S'ha produït un error en obrir l'URI"
 
-#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#. Translators: this is an event source name (like Calendar appointment) and
+#. the time when the event takes place
 #: ../src/main-window.c:1155
 #, c-format
 msgid "%s @ %s"
@@ -536,14 +546,15 @@ msgid "Entry content could not be loaded"
 msgstr "No s'ha pogut carregar el contingut de l'entrada"
 
 #. Translators: this sentence is just used in startup to estimate the width
-#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. of a 15 words sentence. Translate with some random sentences with just 15
+#. words.
 #. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
 #: ../src/main-window.c:1416
 msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
 msgstr ""
-"Això tan sols és una frase de quinze paraules per calcular la mida del text"
+"Això tan sols és una frase de quinze paraules per a calcular la mida del text"
 
 #: ../src/main-window.c:1453
 msgid "Spelling checker could not be initialized"
@@ -604,7 +615,8 @@ msgstr "Interlineat:"
 msgid "Search canceled."
 msgstr "S'ha cancel·lat la cerca."
 
-#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#. Translators: This is an error message wrapper for when searches encounter an
+#. error. The placeholder is for an error message.
 #: ../src/search-dialog.c:224
 #, c-format
 msgid "Error: %s"
@@ -703,7 +715,8 @@ msgstr "S'ha produït un error en obtenir la clau de xifratge: %s"
 msgid "Error encrypting database: %s"
 msgstr "S'ha produït un error en xifrar la base de dades: %s"
 
-#. Translators: The first and second params are file paths, the last param is an error message.
+#. Translators: The first and second params are file paths, the last param is
+#. an error message.
 #: ../src/vfs.c:489
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
@@ -721,7 +734,8 @@ msgstr ""
 msgid "Error closing file: %s"
 msgstr "S'ha produït un error en tancar el fitxer: %s"
 
-#. Translators: the first parameter is a filename, the second is an error message.
+#. Translators: the first parameter is a filename, the second is an error
+#. message.
 #. Translators: the first parameter is a filename.
 #: ../src/vfs.c:994 ../src/vfs.c:1021
 #, c-format
@@ -751,7 +765,8 @@ msgstr ""
 "No es pot carregar l'objecte de finestra del calendari sense un fitxer "
 "d'interfície gràfica"
 
-#. Translators: This is the detail string for important days as displayed in the calendar.
+#. Translators: This is the detail string for important days as displayed in
+#. the calendar.
 #: ../src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Important"
@@ -762,13 +777,14 @@ msgstr "afegeix l'etiqueta"
 
 #: ../src/widgets/entry-tags-area.c:101
 msgid "Write the tag and press enter to save it"
-msgstr "Escriviu l'etiqueta i premeu la tecla de retorn per desar-la"
+msgstr "Escriviu l'etiqueta i premeu la tecla de retorn per a desar-la"
 
 #: ../src/widgets/tag-accessible.c:165
 msgid "Remove the tag from the entry"
 msgstr "Suprimeix l'etiqueta de l'entrada"
 
-#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init...
+#. ?
 #: ../src/widgets/tag.c:416
 msgid "Remove tag"
 msgstr "Suprimeix l'etiqueta"
@@ -777,197 +793,3 @@ msgstr "Suprimeix l'etiqueta"
 msgid "Tag entry"
 msgstr "Etiqueta l'entrada"
 
-#~ msgid "Almanah Preferences"
-#~ msgstr "Preferències de l'Almanah"
-
-#~ msgid "Main window X position"
-#~ msgstr "Posició X de la finestra principal"
-
-#~ msgid "Main window Y position"
-#~ msgstr "Posició Y de la finestra principal"
-
-#~ msgid "Main window height"
-#~ msgstr "Alçada de la finestra principal"
-
-#~ msgid "Main window maximization"
-#~ msgstr "Maximització de la finestra principal"
-
-#~ msgid "Main window width"
-#~ msgstr "Amplada de la finestra principal"
-
-#~ msgid "The X position of the main window."
-#~ msgstr "La posició X de la finestra principal."
-
-#~ msgid "The Y position of the main window."
-#~ msgstr "La posició Y de la finestra principal."
-
-#~ msgid "The height of the main window."
-#~ msgstr "L'alçada de la finestra principal."
-
-#~ msgid "The width of the main window."
-#~ msgstr "L'amplada de la finestra principal."
-
-#~ msgid "Whether the main window should start maximized."
-#~ msgstr "Si la finestra principal s'hauria d'iniciar maximitzada."
-
-#~ msgid "Add a definition for the currently selected text."
-#~ msgstr "Afegeix una definició per al text seleccionat."
-
-#~ msgid "Definition Description"
-#~ msgstr "Descripció de la definició"
-
-#~ msgid "Definition List"
-#~ msgstr "Llista de definicions"
-
-#~ msgid "Definition Type"
-#~ msgstr "Tipus de definició"
-
-#~ msgid "Definition type:"
-#~ msgstr "Tipus de definició:"
-
-#~ msgid "F_ormat"
-#~ msgstr "F_ormata"
-
-#~ msgid "I_mportant"
-#~ msgstr "I_mportant"
-
-#~ msgid "Jump to the current date in the diary."
-#~ msgstr "Vés a la data actual en el diari."
-
-#~ msgid "Nothing selected"
-#~ msgstr "No s'ha seleccionat res"
-
-#~ msgid "Results:"
-#~ msgstr "Resultats:"
-
-#~ msgid "Toggle whether the current entry is marked as important."
-#~ msgstr "Commuta si l'entrada actual està marcada com a important."
-
-#~ msgid "Toggle whether the currently selected text is bold."
-#~ msgstr "Commuta si el text seleccionat està en negreta."
-
-#~ msgid "Toggle whether the currently selected text is italic."
-#~ msgstr "Commuta si el text seleccionat està en cursiva."
-
-#~ msgid "Toggle whether the currently selected text is underlined."
-#~ msgstr "Commuta si el text seleccionat està subratllat."
-
-#~ msgid "View"
-#~ msgstr "Visualitza"
-
-#~ msgid "View Event"
-#~ msgstr "Visualitza l'esdeveniment"
-
-#~ msgid "_Add Definition"
-#~ msgstr "_Afegeix una definició"
-
-#~ msgid "_Definitions"
-#~ msgstr "_Definicions"
-
-#~ msgid "_Export…"
-#~ msgstr "_Exporta…"
-
-#~ msgid "_File"
-#~ msgstr "_Fitxer"
-
-#~ msgid "_Help"
-#~ msgstr "A_juda"
-
-#~ msgid "_Import…"
-#~ msgstr "_Importa…"
-
-#~ msgid "_Print…"
-#~ msgstr "_Imprimeix…"
-
-#~ msgid "_Remove Definition"
-#~ msgstr "_Suprimeix la definició"
-
-#~ msgid "_View Definitions"
-#~ msgstr "_Visualitza les definicions"
-
-#~ msgid "Add Definition"
-#~ msgstr "Afegeix una definició"
-
-#~ msgid "Definition Manager"
-#~ msgstr "Gestor de definicions"
-
-#~ msgid "Are you sure you want to delete the definition for \"%s\"?"
-#~ msgstr "Segur que voleu suprimir la definició per a «%s»?"
-
-#~ msgid "Contact"
-#~ msgstr "Contacte"
-
-#~ msgid "An Evolution contact."
-#~ msgstr "Un contacte de l'Evolution."
-
-#~ msgid "Select Contact"
-#~ msgstr "Seleccioneu un contacte"
-
-#~ msgid "Error opening contact"
-#~ msgstr "S'ha produït un error en obrir el contacte"
-
-#~ msgid "Error opening Evolution"
-#~ msgstr "S'ha produït un error en obrir l'Evolution"
-
-#~ msgid "File"
-#~ msgstr "Fitxer"
-
-#~ msgid "An attached file."
-#~ msgstr "Un fitxer adjunt."
-
-#~ msgid "Select File"
-#~ msgstr "Seleccioneu un fitxer"
-
-#~ msgid "Note"
-#~ msgstr "Nota"
-
-#~ msgid "A note about an important event."
-#~ msgstr "Una nota sobre un esdeveniment important."
-
-#~ msgid "URI"
-#~ msgstr "URI"
-
-#~ msgid "A URI of a file or web page."
-#~ msgstr "Un URI d'un fitxer o d'una pàgina web."
-
-#~ msgid "URI: "
-#~ msgstr "URI: "
-
-#~ msgid "- Manage your diary"
-#~ msgstr "- Gestioneu el vostre diari"
-
-#~ msgid ""
-#~ "The encrypted database is empty. The plain database file has been left "
-#~ "undeleted as backup."
-#~ msgstr ""
-#~ "La base de dades encriptada està buida. El fitxer de base de dades s'ha "
-#~ "deixat com a còpia de seguretat."
-
-#~ msgid "Could not delete plain database file \"%s\"."
-#~ msgstr "No s'ha pogut suprimir el fitxer de base de dades «%s»."
-
-#~ msgid "Due to an unknown error the file cannot be opened."
-#~ msgstr "No es pot obrir el fitxer degut a un error desconegut."
-
-#~ msgid "Due to an unknown error the URI cannot be opened."
-#~ msgstr "No es pot obrir l'URI degut a un error desconegut."
-
-#~ msgid "<b>%A, %e %B %Y</b>"
-#~ msgstr "<b>%A %e %B %Y</b>"
-
-#~ msgid "<b>End Date</b>"
-#~ msgstr "<b>Data de finalització</b>"
-
-#~ msgid ""
-#~ "Both an encrypted and plaintext version of the database exist as \"%s\" "
-#~ "and \"%s\", and one is likely corrupt. Please delete the corrupt one "
-#~ "before continuing."
-#~ msgstr ""
-#~ "Existeix una versió encriptada de la base de dades i una sense encriptar, "
-#~ "anomenades «%s» i «%s». Sembla que una de les dues està malmesa. Suprimiu-"
-#~ "la per a continuar."
-
-#~ msgid "Error getting encryption key: GConf key \"%s\" invalid or empty."
-#~ msgstr ""
-#~ "Error en obtenir la clau d'encriptació: La clau del GConf «%s» no és "
-#~ "vàlida o és buida."
