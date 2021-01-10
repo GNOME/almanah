@@ -38,10 +38,11 @@ msgid ""
 "events which happened (on your computer) for each day (such as tasks and "
 "appointments from Evolution)."
 msgstr ""
-"Podeu xifrar l'agenda per preservar la vostra privacitat. Té les habilitats "
-"d'edició, que inclouen la formatació de text i la impressió de text, i també "
-"us mostra una llista dels esdeveniments que van succeir (en l'ordinador "
-"actual) per a cada dia (com ara les tasques i les cites d'Evolution)."
+"Podeu xifrar l'agenda per a preservar la vostra privacitat. Té les "
+"habilitats d'edició, que inclouen la formatació de text i la impressió de "
+"text, i també us mostra una llista dels esdeveniments que van succeir (en "
+"l'ordinador actual) per a cada dia (com ara les tasques i les cites "
+"d'Evolution)."
 
 #: ../data/almanah.desktop.in.h:1 ../src/application.c:133
 #: ../src/main-window.c:156
@@ -792,4 +793,3 @@ msgstr "Suprimeix l'etiqueta"
 #: ../src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Etiqueta l'entrada"
-
