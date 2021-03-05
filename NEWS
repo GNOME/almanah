@@ -1,3 +1,14 @@
+Overview of changes from Almanah 0.12.2 to Almanah 0.12.3
+=========================================================
+
+* Bugs fixed:
+ - #4 Font size is too small in text view
+ - #7 A lot of [-Wincompatible-pointer-types] compiler warnings
+
+* Translation updates:
+ - Catalan
+
+
 Overview of changes from Almanah 0.12.1 to Almanah 0.12.2
 =========================================================
 
