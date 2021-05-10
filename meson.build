@@ -26,7 +26,7 @@ schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 convertdir = join_paths(datadir, 'GConf', 'gsettings')
 
 # Dependencies
-glib = dependency('glib-2.0')
+glib = dependency('glib-2.0', version: '>= 2.62')
 gtk = dependency('gtk+-3.0', version: '>= 3.15')
 gmodule = dependency('gmodule-2.0')
 gthread = dependency('gthread-2.0')
