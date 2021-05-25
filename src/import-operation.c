@@ -394,8 +394,12 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 
 		/* Set the entry's last-edited date */
 		modification_date_time = g_file_info_get_modification_date_time (file_info);
-		g_date_set_time_t (&last_edited, g_date_time_to_unix (modification_date_time));
-		almanah_entry_set_last_edited (entry, &last_edited);
+		if (modification_date_time != NULL) {
+			g_date_set_time_t (&last_edited, g_date_time_to_unix (modification_date_time));
+			almanah_entry_set_last_edited (entry, &last_edited);
+		} else {
+			almanah_entry_set_last_edited (entry, &parsed_date);
+		}
 
 		/* Store the entry */
 		status = set_entry (self, entry, display_name, &message);
