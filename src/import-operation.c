@@ -351,7 +351,7 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 	while ((file_info = g_file_enumerator_next_file (enumerator, NULL, &child_error)) != NULL) {
 		AlmanahEntry *entry;
 		GDate parsed_date, last_edited;
-		GDateTime *modification_date_time = NULL;
+		g_autoptr(GDateTime) modification_date_time = NULL;
 		GFile *file;
 		gchar *contents, *message = NULL;
 		gsize length;
@@ -408,7 +408,6 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 
 		g_object_unref (entry);
 		g_object_unref (file_info);
-		g_date_time_unref (modification_date_time);
 
 		/* Check for cancellation */
 		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
