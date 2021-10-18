@@ -542,7 +542,7 @@ almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPage
 	almanah_operation.end_date = g_date_new ();
 	g_date_set_time_t (almanah_operation.end_date, time (NULL));
 
-	almanah_operation.current_date = g_memdup (almanah_operation.start_date, sizeof (*(almanah_operation.start_date)));
+	almanah_operation.current_date = g_memdup2 (almanah_operation.start_date, sizeof (*(almanah_operation.start_date)));
 
 	if (*print_settings != NULL)
 		gtk_print_operation_set_print_settings (operation, *print_settings);
