@@ -27,7 +27,7 @@ convertdir = join_paths(datadir, 'GConf', 'gsettings')
 
 # Dependencies
 glib = dependency('glib-2.0', version: '>= 2.68')
-gtk = dependency('gtk+-3.0', version: '>= 3.15')
+gtk = dependency('gtk+-3.0', version: '>= 3.24')
 gmodule = dependency('gmodule-2.0')
 gthread = dependency('gthread-2.0')
 gio = dependency('gio-2.0', version: '>= 2.32')
