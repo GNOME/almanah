@@ -29,7 +29,7 @@ glib_minor = 76
 glib = dependency('glib-2.0', version: f'>= @glib_major@.@glib_minor@')
 
 gtk_major = 3
-gtk_minor = 22
+gtk_minor = 24
 gtk = dependency('gtk+-3.0', version: f'>= @gtk_major@.@gtk_minor@')
 
 gmodule = dependency('gmodule-2.0')
