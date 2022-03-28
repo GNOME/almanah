@@ -2,7 +2,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -38,7 +38,7 @@ static void almanah_preferences_dialog_dispose (GObject *object);
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
 static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
 
-struct _AlmanahPreferencesDialogPrivate {
+typedef struct {
 	GSettings *settings;
 	CryptUIKeyset *keyset;
 	CryptUIKeyStore *key_store;
@@ -47,21 +47,19 @@ struct _AlmanahPreferencesDialogPrivate {
 	guint spell_checking_enabled_id;
 	GtkCheckButton *spell_checking_enabled_check_button;
 #endif /* ENABLE_SPELL_CHECKING */
-};
+} AlmanahPreferencesDialogPrivate;
 
 enum {
 	PROP_SETTINGS = 1,
 };
 
-G_DEFINE_TYPE (AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE_WITH_CODE(AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG, G_ADD_PRIVATE(AlmanahPreferencesDialog))
 #define ALMANAH_PREFERENCES_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogPrivate))
 
 static void
 almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahPreferencesDialogPrivate));
 
 	gobject_class->get_property = get_property;
 	gobject_class->set_property = set_property;
@@ -77,8 +75,6 @@ almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)
 static void
 almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogPrivate);
-
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Preferences"));
 	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
@@ -88,7 +84,7 @@ almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 static void
 almanah_preferences_dialog_dispose (GObject *object)
 {
-	AlmanahPreferencesDialogPrivate *priv = ALMANAH_PREFERENCES_DIALOG (object)->priv;
+	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private(ALMANAH_PREFERENCES_DIALOG (object));
 
 	if (priv->keyset != NULL) {
 		g_object_unref (priv->keyset);
@@ -111,7 +107,7 @@ almanah_preferences_dialog_dispose (GObject *object)
 static void
 get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahPreferencesDialogPrivate *priv = ALMANAH_PREFERENCES_DIALOG (object)->priv;
+	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private(ALMANAH_PREFERENCES_DIALOG (object));
 
 	switch (property_id) {
 		case PROP_SETTINGS:
@@ -127,11 +123,11 @@ get_property (GObject *object, guint property_id, GValue *value, GParamSpec *psp
 static void
 set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	AlmanahPreferencesDialog *self = ALMANAH_PREFERENCES_DIALOG (object);
+	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private(ALMANAH_PREFERENCES_DIALOG (object));
 
 	switch (property_id) {
 		case PROP_SETTINGS:
-			self->priv->settings = g_value_dup_object (value);
+			priv->settings = g_value_dup_object (value);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -194,7 +190,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 		return NULL;
 	}
 
-	priv = ALMANAH_PREFERENCES_DIALOG (preferences_dialog)->priv;
+	priv = almanah_preferences_dialog_get_instance_private(ALMANAH_PREFERENCES_DIALOG (preferences_dialog));
 	priv->settings = g_object_ref (settings);
 	grid = GTK_GRID (gtk_builder_get_object (builder, "almanah_pd_grid"));
 	gtk_widget_set_halign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
@@ -248,15 +244,16 @@ almanah_preferences_dialog_new (GSettings *settings)
 static void
 pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog)
 {
+	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private(preferences_dialog);
 	const gchar *key;
 	GError *error = NULL;
 
 	/* Save the new encryption key to GSettings */
-	key = cryptui_key_combo_get_key (preferences_dialog->priv->key_combo);
+	key = cryptui_key_combo_get_key (priv->key_combo);
 	if (key == NULL)
 		key = "";
 
-	if (g_settings_set_string (preferences_dialog->priv->settings, "encryption-key", key) == FALSE) {
+	if (g_settings_set_string (priv->settings, "encryption-key", key) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error saving the encryption key"));
