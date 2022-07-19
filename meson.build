@@ -35,8 +35,13 @@ gtksourceview = dependency('gtksourceview-3.0')
 sqlite = dependency('sqlite3')
 cairo = dependency('cairo')
 atk = dependency('atk')
-gcr = dependency('gcr-base-3')
 cryptui = dependency('cryptui-0.0')
+
+if get_option('gcr3')
+  gcr = dependency('gcr-base-3')
+else
+  gcr = dependency('gcr-4', version: '>= 3.90.0')
+endif
 
 # Options
 evolution_support = get_option('evolution')
@@ -93,6 +98,9 @@ if have_evolution
   # FIXME: We haven’t kept up to date with the post-3.8 deprecations yet:
   # https://gitlab.gnome.org/GNOME/almanah/issues/1
   #conf.set('EDS_DISABLE_DEPRECATED', 1)
+endif
+if get_option('gcr3')
+  conf.set('HAVE_GCR3', 1)
 endif
 
 config = vcs_tag(
