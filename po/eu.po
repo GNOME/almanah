@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2011.
-# Asier Sarasua Garmendia <asier.sarasua@gmail.com>, 2021.
+# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2021, 2022.
 #
 msgid ""
 msgstr "Project-Id-Version: almanah_eu\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
-"POT-Creation-Date: 2020-08-30 11:13+0000\n"
-"PO-Revision-Date: 2021-05-06 10:00+0100\n"
+"POT-Creation-Date: 2021-05-12 20:17+0000\n"
+"PO-Revision-Date: 2022-04-10 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -423,7 +423,7 @@ msgid ""
 "Select a _folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
 "imported."
-msgstr ""
+msgstr "Hautatu testu-fitxategiak dauzkan _karpeta bat, bat sarrera bakoitzeko, 'uuuu-hh-ee' formatudun izenekin, eta luzapenik gabe. Fitxategi horiek guztiak inportatuko dira."
 
 #: src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
@@ -497,13 +497,13 @@ msgstr "Ezin izan da sarreraren edukia kargatu"
 #. Translators: this sentence is just used in startup to estimate the width
 #. of a 15 words sentence. Translate with some random sentences with just 15 words.
 #. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
-#: src/main-window.c:1459
+#: src/main-window.c:1575
 msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
 msgstr "Hau hamairu hitzeko esaldi bat da, egunkariaren sarrera baten testuaren ikuspegiaren tamaina kalkulatzeko"
 
-#: src/main-window.c:1496
+#: src/main-window.c:1612
 msgid "Spelling checker could not be initialized"
 msgstr "Ezin izan da hasieratu ortografia-egiaztatzailea"
 
@@ -629,7 +629,7 @@ msgstr "Errorea zifratutako datu-basearen \"%s\" fitxategia irekitzean: %s"
 #: src/vfs.c:349
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
-msgstr ""
+msgstr "Errorea atzeradeiaren oinarri-datuen bufferra sortzean: %s"
 
 #: src/vfs.c:357
 #, c-format
@@ -660,7 +660,7 @@ msgstr "Errorea fitxategia %s kokalekutik %s kokalekura kopiatzean: %s"
 #: src/vfs.c:547
 #, c-format
 msgid "Error changing database backup file permissions: %s"
-msgstr ""
+msgstr "Errorea datu-basearen babeskopia-fitxategiaren baimenak aldatzean: %s"
 
 #: src/vfs.c:647
 #, c-format
@@ -690,7 +690,7 @@ msgstr "Erabiltzaile-interfazearen datuak ezin izan dira kargatu: %s"
 
 #: src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
-msgstr ""
+msgstr "Ezin da egutegi-leihoaren objektua kargatu interfaze-fitxategitik"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: src/widgets/calendar.c:176
