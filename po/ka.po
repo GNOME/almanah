@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
-"POT-Creation-Date: 2022-03-25 08:37+0000\n"
-"PO-Revision-Date: 2022-10-01 11:56+0200\n"
+"POT-Creation-Date: 2022-10-01 10:04+0000\n"
+"PO-Revision-Date: 2022-11-26 09:20+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: \n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
 #: data/almanah.appdata.xml.in:7 data/almanah.desktop.in:3
 #: src/application.c:135 src/main-window.c:163
@@ -42,7 +42,7 @@ msgstr ""
 
 #: data/almanah.desktop.in:4
 msgid "Keep a personal diary"
-msgstr ""
+msgstr "აწარმოეთ პირადი დღიური"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
 #: data/almanah.desktop.in:5 src/application.c:274
@@ -97,12 +97,12 @@ msgstr "ჩანაწერის ნახვა"
 #. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
 #: src/ui/almanah.ui:505
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
-msgstr ""
+msgstr "მაგ: \"14/03/2009\" ან \"14 მარტი 2009\"."
 
 #. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
 #: src/ui/almanah.ui:570
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
-msgstr ""
+msgstr "მაგ “http://google.com/” ან “file:///home/me/Photos/photo.jpg”."
 
 #: src/ui/almanah.ui:734
 msgid "Successful Entries"
@@ -118,11 +118,11 @@ msgstr "შეცდომიანი ჩანწერები"
 
 #: src/ui/almanah.ui:802
 msgid "Import Results List"
-msgstr ""
+msgstr "შედეგების სიის შემოტანა"
 
 #: data/org.gnome.almanah.gschema.xml.in:6
 msgid "Database encryption key ID"
-msgstr ""
+msgstr "ბაზის დაშიფვრის გასაღების ID"
 
 #: data/org.gnome.almanah.gschema.xml.in:7
 msgid ""
@@ -164,7 +164,7 @@ msgstr ""
 #: src/application.c:364
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
-msgstr ""
+msgstr "ბრძანების სტრიქონის პარამეტრების დამუშავების შეცდომა: %s\n"
 
 #: src/application.c:383
 msgid "Error encrypting database"
@@ -195,7 +195,7 @@ msgstr ""
 #: src/application.c:549
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
-msgstr ""
+msgstr "დღიურის შემნახველი, შეიცავს %u ჩანაწერს."
 
 #: src/application.c:553
 msgid "Copyright © 2008-2009 Philip Withnall"
@@ -230,20 +230,20 @@ msgstr "აირჩიეთ თარიღი"
 #: src/preferences-dialog.c:177 src/search-dialog.c:95
 #: src/uri-entry-dialog.c:126
 msgid "UI data could not be loaded"
-msgstr ""
+msgstr "ინტერფეისის მონაცემების ჩატვირთვის შეცდომა"
 
 #: src/entry.c:303
 #, c-format
 msgid "Invalid data version number %u."
-msgstr ""
+msgstr "მონაცემების ფაილის არასწორი ვერსიის ნომერი %u."
 
 #: src/events/calendar-appointment.c:51
 msgid "Calendar Appointment"
-msgstr ""
+msgstr "კალენდარის განაწესი"
 
 #: src/events/calendar-appointment.c:52
 msgid "An appointment on an Evolution calendar."
-msgstr ""
+msgstr "განაწესი Evolution-ის კალენდარში."
 
 #. Translators: This is a time string with the format hh:mm
 #: src/events/calendar-appointment.c:89 src/events/calendar-task.c:90
@@ -253,15 +253,15 @@ msgstr "%.2d:%.2d"
 
 #: src/events/calendar-appointment.c:135 src/events/calendar-task.c:125
 msgid "Error launching Evolution"
-msgstr ""
+msgstr "Evolution-ის გაშვების შეცდომა"
 
 #: src/events/calendar-task.c:51
 msgid "Calendar Task"
-msgstr ""
+msgstr "კალენდარის ამოცანა"
 
 #: src/events/calendar-task.c:52
 msgid "A task on an Evolution calendar."
-msgstr ""
+msgstr "ამოცანა Evolution-ის კალენდარში."
 
 #: src/export-operation.c:47 src/import-operation.c:45
 msgid "Text Files"
@@ -287,7 +287,7 @@ msgstr ""
 #: src/export-operation.c:256 src/export-operation.c:313
 #, c-format
 msgid "Error changing exported file permissions: %s"
-msgstr ""
+msgstr "მოსალოდნელი ფაილის წვდომების შეცვლის შეცდომა: %s"
 
 #: src/gtk/menus.ui:6
 msgid "_Search"
@@ -428,7 +428,7 @@ msgstr ""
 #: src/import-operation.c:248
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
-msgstr ""
+msgstr "შემოტანილი ჩანაწერის ბუფერში დესერიალიზაციის შეცდომა: %s"
 
 #: src/import-operation.c:264
 #, c-format
@@ -448,6 +448,10 @@ msgid ""
 "Entry imported from \"%s\":\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"ჩანაწერი შემოტანილია \"%s\"-დან:\n"
+"\n"
 
 #: src/main-window.c:605
 #, c-format
@@ -475,7 +479,7 @@ msgstr ""
 
 #: src/main-window.c:987
 msgid "Error opening URI"
-msgstr ""
+msgstr "URI-ის გახსნის შეცდომა"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
 #: src/main-window.c:1198
@@ -485,7 +489,7 @@ msgstr "%s @ %s"
 
 #: src/main-window.c:1304
 msgid "Entry content could not be loaded"
-msgstr ""
+msgstr "ჩანაწერის შემცველობის ჩატვირთვის შეცდომა"
 
 #. Translators: this sentence is just used in startup to estimate the width
 #. of a 15 words sentence. Translate with some random sentences with just 15 words.
@@ -495,10 +499,12 @@ msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
 msgstr ""
+"ეს უბრალო თხუთმეტსიტყვიანი წინადადებაა დღიურის ჩანაწერის ტექსტური ხედის "
+"ზომის გამოსათვლელად"
 
 #: src/main-window.c:1612
 msgid "Spelling checker could not be initialized"
-msgstr ""
+msgstr "მართლწერის შემმოწმებლის ინიციალიზაციის შეცდომა"
 
 #: src/preferences-dialog.c:83
 msgid "Preferences"
@@ -511,7 +517,7 @@ msgstr "დაშიფვრის გასაღები: "
 
 #: src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
-msgstr ""
+msgstr "არაფერი (არ დაშიფრო)"
 
 #: src/preferences-dialog.c:213
 msgid "New _Key"
@@ -520,23 +526,23 @@ msgstr "ახალი გასაღები"
 #. Set up the "Enable spell checking" check button
 #: src/preferences-dialog.c:237
 msgid "Enable _spell checking"
-msgstr ""
+msgstr "_მართლწერის შემოწმების ჩართვა"
 
 #: src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
-msgstr ""
+msgstr "დაშიფვრის გასაღების შენახვის შეცდომა"
 
 #: src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
-msgstr ""
+msgstr "Seahorse-ის გახსნის შეცდომა"
 
 #: src/printing.c:277
 msgid "This entry is marked as important."
-msgstr ""
+msgstr "ეს ჩანაწერი მონიშნულია, როგორც მნიშვნელოვანი."
 
 #: src/printing.c:298
 msgid "No entry for this date."
-msgstr ""
+msgstr "ამ თარიღისთვის ჩანაწერი არ არსებობს."
 
 #: src/printing.c:457
 msgid "Start date:"
@@ -566,8 +572,8 @@ msgstr "შეცდომა: %s"
 #, c-format
 msgid "Found %d entry:"
 msgid_plural "Found %d entries:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "ნაპოვნია %d ჩანაწერი:"
+msgstr[1] "ნაპოვნია %d ჩანაწერი:"
 
 #: src/search-dialog.c:278
 msgid "Searching…"
@@ -597,17 +603,17 @@ msgstr "შეიყვანეთ URI"
 #: src/vfs.c:291
 #, c-format
 msgid "GPGME is not at least version %s"
-msgstr ""
+msgstr "GPGME არ შეესაბამება მოთხოვნილ მინიმალურ ვერსას %s"
 
 #: src/vfs.c:298
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
-msgstr ""
+msgstr "GPGME-ს OpenPGP-ის მხარდაჭერა არ გააჩნია: %s"
 
 #: src/vfs.c:305
 #, c-format
 msgid "Error creating cipher context: %s"
-msgstr ""
+msgstr "დაშიფვრის კონტექსტის შექმნის შეცდომა: %s"
 
 #: src/vfs.c:325
 #, c-format
@@ -617,7 +623,7 @@ msgstr ""
 #: src/vfs.c:333
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
-msgstr ""
+msgstr "შეცდომა ბაზის ფაილის, '%s', გახსნისას: %s"
 
 #: src/vfs.c:349
 #, c-format
@@ -632,17 +638,17 @@ msgstr ""
 #: src/vfs.c:365
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
-msgstr ""
+msgstr "შეცდომა ბაზის ფაილის, '%s', გახსნისას: %s"
 
 #: src/vfs.c:461
 #, c-format
 msgid "Error getting encryption key: %s"
-msgstr ""
+msgstr "დაშიფვრის გასაღების მიღების შეცდომა: %s"
 
 #: src/vfs.c:485 src/vfs.c:491
 #, c-format
 msgid "Error encrypting database: %s"
-msgstr ""
+msgstr "ბაზის დაშიფვრის შეცდომა: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
 #: src/vfs.c:541
@@ -664,26 +670,26 @@ msgstr "ფაილის (%s) დახურვის შეცდომა"
 #: src/vfs.c:1046 src/vfs.c:1073
 #, c-format
 msgid "Error backing up file ‘%s’"
-msgstr ""
+msgstr "ფაილის '%s' მარქაფს შეცდომა"
 
 #: src/vfs.c:1059
 #, c-format
 msgid "Error decrypting database: %s"
-msgstr ""
+msgstr "შეცდომა ბაზის გაშიფვრისას: %s"
 
 #: src/vfs.c:1099
 #, c-format
 msgid "Error changing database file permissions: %s"
-msgstr ""
+msgstr "შეცდომა ბაზის ფაილის წვდომების შეცვლისას: %s"
 
 #: src/widgets/calendar-button.c:142
 #, c-format
 msgid "UI data could not be loaded: %s"
-msgstr ""
+msgstr "ინტერფეისის მონაცემების ჩატვირთვის შეცდომა: %s"
 
 #: src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
-msgstr ""
+msgstr "ინტერფეისის ფაილიდან კალენდარის ფანჯრის ობიექტის ჩატვირთვა შეუძლებელია"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
 #: src/widgets/calendar.c:176
@@ -696,11 +702,11 @@ msgstr "ჭდის დამატება"
 
 #: src/widgets/entry-tags-area.c:101
 msgid "Write the tag and press enter to save it"
-msgstr ""
+msgstr "დაწერეთ ჭდე და დააწექით Enter-ს, რომ შეინახოთ"
 
 #: src/widgets/tag-accessible.c:165
 msgid "Remove the tag from the entry"
-msgstr ""
+msgstr "ჩანაწერიდან ჭდის წაშლა"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
 #: src/widgets/tag.c:416
@@ -709,4 +715,4 @@ msgstr "ჭდის წაშლა"
 
 #: src/widgets/tag-entry.c:85
 msgid "Tag entry"
-msgstr ""
+msgstr "ჭდის ჩანაწერი"
