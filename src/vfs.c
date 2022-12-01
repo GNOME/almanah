@@ -44,7 +44,11 @@
 #include <fcntl.h>
 
 #define GCR_API_SUBJECT_TO_CHANGE
+#ifdef HAVE_GCR3
 #include <gcr/gcr-base.h>
+#else
+#include <gcr/gcr.h>
+#endif
 #include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n.h>
