@@ -36,11 +36,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_APPLICATION_CLASS(k)		(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_APPLICATION))
 #define ALMANAH_APPLICATION_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_APPLICATION, AlmanahApplicationClass))
 
-typedef struct _AlmanahApplicationPrivate	AlmanahApplicationPrivate;
-
 typedef struct {
 	GtkApplication parent;
-	AlmanahApplicationPrivate *priv;
 } AlmanahApplication;
 
 typedef struct {
