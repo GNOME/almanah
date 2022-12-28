@@ -33,9 +33,13 @@ main (int argc, char *argv[])
 	g_thread_init (NULL);
 #endif
 
+	gtk_source_init ();
+
 	application = almanah_application_new ();
 	status = g_application_run (G_APPLICATION (application), argc, argv);
 	g_object_unref (application);
+
+	gtk_source_finalize ();
 
 	return status;
 }
