@@ -38,11 +38,8 @@ typedef void (*AlmanahExportProgressCallback) (const GDate *date, gpointer user_
 #define ALMANAH_IS_EXPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_EXPORT_OPERATION))
 #define ALMANAH_EXPORT_OPERATION_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationClass))
 
-typedef struct _AlmanahExportOperationPrivate	AlmanahExportOperationPrivate;
-
 typedef struct {
 	GObject parent;
-	AlmanahExportOperationPrivate *priv;
 } AlmanahExportOperation;
 
 typedef struct {

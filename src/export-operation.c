@@ -59,25 +59,22 @@ static void get_property (GObject *object, guint property_id, GValue *value, GPa
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_export_operation_dispose (GObject *object);
 
-struct _AlmanahExportOperationPrivate {
+typedef struct {
 	gint current_mode; /* index into export_modes */
 	AlmanahStorageManager *storage_manager;
 	GFile *destination;
-};
+} AlmanahExportOperationPrivate;
 
 enum {
 	PROP_STORAGE_MANAGER = 1,
 };
 
-G_DEFINE_TYPE (AlmanahExportOperation, almanah_export_operation, G_TYPE_OBJECT)
-#define ALMANAH_EXPORT_OPERATION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahExportOperation, almanah_export_operation, G_TYPE_OBJECT)
 
 static void
 almanah_export_operation_class_init (AlmanahExportOperationClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahExportOperationPrivate));
 
 	gobject_class->get_property = get_property;
 	gobject_class->set_property = set_property;
@@ -93,14 +90,15 @@ almanah_export_operation_class_init (AlmanahExportOperationClass *klass)
 static void
 almanah_export_operation_init (AlmanahExportOperation *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_EXPORT_OPERATION, AlmanahExportOperationPrivate);
-	self->priv->current_mode = -1; /* no mode selected */
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(self);
+
+	priv->current_mode = -1; /* no mode selected */
 }
 
 static void
 almanah_export_operation_dispose (GObject *object)
 {
-	AlmanahExportOperationPrivate *priv = ALMANAH_EXPORT_OPERATION (object)->priv;
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(ALMANAH_EXPORT_OPERATION (object));
 
 	if (priv->storage_manager != NULL)
 		g_object_unref (priv->storage_manager);
@@ -117,7 +115,7 @@ almanah_export_operation_dispose (GObject *object)
 static void
 get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahExportOperationPrivate *priv = ALMANAH_EXPORT_OPERATION (object)->priv;
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(ALMANAH_EXPORT_OPERATION (object));
 
 	switch (property_id) {
 		case PROP_STORAGE_MANAGER:
@@ -133,11 +131,11 @@ get_property (GObject *object, guint property_id, GValue *value, GParamSpec *psp
 static void
 set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	AlmanahExportOperation *self = ALMANAH_EXPORT_OPERATION (object);
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(ALMANAH_EXPORT_OPERATION (object));
 
 	switch (property_id) {
 		case PROP_STORAGE_MANAGER:
-			self->priv->storage_manager = g_value_dup_object (value);
+			priv->storage_manager = g_value_dup_object (value);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -150,8 +148,9 @@ AlmanahExportOperation *
 almanah_export_operation_new (AlmanahExportOperationType type_id, AlmanahStorageManager *source_storage_manager, GFile *destination)
 {
 	AlmanahExportOperation *export_operation = g_object_new (ALMANAH_TYPE_EXPORT_OPERATION, "storage-manager", source_storage_manager, NULL);
-	export_operation->priv->current_mode = type_id;
-	export_operation->priv->destination = g_object_ref (destination);
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(export_operation);
+	priv->current_mode = type_id;
+	priv->destination = g_object_ref (destination);
 
 	return export_operation;
 }
@@ -202,6 +201,7 @@ static gboolean
 export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
                    GCancellable *cancellable, GError **error)
 {
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(self);
 	AlmanahStorageManagerIter iter;
 	AlmanahEntry *entry;
 	GtkTextBuffer *buffer;
@@ -213,7 +213,7 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 
 	/* Iterate through the entries */
 	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_get_entries (self->priv->storage_manager, &iter)) != NULL) {
+	while ((entry = almanah_storage_manager_get_entries (priv->storage_manager, &iter)) != NULL) {
 		GDate date;
 		gchar *filename, *content, *path;
 		GFile *file;
@@ -294,6 +294,7 @@ static gboolean
 export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
                  GCancellable *cancellable, GError **error)
 {
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(self);
 	GFile *source;
 	gboolean success;
 	gchar *destination_path;
@@ -301,7 +302,7 @@ export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExport
 	/* We ignore the progress callbacks, since this is a fairly fast operation, and it exports all the entries at once. */
 
 	/* Get the input file (current unencrypted database) */
-	source = g_file_new_for_path (almanah_storage_manager_get_filename (self->priv->storage_manager));
+	source = g_file_new_for_path (almanah_storage_manager_get_filename (priv->storage_manager));
 
 	/* Copy the current database to that location */
 	success = g_file_copy (source, destination, G_FILE_COPY_OVERWRITE, cancellable, NULL, NULL, error);
@@ -335,6 +336,7 @@ export_data_free (ExportData *data)
 static void
 export_thread (GSimpleAsyncResult *result, AlmanahExportOperation *operation, GCancellable *cancellable)
 {
+	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private(operation);
 	GError *error = NULL;
 	ExportData *data = g_simple_async_result_get_op_res_gpointer (result);
 
@@ -346,7 +348,7 @@ export_thread (GSimpleAsyncResult *result, AlmanahExportOperation *operation, GC
 	}
 
 	/* Export and return */
-	if (export_modes[operation->priv->current_mode].export_func (operation, operation->priv->destination, data->progress_callback,
+	if (export_modes[priv->current_mode].export_func (operation, priv->destination, data->progress_callback,
 	    data->progress_user_data, cancellable, &error) == FALSE) {
 		g_simple_async_result_set_from_error (result, error);
 		g_error_free (error);
