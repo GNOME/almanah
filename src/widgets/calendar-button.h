@@ -36,11 +36,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_CALENDAR_BUTTON_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR_BUTTON))
 #define ALMANAH_CALENDAR_BUTTON_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR_BUTTON, AlmanahCalendarButtonClass))
 
-typedef struct _AlmanahCalendarButtonPrivate	AlmanahCalendarButtonPrivate;
-
 typedef struct {
 	GtkToggleButton parent;
-	AlmanahCalendarButtonPrivate *priv;
 } AlmanahCalendarButton;
 
 typedef struct {
