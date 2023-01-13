@@ -247,7 +247,7 @@ almanah_entry_set_data (AlmanahEntry *self, const guint8 *data, gsize length, gu
 
 	g_free (priv->data);
 
-	priv->data = g_memdup (data, length * sizeof (*data));
+	priv->data = g_memdup2 (data, length * sizeof (*data));
 	priv->length = length;
 	priv->version = version;
 	priv->is_empty = FALSE;
