@@ -27,6 +27,7 @@
 #include "export-operation.h"
 #include "interface.h"
 #include "main-window.h"
+#include "storage-manager.h"
 
 static void response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self);
 
@@ -35,7 +36,7 @@ void ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportD
 void ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
 void ied_file_chooser_file_activated_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
 
-struct _AlmanahImportExportDialogPrivate {
+typedef struct {
 	AlmanahStorageManager *storage_manager;
 	gboolean import; /* TRUE if we're in import mode, FALSE otherwise */
 	GtkComboBox *mode_combo_box;
@@ -46,15 +47,13 @@ struct _AlmanahImportExportDialogPrivate {
 	GtkLabel *description_label;
 	GtkProgressBar *progress_bar;
 	GCancellable *cancellable; /* non-NULL iff an operation is underway */
-};
+} AlmanahImportExportDialogPrivate;
 
 enum {
 	PROP_STORAGE_MANAGER = 1,
 };
 
-G_DEFINE_TYPE (AlmanahImportExportDialog, almanah_import_export_dialog, GTK_TYPE_DIALOG)
-#define ALMANAH_IMPORT_EXPORT_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG,\
-                                                       AlmanahImportExportDialogPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahImportExportDialog, almanah_import_export_dialog, GTK_TYPE_DIALOG)
 
 static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
@@ -64,8 +63,6 @@ static void
 almanah_import_export_dialog_class_init (AlmanahImportExportDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahImportExportDialogPrivate));
 
 	gobject_class->get_property = get_property;
 	gobject_class->set_property = set_property;
@@ -82,8 +79,9 @@ almanah_import_export_dialog_class_init (AlmanahImportExportDialogClass *klass)
 static void
 almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_IMPORT_EXPORT_DIALOG, AlmanahImportExportDialogPrivate);
-	self->priv->current_mode = -1; /* no mode selected */
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(self);
+
+	priv->current_mode = -1; /* no mode selected */
 
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
 	gtk_window_set_default_size (GTK_WINDOW (self), 500, 400);
@@ -92,7 +90,7 @@ almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 static void
 almanah_import_export_dialog_dispose (GObject *object)
 {
-	AlmanahImportExportDialogPrivate *priv = ALMANAH_IMPORT_EXPORT_DIALOG (object)->priv;
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(ALMANAH_IMPORT_EXPORT_DIALOG (object));
 
 	if (priv->storage_manager != NULL)
 		g_object_unref (priv->storage_manager);
@@ -105,7 +103,7 @@ almanah_import_export_dialog_dispose (GObject *object)
 static void
 get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahImportExportDialogPrivate *priv = ALMANAH_IMPORT_EXPORT_DIALOG (object)->priv;
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(ALMANAH_IMPORT_EXPORT_DIALOG (object));
 
 	switch (property_id) {
 		case PROP_STORAGE_MANAGER:
@@ -122,10 +120,11 @@ static void
 set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
 	AlmanahImportExportDialog *self = ALMANAH_IMPORT_EXPORT_DIALOG (object);
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(self);
 
 	switch (property_id) {
 		case PROP_STORAGE_MANAGER:
-			self->priv->storage_manager = g_value_dup_object (value);
+			priv->storage_manager = g_value_dup_object (value);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -186,7 +185,7 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 		return NULL;
 	}
 
-	priv = import_export_dialog->priv;
+	priv = almanah_import_export_dialog_get_instance_private(import_export_dialog);
 	priv->storage_manager = g_object_ref (storage_manager);
 	priv->import = import;
 
@@ -226,16 +225,19 @@ static void
 import_progress_cb (const GDate *date, AlmanahImportStatus status, const gchar *message, AlmanahImportResultsDialog *results_dialog)
 {
 	AlmanahImportExportDialog *self;
+	AlmanahImportExportDialogPrivate *priv;
 
 	self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
 	almanah_import_results_dialog_add_result (results_dialog, date, status, message);
-	gtk_progress_bar_pulse (self->priv->progress_bar);
+	priv = almanah_import_export_dialog_get_instance_private(self);
+	gtk_progress_bar_pulse (priv->progress_bar);
 }
 
 static void
 import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, AlmanahImportResultsDialog *results_dialog)
 {
 	AlmanahImportExportDialog *self;
+	AlmanahImportExportDialogPrivate *priv;
 	GError *error = NULL;
 
 	self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
@@ -261,8 +263,9 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 
 	gtk_widget_destroy (GTK_WIDGET (results_dialog));
 
-	g_object_unref (self->priv->cancellable);
-	self->priv->cancellable = NULL;
+	priv = almanah_import_export_dialog_get_instance_private(self);
+	g_object_unref (priv->cancellable);
+	priv->cancellable = NULL;
 
 	gtk_widget_destroy (GTK_WIDGET (self));
 }
@@ -270,12 +273,15 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 static void
 export_progress_cb (const GDate *date, AlmanahImportExportDialog *self)
 {
-	gtk_progress_bar_pulse (self->priv->progress_bar);
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(self);
+
+	gtk_progress_bar_pulse (priv->progress_bar);
 }
 
 static void
 export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, AlmanahImportExportDialog *self)
 {
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(self);
 	GError *error = NULL;
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
@@ -302,8 +308,8 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 		gtk_widget_destroy (message_dialog);
 	}
 
-	g_object_unref (self->priv->cancellable);
-	self->priv->cancellable = NULL;
+	g_object_unref (priv->cancellable);
+	priv->cancellable = NULL;
 
 	gtk_widget_destroy (GTK_WIDGET (self));
 }
@@ -311,7 +317,7 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 static void
 response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self)
 {
-	AlmanahImportExportDialogPrivate *priv = self->priv;
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(self);
 	GFile *file;
 
 	/* If the user pressed Cancel, cancel the operation if we've started, and return otherwise */
@@ -324,9 +330,9 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 	}
 
 	/* Disable the widgets */
-	gtk_widget_set_sensitive (self->priv->import_export_button, FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (self->priv->file_chooser), FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (self->priv->mode_combo_box), FALSE);
+	gtk_widget_set_sensitive (priv->import_export_button, FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (priv->file_chooser), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (priv->mode_combo_box), FALSE);
 
 	/* Get the input/output file or folder */
 	file = gtk_file_chooser_get_file (priv->file_chooser);
@@ -362,7 +368,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 void
 ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog *self)
 {
-	AlmanahImportExportDialogPrivate *priv = self->priv;
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(self);
 	gint new_mode;
 	GtkTreeIter iter;
 	GtkTreeModel *model;
@@ -392,14 +398,15 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 void
 ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self)
 {
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private(self);
 	GFile *current_file;
 
 	/* Change the sensitivity of the dialogue's buttons based on whether a file is selected */
 	current_file = gtk_file_chooser_get_file (file_chooser);
 	if (current_file == NULL) {
-		gtk_widget_set_sensitive (self->priv->import_export_button, FALSE);
+		gtk_widget_set_sensitive (priv->import_export_button, FALSE);
 	} else {
-		gtk_widget_set_sensitive (self->priv->import_export_button, TRUE);
+		gtk_widget_set_sensitive (priv->import_export_button, TRUE);
 		g_object_unref (current_file);
 	}
 }
@@ -434,14 +441,11 @@ G_DEFINE_TYPE (AlmanahImportResultsDialog, almanah_import_results_dialog, GTK_TY
 static void
 almanah_import_results_dialog_class_init (AlmanahImportResultsDialogClass *klass)
 {
-	g_type_class_add_private (klass, sizeof (AlmanahImportResultsDialogPrivate));
 }
 
 static void
 almanah_import_results_dialog_init (AlmanahImportResultsDialog *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_IMPORT_RESULTS_DIALOG, AlmanahImportResultsDialogPrivate);
-
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
 	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), TRUE);

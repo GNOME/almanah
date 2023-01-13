@@ -36,11 +36,8 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_IMPORT_EXPORT_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG))
 #define ALMANAH_IMPORT_EXPORT_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG, AlmanahImportExportDialogClass))
 
-typedef struct _AlmanahImportExportDialogPrivate	AlmanahImportExportDialogPrivate;
-
 typedef struct {
 	GtkDialog parent;
-	AlmanahImportExportDialogPrivate *priv;
 } AlmanahImportExportDialog;
 
 typedef struct {
