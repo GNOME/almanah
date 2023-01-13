@@ -70,7 +70,7 @@ static gboolean almanah_calendar_button_select_date_press_cb   (GtkWidget *widge
 
 static void dock_position_func (AlmanahCalendarButton *self, gint *x, gint *y);
 
-G_DEFINE_TYPE (AlmanahCalendarButton, almanah_calendar_button, GTK_TYPE_TOGGLE_BUTTON)
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendarButton, almanah_calendar_button, GTK_TYPE_TOGGLE_BUTTON)
 
 static void
 almanah_calendar_button_class_init (AlmanahCalendarButtonClass *klass)
