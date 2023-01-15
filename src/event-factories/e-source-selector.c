@@ -28,13 +28,9 @@
 #include "e-cell-renderer-color.h"
 #include "e-source-selector.h"
 
-#define E_SOURCE_SELECTOR_GET_PRIVATE(obj) \
-	(G_TYPE_INSTANCE_GET_PRIVATE \
-	((obj), E_TYPE_SOURCE_SELECTOR, ESourceSelectorPrivate))
-
 typedef struct _AsyncContext AsyncContext;
 
-struct _ESourceSelectorPrivate {
+typedef struct {
 	ESourceRegistry *registry;
 	GHashTable *source_index;
 	gchar *extension_name;
@@ -49,7 +45,7 @@ struct _ESourceSelectorPrivate {
 	gboolean select_new;
 	gboolean show_colors;
 	gboolean show_toggles;
-};
+} ESourceSelectorPrivate;
 
 struct _AsyncContext {
 	ESourceSelector *selector;
@@ -86,7 +82,7 @@ enum {
 
 static guint signals[NUM_SIGNALS];
 
-G_DEFINE_TYPE (ESourceSelector, e_source_selector, GTK_TYPE_TREE_VIEW)
+G_DEFINE_TYPE_WITH_PRIVATE (ESourceSelector, e_source_selector, GTK_TYPE_TREE_VIEW)
 
 /* ESafeToggleRenderer does not emit 'toggled' signal
  * on 'activate' when mouse is not over the toggle. */
@@ -153,8 +149,10 @@ e_cell_renderer_safe_toggle_new (void)
 static void
 clear_saved_primary_selection (ESourceSelector *selector)
 {
-	gtk_tree_row_reference_free (selector->priv->saved_primary_selection);
-	selector->priv->saved_primary_selection = NULL;
+	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private(selector);
+
+	gtk_tree_row_reference_free (priv->saved_primary_selection);
+	priv->saved_primary_selection = NULL;
 }
 
 static void
@@ -204,6 +202,7 @@ source_selector_write_idle_cb (gpointer user_data)
 {
 	AsyncContext *async_context = user_data;
 	GHashTable *pending_writes;
+	ESourceSelectorPrivate *priv;
 
 	/* XXX This operation is not cancellable. */
 	e_source_write (
@@ -211,7 +210,8 @@ source_selector_write_idle_cb (gpointer user_data)
 		source_selector_write_done_cb,
 		g_object_ref (async_context->selector));
 
-	pending_writes = async_context->selector->priv->pending_writes;
+	priv = e_source_selector_get_instance_private(async_context->selector);
+	pending_writes = priv->pending_writes;
 	g_hash_table_remove (pending_writes, async_context->source);
 
 	return FALSE;
@@ -221,11 +221,13 @@ static void
 source_selector_cancel_write (ESourceSelector *selector,
                               ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	GHashTable *pending_writes;
 
+	priv = e_source_selector_get_instance_private(selector);
 	/* Cancel any pending writes for this ESource so as not
 	 * to overwrite whatever change we're being notified of. */
-	pending_writes = selector->priv->pending_writes;
+	pending_writes = priv->pending_writes;
 	g_hash_table_remove (pending_writes, source);
 }
 
@@ -233,6 +235,7 @@ static void
 source_selector_update_row (ESourceSelector *selector,
                             ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	GHashTable *source_index;
 	ESourceExtension *extension = NULL;
 	GtkTreeRowReference *reference;
@@ -243,7 +246,8 @@ source_selector_update_row (ESourceSelector *selector,
 	const gchar *display_name;
 	gboolean selected;
 
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	reference = g_hash_table_lookup (source_index, source);
 
 	/* This function runs when ANY ESource in the registry changes.
@@ -314,6 +318,7 @@ static gboolean
 source_selector_traverse (GNode *node,
                           ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	ESource *source;
 	GHashTable *source_index;
 	GtkTreeRowReference *reference = NULL;
@@ -325,7 +330,8 @@ source_selector_traverse (GNode *node,
 	if (G_NODE_IS_ROOT (node))
 		return FALSE;
 
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 
 	model = gtk_tree_view_get_model (GTK_TREE_VIEW (selector));
 
@@ -374,6 +380,7 @@ source_selector_save_expanded (GtkTreeView *tree_view,
 static void
 source_selector_build_model (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	ESourceRegistry *registry;
 	GQueue queue = G_QUEUE_INIT;
 	GHashTable *source_index;
@@ -393,7 +400,8 @@ source_selector_build_model (ESourceSelector *selector)
 	if (registry == NULL || extension_name == NULL)
 		return;
 
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	selected = e_source_selector_ref_primary_selection (selector);
 
 	/* Save expanded sources to restore later. */
@@ -454,11 +462,13 @@ static void
 source_selector_expand_to_source (ESourceSelector *selector,
                                   ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	GHashTable *source_index;
 	GtkTreeRowReference *reference;
 	GtkTreePath *path;
 
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	reference = g_hash_table_lookup (source_index, source);
 
 	/* If the ESource is not in our tree model then return silently. */
@@ -524,11 +534,13 @@ static gboolean
 same_source_name_exists (ESourceSelector *selector,
                          const gchar *display_name)
 {
+	ESourceSelectorPrivate *priv;
 	GHashTable *source_index;
 	GHashTableIter iter;
 	gpointer key;
 
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	g_hash_table_iter_init (&iter, source_index);
 
 	while (g_hash_table_iter_next (&iter, &key, NULL)) {
@@ -550,12 +562,14 @@ selection_func (GtkTreeSelection *selection,
                 gboolean path_currently_selected,
                 ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	ESource *source;
 	GtkTreeIter iter;
 	const gchar *extension_name;
 
-	if (selector->priv->toggled_last) {
-		selector->priv->toggled_last = FALSE;
+	priv = e_source_selector_get_instance_private(selector);
+	if (priv->toggled_last) {
+		priv->toggled_last = FALSE;
 		return FALSE;
 	}
 
@@ -615,6 +629,7 @@ cell_toggled_callback (GtkCellRendererToggle *renderer,
                        const gchar *path_string,
                        ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	ESource *source;
 	GtkTreeModel *model;
 	GtkTreePath *path;
@@ -635,7 +650,8 @@ cell_toggled_callback (GtkCellRendererToggle *renderer,
 	else
 		e_source_selector_select_source (selector, source);
 
-	selector->priv->toggled_last = TRUE;
+	priv = e_source_selector_get_instance_private(selector);
+	priv->toggled_last = TRUE;
 
 	gtk_tree_path_free (path);
 
@@ -654,20 +670,24 @@ static void
 source_selector_set_extension_name (ESourceSelector *selector,
                                     const gchar *extension_name)
 {
-	g_return_if_fail (extension_name != NULL);
-	g_return_if_fail (selector->priv->extension_name == NULL);
+	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private(selector);
 
-	selector->priv->extension_name = g_strdup (extension_name);
+	g_return_if_fail (extension_name != NULL);
+	g_return_if_fail (priv->extension_name == NULL);
+
+	priv->extension_name = g_strdup (extension_name);
 }
 
 static void
 source_selector_set_registry (ESourceSelector *selector,
                               ESourceRegistry *registry)
 {
-	g_return_if_fail (E_IS_SOURCE_REGISTRY (registry));
-	g_return_if_fail (selector->priv->registry == NULL);
+	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private(selector);
 
-	selector->priv->registry = g_object_ref (registry);
+	g_return_if_fail (E_IS_SOURCE_REGISTRY (registry));
+	g_return_if_fail (priv->registry == NULL);
+
+	priv->registry = g_object_ref (registry);
 }
 
 static void
@@ -762,7 +782,7 @@ source_selector_dispose (GObject *object)
 {
 	ESourceSelectorPrivate *priv;
 
-	priv = E_SOURCE_SELECTOR_GET_PRIVATE (object);
+	priv = e_source_selector_get_instance_private(E_SOURCE_SELECTOR(object));
 
 	if (priv->registry != NULL) {
 		g_signal_handlers_disconnect_matched (
@@ -787,7 +807,7 @@ source_selector_finalize (GObject *object)
 {
 	ESourceSelectorPrivate *priv;
 
-	priv = E_SOURCE_SELECTOR_GET_PRIVATE (object);
+	priv = e_source_selector_get_instance_private(E_SOURCE_SELECTOR(object));
 
 	g_hash_table_destroy (priv->source_index);
 	g_hash_table_destroy (priv->pending_writes);
@@ -840,6 +860,7 @@ source_selector_button_press_event (GtkWidget *widget,
                                     GdkEventButton *event)
 {
 	ESourceSelector *selector;
+	ESourceSelectorPrivate *priv;
 	GtkWidgetClass *widget_class;
 	GtkTreePath *path;
 	ESource *source = NULL;
@@ -851,7 +872,8 @@ source_selector_button_press_event (GtkWidget *widget,
 
 	selector = E_SOURCE_SELECTOR (widget);
 
-	selector->priv->toggled_last = FALSE;
+	priv = e_source_selector_get_instance_private(selector);
+	priv->toggled_last = FALSE;
 
 	/* Triple-clicking a source selects it exclusively. */
 
@@ -1085,7 +1107,7 @@ source_selector_test_collapse_row (GtkTreeView *tree_view,
 	GtkTreeModel *model;
 	GtkTreeIter child_iter;
 
-	priv = E_SOURCE_SELECTOR_GET_PRIVATE (tree_view);
+	priv = e_source_selector_get_instance_private(E_SOURCE_SELECTOR(tree_view));
 
 	/* Clear this because something else has been clicked on now */
 	priv->toggled_last = FALSE;
@@ -1121,7 +1143,7 @@ source_selector_row_expanded (GtkTreeView *tree_view,
 	GtkTreePath *child_path;
 	GtkTreeIter child_iter;
 
-	priv = E_SOURCE_SELECTOR_GET_PRIVATE (tree_view);
+	priv = e_source_selector_get_instance_private(E_SOURCE_SELECTOR(tree_view));
 
 	if (!priv->saved_primary_selection)
 		return;
@@ -1209,8 +1231,6 @@ e_source_selector_class_init (ESourceSelectorClass *class)
 	GObjectClass *object_class;
 	GtkWidgetClass *widget_class;
 	GtkTreeViewClass *tree_view_class;
-
-	g_type_class_add_private (class, sizeof (ESourceSelectorPrivate));
 
 	object_class = G_OBJECT_CLASS (class);
 	object_class->set_property = source_selector_set_property;
@@ -1334,6 +1354,7 @@ e_source_selector_class_init (ESourceSelectorClass *class)
 static void
 e_source_selector_init (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	GHashTable *pending_writes;
 	GtkTreeViewColumn *column;
 	GtkTreeSelection *selection;
@@ -1347,25 +1368,25 @@ e_source_selector_init (ESourceSelector *selector)
 		(GDestroyNotify) g_object_unref,
 		(GDestroyNotify) pending_writes_destroy_source);
 
-	selector->priv = E_SOURCE_SELECTOR_GET_PRIVATE (selector);
+	priv = e_source_selector_get_instance_private(selector);
 
-	selector->priv->pending_writes = pending_writes;
+	priv->pending_writes = pending_writes;
 
-	selector->priv->main_context = g_main_context_get_thread_default ();
-	if (selector->priv->main_context != NULL)
-		g_main_context_ref (selector->priv->main_context);
+	priv->main_context = g_main_context_get_thread_default ();
+	if (priv->main_context != NULL)
+		g_main_context_ref (priv->main_context);
 
 	tree_view = GTK_TREE_VIEW (selector);
 
 	gtk_tree_view_set_search_column (tree_view, COLUMN_SOURCE);
 	gtk_tree_view_set_enable_search (tree_view, TRUE);
 
-	selector->priv->toggled_last = FALSE;
-	selector->priv->select_new = FALSE;
-	selector->priv->show_colors = TRUE;
-	selector->priv->show_toggles = TRUE;
+	priv->toggled_last = FALSE;
+	priv->select_new = FALSE;
+	priv->show_colors = TRUE;
+	priv->show_toggles = TRUE;
 
-	selector->priv->source_index = g_hash_table_new_full (
+	priv->source_index = g_hash_table_new_full (
 		(GHashFunc) e_source_hash,
 		(GEqualFunc) e_source_equal,
 		(GDestroyNotify) g_object_unref,
@@ -1468,9 +1489,12 @@ e_source_selector_new (ESourceRegistry *registry,
 ESourceRegistry *
 e_source_selector_get_registry (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
+
 	g_return_val_if_fail (E_IS_SOURCE_SELECTOR (selector), NULL);
 
-	return selector->priv->registry;
+	priv = e_source_selector_get_instance_private(selector);
+	return priv->registry;
 }
 
 /**
@@ -1486,9 +1510,12 @@ e_source_selector_get_registry (ESourceSelector *selector)
 const gchar *
 e_source_selector_get_extension_name (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
+
 	g_return_val_if_fail (E_IS_SOURCE_SELECTOR (selector), NULL);
 
-	return selector->priv->extension_name;
+	priv = e_source_selector_get_instance_private(selector);
+	return priv->extension_name;
 }
 
 /**
@@ -1504,9 +1531,12 @@ e_source_selector_get_extension_name (ESourceSelector *selector)
 gboolean
 e_source_selector_get_show_colors (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
+
 	g_return_val_if_fail (E_IS_SOURCE_SELECTOR (selector), FALSE);
 
-	return selector->priv->show_colors;
+	priv = e_source_selector_get_instance_private(selector);
+	return priv->show_colors;
 }
 
 /**
@@ -1522,12 +1552,15 @@ void
 e_source_selector_set_show_colors (ESourceSelector *selector,
                                    gboolean show_colors)
 {
+	ESourceSelectorPrivate *priv;
+
 	g_return_if_fail (E_IS_SOURCE_SELECTOR (selector));
 
-	if ((show_colors ? 1 : 0) == (selector->priv->show_colors ? 1 : 0))
+	priv = e_source_selector_get_instance_private(selector);
+	if ((show_colors ? 1 : 0) == (priv->show_colors ? 1 : 0))
 		return;
 
-	selector->priv->show_colors = show_colors;
+	priv->show_colors = show_colors;
 
 	g_object_notify (G_OBJECT (selector), "show-colors");
 
@@ -1547,9 +1580,11 @@ e_source_selector_set_show_colors (ESourceSelector *selector,
 gboolean
 e_source_selector_get_show_toggles (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	g_return_val_if_fail (E_IS_SOURCE_SELECTOR (selector), FALSE);
 
-	return selector->priv->show_toggles;
+	priv = e_source_selector_get_instance_private(selector);
+	return priv->show_toggles;
 }
 
 /**
@@ -1565,12 +1600,14 @@ void
 e_source_selector_set_show_toggles (ESourceSelector *selector,
                                    gboolean show_toggles)
 {
+	ESourceSelectorPrivate *priv;
 	g_return_if_fail (E_IS_SOURCE_SELECTOR (selector));
 
-	if ((show_toggles ? 1 : 0) == (selector->priv->show_toggles ? 1 : 0))
+	priv = e_source_selector_get_instance_private(selector);
+	if ((show_toggles ? 1 : 0) == (priv->show_toggles ? 1 : 0))
 		return;
 
-	selector->priv->show_toggles = show_toggles;
+	priv->show_toggles = show_toggles;
 
 	g_object_notify (G_OBJECT (selector), "show-toggles");
 
@@ -1657,9 +1694,12 @@ void
 e_source_selector_set_select_new (ESourceSelector *selector,
                                   gboolean state)
 {
+	ESourceSelectorPrivate *priv;
+
 	g_return_if_fail (E_IS_SOURCE_SELECTOR (selector));
 
-	selector->priv->select_new = state;
+	priv = e_source_selector_get_instance_private(selector);
+	priv->select_new = state;
 }
 
 /**
@@ -1673,6 +1713,7 @@ void
 e_source_selector_select_source (ESourceSelector *selector,
                                  ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	ESourceSelectorClass *class;
 	GtkTreeRowReference *reference;
 	GHashTable *source_index;
@@ -1681,7 +1722,8 @@ e_source_selector_select_source (ESourceSelector *selector,
 	g_return_if_fail (E_IS_SOURCE (source));
 
 	/* Make sure the ESource is in our tree model. */
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	reference = g_hash_table_lookup (source_index, source);
 	g_return_if_fail (gtk_tree_row_reference_valid (reference));
 
@@ -1704,6 +1746,7 @@ void
 e_source_selector_unselect_source (ESourceSelector *selector,
                                    ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	ESourceSelectorClass *class;
 	GtkTreeRowReference *reference;
 	GHashTable *source_index;
@@ -1712,7 +1755,8 @@ e_source_selector_unselect_source (ESourceSelector *selector,
 	g_return_if_fail (E_IS_SOURCE (source));
 
 	/* Make sure the ESource is in our tree model. */
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	reference = g_hash_table_lookup (source_index, source);
 	g_return_if_fail (gtk_tree_row_reference_valid (reference));
 
@@ -1737,6 +1781,7 @@ void
 e_source_selector_select_exclusive (ESourceSelector *selector,
                                     ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	ESourceSelectorClass *class;
 	GHashTable *source_index;
 	GHashTableIter iter;
@@ -1748,7 +1793,8 @@ e_source_selector_select_exclusive (ESourceSelector *selector,
 	class = E_SOURCE_SELECTOR_GET_CLASS (selector);
 	g_return_if_fail (class->set_source_selected != NULL);
 
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	g_hash_table_iter_init (&iter, source_index);
 
 	while (g_hash_table_iter_next (&iter, &key, NULL)) {
@@ -1772,6 +1818,7 @@ gboolean
 e_source_selector_source_is_selected (ESourceSelector *selector,
                                       ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	ESourceSelectorClass *class;
 	GtkTreeRowReference *reference;
 	GHashTable *source_index;
@@ -1780,7 +1827,8 @@ e_source_selector_source_is_selected (ESourceSelector *selector,
 	g_return_val_if_fail (E_IS_SOURCE (source), FALSE);
 
 	/* Make sure the ESource is in our tree model. */
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	reference = g_hash_table_lookup (source_index, source);
 	g_return_val_if_fail (gtk_tree_row_reference_valid (reference), FALSE);
 
@@ -1802,6 +1850,7 @@ e_source_selector_source_is_selected (ESourceSelector *selector,
 void
 e_source_selector_edit_primary_selection (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	GtkTreeRowReference *reference;
 	GtkTreeSelection *selection;
 	GtkTreeViewColumn *column;
@@ -1816,7 +1865,8 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 
 	tree_view = GTK_TREE_VIEW (selector);
 	column = gtk_tree_view_get_column (tree_view, 0);
-	reference = selector->priv->saved_primary_selection;
+	priv = e_source_selector_get_instance_private(selector);
+	reference = priv->saved_primary_selection;
 	selection = gtk_tree_view_get_selection (tree_view);
 
 	if (reference != NULL)
@@ -1870,6 +1920,7 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 ESource *
 e_source_selector_ref_primary_selection (ESourceSelector *selector)
 {
+	ESourceSelectorPrivate *priv;
 	ESource *source;
 	GtkTreeRowReference *reference;
 	GtkTreeSelection *selection;
@@ -1885,7 +1936,8 @@ e_source_selector_ref_primary_selection (ESourceSelector *selector)
 	model = gtk_tree_view_get_model (tree_view);
 	selection = gtk_tree_view_get_selection (tree_view);
 
-	reference = selector->priv->saved_primary_selection;
+	priv = e_source_selector_get_instance_private(selector);
+	reference = priv->saved_primary_selection;
 
 	if (gtk_tree_row_reference_valid (reference)) {
 		GtkTreePath *path;
@@ -1930,6 +1982,7 @@ void
 e_source_selector_set_primary_selection (ESourceSelector *selector,
                                          ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	GHashTable *source_index;
 	GtkTreeRowReference *reference;
 	GtkTreeSelection *selection;
@@ -1944,7 +1997,8 @@ e_source_selector_set_primary_selection (ESourceSelector *selector,
 	tree_view = GTK_TREE_VIEW (selector);
 	selection = gtk_tree_view_get_selection (tree_view);
 
-	source_index = selector->priv->source_index;
+	priv = e_source_selector_get_instance_private(selector);
+	source_index = priv->source_index;
 	reference = g_hash_table_lookup (source_index, source);
 
 	/* XXX Maybe we should return a success/fail boolean? */
@@ -1977,7 +2031,7 @@ e_source_selector_set_primary_selection (ESourceSelector *selector,
 	if (gtk_tree_view_row_expanded (tree_view, parent_path)) {
 		gtk_tree_selection_select_path (selection, child_path);
 	} else {
-		selector->priv->saved_primary_selection =
+		priv->saved_primary_selection =
 			gtk_tree_row_reference_copy (reference);
 		g_signal_emit (selector, signals[PRIMARY_SELECTION_CHANGED], 0);
 		g_object_notify (G_OBJECT (selector), "primary-selection");
@@ -2034,6 +2088,7 @@ void
 e_source_selector_queue_write (ESourceSelector *selector,
                                ESource *source)
 {
+	ESourceSelectorPrivate *priv;
 	GSource *idle_source;
 	GHashTable *pending_writes;
 	GMainContext *main_context;
@@ -2042,8 +2097,9 @@ e_source_selector_queue_write (ESourceSelector *selector,
 	g_return_if_fail (E_IS_SOURCE_SELECTOR (selector));
 	g_return_if_fail (E_IS_SOURCE (source));
 
-	main_context = selector->priv->main_context;
-	pending_writes = selector->priv->pending_writes;
+	priv = e_source_selector_get_instance_private(selector);
+	main_context = priv->main_context;
+	pending_writes = priv->pending_writes;
 
 	idle_source = g_hash_table_lookup (pending_writes, source);
 	if (idle_source != NULL && !g_source_is_destroyed (idle_source))
@@ -2075,4 +2131,3 @@ e_source_selector_queue_write (ESourceSelector *selector,
 	g_source_attach (idle_source, main_context);
 	g_source_unref (idle_source);
 }
-
