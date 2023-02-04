@@ -43,7 +43,6 @@ G_BEGIN_DECLS
 
 typedef struct _ECellRendererColor ECellRendererColor;
 typedef struct _ECellRendererColorClass ECellRendererColorClass;
-typedef struct _ECellRendererColorPrivate ECellRendererColorPrivate;
 
 /**
  * ECellRendererColor:
@@ -52,7 +51,6 @@ typedef struct _ECellRendererColorPrivate ECellRendererColorPrivate;
  **/
 struct _ECellRendererColor {
 	GtkCellRenderer parent;
-	ECellRendererColorPrivate *priv;
 };
 
 struct _ECellRendererColorClass {
