@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=almanah&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-10-14 17:59+0000\n"
-"PO-Revision-Date: 2016-01-26 22:47+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
+"POT-Creation-Date: 2020-08-30 11:13+0000\n"
+"PO-Revision-Date: 2022-09-15 19:05+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
@@ -18,20 +17,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/almanah.appdata.xml.in.h:1
+#: data/almanah.appdata.xml.in:7 data/almanah.desktop.in:3
+#: src/application.c:135 src/main-window.c:163
+msgid "Almanah Diary"
+msgstr "Almanah dagbok"
+
+#: data/almanah.appdata.xml.in:8
 msgid "Keep a diary of your life"
 msgstr "För dagbok över ditt liv"
 
-#: ../data/almanah.appdata.xml.in.h:2
+#: data/almanah.appdata.xml.in:10
 msgid ""
 "Almanah Diary is an application to allow you to keep a diary of your life."
 msgstr ""
 "Almanah dagbok är ett program som låter dig föra en dagbok över ditt liv."
 
-#: ../data/almanah.appdata.xml.in.h:3
+#: data/almanah.appdata.xml.in:13
 msgid ""
 "You can encrypt the diary to preserve your privacy. It has editing "
 "abilities, including text formatting and printing and shows you a lists of "
@@ -43,95 +47,92 @@ msgstr ""
 "lista över händelser som inträffat (på din dator) för varje dag (som "
 "exempelvis uppgifter och möten från Evolution)."
 
-#: ../data/almanah.desktop.in.h:1 ../src/application.c:133
-#: ../src/main-window.c:155
-msgid "Almanah Diary"
-msgstr "Almanah dagbok"
-
-#: ../data/almanah.desktop.in.h:2
+#: data/almanah.desktop.in:4
 msgid "Keep a personal diary"
 msgstr "För en personlig dagbok"
 
 #. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
-#: ../data/almanah.desktop.in.h:3 ../src/application.c:272
+#: data/almanah.desktop.in:5 src/application.c:274
 msgid "Diary"
 msgstr "Dagbok"
 
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: ../data/almanah.desktop.in.h:5
+#: data/almanah.desktop.in:7
 msgid "diary;journal;"
 msgstr "dagbok;journal;"
 
-#: ../src/ui/almanah.ui.h:1
+#: src/ui/almanah.ui:27
 msgid "Calendar"
 msgstr "Kalender"
 
-#: ../src/ui/almanah.ui.h:2
+#: src/ui/almanah.ui:46
 msgid "Go to Today"
-msgstr "Gå till idag"
+msgstr "Gå till i dag"
 
-#: ../src/ui/almanah.ui.h:3
+#: src/ui/almanah.ui:56
 msgid "Select Date…"
 msgstr "Välj datum…"
 
-#: ../src/ui/almanah.ui.h:4
+#: src/ui/almanah.ui:134
 msgid "Entry editing area"
 msgstr "Postredigeringsyta"
 
-#: ../src/ui/almanah.ui.h:5
+#: src/ui/almanah.ui:160
 msgid "Past events"
 msgstr "Tidigare händelser"
 
-#: ../src/ui/almanah.ui.h:6
+#: src/ui/almanah.ui:204
 msgid "Past Event List"
 msgstr "Lista över tidigare händelser"
 
-#: ../src/ui/almanah.ui.h:7
+#: src/ui/almanah.ui:299
 msgid "Search entry"
 msgstr "Sök post"
 
-#: ../src/ui/almanah.ui.h:8 ../src/search-dialog.c:69
+#: src/ui/almanah.ui:307 src/search-dialog.c:69
 msgid "Search"
 msgstr "Sök"
 
-#: ../src/ui/almanah.ui.h:9
+#: src/ui/almanah.ui:398
 msgid "Result List"
 msgstr "Resultatlista"
 
-#: ../src/ui/almanah.ui.h:10
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
 msgid "View Entry"
 msgstr "Visa post"
 
-#: ../src/ui/almanah.ui.h:11
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
 msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
 msgstr "exempelvis ”14/03/2009” eller ”14 mars 2009”."
 
-#: ../src/ui/almanah.ui.h:12
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: src/ui/almanah.ui:570
 msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
 msgstr ""
 "exempelvis ”http://google.com/” eller ”file:///home/jag/Foton/foto.jpg”."
 
-#: ../src/ui/almanah.ui.h:13
+#: src/ui/almanah.ui:734
 msgid "Successful Entries"
 msgstr "Lyckade poster"
 
-#: ../src/ui/almanah.ui.h:14
+#: src/ui/almanah.ui:737
 msgid "Merged Entries"
 msgstr "Sammanfogade poster"
 
-#: ../src/ui/almanah.ui.h:15
+#: src/ui/almanah.ui:740
 msgid "Failed Entries"
 msgstr "Misslyckade poster"
 
-#: ../src/ui/almanah.ui.h:16
+#: src/ui/almanah.ui:802
 msgid "Import Results List"
 msgstr "Importera resultatlista"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.h:1
+#: data/org.gnome.almanah.gschema.xml.in:6
 msgid "Database encryption key ID"
 msgstr "Nyckel-id för databaskryptering"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.h:2
+#: data/org.gnome.almanah.gschema.xml.in:7
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -141,48 +142,48 @@ msgstr ""
 "Almanah har byggts med krypteringsstöd. Lämna tom för att inaktivera "
 "databaskryptering."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.h:3
+#: data/org.gnome.almanah.gschema.xml.in:11
 msgid "Spell checking language"
 msgstr "Språk för stavningskontroll"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.h:4
+#: data/org.gnome.almanah.gschema.xml.in:12
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr ""
 "Lokalangivaren för språket i vilket posterna ska stavningskontrolleras."
 
-#: ../data/org.gnome.almanah.gschema.xml.in.h:5
+#: data/org.gnome.almanah.gschema.xml.in:16
 msgid "Spell checking enabled?"
 msgstr "Stavningskontroll aktiverad?"
 
-#: ../data/org.gnome.almanah.gschema.xml.in.h:6
+#: data/org.gnome.almanah.gschema.xml.in:17
 msgid "Whether spell checking of entries is enabled."
 msgstr "Huruvida stavningskontroll av poster är aktiverad."
 
-#: ../src/application.c:255
+#: src/application.c:257
 msgid "Error opening database"
 msgstr "Fel vid öppnande av databasen"
 
-#: ../src/application.c:332
+#: src/application.c:336
 msgid "Enable debug mode"
 msgstr "Aktivera felsökningsläge"
 
-#: ../src/application.c:349
+#: src/application.c:353
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
 "Hantera din dagbok. Endast en instans av programmet kan köras samtidigt."
 
 #. Print an error
-#: ../src/application.c:360
+#: src/application.c:364
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Kommandoradsflaggor kunde inte tolkas: %s\n"
 
-#: ../src/application.c:379
+#: src/application.c:383
 msgid "Error encrypting database"
 msgstr "Fel vid kryptering av databasen"
 
-#: ../src/application.c:522
+#: src/application.c:526
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -193,7 +194,7 @@ msgstr ""
 "under villkoren i GNU General Public License, publicerad av Free Software "
 "Foundation, antingen version 3 eller (om du så vill) någon senare version."
 
-#: ../src/application.c:526
+#: src/application.c:530
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -205,7 +206,7 @@ msgstr ""
 "LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.  Se GNU General Public License för "
 "ytterligare information."
 
-#: ../src/application.c:530
+#: src/application.c:534
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -213,12 +214,12 @@ msgstr ""
 "Du bör ha fått en kopia av GNU General Public License tillsammans med "
 "Almanah.  Om inte, se <http://www.gnu.org/licenses/>."
 
-#: ../src/application.c:545
+#: src/application.c:549
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Ett behjälpligt dagboksprogram, lagrar %u poster."
 
-#: ../src/application.c:549
+#: src/application.c:553
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Copyright © 2008-2009 Philip Withnall"
 
@@ -227,7 +228,7 @@ msgstr "Copyright © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/application.c:557
+#: src/application.c:561
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander <po@danielnylander.se>\n"
@@ -237,11 +238,11 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "<tp-sv@listor.tp-sv.se>."
 
-#: ../src/application.c:561
+#: src/application.c:565
 msgid "Almanah Website"
 msgstr "Webbplats för Almanah"
 
-#: ../src/application.c:589
+#: src/application.c:593
 #, c-format
 msgid ""
 "Couldn't load the CSS resources. The interface might not be styled "
@@ -249,53 +250,53 @@ msgid ""
 msgstr ""
 "Kunde inte läsa in CSS-resurser. Gränssnittet kanske inte visas korrekt: %s"
 
-#: ../src/date-entry-dialog.c:72
+#: src/date-entry-dialog.c:72
 msgid "Select Date"
 msgstr "Välj datum"
 
-#: ../src/date-entry-dialog.c:127 ../src/import-export-dialog.c:169
-#: ../src/import-export-dialog.c:475 ../src/main-window.c:225
-#: ../src/preferences-dialog.c:177 ../src/search-dialog.c:95
-#: ../src/uri-entry-dialog.c:126
+#: src/date-entry-dialog.c:127 src/import-export-dialog.c:169
+#: src/import-export-dialog.c:476 src/main-window.c:235
+#: src/preferences-dialog.c:177 src/search-dialog.c:95
+#: src/uri-entry-dialog.c:126
 msgid "UI data could not be loaded"
 msgstr "Användargränssnittsfilen kunde inte läsas in"
 
-#: ../src/entry.c:303
+#: src/entry.c:303
 #, c-format
 msgid "Invalid data version number %u."
 msgstr "Ogiltigt dataversionsnummer %u."
 
-#: ../src/events/calendar-appointment.c:51
+#: src/events/calendar-appointment.c:51
 msgid "Calendar Appointment"
 msgstr "Kalendermöte"
 
-#: ../src/events/calendar-appointment.c:52
+#: src/events/calendar-appointment.c:52
 msgid "An appointment on an Evolution calendar."
 msgstr "Ett möte i en Evolution-kalender."
 
 #. Translators: This is a time string with the format hh:mm
-#: ../src/events/calendar-appointment.c:89 ../src/events/calendar-task.c:90
+#: src/events/calendar-appointment.c:89 src/events/calendar-task.c:90
 #, c-format
 msgid "%.2d:%.2d"
 msgstr "%.2d:%.2d"
 
-#: ../src/events/calendar-appointment.c:135 ../src/events/calendar-task.c:125
+#: src/events/calendar-appointment.c:135 src/events/calendar-task.c:125
 msgid "Error launching Evolution"
 msgstr "Fel vid start av Evolution"
 
-#: ../src/events/calendar-task.c:51
+#: src/events/calendar-task.c:51
 msgid "Calendar Task"
 msgstr "Kalenderaktivitet"
 
-#: ../src/events/calendar-task.c:52
+#: src/events/calendar-task.c:52
 msgid "A task on an Evolution calendar."
 msgstr "En uppgift i en Evolution-kalender."
 
-#: ../src/export-operation.c:47 ../src/import-operation.c:45
+#: src/export-operation.c:47 src/import-operation.c:45
 msgid "Text Files"
 msgstr "Textfiler"
 
-#: ../src/export-operation.c:48
+#: src/export-operation.c:48
 msgid ""
 "Select a _folder to export the entries to as text files, one per entry, with "
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
@@ -305,11 +306,11 @@ msgstr ""
 "namn i formatet ”åååå-mm-dd” och utan filändelse. Var och en av dessa poster "
 "kommer att exporteras som vanliga okrypterade textfiler."
 
-#: ../src/export-operation.c:52 ../src/import-operation.c:50
+#: src/export-operation.c:52 src/import-operation.c:50
 msgid "Database"
 msgstr "Databas"
 
-#: ../src/export-operation.c:53
+#: src/export-operation.c:53
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
@@ -317,121 +318,122 @@ msgstr ""
 "Välj ett _filnamn för en komplett kopia av den okrypterade Almanah-"
 "dagboksdatabasen."
 
-#: ../src/export-operation.c:256 ../src/export-operation.c:313
+#: src/export-operation.c:256 src/export-operation.c:313
 #, c-format
 msgid "Error changing exported file permissions: %s"
 msgstr "Fel vid ändring av exporterade filrättigheter: %s"
 
-#: ../src/gtk/menus.ui.h:1
+#: src/gtk/menus.ui:6
 msgid "_Search"
 msgstr "_Sök"
 
-#: ../src/gtk/menus.ui.h:2
+#: src/gtk/menus.ui:12
 msgid "Pr_eferences"
 msgstr "Ins_tällningar"
 
-#: ../src/gtk/menus.ui.h:3
+#: src/gtk/menus.ui:16
 msgctxt "Main menu"
 msgid "_Import"
 msgstr "_Import"
 
-#: ../src/gtk/menus.ui.h:4
+#: src/gtk/menus.ui:20
 msgctxt "Main menu"
 msgid "_Export"
 msgstr "_Export"
 
-#: ../src/gtk/menus.ui.h:5
+#: src/gtk/menus.ui:24
 msgid "_Print diary"
 msgstr "Skriv _ut dagbok"
 
-#: ../src/gtk/menus.ui.h:6
+#: src/gtk/menus.ui:30
 msgid "_About Almanah Diary"
 msgstr "_Om Almanah dagbok"
 
-#: ../src/gtk/menus.ui.h:7
+#: src/gtk/menus.ui:34
 msgid "_Quit"
 msgstr "A_vsluta"
 
-#: ../src/gtk/menus.ui.h:8
+#: src/gtk/menus.ui:42
 msgid "_Bold"
 msgstr "_Fet"
 
-#: ../src/gtk/menus.ui.h:9
+#: src/gtk/menus.ui:46
 msgid "_Italic"
 msgstr "_Kursiv"
 
-#: ../src/gtk/menus.ui.h:10
+#: src/gtk/menus.ui:50
 msgid "_Underline"
 msgstr "_Understruken"
 
-#: ../src/gtk/menus.ui.h:11
+#: src/gtk/menus.ui:56
 msgid "_Cut"
 msgstr "_Klipp ut"
 
-#: ../src/gtk/menus.ui.h:12
+#: src/gtk/menus.ui:60
 msgid "_Copy"
 msgstr "_Kopiera"
 
-#: ../src/gtk/menus.ui.h:13
+#: src/gtk/menus.ui:64
 msgid "_Paste"
 msgstr "_Klistra in"
 
-#: ../src/gtk/menus.ui.h:14 ../src/main-window.c:626
+#: src/gtk/menus.ui:68 src/main-window.c:640
 msgid "_Delete"
 msgstr "_Ta bort"
 
-#: ../src/gtk/menus.ui.h:15
+#: src/gtk/menus.ui:74
 msgid "Insert _Time"
 msgstr "Infoga _tid"
 
-#: ../src/gtk/menus.ui.h:16
+#: src/gtk/menus.ui:78
 msgid "Add/Remove _Hyperlink"
 msgstr "Lägg till/Ta bort _hyperlänk"
 
-#: ../src/import-export-dialog.c:203
+#: src/import-export-dialog.c:203
 msgid "Import _mode: "
 msgstr "Import_läge: "
 
-#: ../src/import-export-dialog.c:203
+#: src/import-export-dialog.c:203
 msgid "Export _mode: "
 msgstr "Export_läge: "
 
 #. Set the window title
-#: ../src/import-export-dialog.c:206
+#: src/import-export-dialog.c:206
 msgid "Import Entries"
 msgstr "Importera poster"
 
-#: ../src/import-export-dialog.c:206
+#: src/import-export-dialog.c:206
 msgid "Export Entries"
 msgstr "Exportera poster"
 
-#: ../src/import-export-dialog.c:210
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:211
 msgctxt "Dialog button"
 msgid "_Import"
 msgstr "_Importera"
 
-#: ../src/import-export-dialog.c:210
+#: src/import-export-dialog.c:211
 msgctxt "Dialog button"
 msgid "_Export"
 msgstr "_Exportera"
 
-#: ../src/import-export-dialog.c:247
+#: src/import-export-dialog.c:248
 msgid "Import failed"
 msgstr "Importen misslyckades"
 
-#: ../src/import-export-dialog.c:285
+#: src/import-export-dialog.c:286
 msgid "Export failed"
 msgstr "Exporten misslyckades"
 
-#: ../src/import-export-dialog.c:298
+#: src/import-export-dialog.c:299
 msgid "Export successful"
 msgstr "Exporten lyckades"
 
-#: ../src/import-export-dialog.c:299
+#: src/import-export-dialog.c:300
 msgid "The diary was successfully exported."
 msgstr "Export av dagboken lyckades."
 
-#: ../src/import-export-dialog.c:447
+#: src/import-export-dialog.c:448
 msgid "Import Results"
 msgstr "Resultat av import"
 
@@ -441,13 +443,12 @@ msgstr "Resultat av import"
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/import-export-dialog.c:542 ../src/main-window.c:587
-#: ../src/main-window.c:618 ../src/main-window.c:1225 ../src/printing.c:263
-#: ../src/search-dialog.c:180
+#: src/import-export-dialog.c:543 src/main-window.c:601 src/main-window.c:632
+#: src/main-window.c:1271 src/printing.c:263 src/search-dialog.c:180
 msgid "%A, %e %B %Y"
 msgstr "%A, %e %B %Y"
 
-#: ../src/import-operation.c:46
+#: src/import-operation.c:46
 msgid ""
 "Select a _folder containing text files, one per entry, with names in the "
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
@@ -457,17 +458,17 @@ msgstr ""
 "”åååå-mm-dd” och utan filändelse. Var och en av dessa filer kommer att "
 "importeras."
 
-#: ../src/import-operation.c:51
+#: src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
 msgstr ""
 "Välj en _databasfil att importera som skapats av dagboksprogrammet Almanah."
 
-#: ../src/import-operation.c:248
+#: src/import-operation.c:248
 #, c-format
 msgid "Error deserializing imported entry into buffer: %s"
 msgstr "Fel vid deserialisering av importerad post i buffert: %s"
 
-#: ../src/import-operation.c:264
+#: src/import-operation.c:264
 #, c-format
 msgid ""
 "Error deserializing existing entry into buffer; overwriting with imported "
@@ -479,7 +480,7 @@ msgstr ""
 #. Append some header text for the imported entry
 #. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 #. * The imported entry is appended to this text.
-#: ../src/import-operation.c:305
+#: src/import-operation.c:305
 #, c-format
 msgid ""
 "\n"
@@ -492,267 +493,266 @@ msgstr ""
 "Post importerad från ”%s”:\n"
 "\n"
 
-#: ../src/main-window.c:591
+#: src/main-window.c:605
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "Är du säker på att du vill redigera denna dagbokspost för %s?"
 
-#: ../src/main-window.c:594 ../src/main-window.c:625
+#: src/main-window.c:608 src/main-window.c:639
 msgid "_Cancel"
 msgstr "_Avbryt"
 
-#: ../src/main-window.c:595
+#: src/main-window.c:609
 msgid "_Edit"
 msgstr "R_edigera"
 
-#: ../src/main-window.c:622
+#: src/main-window.c:636
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "Är du säker på att du vill ta bort denna dagbokspost för %s?"
 
 #. Print a warning about the unknown tag
-#: ../src/main-window.c:732
+#: src/main-window.c:746
 #, c-format
 msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
 msgstr "Okänd eller dubblett texttagg ”%s” i post. Ignorerar."
 
-#: ../src/main-window.c:973
+#: src/main-window.c:987
 msgid "Error opening URI"
 msgstr "Fel vid öppnande av URI"
 
 #. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
-#: ../src/main-window.c:1152
+#: src/main-window.c:1198
 #, c-format
 msgid "%s @ %s"
 msgstr "%s @ %s"
 
-#: ../src/main-window.c:1258
+#: src/main-window.c:1304
 msgid "Entry content could not be loaded"
 msgstr "Postens innehåll kunde inte läsas in"
 
 #. Translators: this sentence is just used in startup to estimate the width
-#. of a 15 words sentence. Translate with some randome sentences with just 15 words.
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
 #. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
-#: ../src/main-window.c:1414
+#: src/main-window.c:1459
 msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
 msgstr ""
 "Detta är en mening på femton ord för att beräkna längden på poster i dagboken"
 
-#: ../src/main-window.c:1450
+#: src/main-window.c:1496
 msgid "Spelling checker could not be initialized"
 msgstr "Stavningskontrollen kunde inte initieras"
 
-#: ../src/preferences-dialog.c:83
+#: src/preferences-dialog.c:83
 msgid "Preferences"
 msgstr "Inställningar"
 
 #. Grab our child widgets
-#: ../src/preferences-dialog.c:204
+#: src/preferences-dialog.c:204
 msgid "Encryption key: "
 msgstr "Krypteringsnyckel: "
 
-#: ../src/preferences-dialog.c:208
+#: src/preferences-dialog.c:208
 msgid "None (don't encrypt)"
 msgstr "Ingen (kryptera inte)"
 
-#: ../src/preferences-dialog.c:213
+#: src/preferences-dialog.c:213
 msgid "New _Key"
 msgstr "Ny n_yckel"
 
 #. Set up the "Enable spell checking" check button
-#: ../src/preferences-dialog.c:237
+#: src/preferences-dialog.c:237
 msgid "Enable _spell checking"
 msgstr "Aktivera _stavningskontroll"
 
-#: ../src/preferences-dialog.c:262
+#: src/preferences-dialog.c:262
 msgid "Error saving the encryption key"
 msgstr "Fel vid sparande av krypteringsnyckeln"
 
-#: ../src/preferences-dialog.c:281
+#: src/preferences-dialog.c:281
 msgid "Error opening Seahorse"
 msgstr "Fel vid öppnande av Seahorse"
 
-#: ../src/printing.c:277
+#: src/printing.c:277
 msgid "This entry is marked as important."
 msgstr "Denna post är markerad som viktig."
 
-#: ../src/printing.c:298
+#: src/printing.c:298
 msgid "No entry for this date."
 msgstr "Ingen post för detta datum."
 
-#: ../src/printing.c:453
+#: src/printing.c:457
 msgid "Start date:"
 msgstr "Startdatum:"
 
-#: ../src/printing.c:455
+#: src/printing.c:459
 msgid "End date:"
 msgstr "Slutdatum:"
 
 #. Line spacing
-#: ../src/printing.c:471
+#: src/printing.c:475
 msgid "Line spacing:"
 msgstr "Radutrymme:"
 
-#: ../src/search-dialog.c:221
+#: src/search-dialog.c:221
 msgid "Search canceled."
 msgstr "Sökning avbruten."
 
 #. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
-#: ../src/search-dialog.c:224
+#: src/search-dialog.c:224
 #, c-format
 msgid "Error: %s"
 msgstr "Fel: %s"
 
 #. Success!
-#: ../src/search-dialog.c:229
+#: src/search-dialog.c:229
 #, c-format
 msgid "Found %d entry:"
 msgid_plural "Found %d entries:"
 msgstr[0] "Hittade %d post:"
 msgstr[1] "Hittade %d poster:"
 
-#: ../src/search-dialog.c:278
+#: src/search-dialog.c:278
 msgid "Searching…"
 msgstr "Söker…"
 
-#: ../src/storage-manager.c:248
+#: src/storage-manager.c:247
 #, c-format
 msgid ""
 "Could not open database \"%s\". SQLite provided the following error message: "
 "%s"
 msgstr "Kunde inte öppna databasen ”%s”. SQLite gav följande felmeddelande: %s"
 
-#: ../src/storage-manager.c:291
+#: src/storage-manager.c:290
 #, c-format
 msgid ""
 "Could not run query \"%s\". SQLite provided the following error message: %s"
 msgstr "Kunde inte köra frågan \"%s\". SQLite gav följande felmeddelande: %s"
 
-#: ../src/storage-manager.c:597
+#: src/storage-manager.c:596
 msgid "Error deserializing entry into buffer while searching."
 msgstr "Fel vid deserialisering av post i buffert under sökning."
 
-#: ../src/uri-entry-dialog.c:71
+#: src/uri-entry-dialog.c:71
 msgid "Enter URI"
 msgstr "Ange URI"
 
-#: ../src/vfs.c:239
+#: src/vfs.c:291
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME är inte minst version %s"
 
-#: ../src/vfs.c:246
+#: src/vfs.c:298
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME har inte stöd för OpenPGP: %s"
 
-#: ../src/vfs.c:253
+#: src/vfs.c:305
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Fel vid skapande av chiffersammanhang: %s"
 
-#: ../src/vfs.c:273
+#: src/vfs.c:325
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Kan inte skapa ny GIOChannel för den krypterade databasen: %s"
 
-#: ../src/vfs.c:281
+#: src/vfs.c:333
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Fel vid öppnande av krypterade databasfilen ”%s”: %s"
 
-#: ../src/vfs.c:297
+#: src/vfs.c:349
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Fel vid skapande av en basdatabuffert för Callback: %s"
 
-#: ../src/vfs.c:305
+#: src/vfs.c:357
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Kan inte skapa ny GIOChannel för databasen: %s"
 
-#: ../src/vfs.c:313
+#: src/vfs.c:365
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Fel vid öppnande av databasfilen ”%s”: %s"
 
-#: ../src/vfs.c:409
+#: src/vfs.c:461
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Fel vid hämtning av krypteringsnyckel: %s"
 
-#: ../src/vfs.c:433 ../src/vfs.c:439
+#: src/vfs.c:485 src/vfs.c:491
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Fel vid kryptering av databas: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: ../src/vfs.c:489
+#: src/vfs.c:541
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Fel vid kopiering av filen från %s till %s: %s"
 
-#: ../src/vfs.c:495
+#: src/vfs.c:547
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr "Fel vid ändring av rättigheter för säkerhetskopia av databas: %s"
 
-#: ../src/vfs.c:595
+#: src/vfs.c:647
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Fel vid stängning av filen: %s"
 
-#. Translators: the first parameter is a filename, the second is an error message.
 #. Translators: the first parameter is a filename.
-#: ../src/vfs.c:994 ../src/vfs.c:1021
+#: src/vfs.c:1046 src/vfs.c:1073
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Fel vid säkerhetskopiering av filen ”%s”"
 
-#: ../src/vfs.c:1007
+#: src/vfs.c:1059
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Fel vid dekryptering av databas: %s"
 
-#: ../src/vfs.c:1047
+#: src/vfs.c:1099
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Fel vid ändring av filrättigheter för databas: %s"
 
-#: ../src/widgets/calendar-button.c:142
+#: src/widgets/calendar-button.c:142
 #, c-format
 msgid "UI data could not be loaded: %s"
 msgstr "Användargränssnittsfilen kunde inte läsas in: %s"
 
-#: ../src/widgets/calendar-button.c:152
+#: src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
 msgstr "Kan inte läsa in kalenderfönsterobjekt från användargränssnittsfil"
 
 #. Translators: This is the detail string for important days as displayed in the calendar.
-#: ../src/widgets/calendar.c:176
+#: src/widgets/calendar.c:176
 msgid "Important!"
 msgstr "Viktigt!"
 
-#: ../src/widgets/entry-tags-area.c:100 ../src/widgets/tag-entry.c:166
+#: src/widgets/entry-tags-area.c:100 src/widgets/tag-entry.c:166
 msgid "add tag"
 msgstr "lägg till tagg"
 
-#: ../src/widgets/entry-tags-area.c:101
+#: src/widgets/entry-tags-area.c:101
 msgid "Write the tag and press enter to save it"
 msgstr "Skriv in taggen och tryck retur för att spara den"
 
-#: ../src/widgets/tag-accessible.c:165
+#: src/widgets/tag-accessible.c:165
 msgid "Remove the tag from the entry"
 msgstr "Ta bort taggen från posten"
 
 #. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
-#: ../src/widgets/tag.c:416
+#: src/widgets/tag.c:416
 msgid "Remove tag"
 msgstr "Ta bort tagg"
 
-#: ../src/widgets/tag-entry.c:85
+#: src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Tagga post"
 
