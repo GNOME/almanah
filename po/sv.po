@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
-"POT-Creation-Date: 2020-08-30 11:13+0000\n"
+"POT-Creation-Date: 2023-02-15 13:17+0000\n"
 "PO-Revision-Date: 2022-09-15 19:05+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
-"Language-Team: Swedish\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -534,14 +534,14 @@ msgstr "Postens innehåll kunde inte läsas in"
 #. Translators: this sentence is just used in startup to estimate the width
 #. of a 15 words sentence. Translate with some random sentences with just 15 words.
 #. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
-#: src/main-window.c:1459
+#: src/main-window.c:1575
 msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
 msgstr ""
 "Detta är en mening på femton ord för att beräkna längden på poster i dagboken"
 
-#: src/main-window.c:1496
+#: src/main-window.c:1612
 msgid "Spelling checker could not be initialized"
 msgstr "Stavningskontrollen kunde inte initieras"
 
@@ -639,84 +639,84 @@ msgstr "Fel vid deserialisering av post i buffert under sökning."
 msgid "Enter URI"
 msgstr "Ange URI"
 
-#: src/vfs.c:291
+#: src/vfs.c:295
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME är inte minst version %s"
 
-#: src/vfs.c:298
+#: src/vfs.c:302
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME har inte stöd för OpenPGP: %s"
 
-#: src/vfs.c:305
+#: src/vfs.c:309
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Fel vid skapande av chiffersammanhang: %s"
 
-#: src/vfs.c:325
+#: src/vfs.c:329
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Kan inte skapa ny GIOChannel för den krypterade databasen: %s"
 
-#: src/vfs.c:333
+#: src/vfs.c:337
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Fel vid öppnande av krypterade databasfilen ”%s”: %s"
 
-#: src/vfs.c:349
+#: src/vfs.c:353
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Fel vid skapande av en basdatabuffert för Callback: %s"
 
-#: src/vfs.c:357
+#: src/vfs.c:361
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Kan inte skapa ny GIOChannel för databasen: %s"
 
-#: src/vfs.c:365
+#: src/vfs.c:369
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Fel vid öppnande av databasfilen ”%s”: %s"
 
-#: src/vfs.c:461
+#: src/vfs.c:465
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Fel vid hämtning av krypteringsnyckel: %s"
 
-#: src/vfs.c:485 src/vfs.c:491
+#: src/vfs.c:489 src/vfs.c:495
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Fel vid kryptering av databas: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: src/vfs.c:541
+#: src/vfs.c:545
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Fel vid kopiering av filen från %s till %s: %s"
 
-#: src/vfs.c:547
+#: src/vfs.c:551
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr "Fel vid ändring av rättigheter för säkerhetskopia av databas: %s"
 
-#: src/vfs.c:647
+#: src/vfs.c:651
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Fel vid stängning av filen: %s"
 
 #. Translators: the first parameter is a filename.
-#: src/vfs.c:1046 src/vfs.c:1073
+#: src/vfs.c:1050 src/vfs.c:1077
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "Fel vid säkerhetskopiering av filen ”%s”"
 
-#: src/vfs.c:1059
+#: src/vfs.c:1063
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Fel vid dekryptering av databas: %s"
 
-#: src/vfs.c:1099
+#: src/vfs.c:1103
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Fel vid ändring av filrättigheter för databas: %s"
@@ -979,10 +979,6 @@ msgstr "Tagga post"
 
 #~ msgid "Attached Links"
 #~ msgstr "Bifogade länkar"
-
-#, fuzzy
-#~ msgid "View Link"
-#~ msgstr "Visa post"
 
 #~ msgid "Due to an unknown error the file cannot be opened."
 #~ msgstr "På grund av ett okänt fel kunde filen inte öppnas."
