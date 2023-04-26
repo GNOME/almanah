@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
 "POT-Creation-Date: 2023-03-10 10:57+0000\n"
-"PO-Revision-Date: 2023-04-26 15:53+0000\n"
+"PO-Revision-Date: 2023-04-26 15:56+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -656,38 +656,38 @@ msgstr ""
 "Ekki hægt að búa til nýjan GIOChannel fyrir dulkóðaða gagnagrunninn: %s"
 
 #: src/vfs.c:337
-#, c-format
+#, fuzzy, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Villa við að opna dulkóðað gagnagrunns skjal \"%s\": %s"
 
 #: src/vfs.c:353
-#, c-format
+#, fuzzy, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Villa við að búa til Callback base gagna biðminni:%s ATH"
 
 #: src/vfs.c:361
-#, c-format
+#, fuzzy, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Ekki hægt að búa til nýjan GIOChannel fyrir xxx gagnagrunn: %s "
 
 #: src/vfs.c:369
-#, c-format
+#, fuzzy, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Villa við að opna venjulegt gagnagrunn skjal \"%s\": %s"
 
 #: src/vfs.c:465
-#, c-format
+#, fuzzy, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Villa við að mynda dulkóðunar lykil:%s"
 
 #: src/vfs.c:489 src/vfs.c:495
-#, c-format
+#, fuzzy, c-format
 msgid "Error encrypting database: %s"
 msgstr "Villa við að dulkóða gagnagrunn: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
 #: src/vfs.c:545
-#, c-format
+#, fuzzy, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Villa við að afrita skjalið frá %s til %s: %s"
 
@@ -699,28 +699,28 @@ msgstr "Villa við að breyta aðgangsheimild á öryggisafriti gagnagrunns: %s"
 #: src/vfs.c:651
 #, c-format
 msgid "Error closing file: %s"
-msgstr "Villa við að loka skjali: %s"
+msgstr "Villa við að loka skrá: %s"
 
 #. Translators: the first parameter is a filename.
 #: src/vfs.c:1050 src/vfs.c:1077
 #, c-format
 msgid "Error backing up file ‘%s’"
-msgstr "Villa við gerð öryggisafrits af skjali ‘%s’"
+msgstr "Villa við gerð öryggisafrits af skrá ‘%s’"
 
 #: src/vfs.c:1063
 #, c-format
 msgid "Error decrypting database: %s"
-msgstr "Villa við að dulkóða gagnagrunn: %s"
+msgstr "Villa við að afkóða gagnagrunn: %s"
 
 #: src/vfs.c:1103
-#, c-format
+#, fuzzy, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Villa við að breyta aðgangsheimid skjalsins: %s"
 
 #: src/widgets/calendar-button.c:142
 #, c-format
 msgid "UI data could not be loaded: %s"
-msgstr "Ekki tóks að hlaða inn UI gögnum: %s"
+msgstr "Ekki tóks að hlaða inn UI-viðmótsgögnum: %s"
 
 #: src/widgets/calendar-button.c:152
 msgid "Can't load calendar window object from UI file"
