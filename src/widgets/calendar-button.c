@@ -130,7 +130,7 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 
 	priv->user_event = FIRST_EVENT;
 
-	gtk_button_set_focus_on_click (GTK_BUTTON (self), TRUE);
+	gtk_widget_set_focus_on_click (GTK_WIDGET (self), TRUE);
 
 	/* Calendar dock window from the UI file */
 	builder = gtk_builder_new ();

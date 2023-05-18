@@ -991,7 +991,7 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 		uri = almanah_hyperlink_tag_get_uri (hyperlink_tag);
 
 		/* Attempt to open the URI */
-		gtk_show_uri (gtk_widget_get_screen (GTK_WIDGET (self)), uri, gdk_event_get_time (event), &error);
+		gtk_show_uri_on_window (GTK_WINDOW (self), uri, gdk_event_get_time (event), &error);
 
 		if (error != NULL) {
 			/* Error */
