@@ -6,14 +6,12 @@ project(
   default_options: [
     'b_ndebug=if-release',
   ],
-  meson_version: '>= 0.56',
+  meson_version: '>= 0.59',
 )
 
 cc = meson.get_compiler('c')
 gnome = import('gnome')
 i18n = import('i18n')
-python = import('python')
-python3 = python.find_installation('python3').path()
 data_dir = join_paths(meson.project_source_root(), 'data')
 po_dir = join_paths(meson.project_source_root(), 'po')
 
@@ -112,11 +110,10 @@ config = vcs_tag(
 )
 
 # Post-install scripts
-meson.add_install_script(
-  python3,
-  join_paths(meson.source_root(), 'build-aux', 'post_install.py'),
-  icondir,
-  schemadir,
+gnome.post_install(
+  glib_compile_schemas: true,
+  gtk_update_icon_cache: true,
+  update_desktop_database: true,
 )
 
 # Subfolders
