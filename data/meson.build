@@ -33,11 +33,6 @@ if (appstream_util.found())
   )
 endif
 
-install_data(
-  'almanah.convert',
-  install_dir: convertdir,
-)
-
 gschema_xml = 'org.gnome.almanah.gschema.xml'
 install_data(
   gschema_xml,

@@ -21,7 +21,6 @@ icondir = join_paths(datadir, 'icons', 'hicolor')
 localedir = join_paths(prefix, get_option('localedir'))
 pkgdatadir = join_paths(datadir, meson.project_name())
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
-convertdir = join_paths(datadir, 'GConf', 'gsettings')
 
 # Dependencies
 glib = dependency('glib-2.0', version: '>= 2.68')
