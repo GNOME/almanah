@@ -6,7 +6,7 @@ project(
   default_options: [
     'b_ndebug=if-release',
   ],
-  meson_version: '>= 0.51',
+  meson_version: '>= 0.56',
 )
 
 cc = meson.get_compiler('c')
@@ -14,8 +14,8 @@ gnome = import('gnome')
 i18n = import('i18n')
 python = import('python')
 python3 = python.find_installation('python3').path()
-data_dir = join_paths(meson.source_root(), 'data')
-po_dir = join_paths(meson.source_root(), 'po')
+data_dir = join_paths(meson.project_source_root(), 'data')
+po_dir = join_paths(meson.project_source_root(), 'po')
 
 prefix = get_option('prefix')
 datadir = join_paths(prefix, get_option('datadir'))
