@@ -38,12 +38,9 @@ install_data(
   install_dir: convertdir,
 )
 
-schema_conf = configuration_data()
-schema_conf.set('GETTEXT_PACKAGE', meson.project_name())
-configure_file(
-  input: 'org.gnome.almanah.gschema.xml.in',
-  output: '@BASENAME@',
-  configuration: schema_conf,
+gschema_xml = 'org.gnome.almanah.gschema.xml'
+install_data(
+  gschema_xml,
   install_dir: schemadir,
 )
 
