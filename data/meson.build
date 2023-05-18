@@ -44,4 +44,10 @@ install_data(
   install_dir: schemadir,
 )
 
+gnome.compile_schemas(
+  depend_files: [
+    gschema_xml,
+  ],
+)
+
 subdir('icons')
