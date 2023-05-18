@@ -287,6 +287,8 @@ startup (GApplication *application)
 	g_object_unref (style_provider);
 
 	/* Shortcuts */
+	add_accelerator(GTK_APPLICATION (application), "app.quit", "<Primary>Q");
+	add_accelerator(GTK_APPLICATION (application), "app.search", "<Primary>F");
 	add_accelerator(GTK_APPLICATION (application), "win.select-date", "<Primary>D");
 	add_accelerator(GTK_APPLICATION (application), "win.bold", "<Primary>B");
 	add_accelerator(GTK_APPLICATION (application), "win.italic", "<Primary>I");
