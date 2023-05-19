@@ -53,8 +53,7 @@ enum {
 	PROP_SETTINGS = 1,
 };
 
-G_DEFINE_TYPE_WITH_CODE(AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG, G_ADD_PRIVATE(AlmanahPreferencesDialog))
-#define ALMANAH_PREFERENCES_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG)
 
 static void
 almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)

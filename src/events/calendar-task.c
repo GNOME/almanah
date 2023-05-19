@@ -29,22 +29,19 @@ static const gchar *almanah_calendar_task_event_format_value (AlmanahEvent *even
 static const gchar *almanah_calendar_task_event_format_time (AlmanahEvent *event);
 static gboolean almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window);
 
-struct _AlmanahCalendarTaskEventPrivate {
+typedef struct {
 	gchar *uid;
 	gchar *summary;
 	gchar *time;
-};
+} AlmanahCalendarTaskEventPrivate;
 
-G_DEFINE_TYPE (AlmanahCalendarTaskEvent, almanah_calendar_task_event, ALMANAH_TYPE_EVENT)
-#define ALMANAH_CALENDAR_TASK_EVENT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_CALENDAR_TASK_EVENT, AlmanahCalendarTaskEventPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendarTaskEvent, almanah_calendar_task_event, ALMANAH_TYPE_EVENT)
 
 static void
 almanah_calendar_task_event_class_init (AlmanahCalendarTaskEventClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	AlmanahEventClass *event_class = ALMANAH_EVENT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahCalendarTaskEventPrivate));
 
 	gobject_class->finalize = almanah_calendar_task_event_finalize;
 
@@ -60,13 +57,12 @@ almanah_calendar_task_event_class_init (AlmanahCalendarTaskEventClass *klass)
 static void
 almanah_calendar_task_event_init (AlmanahCalendarTaskEvent *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_CALENDAR_TASK_EVENT, AlmanahCalendarTaskEventPrivate);
 }
 
 static void
 almanah_calendar_task_event_finalize (GObject *object)
 {
-	AlmanahCalendarTaskEventPrivate *priv = ALMANAH_CALENDAR_TASK_EVENT_GET_PRIVATE (object);
+	AlmanahCalendarTaskEventPrivate *priv = almanah_calendar_task_event_get_instance_private (ALMANAH_CALENDAR_TASK_EVENT (object));
 
 	g_free (priv->uid);
 	g_free (priv->summary);
@@ -82,12 +78,14 @@ almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, GTime s
 	AlmanahCalendarTaskEvent *event = g_object_new (ALMANAH_TYPE_CALENDAR_TASK_EVENT, NULL);
 	struct tm date_tm;
 
-	event->priv->uid = g_strdup (uid);
-	event->priv->summary = g_strdup (summary);
+	AlmanahCalendarTaskEventPrivate *priv = almanah_calendar_task_event_get_instance_private (event);
+
+	priv->uid = g_strdup (uid);
+	priv->summary = g_strdup (summary);
 
 	localtime_r ((const time_t*) &(start_time), &date_tm);
 	/* Translators: This is a time string with the format hh:mm */
-	event->priv->time = g_strdup_printf (_("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
+	priv->time = g_strdup_printf (_("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
 
 	return event;
 }
@@ -95,19 +93,21 @@ almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, GTime s
 static const gchar *
 almanah_calendar_task_event_format_value (AlmanahEvent *event)
 {
-	return ALMANAH_CALENDAR_TASK_EVENT (event)->priv->summary;
+	AlmanahCalendarTaskEventPrivate *priv = almanah_calendar_task_event_get_instance_private (ALMANAH_CALENDAR_TASK_EVENT (event));
+	return priv->summary;
 }
 
 static const gchar *
 almanah_calendar_task_event_format_time (AlmanahEvent *event)
 {
-	return ALMANAH_CALENDAR_TASK_EVENT (event)->priv->time;
+	AlmanahCalendarTaskEventPrivate *priv = almanah_calendar_task_event_get_instance_private (ALMANAH_CALENDAR_TASK_EVENT (event));
+	return priv->time;
 }
 
 static gboolean
 almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window)
 {
-	AlmanahCalendarTaskEventPrivate *priv = ALMANAH_CALENDAR_TASK_EVENT (event)->priv;
+	AlmanahCalendarTaskEventPrivate *priv = almanah_calendar_task_event_get_instance_private (ALMANAH_CALENDAR_TASK_EVENT (event));
 	gchar *command_line;
 	gboolean retval;
 	GError *error = NULL;

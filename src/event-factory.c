@@ -39,7 +39,7 @@ enum {
 
 static guint event_factory_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE(AlmanahEventFactory, almanah_event_factory, G_TYPE_OBJECT, G_ADD_PRIVATE(AlmanahEventFactory))
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE(AlmanahEventFactory, almanah_event_factory, G_TYPE_OBJECT)
 
 static void
 almanah_event_factory_class_init (AlmanahEventFactoryClass *klass)

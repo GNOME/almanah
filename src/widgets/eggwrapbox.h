@@ -34,7 +34,6 @@ G_BEGIN_DECLS
 #define EGG_WRAP_BOX_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), EGG_TYPE_WRAP_BOX, EggWrapBoxClass))
 
 typedef struct _EggWrapBox            EggWrapBox;
-typedef struct _EggWrapBoxPrivate     EggWrapBoxPrivate;
 typedef struct _EggWrapBoxClass       EggWrapBoxClass;
 
 
@@ -95,9 +94,6 @@ typedef enum
 struct _EggWrapBox
 {
   GtkContainer container;
-
-  /*< private >*/
-  EggWrapBoxPrivate *priv;
 };
 
 struct _EggWrapBoxClass

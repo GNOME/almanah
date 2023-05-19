@@ -426,17 +426,15 @@ void ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath
 void ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self);
 void ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialog *self);
 
-struct _AlmanahImportResultsDialogPrivate {
+typedef struct {
 	GtkListStore *results_store;
 	GtkTreeSelection *results_selection;
 	GtkTreeModelFilter *filtered_results_store;
 	GtkComboBox *view_combo_box;
 	AlmanahImportStatus current_mode;
-};
+} AlmanahImportResultsDialogPrivate;
 
-G_DEFINE_TYPE (AlmanahImportResultsDialog, almanah_import_results_dialog, GTK_TYPE_DIALOG)
-#define ALMANAH_IMPORT_RESULTS_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG,\
-                                                        AlmanahImportResultsDialogPrivate))
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahImportResultsDialog, almanah_import_results_dialog, GTK_TYPE_DIALOG)
 
 static void
 almanah_import_results_dialog_class_init (AlmanahImportResultsDialogClass *klass)
@@ -497,7 +495,7 @@ almanah_import_results_dialog_new (void)
 		return NULL;
 	}
 
-	priv = results_dialog->priv;
+	priv = almanah_import_results_dialog_get_instance_private (results_dialog);
 
 	/* Grab our child widgets */
 	priv->results_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_ird_results_store"));
@@ -524,11 +522,12 @@ static gboolean
 filter_results_cb (GtkTreeModel *model, GtkTreeIter *iter, AlmanahImportResultsDialog *self)
 {
 	guint status;
+	AlmanahImportResultsDialogPrivate *priv = almanah_import_results_dialog_get_instance_private (self);
 
 	/* Compare the current mode to the row's status column */
 	gtk_tree_model_get (model, iter, 4, &status, -1);
 
-	return (self->priv->current_mode == status) ? TRUE : FALSE;
+	return (priv->current_mode == status) ? TRUE : FALSE;
 }
 
 static void
@@ -542,12 +541,13 @@ almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, cons
 {
 	GtkTreeIter iter;
 	gchar formatted_date[100];
+	AlmanahImportResultsDialogPrivate *priv = almanah_import_results_dialog_get_instance_private (self);
 
 	/* Translators: This is a strftime()-format string for the dates displayed in import results. */
 	g_date_strftime (formatted_date, sizeof (formatted_date), _("%A, %e %B %Y"), date);
 
-	gtk_list_store_append (self->priv->results_store, &iter);
-	gtk_list_store_set (self->priv->results_store, &iter,
+	gtk_list_store_append (priv->results_store, &iter);
+	gtk_list_store_set (priv->results_store, &iter,
 	                    0, g_date_get_day (date),
 	                    1, g_date_get_month (date),
 	                    2, g_date_get_year (date),
@@ -591,8 +591,9 @@ ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self)
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
+	AlmanahImportResultsDialogPrivate *priv = almanah_import_results_dialog_get_instance_private (self);
 
-	if (gtk_tree_selection_get_selected (self->priv->results_selection, &model, &iter) == TRUE) {
+	if (gtk_tree_selection_get_selected (priv->results_selection, &model, &iter) == TRUE) {
 		select_date (self, model, &iter);
 	}
 }
@@ -601,12 +602,12 @@ void
 ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialog *self)
 {
 	gint new_mode;
-	AlmanahImportResultsDialogPrivate *priv = self->priv;
+	AlmanahImportResultsDialogPrivate *priv = almanah_import_results_dialog_get_instance_private (self);
 
 	new_mode = gtk_combo_box_get_active (combo_box);
 	if (new_mode == -1 || new_mode == (gint) priv->current_mode)
 		return;
 
 	priv->current_mode = new_mode;
-	gtk_tree_model_filter_refilter (self->priv->filtered_results_store);
+	gtk_tree_model_filter_refilter (priv->filtered_results_store);
 }

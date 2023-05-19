@@ -57,25 +57,22 @@ static void get_property (GObject *object, guint property_id, GValue *value, GPa
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_import_operation_dispose (GObject *object);
 
-struct _AlmanahImportOperationPrivate {
+typedef struct {
 	gint current_mode; /* index into import_modes */
 	GFile *source;
 	AlmanahStorageManager *storage_manager;
-};
+} AlmanahImportOperationPrivate;
 
 enum {
 	PROP_STORAGE_MANAGER = 1,
 };
 
 G_DEFINE_TYPE (AlmanahImportOperation, almanah_import_operation, G_TYPE_OBJECT)
-#define ALMANAH_IMPORT_OPERATION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_IMPORT_OPERATION, AlmanahImportOperationPrivate))
 
 static void
 almanah_import_operation_class_init (AlmanahImportOperationClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahImportOperationPrivate));
 
 	gobject_class->get_property = get_property;
 	gobject_class->set_property = set_property;
@@ -91,14 +88,14 @@ almanah_import_operation_class_init (AlmanahImportOperationClass *klass)
 static void
 almanah_import_operation_init (AlmanahImportOperation *self)
 {
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_IMPORT_OPERATION, AlmanahImportOperationPrivate);
-	self->priv->current_mode = -1; /* no mode selected */
+	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (self);
+	priv->current_mode = -1; /* no mode selected */
 }
 
 static void
 almanah_import_operation_dispose (GObject *object)
 {
-	AlmanahImportOperationPrivate *priv = ALMANAH_IMPORT_OPERATION (object)->priv;
+	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (ALMANAH_IMPORT_OPERATION (object));
 
 	if (priv->source != NULL)
 		g_object_unref (priv->source);
@@ -115,7 +112,7 @@ almanah_import_operation_dispose (GObject *object)
 static void
 get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahImportOperationPrivate *priv = ALMANAH_IMPORT_OPERATION (object)->priv;
+	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (ALMANAH_IMPORT_OPERATION (object));
 
 	switch (property_id) {
 		case PROP_STORAGE_MANAGER:
@@ -132,10 +129,11 @@ static void
 set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
 	AlmanahImportOperation *self = ALMANAH_IMPORT_OPERATION (object);
+	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (self);
 
 	switch (property_id) {
 		case PROP_STORAGE_MANAGER:
-			self->priv->storage_manager = g_value_dup_object (value);
+			priv->storage_manager = g_value_dup_object (value);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -148,8 +146,10 @@ AlmanahImportOperation *
 almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source, AlmanahStorageManager *dest_storage_manager)
 {
 	AlmanahImportOperation *import_operation = g_object_new (ALMANAH_TYPE_IMPORT_OPERATION, "storage-manager", dest_storage_manager, NULL);
-	import_operation->priv->current_mode = type_id;
-	import_operation->priv->source = g_object_ref (source);
+	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (import_operation);
+
+	priv->current_mode = type_id;
+	priv->source = g_object_ref (source);
 
 	return import_operation;
 }
@@ -229,14 +229,15 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	GtkTextIter existing_start, existing_end, imported_start, imported_end;
 	gchar *header_string;
 	GError *error = NULL;
+	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (self);
 
 	/* Check to see if there's a conflict first */
 	almanah_entry_get_date (imported_entry, &entry_date);
-	existing_entry = almanah_storage_manager_get_entry (self->priv->storage_manager, &entry_date);
+	existing_entry = almanah_storage_manager_get_entry (priv->storage_manager, &entry_date);
 
 	if (existing_entry == NULL) {
 		/* Add the entry to the proper database and return, ignoring failure */
-		almanah_storage_manager_set_entry (self->priv->storage_manager, imported_entry);
+		almanah_storage_manager_set_entry (priv->storage_manager, imported_entry);
 
 		return ALMANAH_IMPORT_STATUS_IMPORTED;
 	}
@@ -258,7 +259,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	existing_buffer = gtk_text_buffer_new (gtk_text_buffer_get_tag_table (imported_buffer));
 	if (almanah_entry_get_content (existing_entry, existing_buffer, FALSE, &error) == FALSE) {
 		/* Deserialising the existing entry failed; use the imported entry instead */
-		almanah_storage_manager_set_entry (self->priv->storage_manager, imported_entry);
+		almanah_storage_manager_set_entry (priv->storage_manager, imported_entry);
 
 		if (message != NULL) {
 			*message = g_strdup_printf (_("Error deserializing existing entry into buffer; overwriting with imported entry: %s"),
@@ -323,7 +324,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 		almanah_entry_set_last_edited (existing_entry, &imported_last_edited);
 	}
 
-	almanah_storage_manager_set_entry (self->priv->storage_manager, existing_entry);
+	almanah_storage_manager_set_entry (priv->storage_manager, existing_entry);
 	g_object_unref (existing_entry);
 
 	return ALMANAH_IMPORT_STATUS_MERGED;
@@ -518,8 +519,10 @@ import_thread (GSimpleAsyncResult *result, AlmanahImportOperation *operation, GC
 		return;
 	}
 
+	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (operation);
+
 	/* Import and return */
-	if (import_modes[operation->priv->current_mode].import_func (operation, operation->priv->source, data->progress_callback,
+	if (import_modes[priv->current_mode].import_func (operation, priv->source, data->progress_callback,
 	    data->progress_user_data, cancellable, &error) == FALSE) {
 		g_simple_async_result_set_from_error (result, error);
 		g_error_free (error);

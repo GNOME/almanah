@@ -27,10 +27,10 @@ enum {
 	PROP_STORAGE_MANAGER = 1
 };
 
-struct _AlmanahTagEntryPrivate {
+typedef struct {
 	GtkListStore *tags_store;
 	AlmanahStorageManager *storage_manager;
-};
+} AlmanahTagEntryPrivate;
 
 static void almanah_tag_entry_get_property	  (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_tag_entry_set_property	  (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
@@ -41,15 +41,13 @@ gboolean    almanah_tag_entry_focus_out_event	  (GtkWidget *self, GdkEventFocus 
 gboolean    almanah_tag_entry_focus_in_event	  (GtkWidget *self, GdkEventFocus *event);
 gboolean    almanah_tag_entry_match_selected	  (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
 
-G_DEFINE_TYPE (AlmanahTagEntry, almanah_tag_entry, GTK_TYPE_ENTRY)
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTagEntry, almanah_tag_entry, GTK_TYPE_ENTRY)
 
 static void
 almanah_tag_entry_class_init (AlmanahTagEntryClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 	GtkWidgetClass *gtkwidget_class = GTK_WIDGET_CLASS (klass);
-
-	g_type_class_add_private (klass, sizeof (AlmanahTagEntryPrivate));
 
 	gobject_class->get_property = almanah_tag_entry_get_property;
 	gobject_class->set_property = almanah_tag_entry_set_property;
@@ -72,11 +70,11 @@ almanah_tag_entry_init (AlmanahTagEntry *self)
 	GtkEntryCompletion *completion;
 	AtkObject *self_atk_object;
 
-	self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, ALMANAH_TYPE_TAG_ENTRY, AlmanahTagEntryPrivate);
+	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (self);
 
-	self->priv->tags_store = gtk_list_store_new (1, G_TYPE_STRING);
+	priv->tags_store = gtk_list_store_new (1, G_TYPE_STRING);
 	completion = gtk_entry_completion_new ();
-	gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (self->priv->tags_store));
+	gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (priv->tags_store));
 	gtk_entry_completion_set_text_column (completion, 0);
 	gtk_entry_set_completion (GTK_ENTRY (self), completion);
 	g_signal_connect (completion, "match-selected", G_CALLBACK (almanah_tag_entry_match_selected), self);
@@ -88,7 +86,7 @@ almanah_tag_entry_init (AlmanahTagEntry *self)
 static void
 almanah_tag_entry_finalize (GObject *object)
 {
-	AlmanahTagEntryPrivate *priv = ALMANAH_TAG_ENTRY (object)->priv;
+	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (ALMANAH_TAG_ENTRY (object));
 
 	g_clear_object (&priv->storage_manager);
 
@@ -98,7 +96,7 @@ almanah_tag_entry_finalize (GObject *object)
 static void
 almanah_tag_entry_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahTagEntryPrivate *priv = ALMANAH_TAG_ENTRY (object)->priv;
+	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (ALMANAH_TAG_ENTRY (object));
 
 	switch (property_id) {
 	case PROP_STORAGE_MANAGER:
@@ -113,7 +111,7 @@ almanah_tag_entry_get_property (GObject *object, guint property_id, GValue *valu
 static void
 almanah_tag_entry_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
-	AlmanahTagEntryPrivate *priv = ALMANAH_TAG_ENTRY (object)->priv;
+	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (ALMANAH_TAG_ENTRY (object));
 
 	switch (property_id) {
 	case PROP_STORAGE_MANAGER:
@@ -133,7 +131,7 @@ almanah_tag_entry_update_tags (AlmanahTagEntry *tag_entry)
 {
 	GList *tags;
 	GtkTreeIter iter;
-	AlmanahTagEntryPrivate *priv = tag_entry->priv;
+	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (tag_entry);
 
 	gtk_list_store_clear (priv->tags_store);
 	tags = almanah_storage_manager_get_tags (priv->storage_manager);

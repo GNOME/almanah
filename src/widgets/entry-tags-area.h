@@ -34,11 +34,9 @@ G_BEGIN_DECLS
 #define ALMANAH_IS_ENTRY_TAGS_AREA_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_ENTRY_TAGS_AREA))
 #define ALMANAH_ENTRY_TAGS_AREA_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_ENTRY_TAGS_AREA, AlmanahEntryTagsAreaClass))
 
-typedef struct _AlmanahEntryTagsAreaPrivate AlmanahEntryTagsAreaPrivate;
 
 typedef struct {
 	EggWrapBox parent;
-	AlmanahEntryTagsAreaPrivate *priv;
 } AlmanahEntryTagsArea;
 
 typedef struct {

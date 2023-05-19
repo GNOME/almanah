@@ -55,11 +55,8 @@ AlmanahImportExportDialog *almanah_import_export_dialog_new (AlmanahStorageManag
 #define ALMANAH_IS_IMPORT_RESULTS_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG))
 #define ALMANAH_IMPORT_RESULTS_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG, AlmanahImportResultsDialogClass))
 
-typedef struct _AlmanahImportResultsDialogPrivate	AlmanahImportResultsDialogPrivate;
-
 typedef struct {
 	GtkDialog parent;
-	AlmanahImportResultsDialogPrivate *priv;
 } AlmanahImportResultsDialog;
 
 typedef struct {
