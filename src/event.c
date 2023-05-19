@@ -33,7 +33,6 @@ enum {
 };
 
 G_DEFINE_ABSTRACT_TYPE (AlmanahEvent, almanah_event, G_TYPE_OBJECT)
-#define ALMANAH_EVENT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ALMANAH_TYPE_EVENT, AlmanahEventPrivate))
 
 static void
 almanah_event_class_init (AlmanahEventClass *klass)

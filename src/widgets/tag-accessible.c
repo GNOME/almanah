@@ -22,11 +22,6 @@
 #include "tag-accessible.h"
 #include "tag.h"
 
-struct _AlmanahTagAccessiblePrivate
-{
-        gint test;
-};
-
 static void  almanah_tag_accessible_initialize                    (AtkObject *obj, gpointer data);
 
 static const gchar* almanah_tag_accessible_get_name               (AtkObject *accessible);
@@ -47,8 +42,6 @@ static void
 almanah_tag_accessible_class_init (AlmanahTagAccessibleClass *klass)
 {
         AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
-
-        g_type_class_add_private (klass, sizeof (AlmanahTagAccessiblePrivate));
 
 	class->get_name = almanah_tag_accessible_get_name;
         class->initialize = almanah_tag_accessible_initialize;
