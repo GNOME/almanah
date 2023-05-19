@@ -68,8 +68,6 @@ static void     almanah_calendar_button_today_clicked_cb       (GtkButton *butto
 static void     almanah_calendar_button_select_date_clicked_cb (GtkButton *button, gpointer user_data);
 static gboolean almanah_calendar_button_select_date_press_cb   (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
 
-static void dock_position_func (AlmanahCalendarButton *self, gint *x, gint *y);
-
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendarButton, almanah_calendar_button, GTK_TYPE_TOGGLE_BUTTON)
 
 static void
