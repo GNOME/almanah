@@ -25,22 +25,12 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_TAG_ACCESSIBLE         (almanah_tag_accessible_get_type ())
-#define ALMANAH_TAG_ACCESSIBLE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_TAG_ACCESSIBLE, AlmanahTagAccessible))
-#define ALMANAH_TAG_ACCESSIBLE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_TAG_ACCESSIBLE, AlmanahTagAccessibleClass))
-#define ALMANAH_IS_TAG_ACCESSIBLE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_TAG_ACCESSIBLE))
-#define ALMANAH_IS_TAG_ACCESSIBLE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_TAG_ACCESSIBLE))
-#define ALMANAH_TAG_ACCESSIBLE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_TAG_ACCESSIBLE, AlmanahTagAccessibleClass))
+#define ALMANAH_TYPE_TAG_ACCESSIBLE (almanah_tag_accessible_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahTagAccessible, almanah_tag_accessible, ALMANAH, TAG_ACCESSIBLE, GtkWidgetAccessible)
 
-typedef struct {
-	GtkWidgetAccessible parent;
-} AlmanahTagAccessible;
-
-typedef struct {
+struct _AlmanahTagAccessibleClass {
 	GtkWidgetAccessibleClass parent;
-} AlmanahTagAccessibleClass;
-
-GType almanah_tag_accessible_get_type  (void) G_GNUC_CONST;
+};
 
 G_END_DECLS
 

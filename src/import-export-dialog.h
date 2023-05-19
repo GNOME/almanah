@@ -29,41 +29,21 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_IMPORT_EXPORT_DIALOG		(almanah_import_export_dialog_get_type ())
-#define ALMANAH_IMPORT_EXPORT_DIALOG(o)			(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG, AlmanahImportExportDialog))
-#define ALMANAH_IMPORT_EXPORT_DIALOG_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG, AlmanahImportExportDialogClass))
-#define ALMANAH_IS_IMPORT_EXPORT_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG))
-#define ALMANAH_IS_IMPORT_EXPORT_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG))
-#define ALMANAH_IMPORT_EXPORT_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_IMPORT_EXPORT_DIALOG, AlmanahImportExportDialogClass))
+#define ALMANAH_TYPE_IMPORT_EXPORT_DIALOG (almanah_import_export_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahImportExportDialog, almanah_import_export_dialog, ALMANAH, IMPORT_EXPORT_DIALOG, GtkDialog)
 
-typedef struct {
-	GtkDialog parent;
-} AlmanahImportExportDialog;
-
-typedef struct {
+struct _AlmanahImportExportDialogClass {
 	GtkDialogClass parent;
-} AlmanahImportExportDialogClass;
-
-GType almanah_import_export_dialog_get_type (void) G_GNUC_CONST;
+};
 
 AlmanahImportExportDialog *almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboolean import) G_GNUC_WARN_UNUSED_RESULT;
 
-#define ALMANAH_TYPE_IMPORT_RESULTS_DIALOG		(almanah_import_results_dialog_get_type ())
-#define ALMANAH_IMPORT_RESULTS_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG, AlmanahImportResultsDialog))
-#define ALMANAH_IMPORT_RESULTS_DIALOG_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG, AlmanahImportResultsDialogClass))
-#define ALMANAH_IS_IMPORT_RESULTS_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG))
-#define ALMANAH_IS_IMPORT_RESULTS_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG))
-#define ALMANAH_IMPORT_RESULTS_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_IMPORT_RESULTS_DIALOG, AlmanahImportResultsDialogClass))
+#define ALMANAH_TYPE_IMPORT_RESULTS_DIALOG (almanah_import_results_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahImportResultsDialog, almanah_import_results_dialog, ALMANAH, IMPORT_RESULTS_DIALOG, GtkDialog)
 
-typedef struct {
-	GtkDialog parent;
-} AlmanahImportResultsDialog;
-
-typedef struct {
+struct _AlmanahImportResultsDialogClass {
 	GtkDialogClass parent;
-} AlmanahImportResultsDialogClass;
-
-GType almanah_import_results_dialog_get_type (void) G_GNUC_CONST;
+};
 
 AlmanahImportResultsDialog *almanah_import_results_dialog_new (void) G_GNUC_WARN_UNUSED_RESULT;
 void almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, const GDate *date, AlmanahImportStatus status, const gchar *message);

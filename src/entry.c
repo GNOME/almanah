@@ -49,6 +49,10 @@ static guint8 *serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextB
 static gboolean deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data,
                                            gsize length, gboolean create_tags, gpointer user_data, GError **error);
 
+struct _AlmanahEntry {
+	GObject parent;
+};
+
 typedef struct {
 	GDate date;
 	guint8 *data;

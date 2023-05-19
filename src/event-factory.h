@@ -31,27 +31,17 @@ typedef enum {
 	ALMANAH_EVENT_FACTORY_CALENDAR
 } AlmanahEventFactoryType;
 
-#define ALMANAH_TYPE_EVENT_FACTORY		(almanah_event_factory_get_type ())
-#define ALMANAH_EVENT_FACTORY(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_EVENT_FACTORY, AlmanahEventFactory))
-#define ALMANAH_EVENT_FACTORY_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_EVENT_FACTORY, AlmanahEventFactoryClass))
-#define ALMANAH_IS_EVENT_FACTORY(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_EVENT_FACTORY))
-#define ALMANAH_IS_EVENT_FACTORY_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_EVENT_FACTORY))
-#define ALMANAH_EVENT_FACTORY_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_EVENT_FACTORY, AlmanahEventFactoryClass))
+#define ALMANAH_TYPE_EVENT_FACTORY (almanah_event_factory_get_type ())
+G_DECLARE_DERIVABLE_TYPE (AlmanahEventFactory, almanah_event_factory, ALMANAH, EVENT_FACTORY, GObject)
 
-typedef struct {
-	GObject parent;
-} AlmanahEventFactory;
-
-typedef struct {
+struct _AlmanahEventFactoryClass {
 	GObjectClass parent;
 
 	AlmanahEventFactoryType type_id;
 
 	void (*query_events) (AlmanahEventFactory *event_factory, GDate *date);
 	GSList *(*get_events) (AlmanahEventFactory *event_factory, GDate *date);
-} AlmanahEventFactoryClass;
-
-GType almanah_event_factory_get_type (void);
+};
 
 AlmanahEventFactoryType almanah_event_factory_get_type_id (AlmanahEventFactory *self);
 

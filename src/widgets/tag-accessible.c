@@ -22,6 +22,10 @@
 #include "tag-accessible.h"
 #include "tag.h"
 
+struct _AlmanahTagAccessible {
+	GtkWidgetAccessible parent;
+};
+
 static void  almanah_tag_accessible_initialize                    (AtkObject *obj, gpointer data);
 
 static const gchar* almanah_tag_accessible_get_name               (AtkObject *accessible);

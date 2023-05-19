@@ -38,6 +38,10 @@ static void almanah_preferences_dialog_dispose (GObject *object);
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
 static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
 
+struct _AlmanahPreferencesDialog {
+	GtkDialog parent;
+};
+
 typedef struct {
 	GSettings *settings;
 	CryptUIKeyset *keyset;

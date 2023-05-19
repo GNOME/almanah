@@ -27,6 +27,10 @@ static void get_property (GObject *object, guint property_id, GValue *value, GPa
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void finalize (GObject *object);
 
+struct _AlmanahHyperlinkTag {
+	GtkTextTag parent;
+};
+
 typedef struct {
 	gchar *uri;
 } AlmanahHyperlinkTagPrivate;

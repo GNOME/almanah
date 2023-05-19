@@ -29,24 +29,15 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_CALENDAR_BUTTON		(almanah_calendar_button_get_type ())
-#define ALMANAH_CALENDAR_BUTTON(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_CALENDAR_BUTTON, AlmanahCalendarButton))
-#define ALMANAH_CALENDAR_BUTTON_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_CALENDAR_BUTTON, AlmanahCalendarButtonClass))
-#define ALMANAH_IS_CALENDAR_BUTTON(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_CALENDAR_BUTTON))
-#define ALMANAH_IS_CALENDAR_BUTTON_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR_BUTTON))
-#define ALMANAH_CALENDAR_BUTTON_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR_BUTTON, AlmanahCalendarButtonClass))
+#define ALMANAH_TYPE_CALENDAR_BUTTON (almanah_calendar_button_get_type ())
+G_DECLARE_DERIVABLE_TYPE (AlmanahCalendarButton, almanah_calendar_button, ALMANAH, CALENDAR_BUTTON, GtkToggleButton)
 
-typedef struct {
-	GtkToggleButton parent;
-} AlmanahCalendarButton;
-
-typedef struct {
+struct _AlmanahCalendarButtonClass {
 	GtkToggleButtonClass parent;
 	void (* day_selected) (AlmanahCalendarButton *self);
 	void (* select_date_clicked) (AlmanahCalendarButton *self);
-} AlmanahCalendarButtonClass;
+};
 
-GType almanah_calendar_button_get_type (void) G_GNUC_CONST;
 GtkWidget *almanah_calendar_button_new (AlmanahStorageManager *storage_manager) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 void almanah_calendar_button_set_storage_manager (AlmanahCalendarButton *self, AlmanahStorageManager *storage_manager);
 void almanah_calendar_button_select_date (AlmanahCalendarButton *self, GDate *date);

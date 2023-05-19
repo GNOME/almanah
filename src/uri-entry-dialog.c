@@ -31,6 +31,10 @@ static void almanah_uri_entry_dialog_set_property (GObject *object, guint proper
 /* GtkBuilder callbacks */
 G_MODULE_EXPORT void ued_uri_entry_notify_text_cb (GObject *gobject, GParamSpec *pspec, AlmanahUriEntryDialog *self);
 
+struct _AlmanahUriEntryDialog {
+	GtkDialog parent;
+};
+
 typedef struct {
 	gchar *uri;
 	GtkWidget *ok_button;

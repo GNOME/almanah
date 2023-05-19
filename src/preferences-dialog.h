@@ -25,22 +25,13 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_PREFERENCES_DIALOG		(almanah_preferences_dialog_get_type ())
-#define ALMANAH_PREFERENCES_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialog))
-#define ALMANAH_PREFERENCES_DIALOG_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogClass))
-#define ALMANAH_IS_PREFERENCES_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_PREFERENCES_DIALOG))
-#define ALMANAH_IS_PREFERENCES_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_PREFERENCES_DIALOG))
-#define ALMANAH_PREFERENCES_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_PREFERENCES_DIALOG, AlmanahPreferencesDialogClass))
+#define ALMANAH_TYPE_PREFERENCES_DIALOG (almanah_preferences_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahPreferencesDialog, almanah_preferences_dialog, ALMANAH, PREFERENCES_DIALOG, GtkDialog)
 
-typedef struct {
-	GtkDialog parent;
-} AlmanahPreferencesDialog;
-
-typedef struct {
+struct _AlmanahPreferencesDialogClass {
 	GtkDialogClass parent;
-} AlmanahPreferencesDialogClass;
+};
 
-GType almanah_preferences_dialog_get_type (void);
 AlmanahPreferencesDialog *almanah_preferences_dialog_new (GSettings *settings) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 G_END_DECLS

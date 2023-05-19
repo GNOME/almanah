@@ -39,22 +39,12 @@ typedef guint AlmanahImportOperationType;
 
 typedef void (*AlmanahImportProgressCallback) (const GDate *date, AlmanahImportStatus status, const gchar *message, gpointer user_data);
 
-#define ALMANAH_TYPE_IMPORT_OPERATION		(almanah_import_operation_get_type ())
-#define ALMANAH_IMPORT_OPERATION(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_IMPORT_OPERATION, AlmanahImportOperation))
-#define ALMANAH_IMPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_IMPORT_OPERATION, AlmanahImportOperationClass))
-#define ALMANAH_IS_IMPORT_OPERATION(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_IMPORT_OPERATION))
-#define ALMANAH_IS_IMPORT_OPERATION_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_IMPORT_OPERATION))
-#define ALMANAH_IMPORT_OPERATION_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_IMPORT_OPERATION, AlmanahImportOperationClass))
+#define ALMANAH_TYPE_IMPORT_OPERATION (almanah_import_operation_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahImportOperation, almanah_import_operation, ALMANAH, IMPORT_OPERATION, GObject)
 
-typedef struct {
-	GObject parent;
-} AlmanahImportOperation;
-
-typedef struct {
+struct _AlmanahImportOperationClass {
 	GObjectClass parent;
-} AlmanahImportOperationClass;
-
-GType almanah_import_operation_get_type (void) G_GNUC_CONST;
+};
 
 AlmanahImportOperation *almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source,
                                                       AlmanahStorageManager *dest_storage_manager) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;

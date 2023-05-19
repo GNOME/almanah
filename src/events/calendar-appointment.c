@@ -29,6 +29,10 @@ static const gchar *almanah_calendar_appointment_event_format_value (AlmanahEven
 static const gchar *almanah_calendar_appointment_event_format_time (AlmanahEvent *event);
 static gboolean almanah_calendar_appointment_event_view (AlmanahEvent *event, GtkWindow *parent_window);
 
+struct _AlmanahCalendarAppointmentEvent {
+	AlmanahEvent parent;
+};
+
 typedef struct {
 	gchar *summary;
 	gchar *time;

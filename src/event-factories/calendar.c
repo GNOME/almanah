@@ -32,6 +32,10 @@ static void query_events (AlmanahEventFactory *event_factory, GDate *date);
 static GSList *get_events (AlmanahEventFactory *event_factory, GDate *date);
 static void events_changed_cb (CalendarClient *client, AlmanahCalendarEventFactory *self);
 
+struct _AlmanahCalendarEventFactory {
+	AlmanahEventFactory parent;
+};
+
 typedef struct {
 	CalendarClient *client;
 } AlmanahCalendarEventFactoryPrivate;

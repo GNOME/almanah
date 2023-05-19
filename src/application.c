@@ -57,6 +57,10 @@ static void action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer
 /* Some callbacks */
 void almanah_application_style_provider_parsing_error_cb (GtkCssProvider *provider, GtkCssSection *section, GError *error, gpointer user_data);
 
+struct _AlmanahApplication {
+	GtkApplication parent;
+};
+
 typedef struct {
 	gboolean debug;
 

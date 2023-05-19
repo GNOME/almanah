@@ -31,6 +31,10 @@ static void almanah_date_entry_dialog_set_property (GObject *object, guint prope
 /* GtkBuilder callbacks */
 void ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *pspec, AlmanahDateEntryDialog *self);
 
+struct _AlmanahDateEntryDialog {
+	GtkDialog parent;
+};
+
 typedef struct {
 	GDate date;
 	GtkWidget *ok_button;

@@ -37,6 +37,10 @@ enum {
 	PROP_TAG = 1
 };
 
+struct _AlmanahTag {
+	GtkDrawingArea parent;
+};
+
 typedef struct {
 	gchar *tag;
 	PangoLayout *layout;

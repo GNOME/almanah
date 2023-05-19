@@ -28,22 +28,13 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_MAIN_WINDOW		(almanah_main_window_get_type ())
-#define ALMANAH_MAIN_WINDOW(o)			(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_MAIN_WINDOW, AlmanahMainWindow))
-#define ALMANAH_MAIN_WINDOW_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_MAIN_WINDOW, AlmanahMainWindowClass))
-#define ALMANAH_IS_MAIN_WINDOW(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_MAIN_WINDOW))
-#define ALMANAH_IS_MAIN_WINDOW_CLASS(k)		(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_MAIN_WINDOW))
-#define ALMANAH_MAIN_WINDOW_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_MAIN_WINDOW, AlmanahMainWindowClass))
+#define ALMANAH_TYPE_MAIN_WINDOW (almanah_main_window_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahMainWindow, almanah_main_window, ALMANAH, MAIN_WINDOW, GtkApplicationWindow)
 
-typedef struct {
-	GtkApplicationWindow parent;
-} AlmanahMainWindow;
-
-typedef struct {
+struct _AlmanahMainWindowClass {
 	GtkApplicationWindowClass parent;
-} AlmanahMainWindowClass;
+};
 
-GType almanah_main_window_get_type (void);
 AlmanahMainWindow *almanah_main_window_new (AlmanahApplication *application) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 void almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date);

@@ -38,6 +38,10 @@ static void almanah_storage_manager_get_property (GObject *object, guint propert
 static void almanah_storage_manager_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static gboolean simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, ...);
 
+struct _AlmanahStorageManager {
+	GObject parent;
+};
+
 typedef struct {
 	gchar *filename;
 	sqlite3 *connection;
@@ -61,7 +65,7 @@ enum {
 
 static guint storage_manager_signals[LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE_WITH_CODE(AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT, G_ADD_PRIVATE(AlmanahStorageManager))
+G_DEFINE_TYPE_WITH_PRIVATE(AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT)
 
 GQuark
 almanah_storage_manager_error_quark (void)

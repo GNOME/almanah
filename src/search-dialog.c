@@ -38,6 +38,10 @@ void sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dia
 static void sd_search_progress_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahSearchDialog **search_dialog_weak_pointer);
 static void sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, AlmanahSearchDialog **search_dialog_weak_pointer);
 
+struct _AlmanahSearchDialog {
+	GtkDialog parent;
+};
+
 typedef struct {
 	GtkEntry *sd_search_entry;
 	GtkWidget *sd_search_button;

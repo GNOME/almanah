@@ -57,6 +57,10 @@ static void get_property (GObject *object, guint property_id, GValue *value, GPa
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_import_operation_dispose (GObject *object);
 
+struct _AlmanahImportOperation {
+	GObject parent;
+};
+
 typedef struct {
 	gint current_mode; /* index into import_modes */
 	GFile *source;

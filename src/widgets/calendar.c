@@ -32,6 +32,10 @@ static gchar *almanah_calendar_detail_func (GtkCalendar *calendar, guint year, g
 static void entry_added_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahCalendar *calendar);
 static void entry_removed_cb (AlmanahStorageManager *storage_manager, GDate *date, AlmanahCalendar *calendar);
 
+struct _AlmanahCalendar {
+	GtkCalendar parent;
+};
+
 typedef struct {
 	AlmanahStorageManager *storage_manager;
 	gulong entry_added_signal;

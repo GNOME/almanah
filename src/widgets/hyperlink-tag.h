@@ -26,22 +26,12 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_HYPERLINK_TAG		(almanah_hyperlink_tag_get_type ())
-#define ALMANAH_HYPERLINK_TAG(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_HYPERLINK_TAG, AlmanahHyperlinkTag))
-#define ALMANAH_HYPERLINK_TAG_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_HYPERLINK_TAG, AlmanahHyperlinkTagClass))
-#define ALMANAH_IS_HYPERLINK_TAG(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_HYPERLINK_TAG))
-#define ALMANAH_IS_HYPERLINK_TAG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_HYPERLINK_TAG))
-#define ALMANAH_HYPERLINK_TAG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_HYPERLINK_TAG, AlmanahHyperlinkTagClass))
+#define ALMANAH_TYPE_HYPERLINK_TAG (almanah_hyperlink_tag_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahHyperlinkTag, almanah_hyperlink_tag, ALMANAH, HYPERLINK_TAG, GtkTextTag)
 
-typedef struct {
-	GtkTextTag parent;
-} AlmanahHyperlinkTag;
-
-typedef struct {
+struct _AlmanahHyperlinkTagClass {
 	GtkTextTagClass parent;
-} AlmanahHyperlinkTagClass;
-
-GType almanah_hyperlink_tag_get_type (void) G_GNUC_CONST;
+};
 
 AlmanahHyperlinkTag *almanah_hyperlink_tag_new (const gchar *uri) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 

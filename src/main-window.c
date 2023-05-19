@@ -97,6 +97,11 @@ void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWi
 void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 void mw_desktop_interface_settings_changed (GSettings *settings, const gchar *key, gpointer user_data);
 
+
+struct _AlmanahMainWindow {
+	GtkApplicationWindow parent;
+};
+
 typedef struct {
 	GtkWidget *header_bar;
 	GtkSourceView *entry_view;

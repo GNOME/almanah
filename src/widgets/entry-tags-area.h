@@ -27,21 +27,12 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_ENTRY_TAGS_AREA         (almanah_entry_tags_area_get_type ())
-#define ALMANAH_ENTRY_TAGS_AREA(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_ENTRY_TAGS_AREA, AlmanahEntryTagsArea))
-#define ALMANAH_ENTRY_TAGS_AREA_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_ENTRY_TAGS_AREA, AlmanahEntryTagsAreaClass))
-#define ALMANAH_IS_ENTRY_TAGS_AREA(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_ENTRY_TAGS_AREA))
-#define ALMANAH_IS_ENTRY_TAGS_AREA_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_ENTRY_TAGS_AREA))
-#define ALMANAH_ENTRY_TAGS_AREA_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_ENTRY_TAGS_AREA, AlmanahEntryTagsAreaClass))
+#define ALMANAH_TYPE_ENTRY_TAGS_AREA (almanah_entry_tags_area_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, ALMANAH, ENTRY_TAGS_AREA, EggWrapBox)
 
-
-typedef struct {
-	EggWrapBox parent;
-} AlmanahEntryTagsArea;
-
-typedef struct {
+struct _AlmanahEntryTagsAreaClass {
 	EggWrapBoxClass parent;
-} AlmanahEntryTagsAreaClass;
+};
 
 GType almanah_entry_tags_area_get_type  (void) G_GNUC_CONST;
 void  almanah_entry_tags_area_set_entry (AlmanahEntryTagsArea *entry_tags_area, AlmanahEntry *entry);

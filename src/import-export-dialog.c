@@ -36,6 +36,10 @@ void ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportD
 void ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
 void ied_file_chooser_file_activated_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
 
+struct _AlmanahImportExportDialog {
+	GtkDialog parent;
+};
+
 typedef struct {
 	AlmanahStorageManager *storage_manager;
 	gboolean import; /* TRUE if we're in import mode, FALSE otherwise */
@@ -425,6 +429,10 @@ static void results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkW
 void ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahImportResultsDialog *self);
 void ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self);
 void ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialog *self);
+
+struct _AlmanahImportResultsDialog {
+	GtkDialog parent;
+};
 
 typedef struct {
 	GtkListStore *results_store;

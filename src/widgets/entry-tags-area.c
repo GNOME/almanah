@@ -31,6 +31,10 @@ enum {
 	PROP_BACK_WIDGET
 };
 
+struct _AlmanahEntryTagsArea {
+	EggWrapBox parent;
+};
+
 typedef struct {
 	AlmanahEntry *entry;
 	AlmanahStorageManager *storage_manager;

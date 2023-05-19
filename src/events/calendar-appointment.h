@@ -27,22 +27,13 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT		(almanah_calendar_appointment_event_get_type ())
-#define ALMANAH_CALENDAR_APPOINTMENT_EVENT(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, AlmanahCalendarAppointmentEvent))
-#define ALMANAH_CALENDAR_APPOINTMENT_EVENT_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, AlmanahCalendarAppointmentEventClass))
-#define ALMANAH_IS_CALENDAR_APPOINTMENT_EVENT(o)	(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT))
-#define ALMANAH_IS_CALENDAR_APPOINTMENT_EVENT_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT))
-#define ALMANAH_CALENDAR_APPOINTMENT_EVENT_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, AlmanahCalendarAppointmentEventClass))
+#define ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT (almanah_calendar_appointment_event_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahCalendarAppointmentEvent, almanah_calendar_appointment_event, ALMANAH, CALENDAR_APPOINTMENT_EVENT, AlmanahEvent)
 
-typedef struct {
-	AlmanahEvent parent;
-} AlmanahCalendarAppointmentEvent;
-
-typedef struct {
+struct _AlmanahCalendarAppointmentEventClass {
 	AlmanahEventClass parent;
-} AlmanahCalendarAppointmentEventClass;
+};
 
-GType almanah_calendar_appointment_event_get_type (void);
 AlmanahCalendarAppointmentEvent *almanah_calendar_appointment_event_new (const gchar *summary, GTime start_time);
 
 G_END_DECLS

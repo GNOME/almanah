@@ -27,6 +27,10 @@ enum {
 	PROP_STORAGE_MANAGER = 1
 };
 
+struct _AlmanahTagEntry {
+	GtkEntry parent;
+};
+
 typedef struct {
 	GtkListStore *tags_store;
 	AlmanahStorageManager *storage_manager;

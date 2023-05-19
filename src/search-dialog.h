@@ -24,22 +24,13 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_SEARCH_DIALOG		(almanah_search_dialog_get_type ())
-#define ALMANAH_SEARCH_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), ALMANAH_TYPE_SEARCH_DIALOG, AlmanahSearchDialog))
-#define ALMANAH_SEARCH_DIALOG_CLASS(k)		(G_TYPE_CHECK_CLASS_CAST((k), ALMANAH_TYPE_SEARCH_DIALOG, AlmanahSearchDialogClass))
-#define ALMANAH_IS_SEARCH_DIALOG(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), ALMANAH_TYPE_SEARCH_DIALOG))
-#define ALMANAH_IS_SEARCH_DIALOG_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), ALMANAH_TYPE_SEARCH_DIALOG))
-#define ALMANAH_SEARCH_DIALOG_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), ALMANAH_TYPE_SEARCH_DIALOG, AlmanahSearchDialogClass))
+#define ALMANAH_TYPE_SEARCH_DIALOG (almanah_search_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (AlmanahSearchDialog, almanah_search_dialog, ALMANAH, SEARCH_DIALOG, GtkDialog)
 
-typedef struct {
-	GtkDialog parent;
-} AlmanahSearchDialog;
-
-typedef struct {
+struct _AlmanahSearchDialogClass {
 	GtkDialogClass parent;
-} AlmanahSearchDialogClass;
+};
 
-GType almanah_search_dialog_get_type (void);
 AlmanahSearchDialog *almanah_search_dialog_new (void);
 
 G_END_DECLS

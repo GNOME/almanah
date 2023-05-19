@@ -43,6 +43,10 @@ const EventFactoryType event_factory_types[] = {
 static void almanah_event_manager_dispose (GObject *object);
 static void events_updated_cb (AlmanahEventFactory *factory, AlmanahEventManager *self);
 
+struct _AlmanahEventManager {
+	GObject parent;
+};
+
 typedef struct {
 	AlmanahEventFactory **factories;
 } AlmanahEventManagerPrivate;
