@@ -22,10 +22,6 @@
 #include "tag-accessible.h"
 #include "tag.h"
 
-typedef struct {
-        gint test;
-} AlmanahTagAccessiblePrivate;
-
 struct _AlmanahTagAccessible {
 	GtkWidgetAccessible parent;
 };
