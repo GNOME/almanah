@@ -33,18 +33,16 @@ if (appstream_util.found())
   )
 endif
 
+gschema_xml = 'org.gnome.almanah.gschema.xml'
 install_data(
-  'almanah.convert',
-  install_dir: convertdir,
+  gschema_xml,
+  install_dir: schemadir,
 )
 
-schema_conf = configuration_data()
-schema_conf.set('GETTEXT_PACKAGE', meson.project_name())
-configure_file(
-  input: 'org.gnome.almanah.gschema.xml.in',
-  output: '@BASENAME@',
-  configuration: schema_conf,
-  install_dir: schemadir,
+gnome.compile_schemas(
+  depend_files: [
+    gschema_xml,
+  ],
 )
 
 subdir('icons')

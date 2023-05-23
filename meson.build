@@ -6,16 +6,14 @@ project(
   default_options: [
     'b_ndebug=if-release',
   ],
-  meson_version: '>= 0.51',
+  meson_version: '>= 0.59',
 )
 
 cc = meson.get_compiler('c')
 gnome = import('gnome')
 i18n = import('i18n')
-python = import('python')
-python3 = python.find_installation('python3').path()
-data_dir = join_paths(meson.source_root(), 'data')
-po_dir = join_paths(meson.source_root(), 'po')
+data_dir = join_paths(meson.project_source_root(), 'data')
+po_dir = join_paths(meson.project_source_root(), 'po')
 
 prefix = get_option('prefix')
 datadir = join_paths(prefix, get_option('datadir'))
@@ -23,7 +21,6 @@ icondir = join_paths(datadir, 'icons', 'hicolor')
 localedir = join_paths(prefix, get_option('localedir'))
 pkgdatadir = join_paths(datadir, meson.project_name())
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
-convertdir = join_paths(datadir, 'GConf', 'gsettings')
 
 # Dependencies
 glib = dependency('glib-2.0', version: '>= 2.68')
@@ -95,9 +92,7 @@ if have_spell_check
 endif
 if have_evolution
   conf.set('HAVE_EVO', 1)
-  # FIXME: We haven’t kept up to date with the post-3.8 deprecations yet:
-  # https://gitlab.gnome.org/GNOME/almanah/issues/1
-  #conf.set('EDS_DISABLE_DEPRECATED', 1)
+  conf.set('EDS_DISABLE_DEPRECATED', 1)
 endif
 if get_option('gcr3')
   conf.set('HAVE_GCR3', 1)
@@ -112,11 +107,10 @@ config = vcs_tag(
 )
 
 # Post-install scripts
-meson.add_install_script(
-  python3,
-  join_paths(meson.source_root(), 'build-aux', 'post_install.py'),
-  icondir,
-  schemadir,
+gnome.post_install(
+  glib_compile_schemas: true,
+  gtk_update_icon_cache: true,
+  update_desktop_database: true,
 )
 
 # Subfolders
