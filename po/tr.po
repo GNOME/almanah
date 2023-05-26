@@ -1,6 +1,7 @@
 # Turkish translation for almanah.
-# Copyright (C) 2011-2022 almanah's COPYRIGHT HOLDER
+# Copyright (C) 2011-2023 almanah's COPYRIGHT HOLDER
 # This file is distributed under the same license as the almanah package.
+#
 # İşbaran Akçayır <isbaran@gmail.com>, 2015.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2014, 2015, 2016.
 #
@@ -8,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
-"POT-Creation-Date: 2020-08-30 11:13+0000\n"
+"POT-Creation-Date: 2022-09-18 09:20+0000\n"
 "PO-Revision-Date: 2016-11-30 22:59+0300\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -178,7 +179,7 @@ msgstr ""
 #: src/application.c:364
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
-msgstr "Komut satırı seçenekleri ayrıştırılamadı: %s\n"
+msgstr "Komut satırı seçenekleri ayrıştırılamadı: %s\n"
 
 #: src/application.c:383
 msgid "Error encrypting database"
@@ -531,7 +532,7 @@ msgstr "Girdi içeriği yüklenemedi"
 #. Translators: this sentence is just used in startup to estimate the width
 #. of a 15 words sentence. Translate with some random sentences with just 15 words.
 #. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
-#: src/main-window.c:1459
+#: src/main-window.c:1575
 msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
@@ -539,7 +540,7 @@ msgstr ""
 "Özgür yazılım herkesçe istenilen sayıda makineye kurulabilir, kopyası "
 "çıkarılabilir ve istenilen kimselere dağıtılabilir, hatta satılabilir."
 
-#: src/main-window.c:1496
+#: src/main-window.c:1612
 msgid "Spelling checker could not be initialized"
 msgstr "Yazım denetçisi ilklendirilemedi"
 
@@ -752,4 +753,3 @@ msgstr "Etiketi kaldır"
 #: src/widgets/tag-entry.c:85
 msgid "Tag entry"
 msgstr "Etiket girişi"
-
