@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
-"POT-Creation-Date: 2023-03-10 10:57+0000\n"
-"PO-Revision-Date: 2023-04-26 15:56+0000\n"
+"POT-Creation-Date: 2023-05-26 22:49+0000\n"
+"PO-Revision-Date: 2023-08-19 10:38+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -127,47 +127,46 @@ msgstr "Misheppnaðar færslur"
 msgid "Import Results List"
 msgstr "Listi yfir innflutning"
 
-#: data/org.gnome.almanah.gschema.xml.in:6
+#: data/org.gnome.almanah.gschema.xml:6
 msgid "Database encryption key ID"
-msgstr "Auðkenni dulritunarlykils gagnagrunns"
+msgstr "Dulritunarlykill gagnagrunns"
 
-#: data/org.gnome.almanah.gschema.xml.in:7
-#, fuzzy
+#: data/org.gnome.almanah.gschema.xml:7
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
 "encryption."
 msgstr ""
-"Persónukennið er notað til að af og -dulkóða gagnagrunnin, ef Almanah var "
-"xxxxx með  dulkóðnar eiginleikum. Hafið óútfyllt til að sleppa dulkóðun á "
-"gagnagrunni."
+"Auðkenni dulritunarlykils sem notaður er til að dulrita gagnagrunnin og opna"
+" hann, ef Almanah "
+"var sett saman með stuðningi við dulritun. Skildu eftir óútfyllt til að"
+" sleppa dulritun á gagnagrunni."
 
-#: data/org.gnome.almanah.gschema.xml.in:11
+#: data/org.gnome.almanah.gschema.xml:11
 msgid "Spell checking language"
-msgstr "Tungumál stafsetningayfirferðar"
+msgstr "Tungumál stafsetningaryfirferðar"
 
-#: data/org.gnome.almanah.gschema.xml.in:12
+#: data/org.gnome.almanah.gschema.xml:12
 msgid "The locale specifier of the language in which to check entry spellings."
-msgstr "Stilling tungumáls fyrir stafarýni."
+msgstr "Tákn fyrir staðfærslu tungumáls fyrir stafsetningaryfirferð færslna."
 
-#: data/org.gnome.almanah.gschema.xml.in:16
+#: data/org.gnome.almanah.gschema.xml:16
 msgid "Spell checking enabled?"
 msgstr "Er stafsetningaryfirferð virk?"
 
-#: data/org.gnome.almanah.gschema.xml.in:17
-#, fuzzy
+#: data/org.gnome.almanah.gschema.xml:17
 msgid "Whether spell checking of entries is enabled."
-msgstr "Hvort stafrýni færslna sé virk."
+msgstr "Hvort stafsetningaryfirferð færslna sé virk."
 
 #: src/application.c:257
 msgid "Error opening database"
 msgstr "Villa við að opna gagnagrunn"
 
-#: src/application.c:336
+#: src/application.c:338
 msgid "Enable debug mode"
 msgstr "Virkja villu-kembingu"
 
-#: src/application.c:353
+#: src/application.c:355
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -175,53 +174,53 @@ msgstr ""
 "tíma."
 
 #. Print an error
-#: src/application.c:364
-#, fuzzy, c-format
+#: src/application.c:366
+#, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Valkostur í skipun var ekki framkvæmanlegur: %s\n"
 
-#: src/application.c:383
+#: src/application.c:385
 msgid "Error encrypting database"
-msgstr "Villa við dulkóðun gagnagrunns"
+msgstr "Villa við dulritun gagnagrunns"
 
-#: src/application.c:526
+#: src/application.c:528
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
 "Foundation, either version 3 of the License, or (at your option) any later "
 "version."
 msgstr ""
-"Almanah er frjáls hugbúnaður; þú mátt dreifa honum og/eða breyta samkvæmt"
-" skilmálum í almenna GNU GPL notkunarleyfinu eins og það er gefið út af"
-" Frjálsu hugbúnaðarstofnuninni; annaðhvort útgáfu 3 af GPL-leyfinu, eða (ef"
-" þér sýnist svo) einhverja nýrri útgáfu leyfisins."
+"Almanah er frjáls hugbúnaður; sem þú mátt dreifa og/eða breyta samkvæmt "
+"skilmálum í almenna GNU GPL notkunarleyfinu eins og það er gefið út af "
+"Frjálsu hugbúnaðarstofnuninni; annaðhvort útgáfu 3 af GPL-leyfinu, eða (ef "
+"þér sýnist svo) einhverja nýrri útgáfu leyfisins."
 
-#: src/application.c:530
+#: src/application.c:532
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
 "details."
 msgstr ""
-"Hugbúnaðnum er dreift í þeirri von að hann geti verið gagnlegur, en ÁN ALLRAR "
-"ÁBYRGÐAR; einnig án þeirrar ábyrgðar sem gefin er í skyn með SELJANLEIKA eða "
-"EIGINLEIKUM TIL TILTEKINNA NOTA. Sjá almenna GNU GPL notkunarleyfið fyrir "
-"nánari upplýsingar."
+"Hugbúnaðnum er dreift í þeirri von að hann geti verið gagnlegur, en ÁN "
+"ALLRAR ÁBYRGÐAR; einnig án þeirrar ábyrgðar sem gefin er í skyn með "
+"SELJANLEIKA eða EIGINLEIKUM TIL TILTEKINNA NOTA. Sjá almenna GNU GPL "
+"notkunarleyfið fyrir nánari upplýsingar."
 
-#: src/application.c:534
+#: src/application.c:536
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 "Það ætti að hafa fylgt afrit af almenna GNU GPL notkunarleyfinu með "
-"forritinu; ef ekki, skoðaðu þá <http://wwwgnu.org/licenses/>."
+"forritinu. Ef ekki, skoðaðu þá <http://wwwgnu.org/licenses/>."
 
-#: src/application.c:549
+#: src/application.c:551
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Gagnleg dagbók, geymir %u færslur."
 
-#: src/application.c:553
+#: src/application.c:555
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Höfundarréttur © 2008-2009 Philip Withnall"
 
@@ -230,20 +229,20 @@ msgstr "Höfundarréttur © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: src/application.c:561
+#: src/application.c:563
 msgid "translator-credits"
-msgstr "Ingirafn Steinarsson, ingirafn at this dot is"
+msgstr "Ingirafn Steinarsson, ingirafn at this dot is, 2023"
 
-#: src/application.c:565
+#: src/application.c:567
 msgid "Almanah Website"
 msgstr "Heimasíða Almanah"
 
-#: src/application.c:593
-#, fuzzy, c-format
+#: src/application.c:595
+#, c-format
 msgid ""
 "Couldn't load the CSS resources. The interface might not be styled "
 "correctly: %s"
-msgstr "Get ekki hlaðið CSS . Stilling á viðmóti gæti verði röng: %s ATH"
+msgstr "Get ekki hlaðið CSS . Stilling á viðmóti gæti verði röng: %s"
 
 #: src/date-entry-dialog.c:72
 msgid "Select Date"
@@ -257,9 +256,9 @@ msgid "UI data could not be loaded"
 msgstr "Ekki var hægt að hlaða inn viðmótsgögnum"
 
 #: src/entry.c:303
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid data version number %u."
-msgstr "Ótæk..... útgáfa númer %u. ATH"
+msgstr "Ótækt útgáfa, númer rangt %u."
 
 #: src/events/calendar-appointment.c:51
 msgid "Calendar Appointment"
@@ -297,22 +296,21 @@ msgid ""
 "names in the format 'yyyy-mm-dd', and no extension. All entries will be "
 "exported, unencrypted in plain text format."
 msgstr ""
-"Veldu _möppu sem innheldur textaskjöl, eina fyrir hverja færslu, með heitum á"
-" sniðinu 'ár-mánuður-dagur', án skráarendingar. Hver og ein slík skrá verður "
-"flutt út, ódulkóðuð á hreinu textasniði."
+"Veldu _möppu sem innheldur textaskjöl, eina fyrir hverja færslu, með heitum "
+"á sniðinu 'ár-mánuður-dagur', án skráarendingar. Hver og ein slík skrá "
+"verður flutt út, ódulkóðuð á hreinu textasniði."
 
 #: src/export-operation.c:52 src/import-operation.c:50
 msgid "Database"
 msgstr "Gagnagrunnur"
 
 #: src/export-operation.c:53
-#, fuzzy
 msgid ""
 "Select a _filename for a complete copy of the unencrypted Almanah Diary "
 "database to be given."
 msgstr ""
-"Veljið s_kráar-nafn fyrir heildar afrit af ódulkóðuðum gagnagrunni "
-"AlmanahDagbókinni."
+"Veljið s_kráar-nafn fyrir heildar afrit af ódulrituðum gagnagrunni Almanah "
+"dagbókinni."
 
 #: src/export-operation.c:256 src/export-operation.c:313
 #, c-format
@@ -442,7 +440,7 @@ msgstr "Niðurstaða innflutnings"
 #: src/import-export-dialog.c:543 src/main-window.c:601 src/main-window.c:632
 #: src/main-window.c:1271 src/printing.c:263 src/search-dialog.c:180
 msgid "%A, %e %B %Y"
-msgstr "%a, %e. %b %Y"
+msgstr "%A, %e. %B %Y"
 
 #: src/import-operation.c:46
 msgid ""
@@ -450,9 +448,9 @@ msgid ""
 "format 'yyyy-mm-dd', and no extension. Any and all such files will be "
 "imported."
 msgstr ""
-"Veldu _möppu sem innheldur textaskjöl, eina fyrir hverja færslu, með heitum á"
-" sniðinu 'ár-mánuður-dagur', án skráarendingar. Hver og ein slík skrá verður "
-"flutt inn."
+"Veldu _möppu sem innheldur textaskjöl, eina fyrir hverja færslu, með heitum "
+"á sniðinu 'ár-mánuður-dagur', án skráarendingar. Hver og ein slík skrá "
+"verður flutt inn."
 
 #: src/import-operation.c:51
 msgid "Select a database _file created by Almanah Diary to import."
@@ -532,8 +530,8 @@ msgid ""
 "This is just a fifteen words sentence to calculate the diary entry text view "
 "size"
 msgstr ""
-"Þetta er bara fimmtán orða setning til að reikna út stærð textaglugga fyrir"
-" dagbókina"
+"Þetta er bara fimmtán orða setning til að reikna út stærð texta-glugga fyrir "
+"dagbókina"
 
 #: src/main-window.c:1612
 msgid "Spelling checker could not be initialized"
@@ -628,7 +626,7 @@ msgstr "Gat ekki keyrt fyrirspurn \"%s\". SQlite gaf eftirfarandi villuboð: %s"
 
 #: src/storage-manager.c:596
 msgid "Error deserializing entry into buffer while searching."
-msgstr "Villa við flutning færslu í biðminni við leit"
+msgstr "Villa við flutning færslu í biðminni við leit."
 
 #: src/uri-entry-dialog.c:71
 msgid "Enter URI"
@@ -645,49 +643,49 @@ msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME styður ekki OpenPGP: %s"
 
 #: src/vfs.c:309
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating cipher context: %s"
-msgstr "Villa við að búa til cipher xxxx: %s "
+msgstr "Villa við að búa til cipher samhengi: %s "
 
 #: src/vfs.c:329
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr ""
-"Ekki hægt að búa til nýjan GIOChannel fyrir dulkóðaða gagnagrunninn: %s"
+"Ekki hægt að búa til nýjan GIOChannel fyrir dulritaða gagnagrunninn: %s"
 
 #: src/vfs.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
-msgstr "Villa við að opna dulkóðað gagnagrunns skjal \"%s\": %s"
+msgstr "Villa við að opna dulritaða gagnagrunn skjalið \"%s\": %s"
 
 #: src/vfs.c:353
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating Callback base data buffer: %s"
-msgstr "Villa við að búa til Callback base gagna biðminni:%s ATH"
+msgstr "Villa við að búa til Callback base gagna biðminni:%s"
 
 #: src/vfs.c:361
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
-msgstr "Ekki hægt að búa til nýjan GIOChannel fyrir xxx gagnagrunn: %s "
+msgstr "Ekki hægt að búa til nýjan GIOChannel fyrir einfaldan gagnagrunn: %s "
 
 #: src/vfs.c:369
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening plain database file \"%s\": %s"
-msgstr "Villa við að opna venjulegt gagnagrunn skjal \"%s\": %s"
+msgstr "Villa við að opna hreintexta gagnagrunnsskrá \"%s\": %s"
 
 #: src/vfs.c:465
-#, fuzzy, c-format
+#, c-format
 msgid "Error getting encryption key: %s"
-msgstr "Villa við að mynda dulkóðunar lykil:%s"
+msgstr "Villa við að mynda dulritunar lykil:%s"
 
 #: src/vfs.c:489 src/vfs.c:495
-#, fuzzy, c-format
+#, c-format
 msgid "Error encrypting database: %s"
-msgstr "Villa við að dulkóða gagnagrunn: %s"
+msgstr "Villa við dulritun gagnagrunns: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
 #: src/vfs.c:545
-#, fuzzy, c-format
+#, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Villa við að afrita skjalið frá %s til %s: %s"
 
@@ -713,7 +711,7 @@ msgid "Error decrypting database: %s"
 msgstr "Villa við að afkóða gagnagrunn: %s"
 
 #: src/vfs.c:1103
-#, fuzzy, c-format
+#, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Villa við að breyta aðgangsheimid skjalsins: %s"
 
