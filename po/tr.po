@@ -9,16 +9,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: almanah master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
-"POT-Creation-Date: 2022-09-18 09:20+0000\n"
-"PO-Revision-Date: 2016-11-30 22:59+0300\n"
-"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
+"POT-Creation-Date: 2023-05-26 22:49+0000\n"
+"PO-Revision-Date: 2023-10-17 00:18+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 3.4\n"
 "X-POOTLE-MTIME: 1425020097.000000\n"
 
 #: data/almanah.appdata.xml.in:7 data/almanah.desktop.in:3
@@ -130,11 +130,11 @@ msgstr "Başarısız Girdiler"
 msgid "Import Results List"
 msgstr "Sonuç Listesini İçe Aktar"
 
-#: data/org.gnome.almanah.gschema.xml.in:6
+#: data/org.gnome.almanah.gschema.xml:6
 msgid "Database encryption key ID"
 msgstr "Veri tabanı şifreleme anahtarı kimliği"
 
-#: data/org.gnome.almanah.gschema.xml.in:7
+#: data/org.gnome.almanah.gschema.xml:7
 msgid ""
 "The ID of the key to use to encrypt and decrypt the database, if Almanah has "
 "been built with encryption support. Leave blank to disable database "
@@ -144,19 +144,19 @@ msgstr ""
 "açmak için kullanılacak anahtarın kimliği. Veri tabanı şifrelemeyi devre "
 "dışı bırakmak için bu alanı boş bırakın."
 
-#: data/org.gnome.almanah.gschema.xml.in:11
+#: data/org.gnome.almanah.gschema.xml:11
 msgid "Spell checking language"
 msgstr "İmla denetimi dili"
 
-#: data/org.gnome.almanah.gschema.xml.in:12
+#: data/org.gnome.almanah.gschema.xml:12
 msgid "The locale specifier of the language in which to check entry spellings."
 msgstr "Girdi yazım denetimi yapılacak dilin yerel belirteci (locale)"
 
-#: data/org.gnome.almanah.gschema.xml.in:16
+#: data/org.gnome.almanah.gschema.xml:16
 msgid "Spell checking enabled?"
 msgstr "İmla denetimi etkinleştirilsin mi?"
 
-#: data/org.gnome.almanah.gschema.xml.in:17
+#: data/org.gnome.almanah.gschema.xml:17
 msgid "Whether spell checking of entries is enabled."
 msgstr "Girdilerde yazım denetiminin etkin olup olmadığı."
 
@@ -164,11 +164,11 @@ msgstr "Girdilerde yazım denetiminin etkin olup olmadığı."
 msgid "Error opening database"
 msgstr "Veri tabanı açılırken hata"
 
-#: src/application.c:336
+#: src/application.c:338
 msgid "Enable debug mode"
 msgstr "Hata ayıklama kipini etkinleştir"
 
-#: src/application.c:353
+#: src/application.c:355
 msgid ""
 "Manage your diary. Only one instance of the program may be open at any time."
 msgstr ""
@@ -176,16 +176,16 @@ msgstr ""
 "olabilir."
 
 #. Print an error
-#: src/application.c:364
+#: src/application.c:366
 #, c-format
 msgid "Command line options could not be parsed: %s\n"
 msgstr "Komut satırı seçenekleri ayrıştırılamadı: %s\n"
 
-#: src/application.c:383
+#: src/application.c:385
 msgid "Error encrypting database"
 msgstr "Veri tabanı şifrelenirken hata"
 
-#: src/application.c:526
+#: src/application.c:528
 msgid ""
 "Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -196,7 +196,7 @@ msgstr ""
 "Genel Kamu Lisansı üçüncü sürüm ya da (seçiminize istinaden) sonraki bir "
 "sürüm şartlarınca değiştirilebilir ve dağıtılabilir."
 
-#: src/application.c:530
+#: src/application.c:532
 msgid ""
 "Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -207,7 +207,7 @@ msgstr ""
 "GARANTİSİ YOKTUR; aynı zamanda BİR AMACA UYGUNLUĞU ya da SATILABİLİRLİĞİ "
 "garanti etmez. Daha fazla ayrıntı için GNU Genel Kamu Lisansını inceleyin."
 
-#: src/application.c:534
+#: src/application.c:536
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "Almanah.  If not, see <http://www.gnu.org/licenses/>."
@@ -216,12 +216,12 @@ msgstr ""
 "olmalısınız. Eğer almadıysanız, <http://www.gnu.org/licenses/> adresini "
 "ziyaret ediniz."
 
-#: src/application.c:549
+#: src/application.c:551
 #, c-format
 msgid "A helpful diary keeper, storing %u entries."
 msgstr "Kullanışlı bir günlük tutucu, %u girdi tutuyor."
 
-#: src/application.c:553
+#: src/application.c:555
 msgid "Copyright © 2008-2009 Philip Withnall"
 msgstr "Telif Hakkı © 2008-2009 Philip Withnall"
 
@@ -230,15 +230,15 @@ msgstr "Telif Hakkı © 2008-2009 Philip Withnall"
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: src/application.c:561
+#: src/application.c:563
 msgid "translator-credits"
 msgstr "Muhammet Kara <muhammetk@gmail.com>"
 
-#: src/application.c:565
+#: src/application.c:567
 msgid "Almanah Website"
 msgstr "Almanah Web Sitesi"
 
-#: src/application.c:593
+#: src/application.c:595
 #, c-format
 msgid ""
 "Couldn't load the CSS resources. The interface might not be styled "
@@ -497,7 +497,7 @@ msgstr "%s için bu günlük girdisini düzenlemek istediğinize emin misiniz?"
 
 #: src/main-window.c:608 src/main-window.c:639
 msgid "_Cancel"
-msgstr "_İptal"
+msgstr "İ_ptal"
 
 #: src/main-window.c:609
 msgid "_Edit"
@@ -637,84 +637,84 @@ msgstr "Arama yaparken girdinin tampon belleğe seri çözümünde hata."
 msgid "Enter URI"
 msgstr "URI Girin"
 
-#: src/vfs.c:291
+#: src/vfs.c:295
 #, c-format
 msgid "GPGME is not at least version %s"
 msgstr "GPGME en az %s sürümünde değil"
 
-#: src/vfs.c:298
+#: src/vfs.c:302
 #, c-format
 msgid "GPGME doesn't support OpenPGP: %s"
 msgstr "GPGME, OpenPGP'i desteklemiyor: %s"
 
-#: src/vfs.c:305
+#: src/vfs.c:309
 #, c-format
 msgid "Error creating cipher context: %s"
 msgstr "Şifreleme bağlamı oluşturulurken hata: %s"
 
-#: src/vfs.c:325
+#: src/vfs.c:329
 #, c-format
 msgid "Can't create a new GIOChannel for the encrypted database: %s"
 msgstr "Şifreli veri tabanı için yeni GIOChannel oluşturulamıyor: %s"
 
-#: src/vfs.c:333
+#: src/vfs.c:337
 #, c-format
 msgid "Error opening encrypted database file \"%s\": %s"
 msgstr "Şifrelenmiş veri tabanı dosyası \"%s\" açılırken hata: %s"
 
-#: src/vfs.c:349
+#: src/vfs.c:353
 #, c-format
 msgid "Error creating Callback base data buffer: %s"
 msgstr "Geriçağrı taban veri tampon belleği oluşturmada hata: %s"
 
-#: src/vfs.c:357
+#: src/vfs.c:361
 #, c-format
 msgid "Can't create a new GIOChannel for the plain database: %s"
 msgstr "Düz veri tabanı için yeni GIOChannel oluşturulamıyor: %s"
 
-#: src/vfs.c:365
+#: src/vfs.c:369
 #, c-format
 msgid "Error opening plain database file \"%s\": %s"
 msgstr "Düz veri tabanı dosyası \"%s\" açılırken hata: %s"
 
-#: src/vfs.c:461
+#: src/vfs.c:465
 #, c-format
 msgid "Error getting encryption key: %s"
 msgstr "Şifreleme anahtarı alınırken hata: %s"
 
-#: src/vfs.c:485 src/vfs.c:491
+#: src/vfs.c:489 src/vfs.c:495
 #, c-format
 msgid "Error encrypting database: %s"
 msgstr "Veri tabanı şifrelenirken hata: %s"
 
 #. Translators: The first and second params are file paths, the last param is an error message.
-#: src/vfs.c:541
+#: src/vfs.c:545
 #, c-format
 msgid "Error copying the file from %s to %s: %s"
 msgstr "Dosyanın %s konumundan %s konumuna kopyalanmasında hata: %s"
 
-#: src/vfs.c:547
+#: src/vfs.c:551
 #, c-format
 msgid "Error changing database backup file permissions: %s"
 msgstr "Veri tabanı yedek dosyası izinleri değiştirmede hata: %s"
 
-#: src/vfs.c:647
+#: src/vfs.c:651
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Dosyanın kapatılmasında hata: %s"
 
 #. Translators: the first parameter is a filename.
-#: src/vfs.c:1046 src/vfs.c:1073
+#: src/vfs.c:1050 src/vfs.c:1077
 #, c-format
 msgid "Error backing up file ‘%s’"
 msgstr "‘%s’ dosyasının yedeklenmesinde hata"
 
-#: src/vfs.c:1059
+#: src/vfs.c:1063
 #, c-format
 msgid "Error decrypting database: %s"
 msgstr "Veri tabanı açılırken hata: %s"
 
-#: src/vfs.c:1099
+#: src/vfs.c:1103
 #, c-format
 msgid "Error changing database file permissions: %s"
 msgstr "Veri tabanı dosya izinleri değiştirilirken hata: %s"
