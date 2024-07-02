@@ -1,0 +1,741 @@
+# Hindi translation for almanah.
+# Copyright (C) 2024 almanah's COPYRIGHT HOLDER
+# This file is distributed under the same license as the almanah package.
+# Scrambled 777 <weblate.scrambled777@simplelogin.com>,  2024.
+# Scrambled777 <weblate.scrambled777@simplelogin.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: almanah master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues\n"
+"POT-Creation-Date: 2023-10-18 18:19+0000\n"
+"PO-Revision-Date: 2024-06-21 21:31+0530\n"
+"Last-Translator: Scrambled777 <weblate.scrambled777@simplelogin.com>\n"
+"Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 46.1\n"
+
+#: data/almanah.appdata.xml.in:7 data/almanah.desktop.in:3
+#: src/application.c:135 src/main-window.c:163
+msgid "Almanah Diary"
+msgstr "अल्मनाह डायरी"
+
+#: data/almanah.appdata.xml.in:8
+msgid "Keep a diary of your life"
+msgstr "अपने जीवन की एक डायरी रखें"
+
+#: data/almanah.appdata.xml.in:10
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"अल्मनाह डायरी एक ऐसा अनुप्रयोग है जो आपको अपने जीवन की डायरी रखने की अनुमति देता है।"
+
+#: data/almanah.appdata.xml.in:13
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"आप अपनी गोपनीयता को सुरक्षित रखने के लिए डायरी को कूटलेख कर सकते हैं। इसमें संपादन "
+"क्षमताएं हैं, जिसमें पाठ प्रारूपण और प्रिंटिंग शामिल है और यह आपको प्रत्येक दिन (आपके कंप्यूटर "
+"पर) हुई घटनाओं की सूची दिखाता है (जैसे कि इवोल्यूशन से कार्य और मुलाकात)।"
+
+#: data/almanah.desktop.in:4
+msgid "Keep a personal diary"
+msgstr "एक व्यक्तिगत डायरी रखें"
+
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#: data/almanah.desktop.in:5 src/application.c:274
+msgid "Diary"
+msgstr "डायरी"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/almanah.desktop.in:7
+msgid "diary;journal;"
+msgstr "डायरी;जर्नल;"
+
+#: src/ui/almanah.ui:27
+msgid "Calendar"
+msgstr "कैलेंडर"
+
+#: src/ui/almanah.ui:46
+msgid "Go to Today"
+msgstr "आज पर जाएं"
+
+#: src/ui/almanah.ui:56
+msgid "Select Date…"
+msgstr "तिथि चुनें…"
+
+#: src/ui/almanah.ui:134
+msgid "Entry editing area"
+msgstr "प्रविष्टि संपादन क्षेत्र"
+
+#: src/ui/almanah.ui:160
+msgid "Past events"
+msgstr "पिछली घटनाएं"
+
+#: src/ui/almanah.ui:204
+msgid "Past Event List"
+msgstr "पिछली घटना सूची"
+
+#: src/ui/almanah.ui:299
+msgid "Search entry"
+msgstr "प्रविष्टि खोजें"
+
+#: src/ui/almanah.ui:307 src/search-dialog.c:69
+msgid "Search"
+msgstr "खोजें"
+
+#: src/ui/almanah.ui:398
+msgid "Result List"
+msgstr "परिणाम सूची"
+
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
+msgid "View Entry"
+msgstr "प्रविष्टि देखें"
+
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "उदाहरणार्थ \"14/03/2009\" या \"14 मार्च 2009\"।"
+
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: src/ui/almanah.ui:570
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "उदाहरणार्थ “http://google.com/” या “file:///home/me/Photos/photo.jpg”।"
+
+#: src/ui/almanah.ui:734
+msgid "Successful Entries"
+msgstr "सफल प्रविष्टियां"
+
+#: src/ui/almanah.ui:737
+msgid "Merged Entries"
+msgstr "विलीन प्रविष्टियां"
+
+#: src/ui/almanah.ui:740
+msgid "Failed Entries"
+msgstr "असफल प्रविष्टियां"
+
+#: src/ui/almanah.ui:802
+msgid "Import Results List"
+msgstr "परिणाम सूची आयात करें"
+
+#: data/org.gnome.almanah.gschema.xml:6
+msgid "Database encryption key ID"
+msgstr "डेटाबेस कूटलेखन कुंजी आईडी"
+
+#: data/org.gnome.almanah.gschema.xml:7
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"डेटाबेस को कूटलेख और विकोड करने के लिए उपयोग की जाने वाली कुंजी की आईडी, यदि अल्मनाह "
+"को कूटलेखन समर्थन के साथ बनाया गया है। डेटाबेस कूटलेखन को अक्षम करने के लिए खाली छोड़ दें।"
+
+#: data/org.gnome.almanah.gschema.xml:11
+msgid "Spell checking language"
+msgstr "वर्तनी जांच भाषा"
+
+#: data/org.gnome.almanah.gschema.xml:12
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "उस भाषा का स्थानीय निर्दिष्टकर्ता जिसमें प्रविष्टि की वर्तनी जांचनी है।"
+
+#: data/org.gnome.almanah.gschema.xml:16
+msgid "Spell checking enabled?"
+msgstr "वर्तनी जांच सक्षम है?"
+
+#: data/org.gnome.almanah.gschema.xml:17
+msgid "Whether spell checking of entries is enabled."
+msgstr "क्या प्रविष्टियों की वर्तनी जांच सक्षम है।"
+
+#: src/application.c:257
+msgid "Error opening database"
+msgstr "डेटाबेस खोलने में त्रुटि"
+
+#: src/application.c:338
+msgid "Enable debug mode"
+msgstr "डिबग मोड सक्षम करें"
+
+#: src/application.c:355
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"अपनी डायरी प्रबंधित करें। किसी भी समय प्रोग्राम का केवल एक ही इंस्टैंस खुला रह सकता है।"
+
+#. Print an error
+#: src/application.c:366
+#, c-format
+msgid "Command line options could not be parsed: %s\n"
+msgstr "कमांड लाइन विकल्पों का विश्लेषण नहीं किया जा सका: %s\n"
+
+#: src/application.c:385
+msgid "Error encrypting database"
+msgstr "डेटाबेस कूटलेखित करते समय त्रुटि"
+
+#: src/application.c:528
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"अल्मनाह एक मुफ्त सॉफ्टवेयर है: आप इसे फ्री सॉफ्टवेयर फाउंडेशन द्वारा प्रकाशित GNU जनरल "
+"पब्लिक लाइसेंस की शर्तों के तहत पुनर्वितरित और/या संशोधित कर सकते हैं, या तो लाइसेंस के "
+"संस्करण 3 के तहत, या (आपके विकल्प पर) किसी भी बाद के संस्करण के तहत।"
+
+#: src/application.c:532
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"अल्मनाह को इस उम्मीद में वितरित किया जाता है कि यह उपयोगी होगा, लेकिन बिना किसी "
+"वारंटी के; यहां तक ​​कि व्यापारिकता या किसी विशेष उद्देश्य के लिए उपयुक्तता की निहित "
+"वारंटी के बिना। अधिक जानकारी के लिए GNU जनरल पब्लिक लाइसेंस देखें।"
+
+#: src/application.c:536
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"आपको अल्मनाह के साथ GNU जनरल पब्लिक लाइसेंस की एक प्रति मिल गई होगी। यदि नहीं, तो "
+"<http://www.gnu.org/licenses/> देखें।"
+
+#: src/application.c:551
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "एक सहायक डायरी कीपर, %u प्रविष्टियों को संग्रहीत करना।"
+
+#: src/application.c:555
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "कॉपीराइट © 2008-2009 फिलिप विथनॉल"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: src/application.c:563
+msgid "translator-credits"
+msgstr "Scrambled777 <weblate.scrambled777@simplelogin.com>"
+
+#: src/application.c:567
+msgid "Almanah Website"
+msgstr "अल्मनाह वेबसाइट"
+
+#: src/application.c:595
+#, c-format
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr "CSS संसाधन लोड नहीं हो सके। इंटरफ़ेस शायद सही ढंग से स्टाइल नहीं किया गया है: %s"
+
+#: src/date-entry-dialog.c:72
+msgid "Select Date"
+msgstr "तारीख़ चुनें"
+
+#: src/date-entry-dialog.c:127 src/import-export-dialog.c:169
+#: src/import-export-dialog.c:476 src/main-window.c:235
+#: src/preferences-dialog.c:177 src/search-dialog.c:95
+#: src/uri-entry-dialog.c:126
+msgid "UI data could not be loaded"
+msgstr "UI डेटा लोड नहीं किया जा सका"
+
+#: src/entry.c:303
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "अमान्य डेटा संस्करण संख्या %u।"
+
+#: src/events/calendar-appointment.c:51
+msgid "Calendar Appointment"
+msgstr "कैलेंडर अपॉइंटमेंट"
+
+#: src/events/calendar-appointment.c:52
+msgid "An appointment on an Evolution calendar."
+msgstr "इवोल्यूशन कैलेंडर पर एक नियुक्ति।"
+
+#. Translators: This is a time string with the format hh:mm
+#: src/events/calendar-appointment.c:89 src/events/calendar-task.c:90
+#, c-format
+msgid "%.2d:%.2d"
+msgstr "%.2d:%.2d"
+
+#: src/events/calendar-appointment.c:135 src/events/calendar-task.c:125
+msgid "Error launching Evolution"
+msgstr "इवोल्यूशन शुरू करते समय त्रुटि"
+
+#: src/events/calendar-task.c:51
+msgid "Calendar Task"
+msgstr "कैलेंडर कार्य"
+
+#: src/events/calendar-task.c:52
+msgid "A task on an Evolution calendar."
+msgstr "इवोल्यूशन कैलेंडर पर एक कार्य।"
+
+#: src/export-operation.c:47 src/import-operation.c:45
+msgid "Text Files"
+msgstr "पाठ फाइलें"
+
+#: src/export-operation.c:48
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"प्रविष्टियों को पाठ फाइलों के रूप में निर्यात करने के लिए एक फोल्डर चुनें, प्रत्येक प्रविष्टि के "
+"लिए एक, 'yyyy-mm-dd' प्रारूप में नाम के साथ, और कोई एक्सटेंशन नहीं। सभी प्रविष्टियां सादे "
+"पाठ प्रारूप में अकूटलेखित निर्यात की जाएंगी।"
+
+#: src/export-operation.c:52 src/import-operation.c:50
+msgid "Database"
+msgstr "डेटाबेस"
+
+#: src/export-operation.c:53
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"अकूटलेखित अल्मनाह डायरी डेटाबेस की पूर्ण प्रतिलिपि देने के लिए एक फाइल नाम का चयन करें।"
+
+#: src/export-operation.c:256 src/export-operation.c:313
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "निर्यातित फाइल अनुमतियां बदलने में त्रुटि: %s"
+
+#: src/gtk/menus.ui:6
+msgid "_Search"
+msgstr "खोजें (_S)"
+
+#: src/gtk/menus.ui:12
+msgid "Pr_eferences"
+msgstr "प्राथमिकताएं (_e)"
+
+#: src/gtk/menus.ui:16
+msgctxt "Main menu"
+msgid "_Import"
+msgstr "आयात करें (_I)"
+
+#: src/gtk/menus.ui:20
+msgctxt "Main menu"
+msgid "_Export"
+msgstr "निर्यात करें (_E)"
+
+#: src/gtk/menus.ui:24
+msgid "_Print diary"
+msgstr "डायरी प्रिंट करें (_P)"
+
+#: src/gtk/menus.ui:30
+msgid "_About Almanah Diary"
+msgstr "अल्मनाह डायरी के बारे में (_A)"
+
+#: src/gtk/menus.ui:34
+msgid "_Quit"
+msgstr "बंद करें (_Q)"
+
+#: src/gtk/menus.ui:42
+msgid "_Bold"
+msgstr "बोल्ड (_B)"
+
+#: src/gtk/menus.ui:46
+msgid "_Italic"
+msgstr "इटैलिक (_I)"
+
+#: src/gtk/menus.ui:50
+msgid "_Underline"
+msgstr "रेखांकन (_U)"
+
+#: src/gtk/menus.ui:56
+msgid "_Cut"
+msgstr "काटें (_C)"
+
+#: src/gtk/menus.ui:60
+msgid "_Copy"
+msgstr "कॉपी करें (_C)"
+
+#: src/gtk/menus.ui:64
+msgid "_Paste"
+msgstr "पेस्ट करें (_P)"
+
+#: src/gtk/menus.ui:68 src/main-window.c:640
+msgid "_Delete"
+msgstr "मिटाएं (_D)"
+
+#: src/gtk/menus.ui:74
+msgid "Insert _Time"
+msgstr "समय सम्मिलित करें (_T)"
+
+#: src/gtk/menus.ui:78
+msgid "Add/Remove _Hyperlink"
+msgstr "हाइपरलिंक जोड़ें/हटाएं (_H)"
+
+#: src/import-export-dialog.c:203
+msgid "Import _mode: "
+msgstr "आयात मोड (_m): "
+
+#: src/import-export-dialog.c:203
+msgid "Export _mode: "
+msgstr "निर्यात मोड (_m): "
+
+#. Set the window title
+#: src/import-export-dialog.c:206
+msgid "Import Entries"
+msgstr "प्रविष्टियां आयात करें"
+
+#: src/import-export-dialog.c:206
+msgid "Export Entries"
+msgstr "प्रविष्टियां निर्यात करें"
+
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:211
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "आयात (_I)"
+
+#: src/import-export-dialog.c:211
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "निर्यात (_E)"
+
+#: src/import-export-dialog.c:248
+msgid "Import failed"
+msgstr "आयात विफल"
+
+#: src/import-export-dialog.c:286
+msgid "Export failed"
+msgstr "निर्यात विफल"
+
+#: src/import-export-dialog.c:299
+msgid "Export successful"
+msgstr "निर्यात सफल"
+
+#: src/import-export-dialog.c:300
+msgid "The diary was successfully exported."
+msgstr "डायरी सफलतापूर्वक निर्यात की गई।"
+
+#: src/import-export-dialog.c:448
+msgid "Import Results"
+msgstr "परिणाम आयात करें"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: src/import-export-dialog.c:543 src/main-window.c:601 src/main-window.c:632
+#: src/main-window.c:1271 src/printing.c:263 src/search-dialog.c:180
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: src/import-operation.c:46
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"पाठ फाइलों वाला एक फोल्डर चुनें, प्रत्येक प्रविष्टि में एक, जिसका नाम 'yyyy-mm-dd' प्रारूप "
+"में हो, और कोई एक्सटेंशन न हो। ऐसी सभी फाइलें आयात की जाएंगी।"
+
+#: src/import-operation.c:51
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr "आयात करने के लिए अल्मनाह डायरी द्वारा बनाई गई डेटाबेस फाइल चुनें।"
+
+#: src/import-operation.c:248
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "बफर में आयातित प्रविष्टि को विक्रमिकीकरण करने में त्रुटि: %s"
+
+#: src/import-operation.c:264
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"बफर में मौजूदा प्रविष्टि को विक्रमिकीकरण करने में त्रुटि; आयातित प्रविष्टि के साथ अधिलेखित "
+"करना: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: src/import-operation.c:305
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"\"%s\" से प्रविष्टि आयातित:\n"
+"\n"
+
+#: src/main-window.c:605
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "क्या आप वाकई %s के लिए इस डायरी प्रविष्टि को संपादित करना चाहते हैं?"
+
+#: src/main-window.c:608 src/main-window.c:639
+msgid "_Cancel"
+msgstr "रद्द करें (_C)"
+
+#: src/main-window.c:609
+msgid "_Edit"
+msgstr "संपादित करें (_E)"
+
+#: src/main-window.c:636
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "क्या आप वाकई %s के लिए इस डायरी प्रविष्टि को मिटाना चाहते हैं?"
+
+#. Print a warning about the unknown tag
+#: src/main-window.c:746
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "प्रविष्टि में अज्ञात या अनुकृत पाठ टैग \"%s\"। अनदेखा किया जा रहा है।"
+
+#: src/main-window.c:987
+msgid "Error opening URI"
+msgstr "URI खोलने में त्रुटि"
+
+#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#: src/main-window.c:1198
+#, c-format
+msgid "%s @ %s"
+msgstr "%s @ %s"
+
+#: src/main-window.c:1304
+msgid "Entry content could not be loaded"
+msgstr "प्रविष्टि सामग्री लोड नहीं की जा सकी"
+
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: src/main-window.c:1575
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr ""
+"यह डायरी प्रविष्टि पाठ दृश्य आकार की गणना करने के लिए सिर्फ पंद्रह शब्दों का वाक्य है"
+
+#: src/main-window.c:1612
+msgid "Spelling checker could not be initialized"
+msgstr "वर्तनी जांचक प्रारंभ नहीं किया जा सका"
+
+#: src/preferences-dialog.c:83
+msgid "Preferences"
+msgstr "प्राथमिकताएं"
+
+#. Grab our child widgets
+#: src/preferences-dialog.c:204
+msgid "Encryption key: "
+msgstr "कूटलेखन कुंजी: "
+
+#: src/preferences-dialog.c:208
+msgid "None (don't encrypt)"
+msgstr "कोई नहीं (कूटलेखित न करें)"
+
+#: src/preferences-dialog.c:213
+msgid "New _Key"
+msgstr "नई कुंजी (_K)"
+
+#. Set up the "Enable spell checking" check button
+#: src/preferences-dialog.c:237
+msgid "Enable _spell checking"
+msgstr "वर्तनी जांच सक्षम करें (_s)"
+
+#: src/preferences-dialog.c:262
+msgid "Error saving the encryption key"
+msgstr "कूटलेखन कुंजी सहेजने में त्रुटि"
+
+#: src/preferences-dialog.c:281
+msgid "Error opening Seahorse"
+msgstr "Seahorse खोलने में त्रुटि"
+
+#: src/printing.c:277
+msgid "This entry is marked as important."
+msgstr "यह प्रविष्टि महत्वपूर्ण के रूप में चिह्नित है।"
+
+#: src/printing.c:298
+msgid "No entry for this date."
+msgstr "इस तिथि के लिए कोई प्रविष्टि नहीं है।"
+
+#: src/printing.c:457
+msgid "Start date:"
+msgstr "प्रारंभ तारीख:"
+
+#: src/printing.c:459
+msgid "End date:"
+msgstr "अंतिम तारीख:"
+
+#. Line spacing
+#: src/printing.c:475
+msgid "Line spacing:"
+msgstr "पंक्ति रिक्ति:"
+
+#: src/search-dialog.c:221
+msgid "Search canceled."
+msgstr "खोज रद्द की गई।"
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: src/search-dialog.c:224
+#, c-format
+msgid "Error: %s"
+msgstr "त्रुटि: %s"
+
+#. Success!
+#: src/search-dialog.c:229
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "%d प्रविष्टि मिली:"
+msgstr[1] "%d प्रविष्टियाँ मिली:"
+
+#: src/search-dialog.c:278
+msgid "Searching…"
+msgstr "खोज रहे हैं…"
+
+#: src/storage-manager.c:247
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr "डेटाबेस \"%s\" नहीं खोला जा सका। SQLite ने निम्न त्रुटि संदेश दिया: %s"
+
+#: src/storage-manager.c:290
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr "क्वेरी \"%s\" नहीं चलाई जा सकी। SQLite ने निम्न त्रुटि संदेश दिया: %s"
+
+#: src/storage-manager.c:596
+msgid "Error deserializing entry into buffer while searching."
+msgstr "खोज करते समय बफर में प्रविष्टि को विक्रमिकीकरण करने में त्रुटि हुई।"
+
+#: src/uri-entry-dialog.c:71
+msgid "Enter URI"
+msgstr "URI दर्ज करें"
+
+#: src/vfs.c:295
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME कम से कम %s संस्करण नहीं है"
+
+#: src/vfs.c:302
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME OpenPGP का समर्थन नहीं करता: %s"
+
+#: src/vfs.c:309
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "सिफर संदर्भ बनाते समय त्रुटि: %s"
+
+#: src/vfs.c:329
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "कूटलेखित डेटाबेस के लिए नया GIOChannel नहीं बनाया जा सकता: %s"
+
+#: src/vfs.c:337
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "कूटलेखित डेटाबेस फाइल \"%s\" खोलने में त्रुटि: %s"
+
+#: src/vfs.c:353
+#, c-format
+msgid "Error creating Callback base data buffer: %s"
+msgstr "कॉलबैक बेस डेटा बफर बनाते समय त्रुटि: %s"
+
+#: src/vfs.c:361
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "सादे डेटाबेस के लिए नया GIOChannel नहीं बनाया जा सकता: %s"
+
+#: src/vfs.c:369
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "सादा डेटाबेस फाइल \"%s\" खोलने में त्रुटि: %s"
+
+#: src/vfs.c:465
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "कूटलेखन कुंजी प्राप्त करने में त्रुटि: %s"
+
+#: src/vfs.c:489 src/vfs.c:495
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "डेटाबेस कूटलेखित करते समय त्रुटि: %s"
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: src/vfs.c:545
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "%s से %s में फाइल कॉपी करते समय त्रुटि: %s"
+
+#: src/vfs.c:551
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "डेटाबेस बैकअप फाइल अनुमतियां बदलते समय त्रुटि: %s"
+
+#: src/vfs.c:651
+#, c-format
+msgid "Error closing file: %s"
+msgstr "फाइल बंद करते समय त्रुटि: %s"
+
+#. Translators: the first parameter is a filename.
+#: src/vfs.c:1050 src/vfs.c:1077
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "फाइल ‘%s’ का बैकअप लेने में त्रुटि"
+
+#: src/vfs.c:1063
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "डेटाबेस विकोडन में त्रुटि: %s"
+
+#: src/vfs.c:1103
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "डेटाबेस फाइल अनुमतियां बदलते समय त्रुटि: %s"
+
+#: src/widgets/calendar-button.c:142
+#, c-format
+msgid "UI data could not be loaded: %s"
+msgstr "UI डेटा लोड नहीं किया जा सका: %s"
+
+#: src/widgets/calendar-button.c:152
+msgid "Can't load calendar window object from UI file"
+msgstr "UI फाइल से कैलेंडर विंडो वस्तु लोड नहीं किया जा सकता"
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: src/widgets/calendar.c:176
+msgid "Important!"
+msgstr "महत्वपूर्ण!"
+
+#: src/widgets/entry-tags-area.c:100 src/widgets/tag-entry.c:166
+msgid "add tag"
+msgstr "टैग जोड़ें"
+
+#: src/widgets/entry-tags-area.c:101
+msgid "Write the tag and press enter to save it"
+msgstr "टैग लिखें और इसे सहेजने के लिए Enter दबाएं"
+
+#: src/widgets/tag-accessible.c:165
+msgid "Remove the tag from the entry"
+msgstr "प्रविष्टि से टैग हटाएं"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: src/widgets/tag.c:416
+msgid "Remove tag"
+msgstr "टैग हटाएं"
+
+#: src/widgets/tag-entry.c:85
+msgid "Tag entry"
+msgstr "टैग प्रविष्टि"
