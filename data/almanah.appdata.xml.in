@@ -29,8 +29,10 @@
     </screenshot>
   </screenshots>
   <url type="homepage">https://wiki.gnome.org/Apps/Almanah_Diary</url>
-  <url type="bugtracker">https://gitlab.gnome.org/GNOME/almanah/issues/new</url>
-  <url type="donation">https://www.gnome.org/friends/</url>
+  <url type="bugtracker">https://gitlab.gnome.org/GNOME/almanah/issues</url>
+  <url type="donation">https://www.gnome.org/donate/</url>
+  <url type="translate">https://l10n.gnome.org/module/almanah/</url>
+  <url type="vcs-browser">https://gitlab.gnome.org/GNOME/almanah</url>
   <update_contact>alvaropg_at_gmail.com</update_contact>
   <project_group>GNOME</project_group>
   <kudos>
