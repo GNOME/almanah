@@ -24,11 +24,11 @@ i18n.merge_file(
   install: true,
   install_dir: join_paths(datadir, 'metainfo'),
 )
-if (appstream_util.found())
+if (appstreamcli.found())
   test(
     'Validating ' + appdata,
-    appstream_util,
-    args: ['validate', '--nonet', appdata],
+    appstreamcli,
+    args: ['validate', '--no-net', '--explain', appdata],
     workdir: meson.current_build_dir(),
   )
 endif

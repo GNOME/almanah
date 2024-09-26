@@ -54,7 +54,7 @@ have_evolution = libecal.found() and libedataserver.found()
 gtkspell = dependency('gtkspell3-3.0', required: spell_checking_support)
 have_spell_check = gtkspell.found()
 
-appstream_util = find_program('appstream-util', required: false)
+appstreamcli = find_program('appstreamcli', required: false)
 desktop_file_validate = find_program('desktop-file-validate', required: false)
 
 almanah_deps = [
