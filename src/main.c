@@ -20,6 +20,7 @@
 #include <config.h>
 #include <glib.h>
 #include <gio/gio.h>
+#include <gtksourceview/gtksource.h>
 
 #include "application.h"
 
