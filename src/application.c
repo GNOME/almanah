@@ -135,7 +135,7 @@ constructed (GObject *object)
 	textdomain (GETTEXT_PACKAGE);
 
 	g_set_application_name (_("Almanah Diary"));
-	gtk_window_set_default_icon_name ("almanah");
+	gtk_window_set_default_icon_name ("org.gnome.Almanah");
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_application_parent_class)->constructed (object);
@@ -563,7 +563,7 @@ action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 				 * "Translator name 2 <translator2@email.address>"
 				 */
 				"translator-credits", _("translator-credits"),
-				"logo-icon-name", "almanah",
+				"logo-icon-name", "org.gnome.Almanah",
 				"license", license,
 				"wrap-license", TRUE,
 				"website-label", _("Almanah Website"),

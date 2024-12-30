@@ -1,4 +1,4 @@
-desktop = 'almanah.desktop'
+desktop = 'org.gnome.Almanah.desktop'
 i18n.merge_file(
   type: 'desktop',
   input: desktop + '.in',

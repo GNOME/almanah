@@ -1398,7 +1398,7 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 
 	/* Show/hide tags: future "side pane", for photos and other elements */
 	button = gtk_toggle_button_new ();
-	button_image = gtk_image_new_from_icon_name ("almanah-tags-symbolic", GTK_ICON_SIZE_MENU);
+	button_image = gtk_image_new_from_icon_name ("org.gnome.Almanah-tags-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_button_set_image (GTK_BUTTON (button), button_image);
 	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.show-tags");
 	gtk_header_bar_pack_end (GTK_HEADER_BAR (main_window->priv->header_bar), button);
