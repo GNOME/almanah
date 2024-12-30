@@ -1,5 +1,5 @@
 # List of source files containing translatable strings.
-data/almanah.appdata.xml.in
+data/org.gnome.Almanah.metainfo.xml.in
 data/org.gnome.Almanah.desktop.in
 src/ui/almanah.ui
 data/org.gnome.almanah.gschema.xml

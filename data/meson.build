@@ -16,7 +16,7 @@ if desktop_file_validate.found()
   )
 endif
 
-appdata = 'almanah.appdata.xml'
+appdata = 'org.gnome.Almanah.metainfo.xml'
 i18n.merge_file(
   input: appdata + '.in',
   output: appdata,
