@@ -62,8 +62,6 @@ almanah_tag_accessible_init (AlmanahTagAccessible *self)
 static void
 almanah_tag_accessible_initialize (AtkObject *obj, gpointer data)
 {
-        GtkWidget  *widget;
-
         ATK_OBJECT_CLASS (almanah_tag_accessible_parent_class)->initialize (obj, data);
 
         obj->role = ATK_ROLE_DRAWING_AREA;

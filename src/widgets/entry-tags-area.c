@@ -213,7 +213,6 @@ almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const gchar *tag)
 void
 tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 {
-	gboolean result;
 	gchar *tag;
 
 	tag = g_strdup (gtk_entry_get_text (entry));

@@ -957,7 +957,6 @@ almanah_storage_manager_get_filename (AlmanahStorageManager *self)
 gboolean
 almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry *entry, const gchar *tag)
 {
-	GDate entry_last_edited;
 	GDate entry_date;
 	sqlite3_stmt *statement;
 	gint result_error;
