@@ -23,12 +23,22 @@ pkgdatadir = join_paths(datadir, meson.project_name())
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 
 # Dependencies
-glib = dependency('glib-2.0', version: '>= 2.68')
-gtk = dependency('gtk+-3.0', version: '>= 3.15')
+glib_major = 2
+glib_minor = 68
+glib = dependency('glib-2.0', version: f'>= @glib_major@.@glib_minor@')
+
+gtk_major = 3
+gtk_minor = 15
+gtk = dependency('gtk+-3.0', version: f'>= @gtk_major@.@gtk_minor@')
+
 gmodule = dependency('gmodule-2.0')
 gthread = dependency('gthread-2.0')
-gio = dependency('gio-2.0', version: '>= 2.32')
-gtksourceview = dependency('gtksourceview-4')
+gio = dependency('gio-2.0')
+
+gtksourceview_major = 4
+gtksourceview_minor = 0
+gtksourceview = dependency('gtksourceview-4', version: f'>= @gtksourceview_major@.@gtksourceview_minor@')
+
 sqlite = dependency('sqlite3')
 cairo = dependency('cairo')
 atk = dependency('atk')
@@ -96,6 +106,30 @@ config = vcs_tag(
     configuration: conf,
   ),
   output: 'config.h',
+)
+
+if glib_minor % 2 == 1
+  glib_minor = glib_minor + 1
+endif
+if gtk_minor % 2 == 1
+  gtk_minor = gtk_minor + 1
+endif
+if gtksourceview_minor % 2 == 1
+  gtksourceview_minor = gtksourceview_minor + 1
+endif
+
+global_c_args = [
+  f'-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_@glib_major@_@glib_minor@',
+  f'-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_@glib_major@_@glib_minor@',
+  f'-DGDK_VERSION_MIN_REQUIRED=GDK_VERSION_@gtk_major@_@gtk_minor@',
+  f'-DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_@gtk_major@_@gtk_minor@',
+  f'-DGTK_SOURCE_VERSION_MIN_REQUIRED=GTK_SOURCE_VERSION_@gtksourceview_major@_@gtksourceview_minor@',
+  f'-DGTK_SOURCE_VERSION_MAX_ALLOWED=GTK_SOURCE_VERSION_@gtksourceview_major@_@gtksourceview_minor@',
+]
+
+add_project_arguments(
+  global_c_args,
+  language: 'c',
 )
 
 # Post-install scripts
