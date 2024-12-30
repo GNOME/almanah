@@ -37,12 +37,10 @@ G_BEGIN_DECLS
 
 typedef struct _CalendarSources        CalendarSources;
 typedef struct _CalendarSourcesClass   CalendarSourcesClass;
-typedef struct _CalendarSourcesPrivate CalendarSourcesPrivate;
 
 struct _CalendarSources
 {
   GObject                 parent;
-  CalendarSourcesPrivate *priv;
 };
 
 struct _CalendarSourcesClass
