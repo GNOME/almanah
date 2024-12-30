@@ -32,13 +32,8 @@ gtksourceview = dependency('gtksourceview-4')
 sqlite = dependency('sqlite3')
 cairo = dependency('cairo')
 atk = dependency('atk')
+gcr = dependency('gcr-4', version: '>= 3.90.0')
 cryptui = dependency('cryptui-0.0')
-
-if get_option('gcr3')
-  gcr = dependency('gcr-base-3')
-else
-  gcr = dependency('gcr-4', version: '>= 3.90.0')
-endif
 
 # Options
 evolution_support = get_option('evolution')
@@ -93,9 +88,6 @@ endif
 if have_evolution
   conf.set('HAVE_EVO', 1)
   conf.set('EDS_DISABLE_DEPRECATED', 1)
-endif
-if get_option('gcr3')
-  conf.set('HAVE_GCR3', 1)
 endif
 
 config = vcs_tag(
