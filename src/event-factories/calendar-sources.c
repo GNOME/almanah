@@ -44,8 +44,6 @@
 #define N_(x) x
 #endif
 
-#define CALENDAR_SOURCES_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CALENDAR_TYPE_SOURCES, CalendarSourcesPrivate))
-
 typedef struct _CalendarSourceData CalendarSourceData;
 
 struct _CalendarSourceData
@@ -62,16 +60,16 @@ struct _CalendarSourceData
   guint            loaded : 1;
 };
 
-struct _CalendarSourcesPrivate
+typedef struct
 {
   CalendarSourceData  appointment_sources;
   CalendarSourceData  task_sources;
 
   ESourceRegistry    *esource_registry;
-};
+} CalendarSourcesPrivate;
 
-static void calendar_sources_class_init (CalendarSourcesClass *klass);
-static void calendar_sources_init       (CalendarSources      *sources);
+G_DEFINE_TYPE_WITH_PRIVATE (CalendarSources, calendar_sources, G_TYPE_OBJECT)
+
 static void calendar_sources_finalize   (GObject             *object);
 
 static void backend_died_cb (ECalClient *client, CalendarSourceData *source_data);
@@ -88,33 +86,6 @@ static guint signals [LAST_SIGNAL] = { 0, };
 static GObjectClass    *parent_class = NULL;
 static CalendarSources *calendar_sources_singleton = NULL;
 
-GType
-calendar_sources_get_type (void)
-{
-  static GType sources_type = 0;
-  
-  if (!sources_type)
-    {
-      static const GTypeInfo sources_info =
-      {
-	sizeof (CalendarSourcesClass),
-	NULL,		/* base_init */
-	NULL,		/* base_finalize */
-	(GClassInitFunc) calendar_sources_class_init,
-	NULL,           /* class_finalize */
-	NULL,		/* class_data */
-	sizeof (CalendarSources),
-	0,		/* n_preallocs */
-	(GInstanceInitFunc) calendar_sources_init,
-      };
-      
-      sources_type = g_type_register_static (G_TYPE_OBJECT,
-					     "CalendarSources",
-					     &sources_info, 0);
-    }
-  
-  return sources_type;
-}
 
 static void
 calendar_sources_class_init (CalendarSourcesClass *klass)
@@ -124,8 +95,6 @@ calendar_sources_class_init (CalendarSourcesClass *klass)
   parent_class = g_type_class_peek_parent (klass);
 
   gobject_class->finalize = calendar_sources_finalize;
-
-  g_type_class_add_private (klass, sizeof (CalendarSourcesPrivate));
 
   signals [APPOINTMENT_SOURCES_CHANGED] =
     g_signal_new ("appointment-sources-changed",
@@ -157,19 +126,19 @@ calendar_sources_init (CalendarSources *sources)
 {
   GError *error = NULL;
 
-  sources->priv = CALENDAR_SOURCES_GET_PRIVATE (sources);
+  CalendarSourcesPrivate *priv = calendar_sources_get_instance_private (sources);
 
-  sources->priv->appointment_sources.client_type    = E_CAL_CLIENT_SOURCE_TYPE_EVENTS;
-  sources->priv->appointment_sources.sources        = sources;
-  sources->priv->appointment_sources.changed_signal = signals [APPOINTMENT_SOURCES_CHANGED];
-  sources->priv->appointment_sources.timeout_id     = 0;
+  priv->appointment_sources.client_type    = E_CAL_CLIENT_SOURCE_TYPE_EVENTS;
+  priv->appointment_sources.sources        = sources;
+  priv->appointment_sources.changed_signal = signals [APPOINTMENT_SOURCES_CHANGED];
+  priv->appointment_sources.timeout_id     = 0;
 
-  sources->priv->task_sources.client_type    = E_CAL_CLIENT_SOURCE_TYPE_TASKS;
-  sources->priv->task_sources.sources        = sources;
-  sources->priv->task_sources.changed_signal = signals [TASK_SOURCES_CHANGED];
-  sources->priv->task_sources.timeout_id     = 0;
+  priv->task_sources.client_type    = E_CAL_CLIENT_SOURCE_TYPE_TASKS;
+  priv->task_sources.sources        = sources;
+  priv->task_sources.changed_signal = signals [TASK_SOURCES_CHANGED];
+  priv->task_sources.timeout_id     = 0;
 
-  sources->priv->esource_registry = e_source_registry_new_sync (NULL, &error);
+  priv->esource_registry = e_source_registry_new_sync (NULL, &error);
 
   if (error) {
     g_warning ("%s: Failed to create ESourceRegistry: %s", G_STRFUNC, error->message);
@@ -218,13 +187,14 @@ static void
 calendar_sources_finalize (GObject *object)
 {
   CalendarSources *sources = CALENDAR_SOURCES (object);
+  CalendarSourcesPrivate *priv = calendar_sources_get_instance_private (sources);
 
-  calendar_sources_finalize_source_data (sources, &sources->priv->appointment_sources);
-  calendar_sources_finalize_source_data (sources, &sources->priv->task_sources);
+  calendar_sources_finalize_source_data (sources, &priv->appointment_sources);
+  calendar_sources_finalize_source_data (sources, &priv->task_sources);
 
-  if (sources->priv->esource_registry)
-    g_object_unref (sources->priv->esource_registry);
-  sources->priv->esource_registry = NULL;
+  if (priv->esource_registry)
+    g_object_unref (priv->esource_registry);
+  priv->esource_registry = NULL;
 
   if (G_OBJECT_CLASS (parent_class)->finalize)
     G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -445,14 +415,17 @@ static void
 calendar_sources_load_sources (CalendarSources    *sources,
 			       CalendarSourceData *source_data,
 			       const char         *sources_extension)
+
 {
-  g_return_if_fail (sources->priv->esource_registry != NULL);
+  CalendarSourcesPrivate *priv = calendar_sources_get_instance_private (sources);
+
+  g_return_if_fail (priv->esource_registry != NULL);
 
   dprintf ("---------------------------\n");
   dprintf ("Loading sources:\n");
   dprintf ("  sources_extension: %s\n", sources_extension);
 
-  source_data->esource_selector = E_SOURCE_SELECTOR (g_object_ref_sink (e_source_selector_new (sources->priv->esource_registry, sources_extension)));
+  source_data->esource_selector = E_SOURCE_SELECTOR (g_object_ref_sink (e_source_selector_new (priv->esource_registry, sources_extension)));
   g_signal_connect (source_data->esource_selector, "selection-changed",
 		    G_CALLBACK (calendar_sources_selection_changed_cb),
 		    source_data);
@@ -469,14 +442,16 @@ calendar_sources_get_appointment_sources (CalendarSources *sources)
 {
   g_return_val_if_fail (CALENDAR_IS_SOURCES (sources), NULL);
 
-  if (!sources->priv->appointment_sources.loaded)
+  CalendarSourcesPrivate *priv = calendar_sources_get_instance_private (sources);
+
+  if (!priv->appointment_sources.loaded)
     {
       calendar_sources_load_sources (sources,
-				     &sources->priv->appointment_sources,
+				     &priv->appointment_sources,
 				     E_SOURCE_EXTENSION_CALENDAR);
     }
   
-  return sources->priv->appointment_sources.clients;
+  return priv->appointment_sources.clients;
 }
 
 GSList *
@@ -484,12 +459,14 @@ calendar_sources_get_task_sources (CalendarSources *sources)
 {
   g_return_val_if_fail (CALENDAR_IS_SOURCES (sources), NULL);
 
-  if (!sources->priv->task_sources.loaded)
+  CalendarSourcesPrivate *priv = calendar_sources_get_instance_private (sources);
+
+  if (!priv->task_sources.loaded)
     {
       calendar_sources_load_sources (sources,
-				     &sources->priv->task_sources,
+				     &priv->task_sources,
 				     E_SOURCE_EXTENSION_TASK_LIST);
     }
 
-  return sources->priv->task_sources.clients;
+  return priv->task_sources.clients;
 }
