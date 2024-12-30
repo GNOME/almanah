@@ -1,6 +1,6 @@
 # Almanah News
 
-## 0.12.3
+## 0.12.3 (2021-03-05)
 
 ### Bugs fixed
 
@@ -11,11 +11,11 @@
 
 - Catalan
 
-## 0.12.2
+## 0.12.2 (2020-09-03)
 
 - Fix version number (no other changes)
 
-## 0.12.1
+## 0.12.1 (2020-09-03)
 
 - Bump Meson dependency to 0.51 to simplify build system (thanks to Jan Tojnar)
 
@@ -31,7 +31,7 @@
 - Romanian
 - Ukrainian
 
-## 0.12.0
+## 0.12.0 (2019-10-07)
 
 - Move encryption support to SQLiteVFS to improve performance and reduce the
   chance of data loss from use of temporary files
