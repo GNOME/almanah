@@ -2,7 +2,7 @@ project(
   'almanah',
   'c',
   license: 'GPL3+',
-  version: '0.12.3',
+  version: '0.12.4',
   default_options: [
     'b_ndebug=if-release',
   ],
