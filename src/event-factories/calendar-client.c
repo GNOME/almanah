@@ -48,8 +48,6 @@
 #define N_(x) x
 #endif
 
-#define CALENDAR_CLIENT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CALENDAR_TYPE_CLIENT, CalendarClientPrivate))
-
 typedef struct _CalendarClientQuery  CalendarClientQuery;
 typedef struct _CalendarClientSource CalendarClientSource;
 
@@ -73,7 +71,7 @@ struct _CalendarClientSource
   guint                query_in_progress : 1;
 };
 
-struct _CalendarClientPrivate
+typedef struct
 {
   CalendarSources     *calendar_sources;
 
@@ -87,10 +85,10 @@ struct _CalendarClientPrivate
   guint                day;
   guint                month;
   guint                year;
-};
+} CalendarClientPrivate;
 
-static void calendar_client_class_init   (CalendarClientClass *klass);
-static void calendar_client_init         (CalendarClient      *client);
+G_DEFINE_TYPE_WITH_PRIVATE (CalendarClient, calendar_client, G_TYPE_OBJECT)
+
 static void calendar_client_finalize     (GObject             *object);
 static void calendar_client_set_property (GObject             *object,
                                           guint                prop_id,
@@ -141,34 +139,6 @@ enum
 static GObjectClass *parent_class = NULL;
 static guint         signals [LAST_SIGNAL] = { 0, };
 
-GType
-calendar_client_get_type (void)
-{
-  static GType client_type = 0;
-
-  if (!client_type)
-    {
-      static const GTypeInfo client_info =
-        {
-          sizeof (CalendarClientClass),
-          NULL,   /* base_init */
-          NULL,   /* base_finalize */
-          (GClassInitFunc) calendar_client_class_init,
-          NULL,           /* class_finalize */
-          NULL,   /* class_data */
-          sizeof (CalendarClient),
-          0,    /* n_preallocs */
-          (GInstanceInitFunc) calendar_client_init,
-        };
-
-      client_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "CalendarClient",
-                                            &client_info, 0);
-    }
-
-  return client_type;
-}
-
 static void
 calendar_client_class_init (CalendarClientClass *klass)
 {
@@ -179,8 +149,6 @@ calendar_client_class_init (CalendarClientClass *klass)
   gobject_class->finalize     = calendar_client_finalize;
   gobject_class->set_property = calendar_client_set_property;
   gobject_class->get_property = calendar_client_get_property;
-
-  g_type_class_add_private (klass, sizeof (CalendarClientPrivate));
 
   g_object_class_install_property (gobject_class,
                                    PROP_DAY,
@@ -248,16 +216,17 @@ calendar_client_config_get_icaltimezone (void)
 static void
 calendar_client_set_timezone (CalendarClient *client)
 {
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList *l;
   GSList *esources;
 
-  client->priv->zone = calendar_client_config_get_icaltimezone ();
+  priv->zone = calendar_client_config_get_icaltimezone ();
 
-  esources = calendar_sources_get_appointment_sources (client->priv->calendar_sources);
+  esources = calendar_sources_get_appointment_sources (priv->calendar_sources);
   for (l = esources; l; l = l->next) {
     ECalClient *source = l->data;
 
-    e_cal_client_set_default_timezone (source, client->priv->zone);
+    e_cal_client_set_default_timezone (source, priv->zone);
   }
 }
 
@@ -275,15 +244,16 @@ static void
 load_calendars (CalendarClient    *client,
                 CalendarEventType  type)
 {
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList *l, *clients;
 
   switch (type)
     {
     case CALENDAR_EVENT_APPOINTMENT:
-      clients = client->priv->appointment_sources;
+      clients = priv->appointment_sources;
       break;
     case CALENDAR_EVENT_TASK:
-      clients = client->priv->task_sources;
+      clients = priv->task_sources;
       break;
     case CALENDAR_EVENT_ALL:
     default:
@@ -304,19 +274,18 @@ load_calendars (CalendarClient    *client,
 static void
 calendar_client_init (CalendarClient *client)
 {
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList *esources;
   GFile *tz;
 
-  client->priv = CALENDAR_CLIENT_GET_PRIVATE (client);
+  priv->calendar_sources = calendar_sources_get ();
 
-  client->priv->calendar_sources = calendar_sources_get ();
-
-  esources = calendar_sources_get_appointment_sources (client->priv->calendar_sources);
-  client->priv->appointment_sources =
+  esources = calendar_sources_get_appointment_sources (priv->calendar_sources);
+  priv->appointment_sources =
     calendar_client_update_sources_list (client, NULL, esources, signals [APPOINTMENTS_CHANGED]);
 
-  esources = calendar_sources_get_task_sources (client->priv->calendar_sources);
-  client->priv->task_sources =
+  esources = calendar_sources_get_task_sources (priv->calendar_sources);
+  priv->task_sources =
     calendar_client_update_sources_list (client, NULL, esources, signals [TASKS_CHANGED]);
 
   /* set the timezone before loading the clients */
@@ -324,55 +293,56 @@ calendar_client_init (CalendarClient *client)
   load_calendars (client, CALENDAR_EVENT_APPOINTMENT);
   load_calendars (client, CALENDAR_EVENT_TASK);
 
-  g_signal_connect_swapped (client->priv->calendar_sources,
+  g_signal_connect_swapped (priv->calendar_sources,
                             "appointment-sources-changed",
                             G_CALLBACK (calendar_client_appointment_sources_changed),
                             client);
-  g_signal_connect_swapped (client->priv->calendar_sources,
+  g_signal_connect_swapped (priv->calendar_sources,
                             "task-sources-changed",
                             G_CALLBACK (calendar_client_task_sources_changed),
                             client);
 
   tz = g_file_new_for_path ("/etc/localtime");
-  client->priv->tz_monitor = g_file_monitor_file (tz, G_FILE_MONITOR_NONE, NULL, NULL);
+  priv->tz_monitor = g_file_monitor_file (tz, G_FILE_MONITOR_NONE, NULL, NULL);
   g_object_unref (tz);
-  if (client->priv->tz_monitor == NULL)
+  if (priv->tz_monitor == NULL)
     g_warning ("Can't monitor /etc/localtime for changes");
   else
-    g_signal_connect (client->priv->tz_monitor, "changed", G_CALLBACK (calendar_client_timezone_changed_cb), client);
+    g_signal_connect (priv->tz_monitor, "changed", G_CALLBACK (calendar_client_timezone_changed_cb), client);
 
-  client->priv->day   = G_MAXUINT;
-  client->priv->month = G_MAXUINT;
-  client->priv->year  = G_MAXUINT;
+  priv->day   = G_MAXUINT;
+  priv->month = G_MAXUINT;
+  priv->year  = G_MAXUINT;
 }
 
 static void
 calendar_client_finalize (GObject *object)
 {
   CalendarClient *client = CALENDAR_CLIENT (object);
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList         *l;
 
-  g_clear_object (&client->priv->tz_monitor);
+  g_clear_object (&priv->tz_monitor);
 
-  for (l = client->priv->appointment_sources; l; l = l->next)
+  for (l = priv->appointment_sources; l; l = l->next)
     {
       calendar_client_source_finalize (l->data);
       g_free (l->data);
     }
-  g_slist_free (client->priv->appointment_sources);
-  client->priv->appointment_sources = NULL;
+  g_slist_free (priv->appointment_sources);
+  priv->appointment_sources = NULL;
 
-  for (l = client->priv->task_sources; l; l = l->next)
+  for (l = priv->task_sources; l; l = l->next)
     {
       calendar_client_source_finalize (l->data);
       g_free (l->data);
     }
-  g_slist_free (client->priv->task_sources);
-  client->priv->task_sources = NULL;
+  g_slist_free (priv->task_sources);
+  priv->task_sources = NULL;
 
-  if (client->priv->calendar_sources)
-    g_object_unref (client->priv->calendar_sources);
-  client->priv->calendar_sources = NULL;
+  if (priv->calendar_sources)
+    g_object_unref (priv->calendar_sources);
+  priv->calendar_sources = NULL;
 
   if (G_OBJECT_CLASS (parent_class)->finalize)
     G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -385,6 +355,7 @@ calendar_client_set_property (GObject      *object,
                               GParamSpec   *pspec)
 {
   CalendarClient *client = CALENDAR_CLIENT (object);
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
 
   switch (prop_id)
     {
@@ -394,11 +365,11 @@ calendar_client_set_property (GObject      *object,
     case PROP_MONTH:
       calendar_client_select_month (client,
                                     g_value_get_uint (value),
-                                    client->priv->year);
+                                    priv->year);
       break;
     case PROP_YEAR:
       calendar_client_select_month (client,
-                                    client->priv->month,
+                                    priv->month,
                                     g_value_get_uint (value));
       break;
     default:
@@ -414,17 +385,18 @@ calendar_client_get_property (GObject    *object,
                               GParamSpec *pspec)
 {
   CalendarClient *client = CALENDAR_CLIENT (object);
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
 
   switch (prop_id)
     {
     case PROP_DAY:
-      g_value_set_uint (value, client->priv->day);
+      g_value_set_uint (value, priv->day);
       break;
     case PROP_MONTH:
-      g_value_set_uint (value, client->priv->month);
+      g_value_set_uint (value, priv->month);
       break;
     case PROP_YEAR:
-      g_value_set_uint (value, client->priv->year);
+      g_value_set_uint (value, priv->year);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1295,14 +1267,13 @@ calendar_client_handle_query_result (CalendarClientSource *source,
                                      ECalClientView       *view)
 {
   CalendarClientQuery *query;
-  CalendarClient      *client;
+  CalendarClient      *client = source->client;
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   gboolean             emit_signal;
   gboolean             events_changed;
   const GSList        *l;
   time_t               month_begin;
   time_t               month_end;
-
-  client = source->client;
 
   query = goddamn_this_is_crack (source, view, &emit_signal);
 
@@ -1310,12 +1281,12 @@ calendar_client_handle_query_result (CalendarClientSource *source,
            query, g_list_length (objects));
 
   month_begin = make_time_for_day_begin (1,
-                                         client->priv->month,
-                                         client->priv->year);
+                                         priv->month,
+                                         priv->year);
 
   month_end = make_time_for_day_begin (1,
-                                       client->priv->month + 1,
-                                       client->priv->year);
+                                       priv->month + 1,
+                                       priv->year);
 
   events_changed = FALSE;
   for (l = objects; l; l = l->next)
@@ -1325,7 +1296,7 @@ calendar_client_handle_query_result (CalendarClientSource *source,
       ICalComponent *ical = l->data;
       char          *uid;
 
-      event = calendar_event_new (ical, source, client->priv->zone);
+      event = calendar_event_new (ical, source, priv->zone);
       if (!event)
         continue;
 
@@ -1334,7 +1305,7 @@ calendar_client_handle_query_result (CalendarClientSource *source,
                                           source->cal_client,
                                           month_begin,
                                           month_end,
-                                          client->priv->zone);
+                                          priv->zone);
 
       uid = calendar_event_get_uid (event);
 
@@ -1521,28 +1492,29 @@ calendar_client_start_query (CalendarClient       *client,
 static void
 calendar_client_update_appointments (CalendarClient *client)
 {
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList *l;
   char   *query;
   char   *month_begin;
   char   *month_end;
 
-  if (client->priv->month == G_MAXUINT ||
-      client->priv->year  == G_MAXUINT)
+  if (priv->month == G_MAXUINT ||
+      priv->year  == G_MAXUINT)
     return;
 
   month_begin = make_isodate_for_day_begin (1,
-                                            client->priv->month,
-                                            client->priv->year);
+                                            priv->month,
+                                            priv->year);
 
   month_end = make_isodate_for_day_begin (1,
-                                          client->priv->month + 1,
-                                          client->priv->year);
+                                          priv->month + 1,
+                                          priv->year);
 
   query = g_strdup_printf ("occur-in-time-range? (make-time \"%s\") "
                            "(make-time \"%s\")",
                            month_begin, month_end);
 
-  for (l = client->priv->appointment_sources; l; l = l->next)
+  for (l = priv->appointment_sources; l; l = l->next)
     {
       CalendarClientSource *cs = l->data;
 
@@ -1560,6 +1532,7 @@ calendar_client_update_appointments (CalendarClient *client)
 static void
 calendar_client_update_tasks (CalendarClient *client)
 {
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList *l;
   char   *query;
 
@@ -1573,24 +1546,24 @@ calendar_client_update_tasks (CalendarClient *client)
   char   *day_begin;
   char   *day_end;
 
-  if (client->priv->day   == G_MAXUINT ||
-      client->priv->month == G_MAXUINT ||
-      client->priv->year  == G_MAXUINT)
+  if (priv->day   == G_MAXUINT ||
+      priv->month == G_MAXUINT ||
+      priv->year  == G_MAXUINT)
     return;
 
-  day_begin = make_isodate_for_day_begin (client->priv->day,
-                                          client->priv->month,
-                                          client->priv->year);
+  day_begin = make_isodate_for_day_begin (priv->day,
+                                          priv->month,
+                                          priv->year);
 
-  day_end = make_isodate_for_day_begin (client->priv->day + 1,
-                                        client->priv->month,
-                                        client->priv->year);
+  day_end = make_isodate_for_day_begin (priv->day + 1,
+                                        priv->month,
+                                        priv->year);
   if (!day_begin || !day_end)
     {
       g_warning ("Cannot run query with invalid date: %dd %dy %dm\n",
-                 client->priv->day,
-                 client->priv->month,
-                 client->priv->year);
+                 priv->day,
+                 priv->month,
+                 priv->year);
       g_free (day_begin);
       g_free (day_end);
       return;
@@ -1606,7 +1579,7 @@ calendar_client_update_tasks (CalendarClient *client)
   query = g_strdup ("#t");
 #endif /* FIX_BROKEN_TASKS_QUERY */
 
-  for (l = client->priv->task_sources; l; l = l->next)
+  for (l = priv->task_sources; l; l = l->next)
     {
       CalendarClientSource *cs = l->data;
 
@@ -1703,15 +1676,16 @@ calendar_client_update_sources_list (CalendarClient *client,
 static void
 calendar_client_appointment_sources_changed (CalendarClient  *client)
 {
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList *esources;
 
   dprintf ("appointment_sources_changed: updating ...\n");
 
-  esources = calendar_sources_get_appointment_sources (client->priv->calendar_sources);
+  esources = calendar_sources_get_appointment_sources (priv->calendar_sources);
 
-  client->priv->appointment_sources =
+  priv->appointment_sources =
     calendar_client_update_sources_list (client,
-                                         client->priv->appointment_sources,
+                                         priv->appointment_sources,
                                          esources,
                                          signals [APPOINTMENTS_CHANGED]);
 
@@ -1722,15 +1696,16 @@ calendar_client_appointment_sources_changed (CalendarClient  *client)
 static void
 calendar_client_task_sources_changed (CalendarClient  *client)
 {
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
   GSList *esources;
 
   dprintf ("task_sources_changed: updating ...\n");
 
-  esources = calendar_sources_get_task_sources (client->priv->calendar_sources);
+  esources = calendar_sources_get_task_sources (priv->calendar_sources);
 
-  client->priv->task_sources =
+  priv->task_sources =
     calendar_client_update_sources_list (client,
-                                         client->priv->task_sources,
+                                         priv->task_sources,
                                          esources,
                                          signals [TASKS_CHANGED]);
 
@@ -1746,14 +1721,16 @@ calendar_client_get_date (CalendarClient *client,
 {
   g_return_if_fail (CALENDAR_IS_CLIENT (client));
 
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+
   if (year)
-    *year = client->priv->year;
+    *year = priv->year;
 
   if (month)
-    *month = client->priv->month;
+    *month = priv->month;
 
   if (day)
-    *day = client->priv->day;
+    *day = priv->day;
 }
 
 void
@@ -1764,10 +1741,12 @@ calendar_client_select_month (CalendarClient *client,
   g_return_if_fail (CALENDAR_IS_CLIENT (client));
   g_return_if_fail (month <= 11);
 
-  if (client->priv->year != year || client->priv->month != month)
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+
+  if (priv->year != year || priv->month != month)
     {
-      client->priv->month = month;
-      client->priv->year  = year;
+      priv->month = month;
+      priv->year  = year;
 
       calendar_client_update_appointments (client);
       calendar_client_update_tasks (client);
@@ -1786,9 +1765,11 @@ calendar_client_select_day (CalendarClient *client,
   g_return_if_fail (CALENDAR_IS_CLIENT (client));
   g_return_if_fail (day <= 31);
 
-  if (client->priv->day != day)
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+
+  if (priv->day != day)
     {
-      client->priv->day = day;
+      priv->day = day;
 
       /* don't need to update appointments unless
        * the selected month changes
@@ -1929,22 +1910,25 @@ calendar_client_get_events (CalendarClient    *client,
   time_t  day_end;
 
   g_return_val_if_fail (CALENDAR_IS_CLIENT (client), NULL);
-  g_return_val_if_fail (client->priv->day   != G_MAXUINT &&
-                        client->priv->month != G_MAXUINT &&
-                        client->priv->year  != G_MAXUINT, NULL);
 
-  day_begin = make_time_for_day_begin (client->priv->day,
-                                       client->priv->month,
-                                       client->priv->year);
-  day_end   = make_time_for_day_begin (client->priv->day + 1,
-                                       client->priv->month,
-                                       client->priv->year);
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+
+  g_return_val_if_fail (priv->day   != G_MAXUINT &&
+                        priv->month != G_MAXUINT &&
+                        priv->year  != G_MAXUINT, NULL);
+
+  day_begin = make_time_for_day_begin (priv->day,
+                                       priv->month,
+                                       priv->year);
+  day_end   = make_time_for_day_begin (priv->day + 1,
+                                       priv->month,
+                                       priv->year);
 
   appointments = NULL;
   if (event_mask & CALENDAR_EVENT_APPOINTMENT)
     {
       appointments = calendar_client_filter_events (client,
-                                                    client->priv->appointment_sources,
+                                                    priv->appointment_sources,
                                                     filter_appointment,
                                                     day_begin,
                                                     day_end);
@@ -1954,7 +1938,7 @@ calendar_client_get_events (CalendarClient    *client,
   if (event_mask & CALENDAR_EVENT_TASK)
     {
       tasks = calendar_client_filter_events (client,
-                                             client->priv->task_sources,
+                                             priv->task_sources,
                                              filter_task,
                                              day_begin,
                                              day_end);
@@ -1986,18 +1970,21 @@ calendar_client_foreach_appointment_day (CalendarClient  *client,
 
   g_return_if_fail (CALENDAR_IS_CLIENT (client));
   g_return_if_fail (iter_func != NULL);
-  g_return_if_fail (client->priv->month != G_MAXUINT &&
-                    client->priv->year  != G_MAXUINT);
+
+  CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+
+  g_return_if_fail (priv->month != G_MAXUINT &&
+                    priv->year  != G_MAXUINT);
 
   month_begin = make_time_for_day_begin (1,
-                                         client->priv->month,
-                                         client->priv->year);
+                                         priv->month,
+                                         priv->year);
   month_end   = make_time_for_day_begin (1,
-                                         client->priv->month + 1,
-                                         client->priv->year);
+                                         priv->month + 1,
+                                         priv->year);
 
   appointments = calendar_client_filter_events (client,
-                                                client->priv->appointment_sources,
+                                                priv->appointment_sources,
                                                 filter_appointment,
                                                 month_begin,
                                                 month_end);
@@ -2051,14 +2038,17 @@ calendar_client_set_task_completed (CalendarClient *client,
   ICalComponent      *ical;
   ICalProperty       *prop;
   ICalPropertyStatus  status;
+  CalendarClientPrivate *priv;
 
   g_return_if_fail (CALENDAR_IS_CLIENT (client));
   g_return_if_fail (task_uid != NULL);
   g_return_if_fail (task_completed == FALSE || percent_complete == 100);
 
+  priv = calendar_client_get_instance_private (client);
+
   ical = NULL;
   esource = NULL;
-  for (l = client->priv->task_sources; l; l = l->next)
+  for (l = priv->task_sources; l; l = l->next)
     {
       CalendarClientSource *source = l->data;
 
@@ -2083,7 +2073,7 @@ calendar_client_set_task_completed (CalendarClient *client,
     {
       ICalTime *completed_time;
 
-      completed_time = i_cal_time_new_current_with_zone (client->priv->zone);
+      completed_time = i_cal_time_new_current_with_zone (priv->zone);
       if (!prop)
         {
           i_cal_component_take_property (ical,

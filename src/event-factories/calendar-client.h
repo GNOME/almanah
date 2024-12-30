@@ -44,12 +44,10 @@ typedef enum
 
 typedef struct _CalendarClient        CalendarClient;
 typedef struct _CalendarClientClass   CalendarClientClass;
-typedef struct _CalendarClientPrivate CalendarClientPrivate;
 
 struct _CalendarClient
 {
   GObject                parent;
-  CalendarClientPrivate *priv;
 };
 
 struct _CalendarClientClass
