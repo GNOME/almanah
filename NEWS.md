@@ -1,5 +1,46 @@
 # Almanah News
 
+## 0.12.4 (2025-01-09)
+
+### Added
+
+- Search (<kbd>Ctrl</kbd>-<kbd>F</kbd>) and Quit (<kbd>Ctrl</kbd>-<kbd>Q</kbd>) keyboard shortcuts (!19)
+- Nix-based development environment and CI (!29, !25)
+
+### Fixed
+
+- Various deprecations (#9, !12, !13, !16, !17)
+- Localization of aplication name (!24)
+
+### Changed
+
+- Application ID and icon name is now rDNS (`org.gnome.Almanah`) instead of just `almanah` (!28, !32, !31)
+
+### Changed dependencies
+
+- GTKSourceView 3 → GTKSourceView 4 (!15, !23)
+- Gcr 3 → Gcr 4 (!14)
+- `appstream-util` → `appstreamcli` (!22)
+
+### Translations
+
+#### Added
+
+- Georgian
+- Hindi
+- Icelandic
+- Italian
+
+#### Updated
+
+- Basque
+- Catalan
+- Chinese (China)
+- Friulian
+- Galician
+- Swedish
+- Turkish
+
 ## 0.12.3 (2021-03-05)
 
 ### Bugs fixed
