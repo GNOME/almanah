@@ -1,39 +1,33 @@
 # Almanah News
 
-Overview of changes from Almanah 0.12.2 to Almanah 0.12.3
-=========================================================
+## 0.12.3
 
-* Bugs fixed:
+### Bugs fixed
  - #4 Font size is too small in text view
- - #7 A lot of [-Wincompatible-pointer-types] compiler warnings
+ - #7 A lot of `-Wincompatible-pointer-types` compiler warnings
 
-* Translation updates:
+### Translation updates
  - Catalan
 
-
-Overview of changes from Almanah 0.12.1 to Almanah 0.12.2
-=========================================================
+## 0.12.2
 
 * Fix version number (no other changes)
 
-Overview of changes from Almanah 0.12.0 to Almanah 0.12.1
-=========================================================
+## 0.12.1
 
 * Bump Meson dependency to 0.51 to simplify build system (thanks to Jan Tojnar)
 
-* Bugs fixed:
+### Bugs fixed
  - #3 typo in src/vfs.c errors
 
-* Translation updates:
+### Translation updates
  - Catalan
  - English (United Kingdom)
  - Malay
  - Romanian
  - Ukrainian
 
-
-Overview of changes from Almanah 0.11.0 to Almanah 0.12.0
-=========================================================
+## 0.12.0
 
 * Move encryption support to SQLiteVFS to improve performance and reduce the
   chance of data loss from use of temporary files
@@ -49,13 +43,13 @@ Overview of changes from Almanah 0.11.0 to Almanah 0.12.0
 
 * Port to libecal-2.0
 
-* Bugs fixed:
+### Bugs fixed
  - #1 Meson build claims implicit function declaration warnings
  - !1 build: Port to meson
  - !4 docs: Port README to Markdown and update it
  - !5 event-factories: Fix an incorrect string comparison
 
-* Translation updates:
+### Translation updates
  - Arabic
  - Bokmål, Norwegian
  - Bosnian
@@ -86,17 +80,16 @@ Overview of changes from Almanah 0.11.0 to Almanah 0.12.0
  - Turkish
  - Ukrainian
 
-Overview of changes from Almanah 0.10.8 to Almanah 0.11.0
-=========================================================
+## 0.11.0
 
-Major changes:
+### Major changes
 * Improved the tagging accesibility.
 * Enhanced the diary security.
 * Changed the tagging look (new button with a symbolic link in the toolbar and the tag bar shown integrated in the main toolbar).
 * Added a new 256x256 icon, that looks better in GNOME Shell.
 * Added an AppData file to show a completed information in Software App.
 
-Update translations:
+### Update translations
 * Brazilian Portuguese (Enrico Nicoletto, Ramon Brandão, Adorilson Bezerra)
 * Czech (Marek Černocký)
 * Danish (Joe Hansen)
@@ -111,12 +104,13 @@ Update translations:
 * Spanish (Daniel Mustieles)
 * Serbian (Мирослав Николић)
 
-Overview of changes from Almanah 0.10.0 to Almanah 0.10.8
-=========================================================
+## 0.10.8
+
+Changes from Almanah 0.10.0.
 
 This is a development release for testing purpose in the road to 0.11, so use carefully.
 
-Major changes:
+### Major changes
 * Main window redesign, see https://live.gnome.org/Almanah_Diary/Design#New_Design
 * Tagging support
 * Port to GMenu
@@ -125,11 +119,11 @@ Major changes:
 * Updated GtkSpell 3 support
 * Updated EDS dependency to 3.5.91 (Thanks to Philip Withnall)
 
-Bugs fixed:
+### Bugs fixed
 * Bug 677209 - The CalendarWindow dropdown doesn't displayed in the correct place
 * Bug 680845 - Translatable strings for the time in the events list
 
-Update translations:
+### Update translations
 * cs (Marek Černocký)
 * es (Daniel Mustieles)
 * gl (Fran Diéguez)
@@ -142,34 +136,32 @@ Update translations:
 * sl (Andrej Žnidaršič and Matej Urbančič)
 * sr (Мирослав Николић)
 
-Overview of changes from Almanah 0.10.0 to Almanah 0.10.1
-========================================================
+## 0.10.1
 
-Bug fixed:
+### Bug fixed
 * Bug 695117 - Almanah doesn't encrypt the database when the application close (see https://bugzilla.gnome.org/show_bug.cgi?id=695117)
 
-Overview of changes from Almanah 0.9.0 to Almanah 0.10.0
-========================================================
+## 0.10.0
 
-Updated dependencies:
+### Updated dependencies
 
-Major changes:
+### Major changes
 * Updated EDS events integration to the new 3.5.91 API
 * Second phase of the new UI
 * Now is set the default file name when the user doing "Print to File"
 * Updated HACKING doc with general principles and a security policy
 
-Bugs fixed:
+### Bugs fixed
 * Bug 683570 - Fails to build against evolution-data-server 3.5.91
 * Bug 680845 - Include the event time as new design suggest
 * Bug 676765 - Deactivate the events expander when no events and show an events counter
 * Bug 676931 - Fix the calendar button/window style
 * Bug 676766 - Show the number of events
 
-Known bugs:
+### Known bugs
 * The CalendarWindow dropdown doesn't displayed in the correct place - see https://bugzilla.gnome.org/show_bug.cgi?id=677209
 
-Updated translations:
+### Updated translations
 * cs (Marek Černocký)
 * da (Joe Hansen)
 * de (Daniel Winzen)
@@ -185,10 +177,9 @@ Updated translations:
 * ru (Yuri Myasoedov)
 
 
-Overview of changes from Almanah 0.8.0 to Almanah 0.9.0
-=======================================================
+## 0.9.0
 
-Major changes:
+### Major changes
 * Removed ‘definitions’ in favour of hyperlinks
 * Move to a new XML-based entry serialisation format (the change should be transparent to users)
 * Use the new GApplication single instance mechanism (bumping our GTK+ and GIO dependencies to 3.0.0 and 2.28.0, respectively)
@@ -199,7 +190,7 @@ Major changes:
 * Re-enable spell checking with GTK+3 (which adds a dependency on GtkSpell v3)
 * Automatically save the current entry every 5 minutes (instead of just when closing or changing entries)
 
-Bugs fixed:
+### Bugs fixed
 * Bug 631835 — Support hyperlinks in diary entries
 * Bug 622193 — Use single instance
 * Bug 647691 — Make search case-insensitive
@@ -211,7 +202,7 @@ Bugs fixed:
 * Bug 671801 — i18n doesn't work
 * Bug 669927 — Save current entry after a timeout
 
-Updated translations:
+### Updated translations
 * cs (Marek Černocký)
 * da (Joe Hansen)
 * de (Mario Blättermann)
@@ -230,10 +221,9 @@ Updated translations:
 * tr (Muhammet Kara)
 * uk (Sergiy Gavrylov)
 
-Overview of changes from Almanah 0.7.2 to Almanah 0.8.0
-=======================================================
+## 0.8.0
 
-Major changes:
+### Major changes
 * Highlight important entries better in the interface
 * Add text and database file export support and make import/export asynchronous
 * Add support for storing the edit date of entries
@@ -245,14 +235,14 @@ Major changes:
 * Port to GSettings
 * Add data format versioning support to the database
 
-Bugs fixed:
+### Bugs fixed
 * Bug 611889 — A little padding in the textaera would be nice
 * Bug 572927 — Important entries
 * Bug 622887 — Migrate from dbus-glib to glib's GDBus
 * Bug 623231 — Dutch translation
 * Bug 641481 — Cannot build with gtk3/evolution 2.91.6
 
-Updated translations:
+### Updated translations
 * ca (Jordi Estrada)
 * cs (Marek Černocký)
 * da (Joe Hansen)
@@ -272,14 +262,13 @@ Updated translations:
 * sv (Daniel Nylander)
 * zh_CN (YunQiang Su)
 
-Overview of changes from Almanah 0.7.1 to Almanah 0.7.2
-=======================================================
+## 0.7.2
 
-Major changes:
+### Major changes
 * Improve key selection
 * Updated build infrastructure
 
-Updated translations:
+### Updated translations
 * cs (Marek Cernocky)
 * da (Joe Hansen)
 * de (Mario Blättermann)
@@ -287,19 +276,17 @@ Updated translations:
 * sl (Andrej Žnidaršič)
 * sv (Daniel Nylander)
 
-Overview of changes from Almanah 0.7.0 to Almanah 0.7.1
-=======================================================
+## 0.7.1
 
-Major changes:
+### Major changes
 * Fix non-Evolution build
 
-Updated translations:
+### Updated translations
 * sl (Andrej Žnidaršič)
 
-Overview of changes from Almanah 0.6.0 to Almanah 0.7.0
-=======================================================
+## 0.7.0
 
-Major changes:
+### Major changes
 * Add a new "Contact" definition type for Evolution contacts
 * Several data loss and crasher fixes
 * Add an "Insert Time" function
@@ -311,7 +298,7 @@ Major changes:
 * Add line spacing option when printing
 * Change website from http://tecnocode.co.uk/projects/almanah to http://live.gnome.org/Almanah_Diary
 
-Bugs fixed:
+### Bugs fixed
 * Bug 594871 — Add line spacing options
 * Bug 599598 — Segmentation fault in debian unstable
 * Bug 585646 — Should not translate %X
@@ -323,7 +310,7 @@ Bugs fixed:
 * Bug 572544 — Allow time to be inserted into entries
 * Bug 572926 — Automatic database backup
 
-Updated translations:
+### Updated translations
 * da (Joe Hansen)
 * de (Mario Blättermann)
 * el (Kostas Papadimas, Βασίλης Κοντογιάνης)
@@ -336,16 +323,18 @@ Updated translations:
 * sv (Daniel Nylander)
 * zh_CN (Aron Xu)
 
-Overview of changes from Almanah 0.5.0 to Almanah 0.6.0
-=======================================================
+## 0.6.0
 
 Note that 0.6 removes the old concept of "links", and all stored links will no longer be accessible. They will,
 however, remain in the database, and can be accessed using the following commands while Almanah's running:
-	sqlite3 ~/.local/share/diary.db
-	.headers ON
-	SELECT * FROM entry_links;
 
-Major changes:
+```
+sqlite3 ~/.local/share/diary.db
+.headers ON
+SELECT * FROM entry_links;
+```
+
+### Major changes
 * Improve accessibility support so the UI's navigable in both Accerciser and GOK
 * Rename "links" to "definitions", and change them such that one "definition" can be used across multiple
   diary entries to catalogue things of importance which are relevant to many diary entries
@@ -355,24 +344,23 @@ Major changes:
   allow, for example, a one-time import of a previous diary into Almanah
 * Improve printing support, adding page settings, print preview and a default page margin of 20px
 
-Bugs fixed:
+### Bugs fixed
 * Bug 567359 — Allow spell checking to be disabled at runtime
 * Bug 564706 — Print margins aren't adjustable
 * Bug 561106 — Add command line option to import old entries
 
-Updated translations:
+### Updated translations
 * de (Mario Blättermann)
 * fr (Pierre Lemaire, Claude Paroz)
 * pt_BR (Taylon Silmer, Vladimir Melo)
 
-Overview of changes from Almanah 0.4.0 to Almanah 0.5.0
-=======================================================
+## 0.5.0
 
 Note that the database format used in 0.5 is not backwards-compatible
 with previous versions, so once an entry has been added in 0.5, the
 database will not be usable with previous versions of Almanah.
 
-Major changes:
+### Major changes
 * Complete the name change to "Almanah Diary"
 * Update the architecture, moving to GObject
 * Make spell checking optional at compile time
@@ -382,13 +370,13 @@ Major changes:
 * Make window dimensions persistent
 * Allow the spelling language to be set via GConf
 
-Bugs fixed:
+### Bugs fixed
 * Bug 539792 — Allow encryption key to be set
 * Bug 546789 — red dots when switched from another day entry where there were
 * Bug 543963 — diary.db file location
 * Bug 543739 — Wrong icons are used for desktop and about dialog
 
-Updated translations:
+### Updated translations
 * ar (Djihed Afifi)
 * en_GB (Philip Withnall)
 * es (Jorge Gonzalez Gonzalez)
@@ -399,21 +387,20 @@ Updated translations:
 * sv (Daniel Nylander)
 * th (Anuchit Sakulwilailert)
 
-Overview of changes from Diary 0.3.1 to Almanah 0.4.0
-=====================================================
+## 0.4.0
 
-Major changes:
+### Major changes
 * Fix various translation problems, including untranslatable strings and strings containing markup
 * Improve some error messages
 * Add icon SVG sources
 * Fix licencing problems introduced with the change to GPLv3+
 * Rename the application to "Almanah Diary" (the data store remains compatible, however)
 
-Bugs fixed:
+### Bugs fixed
 * Bug 541709 — Developer Guidelines: Avoid markup wherever possible
 * Bug 541716 — misspelled word
 
-Updated translations:
+### Updated translations
 * ca (Gil Forcada Codinachs)
 * de (Christoph Wickert)
 * en_GB (Philip Withnall)
@@ -422,41 +409,37 @@ Updated translations:
 * pt_BR (Leonardo Ferreira Fontenelle)
 * sv (Daniel Nylander)
 
-Overview of changes from Diary 0.3.0 to Diary 0.3.1
-===================================================
+## 0.3.1
 
-Major changes:
+### Major changes
 * Update documentation
 * Fix the non-encryption build
 * Make the search dialogue non-modal
 * Fix the desktop file
 
-Overview of changes from Diary 0.2.0 to Diary 0.3.0
-===================================================
+## 0.3.0
 
-Major changes:
+### Major changes
 * Update documentation to point to new SVN repository
 * Add search functionality
 * Add an icon by Jakub Szypulka and a desktop file
 * Improvements to encryption support
 * Fix a crasher bug if requesting statistics for a database with no entries
 
-Updated translations:
+### Updated translations
 * en_GB (Philip Withnall)
 * fr (Jean-François Martin)
 
-Overview of changes from Diary 0.1.0 to Diary 0.2.0
-===================================================
+## 0.2.0
 
-Major changes:
+### Major changes
 * Relicensed from GPLv2 to GPLv3
 * Add database encryption support
 * Add printing support
 
-Initial release of Diary 0.1.0
-==============================
+## Initial release of Diary 0.1.0
 
-Major changes:
+### Major changes
 * Project created
 * Basic editing support
 * Spell checking
