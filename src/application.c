@@ -135,6 +135,7 @@ constructed (GObject *object)
 	textdomain (GETTEXT_PACKAGE);
 
 	g_set_application_name (_("Almanah Diary"));
+	g_set_prgname ("org.gnome.Almanah");
 	gtk_window_set_default_icon_name ("org.gnome.Almanah");
 
 	/* Chain up to the parent class */
