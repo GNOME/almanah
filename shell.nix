@@ -3,7 +3,7 @@ let
   pkgs = import sources.nixpkgs { };
 in
 
-pkgs.mkShell {
+pkgs.mkShell.override {stdenv = pkgs.clangStdenv;} {
   nativeBuildInputs = with pkgs; [
     meson
     ninja
@@ -11,8 +11,9 @@ pkgs.mkShell {
     appstream
     desktop-file-utils
     wrapGAppsHook3
-
+    (tartan.overrideAttrs { src = ~/Projects/tartan; })
     npins
+    clang-analyzer
   ];
 
   buildInputs = with pkgs; [
