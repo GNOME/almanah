@@ -1,9 +1,9 @@
 let
   sources = import ./npins;
-  pkgs = import sources.nixpkgs { };
+  pkgs = import ~/Projects/nixpkgs { };
 in
 
-pkgs.mkShell {
+pkgs.mkShell.override {stdenv = pkgs.clangStdenv;} {
   nativeBuildInputs = with pkgs; [
     meson
     ninja
@@ -11,8 +11,9 @@ pkgs.mkShell {
     appstream
     desktop-file-utils
     wrapGAppsHook3
-
+    tartan
     npins
+    clang-analyzer
   ];
 
   buildInputs = with pkgs; [
