@@ -77,7 +77,7 @@ almanah_calendar_task_event_finalize (GObject *object)
 }
 
 AlmanahCalendarTaskEvent *
-almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, GTime start_time)
+almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, time_t start_time)
 {
 	AlmanahCalendarTaskEvent *event = g_object_new (ALMANAH_TYPE_CALENDAR_TASK_EVENT, NULL);
 	AlmanahCalendarTaskEventPrivate *priv = almanah_calendar_task_event_get_instance_private (event);

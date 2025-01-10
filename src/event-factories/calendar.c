@@ -96,7 +96,7 @@ events_changed_cb (CalendarClient *client, AlmanahCalendarEventFactory *self)
 	g_signal_emit_by_name (self, "events-updated");
 }
 
-static inline GTime
+static inline time_t
 date_to_time (GDate *date)
 {
 	struct tm localtime_tm = { 0, };
@@ -124,7 +124,7 @@ get_events (AlmanahEventFactory *event_factory, GDate *date)
 		/* Create a new event and use it to replace the CalendarEvent */
 		if (calendar_event->type == CALENDAR_EVENT_TASK) {
 			/* Task */
-			GTime today_time, yesterday_time;
+			time_t today_time, yesterday_time;
 
 			today_time = date_to_time (date);
 			yesterday_time = today_time - (24 * 60 * 60);
