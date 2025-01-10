@@ -440,7 +440,7 @@ static gboolean
 import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data,
                  GCancellable *cancellable, GError **error)
 {
-	GFileInfo *file_info;
+	g_autoptr (GFileInfo) file_info = NULL;
 	gchar *path;
 	const gchar *display_name;
 	AlmanahEntry *entry;
@@ -455,7 +455,6 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 		return FALSE;
 
 	display_name = g_file_info_get_display_name (file_info);
-	g_object_unref (file_info);
 
 	/* Open the database */
 	path = g_file_get_path (source);
