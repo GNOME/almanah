@@ -32,7 +32,7 @@ static gboolean almanah_calendar_appointment_event_view (AlmanahEvent *event, Gt
 typedef struct {
 	gchar *summary;
 	gchar *time;
-	GTime start_time;
+	time_t start_time;
 } AlmanahCalendarAppointmentEventPrivate;
 
 struct _AlmanahCalendarAppointmentEvent {
@@ -76,7 +76,7 @@ almanah_calendar_appointment_event_finalize (GObject *object)
 }
 
 AlmanahCalendarAppointmentEvent *
-almanah_calendar_appointment_event_new (const gchar *summary, GTime start_time)
+almanah_calendar_appointment_event_new (const gchar *summary, time_t start_time)
 {
 	AlmanahCalendarAppointmentEvent *event = g_object_new (ALMANAH_TYPE_CALENDAR_APPOINTMENT_EVENT, NULL);
 	AlmanahCalendarAppointmentEventPrivate *priv = almanah_calendar_appointment_event_get_instance_private (event);

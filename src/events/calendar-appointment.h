@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (AlmanahCalendarAppointmentEvent, almanah_calendar_appointment_event, ALMANAH, CALENDAR_APPOINTMENT_EVENT, AlmanahEvent)
 
-AlmanahCalendarAppointmentEvent *almanah_calendar_appointment_event_new (const gchar *summary, GTime start_time);
+AlmanahCalendarAppointmentEvent *almanah_calendar_appointment_event_new (const gchar *summary, time_t start_time);
 
 G_END_DECLS
 
