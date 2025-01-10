@@ -191,7 +191,7 @@ progress_idle_callback (AlmanahExportProgressCallback callback, gpointer user_da
 	data->user_data = user_data;
 	data->date = g_date_new_dmy (g_date_get_day (date), g_date_get_month (date), g_date_get_year (date));
 
-	/* We can't just use g_idle_add() here, since GSimpleAsyncResult uses default priority, so the finished callback will skip any outstanding
+	/* We can't just use g_idle_add() here, since GTask uses default priority, so the finished callback will skip any outstanding
 	 * progress callbacks in the main loop's priority queue, causing Bad Things to happen. We need to guarantee that no more progress callbacks
 	 * will occur after the finished callback has been called; this is one hacky way of achieving that. */
 	source = g_idle_source_new ();
@@ -340,24 +340,22 @@ export_data_free (ExportData *data)
 }
 
 static void
-export_thread (GSimpleAsyncResult *result, AlmanahExportOperation *operation, GCancellable *cancellable)
+export_thread (GTask *task, AlmanahExportOperation *operation, gpointer task_data, GCancellable *cancellable)
 {
 	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private (operation);
 	GError *error = NULL;
-	ExportData *data = g_simple_async_result_get_op_res_gpointer (result);
+	ExportData *data = (ExportData *) task_data;
 
 	/* Check to see if the operation's been cancelled already */
 	if (g_cancellable_set_error_if_cancelled (cancellable, &error) == TRUE) {
-		g_simple_async_result_set_from_error (result, error);
-		g_error_free (error);
+		g_task_return_error (task, error);
 		return;
 	}
 
 	/* Export and return */
 	if (export_modes[priv->current_mode].export_func (operation, priv->destination, data->progress_callback,
 	    data->progress_user_data, cancellable, &error) == FALSE) {
-		g_simple_async_result_set_from_error (result, error);
-		g_error_free (error);
+		g_task_return_error (task, error);
 	}
 }
 
@@ -365,7 +363,7 @@ void
 almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, AlmanahExportProgressCallback progress_callback,
                               gpointer progress_user_data,GAsyncReadyCallback callback, gpointer user_data)
 {
-	GSimpleAsyncResult *result;
+	g_autoptr (GTask) task = NULL;
 	ExportData *data;
 
 	g_return_if_fail (ALMANAH_IS_EXPORT_OPERATION (self));
@@ -375,24 +373,24 @@ almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancel
 	data->progress_callback = progress_callback;
 	data->progress_user_data = progress_user_data;
 
-	result = g_simple_async_result_new (G_OBJECT (self), callback, user_data, almanah_export_operation_run);
-	g_simple_async_result_set_op_res_gpointer (result, data, (GDestroyNotify) export_data_free);
-	g_simple_async_result_run_in_thread (result, (GSimpleAsyncThreadFunc) export_thread, G_PRIORITY_DEFAULT, cancellable);
-	g_object_unref (result);
+	task = g_task_new (G_OBJECT (self), cancellable, callback, user_data);
+	g_task_set_source_tag (task, almanah_export_operation_run);
+	g_task_set_task_data (task, data, (GDestroyNotify) export_data_free);
+	g_task_run_in_thread (task, (GTaskThreadFunc) export_thread);
 }
 
 gboolean
 almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncResult *async_result, GError **error)
 {
-	GSimpleAsyncResult *result = G_SIMPLE_ASYNC_RESULT (async_result);
+	GTask *task = G_TASK (async_result);
 
 	g_return_val_if_fail (ALMANAH_IS_EXPORT_OPERATION (self), FALSE);
 	g_return_val_if_fail (G_IS_ASYNC_RESULT (async_result), FALSE);
 	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-	g_warn_if_fail (g_simple_async_result_get_source_tag (result) == almanah_export_operation_run);
+	g_warn_if_fail (g_task_get_source_tag (task) == almanah_export_operation_run);
 
-	if (g_simple_async_result_propagate_error (result, error) == TRUE)
+	if (g_async_result_legacy_propagate_error (G_ASYNC_RESULT (task), error) == TRUE)
 		return FALSE;
 
 	return TRUE;

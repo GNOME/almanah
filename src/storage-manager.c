@@ -688,28 +688,25 @@ search_entry_async_progress_cb (ProgressCallbackData *data)
 }
 
 static void
-search_entries_async_thread (GSimpleAsyncResult *result, AlmanahStorageManager *storage_manager, GCancellable *cancellable)
+search_entries_async_thread (GTask *task, AlmanahStorageManager *storage_manager, gpointer task_data, GCancellable *cancellable)
 {
 	AlmanahStorageManagerIter iter;
 	AlmanahEntry *entry;
-	SearchAsyncData *search_data;
+	SearchAsyncData *search_data = (SearchAsyncData *) task_data;
 	ProgressCallbackData *progress_data;
 	GError *error = NULL;
-
-	search_data = g_simple_async_result_get_op_res_gpointer (result);
 
 	almanah_storage_manager_iter_init (&iter);
 	while ((entry = almanah_storage_manager_search_entries (storage_manager, search_data->search_string, &iter)) != NULL) {
 		/* Don't do any unnecessary work */
 		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &error)) {
-			g_simple_async_result_set_from_error (result, error);
-			g_error_free (error);
+			g_task_return_error (task, error);
 			return;
 		}
 
 		search_data->count++;
 
-		/* Queue a progress callback for the result */
+		/* Queue a progress callback for the task */
 		progress_data = g_slice_new (ProgressCallbackData);
 		progress_data->callback = search_data->progress_callback;
 		progress_data->storage_manager = g_object_ref (storage_manager);
@@ -726,7 +723,7 @@ search_entries_async_thread (GSimpleAsyncResult *result, AlmanahStorageManager *
 /**
  * almanah_storage_manager_search_entries_async_finish:
  * @self: an #AlmanahStorageManager
- * @result: a #GSimpleAsyncResult
+ * @task: a #GTask
  * @error: a #GError or %NULL
  *
  * Finish an asynchronous search started with almanah_storage_manager_search_entries_async().
@@ -734,24 +731,24 @@ search_entries_async_thread (GSimpleAsyncResult *result, AlmanahStorageManager *
  * Return value: the number of entries which matched the search string, or <code class="literal">-1</code> on error
  */
 gint
-almanah_storage_manager_search_entries_async_finish (AlmanahStorageManager *self, GAsyncResult *result, GError **error)
+almanah_storage_manager_search_entries_async_finish (AlmanahStorageManager *self, GAsyncResult *task, GError **error)
 {
 	SearchAsyncData *search_data = NULL;
 	gint retval = -1;
 
 	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), -1);
-	g_return_val_if_fail (G_IS_ASYNC_RESULT (result), -1);
+	g_return_val_if_fail (G_IS_ASYNC_RESULT (task), -1);
 	g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
-	if (g_simple_async_result_is_valid (result, G_OBJECT (self), almanah_storage_manager_search_entries_async) == FALSE) {
+	if (g_task_is_valid (task, G_OBJECT (self)) == FALSE) {
 		return -1;
 	}
 
 	/* Check for errors */
-	search_data = g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (result));
+	search_data = g_task_get_task_data (G_TASK (task));
 
 	/* Extract the number of results */
-	if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result), error) == FALSE) {
+	if (g_async_result_legacy_propagate_error (G_ASYNC_RESULT (task), error) == FALSE) {
 		retval = search_data->count;
 	}
 
@@ -769,7 +766,7 @@ almanah_storage_manager_search_entries_async_finish (AlmanahStorageManager *self
  * @self: an #AlmanahStorageManager
  * @search_string: the string of search terms being queried against
  * @cancellable: (allow-none): a #GCancellable, or %NULL
- * @progress_callback: (scope notified) (allow-none) (closure progress_user_data): a function to call for each result as it's found, or %NULL
+ * @progress_callback: (scope notified) (allow-none) (closure progress_user_data): a function to call for each task as it's found, or %NULL
  * @progress_user_data: (closure): data to pass to @progress_callback
  * @progress_user_data_destroy: (allow-none): a function to destroy the @progress_user_data when it will not be used any more, or %NULL
  * @callback: a #GAsyncReadyCallback to call once the search is complete
@@ -788,7 +785,7 @@ almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const
                                               GDestroyNotify progress_user_data_destroy,
                                               GAsyncReadyCallback callback, gpointer user_data)
 {
-	GSimpleAsyncResult *result;
+	g_autoptr (GTask) task = NULL;
 	SearchAsyncData *search_data;
 
 	g_return_if_fail (ALMANAH_IS_STORAGE_MANAGER (self));
@@ -796,7 +793,8 @@ almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const
 	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (callback != NULL);
 
-	result = g_simple_async_result_new (G_OBJECT (self), callback, user_data, almanah_storage_manager_search_entries_async);
+	task = g_task_new (G_OBJECT (self), cancellable, callback, user_data);
+	g_task_set_source_tag (task, almanah_storage_manager_search_entries_async);
 
 	search_data = g_slice_new (SearchAsyncData);
 	search_data->search_string = g_strdup (search_string);
@@ -805,10 +803,8 @@ almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const
 	search_data->progress_user_data_destroy = progress_user_data_destroy;
 	search_data->count = 0;
 
-	g_simple_async_result_set_op_res_gpointer (result, search_data, (GDestroyNotify) search_async_data_free);
-	g_simple_async_result_run_in_thread (result, (GSimpleAsyncThreadFunc) search_entries_async_thread, G_PRIORITY_DEFAULT, cancellable);
-
-	g_object_unref (result);
+	g_task_set_task_data (task, search_data, (GDestroyNotify) search_async_data_free);
+	g_task_run_in_thread (task, (GTaskThreadFunc) search_entries_async_thread);
 }
 
 /**
