@@ -195,7 +195,7 @@ progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_da
 	data->status = status;
 	data->message = g_strdup (message);
 
-	/* We can't just use g_idle_add() here, since GSimpleAsyncResult uses default priority, so the finished callback will skip any outstanding
+	/* We can't just use g_idle_add() here, since GTask uses default priority, so the finished callback will skip any outstanding
 	 * progress callbacks in the main loop's priority queue, causing Bad Things to happen. We need to guarantee that no more progress callbacks
 	 * will occur after the finished callback has been called; this is one hacky way of achieving that. */
 	source = g_idle_source_new ();
@@ -511,15 +511,14 @@ import_data_free (ImportData *data)
 }
 
 static void
-import_thread (GSimpleAsyncResult *result, AlmanahImportOperation *operation, GCancellable *cancellable)
+import_thread (GTask *task, AlmanahImportOperation *operation, gpointer task_data, GCancellable *cancellable)
 {
 	GError *error = NULL;
-	ImportData *data = g_simple_async_result_get_op_res_gpointer (result);
+	ImportData *data = (ImportData *) task_data;
 
 	/* Check to see if the operation's been cancelled already */
 	if (g_cancellable_set_error_if_cancelled (cancellable, &error) == TRUE) {
-		g_simple_async_result_set_from_error (result, error);
-		g_error_free (error);
+		g_task_return_error (task, error);
 		return;
 	}
 
@@ -528,8 +527,7 @@ import_thread (GSimpleAsyncResult *result, AlmanahImportOperation *operation, GC
 	/* Import and return */
 	if (import_modes[priv->current_mode].import_func (operation, priv->source, data->progress_callback,
 	    data->progress_user_data, cancellable, &error) == FALSE) {
-		g_simple_async_result_set_from_error (result, error);
-		g_error_free (error);
+		g_task_return_error (task, error);
 	}
 }
 
@@ -537,7 +535,7 @@ void
 almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancellable, AlmanahImportProgressCallback progress_callback,
                               gpointer progress_user_data, GAsyncReadyCallback callback, gpointer user_data)
 {
-	GSimpleAsyncResult *result;
+	g_autoptr (GTask) task = NULL;
 	ImportData *data;
 
 	g_return_if_fail (ALMANAH_IS_IMPORT_OPERATION (self));
@@ -547,24 +545,24 @@ almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancel
 	data->progress_callback = progress_callback;
 	data->progress_user_data = progress_user_data;
 
-	result = g_simple_async_result_new (G_OBJECT (self), callback, user_data, almanah_import_operation_run);
-	g_simple_async_result_set_op_res_gpointer (result, data, (GDestroyNotify) import_data_free);
-	g_simple_async_result_run_in_thread (result, (GSimpleAsyncThreadFunc) import_thread, G_PRIORITY_DEFAULT, cancellable);
-	g_object_unref (result);
+	task = g_task_new (G_OBJECT (self), cancellable, callback, user_data);
+	g_task_set_source_tag (task, almanah_import_operation_run);
+	g_task_set_task_data (task, data, (GDestroyNotify) import_data_free);
+	g_task_run_in_thread (task, (GTaskThreadFunc) import_thread);
 }
 
 gboolean
 almanah_import_operation_finish (AlmanahImportOperation *self, GAsyncResult *async_result, GError **error)
 {
-	GSimpleAsyncResult *result = G_SIMPLE_ASYNC_RESULT (async_result);
+	GTask *task = G_TASK (async_result);
 
 	g_return_val_if_fail (ALMANAH_IS_IMPORT_OPERATION (self), FALSE);
 	g_return_val_if_fail (G_IS_ASYNC_RESULT (async_result), FALSE);
 	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-	g_warn_if_fail (g_simple_async_result_get_source_tag (result) == almanah_import_operation_run);
+	g_warn_if_fail (g_task_get_source_tag (task) == almanah_import_operation_run);
 
-	if (g_simple_async_result_propagate_error (result, error) == TRUE)
+	if (g_async_result_legacy_propagate_error (G_ASYNC_RESULT (task), error) == TRUE)
 		return FALSE;
 
 	return TRUE;
