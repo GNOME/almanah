@@ -515,12 +515,13 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 
 	/* Make sure the dimensions and position are sane */
 	if (width > 1 && height > 1) {
-		GdkScreen *screen;
-		gint max_width, max_height;
-
-		screen = gtk_widget_get_screen (GTK_WIDGET (self));
-		max_width = gdk_screen_get_width (screen);
-		max_height = gdk_screen_get_height (screen);
+		GdkRectangle monitor_geometry;
+		GdkDisplay *display = gdk_display_get_default ();
+		GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (self));
+		GdkMonitor *monitor = gdk_display_get_monitor_at_window (display, window);
+		gdk_monitor_get_geometry (monitor, &monitor_geometry);
+		gint max_width = monitor_geometry.width;
+		gint max_height = monitor_geometry.height;
 
 		width = CLAMP (width, 0, max_width);
 		height = CLAMP (height, 0, max_height);
