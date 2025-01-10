@@ -1378,7 +1378,7 @@ e_source_selector_init (ESourceSelector *selector)
 	tree_store = gtk_tree_store_new (
 		NUM_COLUMNS,
 		G_TYPE_STRING,		/* COLUMN_NAME */
-		GDK_TYPE_COLOR,		/* COLUMN_COLOR */
+		GDK_TYPE_RGBA,		/* COLUMN_COLOR */
 		G_TYPE_BOOLEAN,		/* COLUMN_ACTIVE */
 		G_TYPE_BOOLEAN,		/* COLUMN_SHOW_COLOR */
 		G_TYPE_BOOLEAN,		/* COLUMN_SHOW_TOGGLE */

@@ -207,7 +207,7 @@ e_cell_renderer_color_class_init (ECellRendererColorClass *class)
 			"color",
 			"Color Info",
 			"The color to render",
-			GDK_TYPE_COLOR,
+			GDK_TYPE_RGBA,
 			G_PARAM_READWRITE));
 }
 
