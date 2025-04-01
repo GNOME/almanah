@@ -25,15 +25,6 @@
 #include "search-dialog.h"
 #include "interface.h"
 
-const gchar *
-almanah_get_interface_app_menu_filename (void)
-{
-	if (g_file_test ("./data/almanah-app-menu.ui", G_FILE_TEST_EXISTS) == TRUE)
-		return "./data/almanah-app-menu.ui";
-	else
-		return PACKAGE_DATA_DIR"/almanah/almanah-app-menu.ui";
-}
-
 void
 almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)
 {
