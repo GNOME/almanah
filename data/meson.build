@@ -1,3 +1,15 @@
+service_conf = configuration_data()
+service_conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
+
+service = 'org.gnome.Almanah.service'
+configure_file(
+  input: service + '.in',
+  output: service,
+  install: true,
+  install_dir: join_paths(datadir, 'dbus-1', 'services'),
+  configuration: service_conf,
+)
+
 desktop = 'org.gnome.Almanah.desktop'
 i18n.merge_file(
   type: 'desktop',

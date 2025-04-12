@@ -11,3 +11,4 @@ Terminal=false
 Type=Application
 Categories=GTK;Utility;
 StartupNotify=true
+DBusActivatable=true
