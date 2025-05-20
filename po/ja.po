@@ -1,0 +1,759 @@
+# almanah ja.po
+# Copyright (C) 2020, 2025. THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the almanah  package.
+# Tomo Dote <fu7mu4@gmail.com>, 2020.
+# Kusano Takayuki <https://bsky.app/profile/tkusano.jp>, 2025.
+# Japanese Translation Team https://l10n.gnome.org/teams/ja/, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: almanah master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues/\n"
+"POT-Creation-Date: 2025-05-10 11:04+0000\n"
+"PO-Revision-Date: 2025-05-20 15:37+0900\n"
+"Last-Translator: Tomo Dote <fu7mu4@gmail.com>\n"
+"Language-Team: Japanese <https://l10n.gnome.org/teams/ja/>\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:7 data/org.gnome.Almanah.desktop.in:3
+#: src/application.c:139 src/main-window.c:165
+msgid "Almanah Diary"
+msgstr "アルマナ日記"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:8
+msgid "Keep a diary of your life"
+msgstr "あなたの人生の日記を続けよう"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:10
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"アルマナ日記はあなたの人生で日記をつけ続けるためのアプリケーションです。"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:13
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"プライバシーを保護するために日記を暗号化できます。また、それぞれの日々の日記"
+"の編集ができます。テキストのフォーマット修正、印刷、(コンピューター上で発生し"
+"た)イベントの表示などが含まれています。Evolutionからのタスクや予約も含まれま"
+"す。"
+
+#: data/org.gnome.Almanah.desktop.in:4
+msgid "Keep a personal diary"
+msgstr "個人的な日記をつける"
+
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#: data/org.gnome.Almanah.desktop.in:5 src/application.c:281
+msgid "Diary"
+msgstr "Diary"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Almanah.desktop.in:7
+msgid "diary;journal;"
+msgstr "diary;journal;日記;ダイアリー;ジャーナル;"
+
+#: src/ui/almanah.ui:27
+msgid "Calendar"
+msgstr "カレンダー"
+
+#: src/ui/almanah.ui:46
+msgid "Go to Today"
+msgstr "今日に移動"
+
+#: src/ui/almanah.ui:56
+msgid "Select Date…"
+msgstr "日付で検索…"
+
+#: src/ui/almanah.ui:134
+msgid "Entry editing area"
+msgstr "編集領域へ"
+
+#: src/ui/almanah.ui:160
+msgid "Past events"
+msgstr "過去のイベント"
+
+#: src/ui/almanah.ui:204
+msgid "Past Event List"
+msgstr "過去のイベントリスト"
+
+#: src/ui/almanah.ui:299
+msgid "Search entry"
+msgstr "エントリーの検索"
+
+#: src/ui/almanah.ui:307 src/search-dialog.c:69
+msgid "Search"
+msgstr "検索"
+
+#: src/ui/almanah.ui:398
+msgid "Result List"
+msgstr "結果リスト"
+
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
+msgid "View Entry"
+msgstr "エントリーの表示"
+
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "例: \"2009-03-14\" または \"2009/03/14\"。"
+
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: src/ui/almanah.ui:570
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "例 “http://google.com/” または “file:///home/me/Photos/photo.jpg”。"
+
+#: src/ui/almanah.ui:734
+msgid "Successful Entries"
+msgstr "成功したエントリー"
+
+#: src/ui/almanah.ui:737
+msgid "Merged Entries"
+msgstr "マージしたエントリー"
+
+#: src/ui/almanah.ui:740
+msgid "Failed Entries"
+msgstr "失敗したエントリー"
+
+#: src/ui/almanah.ui:802
+msgid "Import Results List"
+msgstr "結果リストのインポート"
+
+#: data/org.gnome.almanah.gschema.xml:6
+msgid "Database encryption key ID"
+msgstr "データベース暗号キーID"
+
+#: data/org.gnome.almanah.gschema.xml:7
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"このキーIDはデータベースを暗号化や復号のために使用します。ただしアルマナが暗"
+"号サポートを有効にしてビルドされた場合に限ります。データベースの暗号化を無効"
+"にするには空欄のままにしてください。"
+
+#: data/org.gnome.almanah.gschema.xml:11
+msgid "Spell checking language"
+msgstr "スペルチェックの言語"
+
+#: data/org.gnome.almanah.gschema.xml:12
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "エントリーのスペルをチェックする言語のロケールを指定します。"
+
+#: data/org.gnome.almanah.gschema.xml:16
+msgid "Spell checking enabled?"
+msgstr "スペルチェックを有効にしますか?"
+
+#: data/org.gnome.almanah.gschema.xml:17
+msgid "Whether spell checking of entries is enabled."
+msgstr "エントリーのスペルチェックが有効かどうか。"
+
+#: src/application.c:264
+msgid "Error opening database"
+msgstr "データベースオープンエラー"
+
+#: src/application.c:347
+msgid "Enable debug mode"
+msgstr "デバッグモードを有効にする"
+
+#: src/application.c:364
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"あなたの日記を管理します。このプログラムは同時複数のインスタンスを開くことは"
+"できません。"
+
+#. Print an error
+#: src/application.c:375
+#, c-format
+msgid "Command line options could not be parsed: %s\n"
+msgstr "コマンドラインオプションをパースできませんでした: %s\n"
+
+#: src/application.c:394
+msgid "Error encrypting database"
+msgstr "データベース暗号化エラー"
+
+#: src/application.c:537
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+
+#: src/application.c:541
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+
+#: src/application.c:545
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+
+#: src/application.c:559
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "日記保存ソフトウェア、現在 %u 件のエントリーを保持しています。"
+
+#: src/application.c:563
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Copyright © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: src/application.c:571
+msgid "translator-credits"
+msgstr ""
+"Tomo Dote 1 <fu7mu4@gmail.com>\n"
+"Kusano Takayuki <https://bsky.app/profile/tkusano.jp>\n"
+"Japanese Translation Team https://l10n.gnome.org/teams/ja/"
+
+#: src/application.c:575
+msgid "Almanah Website"
+msgstr "アルマナのウェブサイト"
+
+#: src/application.c:603
+#, c-format
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"CSSリソースをロードできませんでした。インターフェースは正しいスタイルで表示で"
+"きないかもしれません： %s"
+
+#: src/date-entry-dialog.c:73
+msgid "Select Date"
+msgstr "日付の選択"
+
+#: src/date-entry-dialog.c:128 src/import-export-dialog.c:171
+#: src/import-export-dialog.c:482 src/main-window.c:237
+#: src/preferences-dialog.c:177 src/search-dialog.c:95
+#: src/uri-entry-dialog.c:125
+msgid "UI data could not be loaded"
+msgstr "ユーザーインターフェースのデータがロードできませんでした"
+
+#: src/entry.c:307
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "不正なデータバージョンナンバー %u。"
+
+#: src/events/calendar-appointment.c:52
+msgid "Calendar Appointment"
+msgstr "カレンダーの予約"
+
+#: src/events/calendar-appointment.c:53
+msgid "An appointment on an Evolution calendar."
+msgstr "Evolutionカレンダーの予約。"
+
+#. Translators: This is a time string with the format hh:mm
+#: src/events/calendar-appointment.c:90 src/events/calendar-task.c:91
+#, c-format
+msgid "%.2d:%.2d"
+msgstr "%.2d:%.2d"
+
+#: src/events/calendar-appointment.c:140 src/events/calendar-task.c:130
+msgid "Error launching Evolution"
+msgstr "Evolution起動エラー"
+
+#: src/events/calendar-task.c:52
+msgid "Calendar Task"
+msgstr "カレンダータスク"
+
+#: src/events/calendar-task.c:53
+msgid "A task on an Evolution calendar."
+msgstr "Evolutionカレンダーのタスク。"
+
+#: src/export-operation.c:47 src/import-operation.c:45
+msgid "Text Files"
+msgstr "テキストファイル"
+
+#: src/export-operation.c:48
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"エントリーをテキストファイルでエクスポートするフォルダ(_F) を選択してくださ"
+"い。エントリー毎に1ファイルになり、ファイル名は'yyyy-mm-dd'という形式で、拡張"
+"子はありません。すべてのエントリーがエクスポートされますが、プレーンテキスト"
+"で、暗号化はされません。"
+
+#: src/export-operation.c:52 src/import-operation.c:50
+msgid "Database"
+msgstr "データベース"
+
+#: src/export-operation.c:53
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"暗号化されていない、アルマナ日記データベースの完全なコピーのファイル名(_F)を"
+"選択してください。"
+
+#: src/export-operation.c:262 src/export-operation.c:320
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "エクスポートしたファイルのパーミッションの変更時にエラー: %s"
+
+#: src/gtk/menus.ui:6
+msgid "_Search"
+msgstr "検索(_S)"
+
+#: src/gtk/menus.ui:12
+msgid "Pr_eferences"
+msgstr "設定(_E)"
+
+#: src/gtk/menus.ui:16
+msgctxt "Main menu"
+msgid "_Import"
+msgstr "インポート(_I)"
+
+#: src/gtk/menus.ui:20
+msgctxt "Main menu"
+msgid "_Export"
+msgstr "エクスポート(_E)"
+
+#: src/gtk/menus.ui:24
+msgid "_Print diary"
+msgstr "日記の印刷(_P)"
+
+#: src/gtk/menus.ui:30
+msgid "_About Almanah Diary"
+msgstr "アルマナ日記について(_A)"
+
+#: src/gtk/menus.ui:34
+msgid "_Quit"
+msgstr "終了(_Q)"
+
+#: src/gtk/menus.ui:42
+msgid "_Bold"
+msgstr "ボールド(_B)"
+
+#: src/gtk/menus.ui:46
+msgid "_Italic"
+msgstr "イタリック(_I)"
+
+#: src/gtk/menus.ui:50
+msgid "_Underline"
+msgstr "アンダーライン(_U)"
+
+#: src/gtk/menus.ui:56
+msgid "_Cut"
+msgstr "切り取り(_C)"
+
+#: src/gtk/menus.ui:60
+msgid "_Copy"
+msgstr "コピー(_C)"
+
+#: src/gtk/menus.ui:64
+msgid "_Paste"
+msgstr "貼り付け(_P)"
+
+#: src/gtk/menus.ui:68 src/main-window.c:643
+msgid "_Delete"
+msgstr "削除(_D)"
+
+#: src/gtk/menus.ui:74
+msgid "Insert _Time"
+msgstr "時刻を挿入(_T)"
+
+#: src/gtk/menus.ui:78
+msgid "Add/Remove _Hyperlink"
+msgstr "ハイパーリンクの追加/削除(_H)"
+
+#: src/import-export-dialog.c:205
+msgid "Import _mode: "
+msgstr "インポートモード(_M): "
+
+#: src/import-export-dialog.c:205
+msgid "Export _mode: "
+msgstr "エクスポートモード(_m): "
+
+#. Set the window title
+#: src/import-export-dialog.c:208
+msgid "Import Entries"
+msgstr "エントリーのインポート"
+
+#: src/import-export-dialog.c:208
+msgid "Export Entries"
+msgstr "エントリーのエクスポート"
+
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:213
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "インポート(_I)"
+
+#: src/import-export-dialog.c:213
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "エクスポート(_E)"
+
+#: src/import-export-dialog.c:249
+msgid "Import failed"
+msgstr "インポートに失敗"
+
+#: src/import-export-dialog.c:289
+msgid "Export failed"
+msgstr "エクスポートに失敗"
+
+#: src/import-export-dialog.c:302
+msgid "Export successful"
+msgstr "エクスポートに成功"
+
+#: src/import-export-dialog.c:303
+msgid "The diary was successfully exported."
+msgstr "日記のエクスポートに成功しました。"
+
+#: src/import-export-dialog.c:454
+msgid "Import Results"
+msgstr "結果のインポート"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: src/import-export-dialog.c:551 src/main-window.c:604 src/main-window.c:635
+#: src/main-window.c:1288 src/printing.c:263 src/search-dialog.c:182
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: src/import-operation.c:46
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"テキストファイルのある _folder を選択してください。エントリー毎に一ファイル"
+"で、ファイル名は'yyyy-mm-dd'フォーマットで拡張子はない、このようなファイルを"
+"インポートします。"
+
+#: src/import-operation.c:51
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr "アルナマ日記が作成したデータベース _file を選択してインポートします。"
+
+#: src/import-operation.c:254
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "インポートしたエントリをバッファへデシリアライズ時のエラー: %s"
+
+#: src/import-operation.c:270
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"既存のエントリをバッファへデシリアライズ時のエラー; インポートしたエントリで"
+"上書き: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: src/import-operation.c:311
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"“%s” からインポートしたエントリ:\n"
+"\n"
+
+#: src/main-window.c:608
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "本当に %s のためにこの日記エントリーを編集しますか?"
+
+#: src/main-window.c:611 src/main-window.c:642
+msgid "_Cancel"
+msgstr "キャンセル(_C)"
+
+#: src/main-window.c:612
+msgid "_Edit"
+msgstr "編集(_E)"
+
+#: src/main-window.c:639
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "本当に %s のためにこの日記エントリーを削除しますか?"
+
+#. Print a warning about the unknown tag
+#: src/main-window.c:751
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "不明または重複したタグがあります \"%s\" 無視します。"
+
+#: src/main-window.c:1000
+msgid "Error opening URI"
+msgstr "URIオープンエラー"
+
+#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#: src/main-window.c:1215
+#, c-format
+msgid "%s @ %s"
+msgstr "%s @ %s"
+
+#: src/main-window.c:1321
+msgid "Entry content could not be loaded"
+msgstr "エントリの内容をロードできませんでした"
+
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: src/main-window.c:1596
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr "この文章はエントリの幅の目安を得るために作成されたランダムな文章です"
+
+#: src/main-window.c:1633
+msgid "Spelling checker could not be initialized"
+msgstr "スペルチェッカーの初期化ができませんでした"
+
+#: src/preferences-dialog.c:82
+msgid "Preferences"
+msgstr "Preferences"
+
+#. Grab our child widgets
+#: src/preferences-dialog.c:204
+msgid "Encryption key: "
+msgstr "復号キー: "
+
+#: src/preferences-dialog.c:208
+msgid "None (don't encrypt)"
+msgstr "なし (暗号化無効)"
+
+#: src/preferences-dialog.c:213
+msgid "New _Key"
+msgstr "新しいキー(_K)"
+
+#. Set up the "Enable spell checking" check button
+#: src/preferences-dialog.c:237
+msgid "Enable _spell checking"
+msgstr "スペルチェックを有効にする(_S)"
+
+#: src/preferences-dialog.c:263
+msgid "Error saving the encryption key"
+msgstr "復号キーの保存エラー"
+
+#: src/preferences-dialog.c:282
+msgid "Error opening Seahorse"
+msgstr "Seahorse起動エラー"
+
+#: src/printing.c:277
+msgid "This entry is marked as important."
+msgstr "このエントリは重要に指定しました。"
+
+#: src/printing.c:298
+msgid "No entry for this date."
+msgstr "この日付のエントリはありません。"
+
+#: src/printing.c:457
+msgid "Start date:"
+msgstr "開始日:"
+
+#: src/printing.c:459
+msgid "End date:"
+msgstr "終了日:"
+
+#. Line spacing
+#: src/printing.c:475
+msgid "Line spacing:"
+msgstr "行間:"
+
+#: src/search-dialog.c:223
+msgid "Search canceled."
+msgstr "検索をキャンセルしました。"
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: src/search-dialog.c:226
+#, c-format
+msgid "Error: %s"
+msgstr "エラー: %s"
+
+#. Success!
+#: src/search-dialog.c:231
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "%d 件のエントリがありました:"
+
+#: src/search-dialog.c:280
+msgid "Searching…"
+msgstr "検索中…"
+
+#: src/storage-manager.c:251
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"データベース \"%s\"を開くことができませんでした。SQLite は次のエラーメッセー"
+"ジを出しました: %s"
+
+#: src/storage-manager.c:295
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"クエリー \"%s\"を実行できませんでした。SQLite は次のエラーメッセージを出しま"
+"した: %s"
+
+#: src/storage-manager.c:606
+msgid "Error deserializing entry into buffer while searching."
+msgstr "検索中にエントリをバッファにデシリアライズする際にエラー。"
+
+#: src/uri-entry-dialog.c:70
+msgid "Enter URI"
+msgstr "URIを入力"
+
+#: src/vfs.c:291
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME は少くとも %s バージョン以上でなければなりません"
+
+#: src/vfs.c:298
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME は OpenPGP をサポートしていません: %s"
+
+#: src/vfs.c:305
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "暗号コンテキストの作成エラー: %s"
+
+#: src/vfs.c:325
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "暗号化データベースのための新しい GIOChannel が作成できません: %s"
+
+#: src/vfs.c:333
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "暗号化データベース\"%s\"のオープン時にエラー: %s"
+
+#: src/vfs.c:349
+#, c-format
+msgid "Error creating Callback base data buffer: %s"
+msgstr "コールバックベースデータバッファ作成エラー: %s"
+
+#: src/vfs.c:357
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "平文データベースのための新しい GIOChannel の作成エラー: %s"
+
+#: src/vfs.c:365
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "平文データベース\"%s\"のオープンエラー: %s"
+
+#: src/vfs.c:461
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "復号キー取得エラー: %s"
+
+#: src/vfs.c:485 src/vfs.c:491
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "データベース暗号化エラー: %s"
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: src/vfs.c:541
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "%s から %s へファイルをコピー時にエラー: %s"
+
+#: src/vfs.c:547
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "データベースのバックアップファイルのパーミッション変更エラー: %s"
+
+#: src/vfs.c:647
+#, c-format
+msgid "Error closing file: %s"
+msgstr "ファイルクローズエラー: %s"
+
+#. Translators: the first parameter is a filename.
+#: src/vfs.c:1046 src/vfs.c:1073
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "バックアップファイルエラー、ファイル名 %s"
+
+#: src/vfs.c:1059
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "データベースの復号エラー: %s"
+
+#: src/vfs.c:1099
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "データベースファイルのパーミッション変更エラー: %s"
+
+#: src/widgets/calendar-button.c:138
+#, c-format
+msgid "UI data could not be loaded: %s"
+msgstr "ユーザーインターフェースのデータがロードできませんでした: %s"
+
+#: src/widgets/calendar-button.c:148
+msgid "Can't load calendar window object from UI file"
+msgstr ""
+"ユーザーインターフェースファイルからカレンダーのウィンドウオブジェクトのロー"
+"ドできません"
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: src/widgets/calendar.c:177
+msgid "Important!"
+msgstr "重要!"
+
+#: src/widgets/entry-tags-area.c:102 src/widgets/tag-entry.c:168
+msgid "add tag"
+msgstr "タグの追加"
+
+#: src/widgets/entry-tags-area.c:103
+msgid "Write the tag and press enter to save it"
+msgstr "タグを書いてエンターを入力して保存します"
+
+#: src/widgets/tag-accessible.c:164
+msgid "Remove the tag from the entry"
+msgstr "このエントリーのタグを削除"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: src/widgets/tag.c:433
+msgid "Remove tag"
+msgstr "タグを削除"
+
+#: src/widgets/tag-entry.c:87
+msgid "Tag entry"
+msgstr "エントリーのタグ"
