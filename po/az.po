@@ -1,0 +1,730 @@
+# Azerbaijani translation for Almanah Diary
+# Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Almanah Diary package.
+# Ramal Rəhimov <jhonaluman@gmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Almanah Diary\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues/\n"
+"POT-Creation-Date: 2025-05-20 06:39+0000\n"
+"PO-Revision-Date: 2025-06-04 14:18+0400\n"
+"Last-Translator: Ramal Rəhimov <jhonaluman@gmail.com>\n"
+"Language-Team: Azerbaijani <contact@azlinux.org>\n"
+"Language: az\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:7 data/org.gnome.Almanah.desktop.in:3
+#: src/application.c:139 src/main-window.c:165
+msgid "Almanah Diary"
+msgstr "Almanah Gündəliyi"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:8
+msgid "Keep a diary of your life"
+msgstr "Həyatınızın gündəliyini saxlayın"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:10
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Almanah Gündəliyi həyatınızın gündəliyini saxlamağa imkan verən bir tətbiqdir."
+
+#: data/org.gnome.Almanah.metainfo.xml.in:13
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Gündəliyi şifrələyərək məxfiliyinizi qoruya bilərsiniz. Mətn formatlaşdırma və çap kimi redaktə imkanlarına malikdir və hər gün üçün (kompüterinizdə) baş verən hadisələrin siyahısını (məsələn, Evolution-dan tapşırıqlar və görüşlər) göstərir."
+
+#: data/org.gnome.Almanah.desktop.in:4
+msgid "Keep a personal diary"
+msgstr "Şəxsi gündəlik saxlayın"
+
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#: data/org.gnome.Almanah.desktop.in:5 src/application.c:281
+msgid "Diary"
+msgstr "Gündəlik"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Almanah.desktop.in:7
+msgid "diary;journal;"
+msgstr "gündəlik;jurnal;"
+
+#: src/ui/almanah.ui:27
+msgid "Calendar"
+msgstr "Təqvim"
+
+#: src/ui/almanah.ui:46
+msgid "Go to Today"
+msgstr "Bu Günə Keç"
+
+#: src/ui/almanah.ui:56
+msgid "Select Date…"
+msgstr "Tarix Seç…"
+
+#: src/ui/almanah.ui:134
+msgid "Entry editing area"
+msgstr "Qeyd redaktə sahəsi"
+
+#: src/ui/almanah.ui:160
+msgid "Past events"
+msgstr "Keçmiş hadisələr"
+
+#: src/ui/almanah.ui:204
+msgid "Past Event List"
+msgstr "Keçmiş Hadisələr Siyahısı"
+
+#: src/ui/almanah.ui:299
+msgid "Search entry"
+msgstr "Qeyd axtar"
+
+#: src/ui/almanah.ui:307 src/search-dialog.c:69
+msgid "Search"
+msgstr "Axtar"
+
+#: src/ui/almanah.ui:398
+msgid "Result List"
+msgstr "Nəticə Siyahısı"
+
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
+msgid "View Entry"
+msgstr "Qeydi Göstər"
+
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "məsələn, \"14/03/2009\" və ya \"14 Mart 2009\"."
+
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: src/ui/almanah.ui:570
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "məsələn, “http://google.com/” və ya “file:///home/me/Fotolar/foto.jpg”."
+
+#: src/ui/almanah.ui:734
+msgid "Successful Entries"
+msgstr "Uğurlu Qeydlər"
+
+#: src/ui/almanah.ui:737
+msgid "Merged Entries"
+msgstr "Birləşdirilmiş Qeydlər"
+
+#: src/ui/almanah.ui:740
+msgid "Failed Entries"
+msgstr "Uğursuz Qeydlər"
+
+#: src/ui/almanah.ui:802
+msgid "Import Results List"
+msgstr "İdxal Nəticələri Siyahısı"
+
+#: data/org.gnome.almanah.gschema.xml:6
+msgid "Database encryption key ID"
+msgstr "Verilənlər bazası şifrələmə açarının ID-si"
+
+#: data/org.gnome.almanah.gschema.xml:7
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Almanah şifrələmə dəstəyi ilə qurulubsa, verilənlər bazasını şifrələmək və deşifrə etmək üçün istifadə ediləcək açarın ID-si. Verilənlər bazası şifrələməsini deaktiv etmək üçün boş buraxın."
+
+#: data/org.gnome.almanah.gschema.xml:11
+msgid "Spell checking language"
+msgstr "Orfoqrafiya yoxlama dili"
+
+#: data/org.gnome.almanah.gschema.xml:12
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "Qeydlərin orfoqrafiyasının yoxlanılacağı dilin lokal təyinatçısı."
+
+#: data/org.gnome.almanah.gschema.xml:16
+msgid "Spell checking enabled?"
+msgstr "Orfoqrafiya yoxlaması aktivdir?"
+
+#: data/org.gnome.almanah.gschema.xml:17
+msgid "Whether spell checking of entries is enabled."
+msgstr "Qeydlərin orfoqrafiya yoxlamasının aktiv olub-olmaması."
+
+#: src/application.c:264
+msgid "Error opening database"
+msgstr "Verilənlər bazasını açma xətası"
+
+#: src/application.c:347
+msgid "Enable debug mode"
+msgstr "Sazlama rejimini aktivləşdir"
+
+#: src/application.c:364
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"Gündəliyinizi idarə edin. Proqramın yalnız bir nümunəsi eyni anda açıq ola bilər."
+
+#. Print an error
+#: src/application.c:375
+#, c-format
+msgid "Command line options could not be parsed: %s\n"
+msgstr "Komanda sətri seçimləri ayrışdırıla bilmədi: %s\n"
+
+#: src/application.c:394
+msgid "Error encrypting database"
+msgstr "Verilənlər bazasını şifrələmə xətası"
+
+#: src/application.c:537
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation, either version 3 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"Almanah pulsuz proqramdır: Siz onu Free Software Foundation tərəfindən nəşr olunan GNU Ümumi İctimai Lisenziyasının 3-cü versiyası və ya (istəyinizə bağlı olaraq) daha sonrakı versiyaları şərtləri altında yenidən paylaya və/yaxud dəyişdirə bilərsiniz."
+
+#: src/application.c:541
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah faydalı olacağı ümidi ilə paylanır, lakin HEÇ BİR ZƏMANƏT olmadan; hətta TİCARƏTƏ YARARLILIQ və ya MÜƏYYƏN MƏQSƏDƏ UYĞUNLUQ zəmanəti belə verilmir. Ətraflı məlumat üçün GNU Ümumi İctimai Lisenziyasına baxın."
+
+#: src/application.c:545
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Almanah ilə birlikdə GNU Ümumi İctimai Lisenziyasının bir nüsxəsini almış olmalısınız. Əgər almamısınızsa, <http://www.gnu.org/licenses/> ünvanına baxın."
+
+#: src/application.c:559
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "Faydalı gündəlik saxlayıcı, %u qeyd saxlayır."
+
+#: src/application.c:563
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Müəllif Hüququ © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#.
+#: src/application.c:571
+msgid "translator-credits"
+msgstr "Ramal Rehimov <jhonaluman@gmail.com>"
+
+#: src/application.c:575
+msgid "Almanah Website"
+msgstr "Almanah Veb Saytı"
+
+#: src/application.c:603
+#, c-format
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"CSS resursları yüklənə bilmədi. İnterfeys düzgün şəkildə formatlaşdırılmaya bilər: %s"
+
+#: src/date-entry-dialog.c:73
+msgid "Select Date"
+msgstr "Tarix Seç"
+
+#: src/date-entry-dialog.c:128 src/import-export-dialog.c:171
+#: src/import-export-dialog.c:482 src/main-window.c:237
+#: src/preferences-dialog.c:177 src/search-dialog.c:95
+#: src/uri-entry-dialog.c:125
+msgid "UI data could not be loaded"
+msgstr "İstifadəçi interfeysi məlumatları yüklənə bilmədi"
+
+#: src/entry.c:307
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Yanlış məlumat versiyası nömrəsi %u."
+
+#: src/events/calendar-appointment.c:52
+msgid "Calendar Appointment"
+msgstr "Təqvim Görüşü"
+
+#: src/events/calendar-appointment.c:53
+msgid "An appointment on an Evolution calendar."
+msgstr "Evolution təqvimində bir görüş."
+
+#. Translators: This is a time string with the format hh:mm
+#: src/events/calendar-appointment.c:90 src/events/calendar-task.c:91
+#, c-format
+msgid "%.2d:%.2d"
+msgstr "%.2d:%.2d"
+
+#: src/events/calendar-appointment.c:140 src/events/calendar-task.c:130
+msgid "Error launching Evolution"
+msgstr "Evolution-u başlatma xətası"
+
+#: src/events/calendar-task.c:52
+msgid "Calendar Task"
+msgstr "Təqvim Tapşırığı"
+
+#: src/events/calendar-task.c:53
+msgid "A task on an Evolution calendar."
+msgstr "Evolution təqvimində bir tapşırıq."
+
+#: src/export-operation.c:47 src/import-operation.c:45
+msgid "Text Files"
+msgstr "Mətn Faylları"
+
+#: src/export-operation.c:48
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"Qeydləri mətn faylları kimi ixrac etmək üçün bir _qovluq seçin, hər qeyd üçün bir fayl, 'yyyy-mm-dd' formatında adlarla və uzantısız. Bütün qeydlər şifrələnməmiş sadə mətn formatında ixrac olunacaq."
+
+#: src/export-operation.c:52 src/import-operation.c:50
+msgid "Database"
+msgstr "Verilənlər Bazası"
+
+#: src/export-operation.c:53
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"Şifrələnməmiş Almanah Gündəliyi verilənlər bazasının tam surəti üçün bir _fayl adı seçin."
+
+#: src/export-operation.c:262 src/export-operation.c:320
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "İxrac olunan faylın icazələrinin dəyişdirilməsi xətası: %s"
+
+#: src/gtk/menus.ui:6
+msgid "_Search"
+msgstr "_Axtar"
+
+#: src/gtk/menus.ui:12
+msgid "Pr_eferences"
+msgstr "_Tərcihlər"
+
+#: src/gtk/menus.ui:16
+msgctxt "Main menu"
+msgid "_Import"
+msgstr "_İdxal"
+
+#: src/gtk/menus.ui:20
+msgctxt "Main menu"
+msgid "_Export"
+msgstr "_İxrac"
+
+#: src/gtk/menus.ui:24
+msgid "_Print diary"
+msgstr "_Gündəliyi çap et"
+
+#: src/gtk/menus.ui:30
+msgid "_About Almanah Diary"
+msgstr "_Almanah Gündəliyi Haqqında"
+
+#: src/gtk/menus.ui:34
+msgid "_Quit"
+msgstr "_Çıx"
+
+#: src/gtk/menus.ui:42
+msgid "_Bold"
+msgstr "_Qalın"
+
+#: src/gtk/menus.ui:46
+msgid "_Italic"
+msgstr "_İtalik"
+
+#: src/gtk/menus.ui:50
+msgid "_Underline"
+msgstr "_Alt xətt"
+
+#: src/gtk/menus.ui:56
+msgid "_Cut"
+msgstr "_Kəs"
+
+#: src/gtk/menus.ui:60
+msgid "_Copy"
+msgstr "_Kopyala"
+
+#: src/gtk/menus.ui:64
+msgid "_Paste"
+msgstr "_Yapışdır"
+
+#: src/gtk/menus.ui:68 src/main-window.c:643
+msgid "_Delete"
+msgstr "_Sil"
+
+#: src/gtk/menus.ui:74
+msgid "Insert _Time"
+msgstr "_Vaxt əlavə et"
+
+#: src/gtk/menus.ui:78
+msgid "Add/Remove _Hyperlink"
+msgstr "_Hiperlink Əlavə Et/Sil"
+
+#: src/import-export-dialog.c:205
+msgid "Import _mode: "
+msgstr "İdxal _rejimi: "
+
+#: src/import-export-dialog.c:205
+msgid "Export _mode: "
+msgstr "İxrac _rejimi: "
+
+#. Set the window title
+#: src/import-export-dialog.c:208
+msgid "Import Entries"
+msgstr "Qeydləri İdxal Et"
+
+#: src/import-export-dialog.c:208
+msgid "Export Entries"
+msgstr "Qeydləri İxrac Et"
+
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:213
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "_İdxal"
+
+#: src/import-export-dialog.c:213
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "_İxrac"
+
+#: src/import-export-dialog.c:249
+msgid "Import failed"
+msgstr "İdxal uğursuz oldu"
+
+#: src/import-export-dialog.c:289
+msgid "Export failed"
+msgstr "İxrac uğursuz oldu"
+
+#: src/import-export-dialog.c:302
+msgid "Export successful"
+msgstr "İxrac uğurlu oldu"
+
+#: src/import-export-dialog.c:303
+msgid "The diary was successfully exported."
+msgstr "Gündəlik uğurla ixrac olundu."
+
+#: src/import-export-dialog.c:454
+msgid "Import Results"
+msgstr "İdxal Nəticələri"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in search results.
+#: src/import-export-dialog.c:551 src/main-window.c:604 src/main-window.c:635
+#: src/main-window.c:1288 src/printing.c:263 src/search-dialog.c:182
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: src/import-operation.c:46
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Qeydləri mətn faylları kimi idxal etmək üçün bir _qovluq seçin, hər qeyd üçün bir fayl, 'yyyy-mm-dd' formatında adlarla və uzantısız. Bütün belə fayllar idxal olunacaq."
+
+#: src/import-operation.c:51
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr "İdxal etmək üçün Almanah Gündəliyi tərəfindən yaradılmış bir verilənlər bazası _faylı seçin."
+
+#: src/import-operation.c:254
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "İdxal olunan qeydin buferə deserializasiya xətası: %s"
+
+#: src/import-operation.c:270
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"Mövcud qeydin buferə deserializasiya xətası; idxal olunan qeydlə üzərinə yazılır: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: src/import-operation.c:311
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"\"%s\"-dən idxal olunan qeyd:\n"
+"\n"
+
+#: src/main-window.c:608
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "%s üçün bu gündəlik qeydini redaktə etmək istədiyinizə əminsiniz?"
+
+#: src/main-window.c:611 src/main-window.c:642
+msgid "_Cancel"
+msgstr "_Ləğv et"
+
+#: src/main-window.c:612
+msgid "_Edit"
+msgstr "_Redaktə"
+
+#: src/main-window.c:639
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "%s üçün bu gündəlik qeydini silmək istədiyinizə əminsiniz?"
+
+#. Print a warning about the unknown tag
+#: src/main-window.c:751
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "Qeyddə naməlum və ya təkrar mətn etiketi \"%s\". Göz ardı edilir."
+
+#: src/main-window.c:1000
+msgid "Error opening URI"
+msgstr "URI açma xətası"
+
+#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#: src/main-window.c:1215
+#, c-format
+msgid "%s @ %s"
+msgstr "%s @ %s"
+
+#: src/main-window.c:1321
+msgid "Entry content could not be loaded"
+msgstr "Qeyd məzmunu yüklənə bilmədi"
+
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: src/main-window.c:1596
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr ""
+"Bu, gündəlik qeyd mətn görünüşünün ölçüsünü hesablamaq üçün sadəcə on beş sözlük cümlədir"
+
+#: src/main-window.c:1633
+msgid "Spelling checker could not be initialized"
+msgstr "Orfoqrafiya yoxlayıcısı işə salına bilmədi"
+
+#: src/preferences-dialog.c:82
+msgid "Preferences"
+msgstr "Tərcihlər"
+
+#. Grab our child widgets
+#: src/preferences-dialog.c:204
+msgid "Encryption key: "
+msgstr "Şifrələmə açarı: "
+
+#: src/preferences-dialog.c:208
+msgid "None (don't encrypt)"
+msgstr "Heç biri (şifrələmə)"
+
+#: src/preferences-dialog.c:213
+msgid "New _Key"
+msgstr "Yeni _Açar"
+
+#. Set up the "Enable spell checking" check button
+#: src/preferences-dialog.c:237
+msgid "Enable _spell checking"
+msgstr "_Orfoqrafiya yoxlamasını aktivləşdir"
+
+#: src/preferences-dialog.c:263
+msgid "Error saving the encryption key"
+msgstr "Şifrələmə açarının saxlanması xətası"
+
+#: src/preferences-dialog.c:282
+msgid "Error opening Seahorse"
+msgstr "Seahorse açma xətası"
+
+#: src/printing.c:277
+msgid "This entry is marked as important."
+msgstr "Bu qeyd vacib kimi qeyd olunub."
+
+#: src/printing.c:298
+msgid "No entry for this date."
+msgstr "Bu tarix üçün qeyd yoxdur."
+
+#: src/printing.c:457
+msgid "Start date:"
+msgstr "Başlanğıc tarixi:"
+
+#: src/printing.c:459
+msgid "End date:"
+msgstr "Son tarix:"
+
+#. Line spacing
+#: src/printing.c:475
+msgid "Line spacing:"
+msgstr "Sətir aralığı:"
+
+#: src/search-dialog.c:223
+msgid "Search canceled."
+msgstr "Axtarış ləğv edildi."
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: src/search-dialog.c:226
+#, c-format
+msgid "Error: %s"
+msgstr "Xəta: %s"
+
+#. Success!
+#: src/search-dialog.c:231
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "%d qeyd tapıldı:"
+msgstr[1] "%d qeyd tapıldı:"
+
+#: src/search-dialog.c:280
+msgid "Searching…"
+msgstr "Axtarılır…"
+
+#: src/storage-manager.c:251
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr ""
+"\"%s\" verilənlər bazası açıla bilmədi. SQLite aşağıdakı xəta mesajını verdi: %s"
+
+#: src/storage-manager.c:295
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"\"%s\" sorğusu icra oluna bilmədi. SQLite aşağıdakı xəta mesajını verdi: %s"
+
+#: src/storage-manager.c:606
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Axtarış zamanı qeydin buferə deserializasiya xətası."
+
+#: src/uri-entry-dialog.c:70
+msgid "Enter URI"
+msgstr "URI daxil et"
+
+#: src/vfs.c:291
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME ən azı %s versiyasında deyil"
+
+#: src/vfs.c:298
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME OpenPGP-ni dəstəkləmir: %s"
+
+#: src/vfs.c:305
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Şifrə konteksti yaratma xətası: %s"
+
+#: src/vfs.c:325
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Şifrələnmiş verilənlər bazası üçün yeni GIOChannel yaradıla bilmir: %s"
+
+#: src/vfs.c:333
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Şifrələnmiş verilənlər bazası faylı \"%s\" açılarkən xəta: %s"
+
+#: src/vfs.c:349
+#, c-format
+msgid "Error creating Callback base data buffer: %s"
+msgstr "Callback əsas məlumat buferi yaratma xətası: %s"
+
+#: src/vfs.c:357
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Sadə verilənlər bazası üçün yeni GIOChannel yaradıla bilmir: %s"
+
+#: src/vfs.c:365
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Sadə verilənlər bazası faylı \"%s\" açılarkən xəta: %s"
+
+#: src/vfs.c:461
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Şifrələmə açarını əldə etmə xətası: %s"
+
+#: src/vfs.c:485 src/vfs.c:491
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Verilənlər bazasını şifrələmə xətası: %s"
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: src/vfs.c:541
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "%s-dən %s-ə faylın kopyalanması xətası: %s"
+
+#: src/vfs.c:547
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Verilənlər bazası ehtiyat faylının icazələrinin dəyişdirilməsi xətası: %s"
+
+#: src/vfs.c:647
+#, c-format
+msgid "Error closing file: %s"
+msgstr "Faylın bağlanması xətası: %s"
+
+#. Translators: the first parameter is a filename.
+#: src/vfs.c:1046 src/vfs.c:1073
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "‘%s’ faylının ehtiyat nüsxəsinin yaradılması xətası"
+
+#: src/vfs.c:1059
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Verilənlər bazasının deşifrə edilməsi xətası: %s"
+
+#: src/vfs.c:1099
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Verilənlər bazası faylının icazələrinin dəyişdirilməsi xətası: %s"
+
+#: src/widgets/calendar-button.c:138
+#, c-format
+msgid "UI data could not be loaded: %s"
+msgstr "İstifadəçi interfeysi məlumatları yüklənə bilmədi: %s"
+
+#: src/widgets/calendar-button.c:148
+msgid "Can't load calendar window object from UI file"
+msgstr "İstifadəçi interfeysi faylından təqvim pəncərə obyektini yükləmək mümkün deyil"
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: src/widgets/calendar.c:177
+msgid "Important!"
+msgstr "Vacib!"
+
+#: src/widgets/entry-tags-area.c:102 src/widgets/tag-entry.c:168
+msgid "add tag"
+msgstr "etiket əlavə et"
+
+#: src/widgets/entry-tags-area.c:103
+msgid "Write the tag and press enter to save it"
+msgstr "Etiketi yazın və saxlamaq üçün enter düyməsini basın"
+
+#: src/widgets/tag-accessible.c:164
+msgid "Remove the tag from the entry"
+msgstr "Qeyddən etiketi sil"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: src/widgets/tag.c:433
+msgid "Remove tag"
+msgstr "Etiketi sil"
+
+#: src/widgets/tag-entry.c:87
+msgid "Tag entry"
+msgstr "Etiket qeydi"
