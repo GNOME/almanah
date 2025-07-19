@@ -19,6 +19,7 @@ sources = [
   'import-export-dialog.c',
   'import-operation.c',
   'export-operation.c',
+  'secret-keys-store.c',
   'uri-entry-dialog.c',
   'widgets/calendar.c',
   'widgets/calendar-button.c',

@@ -25,7 +25,7 @@ schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 
 # Dependencies
 glib_major = 2
-glib_minor = 68
+glib_minor = 76
 glib = dependency('glib-2.0', version: f'>= @glib_major@.@glib_minor@')
 
 gtk_major = 3
@@ -44,13 +44,12 @@ sqlite = dependency('sqlite3')
 cairo = dependency('cairo')
 atk = dependency('atk')
 gcr = dependency('gcr-4', version: '>= 3.90.0')
-cryptui = dependency('cryptui-0.0')
 
 # Options
 evolution_support = get_option('evolution')
 spell_checking_support = get_option('spell_checking')
 
-min_gpgme_version = '1.0.0'
+min_gpgme_version = '1.5.0'
 gpgme = dependency('gpgme', version: '>= @0@'.format(min_gpgme_version))
 
 libecal = dependency('libecal-2.0', version: '>= 3.33.2', required: evolution_support)
@@ -74,7 +73,6 @@ almanah_deps = [
   cairo,
   atk,
   gcr,
-  cryptui,
   gpgme,
   libecal,
   libedataserver,

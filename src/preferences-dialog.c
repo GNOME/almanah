@@ -16,20 +16,17 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <atk/atk.h>
 #include <config.h>
 #include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#define LIBCRYPTUI_API_SUBJECT_TO_CHANGE
-#include <atk/atk.h>
-#include <cryptui-key-combo.h>
-#include <cryptui-keyset.h>
-#include <cryptui.h>
 
 #include "interface.h"
 #include "main-window.h"
 #include "preferences-dialog.h"
+#include "secret-keys-store.h"
 
 static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
@@ -39,9 +36,8 @@ static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesD
 
 typedef struct {
 	GSettings *settings;
-	CryptUIKeyset *keyset;
-	CryptUIKeyStore *key_store;
 	GtkComboBox *key_combo;
+	AlmanahSecretKeysStore *key_store;
 #ifdef ENABLE_SPELL_CHECKING
 	guint spell_checking_enabled_id;
 	GtkCheckButton *spell_checking_enabled_check_button;
@@ -88,15 +84,7 @@ almanah_preferences_dialog_dispose (GObject *object)
 {
 	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private (ALMANAH_PREFERENCES_DIALOG (object));
 
-	if (priv->keyset != NULL) {
-		g_object_unref (priv->keyset);
-		priv->keyset = NULL;
-	}
-
-	if (priv->key_store != NULL) {
-		g_object_unref (priv->key_store);
-		priv->key_store = NULL;
-	}
+	g_clear_object (&priv->key_store);
 
 	if (priv->settings != NULL)
 		g_object_unref (priv->settings);
@@ -137,14 +125,6 @@ set_property (GObject *object, guint property_id, const GValue *value, GParamSpe
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 			break;
 	}
-}
-
-/* Filter the key list so it's not pages and pages long */
-static gboolean
-key_store_filter_cb (CryptUIKeyset *keyset, const gchar *key, gpointer user_data)
-{
-	guint flags = cryptui_keyset_key_flags (keyset, key);
-	return flags & CRYPTUI_FLAG_CAN_SIGN; /* if the key can sign, we have the private key part and can decrypt the database */
 }
 
 AlmanahPreferencesDialog *
@@ -203,10 +183,13 @@ almanah_preferences_dialog_new (GSettings *settings)
 	label = gtk_label_new (_ ("Encryption key: "));
 	gtk_grid_attach (grid, label, 0, 0, 1, 1);
 
-	priv->keyset = cryptui_keyset_new ("openpgp", FALSE);
-	priv->key_store = cryptui_key_store_new (priv->keyset, FALSE, _ ("None (don't encrypt)"));
-	cryptui_key_store_set_filter (priv->key_store, key_store_filter_cb, NULL);
-	priv->key_combo = cryptui_key_combo_new (priv->key_store);
+	priv->key_store = almanah_secret_keys_store_new ();
+	priv->key_combo = GTK_COMBO_BOX (gtk_combo_box_new_with_model (GTK_TREE_MODEL (priv->key_store)));
+	GtkCellRenderer *renderer = gtk_cell_renderer_text_new ();
+	gtk_combo_box_set_id_column (priv->key_combo, SECRET_KEYS_STORE_COLUMN_ID);
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (priv->key_combo), renderer, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (priv->key_combo), renderer,
+	                                "text", SECRET_KEYS_STORE_COLUMN_LABEL, NULL);
 	gtk_grid_attach (grid, GTK_WIDGET (priv->key_combo), 1, 0, 1, 1);
 
 	button = gtk_button_new_with_mnemonic (_ ("New _Key"));
@@ -221,11 +204,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 	/* Set the selected key combo value */
 	key = g_settings_get_string (priv->settings, "encryption-key");
-	if (key != NULL && *key == '\0') {
-		key = NULL;
-	}
-
-	cryptui_key_combo_set_key (priv->key_combo, key);
+	gtk_combo_box_set_active_id (priv->key_combo, key);
 
 	g_signal_connect (priv->key_combo, "changed", G_CALLBACK (pd_key_combo_changed_cb), preferences_dialog);
 
@@ -250,7 +229,7 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 	g_autoptr (GError) error = NULL;
 
 	/* Save the new encryption key to GSettings */
-	key = cryptui_key_combo_get_key (priv->key_combo);
+	key = gtk_combo_box_get_active_id (priv->key_combo);
 	if (key == NULL)
 		key = "";
 
