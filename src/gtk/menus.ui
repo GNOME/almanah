@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-	<menu id="main-window-menu">
+	<menu id="formatting-menu">
 		<section>
 			<item>
 				<attribute name="label" translatable="yes">_Bold</attribute>
@@ -43,6 +43,8 @@
 				<attribute name="action">win.hyperlink</attribute>
 			</item>
 		</section>
+	</menu>
+	<menu id="main-window-menu">
 		<section>
 			<item>
 				<attribute name="label" translatable="yes">_Search</attribute>

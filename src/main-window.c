@@ -1407,6 +1407,14 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 	gtk_button_set_image (GTK_BUTTON (button), button_image);
 	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
 
+	/* Formatting menu */
+	button = gtk_menu_button_new ();
+	menu = gtk_application_get_menu_by_id (gtk_window_get_application (GTK_WINDOW (main_window)), "formatting-menu");
+	gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), G_MENU_MODEL (menu));
+	button_image = gtk_image_new_from_icon_name ("format-text-rich-symbolic", GTK_ICON_SIZE_MENU);
+	gtk_button_set_image (GTK_BUTTON (button), button_image);
+	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
+
 	/* Important entry */
 	button = gtk_toggle_button_new ();
 	gtk_style_context_add_class (gtk_widget_get_style_context (button), "image-button");
