@@ -25,7 +25,6 @@ pkgs.mkShell {
     gtk3
     gtksourceview4
     gtkspell3
-    libcryptui
     sqlite
   ];
 }
