@@ -5,6 +5,7 @@ project(
   version: '0.12.4',
   default_options: [
     'b_ndebug=if-release',
+    'c_std=gnu11',
   ],
   meson_version: '>= 0.59',
 )

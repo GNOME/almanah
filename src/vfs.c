@@ -57,7 +57,7 @@
 
 /* VFS singleton and not a sqlite3_vfs static struct
    due GSettings is setup in initialization time */
-static sqlite3_vfs *almanah_vfs_singleton = NULL;
+_Thread_local sqlite3_vfs *almanah_vfs_singleton = NULL;
 
 #define ENCRYPTED_SUFFIX ".encrypted"
 
