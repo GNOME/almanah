@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008, 2009, 2011 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,8 +17,8 @@
  */
 
 #include <config.h>
-#include <glib.h>
 #include <gio/gio.h>
+#include <glib.h>
 #include <gtksourceview/gtksource.h>
 
 #include "application.h"

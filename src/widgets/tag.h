@@ -23,13 +23,13 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_TAG         (almanah_tag_get_type ())
+#define ALMANAH_TYPE_TAG (almanah_tag_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahTag, almanah_tag, ALMANAH, TAG, GtkDrawingArea)
 
-GtkWidget   *almanah_tag_new      (const gchar *tag);
-const gchar *almanah_tag_get_tag  (AlmanahTag *tag_widget);
-void         almanah_tag_remove   (AlmanahTag *tag_widget);
+GtkWidget *almanah_tag_new (const gchar *tag);
+const gchar *almanah_tag_get_tag (AlmanahTag *tag_widget);
+void almanah_tag_remove (AlmanahTag *tag_widget);
 
 G_END_DECLS
 

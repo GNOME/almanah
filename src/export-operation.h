@@ -19,8 +19,8 @@
 #ifndef ALMANAH_EXPORT_OPERATION_H
 #define ALMANAH_EXPORT_OPERATION_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 
 #include "storage-manager.h"
 
@@ -30,20 +30,16 @@ typedef guint AlmanahExportOperationType;
 
 typedef void (*AlmanahExportProgressCallback) (const GDate *date, gpointer user_data);
 
-#define ALMANAH_TYPE_EXPORT_OPERATION       (almanah_export_operation_get_type ())
+#define ALMANAH_TYPE_EXPORT_OPERATION (almanah_export_operation_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahExportOperation, almanah_export_operation, ALMANAH, EXPORT_OPERATION, GObject)
 
-AlmanahExportOperation *almanah_export_operation_new (AlmanahExportOperationType type_id, AlmanahStorageManager *source_storage_manager,
-                                                      GFile *destination) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
+AlmanahExportOperation *almanah_export_operation_new (AlmanahExportOperationType type_id, AlmanahStorageManager *source_storage_manager, GFile *destination) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
-void almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable,
-                                   AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
-                                   GAsyncReadyCallback callback, gpointer user_data);
+void almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GAsyncReadyCallback callback, gpointer user_data);
 gboolean almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncResult *async_result, GError **error);
 
-void almanah_export_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column,
-                                              guint action_column);
+void almanah_export_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column, guint action_column);
 
 G_END_DECLS
 

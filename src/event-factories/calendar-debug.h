@@ -30,17 +30,17 @@ G_BEGIN_DECLS
 #include <stdio.h>
 
 #ifdef G_HAVE_ISO_VARARGS
-#  define dprintf(...) fprintf (stderr, __VA_ARGS__);
+#define dprintf(...) fprintf (stderr, __VA_ARGS__);
 #elif defined(G_HAVE_GNUC_VARARGS)
-#  define dprintf(args...) fprintf (stderr, args);
+#define dprintf(args...) fprintf (stderr, args);
 #endif
 
 #else /* if !defined (CALENDAR_DEBUG) */
 
 #ifdef G_HAVE_ISO_VARARGS
-#  define dprintf(...)
+#define dprintf(...)
 #elif defined(G_HAVE_GNUC_VARARGS)
-#  define dprintf(args...)
+#define dprintf(args...)
 #endif
 
 #endif /* CALENDAR_ENABLE_DEBUG */

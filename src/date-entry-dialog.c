@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -55,10 +55,10 @@ almanah_date_entry_dialog_class_init (AlmanahDateEntryDialogClass *klass)
 	gobject_class->get_property = almanah_date_entry_dialog_get_property;
 
 	g_object_class_install_property (gobject_class, PROP_DATE,
-				g_param_spec_boxed ("date",
-					"Date", "The current date selected by the dialog.",
-					G_TYPE_DATE,
-					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_boxed ("date",
+	                                                     "Date", "The current date selected by the dialog.",
+	                                                     G_TYPE_DATE,
+	                                                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -69,7 +69,7 @@ almanah_date_entry_dialog_init (AlmanahDateEntryDialog *self)
 	g_date_clear (&(priv->date), 1);
 	g_signal_connect (self, "response", G_CALLBACK (gtk_widget_hide), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
-	gtk_window_set_title (GTK_WINDOW (self), _("Select Date"));
+	gtk_window_set_title (GTK_WINDOW (self), _ ("Select Date"));
 }
 
 static void
@@ -118,13 +118,13 @@ almanah_date_entry_dialog_new (void)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-							    _("UI data could not be loaded"));
+		                                            GTK_DIALOG_MODAL,
+		                                            GTK_MESSAGE_ERROR,
+		                                            GTK_BUTTONS_OK,
+		                                            _ ("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

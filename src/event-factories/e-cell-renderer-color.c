@@ -19,8 +19,8 @@
 
 #include "e-cell-renderer-color.h"
 
-#include <string.h>
 #include <glib/gi18n-lib.h>
+#include <string.h>
 
 enum {
 	PROP_0,
@@ -36,9 +36,9 @@ struct _ECellRendererColor {
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (
-	ECellRendererColor,
-	e_cell_renderer_color,
-	GTK_TYPE_CELL_RENDERER)
+    ECellRendererColor,
+    e_cell_renderer_color,
+    GTK_TYPE_CELL_RENDERER)
 
 static void
 cell_renderer_color_get_size (GtkCellRenderer *cell,
@@ -49,7 +49,7 @@ cell_renderer_color_get_size (GtkCellRenderer *cell,
                               gint *width,
                               gint *height)
 {
-	gint color_width  = 16;
+	gint color_width = 16;
 	gint color_height = 16;
 	gint calc_width;
 	gint calc_height;
@@ -59,28 +59,29 @@ cell_renderer_color_get_size (GtkCellRenderer *cell,
 	guint ypad;
 
 	g_object_get (
-		cell, "xalign", &xalign, "yalign", &yalign,
-		"xpad", &xpad, "ypad", &ypad, NULL);
+	    cell, "xalign", &xalign, "yalign", &yalign,
+	    "xpad", &xpad, "ypad", &ypad, NULL);
 
-	calc_width  = (gint) xpad * 2 + color_width;
+	calc_width = (gint) xpad * 2 + color_width;
 	calc_height = (gint) ypad * 2 + color_height;
 
 	if (cell_area && color_width > 0 && color_height > 0) {
 		if (x_offset) {
-			*x_offset = (((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ?
-					(1.0 - xalign) : xalign) *
-					(cell_area->width - calc_width));
+			*x_offset = (((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ? (1.0 - xalign) : xalign) *
+			             (cell_area->width - calc_width));
 			*x_offset = MAX (*x_offset, 0);
 		}
 
 		if (y_offset) {
-			*y_offset =(yalign *
-				(cell_area->height - calc_height));
+			*y_offset = (yalign *
+			             (cell_area->height - calc_height));
 			*y_offset = MAX (*y_offset, 0);
 		}
 	} else {
-		if (x_offset) *x_offset = 0;
-		if (y_offset) *y_offset = 0;
+		if (x_offset)
+			*x_offset = 0;
+		if (y_offset)
+			*y_offset = 0;
 	}
 
 	if (width)
@@ -110,15 +111,15 @@ cell_renderer_color_render (GtkCellRenderer *cell,
 		return;
 
 	cell_renderer_color_get_size (
-		cell, widget, cell_area,
-		&pix_rect.x, &pix_rect.y,
-		&pix_rect.width, &pix_rect.height);
+	    cell, widget, cell_area,
+	    &pix_rect.x, &pix_rect.y,
+	    &pix_rect.width, &pix_rect.height);
 
 	g_object_get (cell, "xpad", &xpad, "ypad", &ypad, NULL);
 
 	pix_rect.x += cell_area->x + xpad;
 	pix_rect.y += cell_area->y + ypad;
-	pix_rect.width  -= xpad * 2;
+	pix_rect.width -= xpad * 2;
 	pix_rect.height -= ypad * 2;
 
 	if (!gdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect))
@@ -200,14 +201,14 @@ e_cell_renderer_color_class_init (ECellRendererColorClass *class)
 	cell_class->render = cell_renderer_color_render;
 
 	g_object_class_install_property (
-		object_class,
-		PROP_COLOR,
-		g_param_spec_boxed (
-			"color",
-			"Color Info",
-			"The color to render",
-			GDK_TYPE_RGBA,
-			G_PARAM_READWRITE));
+	    object_class,
+	    PROP_COLOR,
+	    g_param_spec_boxed (
+		"color",
+		"Color Info",
+		"The color to render",
+		GDK_TYPE_RGBA,
+		G_PARAM_READWRITE));
 }
 
 static void

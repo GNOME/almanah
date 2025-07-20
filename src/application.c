@@ -18,22 +18,22 @@
 
 #include <config.h>
 
-#include <stdlib.h>
+#include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n.h>
-#include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <locale.h>
+#include <stdlib.h>
 
 #include "application.h"
 #include "event-manager.h"
 #include "import-export-dialog.h"
+#include "interface.h"
 #include "main-window.h"
 #include "preferences-dialog.h"
 #include "printing.h"
 #include "search-dialog.h"
 #include "storage-manager.h"
-#include "interface.h"
 
 static void constructed (GObject *object);
 static void dispose (GObject *object);
@@ -78,13 +78,13 @@ enum {
 };
 
 static GActionEntry app_entries[] = {
-	{"search", action_search_cb, NULL, NULL, NULL},
-	{"preferences", action_preferences_cb, NULL, NULL, NULL },
-	{"import", action_import_cb, NULL, NULL, NULL },
-	{"export", action_export_cb, NULL, NULL, NULL },
-	{"print", action_print_cb, NULL, NULL, NULL },
-	{"about", action_about_cb, NULL, NULL, NULL },
-	{"quit", action_quit_cb, NULL, NULL, NULL },
+	{ "search", action_search_cb, NULL, NULL, NULL },
+	{ "preferences", action_preferences_cb, NULL, NULL, NULL },
+	{ "import", action_import_cb, NULL, NULL, NULL },
+	{ "export", action_export_cb, NULL, NULL, NULL },
+	{ "print", action_print_cb, NULL, NULL, NULL },
+	{ "about", action_about_cb, NULL, NULL, NULL },
+	{ "quit", action_quit_cb, NULL, NULL, NULL },
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahApplication, almanah_application, GTK_TYPE_APPLICATION)
@@ -135,15 +135,15 @@ constructed (GObject *object)
 	textdomain (GETTEXT_PACKAGE);
 
 	const GOptionEntry options[] = {
-		{ "debug", 0, 0, G_OPTION_ARG_NONE, &(priv->debug), N_("Enable debug mode"), NULL },
+		{ "debug", 0, 0, G_OPTION_ARG_NONE, &(priv->debug), N_ ("Enable debug mode"), NULL },
 		{ NULL }
 	};
 
 	g_application_add_main_option_entries (G_APPLICATION (object), options);
 	g_application_set_option_context_summary (G_APPLICATION (object),
-	                                          _("Manage your diary. Only one instance of the program may be open at any time."));
+	                                          _ ("Manage your diary. Only one instance of the program may be open at any time."));
 
-	g_set_application_name (_("Almanah Diary"));
+	g_set_application_name (_ ("Almanah Diary"));
 	g_set_prgname ("org.gnome.Almanah");
 	gtk_window_set_default_icon_name ("org.gnome.Almanah");
 
@@ -268,7 +268,7 @@ startup (GApplication *application)
 
 	if (almanah_storage_manager_connect (priv->storage_manager, &error) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-		                                            _("Error opening database"));
+		                                            _ ("Error opening database"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -285,7 +285,7 @@ startup (GApplication *application)
 
 #ifdef GTK_PRINT_SETTINGS_OUTPUT_BASENAME
 	/* Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen. */
-	gtk_print_settings_set (priv->print_settings, GTK_PRINT_SETTINGS_OUTPUT_BASENAME, _("Diary"));
+	gtk_print_settings_set (priv->print_settings, GTK_PRINT_SETTINGS_OUTPUT_BASENAME, _ ("Diary"));
 #endif
 
 	priv->page_setup = gtk_page_setup_new ();
@@ -301,17 +301,17 @@ startup (GApplication *application)
 	g_object_unref (style_provider);
 
 	/* Shortcuts */
-	add_accelerator(GTK_APPLICATION (application), "app.quit", "<Primary>Q");
-	add_accelerator(GTK_APPLICATION (application), "app.search", "<Primary>F");
-	add_accelerator(GTK_APPLICATION (application), "win.select-date", "<Primary>D");
-	add_accelerator(GTK_APPLICATION (application), "win.bold", "<Primary>B");
-	add_accelerator(GTK_APPLICATION (application), "win.italic", "<Primary>I");
-	add_accelerator(GTK_APPLICATION (application), "win.underline", "<Primary>U");
-	add_accelerator(GTK_APPLICATION (application), "win.hyperlink", "<Primary>H");
-	add_accelerator(GTK_APPLICATION (application), "win.insert-time", "<Primary>T");
-	add_accelerator(GTK_APPLICATION (application), "win.important", "<Primary>M");
-	add_accelerator(GTK_APPLICATION (application), "win.undo", "<Primary>Z");
-	add_accelerator(GTK_APPLICATION (application), "win.redo", "<Primary><Shift>Z");
+	add_accelerator (GTK_APPLICATION (application), "app.quit", "<Primary>Q");
+	add_accelerator (GTK_APPLICATION (application), "app.search", "<Primary>F");
+	add_accelerator (GTK_APPLICATION (application), "win.select-date", "<Primary>D");
+	add_accelerator (GTK_APPLICATION (application), "win.bold", "<Primary>B");
+	add_accelerator (GTK_APPLICATION (application), "win.italic", "<Primary>I");
+	add_accelerator (GTK_APPLICATION (application), "win.underline", "<Primary>U");
+	add_accelerator (GTK_APPLICATION (application), "win.hyperlink", "<Primary>H");
+	add_accelerator (GTK_APPLICATION (application), "win.insert-time", "<Primary>T");
+	add_accelerator (GTK_APPLICATION (application), "win.important", "<Primary>M");
+	add_accelerator (GTK_APPLICATION (application), "win.undo", "<Primary>Z");
+	add_accelerator (GTK_APPLICATION (application), "win.redo", "<Primary><Shift>Z");
 }
 
 /* Nullify our pointer to the main window when it gets destroyed (e.g. when we quit) so that we don't then try
@@ -346,7 +346,7 @@ storage_manager_disconnected_cb (__attribute__ ((unused)) AlmanahStorageManager 
 {
 	if (gpgme_error_message != NULL || warning_message != NULL) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-		                                            _("Error encrypting database"));
+		                                            _ ("Error encrypting database"));
 
 		if (gpgme_error_message != NULL && warning_message != NULL)
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s %s", warning_message, gpgme_error_message);
@@ -483,53 +483,52 @@ action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	gchar *license, *description;
 	guint entry_count;
 
-	const gchar *authors[] =
-	{
+	const gchar *authors[] = {
 		"Philip Withnall <philip@tecnocode.co.uk>",
 		NULL
 	};
 	const gchar *license_parts[] = {
-		N_("Almanah is free software: you can redistribute it and/or modify "
-		   "it under the terms of the GNU General Public License as published by "
-		   "the Free Software Foundation, either version 3 of the License, or "
-		   "(at your option) any later version."),
-		N_("Almanah is distributed in the hope that it will be useful, "
-		   "but WITHOUT ANY WARRANTY; without even the implied warranty of "
-		   "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
-		   "GNU General Public License for more details."),
-		N_("You should have received a copy of the GNU General Public License "
-		   "along with Almanah.  If not, see <http://www.gnu.org/licenses/>."),
+		N_ ("Almanah is free software: you can redistribute it and/or modify "
+		    "it under the terms of the GNU General Public License as published by "
+		    "the Free Software Foundation, either version 3 of the License, or "
+		    "(at your option) any later version."),
+		N_ ("Almanah is distributed in the hope that it will be useful, "
+		    "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+		    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+		    "GNU General Public License for more details."),
+		N_ ("You should have received a copy of the GNU General Public License "
+		    "along with Almanah.  If not, see <http://www.gnu.org/licenses/>."),
 	};
 
 	license = g_strjoin ("\n\n",
-			  _(license_parts[0]),
-			  _(license_parts[1]),
-			  _(license_parts[2]),
-			  NULL);
+	                     _ (license_parts[0]),
+	                     _ (license_parts[1]),
+	                     _ (license_parts[2]),
+	                     NULL);
 
 	storage_manager = almanah_application_dup_storage_manager (application);
 	almanah_storage_manager_get_statistics (storage_manager, &entry_count);
 	g_object_unref (storage_manager);
 
-	description = g_strdup_printf (_("A helpful diary keeper, storing %u entries."), entry_count);
+	description = g_strdup_printf (_ ("A helpful diary keeper, storing %u entries."), entry_count);
 
 	gtk_show_about_dialog (GTK_WINDOW (priv->main_window),
-				"version", VERSION,
-				"copyright", _("Copyright \xc2\xa9 2008-2009 Philip Withnall"),
-				"comments", description,
-				"authors", authors,
-				/* Translators: please include your names here to be credited for your hard work!
-				 * Format:
-				 * "Translator name 1 <translator@email.address>\n"
-				 * "Translator name 2 <translator2@email.address>"
-				 */
-				"translator-credits", _("translator-credits"),
-				"logo-icon-name", "org.gnome.Almanah",
-				"license", license,
-				"wrap-license", TRUE,
-				"website-label", _("Almanah Website"),
-				"website", PACKAGE_URL,
-				NULL);
+	                       "version", VERSION,
+	                       "copyright", _ ("Copyright \xc2\xa9 2008-2009 Philip Withnall"),
+	                       "comments", description,
+	                       "authors", authors,
+	                       /* Translators: please include your names here to be credited for your hard work!
+	                        * Format:
+	                        * "Translator name 1 <translator@email.address>\n"
+	                        * "Translator name 2 <translator2@email.address>"
+	                        */
+	                       "translator-credits", _ ("translator-credits"),
+	                       "logo-icon-name", "org.gnome.Almanah",
+	                       "license", license,
+	                       "wrap-license", TRUE,
+	                       "website-label", _ ("Almanah Website"),
+	                       "website", PACKAGE_URL,
+	                       NULL);
 
 	g_free (license);
 	g_free (description);
@@ -551,11 +550,11 @@ action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 
 void
 almanah_application_style_provider_parsing_error_cb (__attribute__ ((unused)) GtkCssProvider *provider,
-						     __attribute__ ((unused)) GtkCssSection  *section,
-						     GError         *error,
-						     __attribute__ ((unused)) gpointer        user_data)
+                                                     __attribute__ ((unused)) GtkCssSection *section,
+                                                     GError *error,
+                                                     __attribute__ ((unused)) gpointer user_data)
 {
-	g_warning (_("Couldn't load the CSS resources. The interface might not be styled correctly: %s"), error->message);
+	g_warning (_ ("Couldn't load the CSS resources. The interface might not be styled correctly: %s"), error->message);
 }
 
 AlmanahApplication *

@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,8 +18,8 @@
 
 #include <glib.h>
 
-#include "event-factory.h"
 #include "enums.h"
+#include "event-factory.h"
 
 static void almanah_event_factory_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 
@@ -36,7 +36,9 @@ enum {
 	LAST_SIGNAL
 };
 
-static guint event_factory_signals[LAST_SIGNAL] = { 0, };
+static guint event_factory_signals[LAST_SIGNAL] = {
+	0,
+};
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (AlmanahEventFactory, almanah_event_factory, G_TYPE_OBJECT)
 
@@ -48,17 +50,17 @@ almanah_event_factory_class_init (AlmanahEventFactoryClass *klass)
 	gobject_class->get_property = almanah_event_factory_get_property;
 
 	g_object_class_install_property (gobject_class, PROP_TYPE_ID,
-				g_param_spec_enum ("type-id",
-					"Type ID", "The type ID of this event factory.",
-					ALMANAH_TYPE_EVENT_FACTORY_TYPE, ALMANAH_EVENT_FACTORY_UNKNOWN,
-					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_enum ("type-id",
+	                                                    "Type ID", "The type ID of this event factory.",
+	                                                    ALMANAH_TYPE_EVENT_FACTORY_TYPE, ALMANAH_EVENT_FACTORY_UNKNOWN,
+	                                                    G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
 	event_factory_signals[SIGNAL_EVENTS_UPDATED] = g_signal_new ("events-updated",
-				G_TYPE_FROM_CLASS (klass),
-				G_SIGNAL_RUN_LAST,
-				0, NULL, NULL,
-				g_cclosure_marshal_VOID__VOID,
-				G_TYPE_NONE, 0);
+	                                                             G_TYPE_FROM_CLASS (klass),
+	                                                             G_SIGNAL_RUN_LAST,
+	                                                             0, NULL, NULL,
+	                                                             g_cclosure_marshal_VOID__VOID,
+	                                                             G_TYPE_NONE, 0);
 }
 
 static void

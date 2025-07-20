@@ -19,13 +19,13 @@
 #ifndef ALMANAH_URI_ENTRY_DIALOG_H
 #define ALMANAH_URI_ENTRY_DIALOG_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_URI_ENTRY_DIALOG       (almanah_uri_entry_dialog_get_type ())
+#define ALMANAH_TYPE_URI_ENTRY_DIALOG (almanah_uri_entry_dialog_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahUriEntryDialog, almanah_uri_entry_dialog, ALMANAH, URI_ENTRY_DIALOG, GtkDialog)
 

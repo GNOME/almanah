@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,8 +19,8 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include "event.h"
 #include "calendar-appointment.h"
+#include "event.h"
 #include "interface.h"
 
 static void almanah_calendar_appointment_event_finalize (GObject *object);
@@ -48,8 +48,8 @@ almanah_calendar_appointment_event_class_init (AlmanahCalendarAppointmentEventCl
 
 	gobject_class->finalize = almanah_calendar_appointment_event_finalize;
 
-	event_class->name = _("Calendar Appointment");
-	event_class->description = _("An appointment on an Evolution calendar.");
+	event_class->name = _ ("Calendar Appointment");
+	event_class->description = _ ("An appointment on an Evolution calendar.");
 	event_class->icon_name = "appointment-new";
 
 	event_class->format_value = almanah_calendar_appointment_event_format_value;
@@ -84,9 +84,9 @@ almanah_calendar_appointment_event_new (const gchar *summary, time_t start_time)
 	priv->summary = g_strdup (summary);
 	priv->start_time = start_time;
 
-	localtime_r ((const time_t*) &priv->start_time, &date_tm);
+	localtime_r ((const time_t *) &priv->start_time, &date_tm);
 	/* Translators: This is a time string with the format hh:mm */
-	priv->time = g_strdup_printf (_("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
+	priv->time = g_strdup_printf (_ ("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
 
 	return event;
 }
@@ -116,17 +116,17 @@ almanah_calendar_appointment_event_view (AlmanahEvent *event, GtkWindow *parent_
 	gboolean retval;
 	GError *error = NULL;
 
-	gmtime_r ((const time_t*) &(priv->start_time), &utc_date_tm);
+	gmtime_r ((const time_t *) &(priv->start_time), &utc_date_tm);
 
 	/* FIXME: once bug 409200 is fixed, we'll have to make this hh:mm:ss
 	 * instead of hhmmss */
 	command_line = g_strdup_printf ("evolution calendar:///?startdate=%.4d%.2d%.2dT%.2d%.2d%.2dZ",
-					utc_date_tm.tm_year + 1900,
-					utc_date_tm.tm_mon + 1,
-					utc_date_tm.tm_mday,
-					utc_date_tm.tm_hour,
-					utc_date_tm.tm_min,
-					0);
+	                                utc_date_tm.tm_year + 1900,
+	                                utc_date_tm.tm_mon + 1,
+	                                utc_date_tm.tm_mday,
+	                                utc_date_tm.tm_hour,
+	                                utc_date_tm.tm_min,
+	                                0);
 
 	g_debug ("Executing \"%s\".", command_line);
 
@@ -135,8 +135,8 @@ almanah_calendar_appointment_event_view (AlmanahEvent *event, GtkWindow *parent_
 
 	if (retval == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (parent_window,
-							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-							    _("Error launching Evolution"));
+		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+		                                            _ ("Error launching Evolution"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -43,10 +43,8 @@ static void almanah_entry_finalize (GObject *object);
 static void almanah_entry_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_entry_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 
-static guint8 *serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, const GtkTextIter *start,
-                                        const GtkTextIter *end, gsize *length, gpointer user_data);
-static gboolean deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data,
-                                           gsize length, gboolean create_tags, gpointer user_data, GError **error);
+static guint8 *serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, const GtkTextIter *start, const GtkTextIter *end, gsize *length, gpointer user_data);
+static gboolean deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data, gsize length, gboolean create_tags, gpointer user_data, GError **error);
 
 typedef struct {
 	GDate date;
@@ -84,39 +82,39 @@ almanah_entry_class_init (AlmanahEntryClass *klass)
 	gobject_class->finalize = almanah_entry_finalize;
 
 	g_object_class_install_property (gobject_class, PROP_DAY,
-				g_param_spec_uint ("day",
-					"Day", "The day for which this is the entry.",
-					1, 31, 1,
-					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_uint ("day",
+	                                                    "Day", "The day for which this is the entry.",
+	                                                    1, 31, 1,
+	                                                    G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_MONTH,
-				g_param_spec_uint ("month",
-					"Month", "The month for which this is the entry.",
-					1, 12, 1,
-					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_uint ("month",
+	                                                    "Month", "The month for which this is the entry.",
+	                                                    1, 12, 1,
+	                                                    G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_YEAR,
-				g_param_spec_uint ("year",
-					"Year", "The year for which this is the entry.",
-					1, (1 << 16) - 1, 1,
-					G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_uint ("year",
+	                                                    "Year", "The year for which this is the entry.",
+	                                                    1, (1 << 16) - 1, 1,
+	                                                    G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_IS_IMPORTANT,
-				g_param_spec_boolean ("is-important",
-					"Important?", "Whether the entry is particularly important to the user.",
-					FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_boolean ("is-important",
+	                                                       "Important?", "Whether the entry is particularly important to the user.",
+	                                                       FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_LAST_EDITED_DAY,
-				g_param_spec_uint ("last-edited-day",
-					"Last Edited Day", "The day when this entry was last edited.",
-					1, 31, 1,
-					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_uint ("last-edited-day",
+	                                                    "Last Edited Day", "The day when this entry was last edited.",
+	                                                    1, 31, 1,
+	                                                    G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_LAST_EDITED_MONTH,
-				g_param_spec_uint ("last-edited-month",
-					"Last Edited Month", "The month when this entry was last edited.",
-					1, 12, 1,
-					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_uint ("last-edited-month",
+	                                                    "Last Edited Month", "The month when this entry was last edited.",
+	                                                    1, 12, 1,
+	                                                    G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_LAST_EDITED_YEAR,
-				g_param_spec_uint ("last-edited-year",
-					"Last Edited Year", "The year when this entry was last edited.",
-					1, (1 << 16) - 1, 1,
-					G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_uint ("last-edited-year",
+	                                                    "Last Edited Year", "The year when this entry was last edited.",
+	                                                    1, (1 << 16) - 1, 1,
+	                                                    G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -214,10 +212,10 @@ AlmanahEntry *
 almanah_entry_new (GDate *date)
 {
 	return g_object_new (ALMANAH_TYPE_ENTRY,
-			     "day", g_date_get_day (date),
-			     "month", g_date_get_month (date),
-			     "year", g_date_get_year (date),
-			     NULL);
+	                     "day", g_date_get_day (date),
+	                     "month", g_date_get_month (date),
+	                     "year", g_date_get_year (date),
+	                     NULL);
 }
 
 /* NOTE: There's a difference between content and data, as recognised by AlmanahEntry.
@@ -287,8 +285,8 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gbool
 			                                 priv->data, priv->length,
 			                                 &deserialise_error) == FALSE) {
 				/* Since that failed, check the data's in the old format, and try to just load it as text */
-				if (g_strcmp0 ((gchar*) priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
-					gtk_text_buffer_set_text (text_buffer, (gchar*) priv->data, priv->length);
+				if (g_strcmp0 ((gchar *) priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
+					gtk_text_buffer_set_text (text_buffer, (gchar *) priv->data, priv->length);
 					g_error_free (deserialise_error);
 					return TRUE;
 				}
@@ -303,7 +301,7 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gbool
 		default: {
 			/* Invalid/Unset version number */
 			g_set_error (error, ALMANAH_ENTRY_ERROR, ALMANAH_ENTRY_ERROR_INVALID_DATA_VERSION,
-			             _("Invalid data version number %u."), priv->version);
+			             _ ("Invalid data version number %u."), priv->version);
 
 			return FALSE;
 		}
@@ -339,9 +337,9 @@ almanah_entry_get_date (AlmanahEntry *self, GDate *date)
 	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 
 	g_date_set_dmy (date,
-			g_date_get_day (&(priv->date)),
-			g_date_get_month (&(priv->date)),
-			g_date_get_year (&(priv->date)));
+	                g_date_get_day (&(priv->date)),
+	                g_date_get_month (&(priv->date)),
+	                g_date_get_year (&(priv->date)));
 }
 
 AlmanahEntryEditability
@@ -370,9 +368,11 @@ almanah_entry_is_empty (AlmanahEntry *self)
 	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 
 	return (priv->is_empty == TRUE ||
-		priv->length == 0 ||
-		priv->data == NULL ||
-		priv->data[0] == '\0') ? TRUE : FALSE;
+	        priv->length == 0 ||
+	        priv->data == NULL ||
+	        priv->data[0] == '\0')
+	           ? TRUE
+	           : FALSE;
 }
 
 gboolean
@@ -424,41 +424,39 @@ almanah_entry_set_last_edited (AlmanahEntry *self, GDate *last_edited)
  * Copyright (C) 2004 Nokia Corporation
  */
 static void
-find_list_delta (GSList  *old_list,
-                 GSList  *new_list,
-		 GList  **added,
-                 GList  **removed)
+find_list_delta (GSList *old_list,
+                 GSList *new_list,
+                 GList **added,
+                 GList **removed)
 {
-  GSList *tmp;
-  GList *tmp_added, *tmp_removed;
+	GSList *tmp;
+	GList *tmp_added, *tmp_removed;
 
-  tmp_added = NULL;
-  tmp_removed = NULL;
+	tmp_added = NULL;
+	tmp_removed = NULL;
 
-  /* Find added tags */
-  tmp = new_list;
-  while (tmp)
-    {
-      if (!g_slist_find (old_list, tmp->data))
-	tmp_added = g_list_prepend (tmp_added, tmp->data);
+	/* Find added tags */
+	tmp = new_list;
+	while (tmp) {
+		if (!g_slist_find (old_list, tmp->data))
+			tmp_added = g_list_prepend (tmp_added, tmp->data);
 
-      tmp = tmp->next;
-    }
+		tmp = tmp->next;
+	}
 
-  *added = tmp_added;
+	*added = tmp_added;
 
-  /* Find removed tags */
-  tmp = old_list;
-  while (tmp)
-    {
-      if (!g_slist_find (new_list, tmp->data))
-	tmp_removed = g_list_prepend (tmp_removed, tmp->data);
+	/* Find removed tags */
+	tmp = old_list;
+	while (tmp) {
+		if (!g_slist_find (new_list, tmp->data))
+			tmp_removed = g_list_prepend (tmp_removed, tmp->data);
 
-      tmp = tmp->next;
-    }
+		tmp = tmp->next;
+	}
 
-  /* We reverse the list here to match the xml semantics */
-  *removed = g_list_reverse (tmp_removed);
+	/* We reverse the list here to match the xml semantics */
+	*removed = g_list_reverse (tmp_removed);
 }
 
 /* Returns NULL for unknown/unhandled tags */
@@ -494,8 +492,7 @@ get_text_tag_element_name (GtkTextTag *tag)
 }
 
 static guint8 *
-serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, const GtkTextIter *start, const GtkTextIter *end, gsize *length,
-                         gpointer user_data)
+serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, const GtkTextIter *start, const GtkTextIter *end, gsize *length, gpointer user_data)
 {
 	GString *markup;
 	GtkTextIter iter, old_iter;
@@ -505,8 +502,8 @@ serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_
 
 	/* Markup preamble */
 	g_string_append (markup,
-		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-		"<entry xmlns=\"http://www.gnome.org/almanah-diary/entry/2.0/\">");
+	                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+	                 "<entry xmlns=\"http://www.gnome.org/almanah-diary/entry/2.0/\">");
 
 	/* Serialise the text. We maintain a stack of the currently open tags so that the outputted markup is properly nested. We progress through
 	 * the text buffer between tag toggle points, comparing the list of open tags at each point to determine which tags have opened and which
@@ -644,7 +641,7 @@ serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_
 
 	*length = markup->len;
 
-	return (guint8*) g_string_free (markup, FALSE);
+	return (guint8 *) g_string_free (markup, FALSE);
 }
 
 typedef struct {
@@ -655,10 +652,9 @@ typedef struct {
 } DeserialiseContext;
 
 static void
-start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name, const gchar **attribute_names, const gchar **attribute_values,
-                  gpointer user_data, GError **error)
+start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name, const gchar **attribute_names, const gchar **attribute_values, gpointer user_data, GError **error)
 {
-	DeserialiseContext *deserialise_context = (DeserialiseContext*) user_data;
+	DeserialiseContext *deserialise_context = (DeserialiseContext *) user_data;
 
 	if (strcmp (element_name, "entry") == 0) {
 		if (deserialise_context->in_entry) {
@@ -717,7 +713,7 @@ start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name,
 static void
 end_element_cb (GMarkupParseContext *parse_context, const gchar *element_name, gpointer user_data, GError **error)
 {
-	DeserialiseContext *deserialise_context = (DeserialiseContext*) user_data;
+	DeserialiseContext *deserialise_context = (DeserialiseContext *) user_data;
 
 	if (strcmp (element_name, "entry") == 0) {
 		/* We should be finished parsing now */
@@ -743,7 +739,7 @@ end_element_cb (GMarkupParseContext *parse_context, const gchar *element_name, g
 static void
 text_cb (GMarkupParseContext *parse_context, const gchar *text, gsize text_len, gpointer user_data, GError **error)
 {
-	DeserialiseContext *deserialise_context = (DeserialiseContext*) user_data;
+	DeserialiseContext *deserialise_context = (DeserialiseContext *) user_data;
 	GtkTextIter start_iter;
 	gint start_offset;
 	const GSList *i;
@@ -759,8 +755,7 @@ text_cb (GMarkupParseContext *parse_context, const gchar *text, gsize text_len, 
 }
 
 static gboolean
-deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data, gsize length,
-                           gboolean create_tags, gpointer user_data, GError **error)
+deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data, gsize length, gboolean create_tags, gpointer user_data, GError **error)
 {
 	GMarkupParseContext *parse_context;
 	gboolean success;
@@ -780,7 +775,7 @@ deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *conten
 	};
 
 	parse_context = g_markup_parse_context_new (&parser, 0, &deserialise_context, NULL);
-	success = g_markup_parse_context_parse (parse_context, (const gchar*) data, length, error);
+	success = g_markup_parse_context_parse (parse_context, (const gchar *) data, length, error);
 	g_markup_parse_context_free (parse_context);
 
 	return success;

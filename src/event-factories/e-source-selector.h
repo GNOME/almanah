@@ -37,75 +37,60 @@ struct _ESourceSelectorClass {
 	GtkTreeViewClass parent_class;
 
 	/* Methods */
-	gboolean	(*get_source_selected)	(ESourceSelector *selector,
-						 ESource *source);
-	void		(*set_source_selected)	(ESourceSelector *selector,
-						 ESource *source,
-						 gboolean selected);
+	gboolean (*get_source_selected) (ESourceSelector *selector,
+	                                 ESource *source);
+	void (*set_source_selected) (ESourceSelector *selector,
+	                             ESource *source,
+	                             gboolean selected);
 
 	/* Signals */
-	void		(*selection_changed)	(ESourceSelector *selector);
-	void		(*primary_selection_changed)
-						(ESourceSelector *selector);
-	gboolean	(*popup_event)		(ESourceSelector *selector,
-						 ESource *primary,
-						 GdkEventButton *event);
-	gboolean	(*data_dropped)		(ESourceSelector *selector,
-						 GtkSelectionData *data,
-						 ESource *destination,
-						 GdkDragAction action,
-						 guint target_info);
+	void (*selection_changed) (ESourceSelector *selector);
+	void (*primary_selection_changed) (ESourceSelector *selector);
+	gboolean (*popup_event) (ESourceSelector *selector,
+	                         ESource *primary,
+	                         GdkEventButton *event);
+	gboolean (*data_dropped) (ESourceSelector *selector,
+	                          GtkSelectionData *data,
+	                          ESource *destination,
+	                          GdkDragAction action,
+	                          guint target_info);
 
 	gpointer padding1;
 	gpointer padding2;
 	gpointer padding3;
 };
 
-GtkWidget *	e_source_selector_new		(ESourceRegistry *registry,
-						 const gchar *extension_name);
+GtkWidget *e_source_selector_new (ESourceRegistry *registry,
+                                  const gchar *extension_name);
 ESourceRegistry *
-		e_source_selector_get_registry	(ESourceSelector *selector);
-const gchar *	e_source_selector_get_extension_name
-						(ESourceSelector *selector);
-gboolean	e_source_selector_get_show_colors
-						(ESourceSelector *selector);
-void		e_source_selector_set_show_colors
-						(ESourceSelector *selector,
-						 gboolean show_colors);
-gboolean	e_source_selector_get_show_toggles
-						(ESourceSelector *selector);
-void		e_source_selector_set_show_toggles
-						(ESourceSelector *selector,
-						 gboolean show_toggles);
-void		e_source_selector_select_source	(ESourceSelector *selector,
-						 ESource *source);
-void		e_source_selector_unselect_source
-						(ESourceSelector *selector,
-						 ESource *source);
-void		e_source_selector_select_exclusive
-						(ESourceSelector *selector,
-						 ESource *source);
-gboolean	e_source_selector_source_is_selected
-						(ESourceSelector *selector,
-						 ESource *source);
-GSList *	e_source_selector_get_selection	(ESourceSelector *selector);
-void		e_source_selector_free_selection
-						(GSList *list);
-void		e_source_selector_set_select_new
-						(ESourceSelector *selector,
-						 gboolean state);
-void		e_source_selector_edit_primary_selection
-						(ESourceSelector *selector);
-ESource *	e_source_selector_ref_primary_selection
-						(ESourceSelector *selector);
-void		e_source_selector_set_primary_selection
-						(ESourceSelector *selector,
-						 ESource *source);
-ESource *	e_source_selector_ref_source_by_path
-						(ESourceSelector *selector,
-						 GtkTreePath *path);
-void		e_source_selector_queue_write	(ESourceSelector *selector,
-						 ESource *source);
+e_source_selector_get_registry (ESourceSelector *selector);
+const gchar *e_source_selector_get_extension_name (ESourceSelector *selector);
+gboolean e_source_selector_get_show_colors (ESourceSelector *selector);
+void e_source_selector_set_show_colors (ESourceSelector *selector,
+                                        gboolean show_colors);
+gboolean e_source_selector_get_show_toggles (ESourceSelector *selector);
+void e_source_selector_set_show_toggles (ESourceSelector *selector,
+                                         gboolean show_toggles);
+void e_source_selector_select_source (ESourceSelector *selector,
+                                      ESource *source);
+void e_source_selector_unselect_source (ESourceSelector *selector,
+                                        ESource *source);
+void e_source_selector_select_exclusive (ESourceSelector *selector,
+                                         ESource *source);
+gboolean e_source_selector_source_is_selected (ESourceSelector *selector,
+                                               ESource *source);
+GSList *e_source_selector_get_selection (ESourceSelector *selector);
+void e_source_selector_free_selection (GSList *list);
+void e_source_selector_set_select_new (ESourceSelector *selector,
+                                       gboolean state);
+void e_source_selector_edit_primary_selection (ESourceSelector *selector);
+ESource *e_source_selector_ref_primary_selection (ESourceSelector *selector);
+void e_source_selector_set_primary_selection (ESourceSelector *selector,
+                                              ESource *source);
+ESource *e_source_selector_ref_source_by_path (ESourceSelector *selector,
+                                               GtkTreePath *path);
+void e_source_selector_queue_write (ESourceSelector *selector,
+                                    ESource *source);
 
 G_END_DECLS
 

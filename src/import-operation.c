@@ -21,33 +21,30 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "import-operation.h"
 #include "entry.h"
+#include "import-operation.h"
 #include "storage-manager.h"
 
-typedef gboolean (*ImportFunc) (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback callback, gpointer user_data,
-                                GCancellable *cancellable, GError **error);
+typedef gboolean (*ImportFunc) (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback callback, gpointer user_data, GCancellable *cancellable, GError **error);
 
 typedef struct {
-	const gchar *name; /* translatable */
+	const gchar *name;        /* translatable */
 	const gchar *description; /* translatable */
 	GtkFileChooserAction action;
 	ImportFunc import_func;
 } ImportModeDetails;
 
-static gboolean import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback callback, gpointer user_data,
-                                   GCancellable *cancellable, GError **error);
-static gboolean import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback callback, gpointer user_data,
-                                 GCancellable *cancellable, GError **error);
+static gboolean import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback callback, gpointer user_data, GCancellable *cancellable, GError **error);
+static gboolean import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback callback, gpointer user_data, GCancellable *cancellable, GError **error);
 
 static const ImportModeDetails import_modes[] = {
-	{ N_("Text Files"),
-	  N_("Select a _folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
-	     "Any and all such files will be imported."),
+	{ N_ ("Text Files"),
+	  N_ ("Select a _folder containing text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
+	      "Any and all such files will be imported."),
 	  GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
 	  import_text_files },
-	{ N_("Database"),
-	  N_("Select a database _file created by Almanah Diary to import."),
+	{ N_ ("Database"),
+	  N_ ("Select a database _file created by Almanah Diary to import."),
 	  GTK_FILE_CHOOSER_ACTION_OPEN,
 	  import_database }
 };
@@ -181,8 +178,7 @@ progress_idle_callback_cb (ProgressData *data)
 }
 
 static void
-progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_data, const GDate *date, AlmanahImportStatus status,
-                        const gchar *message)
+progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_data, const GDate *date, AlmanahImportStatus status, const gchar *message)
 {
 	GSource *source;
 	ProgressData *data;
@@ -250,7 +246,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	imported_buffer = gtk_text_buffer_new (NULL);
 	if (almanah_entry_get_content (imported_entry, imported_buffer, TRUE, &error) == FALSE) {
 		if (message != NULL)
-			*message = g_strdup_printf (_("Error deserializing imported entry into buffer: %s"), (error != NULL) ? error->message : NULL);
+			*message = g_strdup_printf (_ ("Error deserializing imported entry into buffer: %s"), (error != NULL) ? error->message : NULL);
 
 		g_error_free (error);
 		g_object_unref (imported_buffer);
@@ -266,7 +262,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 		almanah_storage_manager_set_entry (priv->storage_manager, imported_entry);
 
 		if (message != NULL) {
-			*message = g_strdup_printf (_("Error deserializing existing entry into buffer; overwriting with imported entry: %s"),
+			*message = g_strdup_printf (_ ("Error deserializing existing entry into buffer; overwriting with imported entry: %s"),
 			                            (error != NULL) ? error->message : NULL);
 		}
 
@@ -307,7 +303,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	/* Append some header text for the imported entry */
 	/* Translators: This text is appended to an existing entry when an entry is being imported to the same date.
 	 * The imported entry is appended to this text. */
-	header_string = g_strdup_printf (_("\n\nEntry imported from \"%s\":\n\n"), import_source);
+	header_string = g_strdup_printf (_ ("\n\nEntry imported from \"%s\":\n\n"), import_source);
 	gtk_text_buffer_insert (existing_buffer, &existing_end, header_string, -1);
 	g_free (header_string);
 
@@ -335,8 +331,7 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 }
 
 static gboolean
-import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data,
-                   GCancellable *cancellable, GError **error)
+import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
 	gboolean retval = FALSE;
 	GFileInfo *file_info;
@@ -356,7 +351,7 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 	while ((file_info = g_file_enumerator_next_file (enumerator, NULL, &child_error)) != NULL) {
 		AlmanahEntry *entry;
 		GDate parsed_date, last_edited;
-		g_autoptr(GDateTime) modification_date_time = NULL;
+		g_autoptr (GDateTime) modification_date_time = NULL;
 		GFile *file;
 		gchar *contents, *message = NULL;
 		gsize length;
@@ -436,8 +431,7 @@ finish:
 }
 
 static gboolean
-import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data,
-                 GCancellable *cancellable, GError **error)
+import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
 	g_autoptr (GFileInfo) file_info = NULL;
 	gchar *path;
@@ -525,14 +519,13 @@ import_thread (GTask *task, AlmanahImportOperation *operation, gpointer task_dat
 
 	/* Import and return */
 	if (import_modes[priv->current_mode].import_func (operation, priv->source, data->progress_callback,
-	    data->progress_user_data, cancellable, &error) == FALSE) {
+	                                                  data->progress_user_data, cancellable, &error) == FALSE) {
 		g_task_return_error (task, error);
 	}
 }
 
 void
-almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancellable, AlmanahImportProgressCallback progress_callback,
-                              gpointer progress_user_data, GAsyncReadyCallback callback, gpointer user_data)
+almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancellable, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data, GAsyncReadyCallback callback, gpointer user_data)
 {
 	g_autoptr (GTask) task = NULL;
 	ImportData *data;
@@ -578,8 +571,8 @@ almanah_import_operation_populate_model (GtkListStore *store, guint type_id_colu
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter,
 		                    type_id_column, i,
-		                    name_column, _(import_modes[i].name),
-		                    description_column, _(import_modes[i].description),
+		                    name_column, _ (import_modes[i].name),
+		                    description_column, _ (import_modes[i].description),
 		                    action_column, import_modes[i].action,
 		                    -1);
 	}

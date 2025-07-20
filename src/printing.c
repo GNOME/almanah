@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,16 +20,16 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "storage-manager.h"
 #include "interface.h"
 #include "printing.h"
+#include "storage-manager.h"
 #include "widgets/calendar.h"
 
 #define TITLE_MARGIN_BOTTOM 15 /* margin under the title, in pixels */
 #define IMPORTANT_MARGIN_TOP 3 /* margin above the "important" paragraph (and below the title), in pixels */
 #define ENTRY_MARGIN_BOTTOM 10 /* margin under the entry, in pixels */
-#define MAX_ORPHANS 3 /* maximum number of orphan lines to be forced to the next page */
-#define PAGE_MARGIN 20 /* left- and right-hand page margin size, in pixels */
+#define MAX_ORPHANS 3          /* maximum number of orphan lines to be forced to the next page */
+#define PAGE_MARGIN 20         /* left- and right-hand page margin size, in pixels */
 
 typedef struct {
 	AlmanahStorageManager *storage_manager;
@@ -47,7 +47,7 @@ typedef struct {
 } AlmanahPrintOperation;
 
 /* Adapted from code in GtkSourceView's gtksourceprintcompositor.c, previously LGPL >= 2.1
- * Copyright (C) 2000, 2001 Chema Celorio  
+ * Copyright (C) 2000, 2001 Chema Celorio
  * Copyright (C) 2003  Gustavo Giráldez
  * Copyright (C) 2004  Red Hat, Inc.
  * Copyright (C) 2001-2007  Paolo Maggi
@@ -66,8 +66,7 @@ get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
 	if (gtk_text_iter_compare (iter, limit) > 0)
 		*iter = *limit;
 
-	while (tags)
-	{
+	while (tags) {
 		GtkTextTag *tag;
 		gboolean bg_set, fg_set, style_set, ul_set, weight_set, st_set;
 
@@ -75,60 +74,60 @@ get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
 		tags = g_slist_delete_link (tags, tags);
 
 		g_object_get (tag,
-			     "background-set", &bg_set,
-			     "foreground-set", &fg_set,
-			     "style-set", &style_set,
-			     "underline-set", &ul_set,
-			     "weight-set", &weight_set,
-			     "strikethrough-set", &st_set,
-			     NULL);
+		              "background-set", &bg_set,
+		              "foreground-set", &fg_set,
+		              "style-set", &style_set,
+		              "underline-set", &ul_set,
+		              "weight-set", &weight_set,
+		              "strikethrough-set", &st_set,
+		              NULL);
 
-		if (bg_set)
-		{
+		if (bg_set) {
 			GdkRGBA *color = NULL;
-			if (bg) pango_attribute_destroy (bg);
+			if (bg)
+				pango_attribute_destroy (bg);
 			g_object_get (tag, "background-rgba", &color, NULL);
 			bg = pango_attr_background_new (color->red, color->green, color->blue);
 			gdk_rgba_free (color);
 		}
 
-		if (fg_set)
-		{
+		if (fg_set) {
 			GdkRGBA *color = NULL;
-			if (fg) pango_attribute_destroy (fg);
+			if (fg)
+				pango_attribute_destroy (fg);
 			g_object_get (tag, "foreground-rgba", &color, NULL);
 			fg = pango_attr_foreground_new (color->red, color->green, color->blue);
 			gdk_rgba_free (color);
 		}
 
-		if (style_set)
-		{
+		if (style_set) {
 			PangoStyle style_value;
-			if (style) pango_attribute_destroy (style);
+			if (style)
+				pango_attribute_destroy (style);
 			g_object_get (tag, "style", &style_value, NULL);
 			style = pango_attr_style_new (style_value);
 		}
 
-		if (ul_set)
-		{
+		if (ul_set) {
 			PangoUnderline underline;
-			if (ul) pango_attribute_destroy (ul);
+			if (ul)
+				pango_attribute_destroy (ul);
 			g_object_get (tag, "underline", &underline, NULL);
 			ul = pango_attr_underline_new (underline);
 		}
 
-		if (weight_set)
-		{
+		if (weight_set) {
 			PangoWeight weight_value;
-			if (weight) pango_attribute_destroy (weight);
+			if (weight)
+				pango_attribute_destroy (weight);
 			g_object_get (tag, "weight", &weight_value, NULL);
 			weight = pango_attr_weight_new (weight_value);
 		}
 
-		if (st_set)
-		{
+		if (st_set) {
 			gboolean strikethrough;
-			if (st) pango_attribute_destroy (st);
+			if (st)
+				pango_attribute_destroy (st);
 			g_object_get (tag, "strikethrough", &strikethrough, NULL);
 			st = pango_attr_strikethrough_new (strikethrough);
 		}
@@ -151,7 +150,7 @@ get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
 }
 
 /* Adapted from code in GtkSourceView's gtksourceprintcompositor.c, previously LGPL >= 2.1
- * Copyright (C) 2000, 2001 Chema Celorio  
+ * Copyright (C) 2000, 2001 Chema Celorio
  * Copyright (C) 2003  Gustavo Giráldez
  * Copyright (C) 2004  Red Hat, Inc.
  * Copyright (C) 2001-2007  Paolo Maggi
@@ -172,7 +171,7 @@ is_empty_line (const gchar *text)
 }
 
 /* Adapted from code in GtkSourceView's gtksourceprintcompositor.c, previously LGPL >= 2.1
- * Copyright (C) 2000, 2001 Chema Celorio  
+ * Copyright (C) 2000, 2001 Chema Celorio
  * Copyright (C) 2003  Gustavo Giráldez
  * Copyright (C) 2004  Red Hat, Inc.
  * Copyright (C) 2001-2007  Paolo Maggi
@@ -259,7 +258,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 		pango_layout_set_width (title_layout, (gtk_print_context_get_width (context) - 2 * PAGE_MARGIN) * PANGO_SCALE);
 
 		/* Translators: This is a strftime()-format string for the date displayed above each printed entry. */
-		g_date_strftime (title, sizeof (title), _("%A, %e %B %Y"), almanah_operation->current_date);
+		g_date_strftime (title, sizeof (title), _ ("%A, %e %B %Y"), almanah_operation->current_date);
 		markup = g_strdup_printf ("<b>%s</b>", title);
 		pango_layout_set_markup (title_layout, markup, -1);
 		g_free (markup);
@@ -273,7 +272,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 			important_layout = gtk_print_context_create_pango_layout (context);
 			pango_layout_set_width (title_layout, (gtk_print_context_get_width (context) - 2 * PAGE_MARGIN) * PANGO_SCALE);
 
-			markup = g_strdup_printf ("<i>%s</i>", _("This entry is marked as important."));
+			markup = g_strdup_printf ("<i>%s</i>", _ ("This entry is marked as important."));
 			pango_layout_set_markup (important_layout, markup, -1);
 			g_free (markup);
 
@@ -294,7 +293,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
 
 	if (entry == NULL || almanah_entry_is_empty (entry)) {
-		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _("No entry for this date."));
+		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _ ("No entry for this date."));
 		pango_layout_set_markup (entry_layout, entry_text, -1);
 	} else {
 		GtkTextIter start, end;
@@ -421,9 +420,9 @@ draw_page_cb (GtkPrintOperation *operation, GtkPrintContext *context, gint page_
 		almanah_operation->paginated = TRUE;
 		almanah_operation->current_line = 0;
 		g_date_set_dmy (almanah_operation->current_date,
-				g_date_get_day (almanah_operation->start_date),
-				g_date_get_month (almanah_operation->start_date),
-				g_date_get_year (almanah_operation->start_date));
+		                g_date_get_day (almanah_operation->start_date),
+		                g_date_get_month (almanah_operation->start_date),
+		                g_date_get_year (almanah_operation->start_date));
 	}
 
 	almanah_operation->y = 0;
@@ -453,9 +452,9 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	g_object_set (G_OBJECT (start_calendar), "show-details", FALSE, NULL);
 	g_object_set (G_OBJECT (end_calendar), "show-details", FALSE, NULL);
 
-	start_label = GTK_LABEL (gtk_label_new (_("Start date:")));
+	start_label = GTK_LABEL (gtk_label_new (_ ("Start date:")));
 	gtk_widget_set_halign (GTK_WIDGET (start_label), GTK_ALIGN_START);
-	end_label = GTK_LABEL (gtk_label_new (_("End date:")));
+	end_label = GTK_LABEL (gtk_label_new (_ ("End date:")));
 	gtk_widget_set_halign (GTK_WIDGET (end_label), GTK_ALIGN_START);
 
 	grid = GTK_GRID (gtk_grid_new ());
@@ -471,7 +470,7 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	almanah_operation->end_calendar = ALMANAH_CALENDAR (end_calendar);
 
 	/* Line spacing */
-	line_spacing_label = GTK_LABEL (gtk_label_new (_("Line spacing:")));
+	line_spacing_label = GTK_LABEL (gtk_label_new (_ ("Line spacing:")));
 	line_spacing_spin_button = gtk_spin_button_new_with_range (1.0, 3.0, 0.5);
 
 	almanah_operation->line_spacing_spin_button = GTK_SPIN_BUTTON (line_spacing_spin_button);
@@ -516,8 +515,7 @@ custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, Almanah
 }
 
 void
-almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPageSetup **page_setup, GtkPrintSettings **print_settings,
-                       AlmanahStorageManager *storage_manager)
+almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPageSetup **page_setup, GtkPrintSettings **print_settings, AlmanahStorageManager *storage_manager)
 {
 	GtkPrintOperation *operation;
 	GtkPrintOperationResult res;
@@ -556,8 +554,8 @@ almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPage
 	g_signal_connect (operation, "custom-widget-apply", G_CALLBACK (custom_widget_apply_cb), &almanah_operation);
 
 	res = gtk_print_operation_run (operation,
-				       (print_preview == TRUE) ? GTK_PRINT_OPERATION_ACTION_PREVIEW : GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-				       parent_window, NULL);
+	                               (print_preview == TRUE) ? GTK_PRINT_OPERATION_ACTION_PREVIEW : GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+	                               parent_window, NULL);
 
 	if (res == GTK_PRINT_OPERATION_RESULT_APPLY) {
 		if (*print_settings != NULL)

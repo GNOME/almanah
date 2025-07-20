@@ -27,7 +27,7 @@
 
 #include "../src/vfs.h"
 
-#define ALMANAH_TEST_VFS_DATABASE           "almanah_tests.db"
+#define ALMANAH_TEST_VFS_DATABASE "almanah_tests.db"
 #define ALMANAH_TEST_VFS_DATABASE_ENCRYPTED "almanah_tests.db.encrypted"
 
 struct AlmanahTestVfsFixture {
@@ -40,7 +40,7 @@ struct AlmanahTestVfsFixture {
 	gchar *db_file;
 };
 
-static GSettings*
+static GSettings *
 almanah_test_setup_memory_gsettings (void)
 {
 	GSettingsBackend *settings_backend;
@@ -65,7 +65,7 @@ almanah_test_vfs_plain_setup (struct AlmanahTestVfsFixture *fixture, __attribute
 	fixture->db_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE, NULL);
 
 	fixture->settings = almanah_test_setup_memory_gsettings ();
-	g_settings_set_string (fixture->settings, "encryption-key" , "");
+	g_settings_set_string (fixture->settings, "encryption-key", "");
 
 	/* Initializing the VFS */
 	almanah_vfs_init (fixture->settings);
@@ -81,20 +81,20 @@ almanah_test_vfs_enc_setup (struct AlmanahTestVfsFixture *fixture, __attribute__
 	gpgme_error_t gpgme_error;
 	gchar *encryption_key;
 	const char parms[] =
-                "<GnupgKeyParms format=\"internal\">\n"
-                "Key-Type: RSA\n"
-                "Key-Length: 2048\n"
-                "Key-Usage: sign\n"
-                "Subkey-Type: RSA\n"
-                "Subkey-Length: 2048\n"
-                "Subkey-Usage: encrypt\n"
-                "Name-Real: Almanah Test\n"
-                "Name-Email: almanah@gnome.org\n"
-                "Expire-Date: 0\n"
-                "%no-protection\n"
-                "%no-ask-passphrase\n"
-                "</GnupgKeyParms>\n";
-        gpgme_genkey_result_t gpgme_key_result = NULL;
+	    "<GnupgKeyParms format=\"internal\">\n"
+	    "Key-Type: RSA\n"
+	    "Key-Length: 2048\n"
+	    "Key-Usage: sign\n"
+	    "Subkey-Type: RSA\n"
+	    "Subkey-Length: 2048\n"
+	    "Subkey-Usage: encrypt\n"
+	    "Name-Real: Almanah Test\n"
+	    "Name-Email: almanah@gnome.org\n"
+	    "Expire-Date: 0\n"
+	    "%no-protection\n"
+	    "%no-ask-passphrase\n"
+	    "</GnupgKeyParms>\n";
+	gpgme_genkey_result_t gpgme_key_result = NULL;
 
 	fixture->tmp_dir = g_dir_make_tmp ("almanah_XXXXXX", &error);
 	g_assert_no_error (error);
@@ -115,10 +115,10 @@ almanah_test_vfs_enc_setup (struct AlmanahTestVfsFixture *fixture, __attribute__
 	/* Creating a testing encryption key */
 	gpgme_error = gpgme_op_genkey (fixture->gpgme_context, parms, NULL, NULL);
 	g_assert_cmpint (gpgme_error, ==, GPG_ERR_NO_ERROR);
-        gpgme_key_result = gpgme_op_genkey_result (fixture->gpgme_context);
-	g_assert(gpgme_key_result);
+	gpgme_key_result = gpgme_op_genkey_result (fixture->gpgme_context);
+	g_assert (gpgme_key_result);
 
-	fixture->key_fpr = g_strdup(gpgme_key_result->fpr);
+	fixture->key_fpr = g_strdup (gpgme_key_result->fpr);
 	encryption_key = g_strdup_printf ("openpgp:%s", gpgme_key_result->fpr);
 	g_settings_set_string (fixture->settings, "encryption-key", encryption_key);
 	g_free (encryption_key);
@@ -155,7 +155,7 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 			if (gpgme_error == GPG_ERR_NO_ERROR)
 				gpgme_op_delete (fixture->gpgme_context, key, 1);
 			gpgme_key_release (key);
-			g_free(fixture->key_fpr);
+			g_free (fixture->key_fpr);
 		}
 		gpgme_release (fixture->gpgme_context);
 	}
@@ -171,7 +171,7 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 		g_free (enc_file);
 
 		/* Backup encrypted DB */
-		enc_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE_ENCRYPTED"~", NULL);
+		enc_file = g_build_filename (fixture->tmp_dir, ALMANAH_TEST_VFS_DATABASE_ENCRYPTED "~", NULL);
 		g_unlink (enc_file);
 		g_free (enc_file);
 
@@ -224,14 +224,14 @@ almanah_test_vfs_encrypted (struct AlmanahTestVfsFixture *fixture, __attribute__
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	/* Add a table and some data */
-	rc = sqlite3_exec(fixture->db, "CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day));", NULL, 0, &error_msg);
+	rc = sqlite3_exec (fixture->db, "CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day));", NULL, 0, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_test_message ("SQL error creating table entries: %s\n", error_msg);
 		sqlite3_free (error_msg);
 	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
-	rc = sqlite3_exec(fixture->db, "INSERT INTO entries (year, month, day, content) VALUES (2015, 4, 19, 'Just a test');", NULL, 0, &error_msg);
+	rc = sqlite3_exec (fixture->db, "INSERT INTO entries (year, month, day, content) VALUES (2015, 4, 19, 'Just a test');", NULL, 0, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_test_message ("SQL error inserting an entry: %s\n", error_msg);
 		sqlite3_free (error_msg);
@@ -239,7 +239,7 @@ almanah_test_vfs_encrypted (struct AlmanahTestVfsFixture *fixture, __attribute__
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	/* Close the DB */
-	sqlite3_close(fixture->db);
+	sqlite3_close (fixture->db);
 	fixture->db = NULL;
 
 	/* Ensure the encrypted file */
@@ -269,7 +269,7 @@ almanah_test_vfs_encrypted (struct AlmanahTestVfsFixture *fixture, __attribute__
 
 	sqlite3_finalize (fixture->statement);
 	fixture->statement = NULL;
-	sqlite3_close(fixture->db);
+	sqlite3_close (fixture->db);
 	fixture->db = NULL;
 }
 
@@ -283,7 +283,7 @@ almanah_test_vfs_plain_open (struct AlmanahTestVfsFixture *fixture, __attribute_
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
-	sqlite3_close(fixture->db);
+	sqlite3_close (fixture->db);
 	fixture->db = NULL;
 }
 
@@ -299,21 +299,21 @@ almanah_test_vfs_plain_data (struct AlmanahTestVfsFixture *fixture, __attribute_
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
-	rc = sqlite3_exec(fixture->db, "CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day));", NULL, 0, &error_msg);
+	rc = sqlite3_exec (fixture->db, "CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day));", NULL, 0, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_test_message ("SQL error creating table entries: %s\n", error_msg);
 		sqlite3_free (error_msg);
 	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
-	rc = sqlite3_exec(fixture->db, "INSERT INTO entries (year, month, day, content) VALUES (2015, 3, 7, 'Just a test');", NULL, 0, &error_msg);
+	rc = sqlite3_exec (fixture->db, "INSERT INTO entries (year, month, day, content) VALUES (2015, 3, 7, 'Just a test');", NULL, 0, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_test_message ("SQL error inserting an entry: %s\n", error_msg);
 		sqlite3_free (error_msg);
 	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
-	sqlite3_close(fixture->db);
+	sqlite3_close (fixture->db);
 	fixture->db = NULL;
 
 	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
@@ -336,33 +336,33 @@ almanah_test_vfs_plain_data (struct AlmanahTestVfsFixture *fixture, __attribute_
 
 	sqlite3_finalize (fixture->statement);
 	fixture->statement = NULL;
-	sqlite3_close(fixture->db);
+	sqlite3_close (fixture->db);
 	fixture->db = NULL;
 }
 
 int
-main(int argc, char **argv)
+main (int argc, char **argv)
 {
 	g_test_init (&argc, &argv, NULL);
 
 	g_test_add ("/Almanah/vfs/plain",
-		    struct AlmanahTestVfsFixture,
-		    NULL,
-		    almanah_test_vfs_plain_setup,
-		    almanah_test_vfs_plain_open,
-		    almanah_test_vfs_plain_teardown);
+	            struct AlmanahTestVfsFixture,
+	            NULL,
+	            almanah_test_vfs_plain_setup,
+	            almanah_test_vfs_plain_open,
+	            almanah_test_vfs_plain_teardown);
 	g_test_add ("/Almanah/vfs/data",
-		    struct AlmanahTestVfsFixture,
-		    NULL,
-		    almanah_test_vfs_plain_setup,
-		    almanah_test_vfs_plain_data,
-		    almanah_test_vfs_plain_teardown);
+	            struct AlmanahTestVfsFixture,
+	            NULL,
+	            almanah_test_vfs_plain_setup,
+	            almanah_test_vfs_plain_data,
+	            almanah_test_vfs_plain_teardown);
 	g_test_add ("/Almanah/vfs/encrypted",
-		    struct AlmanahTestVfsFixture,
-		    NULL,
-		    almanah_test_vfs_enc_setup,
-		    almanah_test_vfs_encrypted,
-		    almanah_test_vfs_enc_teardown);
+	            struct AlmanahTestVfsFixture,
+	            NULL,
+	            almanah_test_vfs_enc_setup,
+	            almanah_test_vfs_encrypted,
+	            almanah_test_vfs_enc_teardown);
 
-	return g_test_run();
+	return g_test_run ();
 }

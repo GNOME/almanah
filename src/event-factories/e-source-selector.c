@@ -91,9 +91,9 @@ typedef GtkCellRendererToggleClass ECellRendererSafeToggleClass;
 GType e_cell_renderer_safe_toggle_get_type (void);
 
 G_DEFINE_TYPE (
-	ECellRendererSafeToggle,
-	e_cell_renderer_safe_toggle,
-	GTK_TYPE_CELL_RENDERER_TOGGLE)
+    ECellRendererSafeToggle,
+    e_cell_renderer_safe_toggle,
+    GTK_TYPE_CELL_RENDERER_TOGGLE)
 
 static gboolean
 safe_toggle_activate (GtkCellRenderer *cell,
@@ -111,7 +111,7 @@ safe_toggle_activate (GtkCellRenderer *cell,
 
 		region = cairo_region_create_rectangle (cell_area);
 		point_in_cell_area = cairo_region_contains_point (
-			region, event->button.x, event->button.y);
+		    region, event->button.x, event->button.y);
 		cairo_region_destroy (region);
 	}
 
@@ -119,7 +119,8 @@ safe_toggle_activate (GtkCellRenderer *cell,
 		return FALSE;
 
 	return GTK_CELL_RENDERER_CLASS (
-		e_cell_renderer_safe_toggle_parent_class)->activate (
+		   e_cell_renderer_safe_toggle_parent_class)
+	    ->activate (
 		cell, event, widget, path, background_area, cell_area, flags);
 }
 
@@ -202,9 +203,9 @@ source_selector_write_idle_cb (gpointer user_data)
 
 	/* XXX This operation is not cancellable. */
 	e_source_write (
-		async_context->source, NULL,
-		source_selector_write_done_cb,
-		g_object_ref (async_context->selector));
+	    async_context->source, NULL,
+	    source_selector_write_done_cb,
+	    g_object_ref (async_context->selector));
 
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (async_context->selector);
 
@@ -273,12 +274,12 @@ source_selector_update_row (ESourceSelector *selector,
 		gboolean show_toggle;
 
 		show_color =
-			E_IS_SOURCE_SELECTABLE (extension) &&
-			e_source_selector_get_show_colors (selector);
+		    E_IS_SOURCE_SELECTABLE (extension) &&
+		    e_source_selector_get_show_colors (selector);
 
 		if (show_color)
 			color_spec = e_source_selectable_get_color (
-				E_SOURCE_SELECTABLE (extension));
+			    E_SOURCE_SELECTABLE (extension));
 
 		if (color_spec != NULL && *color_spec != '\0')
 			show_color = gdk_rgba_parse (&color, color_spec);
@@ -286,26 +287,26 @@ source_selector_update_row (ESourceSelector *selector,
 		show_toggle = e_source_selector_get_show_toggles (selector);
 
 		gtk_tree_store_set (
-			GTK_TREE_STORE (model), &iter,
-			COLUMN_NAME, display_name,
-			COLUMN_COLOR, show_color ? &color : NULL,
-			COLUMN_ACTIVE, selected,
-			COLUMN_SHOW_COLOR, show_color,
-			COLUMN_SHOW_TOGGLE, show_toggle,
-			COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
-			COLUMN_SOURCE, source,
-			-1);
+		    GTK_TREE_STORE (model), &iter,
+		    COLUMN_NAME, display_name,
+		    COLUMN_COLOR, show_color ? &color : NULL,
+		    COLUMN_ACTIVE, selected,
+		    COLUMN_SHOW_COLOR, show_color,
+		    COLUMN_SHOW_TOGGLE, show_toggle,
+		    COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL,
+		    COLUMN_SOURCE, source,
+		    -1);
 	} else {
 		gtk_tree_store_set (
-			GTK_TREE_STORE (model), &iter,
-			COLUMN_NAME, display_name,
-			COLUMN_COLOR, NULL,
-			COLUMN_ACTIVE, FALSE,
-			COLUMN_SHOW_COLOR, FALSE,
-			COLUMN_SHOW_TOGGLE, FALSE,
-			COLUMN_WEIGHT, PANGO_WEIGHT_BOLD,
-			COLUMN_SOURCE, source,
-			-1);
+		    GTK_TREE_STORE (model), &iter,
+		    COLUMN_NAME, display_name,
+		    COLUMN_COLOR, NULL,
+		    COLUMN_ACTIVE, FALSE,
+		    COLUMN_SHOW_COLOR, FALSE,
+		    COLUMN_SHOW_TOGGLE, FALSE,
+		    COLUMN_WEIGHT, PANGO_WEIGHT_BOLD,
+		    COLUMN_SOURCE, source,
+		    -1);
 	}
 }
 
@@ -331,7 +332,7 @@ source_selector_traverse (GNode *node,
 
 	if (node->parent != NULL && node->parent->data != NULL)
 		reference = g_hash_table_lookup (
-			source_index, node->parent->data);
+		    source_index, node->parent->data);
 
 	if (gtk_tree_row_reference_valid (reference)) {
 		GtkTreeIter parent;
@@ -399,8 +400,7 @@ source_selector_build_model (ESourceSelector *selector)
 
 	/* Save expanded sources to restore later. */
 	gtk_tree_view_map_expanded_rows (
-		tree_view, (GtkTreeViewMappingFunc)
-		source_selector_save_expanded, &queue);
+	    tree_view, (GtkTreeViewMappingFunc) source_selector_save_expanded, &queue);
 
 	model = gtk_tree_view_get_model (tree_view);
 	gtk_tree_store_clear (GTK_TREE_STORE (model));
@@ -410,9 +410,9 @@ source_selector_build_model (ESourceSelector *selector)
 	root = e_source_registry_build_display_tree (registry, extension_name);
 
 	g_node_traverse (
-		root, G_PRE_ORDER, G_TRAVERSE_ALL, -1,
-		(GNodeTraverseFunc) source_selector_traverse,
-		selector);
+	    root, G_PRE_ORDER, G_TRAVERSE_ALL, -1,
+	    (GNodeTraverseFunc) source_selector_traverse,
+	    selector);
 
 	e_source_registry_free_display_tree (root);
 
@@ -445,7 +445,7 @@ source_selector_build_model (ESourceSelector *selector)
 	selected = e_source_selector_ref_primary_selection (selector);
 	if (selected == NULL) {
 		selected = e_source_registry_ref_default_for_extension_name (
-			registry, extension_name);
+		    registry, extension_name);
 		e_source_selector_set_primary_selection (selector, selected);
 	}
 	g_object_unref (selected);
@@ -690,32 +690,32 @@ source_selector_set_property (GObject *object,
 	switch (property_id) {
 		case PROP_EXTENSION_NAME:
 			source_selector_set_extension_name (
-				E_SOURCE_SELECTOR (object),
-				g_value_get_string (value));
+			    E_SOURCE_SELECTOR (object),
+			    g_value_get_string (value));
 			return;
 
 		case PROP_PRIMARY_SELECTION:
 			e_source_selector_set_primary_selection (
-				E_SOURCE_SELECTOR (object),
-				g_value_get_object (value));
+			    E_SOURCE_SELECTOR (object),
+			    g_value_get_object (value));
 			return;
 
 		case PROP_REGISTRY:
 			source_selector_set_registry (
-				E_SOURCE_SELECTOR (object),
-				g_value_get_object (value));
+			    E_SOURCE_SELECTOR (object),
+			    g_value_get_object (value));
 			return;
 
 		case PROP_SHOW_COLORS:
 			e_source_selector_set_show_colors (
-				E_SOURCE_SELECTOR (object),
-				g_value_get_boolean (value));
+			    E_SOURCE_SELECTOR (object),
+			    g_value_get_boolean (value));
 			return;
 
 		case PROP_SHOW_TOGGLES:
 			e_source_selector_set_show_toggles (
-				E_SOURCE_SELECTOR (object),
-				g_value_get_boolean (value));
+			    E_SOURCE_SELECTOR (object),
+			    g_value_get_boolean (value));
 			return;
 	}
 
@@ -731,36 +731,36 @@ source_selector_get_property (GObject *object,
 	switch (property_id) {
 		case PROP_EXTENSION_NAME:
 			g_value_set_string (
-				value,
-				e_source_selector_get_extension_name (
+			    value,
+			    e_source_selector_get_extension_name (
 				E_SOURCE_SELECTOR (object)));
 			return;
 
 		case PROP_PRIMARY_SELECTION:
 			g_value_take_object (
-				value,
-				e_source_selector_ref_primary_selection (
+			    value,
+			    e_source_selector_ref_primary_selection (
 				E_SOURCE_SELECTOR (object)));
 			return;
 
 		case PROP_REGISTRY:
 			g_value_set_object (
-				value,
-				e_source_selector_get_registry (
+			    value,
+			    e_source_selector_get_registry (
 				E_SOURCE_SELECTOR (object)));
 			return;
 
 		case PROP_SHOW_COLORS:
 			g_value_set_boolean (
-				value,
-				e_source_selector_get_show_colors (
+			    value,
+			    e_source_selector_get_show_colors (
 				E_SOURCE_SELECTOR (object)));
 			return;
 
 		case PROP_SHOW_TOGGLES:
 			g_value_set_boolean (
-				value,
-				e_source_selector_get_show_toggles (
+			    value,
+			    e_source_selector_get_show_toggles (
 				E_SOURCE_SELECTOR (object)));
 			return;
 	}
@@ -775,9 +775,9 @@ source_selector_dispose (GObject *object)
 
 	if (priv->registry != NULL) {
 		g_signal_handlers_disconnect_matched (
-			priv->registry,
-			G_SIGNAL_MATCH_DATA,
-			0, 0, NULL, NULL, object);
+		    priv->registry,
+		    G_SIGNAL_MATCH_DATA,
+		    0, 0, NULL, NULL, object);
 		g_object_unref (priv->registry);
 		priv->registry = NULL;
 	}
@@ -818,24 +818,24 @@ source_selector_constructed (GObject *object)
 	registry = e_source_selector_get_registry (selector);
 
 	g_signal_connect (
-		registry, "source-added",
-		G_CALLBACK (source_selector_source_added_cb), selector);
+	    registry, "source-added",
+	    G_CALLBACK (source_selector_source_added_cb), selector);
 
 	g_signal_connect (
-		registry, "source-changed",
-		G_CALLBACK (source_selector_source_changed_cb), selector);
+	    registry, "source-changed",
+	    G_CALLBACK (source_selector_source_changed_cb), selector);
 
 	g_signal_connect (
-		registry, "source-removed",
-		G_CALLBACK (source_selector_source_removed_cb), selector);
+	    registry, "source-removed",
+	    G_CALLBACK (source_selector_source_removed_cb), selector);
 
 	g_signal_connect (
-		registry, "source-enabled",
-		G_CALLBACK (source_selector_source_enabled_cb), selector);
+	    registry, "source-enabled",
+	    G_CALLBACK (source_selector_source_enabled_cb), selector);
 
 	g_signal_connect (
-		registry, "source-disabled",
-		G_CALLBACK (source_selector_source_disabled_cb), selector);
+	    registry, "source-disabled",
+	    G_CALLBACK (source_selector_source_disabled_cb), selector);
 
 	source_selector_build_model (selector);
 
@@ -869,8 +869,8 @@ source_selector_button_press_event (GtkWidget *widget,
 		goto chainup;
 
 	row_exists = gtk_tree_view_get_path_at_pos (
-		GTK_TREE_VIEW (widget), event->x, event->y,
-		&path, NULL, NULL, NULL);
+	    GTK_TREE_VIEW (widget), event->x, event->y,
+	    &path, NULL, NULL, NULL);
 
 	/* Get the source/group */
 	if (row_exists) {
@@ -894,7 +894,7 @@ source_selector_button_press_event (GtkWidget *widget,
 
 	if (right_click)
 		g_signal_emit (
-			widget, signals[POPUP_EVENT], 0, source, event, &res);
+		    widget, signals[POPUP_EVENT], 0, source, event, &res);
 
 	if (triple_click) {
 		e_source_selector_select_exclusive (selector, source);
@@ -1050,9 +1050,9 @@ source_selector_drag_data_received (GtkWidget *widget,
 		goto exit;
 
 	g_signal_emit (
-		widget, signals[DATA_DROPPED], 0, selection_data,
-		source, gdk_drag_context_get_selected_action (context),
-		info, &success);
+	    widget, signals[DATA_DROPPED], 0, selection_data,
+	    source, gdk_drag_context_get_selected_action (context),
+	    info, &success);
 
 exit:
 	if (path != NULL)
@@ -1135,7 +1135,7 @@ source_selector_row_expanded (GtkTreeView *tree_view,
 	model = gtk_tree_view_get_model (tree_view);
 
 	child_path = gtk_tree_row_reference_get_path (
-		priv->saved_primary_selection);
+	    priv->saved_primary_selection);
 	gtk_tree_model_get_iter (model, &child_iter, child_path);
 
 	if (gtk_tree_store_is_ancestor (GTK_TREE_STORE (model), iter, &child_iter)) {
@@ -1219,7 +1219,7 @@ e_source_selector_class_init (ESourceSelectorClass *class)
 	object_class = G_OBJECT_CLASS (class);
 	object_class->set_property = source_selector_set_property;
 	object_class->get_property = source_selector_get_property;
-	object_class->dispose  = source_selector_dispose;
+	object_class->dispose = source_selector_dispose;
 	object_class->finalize = source_selector_finalize;
 	object_class->constructed = source_selector_constructed;
 
@@ -1239,100 +1239,100 @@ e_source_selector_class_init (ESourceSelectorClass *class)
 	class->set_source_selected = source_selector_set_source_selected;
 
 	g_object_class_install_property (
-		object_class,
-		PROP_EXTENSION_NAME,
-		g_param_spec_string (
-			"extension-name",
-			NULL,
-			NULL,
-			NULL,
-			G_PARAM_READWRITE |
-			G_PARAM_CONSTRUCT_ONLY |
-			G_PARAM_STATIC_STRINGS));
+	    object_class,
+	    PROP_EXTENSION_NAME,
+	    g_param_spec_string (
+		"extension-name",
+		NULL,
+		NULL,
+		NULL,
+		G_PARAM_READWRITE |
+		    G_PARAM_CONSTRUCT_ONLY |
+		    G_PARAM_STATIC_STRINGS));
 
 	g_object_class_install_property (
-		object_class,
-		PROP_PRIMARY_SELECTION,
-		g_param_spec_object (
-			"primary-selection",
-			NULL,
-			NULL,
-			E_TYPE_SOURCE,
-			G_PARAM_READWRITE |
-			G_PARAM_STATIC_STRINGS));
+	    object_class,
+	    PROP_PRIMARY_SELECTION,
+	    g_param_spec_object (
+		"primary-selection",
+		NULL,
+		NULL,
+		E_TYPE_SOURCE,
+		G_PARAM_READWRITE |
+		    G_PARAM_STATIC_STRINGS));
 
 	g_object_class_install_property (
-		object_class,
-		PROP_REGISTRY,
-		g_param_spec_object (
-			"registry",
-			NULL,
-			NULL,
-			E_TYPE_SOURCE_REGISTRY,
-			G_PARAM_READWRITE |
-			G_PARAM_CONSTRUCT_ONLY |
-			G_PARAM_STATIC_STRINGS));
+	    object_class,
+	    PROP_REGISTRY,
+	    g_param_spec_object (
+		"registry",
+		NULL,
+		NULL,
+		E_TYPE_SOURCE_REGISTRY,
+		G_PARAM_READWRITE |
+		    G_PARAM_CONSTRUCT_ONLY |
+		    G_PARAM_STATIC_STRINGS));
 
 	g_object_class_install_property (
-		object_class,
-		PROP_SHOW_COLORS,
-		g_param_spec_boolean (
-			"show-colors",
-			NULL,
-			NULL,
-			TRUE,
-			G_PARAM_READWRITE |
-			G_PARAM_STATIC_STRINGS));
+	    object_class,
+	    PROP_SHOW_COLORS,
+	    g_param_spec_boolean (
+		"show-colors",
+		NULL,
+		NULL,
+		TRUE,
+		G_PARAM_READWRITE |
+		    G_PARAM_STATIC_STRINGS));
 
 	g_object_class_install_property (
-		object_class,
-		PROP_SHOW_TOGGLES,
-		g_param_spec_boolean (
-			"show-toggles",
-			NULL,
-			NULL,
-			TRUE,
-			G_PARAM_READWRITE |
-			G_PARAM_STATIC_STRINGS));
+	    object_class,
+	    PROP_SHOW_TOGGLES,
+	    g_param_spec_boolean (
+		"show-toggles",
+		NULL,
+		NULL,
+		TRUE,
+		G_PARAM_READWRITE |
+		    G_PARAM_STATIC_STRINGS));
 
 	signals[SELECTION_CHANGED] = g_signal_new (
-		"selection-changed",
-		G_OBJECT_CLASS_TYPE (object_class),
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (ESourceSelectorClass, selection_changed),
-		NULL, NULL, NULL,
-		G_TYPE_NONE, 0);
+	    "selection-changed",
+	    G_OBJECT_CLASS_TYPE (object_class),
+	    G_SIGNAL_RUN_LAST,
+	    G_STRUCT_OFFSET (ESourceSelectorClass, selection_changed),
+	    NULL, NULL, NULL,
+	    G_TYPE_NONE, 0);
 
 	/* XXX Consider this signal deprecated.  Connect
 	 *     to "notify::primary-selection" instead. */
 	signals[PRIMARY_SELECTION_CHANGED] = g_signal_new (
-		"primary-selection-changed",
-		G_OBJECT_CLASS_TYPE (object_class),
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (ESourceSelectorClass, primary_selection_changed),
-		NULL, NULL, NULL,
-		G_TYPE_NONE, 0);
+	    "primary-selection-changed",
+	    G_OBJECT_CLASS_TYPE (object_class),
+	    G_SIGNAL_RUN_LAST,
+	    G_STRUCT_OFFSET (ESourceSelectorClass, primary_selection_changed),
+	    NULL, NULL, NULL,
+	    G_TYPE_NONE, 0);
 
 	signals[POPUP_EVENT] = g_signal_new (
-		"popup-event",
-		G_OBJECT_CLASS_TYPE (object_class),
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (ESourceSelectorClass, popup_event),
-		ess_bool_accumulator, NULL, NULL,
-		G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT,
-		GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+	    "popup-event",
+	    G_OBJECT_CLASS_TYPE (object_class),
+	    G_SIGNAL_RUN_LAST,
+	    G_STRUCT_OFFSET (ESourceSelectorClass, popup_event),
+	    ess_bool_accumulator, NULL, NULL,
+	    G_TYPE_BOOLEAN, 2, G_TYPE_OBJECT,
+	    GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
 	signals[DATA_DROPPED] = g_signal_new (
-		"data-dropped",
-		G_OBJECT_CLASS_TYPE (object_class),
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (ESourceSelectorClass, data_dropped),
-		NULL, NULL, NULL,
-		G_TYPE_BOOLEAN, 4,
-		GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE,
-		E_TYPE_SOURCE,
-		GDK_TYPE_DRAG_ACTION,
-		G_TYPE_UINT);
+	    "data-dropped",
+	    G_OBJECT_CLASS_TYPE (object_class),
+	    G_SIGNAL_RUN_LAST,
+	    G_STRUCT_OFFSET (ESourceSelectorClass, data_dropped),
+	    NULL, NULL, NULL,
+	    G_TYPE_BOOLEAN, 4,
+	    GTK_TYPE_SELECTION_DATA | G_SIGNAL_TYPE_STATIC_SCOPE,
+	    E_TYPE_SOURCE,
+	    GDK_TYPE_DRAG_ACTION,
+	    G_TYPE_UINT);
 }
 
 static void
@@ -1347,10 +1347,10 @@ e_source_selector_init (ESourceSelector *selector)
 	GtkTreeView *tree_view;
 
 	pending_writes = g_hash_table_new_full (
-		(GHashFunc) g_direct_hash,
-		(GEqualFunc) g_direct_equal,
-		(GDestroyNotify) g_object_unref,
-		(GDestroyNotify) pending_writes_destroy_source);
+	    (GHashFunc) g_direct_hash,
+	    (GEqualFunc) g_direct_equal,
+	    (GDestroyNotify) g_object_unref,
+	    (GDestroyNotify) pending_writes_destroy_source);
 
 	priv->pending_writes = pending_writes;
 
@@ -1369,20 +1369,20 @@ e_source_selector_init (ESourceSelector *selector)
 	priv->show_toggles = TRUE;
 
 	priv->source_index = g_hash_table_new_full (
-		(GHashFunc) e_source_hash,
-		(GEqualFunc) e_source_equal,
-		(GDestroyNotify) g_object_unref,
-		(GDestroyNotify) gtk_tree_row_reference_free);
+	    (GHashFunc) e_source_hash,
+	    (GEqualFunc) e_source_equal,
+	    (GDestroyNotify) g_object_unref,
+	    (GDestroyNotify) gtk_tree_row_reference_free);
 
 	tree_store = gtk_tree_store_new (
-		NUM_COLUMNS,
-		G_TYPE_STRING,		/* COLUMN_NAME */
-		GDK_TYPE_RGBA,		/* COLUMN_COLOR */
-		G_TYPE_BOOLEAN,		/* COLUMN_ACTIVE */
-		G_TYPE_BOOLEAN,		/* COLUMN_SHOW_COLOR */
-		G_TYPE_BOOLEAN,		/* COLUMN_SHOW_TOGGLE */
-		G_TYPE_INT,		/* COLUMN_WEIGHT */
-		E_TYPE_SOURCE);		/* COLUMN_SOURCE */
+	    NUM_COLUMNS,
+	    G_TYPE_STRING,  /* COLUMN_NAME */
+	    GDK_TYPE_RGBA,  /* COLUMN_COLOR */
+	    G_TYPE_BOOLEAN, /* COLUMN_ACTIVE */
+	    G_TYPE_BOOLEAN, /* COLUMN_SHOW_COLOR */
+	    G_TYPE_BOOLEAN, /* COLUMN_SHOW_TOGGLE */
+	    G_TYPE_INT,     /* COLUMN_WEIGHT */
+	    E_TYPE_SOURCE); /* COLUMN_SOURCE */
 
 	gtk_tree_view_set_model (tree_view, GTK_TREE_MODEL (tree_store));
 
@@ -1391,46 +1391,45 @@ e_source_selector_init (ESourceSelector *selector)
 
 	renderer = e_cell_renderer_color_new ();
 	g_object_set (
-		G_OBJECT (renderer), "mode",
-		GTK_CELL_RENDERER_MODE_ACTIVATABLE, NULL);
+	    G_OBJECT (renderer), "mode",
+	    GTK_CELL_RENDERER_MODE_ACTIVATABLE, NULL);
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_add_attribute (
-		column, renderer, "color", COLUMN_COLOR);
+	    column, renderer, "color", COLUMN_COLOR);
 	gtk_tree_view_column_add_attribute (
-		column, renderer, "visible", COLUMN_SHOW_COLOR);
+	    column, renderer, "visible", COLUMN_SHOW_COLOR);
 
 	renderer = e_cell_renderer_safe_toggle_new ();
 	gtk_tree_view_column_pack_start (column, renderer, FALSE);
 	gtk_tree_view_column_add_attribute (
-		column, renderer, "active", COLUMN_ACTIVE);
+	    column, renderer, "active", COLUMN_ACTIVE);
 	gtk_tree_view_column_add_attribute (
-		column, renderer, "visible", COLUMN_SHOW_TOGGLE);
+	    column, renderer, "visible", COLUMN_SHOW_TOGGLE);
 	g_signal_connect (
-		renderer, "toggled",
-		G_CALLBACK (cell_toggled_callback), selector);
+	    renderer, "toggled",
+	    G_CALLBACK (cell_toggled_callback), selector);
 
 	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (
-		G_OBJECT (renderer),
-		"ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	    G_OBJECT (renderer),
+	    "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 	g_signal_connect_swapped (
-		renderer, "edited",
-		G_CALLBACK (text_cell_edited_cb), selector);
+	    renderer, "edited",
+	    G_CALLBACK (text_cell_edited_cb), selector);
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
 	gtk_tree_view_column_set_attributes (
-		column, renderer,
-		"text", COLUMN_NAME,
-		"weight", COLUMN_WEIGHT,
-		NULL);
+	    column, renderer,
+	    "text", COLUMN_NAME,
+	    "weight", COLUMN_WEIGHT,
+	    NULL);
 
 	selection = gtk_tree_view_get_selection (tree_view);
 	gtk_tree_selection_set_select_function (
-		selection, (GtkTreeSelectionFunc)
-		selection_func, selector, NULL);
+	    selection, (GtkTreeSelectionFunc) selection_func, selector, NULL);
 	g_signal_connect_object (
-		selection, "changed",
-		G_CALLBACK (selection_changed_callback),
-		G_OBJECT (selector), 0);
+	    selection, "changed",
+	    G_CALLBACK (selection_changed_callback),
+	    G_OBJECT (selector), 0);
 
 	gtk_tree_view_set_headers_visible (tree_view, FALSE);
 }
@@ -1454,8 +1453,8 @@ e_source_selector_new (ESourceRegistry *registry,
 	g_return_val_if_fail (extension_name != NULL, NULL);
 
 	return g_object_new (
-		E_TYPE_SOURCE_SELECTOR, "registry", registry,
-		"extension-name", extension_name, NULL);
+	    E_TYPE_SOURCE_SELECTOR, "registry", registry,
+	    "extension-name", extension_name, NULL);
 }
 
 /**
@@ -1576,7 +1575,7 @@ e_source_selector_get_show_toggles (ESourceSelector *selector)
  **/
 void
 e_source_selector_set_show_toggles (ESourceSelector *selector,
-                                   gboolean show_toggles)
+                                    gboolean show_toggles)
 {
 	g_return_if_fail (E_IS_SOURCE_SELECTOR (selector));
 
@@ -1641,9 +1640,9 @@ e_source_selector_get_selection (ESourceSelector *selector)
 	closure.list = NULL;
 
 	gtk_tree_model_foreach (
-		gtk_tree_view_get_model (GTK_TREE_VIEW (selector)),
-		(GtkTreeModelForeachFunc) source_selector_check_selected,
-		&closure);
+	    gtk_tree_view_get_model (GTK_TREE_VIEW (selector)),
+	    (GtkTreeModelForeachFunc) source_selector_check_selected,
+	    &closure);
 
 	return g_slist_reverse (closure.list);
 }
@@ -1872,7 +1871,7 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 	g_object_set (renderer, "editable", TRUE, NULL);
 	gtk_tree_view_expand_to_path (tree_view, path);
 	gtk_tree_view_set_cursor_on_cell (
-		tree_view, path, column, renderer, TRUE);
+	    tree_view, path, column, renderer, TRUE);
 	g_object_set (renderer, "editable", FALSE, NULL);
 
 	gtk_tree_path_free (path);
@@ -1926,7 +1925,7 @@ e_source_selector_ref_primary_selection (ESourceSelector *selector)
 
 	if (!have_iter)
 		have_iter = gtk_tree_selection_get_selected (
-			selection, NULL, &iter);
+		    selection, NULL, &iter);
 
 	if (!have_iter)
 		return NULL;
@@ -1991,12 +1990,12 @@ e_source_selector_set_primary_selection (ESourceSelector *selector,
 
 	/* We block the signal because this all needs to be atomic */
 	g_signal_handlers_block_matched (
-		selection, G_SIGNAL_MATCH_FUNC,
-		0, 0, NULL, selection_changed_callback, NULL);
+	    selection, G_SIGNAL_MATCH_FUNC,
+	    0, 0, NULL, selection_changed_callback, NULL);
 	gtk_tree_selection_unselect_all (selection);
 	g_signal_handlers_unblock_matched (
-		selection, G_SIGNAL_MATCH_FUNC,
-		0, 0, NULL, selection_changed_callback, NULL);
+	    selection, G_SIGNAL_MATCH_FUNC,
+	    0, 0, NULL, selection_changed_callback, NULL);
 
 	clear_saved_primary_selection (selector);
 
@@ -2009,7 +2008,7 @@ e_source_selector_set_primary_selection (ESourceSelector *selector,
 		gtk_tree_selection_select_path (selection, child_path);
 	} else {
 		priv->saved_primary_selection =
-			gtk_tree_row_reference_copy (reference);
+		    gtk_tree_row_reference_copy (reference);
 		g_signal_emit (selector, signals[PRIMARY_SELECTION_CHANGED], 0);
 		g_object_notify (G_OBJECT (selector), "primary-selection");
 	}
@@ -2096,16 +2095,15 @@ e_source_selector_queue_write (ESourceSelector *selector,
 	 */
 	idle_source = g_idle_source_new ();
 	g_hash_table_insert (
-		pending_writes,
-		g_object_ref (source),
-		g_source_ref (idle_source));
+	    pending_writes,
+	    g_object_ref (source),
+	    g_source_ref (idle_source));
 	g_source_set_callback (
-		idle_source,
-		source_selector_write_idle_cb,
-		async_context,
-		(GDestroyNotify) async_context_free);
+	    idle_source,
+	    source_selector_write_idle_cb,
+	    async_context,
+	    (GDestroyNotify) async_context_free);
 	g_source_set_priority (idle_source, G_PRIORITY_HIGH_IDLE);
 	g_source_attach (idle_source, main_context);
 	g_source_unref (idle_source);
 }
-

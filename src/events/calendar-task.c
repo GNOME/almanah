@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,8 +19,8 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-#include "event.h"
 #include "calendar-task.h"
+#include "event.h"
 #include "interface.h"
 
 static void almanah_calendar_task_event_finalize (GObject *object);
@@ -48,8 +48,8 @@ almanah_calendar_task_event_class_init (AlmanahCalendarTaskEventClass *klass)
 
 	gobject_class->finalize = almanah_calendar_task_event_finalize;
 
-	event_class->name = _("Calendar Task");
-	event_class->description = _("A task on an Evolution calendar.");
+	event_class->name = _ ("Calendar Task");
+	event_class->description = _ ("A task on an Evolution calendar.");
 	event_class->icon_name = "evolution-tasks";
 
 	event_class->format_value = almanah_calendar_task_event_format_value;
@@ -85,9 +85,9 @@ almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, time_t 
 	priv->uid = g_strdup (uid);
 	priv->summary = g_strdup (summary);
 
-	localtime_r ((const time_t*) &(start_time), &date_tm);
+	localtime_r ((const time_t *) &(start_time), &date_tm);
 	/* Translators: This is a time string with the format hh:mm */
-	priv->time = g_strdup_printf (_("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
+	priv->time = g_strdup_printf (_ ("%.2d:%.2d"), date_tm.tm_hour, date_tm.tm_min);
 
 	return event;
 }
@@ -125,8 +125,8 @@ almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window)
 
 	if (retval == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (parent_window,
-							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-							    _("Error launching Evolution"));
+		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+		                                            _ ("Error launching Evolution"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

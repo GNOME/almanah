@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,9 +21,9 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "search-dialog.h"
 #include "interface.h"
 #include "main-window.h"
+#include "search-dialog.h"
 
 static void sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search_dialog);
 static void sd_results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkWidget *button);
@@ -65,7 +65,7 @@ almanah_search_dialog_init (AlmanahSearchDialog *self)
 {
 	g_signal_connect (self, "response", G_CALLBACK (sd_response_cb), self);
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
-	gtk_window_set_title (GTK_WINDOW (self), _("Search"));
+	gtk_window_set_title (GTK_WINDOW (self), _ ("Search"));
 }
 
 AlmanahSearchDialog *
@@ -85,13 +85,13 @@ almanah_search_dialog_new (void)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-							    _("UI data could not be loaded"));
+		                                            GTK_DIALOG_MODAL,
+		                                            GTK_MESSAGE_ERROR,
+		                                            GTK_BUTTONS_OK,
+		                                            _ ("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -126,7 +126,7 @@ almanah_search_dialog_new (void)
 	priv->sd_cancel_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_cancel_button"));
 
 	g_signal_connect (priv->sd_results_selection, "changed", G_CALLBACK (sd_results_selection_changed_cb),
-			  gtk_builder_get_object (builder, "almanah_sd_view_button"));
+	                  gtk_builder_get_object (builder, "almanah_sd_view_button"));
 
 	gtk_widget_grab_default (priv->sd_search_button);
 
@@ -178,7 +178,7 @@ sd_search_progress_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *ent
 
 	almanah_entry_get_date (entry, &date);
 	/* Translators: This is a strftime()-format string for the dates displayed in search results. */
-	g_date_strftime (formatted_date, sizeof (formatted_date), _("%A, %e %B %Y"), &date);
+	g_date_strftime (formatted_date, sizeof (formatted_date), _ ("%A, %e %B %Y"), &date);
 
 	gtk_list_store_append (priv->sd_results_store, &tree_iter);
 	gtk_list_store_set (priv->sd_results_store, &tree_iter,
@@ -219,10 +219,10 @@ sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, A
 	gtk_widget_set_sensitive (priv->sd_search_button, TRUE);
 
 	if (error != NULL && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == TRUE) {
-		gtk_label_set_text (priv->sd_results_label, _("Search canceled."));
+		gtk_label_set_text (priv->sd_results_label, _ ("Search canceled."));
 	} else if (error != NULL) {
 		/* Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message. */
-		gchar *error_message = g_strdup_printf (_("Error: %s"), error->message);
+		gchar *error_message = g_strdup_printf (_ ("Error: %s"), error->message);
 		gtk_label_set_text (priv->sd_results_label, error_message);
 		g_free (error_message);
 	} else {
@@ -235,8 +235,8 @@ sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, A
 	g_clear_error (&error);
 
 	/* Tidy up */
-	g_object_remove_weak_pointer (G_OBJECT (search_dialog), (gpointer*) search_dialog_weak_pointer);
-	g_slice_free (AlmanahSearchDialog*, search_dialog_weak_pointer);
+	g_object_remove_weak_pointer (G_OBJECT (search_dialog), (gpointer *) search_dialog_weak_pointer);
+	g_slice_free (AlmanahSearchDialog *, search_dialog_weak_pointer);
 
 	g_object_unref (priv->sd_cancellable);
 	priv->sd_cancellable = NULL;
@@ -276,7 +276,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 
 	/* Change UI to show the status */
 	gtk_widget_show (GTK_WIDGET (priv->sd_results_alignment));
-	gtk_label_set_text (priv->sd_results_label, _("Searching…"));
+	gtk_label_set_text (priv->sd_results_label, _ ("Searching…"));
 	gtk_widget_show (GTK_WIDGET (priv->sd_search_spinner));
 	gtk_spinner_start (priv->sd_search_spinner);
 
@@ -285,9 +285,9 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	storage_manager = almanah_application_dup_storage_manager (application);
 
 	/* Launch the search */
-	search_dialog_weak_pointer = g_slice_new (AlmanahSearchDialog*);
+	search_dialog_weak_pointer = g_slice_new (AlmanahSearchDialog *);
 	*search_dialog_weak_pointer = search_dialog;
-	g_object_add_weak_pointer (G_OBJECT (search_dialog), (gpointer*) search_dialog_weak_pointer);
+	g_object_add_weak_pointer (G_OBJECT (search_dialog), (gpointer *) search_dialog_weak_pointer);
 
 	almanah_storage_manager_search_entries_async (storage_manager, search_string, priv->sd_cancellable,
 	                                              (AlmanahStorageManagerSearchCallback) sd_search_progress_cb,
@@ -310,10 +310,10 @@ select_date (AlmanahSearchDialog *self, GtkTreeModel *model, GtkTreeIter *iter)
 	GDate date;
 
 	gtk_tree_model_get (model, iter,
-			    0, &day,
-			    1, &month,
-			    2, &year,
-			    -1);
+	                    0, &day,
+	                    1, &month,
+	                    2, &year,
+	                    -1);
 
 	main_window = ALMANAH_MAIN_WINDOW (gtk_window_get_transient_for (GTK_WINDOW (self)));
 	g_date_set_dmy (&date, day, month, year);
