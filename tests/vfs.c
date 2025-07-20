@@ -119,7 +119,7 @@ almanah_test_vfs_enc_setup (struct AlmanahTestVfsFixture *fixture, __attribute__
 	g_assert(gpgme_key_result);
 
 	fixture->key_fpr = g_strdup(gpgme_key_result->fpr);
-	encryption_key = g_strdup_printf ("opengpg:%s", gpgme_key_result->fpr);
+	encryption_key = g_strdup_printf ("openpgp:%s", gpgme_key_result->fpr);
 	g_settings_set_string (fixture->settings, "encryption-key", encryption_key);
 	g_free (encryption_key);
 
