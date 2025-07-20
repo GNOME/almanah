@@ -395,6 +395,9 @@ cipher_operation_free (CipherOperation *operation)
 	if (operation->npm_closure != NULL)
 		g_free (operation->npm_closure);
 
+	if (operation->gpgme_cbs != NULL)
+		g_free (operation->gpgme_cbs);
+
 	g_free (operation);
 }
 

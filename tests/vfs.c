@@ -51,6 +51,7 @@ almanah_test_setup_memory_gsettings (void)
 	g_object_unref (settings_backend);
 	settings_backend = g_memory_settings_backend_new ();
 	settings = g_settings_new_with_backend ("org.gnome.almanah", settings_backend);
+	g_object_unref (settings_backend);
 
 	return settings;
 }
@@ -139,6 +140,9 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 	if (fixture->statement != NULL)
 		sqlite3_finalize (fixture->statement);
 
+	if (fixture->settings != NULL)
+		g_object_unref (fixture->settings);
+
 	if (fixture->db != NULL)
 		sqlite3_close (fixture->db);
 
@@ -151,6 +155,7 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 			gpgme_error = gpgme_get_key (fixture->gpgme_context, fixture->key_fpr, &key, 1);
 			if (gpgme_error == GPG_ERR_NO_ERROR)
 				gpgme_op_delete (fixture->gpgme_context, key, 1);
+			gpgme_key_release (key);
 			g_free(fixture->key_fpr);
 		}
 		gpgme_release (fixture->gpgme_context);
@@ -185,6 +190,9 @@ almanah_test_vfs_plain_teardown (struct AlmanahTestVfsFixture *fixture, __attrib
 {
 	if (fixture->statement != NULL)
 		sqlite3_finalize (fixture->statement);
+
+	if (fixture->settings != NULL)
+		g_object_unref (fixture->settings);
 
 	if (fixture->db != NULL)
 		sqlite3_close (fixture->db);
