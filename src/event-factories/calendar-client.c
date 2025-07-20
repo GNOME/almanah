@@ -1,4 +1,3 @@
-/* -*- Mode: C; indent-tabs-mode: nil; c-basic-offset: 2; tab-width: 2-*- */
 /*
  * Copyright (C) 2004 Free Software Foundation, Inc.
  * Copyright (C) 2015 Álvaro Peña <alvaropg@gmail.com>
