@@ -19,8 +19,8 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "tag-entry.h"
 #include "storage-manager.h"
+#include "tag-entry.h"
 
 enum {
 	PROP_STORAGE_MANAGER = 1
@@ -35,14 +35,14 @@ struct _AlmanahTagEntry {
 	GtkEntry parent;
 };
 
-static void almanah_tag_entry_get_property	  (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
-static void almanah_tag_entry_set_property	  (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
-static void almanah_tag_entry_finalize		  (GObject *object);
-static void almanah_tag_entry_update_tags	  (AlmanahTagEntry *tag_entry);
+static void almanah_tag_entry_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void almanah_tag_entry_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
+static void almanah_tag_entry_finalize (GObject *object);
+static void almanah_tag_entry_update_tags (AlmanahTagEntry *tag_entry);
 static void almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *natural);
-gboolean    almanah_tag_entry_focus_out_event	  (GtkWidget *self, GdkEventFocus *event);
-gboolean    almanah_tag_entry_focus_in_event	  (GtkWidget *self, GdkEventFocus *event);
-gboolean    almanah_tag_entry_match_selected	  (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
+gboolean almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event);
+gboolean almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event);
+gboolean almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTagEntry, almanah_tag_entry, GTK_TYPE_ENTRY)
 
@@ -61,10 +61,10 @@ almanah_tag_entry_class_init (AlmanahTagEntryClass *klass)
 	gtkwidget_class->get_preferred_width = almanah_tag_entry_get_preferred_width;
 
 	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
-					 g_param_spec_object ("storage-manager",
-							      "Storage manager", "The storage manager whose entries should be listed.",
-							      ALMANAH_TYPE_STORAGE_MANAGER,
-							      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_object ("storage-manager",
+	                                                      "Storage manager", "The storage manager whose entries should be listed.",
+	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
+	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -83,7 +83,7 @@ almanah_tag_entry_init (AlmanahTagEntry *self)
 	g_signal_connect (completion, "match-selected", G_CALLBACK (almanah_tag_entry_match_selected), self);
 
 	self_atk_object = gtk_widget_get_accessible (GTK_WIDGET (self));
-	atk_object_set_name (self_atk_object, _("Tag entry"));
+	atk_object_set_name (self_atk_object, _ ("Tag entry"));
 }
 
 static void
@@ -102,12 +102,12 @@ almanah_tag_entry_get_property (GObject *object, guint property_id, GValue *valu
 	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (ALMANAH_TAG_ENTRY (object));
 
 	switch (property_id) {
-	case PROP_STORAGE_MANAGER:
-		g_value_set_object (value, priv->storage_manager);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
+		case PROP_STORAGE_MANAGER:
+			g_value_set_object (value, priv->storage_manager);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
 	}
 }
 
@@ -117,15 +117,15 @@ almanah_tag_entry_set_property (GObject *object, guint property_id, const GValue
 	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (ALMANAH_TAG_ENTRY (object));
 
 	switch (property_id) {
-	case PROP_STORAGE_MANAGER:
-		g_clear_object (&priv->storage_manager);
-		priv->storage_manager = ALMANAH_STORAGE_MANAGER (g_value_get_object (value));
-		g_object_ref (priv->storage_manager);
-		almanah_tag_entry_update_tags (ALMANAH_TAG_ENTRY (object));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
+		case PROP_STORAGE_MANAGER:
+			g_clear_object (&priv->storage_manager);
+			priv->storage_manager = ALMANAH_STORAGE_MANAGER (g_value_get_object (value));
+			g_object_ref (priv->storage_manager);
+			almanah_tag_entry_update_tags (ALMANAH_TAG_ENTRY (object));
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+			break;
 	}
 }
 
@@ -164,7 +164,7 @@ almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *n
 gboolean
 almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event)
 {
-	gtk_entry_set_text (GTK_ENTRY (self), _("add tag"));
+	gtk_entry_set_text (GTK_ENTRY (self), _ ("add tag"));
 
 	return FALSE;
 }

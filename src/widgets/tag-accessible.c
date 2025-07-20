@@ -25,29 +25,28 @@ struct _AlmanahTagAccessible {
 	GtkWidgetAccessible parent;
 };
 
-static void  almanah_tag_accessible_initialize                    (AtkObject *obj, gpointer data);
+static void almanah_tag_accessible_initialize (AtkObject *obj, gpointer data);
 
-static const gchar* almanah_tag_accessible_get_name               (AtkObject *accessible);
+static const gchar *almanah_tag_accessible_get_name (AtkObject *accessible);
 
-static void  almanah_tag_accessible_atk_action_iface_init         (AtkActionIface *iface);
-gboolean     almanah_tag_accessible_atk_action_do_action          (AtkAction *action, gint i);
-gint         almanah_tag_accessible_atk_action_get_n_actions      (AtkAction *action);
-const gchar* almanah_tag_accessible_atk_action_get_description    (AtkAction *action, gint i);
-const gchar* almanah_tag_accessible_atk_action_get_name           (AtkAction *action, gint i);
-const gchar* almanah_tag_accessible_atk_action_get_keybinding     (AtkAction *action, gint i);
-gboolean     almanah_tag_accessible_atk_action_set_description    (AtkAction *action, gint i, const gchar *desc);
-const gchar* almanah_tag_accessible_atk_action_get_localized_name (AtkAction *action, gint i);
+static void almanah_tag_accessible_atk_action_iface_init (AtkActionIface *iface);
+gboolean almanah_tag_accessible_atk_action_do_action (AtkAction *action, gint i);
+gint almanah_tag_accessible_atk_action_get_n_actions (AtkAction *action);
+const gchar *almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i);
+const gchar *almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i);
+const gchar *almanah_tag_accessible_atk_action_get_keybinding (AtkAction *action, gint i);
+gboolean almanah_tag_accessible_atk_action_set_description (AtkAction *action, gint i, const gchar *desc);
+const gchar *almanah_tag_accessible_atk_action_get_localized_name (AtkAction *action, gint i);
 
-G_DEFINE_TYPE_WITH_CODE (AlmanahTagAccessible, almanah_tag_accessible, GTK_TYPE_WIDGET_ACCESSIBLE,
-			 G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, almanah_tag_accessible_atk_action_iface_init))
+G_DEFINE_TYPE_WITH_CODE (AlmanahTagAccessible, almanah_tag_accessible, GTK_TYPE_WIDGET_ACCESSIBLE, G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, almanah_tag_accessible_atk_action_iface_init))
 
 static void
 almanah_tag_accessible_class_init (AlmanahTagAccessibleClass *klass)
 {
-        AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+	AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
 
 	class->get_name = almanah_tag_accessible_get_name;
-        class->initialize = almanah_tag_accessible_initialize;
+	class->initialize = almanah_tag_accessible_initialize;
 }
 
 static void
@@ -58,13 +57,13 @@ almanah_tag_accessible_init (AlmanahTagAccessible *self)
 static void
 almanah_tag_accessible_initialize (AtkObject *obj, gpointer data)
 {
-        ATK_OBJECT_CLASS (almanah_tag_accessible_parent_class)->initialize (obj, data);
+	ATK_OBJECT_CLASS (almanah_tag_accessible_parent_class)->initialize (obj, data);
 
-        obj->role = ATK_ROLE_DRAWING_AREA;
+	obj->role = ATK_ROLE_DRAWING_AREA;
 }
 
 /* Code adapted from gtklabelaccessible in GTK+ project */
-static const gchar*
+static const gchar *
 almanah_tag_accessible_get_name (AtkObject *accessible)
 {
 	const gchar *name;
@@ -101,10 +100,10 @@ almanah_tag_accessible_atk_action_iface_init (AtkActionIface *iface)
 gboolean
 almanah_tag_accessible_atk_action_do_action (AtkAction *action, gint i)
 {
-        GtkWidget *widget;
+	GtkWidget *widget;
 
-        widget = gtk_accessible_get_widget (GTK_ACCESSIBLE (action));
-        g_return_val_if_fail (widget != NULL, FALSE);
+	widget = gtk_accessible_get_widget (GTK_ACCESSIBLE (action));
+	g_return_val_if_fail (widget != NULL, FALSE);
 
 	if (i == 0) {
 		almanah_tag_remove (ALMANAH_TAG (widget));
@@ -119,7 +118,7 @@ almanah_tag_accessible_atk_action_get_n_actions (AtkAction *action)
 	return 1;
 }
 
-const gchar*
+const gchar *
 almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i)
 {
 	if (i == 0)
@@ -128,7 +127,7 @@ almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i)
 		return NULL;
 }
 
-const gchar*
+const gchar *
 almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i)
 {
 	if (i == 0)
@@ -137,7 +136,7 @@ almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i)
 		return NULL;
 }
 
-const gchar*
+const gchar *
 almanah_tag_accessible_atk_action_get_keybinding (AtkAction *action, gint i)
 {
 	if (i == 0)
@@ -152,11 +151,11 @@ almanah_tag_accessible_atk_action_set_description (AtkAction *action, gint i, co
 	return FALSE;
 }
 
-const gchar*
+const gchar *
 almanah_tag_accessible_atk_action_get_localized_name (AtkAction *action, gint i)
 {
 	if (i == 0)
-		return _("Remove the tag from the entry");
+		return _ ("Remove the tag from the entry");
 	else
 		return NULL;
 }

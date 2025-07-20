@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,12 +19,12 @@
 #ifndef ALMANAH_PREFERENCES_DIALOG_H
 #define ALMANAH_PREFERENCES_DIALOG_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_PREFERENCES_DIALOG     (almanah_preferences_dialog_get_type ())
+#define ALMANAH_TYPE_PREFERENCES_DIALOG (almanah_preferences_dialog_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahPreferencesDialog, almanah_preferences_dialog, ALMANAH, PREFERENCES_DIALOG, GtkDialog)
 

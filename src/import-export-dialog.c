@@ -21,9 +21,9 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+#include "export-operation.h"
 #include "import-export-dialog.h"
 #include "import-operation.h"
-#include "export-operation.h"
 #include "interface.h"
 #include "main-window.h"
 
@@ -73,7 +73,7 @@ almanah_import_export_dialog_class_init (AlmanahImportExportDialogClass *klass)
 	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
 	                                 g_param_spec_object ("storage-manager",
 	                                                      "Storage manager", "The local storage manager: source for export operations and "
-	                                                      "destination for import operations.",
+	                                                                         "destination for import operations.",
 	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
 	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
@@ -161,13 +161,13 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-		                                            _("UI data could not be loaded"));
+		                                            GTK_DIALOG_MODAL,
+		                                            GTK_MESSAGE_ERROR,
+		                                            GTK_BUTTONS_OK,
+		                                            _ ("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -201,15 +201,15 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 
 	/* Set the mode label */
 	gtk_label_set_text_with_mnemonic (GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_mode_label")),
-	                                  (import == TRUE) ? _("Import _mode: ") : _("Export _mode: "));
+	                                  (import == TRUE) ? _ ("Import _mode: ") : _ ("Export _mode: "));
 
 	/* Set the window title */
-	gtk_window_set_title (GTK_WINDOW (import_export_dialog), (import == TRUE) ? _("Import Entries") : _("Export Entries"));
+	gtk_window_set_title (GTK_WINDOW (import_export_dialog), (import == TRUE) ? _ ("Import Entries") : _ ("Export Entries"));
 
 	/* Set the button label. */
 	gtk_button_set_label (GTK_BUTTON (priv->import_export_button),
 	                      /* Translators: These are verbs. */
-	                      (import == TRUE) ? C_("Dialog button", "_Import") : C_("Dialog button", "_Export"));
+	                      (import == TRUE) ? C_ ("Dialog button", "_Import") : C_ ("Dialog button", "_Export"));
 
 	/* Populate the mode combo box */
 	if (import == TRUE)
@@ -245,7 +245,7 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == FALSE) {
 			/* Show an error if the operation wasn't cancelled */
 			GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
-			                                                  GTK_BUTTONS_OK, _("Import failed"));
+			                                                  GTK_BUTTONS_OK, _ ("Import failed"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (error_dialog));
 			gtk_widget_destroy (error_dialog);
@@ -285,7 +285,7 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == FALSE) {
 			/* Show an error if the operation wasn't cancelled */
 			GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
-				                                          GTK_BUTTONS_OK, _("Export failed"));
+			                                                  GTK_BUTTONS_OK, _ ("Export failed"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (error_dialog));
 			gtk_widget_destroy (error_dialog);
@@ -298,8 +298,8 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 
 		gtk_widget_hide (GTK_WIDGET (self));
 		message_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO,
-		                                         GTK_BUTTONS_OK, _("Export successful"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (message_dialog), _("The diary was successfully exported."));
+		                                         GTK_BUTTONS_OK, _ ("Export successful"));
+		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (message_dialog), _ ("The diary was successfully exported."));
 		gtk_dialog_run (GTK_DIALOG (message_dialog));
 		gtk_widget_destroy (message_dialog);
 	}
@@ -344,7 +344,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 		/* Import the entries according to the selected method.*/
 		AlmanahImportOperation *operation;
 		AlmanahImportResultsDialog *results_dialog = almanah_import_results_dialog_new (); /* destroyed in import_cb() */
-		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), GTK_WINDOW (self)); /* this is required in import_cb() */
+		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), GTK_WINDOW (self));     /* this is required in import_cb() */
 
 		operation = almanah_import_operation_new (priv->current_mode, file, priv->storage_manager);
 		almanah_import_operation_run (operation, priv->cancellable, (AlmanahImportProgressCallback) import_progress_cb, results_dialog,
@@ -450,7 +450,7 @@ almanah_import_results_dialog_init (AlmanahImportResultsDialog *self)
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
 	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), TRUE);
-	gtk_window_set_title (GTK_WINDOW (self), _("Import Results"));
+	gtk_window_set_title (GTK_WINDOW (self), _ ("Import Results"));
 	gtk_window_set_default_size (GTK_WINDOW (self), 600, 400);
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 }
@@ -472,13 +472,13 @@ almanah_import_results_dialog_new (void)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-		                                            _("UI data could not be loaded"));
+		                                            GTK_DIALOG_MODAL,
+		                                            GTK_MESSAGE_ERROR,
+		                                            GTK_BUTTONS_OK,
+		                                            _ ("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -547,7 +547,7 @@ almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, cons
 	gchar formatted_date[100];
 
 	/* Translators: This is a strftime()-format string for the dates displayed in import results. */
-	g_date_strftime (formatted_date, sizeof (formatted_date), _("%A, %e %B %Y"), date);
+	g_date_strftime (formatted_date, sizeof (formatted_date), _ ("%A, %e %B %Y"), date);
 
 	gtk_list_store_append (priv->results_store, &iter);
 	gtk_list_store_set (priv->results_store, &iter,

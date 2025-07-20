@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,9 +18,9 @@
 
 #include <glib.h>
 
-#include "event-manager.h"
-#include "event-factory.h"
 #include "enums.h"
+#include "event-factory.h"
+#include "event-manager.h"
 
 typedef struct {
 	AlmanahEventFactoryType type_id;
@@ -55,7 +55,9 @@ enum {
 	LAST_SIGNAL
 };
 
-static guint event_manager_signals[LAST_SIGNAL] = { 0, };
+static guint event_manager_signals[LAST_SIGNAL] = {
+	0,
+};
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEventManager, almanah_event_manager, G_TYPE_OBJECT)
 
@@ -67,11 +69,11 @@ almanah_event_manager_class_init (AlmanahEventManagerClass *klass)
 	gobject_class->dispose = almanah_event_manager_dispose;
 
 	event_manager_signals[SIGNAL_EVENTS_UPDATED] = g_signal_new ("events-updated",
-				G_TYPE_FROM_CLASS (klass),
-				G_SIGNAL_RUN_LAST,
-				0, NULL, NULL,
-				g_cclosure_marshal_VOID__ENUM,
-				G_TYPE_NONE, 1, ALMANAH_TYPE_EVENT_FACTORY_TYPE);
+	                                                             G_TYPE_FROM_CLASS (klass),
+	                                                             G_SIGNAL_RUN_LAST,
+	                                                             0, NULL, NULL,
+	                                                             g_cclosure_marshal_VOID__ENUM,
+	                                                             G_TYPE_NONE, 1, ALMANAH_TYPE_EVENT_FACTORY_TYPE);
 }
 
 static void
@@ -81,7 +83,7 @@ almanah_event_manager_init (AlmanahEventManager *self)
 	guint i;
 
 	/* Set up the list of AlmanahEventFactories */
-	priv->factories = g_new (AlmanahEventFactory*, G_N_ELEMENTS (event_factory_types) + 1);
+	priv->factories = g_new (AlmanahEventFactory *, G_N_ELEMENTS (event_factory_types) + 1);
 	for (i = 0; i < G_N_ELEMENTS (event_factory_types); i++) {
 		priv->factories[i] = g_object_new (event_factory_types[i].type_function (), NULL);
 		g_signal_connect (priv->factories[i], "events-updated", G_CALLBACK (events_updated_cb), self);

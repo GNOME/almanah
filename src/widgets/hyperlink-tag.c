@@ -146,6 +146,7 @@ almanah_hyperlink_tag_set_uri (AlmanahHyperlinkTag *self, const gchar *uri)
 	AlmanahHyperlinkTagPrivate *priv = almanah_hyperlink_tag_get_instance_private (self);
 
 	g_free (priv->uri);
-	priv->uri = g_strdup (uri);;
+	priv->uri = g_strdup (uri);
+	;
 	g_object_notify (G_OBJECT (self), "uri");
 }

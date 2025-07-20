@@ -25,11 +25,11 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_TAG_ENTRY         (almanah_tag_entry_get_type ())
+#define ALMANAH_TYPE_TAG_ENTRY (almanah_tag_entry_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahTagEntry, almanah_tag_entry, ALMANAH, TAG_ENTRY, GtkEntry)
 
-void  almanah_tag_entry_set_storage_manager (AlmanahTagEntry *tag_entry, AlmanahStorageManager *storage_manager);
+void almanah_tag_entry_set_storage_manager (AlmanahTagEntry *tag_entry, AlmanahStorageManager *storage_manager);
 
 G_END_DECLS
 

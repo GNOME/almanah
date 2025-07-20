@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2010 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -173,7 +173,7 @@ almanah_calendar_detail_func (GtkCalendar *calendar, guint year, guint month, gu
 	/* Display markup if the day is important; don't otherwise */
 	if (priv->important_days[day - 1] == TRUE) {
 		/* Translators: This is the detail string for important days as displayed in the calendar. */
-		return g_strdup (_("Important!"));
+		return g_strdup (_ ("Important!"));
 	}
 	return NULL;
 }

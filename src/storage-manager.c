@@ -18,15 +18,15 @@
 
 #include <config.h>
 #include <errno.h>
+#include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
-#include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <sqlite3.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include "entry.h"
 #include "storage-manager.h"
@@ -62,7 +62,9 @@ enum {
 	LAST_SIGNAL
 };
 
-static guint storage_manager_signals[LAST_SIGNAL] = { 0, };
+static guint storage_manager_signals[LAST_SIGNAL] = {
+	0,
+};
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahStorageManager, almanah_storage_manager, G_TYPE_OBJECT)
 
@@ -118,17 +120,17 @@ almanah_storage_manager_class_init (AlmanahStorageManagerClass *klass)
 	                                                              g_cclosure_marshal_VOID__BOXED,
 	                                                              G_TYPE_NONE, 1, G_TYPE_DATE);
 	storage_manager_signals[SIGNAL_ENTRY_TAG_ADDED] = g_signal_new ("entry-tag-added",
-									G_TYPE_FROM_CLASS (klass),
-									G_SIGNAL_RUN_LAST,
-									0, NULL, NULL,
-									NULL,
-									G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
+	                                                                G_TYPE_FROM_CLASS (klass),
+	                                                                G_SIGNAL_RUN_LAST,
+	                                                                0, NULL, NULL,
+	                                                                NULL,
+	                                                                G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
 	storage_manager_signals[SIGNAL_ENTRY_TAG_REMOVED] = g_signal_new ("entry-tag-removed",
-									  G_TYPE_FROM_CLASS (klass),
-									  G_SIGNAL_RUN_LAST,
-									  0, NULL, NULL,
-									  NULL,
-									  G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
+	                                                                  G_TYPE_FROM_CLASS (klass),
+	                                                                  G_SIGNAL_RUN_LAST,
+	                                                                  0, NULL, NULL,
+	                                                                  NULL,
+	                                                                  G_TYPE_NONE, 2, ALMANAH_TYPE_ENTRY, G_TYPE_STRING);
 }
 
 static void
@@ -157,7 +159,7 @@ almanah_storage_manager_new (const gchar *filename, GSettings *settings)
 
 	sm = g_object_new (ALMANAH_TYPE_STORAGE_MANAGER,
 	                   "filename", filename,
-			   "settings", settings,
+	                   "settings", settings,
 	                   NULL);
 
 	return sm;
@@ -221,13 +223,13 @@ create_tables (AlmanahStorageManager *self)
 	guint i;
 	const gchar *queries[] = {
 		"CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day))",
-		"ALTER TABLE entries ADD COLUMN is_important INTEGER", /* added in 0.7.0 */
-		"ALTER TABLE entries ADD COLUMN edited_year INTEGER", /* added in 0.8.0 */
-		"ALTER TABLE entries ADD COLUMN edited_month INTEGER", /* added in 0.8.0 */
-		"ALTER TABLE entries ADD COLUMN edited_day INTEGER", /* added in 0.8.0 */
-		"ALTER TABLE entries ADD COLUMN version INTEGER DEFAULT 1", /* added in 0.8.0 */
+		"ALTER TABLE entries ADD COLUMN is_important INTEGER",                                       /* added in 0.7.0 */
+		"ALTER TABLE entries ADD COLUMN edited_year INTEGER",                                        /* added in 0.8.0 */
+		"ALTER TABLE entries ADD COLUMN edited_month INTEGER",                                       /* added in 0.8.0 */
+		"ALTER TABLE entries ADD COLUMN edited_day INTEGER",                                         /* added in 0.8.0 */
+		"ALTER TABLE entries ADD COLUMN version INTEGER DEFAULT 1",                                  /* added in 0.8.0 */
 		"CREATE TABLE IF NOT EXISTS entry_tag (year INTEGER, month INTEGER, day INTEGER, tag TEXT)", /* added in 0.10.0 */
-		"CREATE INDEX idx_tag ON entry_tag(tag)", /* added in 0.10.0, for information take a look at: http://www.sqlite.org/queryplanner.html */
+		"CREATE INDEX idx_tag ON entry_tag(tag)",                                                    /* added in 0.10.0, for information take a look at: http://www.sqlite.org/queryplanner.html */
 		NULL
 	};
 
@@ -242,12 +244,12 @@ almanah_storage_manager_connect (AlmanahStorageManager *self, GError **error)
 	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 
 	/* Our beautiful SQLite VFS */
-	almanah_vfs_init(priv->settings);
+	almanah_vfs_init (priv->settings);
 
 	/* Open the plain database */
 	if (sqlite3_open_v2 (priv->filename, &(priv->connection), SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah") != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_OPENING_FILE,
-		             _("Could not open database \"%s\". SQLite provided the following error message: %s"),
+		             _ ("Could not open database \"%s\". SQLite provided the following error message: %s"),
 		             priv->filename, sqlite3_errmsg (priv->connection));
 		return FALSE;
 	}
@@ -271,7 +273,7 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, __attribute__ (
 	else
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
 
-	almanah_vfs_finish();
+	almanah_vfs_finish ();
 
 	return TRUE;
 }
@@ -291,7 +293,7 @@ simple_query (AlmanahStorageManager *self, const gchar *query, GError **error, .
 
 	if (sqlite3_exec (priv->connection, new_query, NULL, NULL, NULL) != SQLITE_OK) {
 		g_set_error (error, ALMANAH_STORAGE_MANAGER_ERROR, ALMANAH_STORAGE_MANAGER_ERROR_RUNNING_QUERY,
-		             _("Could not run query \"%s\". SQLite provided the following error message: %s"),
+		             _ ("Could not run query \"%s\". SQLite provided the following error message: %s"),
 		             new_query, sqlite3_errmsg (priv->connection));
 		sqlite3_free (new_query);
 		return FALSE;
@@ -403,7 +405,8 @@ almanah_storage_manager_get_entry (AlmanahStorageManager *self, GDate *date)
 	/* Prepare the statement */
 	if (sqlite3_prepare_v2 (priv->connection,
 	                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version FROM entries "
-	                        "WHERE year = ? AND month = ? AND day = ?", -1,
+	                        "WHERE year = ? AND month = ? AND day = ?",
+	                        -1,
 	                        &statement, NULL) != SQLITE_OK) {
 		return NULL;
 	}
@@ -470,7 +473,8 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		if (sqlite3_prepare_v2 (priv->connection,
 		                        "REPLACE INTO entries "
 		                        "(year, month, day, content, is_important, edited_day, edited_month, edited_year, version) "
-		                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", -1,
+		                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		                        -1,
 		                        &statement, NULL) != SQLITE_OK) {
 			return FALSE;
 		}
@@ -571,11 +575,12 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 
 		/* Prepare the statement. */
 		if (sqlite3_prepare_v2 (priv->connection,
-					"SELECT e.content, e.is_important, e.day, e.month, e.year, e.edited_day, e.edited_month, e.edited_year, e.version, GROUP_CONCAT(et.tag) AS tags FROM entries AS e "
-					"LEFT JOIN entry_tag AS et ON (e.day=et.day AND e.month=et.month AND e.year=et.year) "
-					"GROUP BY e.year, e.month, e.day "
-					"ORDER BY e.year DESC, e.month DESC, e.day DESC", -1,
-					(sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
+		                        "SELECT e.content, e.is_important, e.day, e.month, e.year, e.edited_day, e.edited_month, e.edited_year, e.version, GROUP_CONCAT(et.tag) AS tags FROM entries AS e "
+		                        "LEFT JOIN entry_tag AS et ON (e.day=et.day AND e.month=et.month AND e.year=et.year) "
+		                        "GROUP BY e.year, e.month, e.day "
+		                        "ORDER BY e.year DESC, e.month DESC, e.day DESC",
+		                        -1,
+		                        (sqlite3_stmt **) &(iter->statement), NULL) != SQLITE_OK) {
 			return NULL;
 		}
 
@@ -587,8 +592,8 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	}
 
 	statement = iter->statement;
-	text_buffer = ((SearchData*) iter->user_data)->text_buffer;
-	search_string = ((SearchData*) iter->user_data)->search_string;
+	text_buffer = ((SearchData *) iter->user_data)->text_buffer;
+	search_string = ((SearchData *) iter->user_data)->search_string;
 
 	/* Execute the statement */
 	switch (sqlite3_step (statement)) {
@@ -602,7 +607,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 			if (almanah_entry_get_content (entry, text_buffer, TRUE, NULL) == FALSE) {
 				/* Error: return the next entry instead */
 				g_object_unref (entry);
-				g_warning (_("Error deserializing entry into buffer while searching."));
+				g_warning (_ ("Error deserializing entry into buffer while searching."));
 				return almanah_storage_manager_search_entries (self, NULL, iter);
 			}
 
@@ -633,8 +638,8 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 			/* Clean up the iter and return */
 			sqlite3_finalize (statement);
 			iter->statement = NULL;
-			g_object_unref (((SearchData*) iter->user_data)->text_buffer);
-			g_free (((SearchData*) iter->user_data)->search_string);
+			g_object_unref (((SearchData *) iter->user_data)->text_buffer);
+			g_free (((SearchData *) iter->user_data)->search_string);
 			g_slice_free (SearchData, iter->user_data);
 			iter->user_data = NULL;
 			iter->finished = TRUE;
@@ -779,10 +784,7 @@ almanah_storage_manager_search_entries_async_finish (AlmanahStorageManager *self
  * entries found in total by the operation.
  */
 void
-almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const gchar *search_string, GCancellable *cancellable,
-                                              AlmanahStorageManagerSearchCallback progress_callback, gpointer progress_user_data,
-                                              GDestroyNotify progress_user_data_destroy,
-                                              GAsyncReadyCallback callback, gpointer user_data)
+almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const gchar *search_string, GCancellable *cancellable, AlmanahStorageManagerSearchCallback progress_callback, gpointer progress_user_data, GDestroyNotify progress_user_data_destroy, GAsyncReadyCallback callback, gpointer user_data)
 {
 	g_autoptr (GTask) task = NULL;
 	SearchAsyncData *search_data;
@@ -835,8 +837,9 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 		/* Prepare the statement */
 		if (sqlite3_prepare_v2 (priv->connection,
 		                        "SELECT content, is_important, day, month, year, edited_day, edited_month, edited_year, version "
-		                        "FROM entries", -1,
-		                        (sqlite3_stmt**) &(iter->statement), NULL) != SQLITE_OK) {
+		                        "FROM entries",
+		                        -1,
+		                        (sqlite3_stmt **) &(iter->statement), NULL) != SQLITE_OK) {
 			return NULL;
 		}
 	}
@@ -990,8 +993,8 @@ almanah_storage_manager_entry_add_tag (AlmanahStorageManager *self, AlmanahEntry
 	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 
 	if ((result_error = sqlite3_prepare_v2 (priv->connection,
-						"INSERT INTO entry_tag (year, month, day, tag) VALUES (?, ?, ?, ?)",
-						-1, &statement, NULL)) != SQLITE_OK) {
+	                                        "INSERT INTO entry_tag (year, month, day, tag) VALUES (?, ?, ?, ?)",
+	                                        -1, &statement, NULL)) != SQLITE_OK) {
 		g_debug ("Can't prepare statement. SQLite error code: %d", result_error);
 		return FALSE;
 	}
@@ -1038,10 +1041,10 @@ almanah_storage_manager_entry_remove_tag (AlmanahStorageManager *self, AlmanahEn
 	almanah_entry_get_date (entry, &date);
 
 	result = simple_query (self, "DELETE FROM entry_tag WHERE year = %u AND month = %u AND day = %u AND tag = '%s'", NULL,
-			       g_date_get_year (&date),
-			       g_date_get_month (&date),
-			       g_date_get_day (&date),
-			       tag);
+	                       g_date_get_year (&date),
+	                       g_date_get_month (&date),
+	                       g_date_get_day (&date),
+	                       tag);
 
 	if (result)
 		g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_TAG_REMOVED], 0, entry, tag);
@@ -1076,8 +1079,8 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 
 	if (sqlite3_prepare_v2 (priv->connection,
-				"SELECT DISTINCT tag FROM entry_tag WHERE year = ? AND month = ? AND day = ?",
-				-1, &statement, NULL) != SQLITE_OK) {
+	                        "SELECT DISTINCT tag FROM entry_tag WHERE year = ? AND month = ? AND day = ?",
+	                        -1, &statement, NULL) != SQLITE_OK) {
 		g_debug ("Can't prepare statement");
 		return NULL;
 	}
@@ -1087,7 +1090,7 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 	sqlite3_bind_int (statement, 3, g_date_get_day (&date));
 
 	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		tags = g_list_append (tags, g_strdup ((const gchar*) sqlite3_column_text (statement, 0)));
+		tags = g_list_append (tags, g_strdup ((const gchar *) sqlite3_column_text (statement, 0)));
 	}
 
 	sqlite3_finalize (statement);
@@ -1132,9 +1135,9 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
 
 	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 
-	if (sqlite3_prepare_v2 (priv->connection, 
-				"SELECT count(1) FROM entry_tag WHERE year = ? AND month = ? AND day = ? AND tag = ?",
-				-1, &statement, NULL) != SQLITE_OK) {
+	if (sqlite3_prepare_v2 (priv->connection,
+	                        "SELECT count(1) FROM entry_tag WHERE year = ? AND month = ? AND day = ? AND tag = ?",
+	                        -1, &statement, NULL) != SQLITE_OK) {
 		g_debug ("Can't prepare statement");
 		return FALSE;
 	}
@@ -1144,7 +1147,7 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
 	sqlite3_bind_int (statement, 3, g_date_get_day (&date));
 	sqlite3_bind_text (statement, 4, tag, -1, SQLITE_STATIC);
 
-	if ((q_result  = sqlite3_step (statement)) == SQLITE_ROW) {
+	if ((q_result = sqlite3_step (statement)) == SQLITE_ROW) {
 		if (sqlite3_column_int (statement, 0) > 0)
 			result = TRUE;
 	}
@@ -1157,7 +1160,6 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
 
 	return result;
 }
-
 
 /**
  * almanah_storage_manager_get_tags:

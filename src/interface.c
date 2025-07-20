@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,12 +17,12 @@
  */
 
 #include <config.h>
-#include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <gtk/gtk.h>
 
+#include "interface.h"
 #include "main-window.h"
 #include "search-dialog.h"
-#include "interface.h"
 
 void
 almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)
@@ -41,15 +41,15 @@ almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect
 		gtk_text_buffer_create_tag (text_buffer, "definition", NULL);
 	}
 
-	gtk_text_buffer_create_tag (text_buffer, "bold", 
-				    "weight", PANGO_WEIGHT_BOLD, 
-				    NULL);
+	gtk_text_buffer_create_tag (text_buffer, "bold",
+	                            "weight", PANGO_WEIGHT_BOLD,
+	                            NULL);
 	gtk_text_buffer_create_tag (text_buffer, "italic",
-				    "style", PANGO_STYLE_ITALIC,
-				    NULL);
+	                            "style", PANGO_STYLE_ITALIC,
+	                            NULL);
 	gtk_text_buffer_create_tag (text_buffer, "underline",
-				    "underline", PANGO_UNDERLINE_SINGLE,
-				    NULL);
+	                            "underline", PANGO_UNDERLINE_SINGLE,
+	                            NULL);
 }
 
 gboolean

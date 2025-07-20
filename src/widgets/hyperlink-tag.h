@@ -19,13 +19,13 @@
 #ifndef ALMANAH_HYPERLINK_TAG_H
 #define ALMANAH_HYPERLINK_TAG_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_HYPERLINK_TAG      (almanah_hyperlink_tag_get_type ())
+#define ALMANAH_TYPE_HYPERLINK_TAG (almanah_hyperlink_tag_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahHyperlinkTag, almanah_hyperlink_tag, ALMANAH, HYPERLINK_TAG, GtkTextTag)
 

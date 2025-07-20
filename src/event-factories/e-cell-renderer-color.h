@@ -28,7 +28,7 @@ G_DECLARE_FINAL_TYPE (ECellRendererColor, e_cell_renderer_color, E, CELL_RENDERE
 
 G_BEGIN_DECLS
 
-GtkCellRenderer *e_cell_renderer_color_new	(void);
+GtkCellRenderer *e_cell_renderer_color_new (void);
 
 G_END_DECLS
 

@@ -23,33 +23,30 @@
 #include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
-#include "export-operation.h"
 #include "entry.h"
+#include "export-operation.h"
 #include "storage-manager.h"
 
-typedef gboolean (*ExportFunc) (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback,
-                                gpointer progress_user_data, GCancellable *cancellable, GError **error);
+typedef gboolean (*ExportFunc) (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error);
 
 typedef struct {
-	const gchar *name; /* translatable */
+	const gchar *name;        /* translatable */
 	const gchar *description; /* translatable */
 	GtkFileChooserAction action;
 	ExportFunc export_func;
 } ExportModeDetails;
 
-static gboolean export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback,
-                                   gpointer progress_user_data, GCancellable *cancellable, GError **error);
-static gboolean export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback,
-                                 gpointer progress_user_data, GCancellable *cancellable, GError **error);
+static gboolean export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error);
+static gboolean export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error);
 
 static const ExportModeDetails export_modes[] = {
-	{ N_("Text Files"),
-	  N_("Select a _folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
-	     "All entries will be exported, unencrypted in plain text format."),
+	{ N_ ("Text Files"),
+	  N_ ("Select a _folder to export the entries to as text files, one per entry, with names in the format 'yyyy-mm-dd', and no extension. "
+	      "All entries will be exported, unencrypted in plain text format."),
 	  GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
 	  export_text_files },
-	{ N_("Database"),
-	  N_("Select a _filename for a complete copy of the unencrypted Almanah Diary database to be given."),
+	{ N_ ("Database"),
+	  N_ ("Select a _filename for a complete copy of the unencrypted Almanah Diary database to be given."),
 	  GTK_FILE_CHOOSER_ACTION_SAVE,
 	  export_database }
 };
@@ -203,8 +200,7 @@ progress_idle_callback (AlmanahExportProgressCallback callback, gpointer user_da
 }
 
 static gboolean
-export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
-                   GCancellable *cancellable, GError **error)
+export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
 	AlmanahStorageManagerIter iter;
 	AlmanahEntry *entry;
@@ -258,7 +254,7 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 		path = g_file_get_path (file);
 		if (g_chmod (path, 0600) != 0) {
 			g_set_error (&child_error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			             _("Error changing exported file permissions: %s"),
+			             _ ("Error changing exported file permissions: %s"),
 			             g_strerror (errno));
 
 			g_object_unref (file);
@@ -296,8 +292,7 @@ finish:
 }
 
 static gboolean
-export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data,
-                 GCancellable *cancellable, GError **error)
+export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
 	GFile *source;
 	gboolean success;
@@ -316,7 +311,7 @@ export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExport
 	destination_path = g_file_get_path (destination);
 	if (success == TRUE && g_chmod (destination_path, 0600) != 0) {
 		g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		             _("Error changing exported file permissions: %s"),
+		             _ ("Error changing exported file permissions: %s"),
 		             g_strerror (errno));
 		success = FALSE;
 	}
@@ -353,14 +348,13 @@ export_thread (GTask *task, AlmanahExportOperation *operation, gpointer task_dat
 
 	/* Export and return */
 	if (export_modes[priv->current_mode].export_func (operation, priv->destination, data->progress_callback,
-	    data->progress_user_data, cancellable, &error) == FALSE) {
+	                                                  data->progress_user_data, cancellable, &error) == FALSE) {
 		g_task_return_error (task, error);
 	}
 }
 
 void
-almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, AlmanahExportProgressCallback progress_callback,
-                              gpointer progress_user_data,GAsyncReadyCallback callback, gpointer user_data)
+almanah_export_operation_run (AlmanahExportOperation *self, GCancellable *cancellable, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GAsyncReadyCallback callback, gpointer user_data)
 {
 	g_autoptr (GTask) task = NULL;
 	ExportData *data;
@@ -406,8 +400,8 @@ almanah_export_operation_populate_model (GtkListStore *store, guint type_id_colu
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter,
 		                    type_id_column, i,
-		                    name_column, _(export_modes[i].name),
-		                    description_column, _(export_modes[i].description),
+		                    name_column, _ (export_modes[i].name),
+		                    description_column, _ (export_modes[i].description),
 		                    action_column, export_modes[i].action,
 		                    -1);
 	}

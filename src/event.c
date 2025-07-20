@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -41,20 +41,20 @@ almanah_event_class_init (AlmanahEventClass *klass)
 	gobject_class->get_property = almanah_event_get_property;
 
 	g_object_class_install_property (gobject_class, PROP_NAME,
-				g_param_spec_string ("name",
-					"Name", "The human-readable name for this event type.",
-					NULL,
-					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_string ("name",
+	                                                      "Name", "The human-readable name for this event type.",
+	                                                      NULL,
+	                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_DESCRIPTION,
-				g_param_spec_string ("description",
-					"Description", "The human-readable description for this event type.",
-					NULL,
-					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_string ("description",
+	                                                      "Description", "The human-readable description for this event type.",
+	                                                      NULL,
+	                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 	g_object_class_install_property (gobject_class, PROP_ICON_NAME,
-				g_param_spec_string ("icon-name",
-					"Icon Name", "The icon name for this event type.",
-					NULL,
-					G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_string ("icon-name",
+	                                                      "Icon Name", "The icon name for this event type.",
+	                                                      NULL,
+	                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }
 
 static void

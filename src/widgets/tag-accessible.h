@@ -19,12 +19,12 @@
 #ifndef ALMANAH_TAG_ACCESSIBLE_H
 #define ALMANAH_TAG_ACCESSIBLE_H
 
-#include <gtk/gtk.h>
 #include <gtk/gtk-a11y.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_TAG_ACCESSIBLE         (almanah_tag_accessible_get_type ())
+#define ALMANAH_TYPE_TAG_ACCESSIBLE (almanah_tag_accessible_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahTagAccessible, almanah_tag_accessible, ALMANAH, TAG_ACCESSIBLE, GtkWidgetAccessible)
 
