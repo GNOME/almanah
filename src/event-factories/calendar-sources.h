@@ -28,22 +28,20 @@
 
 G_BEGIN_DECLS
 
-#define CALENDAR_TYPE_SOURCES        (calendar_sources_get_type ())
+#define CALENDAR_TYPE_SOURCES (calendar_sources_get_type ())
 
 G_DECLARE_DERIVABLE_TYPE (CalendarSources, calendar_sources, CALENDAR, SOURCES, GObject)
 
-struct _CalendarSourcesClass
-{
-  GObjectClass    parent_class;
+struct _CalendarSourcesClass {
+	GObjectClass parent_class;
 
-  void         (* appointment_sources_changed) (CalendarSources *sources);
-  void         (* task_sources_changed)        (CalendarSources *sources);
+	void (*appointment_sources_changed) (CalendarSources *sources);
+	void (*task_sources_changed) (CalendarSources *sources);
 };
 
-
-CalendarSources *calendar_sources_get                     (void);
-GSList          *calendar_sources_get_appointment_sources (CalendarSources *sources);
-GSList          *calendar_sources_get_task_sources        (CalendarSources *sources);
+CalendarSources *calendar_sources_get (void);
+GSList *calendar_sources_get_appointment_sources (CalendarSources *sources);
+GSList *calendar_sources_get_task_sources (CalendarSources *sources);
 
 G_END_DECLS
 

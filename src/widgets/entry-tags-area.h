@@ -19,19 +19,19 @@
 #ifndef ALMANAH_ENTRY_TAGS_AREA_H
 #define ALMANAH_ENTRY_TAGS_AREA_H
 
-#include <gtk/gtk.h>
 #include "entry.h"
 #include "storage-manager.h"
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_ENTRY_TAGS_AREA         (almanah_entry_tags_area_get_type ())
+#define ALMANAH_TYPE_ENTRY_TAGS_AREA (almanah_entry_tags_area_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahEntryTagsArea, almanah_entry_tags_area, ALMANAH, ENTRY_TAGS_AREA, GtkFlowBox)
 
-void  almanah_entry_tags_area_set_entry (AlmanahEntryTagsArea *entry_tags_area, AlmanahEntry *entry);
-void  almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_tags_area, AlmanahStorageManager *storage_manager);
-void  almanah_entry_tags_area_set_back_widget (AlmanahEntryTagsArea *entry_tags_area, GtkWidget *back_widget);
+void almanah_entry_tags_area_set_entry (AlmanahEntryTagsArea *entry_tags_area, AlmanahEntry *entry);
+void almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_tags_area, AlmanahStorageManager *storage_manager);
+void almanah_entry_tags_area_set_back_widget (AlmanahEntryTagsArea *entry_tags_area, GtkWidget *back_widget);
 
 G_END_DECLS
 

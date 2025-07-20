@@ -18,29 +18,29 @@
  */
 
 #include <config.h>
-#include <time.h>
-#include <math.h>
-#include <glib.h>
-#include <gtk/gtk.h>
-#include <glib/gi18n.h>
 #include <gio/gio.h>
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
 #include <gtksourceview/gtksource.h>
+#include <math.h>
+#include <time.h>
 #ifdef ENABLE_SPELL_CHECKING
 #include <gtkspell/gtkspell.h>
 #endif /* ENABLE_SPELL_CHECKING */
 
-#include "main-window.h"
-#include "interface.h"
 #include "date-entry-dialog.h"
 #include "entry.h"
-#include "storage-manager.h"
 #include "event-manager.h"
 #include "event.h"
+#include "interface.h"
+#include "main-window.h"
+#include "storage-manager.h"
 #include "uri-entry-dialog.h"
-#include "widgets/calendar.h"
 #include "widgets/calendar-button.h"
-#include "widgets/hyperlink-tag.h"
+#include "widgets/calendar.h"
 #include "widgets/entry-tags-area.h"
+#include "widgets/hyperlink-tag.h"
 
 /* Interval for automatically saving the current entry. Currently an arbitrary 10 minutes. */
 #define SAVE_ENTRY_INTERVAL 10 * 60 /* seconds */
@@ -72,20 +72,20 @@ static void mw_setup_size_text_view (AlmanahMainWindow *self);
 static int mw_get_font_width (GtkWidget *widget, const gchar *font_name);
 
 /* GActions callbacks */
-void mw_cut_activate_cb           (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_copy_activate_cb          (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_paste_activate_cb         (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_delete_activate_cb        (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_insert_time_activate_cb   (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_important_toggle_cb       (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_show_tags_toggle_cb       (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_select_date_activate_cb   (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_bold_toggle_cb            (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_italic_toggle_cb          (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_underline_toggle_cb       (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_hyperlink_toggle_cb       (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-static void mw_undo_cb            (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-static void mw_redo_cb            (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_cut_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_copy_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_paste_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_delete_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_insert_time_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_important_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_show_tags_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_select_date_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_bold_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_italic_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_undo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_redo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 static void mw_source_buffer_notify_can_undo_redo_cb (GObject *obj, GParamSpec *pspec, gpointer user_data);
 
@@ -113,9 +113,9 @@ typedef struct {
 	gboolean pending_italic_active;
 	gboolean pending_underline_active;
 
-	AlmanahEntry *current_entry; /* whether it's been modified is stored as gtk_text_buffer_get_modified (priv->entry_buffer) */
+	AlmanahEntry *current_entry;    /* whether it's been modified is stored as gtk_text_buffer_get_modified (priv->entry_buffer) */
 	gulong current_entry_notify_id; /* signal handler for current_entry::notify */
-	guint save_entry_timeout_id; /* source ID for timer to save current entry periodically */
+	guint save_entry_timeout_id;    /* source ID for timer to save current entry periodically */
 
 	GSettings *desktop_interface_settings;
 	GtkCssProvider *css_provider;
@@ -123,7 +123,7 @@ typedef struct {
 #ifdef ENABLE_SPELL_CHECKING
 	GSettings *settings;
 	gulong spell_checking_enabled_changed_id; /* signal handler for application->settings::changed::spell-checking-enabled */
-#endif /* ENABLE_SPELL_CHECKING */
+#endif                                            /* ENABLE_SPELL_CHECKING */
 } AlmanahMainWindowPrivate;
 
 struct _AlmanahMainWindow {
@@ -161,7 +161,7 @@ almanah_main_window_init (AlmanahMainWindow *self)
 {
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 
-	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Diary"));
+	gtk_window_set_title (GTK_WINDOW (self), _ ("Almanah Diary"));
 	g_signal_connect (self, "delete-event", G_CALLBACK (mw_delete_event_cb), NULL);
 
 	g_action_map_add_action_entries (G_ACTION_MAP (self),
@@ -227,13 +227,13 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-							    _("UI data could not be loaded"));
+		                                            GTK_DIALOG_MODAL,
+		                                            GTK_MESSAGE_ERROR,
+		                                            GTK_BUTTONS_OK,
+		                                            _ ("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -278,7 +278,7 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* We don't use g_settings_bind() because enabling spell checking could fail, and we need to show an error dialogue */
 	priv->spell_checking_enabled_changed_id = g_signal_connect (priv->settings, "changed::spell-checking-enabled",
-								    (GCallback) spell_checking_enabled_changed_cb, main_window);
+	                                                            (GCallback) spell_checking_enabled_changed_cb, main_window);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	/* Set up text formatting. It's important this is done after setting up GtkSpell, so that we know whether to
@@ -319,7 +319,7 @@ almanah_main_window_new (AlmanahApplication *application)
 	mw_setup_size_text_view (main_window);
 
 	/* Select the current day and month */
-	almanah_calendar_button_select_today(priv->calendar_button);
+	almanah_calendar_button_select_today (priv->calendar_button);
 
 	/* Set up a timeout for saving the current entry every so often. */
 	priv->save_entry_timeout_id = g_timeout_add_seconds (SAVE_ENTRY_INTERVAL, (GSourceFunc) save_entry_timeout_cb, main_window);
@@ -601,16 +601,16 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		}
 
 		/* Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry. */
-		g_date_strftime (date_string, sizeof (date_string), _("%A, %e %B %Y"), &date);
+		g_date_strftime (date_string, sizeof (date_string), _ ("%A, %e %B %Y"), &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
-						 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
-						 _("Are you sure you want to edit this diary entry for %s?"),
-						 date_string);
+		                                 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+		                                 _ ("Are you sure you want to edit this diary entry for %s?"),
+		                                 date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-					_("_Cancel"), GTK_RESPONSE_REJECT,
-					_("_Edit"), GTK_RESPONSE_ACCEPT,
-					NULL);
+		                        _ ("_Cancel"), GTK_RESPONSE_REJECT,
+		                        _ ("_Edit"), GTK_RESPONSE_ACCEPT,
+		                        NULL);
 		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
 		gtk_widget_show_all (dialog);
@@ -632,16 +632,16 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		}
 
 		/* Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry. */
-		g_date_strftime (date_string, sizeof (date_string), _("%A, %e %B %Y"), &date);
+		g_date_strftime (date_string, sizeof (date_string), _ ("%A, %e %B %Y"), &date);
 
 		dialog = gtk_message_dialog_new (GTK_WINDOW (self),
-						 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
-						 _("Are you sure you want to delete this diary entry for %s?"),
-						 date_string);
+		                                 GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_NONE,
+		                                 _ ("Are you sure you want to delete this diary entry for %s?"),
+		                                 date_string);
 		gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-					_("_Cancel"), GTK_RESPONSE_REJECT,
-					_("_Delete"), GTK_RESPONSE_ACCEPT,
-					NULL);
+		                        _ ("_Cancel"), GTK_RESPONSE_REJECT,
+		                        _ ("_Delete"), GTK_RESPONSE_ACCEPT,
+		                        NULL);
 		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
 		gtk_widget_show_all (dialog);
@@ -748,7 +748,7 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 			g_action_group_change_action_state (G_ACTION_GROUP (main_window), action_name, g_variant_new_boolean (TRUE));
 		} else if (tag_name == NULL || strcmp (tag_name, "gtkspell-misspelled") != 0) {
 			/* Print a warning about the unknown tag */
-			g_warning (_("Unknown or duplicate text tag \"%s\" in entry. Ignoring."), tag_name);
+			g_warning (_ ("Unknown or duplicate text tag \"%s\" in entry. Ignoring."), tag_name);
 		}
 
 		g_free (tag_name);
@@ -776,10 +776,10 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 
 static void
 mw_entry_buffer_insert_text_cb (__attribute__ ((unused)) GtkSourceBuffer *text_buffer,
-				__attribute__ ((unused)) GtkTextIter *start,
-				__attribute__ ((unused)) gchar *text,
-				__attribute__ ((unused)) gint len,
-				AlmanahMainWindow *main_window)
+                                __attribute__ ((unused)) GtkTextIter *start,
+                                __attribute__ ((unused)) gchar *text,
+                                __attribute__ ((unused)) gint len,
+                                AlmanahMainWindow *main_window)
 {
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GVariant *action_state;
@@ -956,7 +956,7 @@ mw_bold_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 
-	apply_formatting (main_window, "bold", g_variant_get_boolean(parameter));
+	apply_formatting (main_window, "bold", g_variant_get_boolean (parameter));
 	g_simple_action_set_state (action, parameter);
 }
 
@@ -965,7 +965,7 @@ mw_italic_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_d
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 
-	apply_formatting (main_window, "italic", g_variant_get_boolean(parameter));
+	apply_formatting (main_window, "italic", g_variant_get_boolean (parameter));
 	g_simple_action_set_state (action, parameter);
 }
 
@@ -974,7 +974,7 @@ mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 
-	apply_formatting (main_window, "underline", g_variant_get_boolean(parameter));
+	apply_formatting (main_window, "underline", g_variant_get_boolean (parameter));
 	g_simple_action_set_state (action, parameter);
 }
 
@@ -997,7 +997,7 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 			/* Error */
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (self),
 			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-			                                            _("Error opening URI"));
+			                                            _ ("Error opening URI"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
@@ -1073,7 +1073,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 		/* Remove all hyperlinks which are active at the start iter. This covers the case of hyperlinks which span more than the
 		 * selected text (i.e. begin before the start iter and end after the end iter). All other spanning hyperlinks will have an end point
 		 * inside the selected text, and will be caught below. */
-		tags  = gtk_text_iter_get_tags (&start);
+		tags = gtk_text_iter_get_tags (&start);
 
 		for (i = tags; i != NULL; i = i->next) {
 			GtkTextTag *tag = GTK_TEXT_TAG (i->data);
@@ -1114,7 +1114,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 
 	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 
- finish:
+finish:
 	if (update_state)
 		g_simple_action_set_state (action, parameter);
 }
@@ -1212,16 +1212,16 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 		g_debug ("\t%s", almanah_event_format_value (event));
 
 		/* Translators: this is an event source name (like Calendar appointment) and the time when the event takes place */
-		event_time = g_strdup_printf (_("%s @ %s"), almanah_event_format_time (event), almanah_event_get_name (event));
+		event_time = g_strdup_printf (_ ("%s @ %s"), almanah_event_format_time (event), almanah_event_get_name (event));
 
 		gtk_list_store_append (priv->event_store, &iter);
 		gtk_list_store_set (priv->event_store, &iter,
-				    0, event,
-				    1, almanah_event_get_icon_name (event),
-				    2, type_id,
-				    3, almanah_event_format_value (event),
-				    4, g_strdup_printf ("<small>%s</small>", event_time),
-				    -1);
+		                    0, event,
+		                    1, almanah_event_get_icon_name (event),
+		                    2, type_id,
+		                    3, almanah_event_format_value (event),
+		                    4, g_strdup_printf ("<small>%s</small>", event_time),
+		                    -1);
 
 		events_count++;
 
@@ -1285,7 +1285,7 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	/* Update the date label */
 	almanah_calendar_button_get_date (priv->calendar_button, &calendar_date);
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
-	g_date_strftime (calendar_string, sizeof (calendar_string), _("%A, %e %B %Y"), &calendar_date);
+	g_date_strftime (calendar_string, sizeof (calendar_string), _ ("%A, %e %B %Y"), &calendar_date);
 	gtk_header_bar_set_title (GTK_HEADER_BAR (priv->header_bar), calendar_string);
 
 	/* Update the entry */
@@ -1304,9 +1304,8 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 		action = g_action_map_lookup_action (G_ACTION_MAP (main_window), affected_actions[i]);
 		g_simple_action_set_enabled (G_SIMPLE_ACTION (action), !future_entry);
 		if (strcmp (affected_actions[i], "important") == 0)
-			g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean(almanah_entry_is_important (priv->current_entry)));
+			g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (almanah_entry_is_important (priv->current_entry)));
 	}
-
 
 	/* Prepare for the possibility of failure --- do as much of the general interface changes as possible first */
 	gtk_list_store_clear (priv->event_store);
@@ -1317,8 +1316,8 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 		gtk_text_buffer_set_text (GTK_TEXT_BUFFER (priv->entry_buffer), "", 0);
 		if (almanah_entry_get_content (priv->current_entry, GTK_TEXT_BUFFER (priv->entry_buffer), FALSE, &error) == FALSE) {
 			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
-								    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-								    _("Entry content could not be loaded"));
+			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+			                                            _ ("Entry content could not be loaded"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
@@ -1356,13 +1355,11 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	almanah_entry_tags_area_set_entry (priv->entry_tags_area, priv->current_entry);
 }
 
-
 void
 mw_calendar_select_date_clicked_cb (__attribute__ ((unused)) AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window)
 {
 	g_action_group_activate_action (G_ACTION_GROUP (main_window), "select-date", NULL);
 }
-
 
 void
 mw_events_tree_view_row_activated_cb (__attribute__ ((unused)) GtkTreeView *tree_view, GtkTreePath *path, __attribute__ ((unused)) GtkTreeViewColumn *column, AlmanahMainWindow *main_window)
@@ -1373,8 +1370,8 @@ mw_events_tree_view_row_activated_cb (__attribute__ ((unused)) GtkTreeView *tree
 
 	gtk_tree_model_get_iter (GTK_TREE_MODEL (priv->event_store), &iter, path);
 	gtk_tree_model_get (GTK_TREE_MODEL (priv->event_store), &iter,
-			    0, &event,
-			    -1);
+	                    0, &event,
+	                    -1);
 
 	/* NOTE: event types should display their own errors, so one won't be displayed here. */
 	almanah_event_view (event, GTK_WINDOW (main_window));
@@ -1450,90 +1447,90 @@ font_description_to_css (PangoFontDescription *desc, const gchar *selector)
 	}
 	if (set & PANGO_FONT_MASK_STYLE) {
 		switch (pango_font_description_get_style (desc)) {
-		case PANGO_STYLE_NORMAL:
-			g_string_append (s, "font-style: normal; ");
-			break;
-		case PANGO_STYLE_OBLIQUE:
-			g_string_append (s, "font-style: oblique; ");
-			break;
-		case PANGO_STYLE_ITALIC:
-			g_string_append (s, "font-style: italic; ");
-			break;
+			case PANGO_STYLE_NORMAL:
+				g_string_append (s, "font-style: normal; ");
+				break;
+			case PANGO_STYLE_OBLIQUE:
+				g_string_append (s, "font-style: oblique; ");
+				break;
+			case PANGO_STYLE_ITALIC:
+				g_string_append (s, "font-style: italic; ");
+				break;
 		}
 	}
 	if (set & PANGO_FONT_MASK_VARIANT) {
 		switch (pango_font_description_get_variant (desc)) {
-		case PANGO_VARIANT_NORMAL:
-			g_string_append (s, "font-variant: normal; ");
-			break;
-		case PANGO_VARIANT_SMALL_CAPS:
-			g_string_append (s, "font-variant: small-caps; ");
-			break;
+			case PANGO_VARIANT_NORMAL:
+				g_string_append (s, "font-variant: normal; ");
+				break;
+			case PANGO_VARIANT_SMALL_CAPS:
+				g_string_append (s, "font-variant: small-caps; ");
+				break;
 		}
 	}
 	if (set & PANGO_FONT_MASK_WEIGHT) {
 		switch (pango_font_description_get_weight (desc)) {
-		case PANGO_WEIGHT_THIN:
-			g_string_append (s, "font-weight: 100; ");
-			break;
-		case PANGO_WEIGHT_ULTRALIGHT:
-			g_string_append (s, "font-weight: 200; ");
-			break;
-		case PANGO_WEIGHT_LIGHT:
-		case PANGO_WEIGHT_SEMILIGHT:
-			g_string_append (s, "font-weight: 300; ");
-			break;
-		case PANGO_WEIGHT_BOOK:
-		case PANGO_WEIGHT_NORMAL:
-			g_string_append (s, "font-weight: 400; ");
-			break;
-		case PANGO_WEIGHT_MEDIUM:
-			g_string_append (s, "font-weight: 500; ");
-			break;
-		case PANGO_WEIGHT_SEMIBOLD:
-			g_string_append (s, "font-weight: 600; ");
-			break;
-		case PANGO_WEIGHT_BOLD:
-			g_string_append (s, "font-weight: 700; ");
-			break;
-		case PANGO_WEIGHT_ULTRABOLD:
-			g_string_append (s, "font-weight: 800; ");
-			break;
-		case PANGO_WEIGHT_HEAVY:
-		case PANGO_WEIGHT_ULTRAHEAVY:
-			g_string_append (s, "font-weight: 900; ");
-			break;
+			case PANGO_WEIGHT_THIN:
+				g_string_append (s, "font-weight: 100; ");
+				break;
+			case PANGO_WEIGHT_ULTRALIGHT:
+				g_string_append (s, "font-weight: 200; ");
+				break;
+			case PANGO_WEIGHT_LIGHT:
+			case PANGO_WEIGHT_SEMILIGHT:
+				g_string_append (s, "font-weight: 300; ");
+				break;
+			case PANGO_WEIGHT_BOOK:
+			case PANGO_WEIGHT_NORMAL:
+				g_string_append (s, "font-weight: 400; ");
+				break;
+			case PANGO_WEIGHT_MEDIUM:
+				g_string_append (s, "font-weight: 500; ");
+				break;
+			case PANGO_WEIGHT_SEMIBOLD:
+				g_string_append (s, "font-weight: 600; ");
+				break;
+			case PANGO_WEIGHT_BOLD:
+				g_string_append (s, "font-weight: 700; ");
+				break;
+			case PANGO_WEIGHT_ULTRABOLD:
+				g_string_append (s, "font-weight: 800; ");
+				break;
+			case PANGO_WEIGHT_HEAVY:
+			case PANGO_WEIGHT_ULTRAHEAVY:
+				g_string_append (s, "font-weight: 900; ");
+				break;
 		}
 	}
 	if (set & PANGO_FONT_MASK_STRETCH) {
 		switch (pango_font_description_get_stretch (desc)) {
-		case PANGO_STRETCH_ULTRA_CONDENSED:
-			g_string_append (s, "font-stretch: ultra-condensed; ");
-			break;
-		case PANGO_STRETCH_EXTRA_CONDENSED:
-			g_string_append (s, "font-stretch: extra-condensed; ");
-			break;
-		case PANGO_STRETCH_CONDENSED:
-			g_string_append (s, "font-stretch: condensed; ");
-			break;
-		case PANGO_STRETCH_SEMI_CONDENSED:
-			g_string_append (s, "font-stretch: semi-condensed; ");
-			break;
-		case PANGO_STRETCH_NORMAL:
-			g_string_append (s, "font-stretch: normal; ");
-			break;
-		case PANGO_STRETCH_SEMI_EXPANDED:
-			g_string_append (s, "font-stretch: semi-expanded; ");
-			break;
-		case PANGO_STRETCH_EXPANDED:
-			g_string_append (s, "font-stretch: expanded; ");
-			break;
-		case PANGO_STRETCH_EXTRA_EXPANDED:
-			g_string_append (s, "font-stretch: extra-expanded; ");
-			break;
-		case PANGO_STRETCH_ULTRA_EXPANDED:
-			g_string_append (s, "font-stretch: ultra-expanded; ");
-			break;
+			case PANGO_STRETCH_ULTRA_CONDENSED:
+				g_string_append (s, "font-stretch: ultra-condensed; ");
+				break;
+			case PANGO_STRETCH_EXTRA_CONDENSED:
+				g_string_append (s, "font-stretch: extra-condensed; ");
+				break;
+			case PANGO_STRETCH_CONDENSED:
+				g_string_append (s, "font-stretch: condensed; ");
+				break;
+			case PANGO_STRETCH_SEMI_CONDENSED:
+				g_string_append (s, "font-stretch: semi-condensed; ");
+				break;
+			case PANGO_STRETCH_NORMAL:
+				g_string_append (s, "font-stretch: normal; ");
+				break;
+			case PANGO_STRETCH_SEMI_EXPANDED:
+				g_string_append (s, "font-stretch: semi-expanded; ");
+				break;
+			case PANGO_STRETCH_EXPANDED:
+				g_string_append (s, "font-stretch: expanded; ");
+				break;
+			case PANGO_STRETCH_EXTRA_EXPANDED:
+				g_string_append (s, "font-stretch: extra-expanded; ");
+				break;
+			case PANGO_STRETCH_ULTRA_EXPANDED:
+				g_string_append (s, "font-stretch: ultra-expanded; ");
+				break;
 		}
 	}
 	if (set & PANGO_FONT_MASK_SIZE) {
@@ -1574,19 +1571,18 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 		style_context = gtk_widget_get_style_context (GTK_WIDGET (priv->entry_view));
 		gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (priv->css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	}
-	gtk_css_provider_load_from_data (priv->css_provider, css_font, strlen(css_font), NULL);
+	gtk_css_provider_load_from_data (priv->css_provider, css_font, strlen (css_font), NULL);
 
 	/* Setting up entry GtkTextView size based on font size plus a margin */
 	fixed_width = mw_get_font_width (GTK_WIDGET (priv->entry_view), font_desc_string) + ALMANAH_MAIN_WINDOW_FIXED_MARGIN_FONT;
 	/* The ScrolledWindow (parent container for the text view) must be at
 	   least the new width plus the text view margin */
-	gtk_widget_set_size_request(GTK_WIDGET (priv->entry_view), fixed_width, -1);
+	gtk_widget_set_size_request (GTK_WIDGET (priv->entry_view), fixed_width, -1);
 
 	g_free (font_desc_string);
 	pango_font_description_free (font_desc);
 	g_free (css_font);
 }
-
 
 static int
 mw_get_font_width (GtkWidget *widget, const gchar *font_name)
@@ -1601,7 +1597,7 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 	/* Translators: this sentence is just used in startup to estimate the width
 	   of a 15 words sentence. Translate with some random sentences with just 15 words.
 	   See: https://bugzilla.gnome.org/show_bug.cgi?id=754841 */
-	pango_layout_set_text (layout, _("This is just a fifteen words sentence to calculate the diary entry text view size"), -1);
+	pango_layout_set_text (layout, _ ("This is just a fifteen words sentence to calculate the diary entry text view size"), -1);
 
 	pango_layout_get_pixel_size (layout, &width, &height);
 
@@ -1611,7 +1607,6 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 	return width;
 }
 
-
 void
 mw_desktop_interface_settings_changed (G_GNUC_UNUSED GSettings *settings, const gchar *key, gpointer user_data)
 {
@@ -1620,7 +1615,6 @@ mw_desktop_interface_settings_changed (G_GNUC_UNUSED GSettings *settings, const 
 
 	mw_setup_size_text_view (ALMANAH_MAIN_WINDOW (user_data));
 }
-
 
 #ifdef ENABLE_SPELL_CHECKING
 static void
@@ -1638,7 +1632,7 @@ spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused))
 		if (error != NULL) {
 			GtkWidget *dialog = gtk_message_dialog_new (NULL,
 			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-			                                            _("Spelling checker could not be initialized"));
+			                                            _ ("Spelling checker could not be initialized"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);

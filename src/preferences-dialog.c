@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,19 +17,19 @@
  */
 
 #include <config.h>
+#include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
-#include <gio/gio.h>
 #define LIBCRYPTUI_API_SUBJECT_TO_CHANGE
+#include <atk/atk.h>
 #include <cryptui-key-combo.h>
 #include <cryptui-keyset.h>
 #include <cryptui.h>
-#include <atk/atk.h>
 
-#include "preferences-dialog.h"
 #include "interface.h"
 #include "main-window.h"
+#include "preferences-dialog.h"
 
 static void get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
@@ -78,7 +78,7 @@ static void
 almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 {
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
-	gtk_window_set_title (GTK_WINDOW (self), _("Preferences"));
+	gtk_window_set_title (GTK_WINDOW (self), _ ("Preferences"));
 	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
 	gtk_window_set_resizable (GTK_WINDOW (self), TRUE); /* needs to be resizeable so long keys can be made visible in the list */
 }
@@ -167,13 +167,13 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-							    _("UI data could not be loaded"));
+		                                            GTK_DIALOG_MODAL,
+		                                            GTK_MESSAGE_ERROR,
+		                                            GTK_BUTTONS_OK,
+		                                            _ ("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -200,16 +200,16 @@ almanah_preferences_dialog_new (GSettings *settings)
 	gtk_widget_set_valign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
 
 	/* Grab our child widgets */
-	label = gtk_label_new (_("Encryption key: "));
+	label = gtk_label_new (_ ("Encryption key: "));
 	gtk_grid_attach (grid, label, 0, 0, 1, 1);
 
 	priv->keyset = cryptui_keyset_new ("openpgp", FALSE);
-	priv->key_store = cryptui_key_store_new (priv->keyset, FALSE, _("None (don't encrypt)"));
+	priv->key_store = cryptui_key_store_new (priv->keyset, FALSE, _ ("None (don't encrypt)"));
 	cryptui_key_store_set_filter (priv->key_store, key_store_filter_cb, NULL);
 	priv->key_combo = cryptui_key_combo_new (priv->key_store);
 	gtk_grid_attach (grid, GTK_WIDGET (priv->key_combo), 1, 0, 1, 1);
 
-	button = gtk_button_new_with_mnemonic (_("New _Key"));
+	button = gtk_button_new_with_mnemonic (_ ("New _Key"));
 	gtk_grid_attach (grid, button, 2, 0, 1, 1);
 	g_signal_connect (button, "clicked", G_CALLBACK (pd_new_key_button_clicked_cb), preferences_dialog);
 
@@ -233,7 +233,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up the "Enable spell checking" check button */
-	priv->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_("Enable _spell checking")));
+	priv->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_ ("Enable _spell checking")));
 	gtk_grid_attach (grid, GTK_WIDGET (priv->spell_checking_enabled_check_button), 0, 2, 2, 1);
 
 	g_settings_bind (priv->settings, "spell-checking-enabled", priv->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
@@ -258,8 +258,8 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 
 	if (g_settings_set_string (priv->settings, "encryption-key", key) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
-							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-							    _("Error saving the encryption key"));
+		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+		                                            _ ("Error saving the encryption key"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
@@ -275,10 +275,10 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 	const gchar *argv[2] = { "seahorse", NULL };
 	GError *error = NULL;
 
-	if (g_spawn_async (NULL, (gchar**) argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
+	if (g_spawn_async (NULL, (gchar **) argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
-							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-							    _("Error opening Seahorse"));
+		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
+		                                            _ ("Error opening Seahorse"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

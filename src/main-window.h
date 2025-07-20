@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,14 +20,14 @@
 #define ALMANAH_MAIN_WINDOW_H
 
 #include <config.h>
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 
 #include "application.h"
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_MAIN_WINDOW        (almanah_main_window_get_type ())
+#define ALMANAH_TYPE_MAIN_WINDOW (almanah_main_window_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahMainWindow, almanah_main_window, ALMANAH, MAIN_WINDOW, GtkApplicationWindow)
 

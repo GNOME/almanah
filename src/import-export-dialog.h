@@ -19,8 +19,8 @@
 #ifndef ALMANAH_IMPORT_EXPORT_DIALOG_H
 #define ALMANAH_IMPORT_EXPORT_DIALOG_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "import-operation.h"
@@ -28,13 +28,13 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_IMPORT_EXPORT_DIALOG       (almanah_import_export_dialog_get_type ())
+#define ALMANAH_TYPE_IMPORT_EXPORT_DIALOG (almanah_import_export_dialog_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahImportExportDialog, almanah_import_export_dialog, ALMANAH, IMPORT_EXPORT_DIALOG, GtkDialog)
 
 AlmanahImportExportDialog *almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboolean import) G_GNUC_WARN_UNUSED_RESULT;
 
-#define ALMANAH_TYPE_IMPORT_RESULTS_DIALOG      (almanah_import_results_dialog_get_type ())
+#define ALMANAH_TYPE_IMPORT_RESULTS_DIALOG (almanah_import_results_dialog_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahImportResultsDialog, almanah_import_results_dialog, ALMANAH, IMPORT_RESULTS_DIALOG, GtkDialog)
 

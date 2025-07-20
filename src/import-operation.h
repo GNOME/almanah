@@ -19,8 +19,8 @@
 #ifndef ALMANAH_IMPORT_OPERATION_H
 #define ALMANAH_IMPORT_OPERATION_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "storage-manager.h"
@@ -38,20 +38,16 @@ typedef guint AlmanahImportOperationType;
 
 typedef void (*AlmanahImportProgressCallback) (const GDate *date, AlmanahImportStatus status, const gchar *message, gpointer user_data);
 
-#define ALMANAH_TYPE_IMPORT_OPERATION       (almanah_import_operation_get_type ())
+#define ALMANAH_TYPE_IMPORT_OPERATION (almanah_import_operation_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahImportOperation, almanah_import_operation, ALMANAH, IMPORT_OPERATION, GObject)
 
-AlmanahImportOperation *almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source,
-                                                      AlmanahStorageManager *dest_storage_manager) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
+AlmanahImportOperation *almanah_import_operation_new (AlmanahImportOperationType type_id, GFile *source, AlmanahStorageManager *dest_storage_manager) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
-void almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancellable,
-                                   AlmanahImportProgressCallback progress_callback, gpointer progress_user_data,
-                                   GAsyncReadyCallback callback, gpointer user_data);
+void almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancellable, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data, GAsyncReadyCallback callback, gpointer user_data);
 gboolean almanah_import_operation_finish (AlmanahImportOperation *self, GAsyncResult *async_result, GError **error);
 
-void almanah_import_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column,
-                                              guint action_column);
+void almanah_import_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column, guint action_column);
 
 G_END_DECLS
 

@@ -21,8 +21,8 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "uri-entry-dialog.h"
 #include "interface.h"
+#include "uri-entry-dialog.h"
 
 static void almanah_uri_entry_dialog_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_uri_entry_dialog_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
@@ -66,7 +66,7 @@ almanah_uri_entry_dialog_init (AlmanahUriEntryDialog *self)
 {
 	g_signal_connect (self, "response", (GCallback) gtk_widget_hide, self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
-	gtk_window_set_title (GTK_WINDOW (self), _("Enter URI"));
+	gtk_window_set_title (GTK_WINDOW (self), _ ("Enter URI"));
 }
 
 static void
@@ -115,13 +115,13 @@ almanah_uri_entry_dialog_new (void)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar**) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-							    _("UI data could not be loaded"));
+		                                            GTK_DIALOG_MODAL,
+		                                            GTK_MESSAGE_ERROR,
+		                                            GTK_BUTTONS_OK,
+		                                            _ ("UI data could not be loaded"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);

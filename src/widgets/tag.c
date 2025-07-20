@@ -17,16 +17,16 @@
  */
 
 #include <glib/gi18n.h>
-#include <pango/pangocairo.h>
 #include <math.h>
+#include <pango/pangocairo.h>
 
-#include "tag.h"
 #include "tag-accessible.h"
+#include "tag.h"
 
-#define PADDING_TOP    1
+#define PADDING_TOP 1
 #define PADDING_BOTTOM 1
-#define PADDING_LEFT   10
-#define PADDING_RIGHT  5
+#define PADDING_LEFT 10
+#define PADDING_RIGHT 5
 #define SHADOW_RIGHT 1
 #define SHADOW_BOTTOM 2
 #define CLOSE_BUTTON 5
@@ -64,19 +64,21 @@ enum {
 	LAST_SIGNAL
 };
 
-static guint tag_signals[LAST_SIGNAL] = { 0, };
+static guint tag_signals[LAST_SIGNAL] = {
+	0,
+};
 
-static void almanah_tag_finalize             (GObject *object);
-static void almanah_tag_get_property         (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
-static void almanah_tag_set_property         (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
-void        almanah_tag_ensure_layout        (AlmanahTag *self);
-void        almanah_tag_get_preferred_width  (GtkWidget *widget, gint *minimum_width, gint *natural_width);
-void        almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height);
-gboolean    almanah_tag_motion_notify_event  (GtkWidget *widget, GdkEventMotion *event);
-gboolean    almanah_tag_button_press_event   (GtkWidget *widget, GdkEventButton *event);
-gboolean    almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event);
-gboolean    almanah_tag_draw                 (GtkWidget *widget, cairo_t *cr, gpointer data);
-gboolean    almanah_tag_query_tooltip        (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip);
+static void almanah_tag_finalize (GObject *object);
+static void almanah_tag_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
+static void almanah_tag_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
+void almanah_tag_ensure_layout (AlmanahTag *self);
+void almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *natural_width);
+void almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height);
+gboolean almanah_tag_motion_notify_event (GtkWidget *widget, GdkEventMotion *event);
+gboolean almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event);
+gboolean almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event);
+gboolean almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data);
+gboolean almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTag, almanah_tag, GTK_TYPE_DRAWING_AREA)
 
@@ -98,16 +100,16 @@ almanah_tag_class_init (AlmanahTagClass *klass)
 	widget_class->query_tooltip = almanah_tag_query_tooltip;
 
 	g_object_class_install_property (gobject_class, PROP_TAG,
-					 g_param_spec_string ("tag",
-							      "Tag", "The tag name.",
-							      NULL, G_PARAM_READWRITE));
+	                                 g_param_spec_string ("tag",
+	                                                      "Tag", "The tag name.",
+	                                                      NULL, G_PARAM_READWRITE));
 
 	tag_signals[SIGNAL_REMOVE] = g_signal_new ("remove",
-						   G_TYPE_FROM_CLASS (klass),
-						   G_SIGNAL_RUN_LAST,
-						   0, NULL, NULL,
-						   g_cclosure_marshal_VOID__VOID,
-						   G_TYPE_NONE, 0);
+	                                           G_TYPE_FROM_CLASS (klass),
+	                                           G_SIGNAL_RUN_LAST,
+	                                           0, NULL, NULL,
+	                                           g_cclosure_marshal_VOID__VOID,
+	                                           G_TYPE_NONE, 0);
 
 	gtk_widget_class_set_accessible_type (widget_class, ALMANAH_TYPE_TAG_ACCESSIBLE);
 }
@@ -119,10 +121,8 @@ almanah_tag_init (AlmanahTag *self)
 
 	g_signal_connect (G_OBJECT (self), "draw", G_CALLBACK (almanah_tag_draw), NULL);
 
-	gtk_widget_add_events (GTK_WIDGET  (self),
-			       GDK_POINTER_MOTION_MASK
-			       | GDK_BUTTON_PRESS_MASK
-			       | GDK_BUTTON_RELEASE_MASK);
+	gtk_widget_add_events (GTK_WIDGET (self),
+	                       GDK_POINTER_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
 	gdk_rgba_parse (&priv->text_color, "#936835");
 	gdk_rgba_parse (&priv->strock_color, "#ECB447");
@@ -234,7 +234,7 @@ almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *n
 }
 
 gboolean
-almanah_tag_motion_notify_event  (GtkWidget *widget, GdkEventMotion *event)
+almanah_tag_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);
 	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (tag);
@@ -243,8 +243,7 @@ almanah_tag_motion_notify_event  (GtkWidget *widget, GdkEventMotion *event)
 	gboolean close_highlighted;
 
 	/* Close button */
-	if (event->x >= close_x && event->x <= close_x + CLOSE_BUTTON
-	    && event->y >= close_y && event->y <= close_y + CLOSE_BUTTON) {
+	if (event->x >= close_x && event->x <= close_x + CLOSE_BUTTON && event->y >= close_y && event->y <= close_y + CLOSE_BUTTON) {
 		close_highlighted = TRUE;
 	} else {
 		close_highlighted = FALSE;
@@ -266,9 +265,7 @@ almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event)
 	gint close_x = priv->close_x;
 	gint close_y = priv->close_y;
 
-	if (event->x >= close_x && event->x <= close_x + CLOSE_BUTTON
-	    && event->y >= close_y && event->y <= close_y + CLOSE_BUTTON
-	    && event->button == 1) {
+	if (event->x >= close_x && event->x <= close_x + CLOSE_BUTTON && event->y >= close_y && event->y <= close_y + CLOSE_BUTTON && event->button == 1) {
 		priv->close_pressed = TRUE;
 	} else {
 		priv->close_pressed = FALSE;
@@ -285,10 +282,7 @@ almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event)
 	gint close_x = priv->close_x;
 	gint close_y = priv->close_y;
 
-	if (event->x >= close_x && event->x <= close_x + CLOSE_BUTTON
-	    && event->y >= close_y && event->y <= close_y + CLOSE_BUTTON
-	    && priv->close_pressed
-	    && event->button == 1) {
+	if (event->x >= close_x && event->x <= close_x + CLOSE_BUTTON && event->y >= close_y && event->y <= close_y + CLOSE_BUTTON && priv->close_pressed && event->button == 1) {
 		g_signal_emit (tag, tag_signals[SIGNAL_REMOVE], 0);
 	}
 	priv->close_pressed = FALSE;
@@ -333,13 +327,13 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	/* gradient background */
 	fill_pattrn = cairo_pattern_create_linear (1, y_origin + 1, 2, y_origin + height - 1);
 	cairo_pattern_add_color_stop_rgb (fill_pattrn, 0,
-					  priv->fill_a_color.red,
-					  priv->fill_a_color.green,
-					  priv->fill_a_color.blue);
+	                                  priv->fill_a_color.red,
+	                                  priv->fill_a_color.green,
+	                                  priv->fill_a_color.blue);
 	cairo_pattern_add_color_stop_rgb (fill_pattrn, 1,
-					  priv->fill_b_color.red,
-					  priv->fill_b_color.green,
-					  priv->fill_b_color.blue);
+	                                  priv->fill_b_color.red,
+	                                  priv->fill_b_color.green,
+	                                  priv->fill_b_color.blue);
 	cairo_set_source (cr, fill_pattrn);
 	cairo_fill_preserve (cr);
 	/* paint the border */
@@ -366,11 +360,11 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	text_width = text_width / PANGO_SCALE;
 	/* A white text shadow */
 	cairo_set_source_rgba (cr, 1, 1, 1, 0.5);
-	cairo_move_to (cr, PADDING_LEFT, y_origin + middle_height - (text_height /2));
+	cairo_move_to (cr, PADDING_LEFT, y_origin + middle_height - (text_height / 2));
 	pango_cairo_show_layout (cr, priv->layout);
 	/* The text */
 	gdk_cairo_set_source_rgba (cr, &priv->text_color);
-	cairo_move_to (cr, PADDING_LEFT, y_origin + middle_height - (text_height /2) - 1);
+	cairo_move_to (cr, PADDING_LEFT, y_origin + middle_height - (text_height / 2) - 1);
 	pango_cairo_show_layout (cr, priv->layout);
 
 	/* Remove button, it's a "x" */
@@ -409,10 +403,10 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	/* Focus */
 	if (gtk_widget_has_focus (widget))
 		gtk_render_focus (gtk_widget_get_style_context (widget),
-				  cr,
-				  0, 0,
-				  gtk_widget_get_allocated_width (widget),
-				  gtk_widget_get_allocated_height (widget));
+		                  cr,
+		                  0, 0,
+		                  gtk_widget_get_allocated_width (widget),
+		                  gtk_widget_get_allocated_height (widget));
 
 	return FALSE;
 }
@@ -426,10 +420,9 @@ almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_
 	gint close_y = priv->close_y;
 
 	/* @TODO: Maybe remove all this code and test if priv->close_highlighted == TRUE, or just return it */
-	if (x >= close_x && x <= close_x + CLOSE_BUTTON
-	    && y >= close_y && y <= close_y + CLOSE_BUTTON) {
+	if (x >= close_x && x <= close_x + CLOSE_BUTTON && y >= close_y && y <= close_y + CLOSE_BUTTON) {
 		/* Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ? */
-		gtk_tooltip_set_text (tooltip, _("Remove tag"));
+		gtk_tooltip_set_text (tooltip, _ ("Remove tag"));
 		return TRUE;
 	} else {
 		return FALSE;
@@ -440,8 +433,8 @@ GtkWidget *
 almanah_tag_new (const gchar *tag)
 {
 	return GTK_WIDGET (g_object_new (ALMANAH_TYPE_TAG,
-					 "tag", tag,
-					 NULL));
+	                                 "tag", tag,
+	                                 NULL));
 }
 
 const gchar *

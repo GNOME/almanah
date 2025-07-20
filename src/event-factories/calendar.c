@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,12 +18,12 @@
 
 #include <glib.h>
 
-#include "../event.h"
-#include "calendar.h"
-#include "calendar-client.h"
 #include "../event-factory.h"
+#include "../event.h"
 #include "../events/calendar-appointment.h"
 #include "../events/calendar-task.h"
+#include "calendar-client.h"
+#include "calendar.h"
 
 static void almanah_calendar_event_factory_dispose (GObject *object);
 static void query_events (AlmanahEventFactory *event_factory, GDate *date);
@@ -98,7 +98,9 @@ events_changed_cb (CalendarClient *client, AlmanahCalendarEventFactory *self)
 static inline time_t
 date_to_time (GDate *date)
 {
-	struct tm localtime_tm = { 0, };
+	struct tm localtime_tm = {
+		0,
+	};
 
 	localtime_tm.tm_mday = g_date_get_day (date);
 	localtime_tm.tm_mon = g_date_get_month (date) - 1;

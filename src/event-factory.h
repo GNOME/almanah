@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,8 +20,8 @@
 #define ALMANAH_EVENT_FACTORY_H
 
 #include <config.h>
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 
@@ -30,7 +30,7 @@ typedef enum {
 	ALMANAH_EVENT_FACTORY_CALENDAR
 } AlmanahEventFactoryType;
 
-#define ALMANAH_TYPE_EVENT_FACTORY      (almanah_event_factory_get_type ())
+#define ALMANAH_TYPE_EVENT_FACTORY (almanah_event_factory_get_type ())
 
 G_DECLARE_DERIVABLE_TYPE (AlmanahEventFactory, almanah_event_factory, ALMANAH, EVENT_FACTORY, GObject)
 

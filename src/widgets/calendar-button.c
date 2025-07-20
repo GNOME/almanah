@@ -16,8 +16,8 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glib/gi18n.h>
 #include <config.h>
+#include <glib/gi18n.h>
 
 #include "calendar-button.h"
 #include "calendar.h"
@@ -62,10 +62,10 @@ static void almanah_calendar_button_dock_closed (GtkWidget *dock, AlmanahCalenda
 static void almanah_calendar_button_toggled (GtkToggleButton *togglebutton);
 static void almanah_calendar_button_day_selected_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
 static void almanah_calendar_button_month_changed_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
-static gboolean almanah_calendar_button_today_press_cb         (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
-static void     almanah_calendar_button_today_clicked_cb       (GtkButton *button, gpointer user_data);
-static void     almanah_calendar_button_select_date_clicked_cb (GtkButton *button, gpointer user_data);
-static gboolean almanah_calendar_button_select_date_press_cb   (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
+static gboolean almanah_calendar_button_today_press_cb (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
+static void almanah_calendar_button_today_clicked_cb (GtkButton *button, gpointer user_data);
+static void almanah_calendar_button_select_date_clicked_cb (GtkButton *button, gpointer user_data);
+static gboolean almanah_calendar_button_select_date_press_cb (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendarButton, almanah_calendar_button, GTK_TYPE_TOGGLE_BUTTON)
 
@@ -94,12 +94,12 @@ almanah_calendar_button_class_init (AlmanahCalendarButtonClass *klass)
 	 * Emitted when the user selects a day in the dock window.
 	 */
 	calendar_button_signals[DAY_SELECTED_SIGNAL] = g_signal_new ("day-selected",
-								     G_OBJECT_CLASS_TYPE (gobject_class),
-								     G_SIGNAL_RUN_FIRST,
-								     G_STRUCT_OFFSET (AlmanahCalendarButtonClass, day_selected),
-								     NULL, NULL,
-								     NULL,
-								     G_TYPE_NONE, 0);
+	                                                             G_OBJECT_CLASS_TYPE (gobject_class),
+	                                                             G_SIGNAL_RUN_FIRST,
+	                                                             G_STRUCT_OFFSET (AlmanahCalendarButtonClass, day_selected),
+	                                                             NULL, NULL,
+	                                                             NULL,
+	                                                             G_TYPE_NONE, 0);
 
 	/**
 	 * AlmanahCalendarButton::select-date-clicked:
@@ -108,12 +108,12 @@ almanah_calendar_button_class_init (AlmanahCalendarButtonClass *klass)
 	 * Emitted when the user clicks the "select date" button in the dock window.
 	 */
 	calendar_button_signals[SELECT_DATE_CLICKED_SIGNAL] = g_signal_new ("select-date-clicked",
-									    G_OBJECT_CLASS_TYPE (gobject_class),
-									    G_SIGNAL_RUN_FIRST,
-									    G_STRUCT_OFFSET (AlmanahCalendarButtonClass, select_date_clicked),
-									    NULL, NULL,
-									    NULL,
-									    G_TYPE_NONE, 0);
+	                                                                    G_OBJECT_CLASS_TYPE (gobject_class),
+	                                                                    G_SIGNAL_RUN_FIRST,
+	                                                                    G_STRUCT_OFFSET (AlmanahCalendarButtonClass, select_date_clicked),
+	                                                                    NULL, NULL,
+	                                                                    NULL,
+	                                                                    G_TYPE_NONE, 0);
 }
 
 static void
@@ -134,7 +134,7 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 	/* Calendar dock window from the UI file */
 	builder = gtk_builder_new ();
 	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
-		g_warning (_("UI data could not be loaded: %s"), error->message);
+		g_warning (_ ("UI data could not be loaded: %s"), error->message);
 		g_error_free (error);
 		g_object_unref (builder);
 
@@ -144,7 +144,7 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
 	priv->dock = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_calendar_window"));
 	if (priv->dock == NULL) {
-		g_warning (_("Can't load calendar window object from UI file"));
+		g_warning (_ ("Can't load calendar window object from UI file"));
 		g_object_unref (builder);
 
 		return;

@@ -19,23 +19,23 @@
 #ifndef ALMANAH_CALENDAR_BUTTON_H
 #define ALMANAH_CALENDAR_BUTTON_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
-#include "widgets/calendar.h"
 #include "storage-manager.h"
+#include "widgets/calendar.h"
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_CALENDAR_BUTTON        (almanah_calendar_button_get_type ())
+#define ALMANAH_TYPE_CALENDAR_BUTTON (almanah_calendar_button_get_type ())
 
 G_DECLARE_DERIVABLE_TYPE (AlmanahCalendarButton, almanah_calendar_button, ALMANAH, CALENDAR_BUTTON, GtkToggleButton)
 
 struct _AlmanahCalendarButtonClass {
 	GtkToggleButtonClass parent;
-	void (* day_selected) (AlmanahCalendarButton *self);
-	void (* select_date_clicked) (AlmanahCalendarButton *self);
+	void (*day_selected) (AlmanahCalendarButton *self);
+	void (*select_date_clicked) (AlmanahCalendarButton *self);
 };
 
 GtkWidget *almanah_calendar_button_new (AlmanahStorageManager *storage_manager) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;

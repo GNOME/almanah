@@ -1,7 +1,7 @@
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2008-2009 <philip@tecnocode.co.uk>
- * 
+ *
  * Almanah is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,16 +19,16 @@
 #ifndef ALMANAH_STORAGE_MANAGER_H
 #define ALMANAH_STORAGE_MANAGER_H
 
-#include <glib.h>
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <glib.h>
 
 #include "entry.h"
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_STORAGE_MANAGER		(almanah_storage_manager_get_type ())
-#define ALMANAH_STORAGE_MANAGER_ERROR		(almanah_storage_manager_error_quark ())
+#define ALMANAH_TYPE_STORAGE_MANAGER (almanah_storage_manager_get_type ())
+#define ALMANAH_STORAGE_MANAGER_ERROR (almanah_storage_manager_error_quark ())
 
 G_DECLARE_FINAL_TYPE (AlmanahStorageManager, almanah_storage_manager, ALMANAH, STORAGE_MANAGER, GObject)
 
@@ -46,7 +46,7 @@ typedef enum {
 typedef struct {
 	/*< private >*/
 	gpointer /*sqlite3_stmt **/ statement;
-	gboolean finished; /* TRUE if the query is finished and the iter has been cleaned up */
+	gboolean finished;  /* TRUE if the query is finished and the iter has been cleaned up */
 	gpointer user_data; /* to be used by #AlmanahStorageManager functions which need to associate data with a statement */
 } AlmanahStorageManagerIter;
 
@@ -65,12 +65,8 @@ AlmanahEntry *almanah_storage_manager_get_entry (AlmanahStorageManager *self, GD
 gboolean almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *entry);
 
 void almanah_storage_manager_iter_init (AlmanahStorageManagerIter *iter);
-AlmanahEntry *almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string,
-                                                      AlmanahStorageManagerIter *iter) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
-void almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const gchar *search_string, GCancellable *cancellable,
-                                                   AlmanahStorageManagerSearchCallback progress_callback, gpointer progress_user_data,
-                                                   GDestroyNotify progress_user_data_destroy,
-                                                   GAsyncReadyCallback callback_ready, gpointer user_data);
+AlmanahEntry *almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar *search_string, AlmanahStorageManagerIter *iter) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
+void almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const gchar *search_string, GCancellable *cancellable, AlmanahStorageManagerSearchCallback progress_callback, gpointer progress_user_data, GDestroyNotify progress_user_data_destroy, GAsyncReadyCallback callback_ready, gpointer user_data);
 gint almanah_storage_manager_search_entries_async_finish (AlmanahStorageManager *self, GAsyncResult *result, GError **error);
 AlmanahEntry *almanah_storage_manager_get_entries (AlmanahStorageManager *self,
                                                    AlmanahStorageManagerIter *iter) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;

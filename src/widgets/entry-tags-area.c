@@ -20,9 +20,9 @@
 
 #include "entry-tags-area.h"
 #include "entry.h"
-#include "tag.h"
-#include "tag-entry.h"
 #include "storage-manager.h"
+#include "tag-entry.h"
+#include "tag.h"
 
 enum {
 	PROP_ENTRY = 1,
@@ -44,16 +44,16 @@ struct _AlmanahEntryTagsArea {
 
 static void almanah_entry_tags_area_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_entry_tags_area_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
-static void almanah_entry_tags_area_finalize     (GObject *object);
-static void almanah_entry_tags_area_load_tags    (AlmanahEntryTagsArea *self);
-static void almanah_entry_tags_area_update       (AlmanahEntryTagsArea *self);
-static void almanah_entry_tags_area_show         (GtkWidget *widget);
-static void almanah_entry_tags_area_add_tag      (AlmanahEntryTagsArea *self, const gchar *tag);
+static void almanah_entry_tags_area_finalize (GObject *object);
+static void almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self);
+static void almanah_entry_tags_area_update (AlmanahEntryTagsArea *self);
+static void almanah_entry_tags_area_show (GtkWidget *widget);
+static void almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const gchar *tag);
 
 /* Signals */
-void        tag_entry_activate_cb              (GtkEntry *entry, AlmanahEntryTagsArea *self);
-void        entry_tags_area_remove_foreach_cb  (GtkWidget *tag_widget, AlmanahEntryTagsArea *self);
-static void tag_remove                         (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
+void tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self);
+void entry_tags_area_remove_foreach_cb (GtkWidget *tag_widget, AlmanahEntryTagsArea *self);
+static void tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_FLOW_BOX)
 
@@ -70,22 +70,22 @@ almanah_entry_tags_area_class_init (AlmanahEntryTagsAreaClass *klass)
 	widget_class->show = almanah_entry_tags_area_show;
 
 	g_object_class_install_property (gobject_class, PROP_ENTRY,
-					 g_param_spec_object ("entry",
-							      "Entry", "The entry from which show the tag list",
-							      ALMANAH_TYPE_ENTRY,
-							      G_PARAM_READWRITE));
+	                                 g_param_spec_object ("entry",
+	                                                      "Entry", "The entry from which show the tag list",
+	                                                      ALMANAH_TYPE_ENTRY,
+	                                                      G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
-					 g_param_spec_object ("storage-manager",
-							      "Storage manager", "The storage manager whose entries should be listed.",
-							      ALMANAH_TYPE_STORAGE_MANAGER,
-							      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+	                                 g_param_spec_object ("storage-manager",
+	                                                      "Storage manager", "The storage manager whose entries should be listed.",
+	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
+	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 	g_object_class_install_property (gobject_class, PROP_BACK_WIDGET,
-					 g_param_spec_object ("back-widget",
-							      "Back Widget", "The widget to grab the focus after a tag was added to an entry.",
-							      GTK_TYPE_WIDGET,
-							      G_PARAM_READWRITE));
+	                                 g_param_spec_object ("back-widget",
+	                                                      "Back Widget", "The widget to grab the focus after a tag was added to an entry.",
+	                                                      GTK_TYPE_WIDGET,
+	                                                      G_PARAM_READWRITE));
 }
 
 static void
@@ -98,8 +98,8 @@ almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 
 	/* The tag entry widget */
 	priv->tag_entry = g_object_new (ALMANAH_TYPE_TAG_ENTRY, NULL);
-	gtk_entry_set_text (GTK_ENTRY (priv->tag_entry), _("add tag"));
-	gtk_widget_set_tooltip_text (GTK_WIDGET (priv->tag_entry), _("Write the tag and press enter to save it"));
+	gtk_entry_set_text (GTK_ENTRY (priv->tag_entry), _ ("add tag"));
+	gtk_widget_set_tooltip_text (GTK_WIDGET (priv->tag_entry), _ ("Write the tag and press enter to save it"));
 	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (priv->tag_entry));
 	g_signal_connect (priv->tag_entry, "activate", G_CALLBACK (tag_entry_activate_cb), self);
 }
@@ -173,7 +173,7 @@ almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 
 	tags = almanah_storage_manager_entry_get_tags (priv->storage_manager, priv->entry);
 	while (tags) {
-		almanah_entry_tags_area_add_tag (self, (const gchar*) tags->data);
+		almanah_entry_tags_area_add_tag (self, (const gchar *) tags->data);
 
 		g_free (tags->data);
 		tags = g_list_next (tags);
@@ -224,7 +224,7 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 	gtk_entry_set_text (entry, "");
 	if (almanah_storage_manager_entry_add_tag (priv->storage_manager, priv->entry, tag)) {
 		/* @TODO: turn this async waiting for the storage signal "tag-added" */
-		almanah_entry_tags_area_add_tag (self, (const gchar*) tag);
+		almanah_entry_tags_area_add_tag (self, (const gchar *) tag);
 		gtk_widget_grab_focus (priv->back_widget);
 	} else {
 		g_debug ("Can't add the tag");

@@ -19,8 +19,8 @@
 #ifndef ALMANAH_APPLICATION_H
 #define ALMANAH_APPLICATION_H
 
-#include <glib.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "event-manager.h"
@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-#define ALMANAH_TYPE_APPLICATION		(almanah_application_get_type ())
+#define ALMANAH_TYPE_APPLICATION (almanah_application_get_type ())
 
 G_DECLARE_FINAL_TYPE (AlmanahApplication, almanah_application, ALMANAH, APPLICATION, GtkApplication)
 
