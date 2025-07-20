@@ -1,4 +1,3 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
  * Copyright (C) Álvaro Peña 2011-2012 <alvaropg@gmail.com>

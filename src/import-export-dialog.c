@@ -1,4 +1,3 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /*
  * Almanah
  * Copyright (C) Philip Withnall 2009–2010 <philip@tecnocode.co.uk>
