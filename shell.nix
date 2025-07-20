@@ -11,6 +11,7 @@ pkgs.mkShell {
     appstream
     desktop-file-utils
     wrapGAppsHook3
+    clang-tools
 
     npins
   ];
