@@ -102,6 +102,7 @@ typedef struct {
 	AlmanahEntryTagsArea *entry_tags_area;
 	AlmanahCalendarButton *calendar_button;
 	GtkListStore *event_store;
+	GtkTreeView *events_tree_view;
 	GtkWidget *events_expander;
 	GtkLabel *events_count_label;
 	GtkTreeSelection *events_selection;
@@ -152,12 +153,26 @@ static void
 almanah_main_window_class_init (AlmanahMainWindowClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
 	gobject_class->dispose = almanah_main_window_dispose;
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/main-window.ui");
+
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, entry_scrolled);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, entry_view);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, entry_tags_area);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, event_store);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, events_tree_view);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, events_expander);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, events_count_label);
 }
 
 static void
 almanah_main_window_init (AlmanahMainWindow *self)
 {
+	gtk_widget_init_template (GTK_WIDGET (self));
+
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 
 	gtk_window_set_title (GTK_WINDOW (self), _ ("Almanah Diary"));
@@ -210,62 +225,22 @@ almanah_main_window_dispose (GObject *object)
 AlmanahMainWindow *
 almanah_main_window_new (AlmanahApplication *application)
 {
-	GtkBuilder *builder;
 	g_autoptr (AlmanahEventManager) event_manager = NULL;
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
-	GError *error = NULL;
 	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
-	const gchar *object_names[] = {
-		"almanah_main_window",
-		"almanah_mw_event_store",
-		NULL
-	};
 
 	g_return_val_if_fail (ALMANAH_IS_APPLICATION (application), NULL);
 
-	builder = gtk_builder_new ();
-
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/main-window.ui", (gchar **) object_names, &error) == 0) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-		                                            GTK_DIALOG_MODAL,
-		                                            GTK_MESSAGE_ERROR,
-		                                            GTK_BUTTONS_OK,
-		                                            _ ("UI data could not be loaded"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		return NULL;
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	main_window = ALMANAH_MAIN_WINDOW (gtk_builder_get_object (builder, "almanah_main_window"));
-	gtk_builder_connect_signals (builder, main_window);
-
-	if (main_window == NULL) {
-		g_object_unref (builder);
-		return NULL;
-	}
+	main_window = ALMANAH_MAIN_WINDOW (g_object_new (ALMANAH_TYPE_MAIN_WINDOW, NULL));
 
 	/* Set up the application */
 	gtk_window_set_application (GTK_WINDOW (main_window), GTK_APPLICATION (application));
 
 	priv = almanah_main_window_get_instance_private (ALMANAH_MAIN_WINDOW (main_window));
 
-	/* Grab our child widgets */
-	priv->entry_scrolled = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_main_content_scrolled_window"));
-	priv->entry_view = GTK_SOURCE_VIEW (gtk_builder_get_object (builder, "almanah_mw_entry_view"));
 	priv->entry_buffer = GTK_SOURCE_BUFFER (gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->entry_view)));
-	priv->entry_tags_area = ALMANAH_ENTRY_TAGS_AREA (gtk_builder_get_object (builder, "almanah_mw_entry_tags_area"));
-	priv->event_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_mw_event_store"));
-	priv->events_expander = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_mw_events_expander"));
-	priv->events_count_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_mw_events_count_label"));
-	priv->events_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_mw_events_tree_view")));
+	priv->events_selection = gtk_tree_view_get_selection (priv->events_tree_view);
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
@@ -320,8 +295,6 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	/* Set up a timeout for saving the current entry every so often. */
 	priv->save_entry_timeout_id = g_timeout_add_seconds (SAVE_ENTRY_INTERVAL, (GSourceFunc) save_entry_timeout_cb, main_window);
-
-	g_object_unref (builder);
 
 	restore_window_state (main_window);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-	<object class="GtkListStore" id="almanah_mw_event_store">
+	<object class="GtkListStore" id="event_store">
 		<columns>
 			<column type="AlmanahEvent"/><!-- Event object -->
 			<column type="gchararray"/><!-- Icon name -->
@@ -10,7 +10,7 @@
 		</columns>
 	</object>
 
-	<object class="AlmanahMainWindow" id="almanah_main_window">
+	<template class="AlmanahMainWindow" parent="GtkApplicationWindow">
 		<property name="hide-titlebar-when-maximized">True</property>
 		<property name="default-width">640</property>
 		<property name="default-height">480</property>
@@ -25,7 +25,7 @@
 							<class name="almanah-mw-main-content"/>
 						</style>
 						<child>
-							<object class="AlmanahEntryTagsArea" id="almanah_mw_entry_tags_area">
+							<object class="AlmanahEntryTagsArea" id="entry_tags_area">
 								<property name="visible">False</property>
 								<property name="no-show-all">True</property>
 								<property name="vexpand">False</property>
@@ -46,7 +46,7 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkScrolledWindow" id="almanah_mw_main_content_scrolled_window">
+							<object class="GtkScrolledWindow" id="entry_scrolled">
 								<property name="can-focus">True</property>
 								<property name="hscrollbar-policy">GTK_POLICY_NEVER</property>
 								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
@@ -58,7 +58,7 @@
 									<class name="view"/>
 								</style>
 								<child>
-									<object class="GtkSourceView" id="almanah_mw_entry_view">
+									<object class="GtkSourceView" id="entry_view">
 										<property name="width-request">500</property>
 										<property name="can-focus">True</property>
 										<property name="has-focus">True</property>
@@ -72,7 +72,7 @@
 											<class name="almanah-mw-entry-view"/>
 										</style>
 										<child internal-child="accessible">
-											<object class="AtkObject" id="a11y-almanah_mw_entry_view">
+											<object class="AtkObject" id="a11y-entry_view">
 												<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>
 											</object>
 										</child>
@@ -93,7 +93,7 @@
 					</packing>
 				</child>
 				<child>
-					<object class="GtkExpander" id="almanah_mw_events_expander">
+					<object class="GtkExpander" id="events_expander">
 						<child type="label">
 							<object class="GtkHBox" id="almanah_mw_events_expander_label_box">
 								<property name="spacing">6</property>
@@ -101,7 +101,7 @@
 									<object class="GtkLabel" id="almanah_mw_events_label">
 										<property name="label" translatable="yes">Past events</property>
 										<accessibility>
-											<relation target="almanah_mw_events_tree_view" type="label-for"/>
+											<relation target="events_tree_view" type="label-for"/>
 										</accessibility>
 										<attributes>
 											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
@@ -113,7 +113,7 @@
 									</packing>
 								</child>
 								<child>
-									<object class="GtkLabel" id="almanah_mw_events_count_label">
+									<object class="GtkLabel" id="events_count_label">
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -133,8 +133,8 @@
                                                                   <class name="almanah-events-scrolled"/>
                                                                 </style>
 								<child>
-									<object class="GtkTreeView" id="almanah_mw_events_tree_view">
-										<property name="model">almanah_mw_event_store</property>
+									<object class="GtkTreeView" id="events_tree_view">
+										<property name="model">event_store</property>
 										<property name="can-focus">True</property>
 										<property name="headers-visible">False</property>
 										<signal name="row-activated" handler="mw_events_tree_view_row_activated_cb"/>
@@ -142,7 +142,7 @@
 											<relation target="almanah_mw_events_label" type="labelled-by"/>
 										</accessibility>
 										<child internal-child="accessible">
-											<object class="AtkObject" id="a11y-almanah_mw_events_tree_view">
+											<object class="AtkObject" id="a11y-events_tree_view">
 												<property name="AtkObject::accessible-name" translatable="yes">Past Event List</property>
 											</object>
 										</child>
@@ -189,5 +189,5 @@
 				</child>
 			</object>
 		</child>
-	</object>
+	</template>
 </interface>
