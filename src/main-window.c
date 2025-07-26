@@ -1381,7 +1381,7 @@ mw_calendar_day_selected_current_entry_ready_cb (AlmanahMainWindow *main_window)
 	almanah_calendar_button_get_date (priv->calendar_button, &calendar_date);
 	/* Translators: This is a strftime()-format string for the date displayed at the top of the main window. */
 	g_date_strftime (calendar_string, sizeof (calendar_string), _ ("%A, %e %B %Y"), &calendar_date);
-	gtk_header_bar_set_title (GTK_HEADER_BAR (priv->header_bar), calendar_string);
+	gtk_window_set_title (GTK_WINDOW (main_window), calendar_string);
 
 	/* Update the entry */
 	storage_manager = almanah_application_dup_storage_manager (application);
