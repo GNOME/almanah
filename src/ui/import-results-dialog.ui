@@ -19,7 +19,7 @@
 		</data>
 	</object>
 
-	<object class="GtkListStore" id="almanah_ird_results_store">
+	<object class="GtkListStore" id="results_store">
 		<columns>
 			<column type="guint"/><!-- Day -->
 			<column type="guint"/><!-- Month -->
@@ -30,11 +30,11 @@
 		</columns>
 	</object>
 
-	<object class="GtkTreeModelFilter" id="almanah_ird_filtered_results_store">
-		<property name="child-model">almanah_ird_results_store</property>
+	<object class="GtkTreeModelFilter" id="filtered_results_store">
+		<property name="child-model">results_store</property>
 	</object>
 
-	<object class="AlmanahImportResultsDialog" id="almanah_import_results_dialog">
+	<template class="AlmanahImportResultsDialog" parent="GtkDialog">
 		<property name="border-width">5</property>
 		<child internal-child="vbox">
 			<object class="GtkVBox" id="almanah_ird_internal_vbox">
@@ -44,11 +44,11 @@
 						<property name="border-width">5</property>
 						<property name="spacing">6</property>
 						<child>
-							<object class="GtkComboBox" id="almanah_ird_view_combo_box">
+							<object class="GtkComboBox" id="view_combo_box">
 								<signal name="changed" handler="ird_view_combo_box_changed_cb"/>
 								<property name="model">almanah_ird_view_store</property>
 								<accessibility>
-									<relation target="almanah_ird_results_tree_view" type="label-for"/>
+									<relation target="results_tree_view" type="label-for"/>
 								</accessibility>
 								<child>
 									<object class="GtkCellRendererText" id="almanah_ird_view_renderer"/>
@@ -67,15 +67,15 @@
 								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 								<property name="shadow-type">GTK_SHADOW_IN</property>
 								<child>
-									<object class="GtkTreeView" id="almanah_ird_results_tree_view">
-										<property name="model">almanah_ird_filtered_results_store</property>
+									<object class="GtkTreeView" id="results_tree_view">
+										<property name="model">filtered_results_store</property>
 										<property name="headers-visible">False</property>
 										<signal name="row-activated" handler="ird_results_tree_view_row_activated_cb"/>
 										<accessibility>
-											<relation target="almanah_ird_view_combo_box" type="labelled-by"/>
+											<relation target="view_combo_box" type="labelled-by"/>
 										</accessibility>
 										<child internal-child="accessible">
-											<object class="AtkObject" id="a11y-almanah_ird_results_tree_view">
+											<object class="AtkObject" id="a11y-results_tree_view">
 												<property name="AtkObject::accessible-name" translatable="yes">Import Results List</property>
 											</object>
 										</child>
@@ -108,7 +108,7 @@
 				<child internal-child="action_area">
 					<object class="GtkHButtonBox" id="almanah_ird_button_box">
 						<child>
-							<object class="GtkButton" id="almanah_ird_view_button">
+							<object class="GtkButton" id="view_button">
 								<property name="label" translatable="yes">View Entry</property>
 								<property name="sensitive">False</property>
 								<signal name="clicked" handler="ird_view_button_clicked_cb"/>
@@ -127,5 +127,5 @@
 		<action-widgets>
 			<action-widget response="-7">almanah_ird_close_button</action-widget><!-- GTK_RESPONSE_CLOSE -->
 		</action-widgets>
-	</object>
+	</template>
 </interface>
