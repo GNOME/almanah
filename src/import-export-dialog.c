@@ -45,6 +45,7 @@ typedef struct {
 	GtkWidget *import_export_button;
 	GtkLabel *description_label;
 	GtkProgressBar *progress_bar;
+	GtkLabel *mode_label;
 	GCancellable *cancellable; /* non-NULL iff an operation is underway */
 } AlmanahImportExportDialogPrivate;
 
@@ -66,6 +67,7 @@ static void
 almanah_import_export_dialog_class_init (AlmanahImportExportDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
 	gobject_class->get_property = get_property;
 	gobject_class->set_property = set_property;
@@ -77,11 +79,23 @@ almanah_import_export_dialog_class_init (AlmanahImportExportDialogClass *klass)
 	                                                      "destination for import operations.",
 	                                                      ALMANAH_TYPE_STORAGE_MANAGER,
 	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/import-export-dialog.ui");
+
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportExportDialog, mode_combo_box);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportExportDialog, file_chooser);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportExportDialog, import_export_button);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportExportDialog, mode_store);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportExportDialog, description_label);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportExportDialog, progress_bar);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportExportDialog, mode_label);
 }
 
 static void
 almanah_import_export_dialog_init (AlmanahImportExportDialog *self)
 {
+	gtk_widget_init_template (GTK_WIDGET (self));
+
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
 
 	priv->current_mode = -1; /* no mode selected */
@@ -148,60 +162,19 @@ set_property (GObject *object, guint property_id, const GValue *value, GParamSpe
 AlmanahImportExportDialog *
 almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboolean import)
 {
-	GtkBuilder *builder;
 	AlmanahImportExportDialog *import_export_dialog;
 	AlmanahImportExportDialogPrivate *priv;
-	GError *error = NULL;
-	const gchar *object_names[] = {
-		"almanah_ied_mode_store",
-		"almanah_import_export_dialog",
-		NULL
-	};
 
 	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (storage_manager), NULL);
 
-	builder = gtk_builder_new ();
-
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/import-export-dialog.ui", (gchar**) object_names, &error) == 0) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-		                                            _("UI data could not be loaded"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		return NULL;
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	import_export_dialog = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_builder_get_object (builder, "almanah_import_export_dialog"));
-	gtk_builder_connect_signals (builder, import_export_dialog);
-
-	if (import_export_dialog == NULL) {
-		g_object_unref (builder);
-		return NULL;
-	}
+	import_export_dialog = ALMANAH_IMPORT_EXPORT_DIALOG (g_object_new (ALMANAH_TYPE_IMPORT_EXPORT_DIALOG, NULL));
 
 	priv = almanah_import_export_dialog_get_instance_private (import_export_dialog);
 	priv->storage_manager = g_object_ref (storage_manager);
 	priv->import = import;
 
-	/* Grab our child widgets */
-	priv->mode_combo_box = GTK_COMBO_BOX (gtk_builder_get_object (builder, "almanah_ied_mode_combo_box"));
-	priv->file_chooser = GTK_FILE_CHOOSER (gtk_builder_get_object (builder, "almanah_ied_file_chooser"));
-	priv->import_export_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_ied_import_export_button"));
-	priv->mode_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_ied_mode_store"));
-	priv->description_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_description_label"));
-	priv->progress_bar = GTK_PROGRESS_BAR (gtk_builder_get_object (builder, "almanah_ied_progress_bar"));
-
 	/* Set the mode label */
-	gtk_label_set_text_with_mnemonic (GTK_LABEL (gtk_builder_get_object (builder, "almanah_ied_mode_label")),
+	gtk_label_set_text_with_mnemonic (priv->mode_label,
 	                                  (import == TRUE) ? _("Import _mode: ") : _("Export _mode: "));
 
 	/* Set the window title */
@@ -218,8 +191,6 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 	else
 		almanah_export_operation_populate_model (priv->mode_store, 0, 1, 2, 3);
 	gtk_combo_box_set_active (priv->mode_combo_box, 0);
-
-	g_object_unref (builder);
 
 	return import_export_dialog;
 }
