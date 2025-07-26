@@ -1653,7 +1653,7 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 		style_context = gtk_widget_get_style_context (GTK_WIDGET (priv->entry_view));
 		gtk_style_context_add_provider (style_context, GTK_STYLE_PROVIDER (priv->css_provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 	}
-	gtk_css_provider_load_from_data (priv->css_provider, css_font, strlen (css_font), NULL);
+	gtk_css_provider_load_from_data (priv->css_provider, css_font, strlen (css_font));
 
 	/* Setting up entry GtkTextView size based on font size plus a margin */
 	fixed_width = mw_get_font_width (GTK_WIDGET (priv->entry_view), font_desc_string) + ALMANAH_MAIN_WINDOW_FIXED_MARGIN_FONT;
