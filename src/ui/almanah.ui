@@ -461,23 +461,6 @@
 		</action-widgets>
 	</object>
 
-	<object class="AlmanahPreferencesDialog" id="almanah_preferences_dialog">
-		<property name="use-header-bar">1</property>
-		<property name="resizable">False</property>
-		<child internal-child="vbox">
-			<object class="GtkBox" id="box4">
-				<child>
-					<object class="GtkGrid" id="almanah_pd_grid">
-						<property name="column-spacing">12</property>
-						<property name="row-spacing">18</property>
-						<property name="border-width">18</property>
-						<!-- Encryption key chooser and label go here, programmatically -->
-					</object>
-				</child>
-			</object>
-		</child>
-	</object>
-
 	<object class="AlmanahDateEntryDialog" id="almanah_date_entry_dialog">
 		<property name="border-width">5</property>
 		<child internal-child="vbox">
