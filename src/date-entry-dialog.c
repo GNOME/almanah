@@ -47,6 +47,7 @@ static void
 almanah_date_entry_dialog_class_init (AlmanahDateEntryDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
 	gobject_class->set_property = almanah_date_entry_dialog_set_property;
 	gobject_class->get_property = almanah_date_entry_dialog_get_property;
@@ -56,11 +57,18 @@ almanah_date_entry_dialog_class_init (AlmanahDateEntryDialogClass *klass)
 	                                                     "Date", "The current date selected by the dialog.",
 	                                                     G_TYPE_DATE,
 	                                                     G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/date-entry-dialog.ui");
+
+	gtk_widget_class_bind_template_child (widget_class, AlmanahDateEntryDialog, ok_button);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahDateEntryDialog, date_entry);
 }
 
 static void
 almanah_date_entry_dialog_init (AlmanahDateEntryDialog *self)
 {
+	gtk_widget_init_template (GTK_WIDGET (self));
+
 	g_date_clear (&(self->date), 1);
 	g_signal_connect (self, "response", G_CALLBACK (gtk_widget_hide), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
@@ -102,47 +110,9 @@ almanah_date_entry_dialog_set_property (GObject *object, guint property_id, cons
 AlmanahDateEntryDialog *
 almanah_date_entry_dialog_new (void)
 {
-	GtkBuilder *builder;
 	AlmanahDateEntryDialog *date_entry_dialog;
-	GError *error = NULL;
-	const gchar *object_names[] = {
-		"almanah_date_entry_dialog",
-		NULL
-	};
 
-	builder = gtk_builder_new ();
-
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/date-entry-dialog.ui", (gchar **) object_names, &error) == 0) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-		                                            GTK_DIALOG_MODAL,
-		                                            GTK_MESSAGE_ERROR,
-		                                            GTK_BUTTONS_OK,
-		                                            _ ("UI data could not be loaded"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		return NULL;
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	date_entry_dialog = ALMANAH_DATE_ENTRY_DIALOG (gtk_builder_get_object (builder, "almanah_date_entry_dialog"));
-	gtk_builder_connect_signals (builder, date_entry_dialog);
-
-	if (date_entry_dialog == NULL) {
-		g_object_unref (builder);
-		return NULL;
-	}
-
-	/* Grab widgets */
-	date_entry_dialog->ok_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_ded_ok_button"));
-	date_entry_dialog->date_entry = GTK_ENTRY (gtk_builder_get_object (builder, "almanah_ded_date_entry"));
-
-	g_object_unref (builder);
+	date_entry_dialog = g_object_new (ALMANAH_TYPE_DATE_ENTRY_DIALOG, NULL);
 
 	return date_entry_dialog;
 }
