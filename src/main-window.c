@@ -353,7 +353,7 @@ save_window_state (AlmanahMainWindow *self)
 	gsize key_file_length;
 	GdkWindow *window;
 	GdkWindowState state;
-	gint width, height, x, y;
+	gint width, height;
 	g_autoptr (GError) error = NULL;
 
 	/* Overwrite the existing state file with a new one */
@@ -370,12 +370,6 @@ save_window_state (AlmanahMainWindow *self)
 
 	g_key_file_set_integer (key_file, "main-window", "width", width);
 	g_key_file_set_integer (key_file, "main-window", "height", height);
-
-	/* Save the window position */
-	gtk_window_get_position (GTK_WINDOW (self), &x, &y);
-
-	g_key_file_set_integer (key_file, "main-window", "x-position", x);
-	g_key_file_set_integer (key_file, "main-window", "y-position", y);
 
 	/* Serialise the key file data */
 	key_file_data = g_key_file_to_data (key_file, &key_file_length, &error);
@@ -417,7 +411,7 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 	g_autoptr (GKeyFile) key_file = NULL;
 	g_autofree gchar *key_file_data = NULL;
 	gsize key_file_length;
-	gint width = -1, height = -1, x = -1, y = -1;
+	gint width = -1, height = -1;
 	g_autoptr (GError) error = NULL;
 
 	g_file_load_contents_finish (key_file_path, result, &key_file_data, &key_file_length, NULL, &error);
@@ -448,19 +442,6 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 	/* Load the appropriate keys from the file, ignoring errors */
 	width = g_key_file_get_integer (key_file, "main-window", "width", NULL);
 	height = g_key_file_get_integer (key_file, "main-window", "height", NULL);
-	x = g_key_file_get_integer (key_file, "main-window", "x-position", &error);
-
-	if (error != NULL) {
-		x = -1;
-		g_clear_error (&error);
-	}
-
-	y = g_key_file_get_integer (key_file, "main-window", "y-position", &error);
-
-	if (error != NULL) {
-		x = -1;
-		g_clear_error (&error);
-	}
 
 	/* Make sure the dimensions and position are sane */
 	if (width > 1 && height > 1) {
@@ -475,14 +456,7 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 		width = CLAMP (width, 0, max_width);
 		height = CLAMP (height, 0, max_height);
 
-		x = CLAMP (x, 0, max_width - width);
-		y = CLAMP (y, 0, max_height - height);
-
 		gtk_window_resize (GTK_WINDOW (self), width, height);
-	}
-
-	if (x >= 0 && y >= 0) {
-		gtk_window_move (GTK_WINDOW (self), x, y);
 	}
 
 	/* Maximised? */
