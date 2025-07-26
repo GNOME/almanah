@@ -155,7 +155,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 #ifdef ENABLE_SPELL_CHECKING
 	g_settings_bind (preferences_dialog->settings, "spell-checking-enabled", preferences_dialog->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
 #else
-	gtk_widget_destroy (GTK_WIDGET (preferences_dialog->spell_checking_enabled_check_button));
+	g_object_unref (preferences_dialog->spell_checking_enabled_check_button);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	return preferences_dialog;

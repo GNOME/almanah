@@ -241,7 +241,7 @@ entry_tags_area_remove_foreach_cb (GtkWidget *flow_box_child, AlmanahEntryTagsAr
 
 	/* Remove all the tag widget */
 	if (ALMANAH_IS_TAG (tag_widget)) {
-		gtk_widget_destroy (flow_box_child);
+		g_object_unref (flow_box_child);
 		priv->tags_number--;
 	}
 
@@ -271,7 +271,7 @@ tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self)
 	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
 
 	if (almanah_storage_manager_entry_remove_tag (priv->storage_manager, priv->entry, almanah_tag_get_tag (tag_widget))) {
-		gtk_widget_destroy (GTK_WIDGET (tag_widget));
+		g_object_unref (tag_widget);
 		priv->tags_number--;
 	} else {
 		g_debug ("Can't remove the tag");
