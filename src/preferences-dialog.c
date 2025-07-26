@@ -142,7 +142,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 	builder = gtk_builder_new ();
 
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/preferences-dialog.ui", (gchar **) object_names, &error) == 0) {
 		/* Show an error */
 		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 		                                            GTK_DIALOG_MODAL,
