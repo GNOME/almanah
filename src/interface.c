@@ -51,7 +51,7 @@ almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect
 }
 
 gboolean
-almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **error)
+almanah_run_on_display (GdkDisplay *display, const gchar *command_line, GError **error)
 {
 	gboolean retval;
 	g_autoptr (GAppInfo) app_info = NULL;
@@ -66,8 +66,7 @@ almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **er
 		return FALSE;
 	}
 
-	context = gdk_display_get_app_launch_context (gdk_screen_get_display (screen));
-	gdk_app_launch_context_set_screen (context, screen);
+	context = gdk_display_get_app_launch_context (display);
 
 	retval = g_app_info_launch (app_info, NULL, G_APP_LAUNCH_CONTEXT (context), error);
 

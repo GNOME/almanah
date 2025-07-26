@@ -120,7 +120,7 @@ almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window)
 
 	g_debug ("Executing \"%s\".", command_line);
 
-	retval = almanah_run_on_screen (gtk_widget_get_screen (GTK_WIDGET (parent_window)), command_line, &error);
+	retval = almanah_run_on_display (gtk_widget_get_display (GTK_WIDGET (parent_window)), command_line, &error);
 
 	if (retval == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (parent_window,

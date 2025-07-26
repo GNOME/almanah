@@ -23,6 +23,6 @@
 G_BEGIN_DECLS
 
 void almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events);
-gboolean almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **error);
+gboolean almanah_run_on_display (GdkDisplay *display, const gchar *command_line, GError **error);
 
 G_END_DECLS
