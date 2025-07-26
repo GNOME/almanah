@@ -36,6 +36,7 @@ struct _AlmanahPreferencesDialog {
 	GtkDialog parent;
 
 	GSettings *settings;
+	GtkGrid *almanah_pd_grid;
 	GtkComboBox *key_combo;
 	AlmanahSecretKeysStore *key_store;
 #ifdef ENABLE_SPELL_CHECKING
@@ -54,6 +55,7 @@ static void
 almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
 	gobject_class->get_property = get_property;
 	gobject_class->set_property = set_property;
@@ -64,11 +66,16 @@ almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)
 	                                                      "Settings", "Settings instance to modify.",
 	                                                      G_TYPE_SETTINGS,
 	                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/preferences-dialog.ui");
+
+	gtk_widget_class_bind_template_child (widget_class, AlmanahPreferencesDialog, almanah_pd_grid);
 }
 
 static void
 almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 {
+	gtk_widget_init_template (GTK_WIDGET (self));
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _ ("Preferences"));
 	gtk_widget_set_size_request (GTK_WIDGET (self), 400, -1);
@@ -122,50 +129,18 @@ set_property (GObject *object, guint property_id, const GValue *value, GParamSpe
 AlmanahPreferencesDialog *
 almanah_preferences_dialog_new (GSettings *settings)
 {
-	GtkBuilder *builder;
 	GtkGrid *grid;
 	GtkWidget *label, *button;
 	AtkObject *a11y_label, *a11y_key_combo;
 	g_autofree gchar *key = NULL;
 	AlmanahPreferencesDialog *preferences_dialog;
-	GError *error = NULL;
-	const gchar *object_names[] = {
-		"almanah_preferences_dialog",
-		NULL
-	};
 
 	g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
 
-	builder = gtk_builder_new ();
-
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/preferences-dialog.ui", (gchar **) object_names, &error) == 0) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-		                                            GTK_DIALOG_MODAL,
-		                                            GTK_MESSAGE_ERROR,
-		                                            GTK_BUTTONS_OK,
-		                                            _ ("UI data could not be loaded"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		return NULL;
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	preferences_dialog = ALMANAH_PREFERENCES_DIALOG (gtk_builder_get_object (builder, "almanah_preferences_dialog"));
-	gtk_builder_connect_signals (builder, preferences_dialog);
-
-	if (preferences_dialog == NULL) {
-		g_object_unref (builder);
-		return NULL;
-	}
+	preferences_dialog = g_object_new (ALMANAH_TYPE_PREFERENCES_DIALOG, NULL);
 
 	preferences_dialog->settings = g_object_ref (settings);
-	grid = GTK_GRID (gtk_builder_get_object (builder, "almanah_pd_grid"));
+	grid = preferences_dialog->almanah_pd_grid;
 	gtk_widget_set_halign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
 	gtk_widget_set_valign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
 
@@ -205,8 +180,6 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 	g_settings_bind (preferences_dialog->settings, "spell-checking-enabled", preferences_dialog->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
 #endif /* ENABLE_SPELL_CHECKING */
-
-	g_object_unref (builder);
 
 	return preferences_dialog;
 }
