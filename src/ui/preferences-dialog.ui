@@ -4,14 +4,66 @@
 	<template class="AlmanahPreferencesDialog" parent="GtkDialog">
 		<property name="use-header-bar">1</property>
 		<property name="resizable">False</property>
+		<property name="halign">center</property>
+		<property name="valign">center</property>
 		<child internal-child="vbox">
 			<object class="GtkBox" id="box4">
 				<child>
-					<object class="GtkGrid" id="almanah_pd_grid">
+					<object class="GtkGrid">
 						<property name="column-spacing">12</property>
 						<property name="row-spacing">18</property>
 						<property name="border-width">18</property>
-						<!-- Encryption key chooser and label go here, programmatically -->
+						<child>
+							<object class="GtkLabel" id="encryption_key_label">
+								<property name="label" translatable="yes">Encryption key: </property>
+								<accessibility>
+									<relation target="key_combo" type="label-for"/>
+								</accessibility>
+							</object>
+							<packing>
+								<property name="left_attach">0</property>
+								<property name="top_attach">0</property>
+							</packing>
+						</child>
+
+						<child>
+							<object class="GtkComboBox" id="key_combo">
+								<!-- Model and cell renderers set up programatically -->
+								<signal name="changed" handler="pd_key_combo_changed_cb"/>
+								<accessibility>
+									<relation target="encryption_key_label" type="labelled-by"/>
+								</accessibility>
+							</object>
+							<packing>
+								<property name="left_attach">1</property>
+								<property name="top_attach">0</property>
+							</packing>
+						</child>
+
+						<child>
+							<object class="GtkButton">
+								<property name="label" translatable="yes">New _Key</property>
+								<property name="use_underline">True</property>
+								<signal name="clicked" handler="pd_new_key_button_clicked_cb"/>
+							</object>
+							<packing>
+								<property name="left_attach">2</property>
+								<property name="top_attach">0</property>
+							</packing>
+						</child>
+
+
+						<child>
+							<object class="GtkCheckButton" id="spell_checking_enabled_check_button">
+								<property name="label" translatable="yes">Enable _spell checking</property>
+								<property name="use_underline">True</property>
+							</object>
+							<packing>
+								<property name="left_attach">0</property>
+								<property name="top_attach">2</property>
+								<property name="width">2</property>
+							</packing>
+						</child>
 					</object>
 				</child>
 			</object>

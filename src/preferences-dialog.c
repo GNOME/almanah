@@ -39,13 +39,12 @@ struct _AlmanahPreferencesDialog {
 	GtkDialog parent;
 
 	GSettings *settings;
-	GtkGrid *almanah_pd_grid;
 	GtkComboBox *key_combo;
 	AlmanahSecretKeysStore *key_store;
 #ifdef ENABLE_SPELL_CHECKING
 	guint spell_checking_enabled_id;
-	GtkCheckButton *spell_checking_enabled_check_button;
 #endif /* ENABLE_SPELL_CHECKING */
+	GtkCheckButton *spell_checking_enabled_check_button;
 };
 
 enum {
@@ -72,7 +71,11 @@ almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)
 
 	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/preferences-dialog.ui");
 
-	gtk_widget_class_bind_template_child (widget_class, AlmanahPreferencesDialog, almanah_pd_grid);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahPreferencesDialog, key_combo);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahPreferencesDialog, spell_checking_enabled_check_button);
+
+	gtk_widget_class_bind_template_callback (widget_class, pd_new_key_button_clicked_cb);
+	gtk_widget_class_bind_template_callback (widget_class, pd_key_combo_changed_cb);
 }
 
 static void
@@ -135,9 +138,6 @@ set_property (GObject *object, guint property_id, const GValue *value, GParamSpe
 AlmanahPreferencesDialog *
 almanah_preferences_dialog_new (GSettings *settings)
 {
-	GtkGrid *grid;
-	GtkWidget *label, *button;
-	AtkObject *a11y_label, *a11y_key_combo;
 	gchar *key;
 	AlmanahPreferencesDialog *preferences_dialog;
 
@@ -146,46 +146,25 @@ almanah_preferences_dialog_new (GSettings *settings)
 	preferences_dialog = g_object_new (ALMANAH_TYPE_PREFERENCES_DIALOG, NULL);
 
 	preferences_dialog->settings = g_object_ref (settings);
-	grid = preferences_dialog->almanah_pd_grid;
-	gtk_widget_set_halign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
-	gtk_widget_set_valign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
-
-	/* Grab our child widgets */
-	label = gtk_label_new (_("Encryption key: "));
-	gtk_grid_attach (grid, label, 0, 0, 1, 1);
 
 	preferences_dialog->key_store = almanah_secret_keys_store_new ();
-	preferences_dialog->key_combo = GTK_COMBO_BOX (gtk_combo_box_new_with_model (GTK_TREE_MODEL (preferences_dialog->key_store)));
+	gtk_combo_box_set_model (GTK_COMBO_BOX (preferences_dialog->key_combo), GTK_TREE_MODEL (preferences_dialog->key_store));
 	GtkCellRenderer *renderer = gtk_cell_renderer_text_new();
 	gtk_combo_box_set_id_column (preferences_dialog->key_combo, SECRET_KEYS_STORE_COLUMN_ID);
 	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (preferences_dialog->key_combo), renderer, TRUE);
 	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (preferences_dialog->key_combo), renderer,
 	                               "text", SECRET_KEYS_STORE_COLUMN_LABEL, NULL);
-	gtk_grid_attach (grid, GTK_WIDGET (preferences_dialog->key_combo), 1, 0, 1, 1);
-
-	button = gtk_button_new_with_mnemonic (_("New _Key"));
-	gtk_grid_attach (grid, button, 2, 0, 1, 1);
-	g_signal_connect (button, "clicked", G_CALLBACK (pd_new_key_button_clicked_cb), preferences_dialog);
-
-	/* Set up the accessibility relationships */
-	a11y_label = gtk_widget_get_accessible (GTK_WIDGET (label));
-	a11y_key_combo = gtk_widget_get_accessible (GTK_WIDGET (preferences_dialog->key_combo));
-	atk_object_add_relationship (a11y_label, ATK_RELATION_LABEL_FOR, a11y_key_combo);
-	atk_object_add_relationship (a11y_key_combo, ATK_RELATION_LABELLED_BY, a11y_label);
 
 	/* Set the selected key combo value */
 	key = g_settings_get_string (preferences_dialog->settings, "encryption-key");
 	gtk_combo_box_set_active_id (preferences_dialog->key_combo, key);
 	g_free (key);
 
-	g_signal_connect (preferences_dialog->key_combo, "changed", G_CALLBACK (pd_key_combo_changed_cb), preferences_dialog);
-
 #ifdef ENABLE_SPELL_CHECKING
-	/* Set up the "Enable spell checking" check button */
-	preferences_dialog->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_("Enable _spell checking")));
-	gtk_grid_attach (grid, GTK_WIDGET (preferences_dialog->spell_checking_enabled_check_button), 0, 2, 2, 1);
-
 	g_settings_bind (preferences_dialog->settings, "spell-checking-enabled", preferences_dialog->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
+#else
+	gtk_widget_destroy (GTK_WIDGET (preferences_dialog->spell_checking_enabled_check_button));
+	preferences_dialog->settings = NULL;
 #endif /* ENABLE_SPELL_CHECKING */
 
 	return preferences_dialog;
