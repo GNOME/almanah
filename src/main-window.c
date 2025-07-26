@@ -351,19 +351,17 @@ save_window_state (AlmanahMainWindow *self)
 	g_autoptr (GFile) key_file_directory = NULL;
 	g_autofree gchar *key_file_data = NULL;
 	gsize key_file_length;
-	GdkWindow *window;
-	GdkWindowState state;
+	GtkWindow *window;
 	gint width, height;
 	g_autoptr (GError) error = NULL;
 
 	/* Overwrite the existing state file with a new one */
 	key_file = g_key_file_new ();
 
-	window = gtk_widget_get_window (GTK_WIDGET (self));
-	state = gdk_window_get_state (window);
+	window = GTK_WINDOW (self);
 
 	/* Maximisation state */
-	g_key_file_set_boolean (key_file, "main-window", "maximized", state & GDK_WINDOW_STATE_MAXIMIZED ? TRUE : FALSE);
+	g_key_file_set_boolean (key_file, "main-window", "maximized", gtk_window_is_maximized (window));
 
 	/* Save the window dimensions */
 	gtk_window_get_default_size (GTK_WINDOW (self), &width, &height);
@@ -445,16 +443,19 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 
 	/* Make sure the dimensions and position are sane */
 	if (width > 1 && height > 1) {
-		GdkRectangle monitor_geometry;
-		GdkDisplay *display = gdk_display_get_default ();
-		GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (self));
-		GdkMonitor *monitor = gdk_display_get_monitor_at_window (display, window);
-		gdk_monitor_get_geometry (monitor, &monitor_geometry);
-		gint max_width = monitor_geometry.width;
-		gint max_height = monitor_geometry.height;
+		GdkSurface *surface = gtk_native_get_surface (GTK_NATIVE (self));
+		GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (self));
+		GdkMonitor *monitor = gdk_display_get_monitor_at_surface (display, surface);
+		if (monitor) {
+			GdkRectangle monitor_geometry;
 
-		width = CLAMP (width, 0, max_width);
-		height = CLAMP (height, 0, max_height);
+			gdk_monitor_get_geometry (monitor, &monitor_geometry);
+			gint max_width = monitor_geometry.width;
+			gint max_height = monitor_geometry.height;
+
+			width = CLAMP (width, 0, max_width);
+			height = CLAMP (height, 0, max_height);
+		}
 
 		gtk_window_set_default_size (GTK_WINDOW (self), width, height);
 	}
