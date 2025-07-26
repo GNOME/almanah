@@ -28,7 +28,7 @@ G_BEGIN_DECLS
 
 #define ALMANAH_TYPE_CALENDAR (almanah_calendar_get_type ())
 
-G_DECLARE_FINAL_TYPE (AlmanahCalendar, almanah_calendar, ALMANAH, CALENDAR, GtkCalendar)
+G_DECLARE_FINAL_TYPE (AlmanahCalendar, almanah_calendar, ALMANAH, CALENDAR, GtkBox)
 
 GtkWidget *almanah_calendar_new (AlmanahStorageManager *storage_manager) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_RESULT;
 

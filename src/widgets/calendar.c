@@ -17,7 +17,6 @@
  */
 
 #include <glib.h>
-#include <glib/gi18n.h>
 
 #include "calendar.h"
 #include "storage-manager.h"
@@ -26,41 +25,36 @@ static void get_property (GObject *object, guint property_id, GValue *value, GPa
 static void set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void dispose (GObject *object);
 static void almanah_calendar_finalize (GObject *object);
-static void almanah_calendar_month_changed (GtkCalendar *calendar);
-static gchar *almanah_calendar_detail_func (GtkCalendar *calendar, guint year, guint month, guint day, gpointer user_data);
-static void entry_added_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahCalendar *calendar);
-static void entry_removed_cb (AlmanahStorageManager *storage_manager, GDate *date, AlmanahCalendar *calendar);
+static void almanah_calendar_month_changed (GtkCalendar *calendar, AlmanahCalendar *self);
+static void entry_added_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahCalendar *self);
+static void entry_removed_cb (AlmanahStorageManager *storage_manager, GDate *date, AlmanahCalendar *self);
 
 typedef struct {
 	AlmanahStorageManager *storage_manager;
 	gulong entry_added_signal;
 	gulong entry_removed_signal;
-
-	gboolean *important_days;
+	GtkCalendar *calendar;
 } AlmanahCalendarPrivate;
 
 struct _AlmanahCalendar {
-	GtkCalendar parent;
+	GtkBox parent;
 };
 
 enum {
 	PROP_STORAGE_MANAGER = 1,
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendar, almanah_calendar, GTK_TYPE_CALENDAR)
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahCalendar, almanah_calendar, GTK_TYPE_BOX)
 
 static void
 almanah_calendar_class_init (AlmanahCalendarClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-	GtkCalendarClass *calendar_class = GTK_CALENDAR_CLASS (klass);
 
 	gobject_class->get_property = get_property;
 	gobject_class->set_property = set_property;
 	gobject_class->dispose = dispose;
 	gobject_class->finalize = almanah_calendar_finalize;
-
-	calendar_class->month_changed = almanah_calendar_month_changed;
 
 	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
 	                                 g_param_spec_object ("storage-manager",
@@ -72,7 +66,13 @@ almanah_calendar_class_init (AlmanahCalendarClass *klass)
 static void
 almanah_calendar_init (AlmanahCalendar *self)
 {
-	gtk_calendar_set_detail_func (GTK_CALENDAR (self), almanah_calendar_detail_func, NULL, NULL);
+	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (self);
+
+	priv->calendar = GTK_CALENDAR (gtk_calendar_new ());
+
+	gtk_box_append (GTK_BOX (self), GTK_WIDGET (priv->calendar));
+
+	g_signal_connect (priv->calendar, "month_changed", (GCallback) almanah_calendar_month_changed, self);
 }
 
 static void
@@ -88,10 +88,6 @@ dispose (GObject *object)
 static void
 almanah_calendar_finalize (GObject *object)
 {
-	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (ALMANAH_CALENDAR (object));
-
-	g_free (priv->important_days);
-
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_calendar_parent_class)->finalize (object);
 }
@@ -129,15 +125,17 @@ set_property (GObject *object, guint property_id, const GValue *value, GParamSpe
 }
 
 static void
-almanah_calendar_month_changed (GtkCalendar *calendar)
+almanah_calendar_month_changed (GtkCalendar *calendar, AlmanahCalendar *self)
 {
-	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (ALMANAH_CALENDAR (calendar));
-	guint i, year, month, num_days;
+	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (self);
+	guint i, num_days;
 	g_autofree gboolean *days = NULL;
 
 	/* Mark the days on the calendar which have diary entries */
-	gtk_calendar_get_date (calendar, &year, &month, NULL);
-	month++;
+	g_autoptr (GDateTime) datetime = gtk_calendar_get_date (priv->calendar);
+	guint month = g_date_time_get_month (datetime) + 1;
+	guint year = g_date_time_get_year (datetime);
+
 	days = almanah_storage_manager_get_month_marked_days (priv->storage_manager, year, month, &num_days);
 
 	gtk_calendar_clear_marks (calendar);
@@ -148,58 +146,34 @@ almanah_calendar_month_changed (GtkCalendar *calendar)
 			gtk_calendar_unmark_day (calendar, i + 1);
 		}
 	}
-
-	/* Cache the days which are important, so that the detail function isn't hideously slow */
-	g_free (priv->important_days);
-	priv->important_days = almanah_storage_manager_get_month_important_days (priv->storage_manager, year, month, &num_days);
-}
-
-static gchar *
-almanah_calendar_detail_func (GtkCalendar *calendar, guint year, guint month, guint day, gpointer user_data)
-{
-	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (ALMANAH_CALENDAR (calendar));
-	guint calendar_year, calendar_month;
-
-	gtk_calendar_get_date (calendar, &calendar_year, &calendar_month, NULL);
-
-	/* Check we actually have the data available for the requested month */
-	if (priv->important_days == NULL || year != calendar_year || month != calendar_month) {
-		return NULL;
-	}
-
-	/* Display markup if the day is important; don't otherwise */
-	if (priv->important_days[day - 1] == TRUE) {
-		/* Translators: This is the detail string for important days as displayed in the calendar. */
-		return g_strdup (_ ("Important!"));
-	}
-	return NULL;
 }
 
 static void
-entry_added_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahCalendar *calendar)
+entry_added_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahCalendar *self)
 {
 	GDate date;
-	guint month;
 
 	almanah_entry_get_date (entry, &date);
-	gtk_calendar_get_date (GTK_CALENDAR (calendar), NULL, &month, NULL);
+	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (self);
+	g_autoptr (GDateTime) datetime = gtk_calendar_get_date (priv->calendar);
+	guint month = g_date_time_get_month (datetime) + 1;
 
-	if (g_date_get_month (&date) == month + 1) {
+	if (g_date_get_month (&date) == month) {
 		/* Mark the entry on the calendar, since it's guaranteed to be non-empty */
-		gtk_calendar_mark_day (GTK_CALENDAR (calendar), g_date_get_day (&date));
+		gtk_calendar_mark_day (priv->calendar, g_date_get_day (&date));
 	}
 }
 
 static void
-entry_removed_cb (AlmanahStorageManager *storage_manager, GDate *date, AlmanahCalendar *calendar)
+entry_removed_cb (AlmanahStorageManager *storage_manager, GDate *date, AlmanahCalendar *self)
 {
-	guint month;
+	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (self);
+	g_autoptr (GDateTime) datetime = gtk_calendar_get_date (priv->calendar);
+	guint month = g_date_time_get_month (datetime) + 1;
 
-	gtk_calendar_get_date (GTK_CALENDAR (calendar), NULL, &month, NULL);
-
-	if (g_date_get_month (date) == month + 1) {
+	if (g_date_get_month (date) == month) {
 		/* Unmark the entry on the calendar */
-		gtk_calendar_unmark_day (GTK_CALENDAR (calendar), g_date_get_day (date));
+		gtk_calendar_unmark_day (priv->calendar, g_date_get_day (date));
 	}
 }
 
@@ -252,8 +226,11 @@ almanah_calendar_select_date (AlmanahCalendar *self, GDate *date)
 	g_return_if_fail (ALMANAH_IS_CALENDAR (self));
 	g_return_if_fail (date != NULL);
 
-	gtk_calendar_select_month (GTK_CALENDAR (self), g_date_get_month (date) - 1, g_date_get_year (date));
-	gtk_calendar_select_day (GTK_CALENDAR (self), g_date_get_day (date));
+	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (self);
+
+	g_autoptr (GDateTime) datetime = gtk_calendar_get_date (priv->calendar);
+	g_autoptr (GTimeZone) tz = g_time_zone_new_utc ();
+	g_date_time_new (tz, g_date_get_year (date), g_date_get_month (date), g_date_get_day (date), 0, 0, 0);
 }
 
 void
@@ -270,11 +247,14 @@ almanah_calendar_select_today (AlmanahCalendar *self)
 void
 almanah_calendar_get_date (AlmanahCalendar *self, GDate *date)
 {
-	guint year, month, day;
-
 	g_return_if_fail (ALMANAH_IS_CALENDAR (self));
 	g_return_if_fail (date != NULL);
 
-	gtk_calendar_get_date (GTK_CALENDAR (self), &year, &month, &day);
-	g_date_set_dmy (date, day, month + 1, year);
+	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (self);
+
+	g_autoptr (GDateTime) datetime = gtk_calendar_get_date (priv->calendar);
+	g_date_set_dmy (date,
+	                g_date_time_get_day_of_month (datetime),
+	                g_date_time_get_month (datetime),
+	                g_date_time_get_year (datetime));
 }
