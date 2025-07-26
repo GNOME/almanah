@@ -129,7 +129,7 @@ almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window)
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 
 		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-		                  G_CALLBACK (gtk_widget_destroy),
+		                  G_CALLBACK (gtk_window_destroy),
 		                  NULL);
 
 		gtk_widget_show (dialog);

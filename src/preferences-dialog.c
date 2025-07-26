@@ -178,7 +178,7 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 		                                            _ ("Error saving the encryption key"));
 
 		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-		                  G_CALLBACK (gtk_widget_destroy),
+		                  G_CALLBACK (gtk_window_destroy),
 		                  NULL);
 
 		gtk_widget_show (dialog);
@@ -199,7 +199,7 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 
 		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-		                  G_CALLBACK (gtk_widget_destroy),
+		                  G_CALLBACK (gtk_window_destroy),
 		                  NULL);
 
 		gtk_widget_show (dialog);

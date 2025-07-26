@@ -156,7 +156,7 @@ dispose (GObject *object)
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (ALMANAH_APPLICATION (object));
 
 	if (priv->main_window != NULL) {
-		gtk_widget_destroy (GTK_WIDGET (priv->main_window));
+		gtk_window_destroy (GTK_WINDOW (priv->main_window));
 		priv->main_window = NULL;
 	}
 	g_clear_object (&priv->event_manager);
@@ -231,7 +231,7 @@ db_open_error_dialog_response_cb (GtkDialog *self,
 {
 	GApplication *application = G_APPLICATION (user_data);
 
-	gtk_widget_destroy (GTK_WIDGET (self));
+	gtk_window_destroy (GTK_WINDOW (self));
 
 	/* Allow the end of the application */
 	g_application_release (application);
@@ -353,7 +353,7 @@ encryption_error_dialog_response_cb (GtkDialog *self,
                                      gint response_id,
                                      gpointer user_data)
 {
-	gtk_widget_destroy (GTK_WIDGET (self));
+	gtk_window_destroy (GTK_WINDOW (self));
 
 	/* Allow the end of the application */
 	g_application_release (G_APPLICATION (user_data));
@@ -426,7 +426,7 @@ action_search_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
 
 	g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-	                  G_CALLBACK (gtk_widget_destroy),
+	                  G_CALLBACK (gtk_window_destroy),
 	                  NULL);
 
 	gtk_widget_show (GTK_WIDGET (dialog));
@@ -557,7 +557,7 @@ action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	gtk_widget_hide (GTK_WIDGET (main_window));
 
 	almanah_main_window_save_current_entry (main_window, TRUE, NULL);
-	gtk_widget_destroy (GTK_WIDGET (main_window));
+	gtk_window_destroy (GTK_WINDOW (main_window));
 }
 
 static void

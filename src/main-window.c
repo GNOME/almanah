@@ -517,7 +517,7 @@ edit_confirm_prompt_response_cb (GtkDialog *self,
 {
 	g_autofree SaveCurrentEntryFinalizeData *data = (SaveCurrentEntryFinalizeData *) user_data;
 
-	gtk_widget_destroy (GTK_WIDGET (self));
+	gtk_window_destroy (GTK_WINDOW (self));
 
 	if (response_id == GTK_RESPONSE_ACCEPT) {
 		mw_save_current_entry_finalize (g_steal_pointer (&data));
@@ -854,7 +854,7 @@ mw_delete_event_cb (GtkWindow *window, __attribute__ ((unused)) gpointer user_da
 	almanah_main_window_save_current_entry (ALMANAH_MAIN_WINDOW (window), TRUE, NULL);
 	save_window_state (ALMANAH_MAIN_WINDOW (window));
 
-	gtk_widget_destroy (GTK_WIDGET (window));
+	gtk_window_destroy (window);
 
 	return TRUE;
 }
@@ -942,7 +942,7 @@ date_entry_dialog_response_cb (GtkDialog *self,
 		almanah_main_window_select_date (main_window, &new_date);
 	}
 
-	gtk_widget_destroy (GTK_WIDGET (self));
+	gtk_window_destroy (GTK_WINDOW (self));
 }
 
 static void
@@ -960,7 +960,7 @@ mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __at
 	                  G_CALLBACK (date_entry_dialog_response_cb),
 	                  main_window);
 
-	gtk_widget_show_all (GTK_WIDGET (dialog));
+	gtk_widget_show (GTK_WIDGET (dialog));
 }
 
 static void
@@ -1070,7 +1070,7 @@ hyperlink_tag_presed_cb (
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 
 		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-		                  G_CALLBACK (gtk_widget_destroy),
+		                  G_CALLBACK (gtk_window_destroy),
 		                  NULL);
 
 		gtk_widget_show (dialog);
@@ -1416,7 +1416,7 @@ mw_calendar_day_selected_current_entry_ready_cb (AlmanahMainWindow *main_window)
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 
 			g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-			                  G_CALLBACK (gtk_widget_destroy),
+			                  G_CALLBACK (gtk_window_destroy),
 			                  NULL);
 
 			gtk_widget_show (dialog);
@@ -1717,7 +1717,7 @@ spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused))
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 
 			g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-			                  G_CALLBACK (gtk_widget_destroy),
+			                  G_CALLBACK (gtk_window_destroy),
 			                  NULL);
 
 			gtk_widget_show (dialog);
