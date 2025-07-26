@@ -3,11 +3,11 @@
   <gresource prefix="/org/gnome/Almanah">
     <file preprocess="xml-stripblanks">gtk/menus.ui</file>
     <file>css/almanah.css</file>
-    <file preprocess="xml-stripblanks">ui/almanah.ui</file>
     <file preprocess="xml-stripblanks">ui/calendar-button.ui</file>
     <file preprocess="xml-stripblanks">ui/date-entry-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/import-export-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/import-results-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/main-window.ui</file>
     <file preprocess="xml-stripblanks">ui/preferences-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/search-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/uri-entry-dialog.ui</file>
