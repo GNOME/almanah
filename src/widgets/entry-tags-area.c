@@ -181,7 +181,6 @@ almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 	}
 
 	g_free (tags);
-	gtk_widget_show_all (GTK_WIDGET (self));
 }
 
 static void

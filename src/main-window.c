@@ -583,7 +583,6 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 					NULL);
 		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
-		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled the edit */
 			gtk_window_destroy (GTK_WINDOW (dialog));
@@ -614,7 +613,6 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 					NULL);
 		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
-		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled deletion */
 			gtk_window_destroy (GTK_WINDOW (dialog));
@@ -890,7 +888,6 @@ mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __at
 	almanah_calendar_button_popdown (priv->calendar_button);
 
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
-	gtk_widget_show_all (GTK_WIDGET (dialog));
 	if (almanah_date_entry_dialog_run (dialog) == TRUE) {
 		GDate new_date;
 
@@ -1011,7 +1008,6 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 		/* Get a URI from the user */
 		uri_entry_dialog = almanah_uri_entry_dialog_new ();
 		gtk_window_set_transient_for (GTK_WINDOW (uri_entry_dialog), GTK_WINDOW (self));
-		gtk_widget_show_all (GTK_WIDGET (uri_entry_dialog));
 
 		if (almanah_uri_entry_dialog_run (uri_entry_dialog) == TRUE) {
 			GtkTextTag *tag;

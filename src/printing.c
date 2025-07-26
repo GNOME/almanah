@@ -491,8 +491,6 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	// todo: set padding=6 (fill does not do anything when expand=false)
 	gtk_box_prepend (vbox, GTK_WIDGET (hbox));
 
-	gtk_widget_show_all (GTK_WIDGET (vbox));
-
 	/* Make sure they have the dates with entries marked */
 	almanah_calendar_select_today (almanah_operation->start_calendar);
 	almanah_calendar_select_today (almanah_operation->end_calendar);
