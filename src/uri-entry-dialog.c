@@ -49,6 +49,7 @@ static void
 almanah_uri_entry_dialog_class_init (AlmanahUriEntryDialogClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
 	gobject_class->set_property = almanah_uri_entry_dialog_set_property;
 	gobject_class->get_property = almanah_uri_entry_dialog_get_property;
@@ -58,11 +59,18 @@ almanah_uri_entry_dialog_class_init (AlmanahUriEntryDialogClass *klass)
 	                                                      "URI", "The current URI entered in the dialog.",
 	                                                      NULL,
 	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/uri-entry-dialog.ui");
+
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahUriEntryDialog, ok_button);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahUriEntryDialog, uri_entry);
 }
 
 static void
 almanah_uri_entry_dialog_init (AlmanahUriEntryDialog *self)
 {
+	gtk_widget_init_template (GTK_WIDGET (self));
+
 	g_signal_connect (self, "response", (GCallback) gtk_widget_hide, self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _ ("Enter URI"));
@@ -103,50 +111,9 @@ almanah_uri_entry_dialog_set_property (GObject *object, guint property_id, const
 AlmanahUriEntryDialog *
 almanah_uri_entry_dialog_new (void)
 {
-	GtkBuilder *builder;
 	AlmanahUriEntryDialog *uri_entry_dialog;
-	AlmanahUriEntryDialogPrivate *priv;
-	GError *error = NULL;
-	const gchar *object_names[] = {
-		"almanah_uri_entry_dialog",
-		NULL
-	};
 
-	builder = gtk_builder_new ();
-
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/uri-entry-dialog.ui", (gchar **) object_names, &error) == 0) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-		                                            GTK_DIALOG_MODAL,
-		                                            GTK_MESSAGE_ERROR,
-		                                            GTK_BUTTONS_OK,
-		                                            _ ("UI data could not be loaded"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		return NULL;
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	uri_entry_dialog = ALMANAH_URI_ENTRY_DIALOG (gtk_builder_get_object (builder, "almanah_uri_entry_dialog"));
-	gtk_builder_connect_signals (builder, uri_entry_dialog);
-
-	if (uri_entry_dialog == NULL) {
-		g_object_unref (builder);
-		return NULL;
-	}
-
-	priv = almanah_uri_entry_dialog_get_instance_private (uri_entry_dialog);
-
-	/* Grab widgets */
-	priv->ok_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_ued_ok_button"));
-	priv->uri_entry = GTK_ENTRY (gtk_builder_get_object (builder, "almanah_ued_uri_entry"));
-
-	g_object_unref (builder);
+	uri_entry_dialog = ALMANAH_URI_ENTRY_DIALOG (g_object_new (ALMANAH_TYPE_URI_ENTRY_DIALOG, NULL));
 
 	return uri_entry_dialog;
 }
