@@ -2,18 +2,17 @@
 <interface>
 	<requires lib="gtk+" version="3.0"/>
 
-	<object class="GtkPopover" id="almanah_calendar_window">
+	<object class="GtkPopover" id="dock">
 		<property name="border-width">12</property>
 		<child>
 			<object class="GtkBox" id="almanah_cw_vbox">
 				<property name="orientation">GTK_ORIENTATION_VERTICAL</property>
 				<property name="spacing">6</property>
 				<child>
-					<object class="AlmanahCalendar" id="almanah_cw_calendar">
+					<object class="AlmanahCalendar" id="calendar">
 						<property name="width-request">200</property>
 						<property name="can-focus">True</property>
 						<property name="show-details">False</property>
-						<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
 						<child internal-child="accessible">
 							<object class="AtkObject" id="a11y-almanah_mw_calendar">
 								<property name="AtkObject::accessible-name" translatable="yes">Calendar</property>
@@ -32,7 +31,7 @@
 							<class name="linked" />
 						</style>
 						<child>
-							<object class="GtkButton" id="almanah_cw_today_button">
+							<object class="GtkButton" id="today_button">
 								<property name="visible">True</property>
 								<property name="can_focus">True</property>
 								<property name="label" translatable="yes">Go to Today</property>
@@ -42,7 +41,7 @@
 							</packing>
 						</child>
 						<child>
-							<object class="GtkButton" id="almanah_cw_select_date_button">
+							<object class="GtkButton" id="select_date_button">
 								<property name="visible">True</property>
 								<property name="can_focus">True</property>
 								<property name="label" translatable="yes">Select Date…</property>
@@ -59,4 +58,7 @@
 			</object>
 		</child>
 	</object>
+
+	<template class="AlmanahCalendarButton" parent="GtkToggleButton">
+	</template>
 </interface>
