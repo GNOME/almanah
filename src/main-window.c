@@ -1216,7 +1216,7 @@ mw_undo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 
-	gtk_source_buffer_undo (priv->entry_buffer);
+	gtk_text_buffer_undo (GTK_TEXT_BUFFER (priv->entry_buffer));
 }
 
 static void
@@ -1225,7 +1225,7 @@ mw_redo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 
-	gtk_source_buffer_redo (priv->entry_buffer);
+	gtk_text_buffer_redo (GTK_TEXT_BUFFER (priv->entry_buffer));
 }
 
 static void
@@ -1238,11 +1238,11 @@ mw_source_buffer_notify_can_undo_redo_cb (GObject *obj, GParamSpec *pspec, gpoin
 	/* Update whether the undo and redo actions are enabled. */
 	action = g_action_map_lookup_action (G_ACTION_MAP (main_window), "undo");
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
-	                             gtk_source_buffer_can_undo (priv->entry_buffer));
+	                             gtk_text_buffer_get_can_undo (GTK_TEXT_BUFFER (priv->entry_buffer)));
 
 	action = g_action_map_lookup_action (G_ACTION_MAP (main_window), "redo");
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (action),
-	                             gtk_source_buffer_can_redo (priv->entry_buffer));
+	                             gtk_text_buffer_get_can_redo (GTK_TEXT_BUFFER (priv->entry_buffer)));
 }
 
 static void
