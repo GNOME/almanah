@@ -386,8 +386,10 @@ G_MODULE_EXPORT void ird_view_combo_box_changed_cb (GtkComboBox *combo_box, Alma
 typedef struct {
 	GtkListStore *results_store;
 	GtkTreeSelection *results_selection;
+	GtkTreeView *results_tree_view;
 	GtkTreeModelFilter *filtered_results_store;
 	GtkComboBox *view_combo_box;
+	GtkButton *view_button;
 	AlmanahImportStatus current_mode;
 } AlmanahImportResultsDialogPrivate;
 
@@ -401,11 +403,22 @@ G_DEFINE_TYPE_WITH_PRIVATE (AlmanahImportResultsDialog, almanah_import_results_d
 static void
 almanah_import_results_dialog_class_init (AlmanahImportResultsDialogClass *klass)
 {
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/import-results-dialog.ui");
+
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportResultsDialog, results_store);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportResultsDialog, results_tree_view);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportResultsDialog, filtered_results_store);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportResultsDialog, view_combo_box);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahImportResultsDialog, view_button);
 }
 
 static void
 almanah_import_results_dialog_init (AlmanahImportResultsDialog *self)
 {
+	gtk_widget_init_template (GTK_WIDGET (self));
+
 	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
 	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), TRUE);
@@ -417,56 +430,17 @@ almanah_import_results_dialog_init (AlmanahImportResultsDialog *self)
 AlmanahImportResultsDialog *
 almanah_import_results_dialog_new (void)
 {
-	GtkBuilder *builder;
 	AlmanahImportResultsDialog *results_dialog;
 	AlmanahImportResultsDialogPrivate *priv;
-	GError *error = NULL;
-	const gchar *object_names[] = {
-		"almanah_ird_view_store",
-		"almanah_ird_results_store",
-		"almanah_ird_filtered_results_store",
-		"almanah_import_results_dialog",
-		NULL
-	};
 
-	builder = gtk_builder_new ();
-
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/import-results-dialog.ui", (gchar **) object_names, &error) == 0) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-		                                            GTK_DIALOG_MODAL,
-		                                            GTK_MESSAGE_ERROR,
-		                                            GTK_BUTTONS_OK,
-		                                            _ ("UI data could not be loaded"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		return NULL;
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	results_dialog = ALMANAH_IMPORT_RESULTS_DIALOG (gtk_builder_get_object (builder, "almanah_import_results_dialog"));
-	gtk_builder_connect_signals (builder, results_dialog);
-
-	if (results_dialog == NULL) {
-		g_object_unref (builder);
-		return NULL;
-	}
+	results_dialog = ALMANAH_IMPORT_RESULTS_DIALOG (g_object_new (ALMANAH_TYPE_IMPORT_RESULTS_DIALOG, NULL));
 
 	priv = almanah_import_results_dialog_get_instance_private (results_dialog);
 
-	/* Grab our child widgets */
-	priv->results_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_ird_results_store"));
-	priv->results_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_ird_results_tree_view")));
-	priv->filtered_results_store = GTK_TREE_MODEL_FILTER (gtk_builder_get_object (builder, "almanah_ird_filtered_results_store"));
-	priv->view_combo_box = GTK_COMBO_BOX (gtk_builder_get_object (builder, "almanah_ird_view_combo_box"));
+	priv->results_selection = gtk_tree_view_get_selection (priv->results_tree_view);
 
 	g_signal_connect (priv->results_selection, "changed", G_CALLBACK (results_selection_changed_cb),
-	                  gtk_builder_get_object (builder, "almanah_ird_view_button"));
+	                  priv->view_button);
 
 	/* Set up the tree filter */
 	gtk_tree_model_filter_set_visible_func (priv->filtered_results_store, (GtkTreeModelFilterVisibleFunc) filter_results_cb,
@@ -474,8 +448,6 @@ almanah_import_results_dialog_new (void)
 
 	/* Set up the combo box */
 	gtk_combo_box_set_active (priv->view_combo_box, ALMANAH_IMPORT_STATUS_MERGED);
-
-	g_object_unref (builder);
 
 	return results_dialog;
 }
