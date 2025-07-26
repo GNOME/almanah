@@ -158,7 +158,7 @@ dispose (GObject *object)
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (ALMANAH_APPLICATION (object));
 
 	if (priv->main_window != NULL)
-		gtk_widget_destroy (GTK_WIDGET (priv->main_window));
+		gtk_window_destroy (GTK_WINDOW (priv->main_window));
 	priv->main_window = NULL;
 
 	if (priv->event_manager != NULL)
@@ -272,7 +272,7 @@ startup (GApplication *application)
 		                                            _("Error opening database"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
+		gtk_window_destroy (GTK_WINDOW (dialog));
 
 		/* TODO */
 		exit (1);
@@ -357,7 +357,7 @@ storage_manager_disconnected_cb (__attribute__ ((unused)) AlmanahStorageManager 
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", warning_message);
 
 		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
+		gtk_window_destroy (GTK_WINDOW (dialog));
 	}
 
 	/* Allow the end of the applaction */
@@ -404,7 +404,7 @@ action_search_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 	gtk_widget_show (GTK_WIDGET (dialog));
 	gtk_dialog_run (GTK_DIALOG (dialog));
 
-	gtk_widget_destroy (GTK_WIDGET (dialog));
+	gtk_window_destroy (GTK_WINDOW (dialog));
 }
 
 static void
@@ -422,7 +422,7 @@ action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user
 	gtk_widget_show_all (GTK_WIDGET (dialog));
 	gtk_dialog_run (GTK_DIALOG (dialog));
 
-	gtk_widget_destroy (GTK_WIDGET (dialog));
+	gtk_window_destroy (GTK_WINDOW (dialog));
 }
 
 static void
@@ -547,7 +547,7 @@ action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	gtk_widget_hide (GTK_WIDGET (main_window));
 
 	almanah_main_window_save_current_entry (main_window, TRUE);
-	gtk_widget_destroy (GTK_WIDGET (main_window));
+	gtk_window_destroy (GTK_WINDOW (main_window));
 }
 
 void

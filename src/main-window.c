@@ -586,11 +586,11 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled the edit */
-			gtk_widget_destroy (dialog);
+			gtk_window_destroy (GTK_WINDOW (dialog));
 			goto done;
 		}
 
-		gtk_widget_destroy (dialog);
+		gtk_window_destroy (GTK_WINDOW (dialog));
 	} else if (entry_exists == TRUE && existing_entry_is_empty == FALSE && entry_is_empty == TRUE) {
 		/* Deleting an existing entry */
 		gchar date_string[100];
@@ -617,11 +617,11 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		gtk_widget_show_all (dialog);
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled deletion */
-			gtk_widget_destroy (dialog);
+			gtk_window_destroy (GTK_WINDOW (dialog));
 			goto done;
 		}
 
-		gtk_widget_destroy (dialog);
+		gtk_window_destroy (GTK_WINDOW (dialog));
 	}
 
 	/* Save the entry */
@@ -807,7 +807,7 @@ mw_delete_event_cb (GtkWindow *window, __attribute__ ((unused)) gpointer user_da
 	almanah_main_window_save_current_entry (ALMANAH_MAIN_WINDOW (window), TRUE);
 	save_window_state (ALMANAH_MAIN_WINDOW (window));
 
-	gtk_widget_destroy (GTK_WIDGET (window));
+	gtk_window_destroy (window);
 
 	return TRUE;
 }
@@ -899,7 +899,7 @@ mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __at
 		almanah_main_window_select_date (main_window, &new_date);
 	}
 
-	gtk_widget_destroy (GTK_WIDGET (dialog));
+	gtk_window_destroy (GTK_WINDOW (dialog));
 }
 
 static void
@@ -970,7 +970,7 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 			                                            _("Error opening URI"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
-			gtk_widget_destroy (dialog);
+			gtk_window_destroy (GTK_WINDOW (dialog));
 
 			g_error_free (error);
 		}
@@ -1035,7 +1035,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 			update_state = TRUE;
 		}
 
-		gtk_widget_destroy (GTK_WIDGET (uri_entry_dialog));
+		gtk_window_destroy (GTK_WINDOW (uri_entry_dialog));
 	} else {
 		GtkTextIter iter = start;
 		GSList *tags, *i;
@@ -1291,7 +1291,7 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 								    _("Entry content could not be loaded"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
-			gtk_widget_destroy (dialog);
+			gtk_window_destroy (GTK_WINDOW (dialog));
 
 			g_error_free (error);
 
@@ -1579,7 +1579,7 @@ spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused))
 			                                            _("Spelling checker could not be initialized"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
-			gtk_widget_destroy (dialog);
+			gtk_window_destroy (GTK_WINDOW (dialog));
 
 			g_error_free (error);
 		}

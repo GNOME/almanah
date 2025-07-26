@@ -157,7 +157,7 @@ set_property (GObject *object, guint property_id, const GValue *value, GParamSpe
  *
  * Returns a new #AlmanahImportExportDialog, configured for importing if @import is %TRUE, and exporting otherwise.
  *
- * Return value: a new #AlmanahImportExportDialog; destroy with gtk_widget_destroy()
+ * Return value: a new #AlmanahImportExportDialog; destroy with gtk_window_destroy()
  **/
 AlmanahImportExportDialog *
 almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboolean import)
@@ -220,23 +220,22 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 			                                                  GTK_BUTTONS_OK, _("Import failed"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (error_dialog));
-			gtk_widget_destroy (error_dialog);
+			gtk_window_destroy (GTK_WINDOW (error_dialog));
 		}
 
 		g_error_free (error);
 	} else {
 		/* Show the results dialogue */
 		gtk_widget_hide (GTK_WIDGET (self));
-		gtk_widget_show_all (GTK_WIDGET (results_dialog));
 		gtk_dialog_run (GTK_DIALOG (results_dialog));
 	}
 
-	gtk_widget_destroy (GTK_WIDGET (results_dialog));
+	gtk_window_destroy (GTK_WINDOW (results_dialog));
 
 	g_object_unref (priv->cancellable);
 	priv->cancellable = NULL;
 
-	gtk_widget_destroy (GTK_WIDGET (self));
+	gtk_window_destroy (GTK_WINDOW (self));
 }
 
 static void
@@ -260,7 +259,7 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 				                                          GTK_BUTTONS_OK, _("Export failed"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (error_dialog));
-			gtk_widget_destroy (error_dialog);
+			gtk_window_destroy (GTK_WINDOW (error_dialog));
 		}
 
 		g_error_free (error);
@@ -273,7 +272,7 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 		                                         GTK_BUTTONS_OK, _("Export successful"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (message_dialog), _("The diary was successfully exported."));
 		gtk_dialog_run (GTK_DIALOG (message_dialog));
-		gtk_widget_destroy (message_dialog);
+		gtk_window_destroy (GTK_WINDOW (message_dialog));
 	}
 
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
@@ -281,7 +280,7 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 	g_object_unref (priv->cancellable);
 	priv->cancellable = NULL;
 
-	gtk_widget_destroy (GTK_WIDGET (self));
+	gtk_window_destroy (GTK_WINDOW (self));
 }
 
 static void
@@ -293,7 +292,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 	/* If the user pressed Cancel, cancel the operation if we've started, and return otherwise */
 	if (response_id != GTK_RESPONSE_OK) {
 		if (priv->cancellable == NULL)
-			gtk_widget_destroy (GTK_WIDGET (self));
+			gtk_window_destroy (GTK_WINDOW (self));
 		else
 			g_cancellable_cancel (priv->cancellable);
 		return;
