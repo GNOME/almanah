@@ -28,21 +28,20 @@ glib_major = 2
 glib_minor = 76
 glib = dependency('glib-2.0', version: f'>= @glib_major@.@glib_minor@')
 
-gtk_major = 3
-gtk_minor = 24
-gtk = dependency('gtk+-3.0', version: f'>= @gtk_major@.@gtk_minor@')
+gtk_major = 4
+gtk_minor = 3
+gtk = dependency('gtk4', version: f'>= @gtk_major@.@gtk_minor@')
 
 gmodule = dependency('gmodule-2.0')
 gthread = dependency('gthread-2.0')
 gio = dependency('gio-2.0')
 
-gtksourceview_major = 4
+gtksourceview_major = 5
 gtksourceview_minor = 0
-gtksourceview = dependency('gtksourceview-4', version: f'>= @gtksourceview_major@.@gtksourceview_minor@')
+gtksourceview = dependency('gtksourceview-5', version: f'>= @gtksourceview_major@.@gtksourceview_minor@')
 
 sqlite = dependency('sqlite3')
 cairo = dependency('cairo')
-atk = dependency('atk')
 gcr = dependency('gcr-4', version: '>= 3.90.0')
 
 # Options
@@ -56,8 +55,7 @@ libecal = dependency('libecal-2.0', version: '>= 3.33.2', required: evolution_su
 libedataserver = dependency('libedataserver-1.2', version: '>= 2.28', required: evolution_support)
 have_evolution = libecal.found() and libedataserver.found()
 
-gtkspell = dependency('gtkspell3-3.0', required: spell_checking_support)
-have_spell_check = gtkspell.found()
+have_spell_check = false
 
 appstreamcli = find_program('appstreamcli', required: false)
 cppcheck = find_program('cppcheck', required: false)
@@ -72,12 +70,10 @@ almanah_deps = [
   gtksourceview,
   sqlite,
   cairo,
-  atk,
   gcr,
   gpgme,
   libecal,
   libedataserver,
-  gtkspell,
 ]
 
 # configuration

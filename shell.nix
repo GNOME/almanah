@@ -11,22 +11,20 @@ pkgs.mkShell {
     appstream
     cppcheck
     desktop-file-utils
-    wrapGAppsHook3
+    wrapGAppsHook4
     clang-tools
 
     npins
   ];
 
   buildInputs = with pkgs; [
-    atk
     cairo
     evolution-data-server
     gcr_4
     glib
     gpgme
-    gtk3
-    gtksourceview4
-    gtkspell3
+    gtk4
+    gtksourceview5
     sqlite
   ];
 }
