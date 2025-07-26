@@ -341,7 +341,6 @@ activate (GApplication *application)
 	/* Create the interface */
 	if (priv->main_window == NULL) {
 		priv->main_window = almanah_main_window_new (self);
-		gtk_widget_show_all (GTK_WIDGET (priv->main_window));
 		g_signal_connect (priv->main_window, "destroy", (GCallback) main_window_destroy_cb, application);
 	}
 
@@ -460,9 +459,6 @@ action_import_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-
-	/* The dialog destroys itself once done */
-	gtk_widget_show_all (dialog);
 }
 
 static void
@@ -478,9 +474,6 @@ action_export_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-
-	/* The dialog destroys itself once done */
-	gtk_widget_show_all (dialog);
 }
 
 static void

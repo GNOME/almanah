@@ -101,13 +101,16 @@
 		<child type="titlebar">
 			<object class="GtkHeaderBar" id="header_bar">
 				<property name="show_close_button">True</property>
+				<property name="visible">1</property>
 
 				<child>
 					<object class="GtkMenuButton">
 						<property name="menu-model">main-window-menu</property>
+						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">open-menu-symbolic</property>
+								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
@@ -119,23 +122,28 @@
 				<child>
 					<object class="GtkMenuButton">
 						<property name="menu-model">formatting-menu</property>
+						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">format-text-rich-symbolic</property>
+								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
 					<packing>
 						<property name="pack-type">end</property>
+						<property name="visible">1</property>
 					</packing>
 				</child>
 
 				<child>
 					<object class="GtkToggleButton">
 						<property name="action-name">win.important</property>
+						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">starred-symbolic</property>
+								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
@@ -147,9 +155,11 @@
 				<child>
 					<object class="GtkToggleButton" id="show_tags_toggle_button">
 						<property name="action-name">win.show-tags</property>
+						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">org.gnome.Almanah-tags-symbolic</property>
+								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
@@ -164,10 +174,12 @@
 			<object class="GtkBox" id="vbox3">
 				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
+				<property name="visible">1</property>
 				<child>
 					<object class="GtkGrid" id="content_grid">
 						<property name="orientation">GTK_ORIENTATION_VERTICAL</property>
 						<property name="row_spacing">0</property>
+						<property name="visible">1</property>
 						<style>
 							<class name="almanah-mw-main-content"/>
 						</style>
@@ -200,6 +212,7 @@
 								<property name="shadow-type">GTK_SHADOW_IN</property>
 								<property name="hexpand">True</property>
 								<property name="vexpand">True</property>
+								<property name="visible">1</property>
 								<style>
 									<class name="almanah-mw-scrolled"/>
 									<class name="view"/>
@@ -215,6 +228,7 @@
 										<property name="vexpand">True</property>
 										<property name="margin-start">20</property>
 										<property name="margin-end">20</property>
+										<property name="visible">1</property>
 										<style>
 											<class name="almanah-mw-entry-view"/>
 										</style>
@@ -241,13 +255,16 @@
 				</child>
 				<child>
 					<object class="GtkExpander" id="events_expander">
+						<property name="visible">1</property>
 						<child type="label">
 							<object class="GtkBox" id="almanah_mw_events_expander_label_box">
 								<property name="orientation">horizontal</property>
 								<property name="spacing">6</property>
+								<property name="visible">1</property>
 								<child>
 									<object class="GtkLabel" id="almanah_mw_events_label">
 										<property name="label" translatable="yes">Past events</property>
+										<property name="visible">1</property>
 										<accessibility>
 											<relation target="events_tree_view" type="label-for"/>
 										</accessibility>
@@ -262,6 +279,7 @@
 								</child>
 								<child>
 									<object class="GtkLabel" id="events_count_label">
+										<property name="visible">1</property>
 									</object>
 									<packing>
 										<property name="expand">False</property>
@@ -277,6 +295,7 @@
 								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 								<property name="shadow-type">GTK_SHADOW_IN</property>
 								<property name="height-request">150</property>
+								<property name="visible">1</property>
                                                                 <style>
                                                                   <class name="almanah-events-scrolled"/>
                                                                 </style>
@@ -285,6 +304,7 @@
 										<property name="model">event_store</property>
 										<property name="can-focus">True</property>
 										<property name="headers-visible">False</property>
+										<property name="visible">1</property>
 										<signal name="row-activated" handler="mw_events_tree_view_row_activated_cb"/>
 										<accessibility>
 											<relation target="almanah_mw_events_label" type="labelled-by"/>

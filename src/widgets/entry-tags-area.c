@@ -182,8 +182,6 @@ almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 		gchar *tag = g_ptr_array_index (tags, i);
 		almanah_entry_tags_area_add_tag (self, (const gchar *) tag);
 	}
-
-	gtk_widget_show_all (GTK_WIDGET (self));
 }
 
 static void

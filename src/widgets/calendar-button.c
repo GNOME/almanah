@@ -202,7 +202,6 @@ almanah_calendar_button_toggled (GtkToggleButton *togglebutton)
 
 	if (gtk_toggle_button_get_active (togglebutton)) {
 		/* Show the dock */
-		gtk_widget_show_all (GTK_WIDGET (priv->dock));
 	}
 }
 
