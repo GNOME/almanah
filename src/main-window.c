@@ -366,7 +366,7 @@ save_window_state (AlmanahMainWindow *self)
 	g_key_file_set_boolean (key_file, "main-window", "maximized", state & GDK_WINDOW_STATE_MAXIMIZED ? TRUE : FALSE);
 
 	/* Save the window dimensions */
-	gtk_window_get_size (GTK_WINDOW (self), &width, &height);
+	gtk_window_get_default_size (GTK_WINDOW (self), &width, &height);
 
 	g_key_file_set_integer (key_file, "main-window", "width", width);
 	g_key_file_set_integer (key_file, "main-window", "height", height);
@@ -456,7 +456,7 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 		width = CLAMP (width, 0, max_width);
 		height = CLAMP (height, 0, max_height);
 
-		gtk_window_resize (GTK_WINDOW (self), width, height);
+		gtk_window_set_default_size (GTK_WINDOW (self), width, height);
 	}
 
 	/* Maximised? */
