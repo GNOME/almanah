@@ -467,12 +467,18 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	almanah_operation->line_spacing_spin_button = GTK_SPIN_BUTTON (line_spacing_spin_button);
 
 	hbox = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6));
-	gtk_box_pack_start (hbox, GTK_WIDGET (line_spacing_label), FALSE, TRUE, 6);
-	gtk_box_pack_start (hbox, line_spacing_spin_button, TRUE, TRUE, 6);
+	gtk_box_prepend (hbox, GTK_WIDGET (line_spacing_label));
+	// todo: set padding=6 (fill does not do anything when expand=false)
+	gtk_box_prepend (hbox, line_spacing_spin_button);
+	// todo: set fill, padding=6
+	gtk_widget_set_hexpand (line_spacing_spin_button, TRUE);
 
 	vbox = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, 12));
-	gtk_box_pack_start (vbox, GTK_WIDGET (grid), TRUE, TRUE, 6);
-	gtk_box_pack_start (vbox, GTK_WIDGET (hbox), FALSE, TRUE, 6);
+	gtk_box_prepend (vbox, GTK_WIDGET (grid));
+	// todo: set fill, padding=6
+	gtk_widget_set_vexpand (line_spacing_spin_button, TRUE);
+	// todo: set padding=6 (fill does not do anything when expand=false)
+	gtk_box_prepend (vbox, GTK_WIDGET (hbox));
 
 	/* Make sure they have the dates with entries marked */
 	almanah_calendar_select_today (almanah_operation->start_calendar);
