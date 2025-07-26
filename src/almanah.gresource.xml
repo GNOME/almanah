@@ -9,5 +9,6 @@
     <file preprocess="xml-stripblanks">ui/import-results-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/preferences-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/search-dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/uri-entry-dialog.ui</file>
   </gresource>
 </gresources>
