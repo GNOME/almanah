@@ -122,6 +122,14 @@ almanah_calendar_button_class_init (AlmanahCalendarButtonClass *klass)
 	gtk_widget_class_bind_template_child_private (widget_class, AlmanahCalendarButton, today_button);
 	gtk_widget_class_bind_template_child_private (widget_class, AlmanahCalendarButton, select_date_button);
 
+	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_dock_closed);
+	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_day_selected_cb);
+	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_month_changed_cb);
+	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_today_clicked_cb);
+	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_today_press_cb);
+	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_select_date_clicked_cb);
+	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_select_date_press_cb);
+
 	g_type_ensure (ALMANAH_TYPE_CALENDAR);
 }
 
@@ -132,25 +140,6 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 
 	AlmanahCalendarButtonPrivate *priv = almanah_calendar_button_get_instance_private (self);
 	priv->user_event = FIRST_EVENT;
-
-	gtk_widget_set_focus_on_click (GTK_WIDGET (self), TRUE);
-
-	gtk_popover_set_relative_to (GTK_POPOVER (priv->dock), GTK_WIDGET (self));
-
-	g_signal_connect (priv->dock, "hide", G_CALLBACK (almanah_calendar_button_dock_closed), self);
-
-	/* The calendar widget */
-	g_signal_connect (priv->calendar, "day-selected", G_CALLBACK (almanah_calendar_button_day_selected_cb), self);
-	g_signal_connect (priv->calendar, "month_changed", G_CALLBACK (almanah_calendar_button_month_changed_cb), self);
-
-	/* Today button */
-	g_signal_connect (priv->today_button, "clicked", G_CALLBACK (almanah_calendar_button_today_clicked_cb), self);
-	g_signal_connect (priv->today_button, "button-press-event", G_CALLBACK (almanah_calendar_button_today_press_cb), self);
-
-	/* Select a day button */
-	/* @TODO: No the button press event, instead the 'activate' action funcion (if not, the select day window dosn't showed... */
-	g_signal_connect (priv->select_date_button, "clicked", G_CALLBACK (almanah_calendar_button_select_date_clicked_cb), self);
-	g_signal_connect (priv->select_date_button, "button-press-event", G_CALLBACK (almanah_calendar_button_select_date_press_cb), self);
 }
 
 static void
