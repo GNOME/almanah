@@ -113,7 +113,7 @@ sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDialog *search
 	}
 
 	gtk_list_store_clear (search_dialog->sd_results_store);
-	gtk_entry_set_text (search_dialog->sd_search_entry, "");
+	gtk_editable_set_text (GTK_EDITABLE (search_dialog->sd_search_entry), "");
 
 	gtk_widget_hide (GTK_WIDGET (dialog));
 }
@@ -226,7 +226,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 
 	search_dialog->sd_cancellable = g_cancellable_new ();
 
-	search_string = gtk_entry_get_text (search_dialog->sd_search_entry);
+	search_string = gtk_editable_get_text (GTK_EDITABLE (search_dialog->sd_search_entry));
 
 	/* Change UI to show the status */
 	gtk_widget_show (GTK_WIDGET (search_dialog->sd_results_alignment));

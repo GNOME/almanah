@@ -166,7 +166,7 @@ almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *mode
 	gchar *tag;
 
 	gtk_tree_model_get (model, iter, 0, &tag, -1);
-	gtk_entry_set_text (GTK_ENTRY (self), tag);
+	gtk_editable_set_text (GTK_EDITABLE (self), tag);
 	g_signal_emit_by_name (GTK_ENTRY (self), "activate");
 
 	return TRUE;

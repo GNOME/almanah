@@ -135,9 +135,9 @@ ued_uri_entry_notify_text_cb (GObject *gobject, GParamSpec *param_spec, AlmanahU
 	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (self);
 
 	/* Enable/Disable the OK button based on whether the current URI is valid. */
-	if (is_uri_valid (gtk_entry_get_text (priv->uri_entry)) == TRUE) {
+	if (is_uri_valid (gtk_editable_get_text (GTK_EDITABLE (priv->uri_entry))) == TRUE) {
 		/* The URI was parsed successfully; update priv->uri and enable the OK button */
-		priv->uri = g_strdup (gtk_entry_get_text (priv->uri_entry));
+		priv->uri = g_strdup (gtk_editable_get_text (GTK_EDITABLE (priv->uri_entry)));
 		gtk_widget_set_sensitive (priv->ok_button, TRUE);
 	} else {
 		/* Failure due to the URI entered being invalid; disable the OK button */

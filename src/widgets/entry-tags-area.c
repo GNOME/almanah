@@ -99,7 +99,7 @@ almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 
 	/* The tag entry widget */
 	priv->tag_entry = g_object_new (ALMANAH_TYPE_TAG_ENTRY, NULL);
-	gtk_entry_set_text (GTK_ENTRY (priv->tag_entry), _ ("add tag"));
+	gtk_editable_set_text (GTK_EDITABLE (priv->tag_entry), _ ("add tag"));
 	gtk_widget_set_tooltip_text (GTK_WIDGET (priv->tag_entry), _ ("Write the tag and press enter to save it"));
 	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (priv->tag_entry));
 	g_signal_connect (priv->tag_entry, "activate", G_CALLBACK (tag_entry_activate_cb), self);
@@ -221,8 +221,8 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
 	g_autofree gchar *tag = NULL;
 
-	tag = g_strdup (gtk_entry_get_text (entry));
-	gtk_entry_set_text (entry, "");
+	tag = g_strdup (gtk_editable_get_text (GTK_EDITABLE (entry)));
+	gtk_editable_set_text (GTK_EDITABLE (entry), "");
 	if (almanah_storage_manager_entry_add_tag (priv->storage_manager, priv->entry, tag)) {
 		/* @TODO: turn this async waiting for the storage signal "tag-added" */
 		almanah_entry_tags_area_add_tag (self, (const gchar *) tag);
