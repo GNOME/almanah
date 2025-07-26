@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<interface>
+	<requires lib="gtk+" version="3.0"/>
+
+	<object class="GtkPopover" id="almanah_calendar_window">
+		<property name="border-width">12</property>
+		<child>
+			<object class="GtkBox" id="almanah_cw_vbox">
+				<property name="orientation">GTK_ORIENTATION_VERTICAL</property>
+				<property name="spacing">6</property>
+				<child>
+					<object class="AlmanahCalendar" id="almanah_cw_calendar">
+						<property name="width-request">200</property>
+						<property name="can-focus">True</property>
+						<property name="show-details">False</property>
+						<signal name="day-selected" handler="mw_calendar_day_selected_cb"/>
+						<child internal-child="accessible">
+							<object class="AtkObject" id="a11y-almanah_mw_calendar">
+								<property name="AtkObject::accessible-name" translatable="yes">Calendar</property>
+							</object>
+						</child>
+					</object>
+					<packing>
+						<property name="expand">True</property>
+					</packing>
+				</child>
+				<child>
+					<object class="GtkButtonBox" id="almanah_cw_button_box">
+						<property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
+						<property name="homogeneous">True</property>
+						<style>
+							<class name="linked" />
+						</style>
+						<child>
+							<object class="GtkButton" id="almanah_cw_today_button">
+								<property name="visible">True</property>
+								<property name="can_focus">True</property>
+								<property name="label" translatable="yes">Go to Today</property>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+						<child>
+							<object class="GtkButton" id="almanah_cw_select_date_button">
+								<property name="visible">True</property>
+								<property name="can_focus">True</property>
+								<property name="label" translatable="yes">Select Date…</property>
+							</object>
+							<packing>
+								<property name="expand">False</property>
+							</packing>
+						</child>
+					</object>
+					<packing>
+						<property name="expand">False</property>
+					</packing>
+				</child>
+			</object>
+		</child>
+	</object>
+</interface>

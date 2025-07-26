@@ -134,7 +134,7 @@ almanah_calendar_button_init (AlmanahCalendarButton *self)
 
 	/* Calendar dock window from the UI file */
 	builder = gtk_builder_new ();
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/almanah.ui", (gchar **) object_names, &error) == 0) {
+	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/calendar-button.ui", (gchar **) object_names, &error) == 0) {
 		g_warning (_("UI data could not be loaded: %s"), error->message);
 		g_error_free (error);
 		g_object_unref (builder);
