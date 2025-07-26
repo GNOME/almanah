@@ -35,7 +35,9 @@ static void almanah_preferences_dialog_dispose (GObject *object);
 static void pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog);
 static void pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *preferences_dialog);
 
-typedef struct {
+struct _AlmanahPreferencesDialog {
+	GtkDialog parent;
+
 	GSettings *settings;
 	GtkComboBox *key_combo;
 	AlmanahSecretKeysStore *key_store;
@@ -43,17 +45,13 @@ typedef struct {
 	guint spell_checking_enabled_id;
 	GtkCheckButton *spell_checking_enabled_check_button;
 #endif /* ENABLE_SPELL_CHECKING */
-} AlmanahPreferencesDialogPrivate;
-
-struct _AlmanahPreferencesDialog {
-	GtkDialog parent;
 };
 
 enum {
 	PROP_SETTINGS = 1,
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (AlmanahPreferencesDialog, almanah_preferences_dialog, GTK_TYPE_DIALOG)
 
 static void
 almanah_preferences_dialog_class_init (AlmanahPreferencesDialogClass *klass)
@@ -83,13 +81,13 @@ almanah_preferences_dialog_init (AlmanahPreferencesDialog *self)
 static void
 almanah_preferences_dialog_dispose (GObject *object)
 {
-	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private (ALMANAH_PREFERENCES_DIALOG (object));
+	AlmanahPreferencesDialog *self = ALMANAH_PREFERENCES_DIALOG (object);
 
-	g_clear_object (&priv->key_store);
+	g_clear_object (&self->key_store);
 
-	if (priv->settings != NULL)
-		g_object_unref (priv->settings);
-	priv->settings = NULL;
+	if (self->settings != NULL)
+		g_object_unref (self->settings);
+	self->settings = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_preferences_dialog_parent_class)->dispose (object);
@@ -98,11 +96,11 @@ almanah_preferences_dialog_dispose (GObject *object)
 static void
 get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private (ALMANAH_PREFERENCES_DIALOG (object));
+	AlmanahPreferencesDialog *self = ALMANAH_PREFERENCES_DIALOG (object);
 
 	switch (property_id) {
 		case PROP_SETTINGS:
-			g_value_set_object (value, priv->settings);
+			g_value_set_object (value, self->settings);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -115,11 +113,10 @@ static void
 set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec)
 {
 	AlmanahPreferencesDialog *self = ALMANAH_PREFERENCES_DIALOG (object);
-	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private (self);
 
 	switch (property_id) {
 		case PROP_SETTINGS:
-			priv->settings = g_value_dup_object (value);
+			self->settings = g_value_dup_object (value);
 			break;
 		default:
 			/* We don't have any other property... */
@@ -137,7 +134,6 @@ almanah_preferences_dialog_new (GSettings *settings)
 	AtkObject *a11y_label, *a11y_key_combo;
 	gchar *key;
 	AlmanahPreferencesDialog *preferences_dialog;
-	AlmanahPreferencesDialogPrivate *priv;
 	GError *error = NULL;
 	const gchar *object_names[] = {
 		"almanah_preferences_dialog",
@@ -174,8 +170,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 		return NULL;
 	}
 
-	priv = almanah_preferences_dialog_get_instance_private (preferences_dialog);
-	priv->settings = g_object_ref (settings);
+	preferences_dialog->settings = g_object_ref (settings);
 	grid = GTK_GRID (gtk_builder_get_object (builder, "almanah_pd_grid"));
 	gtk_widget_set_halign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
 	gtk_widget_set_valign (GTK_WIDGET (grid), GTK_ALIGN_CENTER);
@@ -184,14 +179,14 @@ almanah_preferences_dialog_new (GSettings *settings)
 	label = gtk_label_new (_("Encryption key: "));
 	gtk_grid_attach (grid, label, 0, 0, 1, 1);
 
-	priv->key_store = almanah_secret_keys_store_new ();
-	priv->key_combo = GTK_COMBO_BOX (gtk_combo_box_new_with_model (GTK_TREE_MODEL (priv->key_store)));
+	preferences_dialog->key_store = almanah_secret_keys_store_new ();
+	preferences_dialog->key_combo = GTK_COMBO_BOX (gtk_combo_box_new_with_model (GTK_TREE_MODEL (preferences_dialog->key_store)));
 	GtkCellRenderer *renderer = gtk_cell_renderer_text_new();
-	gtk_combo_box_set_id_column (priv->key_combo, SECRET_KEYS_STORE_COLUMN_ID);
-	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (priv->key_combo), renderer, TRUE);
-	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (priv->key_combo), renderer,
+	gtk_combo_box_set_id_column (preferences_dialog->key_combo, SECRET_KEYS_STORE_COLUMN_ID);
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (preferences_dialog->key_combo), renderer, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (preferences_dialog->key_combo), renderer,
 	                               "text", SECRET_KEYS_STORE_COLUMN_LABEL, NULL);
-	gtk_grid_attach (grid, GTK_WIDGET (priv->key_combo), 1, 0, 1, 1);
+	gtk_grid_attach (grid, GTK_WIDGET (preferences_dialog->key_combo), 1, 0, 1, 1);
 
 	button = gtk_button_new_with_mnemonic (_("New _Key"));
 	gtk_grid_attach (grid, button, 2, 0, 1, 1);
@@ -199,23 +194,23 @@ almanah_preferences_dialog_new (GSettings *settings)
 
 	/* Set up the accessibility relationships */
 	a11y_label = gtk_widget_get_accessible (GTK_WIDGET (label));
-	a11y_key_combo = gtk_widget_get_accessible (GTK_WIDGET (priv->key_combo));
+	a11y_key_combo = gtk_widget_get_accessible (GTK_WIDGET (preferences_dialog->key_combo));
 	atk_object_add_relationship (a11y_label, ATK_RELATION_LABEL_FOR, a11y_key_combo);
 	atk_object_add_relationship (a11y_key_combo, ATK_RELATION_LABELLED_BY, a11y_label);
 
 	/* Set the selected key combo value */
-	key = g_settings_get_string (priv->settings, "encryption-key");
-	gtk_combo_box_set_active_id (priv->key_combo, key);
+	key = g_settings_get_string (preferences_dialog->settings, "encryption-key");
+	gtk_combo_box_set_active_id (preferences_dialog->key_combo, key);
 	g_free (key);
 
-	g_signal_connect (priv->key_combo, "changed", G_CALLBACK (pd_key_combo_changed_cb), preferences_dialog);
+	g_signal_connect (preferences_dialog->key_combo, "changed", G_CALLBACK (pd_key_combo_changed_cb), preferences_dialog);
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up the "Enable spell checking" check button */
-	priv->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_("Enable _spell checking")));
-	gtk_grid_attach (grid, GTK_WIDGET (priv->spell_checking_enabled_check_button), 0, 2, 2, 1);
+	preferences_dialog->spell_checking_enabled_check_button = GTK_CHECK_BUTTON (gtk_check_button_new_with_mnemonic (_("Enable _spell checking")));
+	gtk_grid_attach (grid, GTK_WIDGET (preferences_dialog->spell_checking_enabled_check_button), 0, 2, 2, 1);
 
-	g_settings_bind (priv->settings, "spell-checking-enabled", priv->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (preferences_dialog->settings, "spell-checking-enabled", preferences_dialog->spell_checking_enabled_check_button, "active", G_SETTINGS_BIND_DEFAULT);
 #endif /* ENABLE_SPELL_CHECKING */
 
 	g_object_unref (builder);
@@ -226,16 +221,15 @@ almanah_preferences_dialog_new (GSettings *settings)
 static void
 pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *preferences_dialog)
 {
-	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private (preferences_dialog);
 	const gchar *key;
 	GError *error = NULL;
 
 	/* Save the new encryption key to GSettings */
-	key = gtk_combo_box_get_active_id (priv->key_combo);
+	key = gtk_combo_box_get_active_id (preferences_dialog->key_combo);
 	if (key == NULL)
 		key = "";
 
-	if (g_settings_set_string (priv->settings, "encryption-key", key) == FALSE) {
+	if (g_settings_set_string (preferences_dialog->settings, "encryption-key", key) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
 							    GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 							    _("Error saving the encryption key"));
