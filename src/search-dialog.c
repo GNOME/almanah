@@ -48,8 +48,10 @@ struct _AlmanahSearchDialog {
 	GtkLabel *sd_results_label;
 	GtkWidget *sd_results_alignment;
 	GtkListStore *sd_results_store;
+	GtkTreeView *sd_results_tree_view;
 	GtkTreeSelection *sd_results_selection;
 	GCancellable *sd_cancellable;
+	GtkButton *sd_view_button;
 };
 
 G_DEFINE_TYPE (AlmanahSearchDialog, almanah_search_dialog, GTK_TYPE_DIALOG)
@@ -57,11 +59,25 @@ G_DEFINE_TYPE (AlmanahSearchDialog, almanah_search_dialog, GTK_TYPE_DIALOG)
 static void
 almanah_search_dialog_class_init (AlmanahSearchDialogClass *klass)
 {
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+	gtk_widget_class_set_template_from_resource (widget_class, "/org/gnome/Almanah/ui/search-dialog.ui");
+
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_search_entry);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_results_store);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_results_tree_view);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_results_alignment);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_search_spinner);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_results_label);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_search_button);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_cancel_button);
+	gtk_widget_class_bind_template_child (widget_class, AlmanahSearchDialog, sd_view_button);
 }
 
 static void
 almanah_search_dialog_init (AlmanahSearchDialog *self)
 {
+	gtk_widget_init_template (GTK_WIDGET (self));
 	g_signal_connect (self, "response", G_CALLBACK (sd_response_cb), self);
 	gtk_window_set_modal (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _("Search"));
@@ -70,63 +86,16 @@ almanah_search_dialog_init (AlmanahSearchDialog *self)
 AlmanahSearchDialog *
 almanah_search_dialog_new (void)
 {
-	GtkBuilder *builder;
 	AlmanahSearchDialog *search_dialog;
-	GError *error = NULL;
-	const gchar *object_names[] = {
-		"almanah_search_dialog",
-		"almanah_sd_search_button_image",
-		"almanah_sd_cancel_button_image",
-		"almanah_sd_results_store",
-		NULL
-	};
-
-	builder = gtk_builder_new ();
-
-	if (gtk_builder_add_objects_from_resource (builder, "/org/gnome/Almanah/ui/search-dialog.ui", (gchar**) object_names, &error) == 0) {
-		/* Show an error */
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-							    GTK_DIALOG_MODAL,
-							    GTK_MESSAGE_ERROR,
-							    GTK_BUTTONS_OK,
-							    _("UI data could not be loaded"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
-		g_object_unref (builder);
-
-		return NULL;
-	}
-
-	gtk_builder_set_translation_domain (builder, GETTEXT_PACKAGE);
-	search_dialog = ALMANAH_SEARCH_DIALOG (gtk_builder_get_object (builder, "almanah_search_dialog"));
-	gtk_builder_connect_signals (builder, search_dialog);
-
-	if (search_dialog == NULL) {
-		g_object_unref (builder);
-		return NULL;
-	}
+	search_dialog = g_object_new (ALMANAH_TYPE_SEARCH_DIALOG, NULL);
 
 	search_dialog->sd_cancellable = NULL;
 
-	/* Grab our child widgets */
-	search_dialog->sd_search_entry = GTK_ENTRY (gtk_builder_get_object (builder, "almanah_sd_search_entry"));
-	search_dialog->sd_results_store = GTK_LIST_STORE (gtk_builder_get_object (builder, "almanah_sd_results_store"));
-	search_dialog->sd_results_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (gtk_builder_get_object (builder, "almanah_sd_results_tree_view")));
-	search_dialog->sd_results_alignment = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_results_alignment"));
-	search_dialog->sd_search_spinner = GTK_SPINNER (gtk_builder_get_object (builder, "almanah_sd_search_spinner"));
-	search_dialog->sd_results_label = GTK_LABEL (gtk_builder_get_object (builder, "almanah_sd_results_label"));
-	search_dialog->sd_search_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_search_button"));
-	search_dialog->sd_cancel_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_sd_cancel_button"));
-
+	search_dialog->sd_results_selection = gtk_tree_view_get_selection (search_dialog->sd_results_tree_view);
 	g_signal_connect (search_dialog->sd_results_selection, "changed", G_CALLBACK (sd_results_selection_changed_cb),
-			  gtk_builder_get_object (builder, "almanah_sd_view_button"));
+	                  search_dialog->sd_view_button);
 
 	gtk_widget_grab_default (search_dialog->sd_search_button);
-
-	g_object_unref (builder);
 
 	return search_dialog;
 }
