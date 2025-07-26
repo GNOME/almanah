@@ -93,7 +93,7 @@ almanah_search_dialog_new (void)
 	g_signal_connect (search_dialog->sd_results_selection, "changed", G_CALLBACK (sd_results_selection_changed_cb),
 	                  search_dialog->sd_view_button);
 
-	gtk_widget_grab_default (search_dialog->sd_search_button);
+	gtk_window_set_default_widget (GTK_WINDOW (search_dialog), search_dialog->sd_search_button);
 
 	return search_dialog;
 }
@@ -251,7 +251,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	/* Allow the user to cancel the search */
 	gtk_widget_set_sensitive (search_dialog->sd_search_button, FALSE);
 	gtk_widget_set_sensitive (search_dialog->sd_cancel_button, TRUE);
-	gtk_widget_grab_default (search_dialog->sd_cancel_button);
+	gtk_window_set_default_widget (GTK_WINDOW (search_dialog), search_dialog->sd_cancel_button);
 }
 
 static void
