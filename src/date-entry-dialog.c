@@ -29,21 +29,19 @@ static void almanah_date_entry_dialog_set_property (GObject *object, guint prope
 /* GtkBuilder callbacks */
 G_MODULE_EXPORT void ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *pspec, AlmanahDateEntryDialog *self);
 
-typedef struct {
+struct _AlmanahDateEntryDialog {
+	GtkDialog parent;
+
 	GDate date;
 	GtkWidget *ok_button;
 	GtkEntry *date_entry;
-} AlmanahDateEntryDialogPrivate;
-
-struct _AlmanahDateEntryDialog {
-	GtkDialog parent;
 };
 
 enum {
 	PROP_DATE = 1
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (AlmanahDateEntryDialog, almanah_date_entry_dialog, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (AlmanahDateEntryDialog, almanah_date_entry_dialog, GTK_TYPE_DIALOG)
 
 static void
 almanah_date_entry_dialog_class_init (AlmanahDateEntryDialogClass *klass)
@@ -63,9 +61,7 @@ almanah_date_entry_dialog_class_init (AlmanahDateEntryDialogClass *klass)
 static void
 almanah_date_entry_dialog_init (AlmanahDateEntryDialog *self)
 {
-	AlmanahDateEntryDialogPrivate *priv = almanah_date_entry_dialog_get_instance_private (self);
-
-	g_date_clear (&(priv->date), 1);
+	g_date_clear (&(self->date), 1);
 	g_signal_connect (self, "response", G_CALLBACK (gtk_widget_hide), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 	gtk_window_set_title (GTK_WINDOW (self), _ ("Select Date"));
@@ -74,11 +70,11 @@ almanah_date_entry_dialog_init (AlmanahDateEntryDialog *self)
 static void
 almanah_date_entry_dialog_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahDateEntryDialogPrivate *priv = almanah_date_entry_dialog_get_instance_private (ALMANAH_DATE_ENTRY_DIALOG (object));
+	AlmanahDateEntryDialog *self = ALMANAH_DATE_ENTRY_DIALOG (object);
 
 	switch (property_id) {
 		case PROP_DATE:
-			g_value_set_boxed (value, &(priv->date));
+			g_value_set_boxed (value, &(self->date));
 			break;
 		default:
 			/* We don't have any other property... */
@@ -108,7 +104,6 @@ almanah_date_entry_dialog_new (void)
 {
 	GtkBuilder *builder;
 	AlmanahDateEntryDialog *date_entry_dialog;
-	AlmanahDateEntryDialogPrivate *priv;
 	GError *error = NULL;
 	const gchar *object_names[] = {
 		"almanah_date_entry_dialog",
@@ -143,11 +138,9 @@ almanah_date_entry_dialog_new (void)
 		return NULL;
 	}
 
-	priv = almanah_date_entry_dialog_get_instance_private (date_entry_dialog);
-
 	/* Grab widgets */
-	priv->ok_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_ded_ok_button"));
-	priv->date_entry = GTK_ENTRY (gtk_builder_get_object (builder, "almanah_ded_date_entry"));
+	date_entry_dialog->ok_button = GTK_WIDGET (gtk_builder_get_object (builder, "almanah_ded_ok_button"));
+	date_entry_dialog->date_entry = GTK_ENTRY (gtk_builder_get_object (builder, "almanah_ded_date_entry"));
 
 	g_object_unref (builder);
 
@@ -157,11 +150,9 @@ almanah_date_entry_dialog_new (void)
 gboolean
 almanah_date_entry_dialog_run (AlmanahDateEntryDialog *self)
 {
-	AlmanahDateEntryDialogPrivate *priv = almanah_date_entry_dialog_get_instance_private (self);
-
 	/* Reset the date, entry and consequently the OK button */
-	gtk_entry_set_text (priv->date_entry, "");
-	g_date_clear (&(priv->date), 1);
+	gtk_entry_set_text (self->date_entry, "");
+	g_date_clear (&(self->date), 1);
 
 	return (gtk_dialog_run (GTK_DIALOG (self)) == GTK_RESPONSE_OK) ? TRUE : FALSE;
 }
@@ -169,35 +160,30 @@ almanah_date_entry_dialog_run (AlmanahDateEntryDialog *self)
 G_MODULE_EXPORT void
 ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *param_spec, AlmanahDateEntryDialog *self)
 {
-	AlmanahDateEntryDialogPrivate *priv = almanah_date_entry_dialog_get_instance_private (self);
 	GDate new_date;
 
 	/* Enable/Disable the OK button based on whether the current date is valid */
-	g_date_set_parse (&new_date, gtk_entry_get_text (priv->date_entry));
+	g_date_set_parse (&new_date, gtk_entry_get_text (self->date_entry));
 
 	if (g_date_valid (&new_date) == TRUE) {
-		/* The date was parsed successfully; update priv->date and enable the OK button */
-		priv->date = new_date;
-		gtk_widget_set_sensitive (priv->ok_button, TRUE);
+		/* The date was parsed successfully; update self->date and enable the OK button */
+		self->date = new_date;
+		gtk_widget_set_sensitive (self->ok_button, TRUE);
 	} else {
 		/* Failure due to the date entered being invalid; disable the OK button */
-		gtk_widget_set_sensitive (priv->ok_button, FALSE);
+		gtk_widget_set_sensitive (self->ok_button, FALSE);
 	}
 }
 
 void
 almanah_date_entry_dialog_get_date (AlmanahDateEntryDialog *self, GDate *date)
 {
-	AlmanahDateEntryDialogPrivate *priv = almanah_date_entry_dialog_get_instance_private (self);
-
-	*date = priv->date;
+	*date = self->date;
 }
 
 void
 almanah_date_entry_dialog_set_date (AlmanahDateEntryDialog *self, GDate *date)
 {
-	AlmanahDateEntryDialogPrivate *priv = almanah_date_entry_dialog_get_instance_private (self);
-
-	priv->date = *date;
+	self->date = *date;
 	g_object_notify (G_OBJECT (self), "date");
 }
