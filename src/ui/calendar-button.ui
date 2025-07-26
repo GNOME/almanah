@@ -3,13 +3,17 @@
 	<requires lib="gtk+" version="3.0"/>
 
 	<object class="GtkPopover" id="dock">
+		<signal name="hide" handler="almanah_calendar_button_dock_closed"/>
 		<property name="border-width">12</property>
+		<property name="relative-to">AlmanahCalendarButton</property>
 		<child>
 			<object class="GtkBox" id="almanah_cw_vbox">
 				<property name="orientation">GTK_ORIENTATION_VERTICAL</property>
 				<property name="spacing">6</property>
 				<child>
 					<object class="AlmanahCalendar" id="calendar">
+						<signal name="day-selected" handler="almanah_calendar_button_day_selected_cb"/>
+						<signal name="month_changed" handler="almanah_calendar_button_month_changed_cb"/>
 						<property name="width-request">200</property>
 						<property name="can-focus">True</property>
 						<property name="show-details">False</property>
@@ -32,6 +36,8 @@
 						</style>
 						<child>
 							<object class="GtkButton" id="today_button">
+								<signal name="clicked" handler="almanah_calendar_button_today_clicked_cb"/>
+								<signal name="button-press-event" handler="almanah_calendar_button_today_press_cb"/>
 								<property name="visible">True</property>
 								<property name="can_focus">True</property>
 								<property name="label" translatable="yes">Go to Today</property>
@@ -42,6 +48,9 @@
 						</child>
 						<child>
 							<object class="GtkButton" id="select_date_button">
+								<!-- @TODO: No the button press event, instead the 'activate' action funcion (if not, the select day window dosn't showed... -->
+								<signal name="clicked" handler="almanah_calendar_button_select_date_clicked_cb"/>
+								<signal name="button-press-event" handler="almanah_calendar_button_select_date_press_cb"/>
 								<property name="visible">True</property>
 								<property name="can_focus">True</property>
 								<property name="label" translatable="yes">Select Date…</property>
