@@ -168,6 +168,9 @@ almanah_main_window_class_init (AlmanahMainWindowClass *klass)
 	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, events_tree_view);
 	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, events_expander);
 	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, events_count_label);
+	gtk_widget_class_bind_template_child_private (widget_class, AlmanahMainWindow, header_bar);
+
+	gtk_widget_class_bind_template_callback (widget_class, mw_delete_event_cb);
 }
 
 static void
@@ -177,17 +180,10 @@ almanah_main_window_init (AlmanahMainWindow *self)
 
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 
-	gtk_window_set_title (GTK_WINDOW (self), _("Almanah Diary"));
-	g_signal_connect (self, "delete-event", G_CALLBACK (mw_delete_event_cb), NULL);
-
 	g_action_map_add_action_entries (G_ACTION_MAP (self),
 	                                 win_entries,
 	                                 G_N_ELEMENTS (win_entries),
 	                                 self);
-
-	priv->header_bar = gtk_header_bar_new ();
-	gtk_window_set_titlebar (GTK_WINDOW (self), priv->header_bar);
-	gtk_header_bar_set_show_close_button (GTK_HEADER_BAR (priv->header_bar), TRUE);
 
 	priv->desktop_interface_settings = NULL;
 	priv->css_provider = NULL;
@@ -1358,8 +1354,7 @@ static void
 mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application)
 {
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
-	GtkWidget *button, *button_image;
-	GMenu *menu;
+	GtkWidget *button_image;
 	AlmanahStorageManager *storage_manager;
 
 	/* Setup the calendar button */
@@ -1372,37 +1367,6 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 	button_image = gtk_image_new_from_icon_name ("x-office-calendar-symbolic", GTK_ICON_SIZE_MENU);
 	gtk_button_set_image (GTK_BUTTON (priv->calendar_button), button_image);
 	gtk_header_bar_pack_start (GTK_HEADER_BAR (priv->header_bar), GTK_WIDGET (priv->calendar_button));
-
-	/* Hamburger menu  */
-	button = gtk_menu_button_new ();
-	menu = gtk_application_get_menu_by_id (gtk_window_get_application (GTK_WINDOW (main_window)), "main-window-menu");
-	gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), G_MENU_MODEL (menu));
-	button_image = gtk_image_new_from_icon_name ("open-menu-symbolic", GTK_ICON_SIZE_MENU);
-	gtk_button_set_image (GTK_BUTTON (button), button_image);
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
-
-	/* Formatting menu */
-	button = gtk_menu_button_new ();
-	menu = gtk_application_get_menu_by_id (gtk_window_get_application (GTK_WINDOW (main_window)), "formatting-menu");
-	gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), G_MENU_MODEL (menu));
-	button_image = gtk_image_new_from_icon_name ("format-text-rich-symbolic", GTK_ICON_SIZE_MENU);
-	gtk_button_set_image (GTK_BUTTON (button), button_image);
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
-
-	/* Important entry */
-	button = gtk_toggle_button_new ();
-	gtk_style_context_add_class (gtk_widget_get_style_context (button), "image-button");
-	button_image = gtk_image_new_from_icon_name ("starred-symbolic", GTK_ICON_SIZE_MENU);
-	gtk_button_set_image (GTK_BUTTON (button), button_image);
-	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.important");
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
-
-	/* Show/hide tags: future "side pane", for photos and other elements */
-	button = gtk_toggle_button_new ();
-	button_image = gtk_image_new_from_icon_name ("org.gnome.Almanah-tags-symbolic", GTK_ICON_SIZE_MENU);
-	gtk_button_set_image (GTK_BUTTON (button), button_image);
-	gtk_actionable_set_action_name (GTK_ACTIONABLE (button), "win.show-tags");
-	gtk_header_bar_pack_end (GTK_HEADER_BAR (priv->header_bar), button);
 }
 
 /* Taken from pango_font_description_to_css() in GTK, licensed under GPLv2+

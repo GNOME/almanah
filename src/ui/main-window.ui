@@ -1,5 +1,86 @@
 <?xml version="1.0"?>
 <interface>
+	<menu id="formatting-menu">
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_Bold</attribute>
+				<attribute name="action">win.bold</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Italic</attribute>
+				<attribute name="action">win.italic</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Underline</attribute>
+				<attribute name="action">win.underline</attribute>
+			</item>
+		</section>
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_Cut</attribute>
+				<attribute name="action">win.cut</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Copy</attribute>
+				<attribute name="action">win.copy</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Paste</attribute>
+				<attribute name="action">win.paste</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Delete</attribute>
+				<attribute name="action">win.cut</attribute>
+			</item>
+		</section>
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">Insert _Time</attribute>
+				<attribute name="action">win.insert-time</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">Add/Remove _Hyperlink</attribute>
+				<attribute name="action">win.hyperlink</attribute>
+			</item>
+		</section>
+	</menu>
+	<menu id="main-window-menu">
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_Search</attribute>
+				<attribute name="action">app.search</attribute>
+			</item>
+		</section>
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">Pr_eferences</attribute>
+				<attribute name="action">app.preferences</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes" context="Main menu">_Import</attribute>
+				<attribute name="action">app.import</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes" context="Main menu">_Export</attribute>
+				<attribute name="action">app.export</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Print diary</attribute>
+				<attribute name="action">app.print</attribute>
+			</item>
+		</section>
+		<section>
+			<item>
+				<attribute name="label" translatable="yes">_About Almanah Diary</attribute>
+				<attribute name="action">app.about</attribute>
+			</item>
+			<item>
+				<attribute name="label" translatable="yes">_Quit</attribute>
+				<attribute name="action">app.quit</attribute>
+			</item>
+		</section>
+	</menu>
+
 	<object class="GtkListStore" id="event_store">
 		<columns>
 			<column type="AlmanahEvent"/><!-- Event object -->
@@ -11,9 +92,74 @@
 	</object>
 
 	<template class="AlmanahMainWindow" parent="GtkApplicationWindow">
+		<property name="title" translatable="yes">Almanah Diary</property>
 		<property name="hide-titlebar-when-maximized">True</property>
+		<signal name="delete-event" handler="mw_delete_event_cb"/>
 		<property name="default-width">640</property>
 		<property name="default-height">480</property>
+
+		<child type="titlebar">
+			<object class="GtkHeaderBar" id="header_bar">
+				<property name="show_close_button">True</property>
+
+				<child>
+					<object class="GtkMenuButton">
+						<property name="menu-model">main-window-menu</property>
+						<child>
+							<object class="GtkImage">
+								<property name="icon-name">open-menu-symbolic</property>
+							</object>
+						</child>
+					</object>
+					<packing>
+						<property name="pack-type">end</property>
+					</packing>
+				</child>
+
+				<child>
+					<object class="GtkMenuButton">
+						<property name="menu-model">formatting-menu</property>
+						<child>
+							<object class="GtkImage">
+								<property name="icon-name">format-text-rich-symbolic</property>
+							</object>
+						</child>
+					</object>
+					<packing>
+						<property name="pack-type">end</property>
+					</packing>
+				</child>
+
+				<child>
+					<object class="GtkToggleButton">
+						<property name="action-name">win.important</property>
+						<child>
+							<object class="GtkImage">
+								<property name="icon-name">starred-symbolic</property>
+							</object>
+						</child>
+					</object>
+					<packing>
+						<property name="pack-type">end</property>
+					</packing>
+				</child>
+
+				<child>
+					<object class="GtkToggleButton" id="show_tags_toggle_button">
+						<property name="action-name">win.show-tags</property>
+						<child>
+							<object class="GtkImage">
+								<property name="icon-name">org.gnome.Almanah-tags-symbolic</property>
+							</object>
+						</child>
+					</object>
+					<packing>
+						<property name="pack-type">end</property>
+					</packing>
+				</child>
+			</object>
+		</child>
+
 		<child>
 			<object class="GtkVBox" id="vbox3">
 				<property name="spacing">6</property>
