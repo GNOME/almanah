@@ -1354,7 +1354,6 @@ static void
 mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application)
 {
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
-	GtkWidget *button_image;
 	AlmanahStorageManager *storage_manager;
 
 	/* Setup the calendar button */
@@ -1363,9 +1362,7 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 	g_object_unref (storage_manager);
 	g_signal_connect (priv->calendar_button, "day-selected", G_CALLBACK (mw_calendar_day_selected_cb), main_window);
 	g_signal_connect (priv->calendar_button, "select-date-clicked", G_CALLBACK (mw_calendar_select_date_clicked_cb), main_window);
-	gtk_style_context_add_class (gtk_widget_get_style_context (priv->header_bar), "image-button");
-	button_image = gtk_image_new_from_icon_name ("x-office-calendar-symbolic", GTK_ICON_SIZE_MENU);
-	gtk_button_set_image (GTK_BUTTON (priv->calendar_button), button_image);
+	gtk_button_set_icon_name (GTK_BUTTON (priv->calendar_button), "x-office-calendar-symbolic");
 	gtk_header_bar_pack_start (GTK_HEADER_BAR (priv->header_bar), GTK_WIDGET (priv->calendar_button));
 }
 
