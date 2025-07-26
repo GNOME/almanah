@@ -165,7 +165,7 @@ almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *n
 gboolean
 almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event)
 {
-	gtk_entry_set_text (GTK_ENTRY (self), _("add tag"));
+	gtk_editable_set_text (GTK_EDITABLE (self), _("add tag"));
 
 	return FALSE;
 }
@@ -173,7 +173,7 @@ almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event)
 gboolean
 almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event)
 {
-	gtk_entry_set_text (GTK_ENTRY (self), "");
+	gtk_editable_set_text (GTK_EDITABLE (self), "");
 
 	return FALSE;
 }
@@ -184,7 +184,7 @@ almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *mode
 	gchar *tag;
 
 	gtk_tree_model_get (model, iter, 0, &tag, -1);
-	gtk_entry_set_text (GTK_ENTRY (self), tag);
+	gtk_editable_set_text (GTK_EDITABLE (self), tag);
 	g_signal_emit_by_name (GTK_ENTRY (self), "activate");
 
 	return TRUE;

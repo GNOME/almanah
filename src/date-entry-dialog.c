@@ -123,7 +123,7 @@ gboolean
 almanah_date_entry_dialog_run (AlmanahDateEntryDialog *self)
 {
 	/* Reset the date, entry and consequently the OK button */
-	gtk_entry_set_text (self->date_entry, "");
+	gtk_editable_set_text (GTK_EDITABLE (self->date_entry), "");
 	g_date_clear (&(self->date), 1);
 
 	return (gtk_dialog_run (GTK_DIALOG (self)) == GTK_RESPONSE_OK) ? TRUE : FALSE;
@@ -135,7 +135,7 @@ ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *param_spec, Almanah
 	GDate new_date;
 
 	/* Enable/Disable the OK button based on whether the current date is valid */
-	g_date_set_parse (&new_date, gtk_entry_get_text (self->date_entry));
+	g_date_set_parse (&new_date, gtk_editable_get_text (GTK_EDITABLE (self->date_entry)));
 
 	if (g_date_valid (&new_date) == TRUE) {
 		/* The date was parsed successfully; update self->date and enable the OK button */
