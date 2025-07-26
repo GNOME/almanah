@@ -249,14 +249,6 @@
 		</child>
 	</object>
 
-	<object class="GtkListStore" id="almanah_add_type_store">
-		<columns>
-			<column type="gchararray"/><!-- Name -->
-			<column type="guint"/><!-- Type -->
-			<column type="gchararray"/><!-- Icon name -->
-		</columns>
-	</object>
-
 	<object class="AlmanahUriEntryDialog" id="almanah_uri_entry_dialog">
 		<property name="border-width">5</property>
 		<child internal-child="vbox">
