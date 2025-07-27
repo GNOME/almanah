@@ -451,7 +451,7 @@ create_custom_widget_cb (GtkPrintOperation *operation, AlmanahPrintOperation *al
 	grid = GTK_GRID (gtk_grid_new ());
 	gtk_grid_set_row_spacing (grid, 6);
 	gtk_grid_set_column_spacing (grid, 6);
-	gtk_container_set_border_width (GTK_CONTAINER (grid), 6);
+	// gtk_container_set_border_width (GTK_CONTAINER (grid), 6);
 	gtk_grid_attach (grid, GTK_WIDGET (start_label), 0, 0, 1, 1);
 	gtk_grid_attach (grid, start_calendar, 0, 1, 1, 1);
 	gtk_grid_attach (grid, GTK_WIDGET (end_label), 1, 0, 1, 1);
