@@ -334,7 +334,7 @@ static gboolean
 import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
 	gboolean retval = FALSE;
-	GFileInfo *file_info;
+	GFileInfo *file_info_temp;
 	GFileEnumerator *enumerator;
 	GtkTextBuffer *buffer;
 	GError *child_error = NULL;
@@ -348,7 +348,8 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 	buffer = gtk_text_buffer_new (NULL);
 
 	/* Enumerate all the children of the folder */
-	while ((file_info = g_file_enumerator_next_file (enumerator, NULL, &child_error)) != NULL) {
+	while ((file_info_temp = g_file_enumerator_next_file (enumerator, NULL, &child_error)) != NULL) {
+		g_autoptr (GFileInfo) file_info = g_steal_pointer (&file_info_temp);
 		AlmanahEntry *entry;
 		GDate parsed_date, last_edited;
 		g_autoptr (GDateTime) modification_date_time = NULL;
@@ -361,14 +362,12 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 
 		/* Skip the file if it's hidden */
 		if (g_file_info_get_is_hidden (file_info) == TRUE || file_name[strlen (file_name) - 1] == '~') {
-			g_object_unref (file_info);
 			continue;
 		}
 
 		/* Heuristically parse the date, though we recommend using the format: yyyy-mm-dd */
 		g_date_set_parse (&parsed_date, file_name);
 		if (g_date_valid (&parsed_date) == FALSE) {
-			g_object_unref (file_info);
 			continue;
 		}
 
@@ -379,7 +378,6 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 		/* Load the content */
 		if (g_file_load_contents (file, NULL, &contents, &length, NULL, &child_error) == FALSE) {
 			g_object_unref (file);
-			g_object_unref (file_info);
 			break; /* let the error get handled by the code just after the loop */
 		}
 		g_object_unref (file);
@@ -407,7 +405,6 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 		g_free (message);
 
 		g_object_unref (entry);
-		g_object_unref (file_info);
 
 		/* Check for cancellation */
 		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
@@ -436,7 +433,7 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 	g_autoptr (GFileInfo) file_info = NULL;
 	gchar *path;
 	const gchar *display_name;
-	AlmanahEntry *entry;
+	AlmanahEntry *entry_temp;
 	AlmanahStorageManager *database;
 	AlmanahStorageManagerIter iter;
 	gboolean success = FALSE;
@@ -464,7 +461,8 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 
 	/* Iterate through every entry */
 	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_get_entries (database, &iter)) != NULL) {
+	while ((entry_temp = almanah_storage_manager_get_entries (database, &iter)) != NULL) {
+		g_autoptr (AlmanahEntry) entry = g_steal_pointer (&entry_temp);
 		GDate date;
 		gchar *message = NULL;
 		AlmanahImportStatus status;
@@ -474,8 +472,6 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 		status = set_entry (self, entry, display_name, &message);
 		progress_idle_callback (progress_callback, progress_user_data, &date, status, message);
 		g_free (message);
-
-		g_object_unref (entry);
 
 		/* Check for cancellation */
 		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, error) == TRUE)
