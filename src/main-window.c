@@ -928,24 +928,10 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 	/* Open the hyperlink if it's control-clicked */
 	if (event->type == GDK_BUTTON_RELEASE && event->button.state & GDK_CONTROL_MASK) {
 		const gchar *uri;
-		GError *error = NULL;
 
 		uri = almanah_hyperlink_tag_get_uri (hyperlink_tag);
 
-		/* Attempt to open the URI */
-		gtk_show_uri_on_window (GTK_WINDOW (self), uri, gdk_event_get_time (event), &error);
-
-		if (error != NULL) {
-			/* Error */
-			GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (self),
-			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-			                                            _("Error opening URI"));
-			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-			gtk_dialog_run (GTK_DIALOG (dialog));
-			gtk_window_destroy (GTK_WINDOW (dialog));
-
-			g_error_free (error);
-		}
+		gtk_show_uri (GTK_WINDOW (self), uri, gdk_event_get_time (event));
 
 		return TRUE;
 	}
