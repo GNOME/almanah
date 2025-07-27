@@ -30,10 +30,6 @@ main (int argc, char *argv[])
 	AlmanahApplication *application;
 	int status;
 
-#if !GLIB_CHECK_VERSION (2, 31, 0)
-	g_thread_init (NULL);
-#endif
-
 	gtk_source_init ();
 
 	application = almanah_application_new ();
