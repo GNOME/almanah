@@ -600,7 +600,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 		case SQLITE_ROW: {
 			GtkTextIter text_iter;
 			AlmanahEntry *entry = build_entry_from_statement (statement);
-			const gchar *tags = sqlite3_column_text (statement, 9);
+			const gchar *tags = (const gchar *) sqlite3_column_text (statement, 9);
 
 			/* Deserialise the entry into our buffer */
 			gtk_text_buffer_set_text (text_buffer, "", 0);
@@ -1186,7 +1186,7 @@ almanah_storage_manager_get_tags (AlmanahStorageManager *self)
 	}
 
 	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		tags = g_list_append (tags, g_strdup (sqlite3_column_text (statement, 0)));
+		tags = g_list_append (tags, g_strdup ((const gchar *) sqlite3_column_text (statement, 0)));
 	}
 
 	sqlite3_finalize (statement);
