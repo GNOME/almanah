@@ -1673,8 +1673,7 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 
 	/* Make sure it's either NULL or a proper locale specifier */
 	if (spelling_language != NULL && spelling_language[0] == '\0') {
-		g_free (spelling_language);
-		spelling_language = NULL;
+		g_clear_pointer (&spelling_language, g_free);
 	}
 
 	gtkspell = gtk_spell_checker_new ();
