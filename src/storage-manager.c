@@ -1058,11 +1058,13 @@ almanah_storage_manager_entry_remove_tag (AlmanahStorageManager *self, AlmanahEn
  * @entry: an #AlmanahEntry
  *
  * Gets the tags added to an entry by the user from the database.
+ *
+ * Returns: (transfer full) (nullable): A #GPtrArray with the tags of the entry, or NULL on failure.
  */
-GList *
+GPtrArray *
 almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntry *entry)
 {
-	GList *tags = NULL;
+	g_autoptr (GPtrArray) tags = g_ptr_array_new_with_free_func (g_free);
 	GDate date;
 	sqlite3_stmt *statement;
 	gint result;
@@ -1090,18 +1092,17 @@ almanah_storage_manager_entry_get_tags (AlmanahStorageManager *self, AlmanahEntr
 	sqlite3_bind_int (statement, 3, g_date_get_day (&date));
 
 	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		tags = g_list_append (tags, g_strdup ((const gchar *) sqlite3_column_text (statement, 0)));
+		g_ptr_array_add (tags, g_strdup ((const gchar *) sqlite3_column_text (statement, 0)));
 	}
 
 	sqlite3_finalize (statement);
 
 	if (result != SQLITE_DONE) {
 		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (priv->connection));
-		g_list_free_full (tags, (GDestroyNotify) g_free);
-		tags = NULL;
+		return NULL;
 	}
 
-	return tags;
+	return g_steal_pointer (&tags);
 }
 
 /**
@@ -1167,12 +1168,12 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
  *
  * Gets all the tags added to entries by the user from the database.
  *
- * Return value: #GList with all the tags.
+ * Returns: (transfer full) (nullable): A #GPtrArray with all the tags, or NULL on failure.
  */
-GList *
+GPtrArray *
 almanah_storage_manager_get_tags (AlmanahStorageManager *self)
 {
-	GList *tags = NULL;
+	g_autoptr (GPtrArray) tags = g_ptr_array_new_with_free_func (g_free);
 	sqlite3_stmt *statement;
 	gint result;
 
@@ -1186,16 +1187,15 @@ almanah_storage_manager_get_tags (AlmanahStorageManager *self)
 	}
 
 	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
-		tags = g_list_append (tags, g_strdup ((const gchar *) sqlite3_column_text (statement, 0)));
+		g_ptr_array_add (tags, g_strdup ((const gchar *) sqlite3_column_text (statement, 0)));
 	}
 
 	sqlite3_finalize (statement);
 
 	if (result != SQLITE_DONE) {
 		g_debug ("Error querying for tags from database: %s", sqlite3_errmsg (priv->connection));
-		g_free (tags);
-		tags = NULL;
+		return NULL;
 	}
 
-	return tags;
+	return g_steal_pointer (&tags);
 }

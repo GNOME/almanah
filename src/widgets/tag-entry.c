@@ -132,21 +132,22 @@ almanah_tag_entry_set_property (GObject *object, guint property_id, const GValue
 static void
 almanah_tag_entry_update_tags (AlmanahTagEntry *tag_entry)
 {
-	GList *tags;
+	g_autoptr (GPtrArray) tags = NULL;
 	GtkTreeIter iter;
 	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (tag_entry);
 
 	gtk_list_store_clear (priv->tags_store);
 	tags = almanah_storage_manager_get_tags (priv->storage_manager);
-	while (tags) {
-		gtk_list_store_append (priv->tags_store, &iter);
-		gtk_list_store_set (priv->tags_store, &iter, 0, tags->data, -1);
 
-		tags = g_list_next (tags);
+	if (tags == NULL) {
+		return;
 	}
 
-	if (tags)
-		g_list_free (tags);
+	for (guint i = 0; i < tags->len; i++) {
+		gchar *tag = g_ptr_array_index (tags, i);
+		gtk_list_store_append (priv->tags_store, &iter);
+		gtk_list_store_set (priv->tags_store, &iter, 0, tag, -1);
+	}
 }
 
 static void

@@ -169,17 +169,19 @@ static void
 almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 {
 	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
-	GList *tags;
+	g_autoptr (GPtrArray) tags = NULL;
 
 	tags = almanah_storage_manager_entry_get_tags (priv->storage_manager, priv->entry);
-	while (tags) {
-		almanah_entry_tags_area_add_tag (self, (const gchar *) tags->data);
 
-		g_free (tags->data);
-		tags = g_list_next (tags);
+	if (tags == NULL) {
+		return;
 	}
 
-	g_free (tags);
+	for (guint i = 0; i < tags->len; i++) {
+		gchar *tag = g_ptr_array_index (tags, i);
+		almanah_entry_tags_area_add_tag (self, (const gchar *) tag);
+	}
+
 	gtk_widget_show_all (GTK_WIDGET (self));
 }
 
