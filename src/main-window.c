@@ -1010,8 +1010,6 @@ hyperlink_tag_presed_cb (
 
 	GtkWidget *entry_view = gtk_event_controller_get_widget (GTK_EVENT_CONTROLLER (self));
 
-	GtkWindow *window = GTK_WINDOW (gtk_widget_get_toplevel (entry_view));
-
 	GtkTextIter iter;
 	gtk_text_view_get_iter_at_location (GTK_TEXT_VIEW (entry_view), &iter, x, y);
 
@@ -1029,27 +1027,10 @@ hyperlink_tag_presed_cb (
 		return;
 	}
 
-	const gchar *uri;
-	g_autoptr (GError) error = NULL;
-
-	uri = almanah_hyperlink_tag_get_uri (hyperlink_tag);
+	const gchar *uri = almanah_hyperlink_tag_get_uri (hyperlink_tag);
 
 	/* Attempt to open the URI */
-	gtk_show_uri_on_window (window, uri, gdk_event_get_time (event), &error);
-
-	if (error != NULL) {
-		/* Error */
-		GtkWidget *dialog = gtk_message_dialog_new (window,
-		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
-		                                            _ ("Error opening URI"));
-		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-
-		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
-		                  G_CALLBACK (gtk_window_destroy),
-		                  NULL);
-
-		gtk_widget_show (dialog);
-	}
+	gtk_show_uri (GTK_WINDOW (self), uri, gdk_event_get_time (event));
 }
 
 typedef struct UriEntryDialogData {
