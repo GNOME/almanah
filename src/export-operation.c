@@ -203,7 +203,7 @@ static gboolean
 export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
 	AlmanahStorageManagerIter iter;
-	AlmanahEntry *entry;
+	AlmanahEntry *entry_temp;
 	GtkTextBuffer *buffer;
 	gboolean success = FALSE;
 	GError *child_error = NULL;
@@ -214,7 +214,8 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 
 	/* Iterate through the entries */
 	almanah_storage_manager_iter_init (&iter);
-	while ((entry = almanah_storage_manager_get_entries (priv->storage_manager, &iter)) != NULL) {
+	while ((entry_temp = almanah_storage_manager_get_entries (priv->storage_manager, &iter)) != NULL) {
+		g_autoptr (AlmanahEntry) entry = g_steal_pointer (&entry_temp);
 		GDate date;
 		gchar *filename, *content, *path;
 		GFile *file;
@@ -230,11 +231,8 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 		if (almanah_entry_get_content (entry, buffer, TRUE, &child_error) == FALSE) {
 			/* Error */
 			g_object_unref (file);
-			g_object_unref (entry);
 			break;
 		}
-
-		g_object_unref (entry);
 
 		gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
 		content = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, FALSE);
