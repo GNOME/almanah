@@ -839,7 +839,7 @@ mw_cut_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute_
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
-	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
+	GdkClipboard *clipboard = gdk_display_get_clipboard (gtk_widget_get_display (GTK_WIDGET (main_window)));
 	gtk_text_buffer_cut_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard, TRUE);
 }
 
@@ -848,7 +848,8 @@ mw_copy_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
-	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
+
+	GdkClipboard *clipboard = gdk_display_get_clipboard (gtk_widget_get_display (GTK_WIDGET (main_window)));
 	gtk_text_buffer_copy_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard);
 }
 
@@ -857,7 +858,7 @@ mw_paste_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribut
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
-	GtkClipboard *clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (GTK_WIDGET (main_window)), GDK_SELECTION_CLIPBOARD);
+	GdkClipboard *clipboard = gdk_display_get_clipboard (gtk_widget_get_display (GTK_WIDGET (main_window)));
 	gtk_text_buffer_paste_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard, NULL, TRUE);
 }
 
