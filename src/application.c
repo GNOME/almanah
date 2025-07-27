@@ -301,7 +301,7 @@ startup (GApplication *application)
 	style_provider = gtk_css_provider_new ();
 	g_signal_connect (G_OBJECT (style_provider), "parsing-error", G_CALLBACK (almanah_application_style_provider_parsing_error_cb), NULL);
 	gtk_css_provider_load_from_resource (style_provider, "/org/gnome/Almanah/css/almanah.css");
-	gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	gtk_style_context_add_provider_for_display (gdk_display_get_default (), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
 	/* Shortcuts */
 	add_accelerator (GTK_APPLICATION (application), "app.quit", "<Primary>Q");
