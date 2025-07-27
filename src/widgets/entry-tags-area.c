@@ -36,10 +36,11 @@ typedef struct {
 	GtkWidget *back_widget;
 	guint tags_number;
 	AlmanahTagEntry *tag_entry;
+	GtkFlowBox *flow_box;
 } AlmanahEntryTagsAreaPrivate;
 
 struct _AlmanahEntryTagsArea {
-	GtkFlowBox parent;
+	GtkBox parent;
 };
 
 static void almanah_entry_tags_area_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
@@ -53,10 +54,9 @@ static void almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const g
 /* Signals */
 static void tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self);
 
-static void entry_tags_area_remove_foreach_cb (GtkWidget *flow_box_child, AlmanahEntryTagsArea *self);
 static void tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
-G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_FLOW_BOX)
+G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_BOX)
 
 static void
 almanah_entry_tags_area_class_init (AlmanahEntryTagsAreaClass *klass)
@@ -94,6 +94,10 @@ almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 {
 	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
 
+	priv->flow_box = GTK_FLOW_BOX (gtk_flow_box_new ());
+
+	gtk_box_append (GTK_BOX (self), GTK_WIDGET (priv->flow_box));
+
 	/* There is no tags showed right now. */
 	priv->tags_number = 0;
 
@@ -101,7 +105,7 @@ almanah_entry_tags_area_init (AlmanahEntryTagsArea *self)
 	priv->tag_entry = g_object_new (ALMANAH_TYPE_TAG_ENTRY, NULL);
 	gtk_editable_set_text (GTK_EDITABLE (priv->tag_entry), _ ("add tag"));
 	gtk_widget_set_tooltip_text (GTK_WIDGET (priv->tag_entry), _ ("Write the tag and press enter to save it"));
-	gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (priv->tag_entry));
+	gtk_flow_box_append (priv->flow_box, GTK_WIDGET (priv->tag_entry));
 	g_signal_connect (priv->tag_entry, "activate", G_CALLBACK (tag_entry_activate_cb), self);
 }
 
@@ -187,8 +191,27 @@ almanah_entry_tags_area_load_tags (AlmanahEntryTagsArea *self)
 static void
 almanah_entry_tags_area_update (AlmanahEntryTagsArea *self)
 {
+	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
+
 	/* Update the tags area removing all tag widgets first */
-	gtk_container_foreach (GTK_CONTAINER (self), (GtkCallback) entry_tags_area_remove_foreach_cb, self);
+	for (ssize_t i = priv->tags_number; i > 0; i--) {
+		GtkFlowBoxChild *fbchild = gtk_flow_box_get_child_at_index (priv->flow_box, i);
+
+		if (fbchild == NULL) {
+			break;
+		}
+
+		GtkWidget *child = gtk_flow_box_child_get_child (fbchild);
+
+		/* Remove all the tag widget */
+		if (ALMANAH_IS_TAG (child)) {
+			gtk_flow_box_remove (priv->flow_box, child);
+			priv->tags_number--;
+		}
+	}
+
+	/* Show the tags for the entry when no remains tag widgets */
+	almanah_entry_tags_area_load_tags (self);
 }
 
 static void
@@ -208,7 +231,7 @@ almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const gchar *tag)
 	GtkWidget *tag_widget;
 
 	tag_widget = almanah_tag_new (tag);
-	gtk_container_add (GTK_CONTAINER (self), tag_widget);
+	gtk_flow_box_append (priv->flow_box, tag_widget);
 	gtk_widget_show (tag_widget);
 	g_signal_connect (tag_widget, "remove", G_CALLBACK (tag_remove), self);
 
@@ -229,25 +252,6 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 		gtk_widget_grab_focus (priv->back_widget);
 	} else {
 		g_debug ("Can't add the tag");
-	}
-}
-
-static void
-entry_tags_area_remove_foreach_cb (GtkWidget *flow_box_child, AlmanahEntryTagsArea *self)
-{
-	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
-
-	GtkWidget *tag_widget = gtk_bin_get_child (GTK_BIN (flow_box_child));
-
-	/* Remove all the tag widget */
-	if (ALMANAH_IS_TAG (tag_widget)) {
-		g_object_unref (flow_box_child);
-		priv->tags_number--;
-	}
-
-	/* Show the tags for the entry when no remains tag widgets */
-	if (priv->tags_number == 0) {
-		almanah_entry_tags_area_load_tags (self);
 	}
 }
 
