@@ -172,7 +172,7 @@ progress_idle_callback_cb (ProgressData *data)
 	/* Free the data */
 	g_free (data->message);
 	g_date_free (data->date);
-	g_slice_free (ProgressData, data);
+	g_free (data);
 
 	return FALSE;
 }
@@ -183,7 +183,7 @@ progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_da
 	GSource *source;
 	ProgressData *data;
 
-	data = g_slice_new (ProgressData);
+	data = g_new (ProgressData, 1);
 	data->callback = callback;
 	data->user_data = user_data;
 	data->date = g_date_new_dmy (g_date_get_day (date), g_date_get_month (date), g_date_get_year (date));
@@ -500,7 +500,7 @@ typedef struct {
 static void
 import_data_free (ImportData *data)
 {
-	g_slice_free (ImportData, data);
+	g_free (data);
 }
 
 static void
@@ -533,7 +533,7 @@ almanah_import_operation_run (AlmanahImportOperation *self, GCancellable *cancel
 	g_return_if_fail (ALMANAH_IS_IMPORT_OPERATION (self));
 	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
-	data = g_slice_new (ImportData);
+	data = g_new (ImportData, 1);
 	data->progress_callback = progress_callback;
 	data->progress_user_data = progress_user_data;
 

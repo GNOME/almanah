@@ -162,7 +162,7 @@ async_context_free (AsyncContext *async_context)
 	if (async_context->source != NULL)
 		g_object_unref (async_context->source);
 
-	g_slice_free (AsyncContext, async_context);
+	g_free (async_context);
 }
 
 static void
@@ -2081,7 +2081,7 @@ e_source_selector_queue_write (ESourceSelector *selector,
 	if (idle_source != NULL && !g_source_is_destroyed (idle_source))
 		return;
 
-	async_context = g_slice_new0 (AsyncContext);
+	async_context = g_new0 (AsyncContext, 1);
 	async_context->selector = g_object_ref (selector);
 	async_context->source = g_object_ref (source);
 

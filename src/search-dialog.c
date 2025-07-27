@@ -236,7 +236,7 @@ sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, A
 
 	/* Tidy up */
 	g_object_remove_weak_pointer (G_OBJECT (search_dialog), (gpointer *) search_dialog_weak_pointer);
-	g_slice_free (AlmanahSearchDialog *, search_dialog_weak_pointer);
+	g_free (search_dialog_weak_pointer);
 
 	g_object_unref (priv->sd_cancellable);
 	priv->sd_cancellable = NULL;
@@ -285,7 +285,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	storage_manager = almanah_application_dup_storage_manager (application);
 
 	/* Launch the search */
-	search_dialog_weak_pointer = g_slice_new (AlmanahSearchDialog *);
+	search_dialog_weak_pointer = g_new (AlmanahSearchDialog *, 1);
 	*search_dialog_weak_pointer = search_dialog;
 	g_object_add_weak_pointer (G_OBJECT (search_dialog), (gpointer *) search_dialog_weak_pointer);
 
