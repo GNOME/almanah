@@ -220,7 +220,7 @@ void
 tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 {
 	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
-	gchar *tag;
+	g_autofree gchar *tag = NULL;
 
 	tag = g_strdup (gtk_entry_get_text (entry));
 	gtk_entry_set_text (entry, "");
@@ -231,7 +231,6 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 	} else {
 		g_debug ("Can't add the tag");
 	}
-	g_free (tag);
 }
 
 void

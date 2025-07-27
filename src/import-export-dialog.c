@@ -238,7 +238,7 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 {
 	AlmanahImportExportDialog *self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
 	if (almanah_import_operation_finish (operation, async_result, &error) == FALSE) {
@@ -250,8 +250,6 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, Almana
 			gtk_dialog_run (GTK_DIALOG (error_dialog));
 			gtk_widget_destroy (error_dialog);
 		}
-
-		g_error_free (error);
 	} else {
 		/* Show the results dialogue */
 		gtk_widget_hide (GTK_WIDGET (self));
@@ -278,7 +276,7 @@ export_progress_cb (const GDate *date, AlmanahImportExportDialog *self)
 static void
 export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, AlmanahImportExportDialog *self)
 {
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
 	if (almanah_export_operation_finish (operation, async_result, &error) == FALSE) {
@@ -290,8 +288,6 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 			gtk_dialog_run (GTK_DIALOG (error_dialog));
 			gtk_widget_destroy (error_dialog);
 		}
-
-		g_error_free (error);
 	} else {
 		/* Show a success message */
 		GtkWidget *message_dialog;
@@ -316,7 +312,7 @@ static void
 response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self)
 {
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
-	GFile *file;
+	g_autoptr (GFile) file = NULL;
 
 	/* If the user pressed Cancel, cancel the operation if we've started, and return otherwise */
 	if (response_id != GTK_RESPONSE_OK) {
@@ -342,25 +338,21 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 
 	if (priv->import == TRUE) {
 		/* Import the entries according to the selected method.*/
-		AlmanahImportOperation *operation;
+		g_autoptr (AlmanahImportOperation) operation = NULL;
 		AlmanahImportResultsDialog *results_dialog = almanah_import_results_dialog_new (); /* destroyed in import_cb() */
 		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), GTK_WINDOW (self));     /* this is required in import_cb() */
 
 		operation = almanah_import_operation_new (priv->current_mode, file, priv->storage_manager);
 		almanah_import_operation_run (operation, priv->cancellable, (AlmanahImportProgressCallback) import_progress_cb, results_dialog,
 		                              (GAsyncReadyCallback) import_cb, results_dialog);
-		g_object_unref (operation);
 	} else {
 		/* Export the entries according to the selected method. */
-		AlmanahExportOperation *operation;
+		g_autoptr (AlmanahExportOperation) operation = NULL;
 
 		operation = almanah_export_operation_new (priv->current_mode, priv->storage_manager, file);
 		almanah_export_operation_run (operation, priv->cancellable, (AlmanahExportProgressCallback) export_progress_cb, self,
 		                              (GAsyncReadyCallback) export_cb, self);
-		g_object_unref (operation);
 	}
-
-	g_object_unref (file);
 }
 
 void
@@ -370,7 +362,7 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 	gint new_mode;
 	GtkTreeIter iter;
 	GtkTreeModel *model;
-	gchar *description;
+	g_autofree gchar *description = NULL;
 	GtkFileChooserAction action;
 
 	new_mode = gtk_combo_box_get_active (combo_box);
@@ -389,15 +381,13 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 
 	gtk_file_chooser_set_action (priv->file_chooser, action);
 	gtk_label_set_text_with_mnemonic (priv->description_label, description);
-
-	g_free (description);
 }
 
 void
 ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self)
 {
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
-	GFile *current_file;
+	g_autoptr (GFile) current_file = NULL;
 
 	/* Change the sensitivity of the dialogue's buttons based on whether a file is selected */
 	current_file = gtk_file_chooser_get_file (file_chooser);
@@ -405,7 +395,6 @@ ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImpo
 		gtk_widget_set_sensitive (priv->import_export_button, FALSE);
 	} else {
 		gtk_widget_set_sensitive (priv->import_export_button, TRUE);
-		g_object_unref (current_file);
 	}
 }
 

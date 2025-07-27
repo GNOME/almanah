@@ -178,8 +178,8 @@ source_selector_write_done_cb (GObject *source_object,
                                gpointer user_data)
 {
 	ESource *source;
-	ESourceSelector *selector;
-	GError *error = NULL;
+	g_autoptr (ESourceSelector) selector = NULL;
+	g_autoptr (GError) error = NULL;
 
 	source = E_SOURCE (source_object);
 	selector = E_SOURCE_SELECTOR (user_data);
@@ -189,10 +189,7 @@ source_selector_write_done_cb (GObject *source_object,
 	/* FIXME Display the error in the selector somehow? */
 	if (error != NULL) {
 		g_warning ("%s: %s", G_STRFUNC, error->message);
-		g_error_free (error);
 	}
-
-	g_object_unref (selector);
 }
 
 static gboolean
@@ -237,7 +234,7 @@ source_selector_update_row (ESourceSelector *selector,
 	ESourceExtension *extension = NULL;
 	GtkTreeRowReference *reference;
 	GtkTreeModel *model;
-	GtkTreePath *path;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
 	const gchar *extension_name;
 	const gchar *display_name;
@@ -257,7 +254,6 @@ source_selector_update_row (ESourceSelector *selector,
 	model = gtk_tree_row_reference_get_model (reference);
 	path = gtk_tree_row_reference_get_path (reference);
 	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_path_free (path);
 
 	display_name = e_source_get_display_name (source);
 
@@ -319,7 +315,7 @@ source_selector_traverse (GNode *node,
 	GHashTable *source_index;
 	GtkTreeRowReference *reference = NULL;
 	GtkTreeModel *model;
-	GtkTreePath *path;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
 
 	/* Skip the root node. */
@@ -339,7 +335,6 @@ source_selector_traverse (GNode *node,
 
 		path = gtk_tree_row_reference_get_path (reference);
 		gtk_tree_model_get_iter (model, &parent, path);
-		gtk_tree_path_free (path);
 
 		gtk_tree_store_append (GTK_TREE_STORE (model), &iter, &parent);
 	} else
@@ -350,7 +345,6 @@ source_selector_traverse (GNode *node,
 	path = gtk_tree_model_get_path (model, &iter);
 	reference = gtk_tree_row_reference_new (model, path);
 	g_hash_table_insert (source_index, g_object_ref (source), reference);
-	gtk_tree_path_free (path);
 
 	source_selector_update_row (selector, source);
 
@@ -381,7 +375,7 @@ source_selector_build_model (ESourceSelector *selector)
 	GHashTable *source_index;
 	GtkTreeView *tree_view;
 	GtkTreeModel *model;
-	ESource *selected;
+	g_autoptr (ESource) selected = NULL;
 	const gchar *extension_name;
 	GNode *root;
 
@@ -419,26 +413,22 @@ source_selector_build_model (ESourceSelector *selector)
 	/* Restore previously expanded sources. */
 	while (!g_queue_is_empty (&queue)) {
 		GtkTreeRowReference *reference;
-		ESource *source;
+		g_autoptr (ESource) source = NULL;
 
 		source = g_queue_pop_head (&queue);
 		reference = g_hash_table_lookup (source_index, source);
 
 		if (gtk_tree_row_reference_valid (reference)) {
-			GtkTreePath *path;
+			g_autoptr (GtkTreePath) path = NULL;
 
 			path = gtk_tree_row_reference_get_path (reference);
 			gtk_tree_view_expand_to_path (tree_view, path);
-			gtk_tree_path_free (path);
 		}
-
-		g_object_unref (source);
 	}
 
 	/* Restore the primary selection. */
 	if (selected != NULL) {
 		e_source_selector_set_primary_selection (selector, selected);
-		g_object_unref (selected);
 	}
 
 	/* Make sure we have a primary selection.  If not, pick one. */
@@ -448,7 +438,6 @@ source_selector_build_model (ESourceSelector *selector)
 		    registry, extension_name);
 		e_source_selector_set_primary_selection (selector, selected);
 	}
-	g_object_unref (selected);
 }
 
 static void
@@ -458,7 +447,7 @@ source_selector_expand_to_source (ESourceSelector *selector,
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
 	GHashTable *source_index;
 	GtkTreeRowReference *reference;
-	GtkTreePath *path;
+	g_autoptr (GtkTreePath) path = NULL;
 
 	source_index = priv->source_index;
 	reference = g_hash_table_lookup (source_index, source);
@@ -473,7 +462,6 @@ source_selector_expand_to_source (ESourceSelector *selector,
 	/* Expand the tree view to the path containing the ESource */
 	path = gtk_tree_row_reference_get_path (reference);
 	gtk_tree_view_expand_to_path (GTK_TREE_VIEW (selector), path);
-	gtk_tree_path_free (path);
 }
 
 static void
@@ -554,7 +542,7 @@ selection_func (GtkTreeSelection *selection,
                 ESourceSelector *selector)
 {
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
-	ESource *source;
+	g_autoptr (ESource) source = NULL;
 	GtkTreeIter iter;
 	const gchar *extension_name;
 
@@ -573,13 +561,10 @@ selection_func (GtkTreeSelection *selection,
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
 
 	if (!e_source_has_extension (source, extension_name)) {
-		g_object_unref (source);
 		return FALSE;
 	}
 
 	clear_saved_primary_selection (selector);
-
-	g_object_unref (source);
 
 	return TRUE;
 }
@@ -591,7 +576,7 @@ text_cell_edited_cb (ESourceSelector *selector,
 {
 	GtkTreeView *tree_view;
 	GtkTreeModel *model;
-	GtkTreePath *path;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
 	ESource *source;
 
@@ -601,7 +586,6 @@ text_cell_edited_cb (ESourceSelector *selector,
 
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
-	gtk_tree_path_free (path);
 
 	if (new_name == NULL || *new_name == '\0')
 		return;
@@ -620,16 +604,15 @@ cell_toggled_callback (GtkCellRendererToggle *renderer,
                        ESourceSelector *selector)
 {
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
-	ESource *source;
+	g_autoptr (ESource) source = NULL;
 	GtkTreeModel *model;
-	GtkTreePath *path;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
 
 	model = gtk_tree_view_get_model (GTK_TREE_VIEW (selector));
 	path = gtk_tree_path_new_from_string (path_string);
 
 	if (!gtk_tree_model_get_iter (model, &iter, path)) {
-		gtk_tree_path_free (path);
 		return;
 	}
 
@@ -641,10 +624,6 @@ cell_toggled_callback (GtkCellRendererToggle *renderer,
 		e_source_selector_select_source (selector, source);
 
 	priv->toggled_last = TRUE;
-
-	gtk_tree_path_free (path);
-
-	g_object_unref (source);
 }
 
 static void
@@ -850,8 +829,8 @@ source_selector_button_press_event (GtkWidget *widget,
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
 	GtkWidgetClass *widget_class;
 	GtkTreePath *path;
-	ESource *source = NULL;
-	ESource *primary;
+	g_autoptr (ESource) source = NULL;
+	g_autoptr (ESource) primary = NULL;
 	gboolean right_click = FALSE;
 	gboolean triple_click = FALSE;
 	gboolean row_exists;
@@ -889,8 +868,6 @@ source_selector_button_press_event (GtkWidget *widget,
 	primary = e_source_selector_ref_primary_selection (selector);
 	if (source != primary)
 		e_source_selector_set_primary_selection (selector, source);
-	if (primary != NULL)
-		g_object_unref (primary);
 
 	if (right_click)
 		g_signal_emit (
@@ -900,8 +877,6 @@ source_selector_button_press_event (GtkWidget *widget,
 		e_source_selector_select_exclusive (selector, source);
 		res = TRUE;
 	}
-
-	g_object_unref (source);
 
 	return res;
 
@@ -933,10 +908,10 @@ source_selector_drag_motion (GtkWidget *widget,
                              gint y,
                              guint time_)
 {
-	ESource *source = NULL;
+	g_autoptr (ESource) source = NULL;
 	GtkTreeView *tree_view;
 	GtkTreeModel *model;
-	GtkTreePath *path = NULL;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
 	GtkTreeViewDropPosition pos;
 	GdkDragAction action = 0;
@@ -964,12 +939,6 @@ source_selector_drag_motion (GtkWidget *widget,
 		action = gdk_drag_context_get_suggested_action (context);
 
 exit:
-	if (path != NULL)
-		gtk_tree_path_free (path);
-
-	if (source != NULL)
-		g_object_unref (source);
-
 	gdk_drag_status (context, action, time_);
 
 	return TRUE;
@@ -982,11 +951,11 @@ source_selector_drag_drop (GtkWidget *widget,
                            gint y,
                            guint time_)
 {
-	ESource *source;
+	g_autoptr (ESource) source = NULL;
 	ESourceSelector *selector;
 	GtkTreeView *tree_view;
 	GtkTreeModel *model;
-	GtkTreePath *path;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
 	const gchar *extension_name;
 	gboolean drop_zone;
@@ -1000,7 +969,6 @@ source_selector_drag_drop (GtkWidget *widget,
 		return FALSE;
 
 	valid = gtk_tree_model_get_iter (model, &iter, path);
-	gtk_tree_path_free (path);
 	g_return_val_if_fail (valid, FALSE);
 
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
@@ -1008,8 +976,6 @@ source_selector_drag_drop (GtkWidget *widget,
 	selector = E_SOURCE_SELECTOR (widget);
 	extension_name = e_source_selector_get_extension_name (selector);
 	drop_zone = e_source_has_extension (source, extension_name);
-
-	g_object_unref (source);
 
 	return drop_zone;
 }
@@ -1023,10 +989,10 @@ source_selector_drag_data_received (GtkWidget *widget,
                                     guint info,
                                     guint time_)
 {
-	ESource *source = NULL;
+	g_autoptr (ESource) source = NULL;
 	GtkTreeView *tree_view;
 	GtkTreeModel *model;
-	GtkTreePath *path = NULL;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
 	GdkDragAction action;
 	gboolean delete;
@@ -1055,12 +1021,6 @@ source_selector_drag_data_received (GtkWidget *widget,
 	    info, &success);
 
 exit:
-	if (path != NULL)
-		gtk_tree_path_free (path);
-
-	if (source != NULL)
-		g_object_unref (source);
-
 	gtk_drag_finish (context, success, delete, time_);
 }
 
@@ -1068,15 +1028,12 @@ static gboolean
 source_selector_popup_menu (GtkWidget *widget)
 {
 	ESourceSelector *selector;
-	ESource *source;
+	g_autoptr (ESource) source = NULL;
 	gboolean res = FALSE;
 
 	selector = E_SOURCE_SELECTOR (widget);
 	source = e_source_selector_ref_primary_selection (selector);
 	g_signal_emit (selector, signals[POPUP_EVENT], 0, source, NULL, &res);
-
-	if (source != NULL)
-		g_object_unref (source);
 
 	return res;
 }
@@ -1106,12 +1063,11 @@ source_selector_test_collapse_row (GtkTreeView *tree_view,
 
 	if (gtk_tree_store_is_ancestor (GTK_TREE_STORE (model), iter, &child_iter)) {
 		GtkTreeRowReference *reference;
-		GtkTreePath *child_path;
+		g_autoptr (GtkTreePath) child_path = NULL;
 
 		child_path = gtk_tree_model_get_path (model, &child_iter);
 		reference = gtk_tree_row_reference_new (model, child_path);
 		priv->saved_primary_selection = reference;
-		gtk_tree_path_free (child_path);
 	}
 
 	return FALSE;
@@ -1124,7 +1080,7 @@ source_selector_row_expanded (GtkTreeView *tree_view,
 {
 	ESourceSelectorPrivate *priv;
 	GtkTreeModel *model;
-	GtkTreePath *child_path;
+	g_autoptr (GtkTreePath) child_path = NULL;
 	GtkTreeIter child_iter;
 
 	priv = e_source_selector_get_instance_private (E_SOURCE_SELECTOR (tree_view));
@@ -1146,8 +1102,6 @@ source_selector_row_expanded (GtkTreeView *tree_view,
 
 		clear_saved_primary_selection (E_SOURCE_SELECTOR (tree_view));
 	}
-
-	gtk_tree_path_free (child_path);
 }
 
 static gboolean
@@ -1598,7 +1552,7 @@ source_selector_check_selected (GtkTreeModel *model,
                                 GtkTreeIter *iter,
                                 gpointer user_data)
 {
-	ESource *source;
+	g_autoptr (ESource) source = NULL;
 
 	struct {
 		ESourceSelector *selector;
@@ -1609,8 +1563,6 @@ source_selector_check_selected (GtkTreeModel *model,
 
 	if (e_source_selector_source_is_selected (closure->selector, source))
 		closure->list = g_slist_prepend (closure->list, source);
-	else
-		g_object_unref (source);
 
 	return FALSE;
 }
@@ -1833,9 +1785,9 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 	GtkCellRenderer *renderer;
 	GtkTreeView *tree_view;
 	GtkTreeModel *model;
-	GtkTreePath *path = NULL;
+	g_autoptr (GtkTreePath) path = NULL;
 	GtkTreeIter iter;
-	GList *list;
+	g_autoptr (GList) list = NULL;
 
 	g_return_if_fail (E_IS_SOURCE_SELECTOR (selector));
 
@@ -1863,7 +1815,6 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 			break;
 		list = g_list_delete_link (list, list);
 	}
-	g_list_free (list);
 
 	/* Make the text cell renderer editable, but only temporarily.
 	 * We don't want editing to be activated by simply clicking on
@@ -1873,8 +1824,6 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 	gtk_tree_view_set_cursor_on_cell (
 	    tree_view, path, column, renderer, TRUE);
 	g_object_set (renderer, "editable", FALSE, NULL);
-
-	gtk_tree_path_free (path);
 }
 
 /**
@@ -1897,7 +1846,7 @@ ESource *
 e_source_selector_ref_primary_selection (ESourceSelector *selector)
 {
 	ESourceSelectorPrivate *priv;
-	ESource *source;
+	g_autoptr (ESource) source = NULL;
 	GtkTreeRowReference *reference;
 	GtkTreeSelection *selection;
 	GtkTreeView *tree_view;
@@ -1916,11 +1865,10 @@ e_source_selector_ref_primary_selection (ESourceSelector *selector)
 	reference = priv->saved_primary_selection;
 
 	if (gtk_tree_row_reference_valid (reference)) {
-		GtkTreePath *path;
+		g_autoptr (GtkTreePath) path = NULL;
 
 		path = gtk_tree_row_reference_get_path (reference);
 		have_iter = gtk_tree_model_get_iter (model, &iter, path);
-		gtk_tree_path_free (path);
 	}
 
 	if (!have_iter)
@@ -1935,7 +1883,6 @@ e_source_selector_ref_primary_selection (ESourceSelector *selector)
 	extension_name = e_source_selector_get_extension_name (selector);
 
 	if (!e_source_has_extension (source, extension_name)) {
-		g_object_unref (source);
 		return NULL;
 	}
 
@@ -1963,8 +1910,8 @@ e_source_selector_set_primary_selection (ESourceSelector *selector,
 	GtkTreeRowReference *reference;
 	GtkTreeSelection *selection;
 	GtkTreeView *tree_view;
-	GtkTreePath *child_path;
-	GtkTreePath *parent_path;
+	g_autoptr (GtkTreePath) child_path = NULL;
+	g_autoptr (GtkTreePath) parent_path = NULL;
 	const gchar *extension_name;
 
 	g_return_if_fail (E_IS_SOURCE_SELECTOR (selector));
@@ -2012,9 +1959,6 @@ e_source_selector_set_primary_selection (ESourceSelector *selector,
 		g_signal_emit (selector, signals[PRIMARY_SELECTION_CHANGED], 0);
 		g_object_notify (G_OBJECT (selector), "primary-selection");
 	}
-
-	gtk_tree_path_free (child_path);
-	gtk_tree_path_free (parent_path);
 }
 
 /**
@@ -2065,7 +2009,7 @@ e_source_selector_queue_write (ESourceSelector *selector,
                                ESource *source)
 {
 	ESourceSelectorPrivate *priv;
-	GSource *idle_source;
+	g_autoptr (GSource) idle_source = NULL;
 	GHashTable *pending_writes;
 	GMainContext *main_context;
 	AsyncContext *async_context;
@@ -2105,5 +2049,4 @@ e_source_selector_queue_write (ESourceSelector *selector,
 	    (GDestroyNotify) async_context_free);
 	g_source_set_priority (idle_source, G_PRIORITY_HIGH_IDLE);
 	g_source_attach (idle_source, main_context);
-	g_source_unref (idle_source);
 }

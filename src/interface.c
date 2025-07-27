@@ -56,8 +56,8 @@ gboolean
 almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **error)
 {
 	gboolean retval;
-	GAppInfo *app_info;
-	GdkAppLaunchContext *context;
+	g_autoptr (GAppInfo) app_info = NULL;
+	g_autoptr (GdkAppLaunchContext) context = NULL;
 
 	app_info = g_app_info_create_from_commandline (command_line,
 	                                               "Almanah Execute",
@@ -72,9 +72,6 @@ almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **er
 	gdk_app_launch_context_set_screen (context, screen);
 
 	retval = g_app_info_launch (app_info, NULL, G_APP_LAUNCH_CONTEXT (context), error);
-
-	g_object_unref (context);
-	g_object_unref (app_info);
 
 	return retval;
 }

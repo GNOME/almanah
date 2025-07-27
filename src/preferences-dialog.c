@@ -154,7 +154,7 @@ almanah_preferences_dialog_new (GSettings *settings)
 	GtkGrid *grid;
 	GtkWidget *label, *button;
 	AtkObject *a11y_label, *a11y_key_combo;
-	gchar *key;
+	g_autofree gchar *key = NULL;
 	AlmanahPreferencesDialog *preferences_dialog;
 	AlmanahPreferencesDialogPrivate *priv;
 	GError *error = NULL;
@@ -222,12 +222,10 @@ almanah_preferences_dialog_new (GSettings *settings)
 	/* Set the selected key combo value */
 	key = g_settings_get_string (priv->settings, "encryption-key");
 	if (key != NULL && *key == '\0') {
-		g_free (key);
 		key = NULL;
 	}
 
 	cryptui_key_combo_set_key (priv->key_combo, key);
-	g_free (key);
 
 	g_signal_connect (priv->key_combo, "changed", G_CALLBACK (pd_key_combo_changed_cb), preferences_dialog);
 
@@ -249,7 +247,7 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 {
 	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private (preferences_dialog);
 	const gchar *key;
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 
 	/* Save the new encryption key to GSettings */
 	key = cryptui_key_combo_get_key (priv->key_combo);
@@ -263,8 +261,6 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
 	}
 }
 
@@ -273,7 +269,7 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 {
 	/* NOTE: pilfered from cryptui_need_to_get_keys */
 	const gchar *argv[2] = { "seahorse", NULL };
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 
 	if (g_spawn_async (NULL, (gchar **) argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
@@ -282,7 +278,5 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (dialog);
-
-		g_error_free (error);
 	}
 }
