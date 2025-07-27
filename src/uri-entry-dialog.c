@@ -168,11 +168,10 @@ almanah_uri_entry_dialog_run (AlmanahUriEntryDialog *self)
 static gboolean
 is_uri_valid (const gchar *uri)
 {
-	gchar *tmp;
+	g_autofree gchar *tmp = NULL;
 
 	/* We assume that g_uri_parse_scheme() will fail if the URI is invalid. */
 	tmp = g_uri_parse_scheme (uri);
-	g_free (tmp);
 
 	return (tmp != NULL) ? TRUE : FALSE;
 }

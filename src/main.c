@@ -26,7 +26,7 @@
 int
 main (int argc, char *argv[])
 {
-	AlmanahApplication *application;
+	g_autoptr (AlmanahApplication) application = NULL;
 	int status;
 
 #if !GLIB_CHECK_VERSION(2, 31, 0)
@@ -37,7 +37,6 @@ main (int argc, char *argv[])
 
 	application = almanah_application_new ();
 	status = g_application_run (G_APPLICATION (application), argc, argv);
-	g_object_unref (application);
 
 	gtk_source_finalize ();
 

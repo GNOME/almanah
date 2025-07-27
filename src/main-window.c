@@ -212,11 +212,11 @@ AlmanahMainWindow *
 almanah_main_window_new (AlmanahApplication *application)
 {
 	GtkBuilder *builder;
-	AlmanahEventManager *event_manager;
+	g_autoptr (AlmanahEventManager) event_manager = NULL;
 	AlmanahMainWindow *main_window;
 	AlmanahMainWindowPrivate *priv;
 	GError *error = NULL;
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 	const gchar *object_names[] = {
 		"almanah_main_window",
 		"almanah_mw_event_store",
@@ -303,14 +303,12 @@ almanah_main_window_new (AlmanahApplication *application)
 	/* Set the storage to the tags area */
 	storage_manager = almanah_application_dup_storage_manager (application);
 	almanah_entry_tags_area_set_storage_manager (priv->entry_tags_area, storage_manager);
-	g_object_unref (storage_manager);
 	/* The entry GtkTextView is the widget that grab the focus after a tag was added */
 	almanah_entry_tags_area_set_back_widget (priv->entry_tags_area, GTK_WIDGET (priv->entry_view));
 
 	/* Notification for event changes */
 	event_manager = almanah_application_dup_event_manager (application);
 	g_signal_connect (event_manager, "events-updated", G_CALLBACK (mw_events_updated_cb), main_window);
-	g_object_unref (event_manager);
 
 	/* Set up the main toolbar */
 	mw_setup_headerbar (main_window, application);
@@ -364,11 +362,10 @@ static GFile *
 get_window_state_file (void)
 {
 	GFile *key_file_path;
-	gchar *filename;
+	g_autofree gchar *filename = NULL;
 
 	filename = g_build_filename (g_get_user_config_dir (), PACKAGE_NAME, "state.ini", NULL);
 	key_file_path = g_file_new_for_path (filename);
-	g_free (filename);
 
 	return key_file_path;
 }
@@ -376,14 +373,15 @@ get_window_state_file (void)
 static void
 save_window_state (AlmanahMainWindow *self)
 {
-	GKeyFile *key_file;
-	GFile *key_file_path = NULL, *key_file_directory;
-	gchar *key_file_data;
+	g_autoptr (GKeyFile) key_file = NULL;
+	g_autoptr (GFile) key_file_path = NULL;
+	g_autoptr (GFile) key_file_directory = NULL;
+	g_autofree gchar *key_file_data = NULL;
 	gsize key_file_length;
 	GdkWindow *window;
 	GdkWindowState state;
 	gint width, height, x, y;
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 
 	/* Overwrite the existing state file with a new one */
 	key_file = g_key_file_new ();
@@ -408,12 +406,10 @@ save_window_state (AlmanahMainWindow *self)
 
 	/* Serialise the key file data */
 	key_file_data = g_key_file_to_data (key_file, &key_file_length, &error);
-	g_key_file_free (key_file);
 
 	if (error != NULL) {
 		g_warning ("Error generating window state data: %s", error->message);
-		g_error_free (error);
-		goto done;
+		return;
 	}
 
 	/* Ensure that the correct directories exist */
@@ -421,13 +417,11 @@ save_window_state (AlmanahMainWindow *self)
 
 	key_file_directory = g_file_get_parent (key_file_path);
 	g_file_make_directory_with_parents (key_file_directory, NULL, &error);
-	g_object_unref (key_file_directory);
 
 	if (error != NULL) {
 		if (error->code != G_IO_ERROR_EXISTS) {
-			gchar *parse_name = g_file_get_parse_name (key_file_path);
+			g_autofree gchar *parse_name = g_file_get_parse_name (key_file_path);
 			g_warning ("Error creating directory for window state data file “%s”: %s", parse_name, error->message);
-			g_free (parse_name);
 		}
 
 		g_clear_error (&error);
@@ -439,47 +433,33 @@ save_window_state (AlmanahMainWindow *self)
 	g_file_replace_contents (key_file_path, key_file_data, key_file_length, NULL, FALSE, G_FILE_CREATE_PRIVATE, NULL, NULL, &error);
 
 	if (error != NULL) {
-		gchar *parse_name = g_file_get_parse_name (key_file_path);
+		g_autofree gchar *parse_name = g_file_get_parse_name (key_file_path);
 		g_warning ("Error saving window state data to “%s”: %s", parse_name, error->message);
-		g_free (parse_name);
-
-		g_error_free (error);
-		goto done;
 	}
-
-done:
-	if (key_file_path != NULL) {
-		g_object_unref (key_file_path);
-	}
-
-	g_free (key_file_data);
 }
 
 static void
 restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMainWindow *self)
 {
-	GKeyFile *key_file = NULL;
-	gchar *key_file_data = NULL;
+	g_autoptr (GKeyFile) key_file = NULL;
+	g_autofree gchar *key_file_data = NULL;
 	gsize key_file_length;
 	gint width = -1, height = -1, x = -1, y = -1;
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 
 	g_file_load_contents_finish (key_file_path, result, &key_file_data, &key_file_length, NULL, &error);
 
 	if (error != NULL) {
 		if (error->code != G_IO_ERROR_NOT_FOUND) {
-			gchar *parse_name = g_file_get_parse_name (key_file_path);
+			g_autofree gchar *parse_name = g_file_get_parse_name (key_file_path);
 			g_warning ("Error loading window state data from “%s”: %s", parse_name, error->message);
-			g_free (parse_name);
 		}
-
-		g_error_free (error);
-		goto done;
+		return;
 	}
 
 	/* Skip loading the key file if it has zero length */
 	if (key_file_length == 0) {
-		goto done;
+		return;
 	}
 
 	/* Load the key file's data into the GKeyFile */
@@ -487,12 +467,9 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 	g_key_file_load_from_data (key_file, key_file_data, key_file_length, G_KEY_FILE_NONE, &error);
 
 	if (error != NULL) {
-		gchar *parse_name = g_file_get_parse_name (key_file_path);
+		g_autofree gchar *parse_name = g_file_get_parse_name (key_file_path);
 		g_warning ("Error loading window state data from “%s”: %s", parse_name, error->message);
-		g_free (parse_name);
-
-		g_error_free (error);
-		goto done;
+		return;
 	}
 
 	/* Load the appropriate keys from the file, ignoring errors */
@@ -539,24 +516,16 @@ restore_window_state_cb (GFile *key_file_path, GAsyncResult *result, AlmanahMain
 	if (g_key_file_get_boolean (key_file, "main-window", "maximized", NULL) == TRUE) {
 		gtk_window_maximize (GTK_WINDOW (self));
 	}
-
-done:
-	g_free (key_file_data);
-
-	if (key_file != NULL) {
-		g_key_file_free (key_file);
-	}
 }
 
 static void
 restore_window_state (AlmanahMainWindow *self)
 {
-	GFile *key_file_path;
+	g_autoptr (GFile) key_file_path = NULL;
 
 	/* Asynchronously load up the state key file */
 	key_file_path = get_window_state_file ();
 	g_file_load_contents_async (key_file_path, NULL, (GAsyncReadyCallback) restore_window_state_cb, self);
-	g_object_unref (key_file_path);
 }
 
 void
@@ -564,7 +533,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 {
 	gboolean entry_exists, existing_entry_is_empty, entry_is_empty;
 	GDate date, last_edited;
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	AlmanahEntryEditability editability;
 
@@ -589,7 +558,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	 * If an entry is being deleted, permission must be given for that as a priority. */
 	if (editability == ALMANAH_ENTRY_FUTURE) {
 		/* Can't edit entries for dates in the future */
-		goto done;
+		return;
 	} else if (editability == ALMANAH_ENTRY_PAST && (existing_entry_is_empty == FALSE || entry_is_empty == FALSE)) {
 		/* Attempting to edit an existing entry in the past */
 		gchar date_string[100];
@@ -597,7 +566,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 
 		/* No-op if we're not allowed to prompt the user. */
 		if (prompt_user == FALSE) {
-			goto done;
+			return;
 		}
 
 		/* Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry. */
@@ -617,7 +586,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled the edit */
 			gtk_widget_destroy (dialog);
-			goto done;
+			return;
 		}
 
 		gtk_widget_destroy (dialog);
@@ -628,7 +597,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 
 		/* No-op if we're not allowed to prompt the user. */
 		if (prompt_user == FALSE) {
-			goto done;
+			return;
 		}
 
 		/* Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry. */
@@ -648,7 +617,7 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled deletion */
 			gtk_widget_destroy (dialog);
-			goto done;
+			return;
 		}
 
 		gtk_widget_destroy (dialog);
@@ -668,9 +637,6 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		/* Since the entry is empty, remove all the events from the treeview */
 		gtk_list_store_clear (priv->event_store);
 	}
-
-done:
-	g_object_unref (storage_manager);
 }
 
 static gboolean
@@ -717,7 +683,7 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 	tag_list = _tag_list;
 	while (tag_list != NULL) {
 		GtkTextTag *tag;
-		gchar *tag_name;
+		g_autofree gchar *tag_name = NULL;
 		const gchar *action_name = NULL;
 
 		tag = GTK_TEXT_TAG (tag_list->data);
@@ -750,8 +716,6 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 			/* Print a warning about the unknown tag */
 			g_warning (_ ("Unknown or duplicate text tag \"%s\" in entry. Ignoring."), tag_name);
 		}
-
-		g_free (tag_name);
 		tag_list = tag_list->next;
 	}
 
@@ -986,7 +950,7 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 	/* Open the hyperlink if it's control-clicked */
 	if (event->type == GDK_BUTTON_RELEASE && event->button.state & GDK_CONTROL_MASK) {
 		const gchar *uri;
-		GError *error = NULL;
+		g_autoptr (GError) error = NULL;
 
 		uri = almanah_hyperlink_tag_get_uri (hyperlink_tag);
 
@@ -1001,8 +965,6 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
-
-			g_error_free (error);
 		}
 
 		return TRUE;
@@ -1044,7 +1006,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 		gtk_widget_show_all (GTK_WIDGET (uri_entry_dialog));
 
 		if (almanah_uri_entry_dialog_run (uri_entry_dialog) == TRUE) {
-			GtkTextTag *tag;
+			g_autoptr (GtkTextTag) tag = NULL;
 			GtkTextTagTable *table;
 
 			/* Create and apply a new anonymous tag */
@@ -1057,9 +1019,6 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 
 			/* Connect up events */
 			g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, self);
-
-			/* The text tag table keeps a reference */
-			g_object_unref (tag);
 
 			/* Case 2 */
 			update_state = TRUE;
@@ -1194,7 +1153,7 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 	GSList *_events, *events;
 	GDate date;
 	guint events_count = 0;
-	gchar *events_text;
+	g_autofree gchar *events_text = NULL;
 
 	almanah_calendar_button_get_date (priv->calendar_button, &date);
 	_events = almanah_event_manager_get_events (event_manager, type_id, &date);
@@ -1206,8 +1165,8 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 
 	for (events = _events; events != NULL; events = g_slist_next (events)) {
 		GtkTreeIter iter;
-		AlmanahEvent *event = events->data;
-		gchar *event_time;
+		g_autoptr (AlmanahEvent) event = events->data;
+		g_autofree gchar *event_time = NULL;
 
 		g_debug ("\t%s", almanah_event_format_value (event));
 
@@ -1224,14 +1183,10 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 		                    -1);
 
 		events_count++;
-
-		g_object_unref (event);
-		g_free (event_time);
 	}
 
 	events_text = g_strdup_printf ("%u", events_count);
 	gtk_label_set_label (priv->events_count_label, events_text);
-	g_free (events_text);
 
 	if (events_count > 0) {
 		gtk_widget_set_sensitive (priv->events_expander, TRUE);
@@ -1249,14 +1204,14 @@ void
 mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *calendar_button, AlmanahMainWindow *main_window)
 {
 	AlmanahApplication *application;
-	AlmanahStorageManager *storage_manager;
-	AlmanahEventManager *event_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
+	g_autoptr (AlmanahEventManager) event_manager = NULL;
 	GDate calendar_date;
 #ifdef ENABLE_SPELL_CHECKING
 	GtkSpellChecker *gtkspell;
 #endif /* ENABLE_SPELL_CHECKING */
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
-	AlmanahEntry *entry;
+	g_autoptr (AlmanahEntry) entry = NULL;
 	GAction *action;
 	gboolean future_entry;
 	const gchar *affected_actions[] = {
@@ -1291,12 +1246,10 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	/* Update the entry */
 	storage_manager = almanah_application_dup_storage_manager (application);
 	entry = almanah_storage_manager_get_entry (storage_manager, &calendar_date);
-	g_object_unref (storage_manager);
 
 	if (entry == NULL)
 		entry = almanah_entry_new (&calendar_date);
 	set_current_entry (main_window, entry);
-	g_object_unref (entry);
 
 	future_entry = almanah_entry_get_editability (priv->current_entry) == ALMANAH_ENTRY_FUTURE;
 	gtk_text_view_set_editable (GTK_TEXT_VIEW (priv->entry_view), !future_entry);
@@ -1311,7 +1264,7 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	gtk_list_store_clear (priv->event_store);
 
 	if (almanah_entry_is_empty (priv->current_entry) == FALSE) {
-		GError *error = NULL;
+		g_autoptr (GError) error = NULL;
 
 		gtk_text_buffer_set_text (GTK_TEXT_BUFFER (priv->entry_buffer), "", 0);
 		if (almanah_entry_get_content (priv->current_entry, GTK_TEXT_BUFFER (priv->entry_buffer), FALSE, &error) == FALSE) {
@@ -1321,8 +1274,6 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
-
-			g_error_free (error);
 
 			/* Make sure the interface is left in a decent state before we return */
 			gtk_text_view_set_editable (GTK_TEXT_VIEW (priv->entry_view), FALSE);
@@ -1349,7 +1300,6 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	/* List the entry's events */
 	event_manager = almanah_application_dup_event_manager (application);
 	almanah_event_manager_query_events (event_manager, ALMANAH_EVENT_FACTORY_UNKNOWN, &calendar_date);
-	g_object_unref (event_manager);
 
 	/* Show the entry tags */
 	almanah_entry_tags_area_set_entry (priv->entry_tags_area, priv->current_entry);
@@ -1383,12 +1333,11 @@ mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *applicat
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);
 	GtkWidget *button, *button_image;
 	GMenu *menu;
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 
 	/* Setup the calendar button */
 	storage_manager = almanah_application_dup_storage_manager (application);
 	priv->calendar_button = ALMANAH_CALENDAR_BUTTON (almanah_calendar_button_new (storage_manager));
-	g_object_unref (storage_manager);
 	g_signal_connect (priv->calendar_button, "day-selected", G_CALLBACK (mw_calendar_day_selected_cb), main_window);
 	g_signal_connect (priv->calendar_button, "select-date-clicked", G_CALLBACK (mw_calendar_select_date_clicked_cb), main_window);
 	gtk_style_context_add_class (gtk_widget_get_style_context (priv->header_bar), "image-button");
@@ -1545,9 +1494,9 @@ font_description_to_css (PangoFontDescription *desc, const gchar *selector)
 static void
 mw_setup_size_text_view (AlmanahMainWindow *self)
 {
-	gchar *font_desc_string = NULL;
+	g_autofree gchar *font_desc_string = NULL;
 	PangoFontDescription *font_desc = NULL;
-	gchar *css_font = NULL;
+	g_autofree gchar *css_font = NULL;
 	int fixed_width;
 
 	g_return_if_fail (ALMANAH_IS_MAIN_WINDOW (self));
@@ -1578,10 +1527,7 @@ mw_setup_size_text_view (AlmanahMainWindow *self)
 	/* The ScrolledWindow (parent container for the text view) must be at
 	   least the new width plus the text view margin */
 	gtk_widget_set_size_request (GTK_WIDGET (priv->entry_view), fixed_width, -1);
-
-	g_free (font_desc_string);
 	pango_font_description_free (font_desc);
-	g_free (css_font);
 }
 
 static int
@@ -1589,7 +1535,7 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 {
 	int width, height;
 	PangoFontDescription *desc;
-	PangoLayout *layout;
+	g_autoptr (PangoLayout) layout = NULL;
 
 	desc = pango_font_description_from_string (font_name);
 	layout = pango_layout_new (gtk_widget_get_pango_context (widget));
@@ -1600,8 +1546,6 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 	pango_layout_set_text (layout, _ ("This is just a fifteen words sentence to calculate the diary entry text view size"), -1);
 
 	pango_layout_get_pixel_size (layout, &width, &height);
-
-	g_object_unref (layout);
 	pango_font_description_free (desc);
 
 	return width;
@@ -1625,7 +1569,7 @@ spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused))
 	g_debug ("spell_checking_enabled_changed_cb called with %u.", enabled);
 
 	if (enabled == TRUE) {
-		GError *error = NULL;
+		g_autoptr (GError) error = NULL;
 
 		enable_spell_checking (self, &error);
 
@@ -1636,8 +1580,6 @@ spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused))
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
 			gtk_dialog_run (GTK_DIALOG (dialog));
 			gtk_widget_destroy (dialog);
-
-			g_error_free (error);
 		}
 	} else {
 		disable_spell_checking (self);
@@ -1649,9 +1591,9 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 {
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	AlmanahApplication *application;
-	GSettings *settings;
+	g_autoptr (GSettings) settings = NULL;
 	GtkSpellChecker *gtkspell;
-	gchar *spelling_language;
+	g_autofree gchar *spelling_language = NULL;
 	GtkTextTagTable *table;
 	GtkTextTag *tag;
 
@@ -1669,7 +1611,6 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (self)));
 	settings = almanah_application_dup_settings (application);
 	spelling_language = g_settings_get_string (settings, "spelling-language");
-	g_object_unref (settings);
 
 	/* Make sure it's either NULL or a proper locale specifier */
 	if (spelling_language != NULL && spelling_language[0] == '\0') {
@@ -1679,7 +1620,6 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 	gtkspell = gtk_spell_checker_new ();
 	gtk_spell_checker_set_language (gtkspell, spelling_language, error);
 	gtk_spell_checker_attach (gtkspell, GTK_TEXT_VIEW (priv->entry_view));
-	g_free (spelling_language);
 
 	if (gtkspell == NULL)
 		return FALSE;

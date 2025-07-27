@@ -502,19 +502,17 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 static gchar *
 get_encryption_key (AlmanahSQLiteVFS *self)
 {
-	gchar *encryption_key;
+	g_autofree gchar *encryption_key = NULL;
 	gchar **key_parts;
 	guint i;
 
 	encryption_key = g_settings_get_string (self->settings, "encryption-key");
 	if (encryption_key == NULL || encryption_key[0] == '\0') {
-		g_free (encryption_key);
 		return NULL;
 	}
 
 	/* Key is generally in the form openpgp:FOOBARKEY, and GPGME doesn't like the openpgp: prefix, so it must be removed. */
 	key_parts = g_strsplit (encryption_key, ":", 2);
-	g_free (encryption_key);
 
 	for (i = 0; key_parts[i] != NULL; i++) {
 		if (strcmp (key_parts[i], "openpgp") != 0)
@@ -529,8 +527,9 @@ static gboolean
 back_up_file (const gchar *filename)
 {
 	GError *error = NULL;
-	GFile *original_file, *backup_file;
-	gchar *backup_filename;
+	g_autoptr (GFile) original_file = NULL;
+	g_autoptr (GFile) backup_file = NULL;
+	g_autofree gchar *backup_filename = NULL;
 	gboolean retval = TRUE;
 
 	/* Make a backup of the encrypted database file */
@@ -549,10 +548,6 @@ back_up_file (const gchar *filename)
 		g_warning (_ ("Error changing database backup file permissions: %s"), g_strerror (errno));
 		retval = FALSE;
 	}
-
-	g_free (backup_filename);
-	g_object_unref (original_file);
-	g_object_unref (backup_file);
 
 	return retval;
 }
@@ -660,7 +655,7 @@ static int
 almanah_vfs_io_close (sqlite3_file *pFile)
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS *) pFile;
-	gchar *encryption_key;
+	g_autofree gchar *encryption_key = NULL;
 	GError *child_error = NULL;
 	int rc;
 
@@ -668,8 +663,8 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 	if (encryption_key == NULL) {
 		if (self->decrypted) {
 			/* Save the data from memory to plain file */
-			GFile *plain_file;
-			GFileOutputStream *plain_output_stream;
+			g_autoptr (GFile) plain_file = NULL;
+			g_autoptr (GFileOutputStream) plain_output_stream = NULL;
 			gsize bytes_written;
 
 			plain_file = g_file_new_for_path (self->plain_filename);
@@ -679,7 +674,6 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 			                                     &child_error);
 			if (child_error != NULL) {
 				g_warning ("Error opening plain file %s: %s", self->plain_filename, child_error->message);
-				g_object_unref (plain_file);
 				return SQLITE_IOERR;
 			}
 
@@ -690,30 +684,21 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 			                               NULL,
 			                               &child_error) == FALSE) {
 				g_warning ("Error writing data to plain file %s: %s", self->plain_filename, child_error->message);
-				g_object_unref (plain_file);
-				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
 				return SQLITE_IOERR;
 			}
 
 			if (bytes_written != self->plain_size) {
 				g_warning ("Error writing data to plain file %s: %s", self->plain_filename, "Not all the data has been written to the file");
-				g_object_unref (plain_file);
-				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
 				return SQLITE_IOERR;
 			}
 
 			if (g_output_stream_close (G_OUTPUT_STREAM (plain_output_stream), NULL, &child_error) == FALSE) {
 				g_warning ("Error closing the plain file %s: %s", self->plain_filename, child_error->message);
-				g_object_unref (plain_file);
-				g_object_unref (plain_output_stream);
 				g_unlink (self->plain_filename);
 				return SQLITE_IOERR;
 			}
-
-			g_object_unref (plain_file);
-			g_object_unref (plain_output_stream);
 			g_unlink (self->encrypted_filename);
 
 			rc = SQLITE_OK;
@@ -746,7 +731,6 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 
 			g_unlink (self->plain_filename);
 
-			g_free (encryption_key);
 			rc = SQLITE_OK;
 		}
 	}
@@ -1012,7 +996,7 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 	int oflags = 0;
 	char *aBuf = NULL;
 	struct stat encrypted_db_stat, plaintext_db_stat;
-	GError *child_error = NULL;
+	g_autoptr (GError) child_error = NULL;
 
 	if (zName == 0) {
 		return SQLITE_IOERR;
@@ -1063,8 +1047,6 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 						g_free (self->encrypted_filename);
 						return SQLITE_IOERR;
 					}
-
-					g_error_free (child_error);
 				} else
 					self->decrypted = TRUE;
 			}

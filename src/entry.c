@@ -272,7 +272,7 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gbool
 		case DATA_FORMAT_PLAIN_TEXT__GTK_TEXT_BUFFER: {
 			GdkAtom format_atom;
 			GtkTextIter start_iter;
-			GError *deserialise_error = NULL;
+			g_autoptr (GError) deserialise_error = NULL;
 
 			format_atom = gtk_text_buffer_register_deserialize_tagset (text_buffer, PACKAGE_NAME);
 			gtk_text_buffer_deserialize_set_can_create_tags (text_buffer, format_atom, create_tags);
@@ -287,7 +287,6 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gbool
 				/* Since that failed, check the data's in the old format, and try to just load it as text */
 				if (g_strcmp0 ((gchar *) priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
 					gtk_text_buffer_set_text (text_buffer, (gchar *) priv->data, priv->length);
-					g_error_free (deserialise_error);
 					return TRUE;
 				}
 
@@ -463,7 +462,7 @@ find_list_delta (GSList *old_list,
 static const gchar *
 get_text_tag_element_name (GtkTextTag *tag)
 {
-	gchar *name;
+	g_autofree gchar *name = NULL;
 	const gchar *element_name = NULL;
 
 	if (ALMANAH_IS_HYPERLINK_TAG (tag)) {
@@ -485,8 +484,6 @@ get_text_tag_element_name (GtkTextTag *tag)
 	} else if (strcmp (name, "underline") == 0) {
 		element_name = "underline";
 	}
-
-	g_free (name);
 
 	return element_name;
 }
@@ -513,19 +510,19 @@ serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_
 
 	for (old_iter = iter = *start; gtk_text_iter_compare (&iter, end) <= 0; old_iter = iter, gtk_text_iter_forward_to_tag_toggle (&iter, NULL)) {
 		GSList *new_tag_list;
-		GList *added, *removed;
+		g_autoptr (GList) added = NULL;
+		g_autoptr (GList) removed = NULL;
 		const GList *i;
 
 		/* Append the text */
 		if (!gtk_text_iter_equal (&old_iter, &iter)) {
-			gchar *text, *escaped_text;
+			g_autofree gchar *text = NULL;
+			g_autofree gchar *escaped_text = NULL;
 
 			text = gtk_text_iter_get_slice (&old_iter, &iter);
 			escaped_text = g_markup_escape_text (text, -1);
-			g_free (text);
 
 			g_string_append (markup, escaped_text);
-			g_free (escaped_text);
 		}
 
 		/* Calculate which tags have been opened and closed */
@@ -593,22 +590,18 @@ serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_
 			g_string_append (markup, element_name);
 
 			if (ALMANAH_IS_HYPERLINK_TAG (tag)) {
-				gchar *escaped_uri;
+				g_autofree gchar *escaped_uri = NULL;
 
 				escaped_uri = g_markup_escape_text (almanah_hyperlink_tag_get_uri (ALMANAH_HYPERLINK_TAG (tag)), -1);
 				g_string_append (markup, " uri=\"");
 				g_string_append (markup, escaped_uri);
 				g_string_append_c (markup, '"');
-				g_free (escaped_uri);
 			}
 
 			g_string_append_c (markup, '>');
 
 			active_tags = g_slist_prepend (active_tags, tag);
 		}
-
-		g_list_free (added);
-		g_list_free (removed);
 
 		/* Swap the new and old tag lists */
 		g_slist_free (old_tag_list);
@@ -666,7 +659,7 @@ start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name,
 		return;
 	} else {
 		GtkTextTagTable *table;
-		GtkTextTag *tag = NULL;
+		g_autoptr (GtkTextTag) tag = NULL;
 
 		if (!deserialise_context->in_entry) {
 			g_set_error_literal (error, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "An <entry> element must be at the top level.");
@@ -699,7 +692,6 @@ start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name,
 			/* Create the tag and register it in the tag table */
 			tag = GTK_TEXT_TAG (almanah_hyperlink_tag_new (uri));
 			gtk_text_tag_table_add (table, tag);
-			g_object_unref (tag); /* the tag table keeps a reference */
 		}
 
 		/* Ignore unrecognised tags (which can happen when searching, for example). */

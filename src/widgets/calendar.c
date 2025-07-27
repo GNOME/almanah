@@ -136,7 +136,7 @@ almanah_calendar_month_changed (GtkCalendar *calendar)
 {
 	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (ALMANAH_CALENDAR (calendar));
 	guint i, year, month, num_days;
-	gboolean *days;
+	g_autofree gboolean *days = NULL;
 
 	/* Mark the days on the calendar which have diary entries */
 	gtk_calendar_get_date (calendar, &year, &month, NULL);
@@ -150,8 +150,6 @@ almanah_calendar_month_changed (GtkCalendar *calendar)
 		else
 			gtk_calendar_unmark_day (calendar, i + 1);
 	}
-
-	g_free (days);
 
 	/* Cache the days which are important, so that the detail function isn't hideously slow */
 	g_free (priv->important_days);

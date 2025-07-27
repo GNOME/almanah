@@ -599,14 +599,13 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	switch (sqlite3_step (statement)) {
 		case SQLITE_ROW: {
 			GtkTextIter text_iter;
-			AlmanahEntry *entry = build_entry_from_statement (statement);
+			g_autoptr (AlmanahEntry) entry = build_entry_from_statement (statement);
 			const gchar *tags = (const gchar *) sqlite3_column_text (statement, 9);
 
 			/* Deserialise the entry into our buffer */
 			gtk_text_buffer_set_text (text_buffer, "", 0);
 			if (almanah_entry_get_content (entry, text_buffer, TRUE, NULL) == FALSE) {
 				/* Error: return the next entry instead */
-				g_object_unref (entry);
 				g_warning (_ ("Error deserializing entry into buffer while searching."));
 				return almanah_storage_manager_search_entries (self, NULL, iter);
 			}
@@ -623,8 +622,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 				return entry;
 			}
 
-			/* Free stuff up and return the next match instead */
-			g_object_unref (entry);
+			/* Return the next match instead */
 			return almanah_storage_manager_search_entries (self, NULL, iter);
 		}
 		case SQLITE_DONE:
@@ -877,7 +875,7 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	sqlite3_stmt *statement;
 	gint i, result;
-	gboolean *days;
+	g_autofree gboolean *days = NULL;
 
 	/* Build the result array */
 	i = g_date_get_days_in_month (month, year);
@@ -887,7 +885,6 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 
 	/* Prepare and run the query */
 	if (sqlite3_prepare_v2 (priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ?", -1, &statement, NULL) != SQLITE_OK) {
-		g_free (days);
 		return NULL;
 	}
 
@@ -902,7 +899,6 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 
 	if (result != SQLITE_DONE) {
 		/* Error */
-		g_free (days);
 		return NULL;
 	}
 
@@ -916,7 +912,7 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 	sqlite3_stmt *statement;
 	gint i, result;
-	gboolean *days;
+	g_autofree gboolean *days = NULL;
 
 	/* Build the result array */
 	i = g_date_get_days_in_month (month, year);
@@ -927,7 +923,6 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 	/* Prepare and run the query */
 	if (sqlite3_prepare_v2 (priv->connection, "SELECT day FROM entries WHERE year = ? AND month = ? AND is_important = 1", -1,
 	                        &statement, NULL) != SQLITE_OK) {
-		g_free (days);
 		return NULL;
 	}
 
@@ -942,7 +937,6 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 
 	if (result != SQLITE_DONE) {
 		/* Error */
-		g_free (days);
 		return NULL;
 	}
 

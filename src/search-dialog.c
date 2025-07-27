@@ -222,14 +222,12 @@ sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, A
 		gtk_label_set_text (priv->sd_results_label, _ ("Search canceled."));
 	} else if (error != NULL) {
 		/* Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message. */
-		gchar *error_message = g_strdup_printf (_ ("Error: %s"), error->message);
+		g_autofree gchar *error_message = g_strdup_printf (_ ("Error: %s"), error->message);
 		gtk_label_set_text (priv->sd_results_label, error_message);
-		g_free (error_message);
 	} else {
 		/* Success! */
-		gchar *results_string = g_strdup_printf (g_dngettext (GETTEXT_PACKAGE, "Found %d entry:", "Found %d entries:", counter), counter);
+		g_autofree gchar *results_string = g_strdup_printf (g_dngettext (GETTEXT_PACKAGE, "Found %d entry:", "Found %d entries:", counter), counter);
 		gtk_label_set_text (priv->sd_results_label, results_string);
-		g_free (results_string);
 	}
 
 	g_clear_error (&error);
@@ -257,7 +255,7 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 {
 	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
 	AlmanahApplication *application;
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 	const gchar *search_string;
 	AlmanahSearchDialog **search_dialog_weak_pointer;
 
@@ -298,8 +296,6 @@ sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	gtk_widget_set_sensitive (priv->sd_search_button, FALSE);
 	gtk_widget_set_sensitive (priv->sd_cancel_button, TRUE);
 	gtk_widget_grab_default (priv->sd_cancel_button);
-
-	g_object_unref (storage_manager);
 }
 
 static void

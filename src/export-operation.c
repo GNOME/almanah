@@ -179,7 +179,7 @@ progress_idle_callback_cb (ProgressData *data)
 static void
 progress_idle_callback (AlmanahExportProgressCallback callback, gpointer user_data, const GDate *date)
 {
-	GSource *source;
+	g_autoptr (GSource) source = NULL;
 	ProgressData *data;
 
 	data = g_new (ProgressData, 1);
@@ -195,8 +195,6 @@ progress_idle_callback (AlmanahExportProgressCallback callback, gpointer user_da
 
 	g_source_set_callback (source, (GSourceFunc) progress_idle_callback_cb, data, NULL);
 	g_source_attach (source, NULL);
-
-	g_source_unref (source);
 }
 
 static gboolean
@@ -204,8 +202,7 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 {
 	AlmanahStorageManagerIter iter;
 	AlmanahEntry *entry_temp;
-	GtkTextBuffer *buffer;
-	gboolean success = FALSE;
+	g_autoptr (GtkTextBuffer) buffer = NULL;
 	GError *child_error = NULL;
 	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private (self);
 
@@ -217,20 +214,20 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 	while ((entry_temp = almanah_storage_manager_get_entries (priv->storage_manager, &iter)) != NULL) {
 		g_autoptr (AlmanahEntry) entry = g_steal_pointer (&entry_temp);
 		GDate date;
-		gchar *filename, *content, *path;
-		GFile *file;
+		g_autofree gchar *filename = NULL;
+		g_autofree gchar *content = NULL;
+		g_autofree gchar *path = NULL;
+		g_autoptr (GFile) file = NULL;
 		GtkTextIter start_iter, end_iter;
 
 		/* Get the filename */
 		almanah_entry_get_date (entry, &date);
 		filename = g_strdup_printf ("%04u-%02u-%02u", g_date_get_year (&date), g_date_get_month (&date), g_date_get_day (&date));
 		file = g_file_get_child (destination, filename);
-		g_free (filename);
 
 		/* Get the entry contents */
 		if (almanah_entry_get_content (entry, buffer, TRUE, &child_error) == FALSE) {
 			/* Error */
-			g_object_unref (file);
 			break;
 		}
 
@@ -241,12 +238,8 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 		if (g_file_replace_contents (file, content, strlen (content), NULL, FALSE,
 		                             G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION, NULL, NULL, &child_error) == FALSE) {
 			/* Error */
-			g_object_unref (file);
-			g_free (content);
 			break;
 		}
-
-		g_free (content);
 
 		/* Ensure the file is only readable to the current user. */
 		path = g_file_get_path (file);
@@ -255,14 +248,8 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 			             _ ("Error changing exported file permissions: %s"),
 			             g_strerror (errno));
 
-			g_object_unref (file);
-			g_free (path);
-
 			break;
 		}
-
-		g_object_unref (file);
-		g_free (path);
 
 		/* Progress callback */
 		progress_idle_callback (progress_callback, progress_user_data, &date);
@@ -278,23 +265,18 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 	/* Check if the loop was broken due to an error */
 	if (child_error != NULL) {
 		g_propagate_error (error, child_error);
-		goto finish;
+		return FALSE;
 	}
 
-	success = TRUE;
-
-finish:
-	g_object_unref (buffer);
-
-	return success;
+	return TRUE;
 }
 
 static gboolean
 export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
-	GFile *source;
+	g_autoptr (GFile) source = NULL;
 	gboolean success;
-	gchar *destination_path;
+	g_autofree gchar *destination_path = NULL;
 	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private (self);
 
 	/* We ignore the progress callbacks, since this is a fairly fast operation, and it exports all the entries at once. */
@@ -313,9 +295,6 @@ export_database (AlmanahExportOperation *self, GFile *destination, AlmanahExport
 		             g_strerror (errno));
 		success = FALSE;
 	}
-
-	g_free (destination_path);
-	g_object_unref (source);
 
 	return success;
 }

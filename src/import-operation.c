@@ -180,7 +180,7 @@ progress_idle_callback_cb (ProgressData *data)
 static void
 progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_data, const GDate *date, AlmanahImportStatus status, const gchar *message)
 {
-	GSource *source;
+	g_autoptr (GSource) source = NULL;
 	ProgressData *data;
 
 	data = g_new (ProgressData, 1);
@@ -198,8 +198,6 @@ progress_idle_callback (AlmanahImportProgressCallback callback, gpointer user_da
 
 	g_source_set_callback (source, (GSourceFunc) progress_idle_callback_cb, data, NULL);
 	g_source_attach (source, NULL);
-
-	g_source_unref (source);
 }
 
 /**
@@ -225,11 +223,12 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 {
 	AlmanahImportOperationPrivate *priv = almanah_import_operation_get_instance_private (self);
 	GDate entry_date, existing_last_edited, imported_last_edited;
-	AlmanahEntry *existing_entry;
-	GtkTextBuffer *existing_buffer, *imported_buffer;
+	g_autoptr (AlmanahEntry) existing_entry = NULL;
+	g_autoptr (GtkTextBuffer) existing_buffer = NULL;
+	g_autoptr (GtkTextBuffer) imported_buffer = NULL;
 	GtkTextIter existing_start, existing_end, imported_start, imported_end;
-	gchar *header_string;
-	GError *error = NULL;
+	g_autofree gchar *header_string = NULL;
+	g_autoptr (GError) error = NULL;
 
 	/* Check to see if there's a conflict first */
 	almanah_entry_get_date (imported_entry, &entry_date);
@@ -248,10 +247,6 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 		if (message != NULL)
 			*message = g_strdup_printf (_ ("Error deserializing imported entry into buffer: %s"), (error != NULL) ? error->message : NULL);
 
-		g_error_free (error);
-		g_object_unref (imported_buffer);
-		g_object_unref (existing_entry);
-
 		return ALMANAH_IMPORT_STATUS_FAILED;
 	}
 
@@ -266,11 +261,6 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 			                            (error != NULL) ? error->message : NULL);
 		}
 
-		g_error_free (error);
-		g_object_unref (imported_buffer);
-		g_object_unref (existing_buffer);
-		g_object_unref (existing_entry);
-
 		return ALMANAH_IMPORT_STATUS_IMPORTED;
 	}
 
@@ -281,23 +271,16 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	/* Compare the two buffers --- if they're identical, leave the current entry alone and mark the entries as merged.
 	 * Compare the character counts first so that the comparison is less expensive in the case they aren't identical .*/
 	if (gtk_text_buffer_get_char_count (existing_buffer) == gtk_text_buffer_get_char_count (imported_buffer)) {
-		gchar *existing_text, *imported_text;
+		g_autofree gchar *existing_text = NULL;
+		g_autofree gchar *imported_text = NULL;
 
 		existing_text = gtk_text_buffer_get_text (existing_buffer, &existing_start, &existing_end, FALSE);
 		imported_text = gtk_text_buffer_get_text (imported_buffer, &imported_start, &imported_end, FALSE);
 
 		/* If they're the same, no modifications are required */
 		if (strcmp (existing_text, imported_text) == 0) {
-			g_free (existing_text);
-			g_free (imported_text);
-			g_object_unref (imported_buffer);
-			g_object_unref (existing_buffer);
-			g_object_unref (existing_entry);
 			return ALMANAH_IMPORT_STATUS_MERGED;
 		}
-
-		g_free (existing_text);
-		g_free (imported_text);
 	}
 
 	/* Append some header text for the imported entry */
@@ -305,15 +288,12 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	 * The imported entry is appended to this text. */
 	header_string = g_strdup_printf (_ ("\n\nEntry imported from \"%s\":\n\n"), import_source);
 	gtk_text_buffer_insert (existing_buffer, &existing_end, header_string, -1);
-	g_free (header_string);
 
 	/* Append the imported entry to the end of the existing one */
 	gtk_text_buffer_insert_range (existing_buffer, &existing_end, &imported_start, &imported_end);
-	g_object_unref (imported_buffer);
 
 	/* Store the buffer back in the existing entry and save the entry */
 	almanah_entry_set_content (existing_entry, existing_buffer);
-	g_object_unref (existing_buffer);
 
 	/* Update the last-edited time for the merged entry to be the more recent of the last-edited times for the existing and imported entries */
 	almanah_entry_get_last_edited (existing_entry, &existing_last_edited);
@@ -325,7 +305,6 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	}
 
 	almanah_storage_manager_set_entry (priv->storage_manager, existing_entry);
-	g_object_unref (existing_entry);
 
 	return ALMANAH_IMPORT_STATUS_MERGED;
 }
@@ -333,10 +312,9 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 static gboolean
 import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
-	gboolean retval = FALSE;
 	GFileInfo *file_info_temp;
-	GFileEnumerator *enumerator;
-	GtkTextBuffer *buffer;
+	g_autoptr (GFileEnumerator) enumerator = NULL;
+	g_autoptr (GtkTextBuffer) buffer = NULL;
 	GError *child_error = NULL;
 
 	enumerator = g_file_enumerate_children (source, "standard::name,standard::display-name,standard::is-hidden,time::modified",
@@ -350,11 +328,12 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 	/* Enumerate all the children of the folder */
 	while ((file_info_temp = g_file_enumerator_next_file (enumerator, NULL, &child_error)) != NULL) {
 		g_autoptr (GFileInfo) file_info = g_steal_pointer (&file_info_temp);
-		AlmanahEntry *entry;
+		g_autoptr (AlmanahEntry) entry = NULL;
 		GDate parsed_date, last_edited;
 		g_autoptr (GDateTime) modification_date_time = NULL;
-		GFile *file;
-		gchar *contents, *message = NULL;
+		g_autoptr (GFile) file = NULL;
+		g_autofree gchar *contents = NULL;
+		g_autofree gchar *message = NULL;
 		gsize length;
 		AlmanahImportStatus status;
 		const gchar *file_name = g_file_info_get_name (file_info);
@@ -377,10 +356,8 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 
 		/* Load the content */
 		if (g_file_load_contents (file, NULL, &contents, &length, NULL, &child_error) == FALSE) {
-			g_object_unref (file);
 			break; /* let the error get handled by the code just after the loop */
 		}
-		g_object_unref (file);
 
 		/* Create the relevant entry */
 		entry = almanah_entry_new (&parsed_date);
@@ -388,7 +365,6 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 		/* Set the content on the entry */
 		gtk_text_buffer_set_text (buffer, contents, length);
 		almanah_entry_set_content (entry, buffer);
-		g_free (contents);
 
 		/* Set the entry's last-edited date */
 		modification_date_time = g_file_info_get_modification_date_time (file_info);
@@ -402,9 +378,6 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 		/* Store the entry */
 		status = set_entry (self, entry, display_name, &message);
 		progress_idle_callback (progress_callback, progress_user_data, &parsed_date, status, message);
-		g_free (message);
-
-		g_object_unref (entry);
 
 		/* Check for cancellation */
 		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
@@ -414,30 +387,23 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 	/* Check if the loop was broken due to an error */
 	if (child_error != NULL) {
 		g_propagate_error (error, child_error);
-		goto finish;
+		return FALSE;
 	}
 
-	/* Success! */
-	retval = TRUE;
-
-finish:
-	g_object_unref (enumerator);
-	g_object_unref (buffer);
-
-	return retval;
+	return TRUE;
 }
 
 static gboolean
 import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgressCallback progress_callback, gpointer progress_user_data, GCancellable *cancellable, GError **error)
 {
 	g_autoptr (GFileInfo) file_info = NULL;
-	gchar *path;
+	g_autofree gchar *path = NULL;
 	const gchar *display_name;
 	AlmanahEntry *entry_temp;
-	AlmanahStorageManager *database;
+	g_autoptr (AlmanahStorageManager) database = NULL;
 	AlmanahStorageManagerIter iter;
 	gboolean success = FALSE;
-	GSettings *settings;
+	g_autoptr (GSettings) settings = NULL;
 
 	/* Get the display name for use with set_entry(), below */
 	file_info = g_file_query_info (source, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NONE, cancellable, error);
@@ -450,12 +416,9 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 	path = g_file_get_path (source);
 	settings = g_settings_new ("org.gnome.almanah");
 	database = almanah_storage_manager_new (path, settings);
-	g_object_unref (settings);
-	g_free (path);
 
 	/* Connect to the database */
 	if (almanah_storage_manager_connect (database, error) == FALSE) {
-		g_object_unref (database);
 		return FALSE;
 	}
 
@@ -464,14 +427,13 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 	while ((entry_temp = almanah_storage_manager_get_entries (database, &iter)) != NULL) {
 		g_autoptr (AlmanahEntry) entry = g_steal_pointer (&entry_temp);
 		GDate date;
-		gchar *message = NULL;
+		g_autofree gchar *message = NULL;
 		AlmanahImportStatus status;
 
 		almanah_entry_get_date (entry, &date);
 
 		status = set_entry (self, entry, display_name, &message);
 		progress_idle_callback (progress_callback, progress_user_data, &date, status, message);
-		g_free (message);
 
 		/* Check for cancellation */
 		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, error) == TRUE)
@@ -483,7 +445,6 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 
 finish:
 	almanah_storage_manager_disconnect (database, NULL);
-	g_object_unref (database);
 
 	return success;
 }

@@ -243,9 +243,9 @@ static void
 startup (GApplication *application)
 {
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (ALMANAH_APPLICATION (application));
-	gchar *db_filename;
+	g_autofree gchar *db_filename = NULL;
 	GError *error = NULL;
-	GtkCssProvider *style_provider;
+	g_autoptr (GtkCssProvider) style_provider = NULL;
 
 	/* Chain up. */
 	G_APPLICATION_CLASS (almanah_application_parent_class)->startup (application);
@@ -264,7 +264,6 @@ startup (GApplication *application)
 	/* Open the DB */
 	db_filename = g_build_filename (g_get_user_data_dir (), "diary.db", NULL);
 	priv->storage_manager = almanah_storage_manager_new (db_filename, priv->settings);
-	g_free (db_filename);
 
 	if (almanah_storage_manager_connect (priv->storage_manager, &error) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
@@ -298,7 +297,6 @@ startup (GApplication *application)
 	g_signal_connect (G_OBJECT (style_provider), "parsing-error", G_CALLBACK (almanah_application_style_provider_parsing_error_cb), NULL);
 	gtk_css_provider_load_from_resource (style_provider, "/org/gnome/Almanah/css/almanah.css");
 	gtk_style_context_add_provider_for_screen (gdk_screen_get_default (), GTK_STYLE_PROVIDER (style_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	g_object_unref (style_provider);
 
 	/* Shortcuts */
 	add_accelerator (GTK_APPLICATION (application), "app.quit", "<Primary>Q");
@@ -411,12 +409,11 @@ action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user
 {
 	AlmanahApplication *application = ALMANAH_APPLICATION (user_data);
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (application);
-	GSettings *settings;
+	g_autoptr (GSettings) settings = NULL;
 	AlmanahPreferencesDialog *dialog;
 	settings = almanah_application_dup_settings (application);
 	dialog = almanah_preferences_dialog_new (settings);
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
-	g_object_unref (settings);
 
 	gtk_widget_show_all (GTK_WIDGET (dialog));
 	gtk_dialog_run (GTK_DIALOG (dialog));
@@ -429,12 +426,11 @@ action_import_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 {
 	AlmanahApplication *application = ALMANAH_APPLICATION (user_data);
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (application);
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 	GtkWidget *dialog;
 
 	storage_manager = almanah_application_dup_storage_manager (application);
 	dialog = GTK_WIDGET (almanah_import_export_dialog_new (storage_manager, TRUE));
-	g_object_unref (storage_manager);
 
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
@@ -448,12 +444,11 @@ action_export_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 {
 	AlmanahApplication *application = ALMANAH_APPLICATION (user_data);
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (application);
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 	GtkWidget *dialog;
 
 	storage_manager = almanah_application_dup_storage_manager (application);
 	dialog = GTK_WIDGET (almanah_import_export_dialog_new (storage_manager, FALSE));
-	g_object_unref (storage_manager);
 
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
@@ -467,11 +462,10 @@ action_print_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahApplication *application = ALMANAH_APPLICATION (user_data);
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (application);
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 
 	storage_manager = almanah_application_dup_storage_manager (application);
 	almanah_print_entries (FALSE, GTK_WINDOW (priv->main_window), &(priv->page_setup), &(priv->print_settings), storage_manager);
-	g_object_unref (storage_manager);
 }
 
 static void
@@ -479,7 +473,7 @@ action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahApplication *application = ALMANAH_APPLICATION (user_data);
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (application);
-	AlmanahStorageManager *storage_manager;
+	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 	gchar *license, *description;
 	guint entry_count;
 
@@ -508,7 +502,6 @@ action_about_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 
 	storage_manager = almanah_application_dup_storage_manager (application);
 	almanah_storage_manager_get_statistics (storage_manager, &entry_count);
-	g_object_unref (storage_manager);
 
 	description = g_strdup_printf (_ ("A helpful diary keeper, storing %u entries."), entry_count);
 

@@ -83,21 +83,19 @@ get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
 		              NULL);
 
 		if (bg_set) {
-			GdkRGBA *color = NULL;
+			g_autoptr (GdkRGBA) color = NULL;
 			if (bg)
 				pango_attribute_destroy (bg);
 			g_object_get (tag, "background-rgba", &color, NULL);
 			bg = pango_attr_background_new (color->red, color->green, color->blue);
-			gdk_rgba_free (color);
 		}
 
 		if (fg_set) {
-			GdkRGBA *color = NULL;
+			g_autoptr (GdkRGBA) color = NULL;
 			if (fg)
 				pango_attribute_destroy (fg);
 			g_object_get (tag, "foreground-rgba", &color, NULL);
 			fg = pango_attr_foreground_new (color->red, color->green, color->blue);
-			gdk_rgba_free (color);
 		}
 
 		if (style_set) {
@@ -179,7 +177,7 @@ is_empty_line (const gchar *text)
 static void
 lay_out_entry (PangoLayout *layout, GtkTextIter *start, GtkTextIter *end)
 {
-	gchar *text;
+	g_autofree gchar *text = NULL;
 	PangoAttrList *attr_list = NULL;
 	GtkTextIter segm_start, segm_end;
 	int start_index;
@@ -192,12 +190,10 @@ lay_out_entry (PangoLayout *layout, GtkTextIter *start, GtkTextIter *end)
 	 * works :-) */
 	if (gtk_text_iter_ends_line (start) || is_empty_line (text)) {
 		pango_layout_set_text (layout, " ", 1);
-		g_free (text);
 		return;
 	}
 
 	pango_layout_set_text (layout, text, -1);
-	g_free (text);
 
 	segm_start = *start;
 	start_index = gtk_text_iter_get_line_index (start);
@@ -240,7 +236,7 @@ lay_out_entry (PangoLayout *layout, GtkTextIter *start, GtkTextIter *end)
 static gboolean
 print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrintOperation *almanah_operation)
 {
-	AlmanahEntry *entry;
+	g_autoptr (AlmanahEntry) entry = NULL;
 	gchar title[100], *markup;
 	PangoLayout *title_layout = NULL, *important_layout = NULL, *entry_layout;
 	PangoLayoutLine *entry_line;
@@ -304,9 +300,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 			lay_out_entry (entry_layout, &start, &end);
 		}
 	}
-
-	if (entry != NULL)
-		g_object_unref (entry);
 
 	/* Check we're not orphaning things */
 	entry_line = pango_layout_get_line_readonly (entry_layout, MIN ((guint) pango_layout_get_line_count (entry_layout) - 1, almanah_operation->current_line + MAX_ORPHANS));
@@ -517,7 +510,7 @@ custom_widget_apply_cb (GtkPrintOperation *operation, GtkWidget *widget, Almanah
 void
 almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPageSetup **page_setup, GtkPrintSettings **print_settings, AlmanahStorageManager *storage_manager)
 {
-	GtkPrintOperation *operation;
+	g_autoptr (GtkPrintOperation) operation = NULL;
 	GtkPrintOperationResult res;
 	AlmanahPrintOperation almanah_operation;
 
@@ -573,5 +566,4 @@ almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPage
 		g_date_free (almanah_operation.start_date);
 		g_date_free (almanah_operation.end_date);
 	}
-	g_object_unref (operation);
 }
