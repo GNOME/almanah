@@ -585,7 +585,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 		}
 
 		/* Set up persistent data for the operation */
-		data = g_slice_new (SearchData);
+		data = g_new (SearchData, 1);
 		data->text_buffer = gtk_text_buffer_new (NULL);
 		data->search_string = g_strdup (search_string);
 		iter->user_data = data;
@@ -640,7 +640,7 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 			iter->statement = NULL;
 			g_object_unref (((SearchData *) iter->user_data)->text_buffer);
 			g_free (((SearchData *) iter->user_data)->search_string);
-			g_slice_free (SearchData, iter->user_data);
+			g_free (iter->user_data);
 			iter->user_data = NULL;
 			iter->finished = TRUE;
 
@@ -664,7 +664,7 @@ search_async_data_free (SearchAsyncData *data)
 {
 	g_free (data->search_string);
 
-	g_slice_free (SearchAsyncData, data);
+	g_free (data);
 }
 
 typedef struct {
@@ -680,7 +680,7 @@ progress_callback_data_free (ProgressCallbackData *data)
 	g_object_unref (data->entry);
 	g_object_unref (data->storage_manager);
 
-	g_slice_free (ProgressCallbackData, data);
+	g_free (data);
 }
 
 static gboolean
@@ -711,7 +711,7 @@ search_entries_async_thread (GTask *task, AlmanahStorageManager *storage_manager
 		search_data->count++;
 
 		/* Queue a progress callback for the task */
-		progress_data = g_slice_new (ProgressCallbackData);
+		progress_data = g_new (ProgressCallbackData, 1);
 		progress_data->callback = search_data->progress_callback;
 		progress_data->storage_manager = g_object_ref (storage_manager);
 		progress_data->entry = g_object_ref (entry);
@@ -797,7 +797,7 @@ almanah_storage_manager_search_entries_async (AlmanahStorageManager *self, const
 	task = g_task_new (G_OBJECT (self), cancellable, callback, user_data);
 	g_task_set_source_tag (task, almanah_storage_manager_search_entries_async);
 
-	search_data = g_slice_new (SearchAsyncData);
+	search_data = g_new (SearchAsyncData, 1);
 	search_data->search_string = g_strdup (search_string);
 	search_data->progress_callback = progress_callback;
 	search_data->progress_user_data = progress_user_data;
