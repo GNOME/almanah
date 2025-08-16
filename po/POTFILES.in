@@ -23,7 +23,6 @@ src/uri-entry-dialog.c
 src/vfs.c
 src/widgets/calendar-button.c
 src/widgets/calendar.c
-src/widgets/eggwrapbox.c
 src/widgets/entry-tags-area.c
 src/widgets/tag-accessible.c
 src/widgets/tag.c
