@@ -520,7 +520,7 @@ get_encryption_key (AlmanahSQLiteVFS *self)
 	}
 	g_strfreev (key_parts);
 
-	return encryption_key;
+	return g_steal_pointer (&encryption_key);
 }
 
 static gboolean

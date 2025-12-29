@@ -1886,7 +1886,7 @@ e_source_selector_ref_primary_selection (ESourceSelector *selector)
 		return NULL;
 	}
 
-	return source;
+	return g_steal_pointer(&source);
 }
 
 /**
