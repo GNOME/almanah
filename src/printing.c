@@ -289,7 +289,7 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 	pango_layout_set_ellipsize (entry_layout, PANGO_ELLIPSIZE_NONE);
 
 	if (entry == NULL || almanah_entry_is_empty (entry)) {
-		gchar *entry_text = g_strdup_printf ("<i>%s</i>", _ ("No entry for this date."));
+		g_autofree gchar *entry_text = g_strdup_printf ("<i>%s</i>", _ ("No entry for this date."));
 		pango_layout_set_markup (entry_layout, entry_text, -1);
 	} else {
 		GtkTextIter start, end;
