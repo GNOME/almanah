@@ -902,7 +902,7 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 		return NULL;
 	}
 
-	return days;
+	return g_steal_pointer (&days);
 }
 
 /* NOTE: Free results with g_free. Return value is 0-based. */
@@ -940,7 +940,7 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 		return NULL;
 	}
 
-	return days;
+	return g_steal_pointer (&days);
 }
 
 const gchar *
