@@ -398,18 +398,19 @@ cipher_operation_free (CipherOperation *operation)
 	g_free (operation);
 }
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (CipherOperation, cipher_operation_free);
+
 static gboolean
 decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 {
 	GError *preparation_error = NULL;
-	CipherOperation *operation;
+	g_autoptr (CipherOperation) operation = NULL;
 	gpgme_error_t error_gpgme;
 
 	operation = g_new0 (CipherOperation, 1);
 
 	/* Set up, decrypting to memory */
 	if (prepare_gpgme (operation) != TRUE || open_db_files (self, FALSE, operation, TRUE, &preparation_error) != TRUE) {
-		cipher_operation_free (operation);
 		g_propagate_error (error, preparation_error);
 		return FALSE;
 	}
@@ -417,7 +418,6 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 	/* Decrypt and verify! */
 	error_gpgme = gpgme_op_decrypt_verify (operation->context, operation->gpgme_cipher, operation->gpgme_plain);
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		cipher_operation_free (operation);
 		g_set_error (error,
 		             ALMANAH_VFS_ERROR,
 		             ALMANAH_VFS_ERROR_DECRYPT,
@@ -430,9 +430,6 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 	self->plain_offset = 0;
 	self->plain_size = operation->npm_closure->size;
 
-	/* Do this one synchronously */
-	cipher_operation_free (operation);
-
 	return TRUE;
 }
 
@@ -440,7 +437,7 @@ static gboolean
 encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean from_memory, GError **error)
 {
 	GError *preparation_error = NULL;
-	CipherOperation *operation;
+	g_autoptr (CipherOperation) operation = NULL;
 	gpgme_error_t error_gpgme;
 	gpgme_key_t gpgme_keys[2] = {
 		NULL,
@@ -451,7 +448,6 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 
 	/* Set up */
 	if (prepare_gpgme (operation) != TRUE) {
-		cipher_operation_free (operation);
 		g_propagate_error (error, preparation_error);
 		return FALSE;
 	}
@@ -459,7 +455,6 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 	/* Set up signing and the recipient */
 	error_gpgme = gpgme_get_key (operation->context, encryption_key, &gpgme_keys[0], FALSE);
 	if (error_gpgme != GPG_ERR_NO_ERROR || gpgme_keys[0] == NULL) {
-		cipher_operation_free (operation);
 		g_critical (_ ("Error getting encryption key: %s"), gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
@@ -467,7 +462,6 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 	gpgme_signers_add (operation->context, gpgme_keys[0]);
 
 	if (open_db_files (self, TRUE, operation, from_memory, &preparation_error) != TRUE) {
-		cipher_operation_free (operation);
 		g_propagate_error (error, preparation_error);
 		return FALSE;
 	}
@@ -483,7 +477,6 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 	gpgme_key_unref (gpgme_keys[0]);
 
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		cipher_operation_free (operation);
 		g_critical (_ ("Error encrypting database: %s"), gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
@@ -491,11 +484,9 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 	gpgme_wait (operation->context, &error_gpgme, TRUE);
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
 		g_critical (_ ("Error encrypting database: %s"), gpgme_strerror (error_gpgme));
-		cipher_operation_free (operation);
 		return FALSE;
 	}
 
-	cipher_operation_free (operation);
 	return TRUE;
 }
 
