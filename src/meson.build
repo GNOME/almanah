@@ -72,3 +72,37 @@ almanah = executable(
   include_directories: inc,
   install: true,
 )
+
+if cppcheck.found()
+  # cppcheck needs the workspace to exist
+  cppcheck_workspace = custom_target(
+    '_cppcheck_workspace',
+    command: [
+      'mkdir',
+      '-p',
+      '@OUTPUT@',
+    ],
+    output: '_cppcheck',
+  )
+
+  run_target(
+    'cppcheck',
+    command: [
+      cppcheck,
+      '--enable=all',
+      '--inline-suppr',
+      '--error-exitcode=1',
+      '--suppress=missingIncludeSystem',
+      '--suppress=constParameterCallback',
+      '--suppress=*:/nix/store/**',
+      '--check-level=exhaustive',
+      '--cppcheck-build-dir=@0@'.format(cppcheck_workspace.full_path()),
+      '--project=@0@'.format(meson.project_build_root() / 'compile_commands.json'),
+      '--file-filter=@0@/'.format(meson.current_source_dir()),
+      '--library=gtk',
+    ],
+    depends: [
+      cppcheck_workspace,
+    ],
+  )
+endif

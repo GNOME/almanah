@@ -60,6 +60,7 @@ gtkspell = dependency('gtkspell3-3.0', required: spell_checking_support)
 have_spell_check = gtkspell.found()
 
 appstreamcli = find_program('appstreamcli', required: false)
+cppcheck = find_program('cppcheck', required: false)
 desktop_file_validate = find_program('desktop-file-validate', required: false)
 
 almanah_deps = [

@@ -9,6 +9,7 @@ pkgs.mkShell {
     ninja
     pkg-config
     appstream
+    cppcheck
     desktop-file-utils
     wrapGAppsHook3
     clang-tools
