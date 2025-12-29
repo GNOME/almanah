@@ -1033,7 +1033,7 @@ calendar_event_get_uid (CalendarEvent *event)
 {
 	switch (event->type) {
 		case CALENDAR_EVENT_APPOINTMENT:
-			return g_strdup_printf ("%s%s", CALENDAR_APPOINTMENT (event)->uid, CALENDAR_APPOINTMENT (event)->rid ? CALENDAR_APPOINTMENT (event)->rid : "");
+			return g_strdup_printf ("%s%s", CALENDAR_APPOINTMENT (event)->uid, CALENDAR_APPOINTMENT (event)->rid ?: "");
 			break;
 		case CALENDAR_EVENT_TASK:
 			return g_strdup (CALENDAR_TASK (event)->uid);
@@ -1324,7 +1324,7 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
 		CalendarEvent *event;
 		const ECalComponentId *id = l->data;
 		char *uid = g_strdup_printf ("%s%s", e_cal_component_id_get_uid (id),
-		                             e_cal_component_id_get_rid (id) ? e_cal_component_id_get_rid (id) : "");
+		                             e_cal_component_id_get_rid (id) ?: "");
 
 		if (!e_cal_component_id_get_rid (id) || !(e_cal_component_id_get_rid (id)[0])) {
 			unsigned int size = g_hash_table_size (query->events);
