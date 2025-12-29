@@ -1323,8 +1323,8 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
 	for (l = ids; l; l = l->next) {
 		CalendarEvent *event;
 		const ECalComponentId *id = l->data;
-		char *uid = g_strdup_printf ("%s%s", e_cal_component_id_get_uid (id),
-		                             e_cal_component_id_get_rid (id) ?: "");
+		g_autofree char *uid = g_strdup_printf ("%s%s", e_cal_component_id_get_uid (id),
+		                                        e_cal_component_id_get_rid (id) ?: "");
 
 		if (!e_cal_component_id_get_rid (id) || !(e_cal_component_id_get_rid (id)[0])) {
 			unsigned int size = g_hash_table_size (query->events);
@@ -1342,7 +1342,6 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
 
 			events_changed = TRUE;
 		}
-		g_free (uid);
 	}
 
 	if (emit_signal && events_changed) {
