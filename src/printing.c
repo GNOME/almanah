@@ -237,7 +237,7 @@ static gboolean
 print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrintOperation *almanah_operation)
 {
 	g_autoptr (AlmanahEntry) entry = NULL;
-	gchar title[100], *markup;
+	gchar title[100];
 	PangoLayout *title_layout = NULL, *important_layout = NULL, *entry_layout;
 	PangoLayoutLine *entry_line;
 	PangoRectangle logical_extents;
@@ -255,9 +255,8 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 		/* Translators: This is a strftime()-format string for the date displayed above each printed entry. */
 		g_date_strftime (title, sizeof (title), _ ("%A, %e %B %Y"), almanah_operation->current_date);
-		markup = g_strdup_printf ("<b>%s</b>", title);
+		g_autofree gchar *markup = g_strdup_printf ("<b>%s</b>", title);
 		pango_layout_set_markup (title_layout, markup, -1);
-		g_free (markup);
 
 		title_y = almanah_operation->y;
 		pango_layout_get_pixel_size (title_layout, NULL, &height);
@@ -268,9 +267,8 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 			important_layout = gtk_print_context_create_pango_layout (context);
 			pango_layout_set_width (title_layout, (gtk_print_context_get_width (context) - 2 * PAGE_MARGIN) * PANGO_SCALE);
 
-			markup = g_strdup_printf ("<i>%s</i>", _ ("This entry is marked as important."));
+			g_autofree gchar *markup = g_strdup_printf ("<i>%s</i>", _ ("This entry is marked as important."));
 			pango_layout_set_markup (important_layout, markup, -1);
-			g_free (markup);
 
 			/* If the important paragraph is displayed, it's displayed IMPORTANT_MARGIN_TOP pixels below the bottom of the title
 			 * paragraph, and then the entry content is displayed TITLE_MARGIN_BOTTOM pixels below the bottom of the important paragraph. */
