@@ -556,16 +556,6 @@ almanah_application_new (void)
 	return ALMANAH_APPLICATION (g_object_new (ALMANAH_TYPE_APPLICATION, NULL));
 }
 
-gboolean
-almanah_application_get_debug (AlmanahApplication *self)
-{
-	g_return_val_if_fail (ALMANAH_IS_APPLICATION (self), FALSE);
-
-	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (self);
-
-	return priv->debug;
-}
-
 AlmanahEventManager *
 almanah_application_dup_event_manager (AlmanahApplication *self)
 {

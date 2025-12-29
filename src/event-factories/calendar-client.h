@@ -100,10 +100,6 @@ typedef void (*CalendarDayIter) (CalendarClient *client,
 
 CalendarClient *calendar_client_new (void);
 
-void calendar_client_get_date (CalendarClient *client,
-                               guint *year,
-                               guint *month,
-                               guint *day);
 void calendar_client_select_month (CalendarClient *client,
                                    guint month,
                                    guint year);
@@ -112,14 +108,6 @@ void calendar_client_select_day (CalendarClient *client,
 
 GSList *calendar_client_get_events (CalendarClient *client,
                                     CalendarEventType event_mask);
-void calendar_client_foreach_appointment_day (CalendarClient *client,
-                                              CalendarDayIter iter_func,
-                                              gpointer user_data);
-
-void calendar_client_set_task_completed (CalendarClient *client,
-                                         char *task_uid,
-                                         gboolean task_completed,
-                                         guint percent_complete);
 
 void calendar_event_free (CalendarEvent *event);
 

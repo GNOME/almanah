@@ -34,8 +34,6 @@ G_DECLARE_FINAL_TYPE (AlmanahApplication, almanah_application, ALMANAH, APPLICAT
 
 AlmanahApplication *almanah_application_new (void) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
-gboolean almanah_application_get_debug (AlmanahApplication *self) G_GNUC_PURE;
-
 AlmanahEventManager *almanah_application_dup_event_manager (AlmanahApplication *self) G_GNUC_WARN_UNUSED_RESULT;
 AlmanahStorageManager *almanah_application_dup_storage_manager (AlmanahApplication *self) G_GNUC_WARN_UNUSED_RESULT;
 GSettings *almanah_application_dup_settings (AlmanahApplication *self) G_GNUC_WARN_UNUSED_RESULT;
