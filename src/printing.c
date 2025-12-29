@@ -238,7 +238,9 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 {
 	g_autoptr (AlmanahEntry) entry = NULL;
 	gchar title[100];
-	PangoLayout *title_layout = NULL, *important_layout = NULL, *entry_layout;
+	g_autoptr (PangoLayout) title_layout = NULL;
+	g_autoptr (PangoLayout) important_layout = NULL;
+	g_autoptr (PangoLayout) entry_layout = NULL;
 	PangoLayoutLine *entry_line;
 	PangoRectangle logical_extents;
 	gint height, line_height;
@@ -306,12 +308,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 	if (almanah_operation->y + (MIN (pango_layout_get_line_count (entry_layout), MAX_ORPHANS) * line_height) - pango_layout_get_spacing (entry_layout) / PANGO_SCALE + (gint) ((almanah_operation->line_spacing - 1.0) * ((gdouble) logical_extents.height)) > gtk_print_context_get_height (context)) {
 		/* Not enough space on the page to contain the title and orphaned lines */
-		if (title_layout != NULL)
-			g_object_unref (title_layout);
-		if (important_layout != NULL)
-			g_object_unref (important_layout);
-		g_object_unref (entry_layout);
-
 		almanah_operation->current_line = 0;
 
 		return FALSE;
@@ -345,12 +341,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 		 * bottom line on a page. */
 		if (entry_y + logical_extents.height > gtk_print_context_get_height (context)) {
 			/* Paint the rest on the next page */
-			if (title_layout != NULL)
-				g_object_unref (title_layout);
-			if (important_layout != NULL)
-				g_object_unref (important_layout);
-			g_object_unref (entry_layout);
-
 			almanah_operation->current_line = i;
 
 			return FALSE;
@@ -367,12 +357,6 @@ print_entry (GtkPrintOperation *operation, GtkPrintContext *context, AlmanahPrin
 
 	/* Finish off the entry with a bottom margin */
 	almanah_operation->y = entry_y + ENTRY_MARGIN_BOTTOM;
-
-	if (title_layout != NULL)
-		g_object_unref (title_layout);
-	if (important_layout != NULL)
-		g_object_unref (important_layout);
-	g_object_unref (entry_layout);
 
 	almanah_operation->current_line = 0;
 
