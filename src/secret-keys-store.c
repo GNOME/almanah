@@ -258,7 +258,7 @@ init_gpg_homedir_monitor (AlmanahSecretKeysStore *store)
 		                  G_CALLBACK (monitor_gpg_homedir), store);
 	} else {
 		g_warning ("couldn't monitor the GPG home directory: %s: %s",
-		           gpg_homedir, err && err->message ? err->message : "");
+		           gpg_homedir, err->message ? err->message : "");
 	}
 }
 
