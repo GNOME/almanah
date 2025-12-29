@@ -708,8 +708,8 @@ calendar_appointment_copy (CalendarAppointment *appointment,
 {
 	GSList *l;
 
-	g_assert (appointment != NULL);
-	g_assert (appointment_copy != NULL);
+	g_return_if_fail (appointment != NULL);
+	g_return_if_fail (appointment_copy != NULL);
 
 	appointment_copy->occurrences = g_slist_copy (appointment->occurrences);
 	for (l = appointment_copy->occurrences; l; l = l->next) {
@@ -831,7 +831,7 @@ calendar_appointment_generate_ocurrences (CalendarAppointment *appointment,
 {
 	ICalTime *interval_start, *interval_end;
 
-	g_assert (appointment->occurrences == NULL);
+	g_return_if_fail (appointment->occurrences == NULL);
 
 	interval_start = i_cal_time_new_from_timet_with_zone (start, FALSE, NULL);
 	interval_end = i_cal_time_new_from_timet_with_zone (end, FALSE, NULL);
@@ -872,8 +872,8 @@ static void
 calendar_task_copy (CalendarTask *task,
                     CalendarTask *task_copy)
 {
-	g_assert (task != NULL);
-	g_assert (task_copy != NULL);
+	g_return_if_fail (task != NULL);
+	g_return_if_fail (task_copy != NULL);
 
 	task_copy->uid = g_strdup (task->uid);
 	task_copy->summary = g_strdup (task->summary);
