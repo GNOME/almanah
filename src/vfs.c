@@ -448,7 +448,6 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 
 	/* Set up */
 	if (prepare_gpgme (operation) != TRUE) {
-		g_propagate_error (error, preparation_error);
 		return FALSE;
 	}
 
