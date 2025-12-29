@@ -563,9 +563,6 @@ almanah_vfs_direct_write (AlmanahSQLiteVFS *self, /* File handle */
                           sqlite_int64 offset     /* File offset to write to */
 )
 {
-	off_t ofst;
-	size_t nWrite;
-
 	if (self->decrypted) {
 		if ((gsize) (offset + len) > self->plain_buffer_size) {
 			gsize new_size;
@@ -595,12 +592,12 @@ almanah_vfs_direct_write (AlmanahSQLiteVFS *self, /* File handle */
 
 		return SQLITE_OK;
 	} else {
-		ofst = lseek (self->fd, offset, SEEK_SET);
+		off_t ofst = lseek (self->fd, offset, SEEK_SET);
 		if (ofst != offset) {
 			return SQLITE_IOERR_WRITE;
 		}
 
-		nWrite = write (self->fd, buffer, len);
+		size_t nWrite = write (self->fd, buffer, len);
 		if (nWrite != (size_t) len) {
 			return SQLITE_IOERR_WRITE;
 		}

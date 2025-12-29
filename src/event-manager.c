@@ -95,10 +95,10 @@ static void
 almanah_event_manager_dispose (GObject *object)
 {
 	AlmanahEventManagerPrivate *priv = almanah_event_manager_get_instance_private (ALMANAH_EVENT_MANAGER (object));
-	guint i = 0;
 
 	/* Free the factories */
 	if (priv->factories != NULL) {
+		guint i = 0;
 		for (i = 0; priv->factories[i] != NULL; i++)
 			g_object_unref (priv->factories[i]);
 		g_free (priv->factories);
