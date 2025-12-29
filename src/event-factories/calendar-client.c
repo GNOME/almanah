@@ -348,7 +348,7 @@ calendar_client_set_property (GObject *object,
                               GParamSpec *pspec)
 {
 	CalendarClient *client = CALENDAR_CLIENT (object);
-	CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+	const CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
 
 	switch (prop_id) {
 		case PROP_DAY:
@@ -377,7 +377,7 @@ calendar_client_get_property (GObject *object,
                               GParamSpec *pspec)
 {
 	CalendarClient *client = CALENDAR_CLIENT (object);
-	CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+	const CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
 
 	switch (prop_id) {
 		case PROP_DAY:
@@ -448,7 +448,7 @@ get_time_from_property (ICalComponent *ical,
 	ICalProperty *prop;
 	ICalTime *ical_time;
 	ICalParameter *param;
-	ICalTimezone *time_zone = NULL;
+	const ICalTimezone *time_zone = NULL;
 	time_t retval;
 
 	prop = i_cal_component_get_first_property (ical, prop_kind);
@@ -546,7 +546,7 @@ get_ical_is_all_day (ICalComponent *ical,
                      ICalTimezone *default_zone)
 {
 	ICalProperty *prop;
-	struct tm *start_tm;
+	const struct tm *start_tm;
 	time_t end_time;
 	ICalDuration *duration;
 	ICalTime *start_icaltime;
@@ -684,8 +684,8 @@ calendar_appointment_equal (CalendarAppointment *a,
 		return FALSE;
 
 	for (la = a->occurrences, lb = b->occurrences; la && lb; la = la->next, lb = lb->next) {
-		CalendarOccurrence *oa = la->data;
-		CalendarOccurrence *ob = lb->data;
+		const CalendarOccurrence *oa = la->data;
+		const CalendarOccurrence *ob = lb->data;
 
 		if (oa->start_time != ob->start_time ||
 		    oa->end_time != ob->end_time)
@@ -713,7 +713,7 @@ calendar_appointment_copy (CalendarAppointment *appointment,
 
 	appointment_copy->occurrences = g_slist_copy (appointment->occurrences);
 	for (l = appointment_copy->occurrences; l; l = l->next) {
-		CalendarOccurrence *occurrence = l->data;
+		const CalendarOccurrence *occurrence = l->data;
 		CalendarOccurrence *occurrence_copy;
 
 		occurrence_copy = g_new0 (CalendarOccurrence, 1);
@@ -1291,7 +1291,7 @@ check_object_remove (gpointer key,
                      gpointer value,
                      gpointer data)
 {
-	char *uid = data;
+	const char *uid = data;
 	size_t len;
 
 	len = strlen (uid);
@@ -1322,7 +1322,7 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
 	events_changed = FALSE;
 	for (l = ids; l; l = l->next) {
 		CalendarEvent *event;
-		ECalComponentId *id = l->data;
+		const ECalComponentId *id = l->data;
 		char *uid = g_strdup_printf ("%s%s", e_cal_component_id_get_uid (id),
 		                             e_cal_component_id_get_rid (id) ? e_cal_component_id_get_rid (id) : "");
 
@@ -1655,7 +1655,7 @@ calendar_client_get_date (CalendarClient *client,
 {
 	g_return_if_fail (CALENDAR_IS_CLIENT (client));
 
-	CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
+	const CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
 
 	if (year)
 		*year = priv->year;
@@ -1740,7 +1740,7 @@ filter_appointment (const char *uid,
 	CALENDAR_APPOINTMENT (event)->occurrences = NULL;
 
 	for (l = occurrences; l; l = l->next) {
-		CalendarOccurrence *occurrence = l->data;
+		const CalendarOccurrence *occurrence = l->data;
 		time_t start_time = occurrence->start_time;
 		time_t end_time = occurrence->end_time;
 

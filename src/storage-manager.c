@@ -946,7 +946,7 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 const gchar *
 almanah_storage_manager_get_filename (AlmanahStorageManager *self)
 {
-	AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
+	const AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
 
 	return priv->filename;
 }

@@ -71,7 +71,7 @@ almanah_event_factory_init (AlmanahEventFactory *self)
 static void
 almanah_event_factory_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec)
 {
-	AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (object);
+	const AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (object);
 
 	switch (property_id) {
 		case PROP_TYPE_ID:
@@ -87,14 +87,14 @@ almanah_event_factory_get_property (GObject *object, guint property_id, GValue *
 AlmanahEventFactoryType
 almanah_event_factory_get_type_id (AlmanahEventFactory *self)
 {
-	AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (self);
+	const AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (self);
 	return klass->type_id;
 }
 
 void
 almanah_event_factory_query_events (AlmanahEventFactory *self, GDate *date)
 {
-	AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (self);
+	const AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (self);
 	g_assert (klass->query_events != NULL);
 	return klass->query_events (self, date);
 }
@@ -102,7 +102,7 @@ almanah_event_factory_query_events (AlmanahEventFactory *self, GDate *date)
 GSList *
 almanah_event_factory_get_events (AlmanahEventFactory *self, GDate *date)
 {
-	AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (self);
+	const AlmanahEventFactoryClass *klass = ALMANAH_EVENT_FACTORY_GET_CLASS (self);
 	g_assert (klass->get_events != NULL);
 	return klass->get_events (self, date);
 }

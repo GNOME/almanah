@@ -219,7 +219,7 @@ set_property (GObject *object, guint property_id, const GValue *value, GParamSpe
 static void
 debug_handler (const char *log_domain, GLogLevelFlags log_level, const char *message, AlmanahApplication *self)
 {
-	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (self);
+	const AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (self);
 
 	/* Only display debug messages if we've been run with --debug */
 	if (priv->debug == TRUE) {
