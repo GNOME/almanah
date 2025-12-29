@@ -22,8 +22,6 @@
 
 #include <config.h>
 
-#include <string.h>
-
 #include "e-cell-renderer-color.h"
 #include "e-source-selector.h"
 

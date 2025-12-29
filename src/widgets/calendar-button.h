@@ -24,7 +24,6 @@
 #include <gtk/gtk.h>
 
 #include "storage-manager.h"
-#include "widgets/calendar.h"
 
 G_BEGIN_DECLS
 

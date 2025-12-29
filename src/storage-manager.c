@@ -17,14 +17,12 @@
  */
 
 #include <config.h>
-#include <errno.h>
 #include <gio/gio.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
 #include <gtk/gtk.h>
 #include <sqlite3.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 

@@ -21,8 +21,6 @@
 #include <gtk/gtk.h>
 
 #include "interface.h"
-#include "main-window.h"
-#include "search-dialog.h"
 
 void
 almanah_interface_create_text_tags (GtkTextBuffer *text_buffer, gboolean connect_events)

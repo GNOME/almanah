@@ -20,7 +20,6 @@
 #include "e-cell-renderer-color.h"
 
 #include <glib/gi18n-lib.h>
-#include <string.h>
 
 enum {
 	PROP_0,

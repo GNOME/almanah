@@ -18,8 +18,6 @@
 
 #include <glib.h>
 #include <glib/gi18n.h>
-#include <math.h>
-#include <string.h>
 
 #include "event.h"
 

@@ -23,7 +23,6 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <gtksourceview/gtksource.h>
-#include <math.h>
 #include <time.h>
 #ifdef ENABLE_SPELL_CHECKING
 #include <gtkspell/gtkspell.h>
@@ -38,7 +37,6 @@
 #include "storage-manager.h"
 #include "uri-entry-dialog.h"
 #include "widgets/calendar-button.h"
-#include "widgets/calendar.h"
 #include "widgets/entry-tags-area.h"
 #include "widgets/hyperlink-tag.h"
 

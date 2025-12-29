@@ -26,7 +26,6 @@
 #include "calendar-sources.h"
 
 #include <libintl.h>
-#include <string.h>
 #define HANDLE_LIBICAL_MEMORY
 #include <libecal/libecal.h>
 #include <libedataserver/libedataserver.h>

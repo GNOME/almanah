@@ -24,7 +24,6 @@
 #include <gtk/gtk.h>
 
 #include "interface.h"
-#include "main-window.h"
 #include "preferences-dialog.h"
 #include "secret-keys-store.h"
 
