@@ -13,7 +13,7 @@ build-and-test:
   script:
     - eval "$(npins/export-shell-env.sh)"
     - meson setup "${MESON_BUILD_DIR}"
-    - meson compile -C "${MESON_BUILD_DIR}"
+    - ninja -C "${MESON_BUILD_DIR}" clang-format-check
     - meson test -C "${MESON_BUILD_DIR}"
     - meson dist -C "${MESON_BUILD_DIR}" --include-subprojects
   artifacts:
