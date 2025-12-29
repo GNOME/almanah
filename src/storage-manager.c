@@ -616,10 +616,10 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 			                                  GTK_TEXT_SEARCH_VISIBLE_ONLY | GTK_TEXT_SEARCH_TEXT_ONLY | GTK_TEXT_SEARCH_CASE_INSENSITIVE,
 			                                  NULL, NULL, NULL) == TRUE) {
 				/* A match was found! */
-				return entry;
+				return g_steal_pointer (&entry);
 			} else if (tags != NULL && (strstr (tags, search_string) != NULL)) {
 				/* A match in an entry tag */
-				return entry;
+				return g_steal_pointer (&entry);
 			}
 
 			/* Return the next match instead */
