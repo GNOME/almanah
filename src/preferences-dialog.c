@@ -83,10 +83,7 @@ almanah_preferences_dialog_dispose (GObject *object)
 	AlmanahPreferencesDialogPrivate *priv = almanah_preferences_dialog_get_instance_private (ALMANAH_PREFERENCES_DIALOG (object));
 
 	g_clear_object (&priv->key_store);
-
-	if (priv->settings != NULL)
-		g_object_unref (priv->settings);
-	priv->settings = NULL;
+	g_clear_object (&priv->settings);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_preferences_dialog_parent_class)->dispose (object);

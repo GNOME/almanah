@@ -99,14 +99,8 @@ static void
 almanah_export_operation_dispose (GObject *object)
 {
 	AlmanahExportOperationPrivate *priv = almanah_export_operation_get_instance_private (ALMANAH_EXPORT_OPERATION (object));
-
-	if (priv->storage_manager != NULL)
-		g_object_unref (priv->storage_manager);
-	priv->storage_manager = NULL;
-
-	if (priv->destination != NULL)
-		g_object_unref (priv->destination);
-	priv->destination = NULL;
+	g_clear_object (&priv->storage_manager);
+	g_clear_object (&priv->destination);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_export_operation_parent_class)->dispose (object);

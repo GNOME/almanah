@@ -158,26 +158,11 @@ dispose (GObject *object)
 	if (priv->main_window != NULL)
 		gtk_widget_destroy (GTK_WIDGET (priv->main_window));
 	priv->main_window = NULL;
-
-	if (priv->event_manager != NULL)
-		g_object_unref (priv->event_manager);
-	priv->event_manager = NULL;
-
-	if (priv->storage_manager != NULL)
-		g_object_unref (priv->storage_manager);
-	priv->storage_manager = NULL;
-
-	if (priv->settings != NULL)
-		g_object_unref (priv->settings);
-	priv->settings = NULL;
-
-	if (priv->page_setup != NULL)
-		g_object_unref (priv->page_setup);
-	priv->page_setup = NULL;
-
-	if (priv->print_settings != NULL)
-		g_object_unref (priv->print_settings);
-	priv->print_settings = NULL;
+	g_clear_object (&priv->event_manager);
+	g_clear_object (&priv->storage_manager);
+	g_clear_object (&priv->settings);
+	g_clear_object (&priv->page_setup);
+	g_clear_object (&priv->print_settings);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_application_parent_class)->dispose (object);

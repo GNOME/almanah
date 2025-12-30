@@ -332,10 +332,7 @@ calendar_client_finalize (GObject *object)
 	}
 	g_slist_free (priv->task_sources);
 	priv->task_sources = NULL;
-
-	if (priv->calendar_sources)
-		g_object_unref (priv->calendar_sources);
-	priv->calendar_sources = NULL;
+	g_clear_object (&priv->calendar_sources);
 
 	if (G_OBJECT_CLASS (parent_class)->finalize)
 		G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -1352,9 +1349,7 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
 static void
 calendar_client_query_finalize (CalendarClientQuery *query)
 {
-	if (query->view)
-		g_object_unref (query->view);
-	query->view = NULL;
+	g_clear_object (&query->view);
 
 	if (query->events)
 		g_hash_table_destroy (query->events);
@@ -1535,10 +1530,7 @@ static void
 calendar_client_source_finalize (CalendarClientSource *source)
 {
 	source->client = NULL;
-
-	if (source->cal_client)
-		g_object_unref (source->cal_client);
-	source->cal_client = NULL;
+	g_clear_object (&source->cal_client);
 
 	calendar_client_query_finalize (&source->completed_query);
 	calendar_client_query_finalize (&source->in_progress_query);

@@ -185,10 +185,7 @@ calendar_sources_finalize (GObject *object)
 
 	calendar_sources_finalize_source_data (sources, &priv->appointment_sources);
 	calendar_sources_finalize_source_data (sources, &priv->task_sources);
-
-	if (priv->esource_registry)
-		g_object_unref (priv->esource_registry);
-	priv->esource_registry = NULL;
+	g_clear_object (&priv->esource_registry);
 
 	if (G_OBJECT_CLASS (parent_class)->finalize)
 		G_OBJECT_CLASS (parent_class)->finalize (object);

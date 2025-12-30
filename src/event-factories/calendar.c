@@ -69,10 +69,7 @@ static void
 almanah_calendar_event_factory_dispose (GObject *object)
 {
 	AlmanahCalendarEventFactoryPrivate *priv = almanah_calendar_event_factory_get_instance_private (ALMANAH_CALENDAR_EVENT_FACTORY (object));
-
-	if (priv->client != NULL)
-		g_object_unref (priv->client);
-	priv->client = NULL;
+	g_clear_object (&priv->client);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_calendar_event_factory_parent_class)->dispose (object);

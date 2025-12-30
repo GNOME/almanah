@@ -79,10 +79,7 @@ static void
 dispose (GObject *object)
 {
 	AlmanahCalendarPrivate *priv = almanah_calendar_get_instance_private (ALMANAH_CALENDAR (object));
-
-	if (priv->storage_manager != NULL)
-		g_object_unref (priv->storage_manager);
-	priv->storage_manager = NULL;
+	g_clear_object (&priv->storage_manager);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_calendar_parent_class)->dispose (object);
