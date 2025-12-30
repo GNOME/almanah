@@ -27,7 +27,7 @@ static void almanah_date_entry_dialog_get_property (GObject *object, guint prope
 static void almanah_date_entry_dialog_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 
 /* GtkBuilder callbacks */
-void ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *pspec, AlmanahDateEntryDialog *self);
+G_MODULE_EXPORT void ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *pspec, AlmanahDateEntryDialog *self);
 
 typedef struct {
 	GDate date;
@@ -166,7 +166,7 @@ almanah_date_entry_dialog_run (AlmanahDateEntryDialog *self)
 	return (gtk_dialog_run (GTK_DIALOG (self)) == GTK_RESPONSE_OK) ? TRUE : FALSE;
 }
 
-void
+G_MODULE_EXPORT void
 ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *param_spec, AlmanahDateEntryDialog *self)
 {
 	AlmanahDateEntryDialogPrivate *priv = almanah_date_entry_dialog_get_instance_private (self);

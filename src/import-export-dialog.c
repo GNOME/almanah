@@ -29,9 +29,9 @@
 static void response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *self);
 
 /* GtkBuilder callbacks */
-void ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog *self);
-void ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
-void ied_file_chooser_file_activated_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
+G_MODULE_EXPORT void ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog *self);
+G_MODULE_EXPORT void ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
+G_MODULE_EXPORT void ied_file_chooser_file_activated_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self);
 
 typedef struct {
 	AlmanahStorageManager *storage_manager;
@@ -353,7 +353,7 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 	}
 }
 
-void
+G_MODULE_EXPORT void
 ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog *self)
 {
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
@@ -382,7 +382,7 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 	gtk_label_set_text_with_mnemonic (priv->description_label, description);
 }
 
-void
+G_MODULE_EXPORT void
 ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self)
 {
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
@@ -397,7 +397,7 @@ ied_file_chooser_selection_changed_cb (GtkFileChooser *file_chooser, AlmanahImpo
 	}
 }
 
-void
+G_MODULE_EXPORT void
 ied_file_chooser_file_activated_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self)
 {
 	/* Activate the dialogue's default button */
@@ -408,9 +408,9 @@ static gboolean filter_results_cb (GtkTreeModel *model, GtkTreeIter *iter, Alman
 static void results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkWidget *button);
 
 /* GtkBuilder callbacks */
-void ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahImportResultsDialog *self);
-void ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self);
-void ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialog *self);
+G_MODULE_EXPORT void ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahImportResultsDialog *self);
+G_MODULE_EXPORT void ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self);
+G_MODULE_EXPORT void ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialog *self);
 
 typedef struct {
 	GtkListStore *results_store;
@@ -566,7 +566,7 @@ select_date (AlmanahImportResultsDialog *self, GtkTreeModel *model, GtkTreeIter 
 	almanah_main_window_select_date (main_window, &date);
 }
 
-void
+G_MODULE_EXPORT void
 ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahImportResultsDialog *self)
 {
 	GtkTreeIter iter;
@@ -577,7 +577,7 @@ ird_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *pat
 	select_date (self, model, &iter);
 }
 
-void
+G_MODULE_EXPORT void
 ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self)
 {
 	AlmanahImportResultsDialogPrivate *priv = almanah_import_results_dialog_get_instance_private (self);
@@ -589,7 +589,7 @@ ird_view_button_clicked_cb (GtkButton *button, AlmanahImportResultsDialog *self)
 	}
 }
 
-void
+G_MODULE_EXPORT void
 ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialog *self)
 {
 	AlmanahImportResultsDialogPrivate *priv = almanah_import_results_dialog_get_instance_private (self);

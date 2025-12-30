@@ -88,8 +88,8 @@ static void mw_redo_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 static void mw_source_buffer_notify_can_undo_redo_cb (GObject *obj, GParamSpec *pspec, gpointer user_data);
 
 /* GtkBuilder callbacks */
-void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
-void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
+G_MODULE_EXPORT void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
+G_MODULE_EXPORT void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 
 /* Other callbacks */
 static void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
@@ -1213,7 +1213,7 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 	g_slist_free (_events);
 }
 
-void
+G_MODULE_EXPORT void
 mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *calendar_button, AlmanahMainWindow *main_window)
 {
 	AlmanahApplication *application;
@@ -1326,7 +1326,7 @@ mw_calendar_select_date_clicked_cb (__attribute__ ((unused)) AlmanahCalendarButt
 	g_action_group_activate_action (G_ACTION_GROUP (main_window), "select-date", NULL);
 }
 
-void
+G_MODULE_EXPORT void
 mw_events_tree_view_row_activated_cb (__attribute__ ((unused)) GtkTreeView *tree_view, GtkTreePath *path, __attribute__ ((unused)) GtkTreeViewColumn *column, AlmanahMainWindow *main_window)
 {
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (main_window);

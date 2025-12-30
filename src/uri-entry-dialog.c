@@ -175,7 +175,7 @@ is_uri_valid (const gchar *uri)
 	return (tmp != NULL) ? TRUE : FALSE;
 }
 
-void
+G_MODULE_EXPORT void
 ued_uri_entry_notify_text_cb (GObject *gobject, GParamSpec *param_spec, AlmanahUriEntryDialog *self)
 {
 	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (self);

@@ -28,10 +28,10 @@ static void sd_response_cb (GtkDialog *dialog, gint response_id, AlmanahSearchDi
 static void sd_results_selection_changed_cb (GtkTreeSelection *tree_selection, GtkWidget *button);
 
 /* GtkBuilder callbacks */
-void sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
-void sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
-void sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahSearchDialog *self);
-void sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
+G_MODULE_EXPORT void sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
+G_MODULE_EXPORT void sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
+G_MODULE_EXPORT void sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahSearchDialog *self);
+G_MODULE_EXPORT void sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog);
 
 static void sd_search_progress_cb (AlmanahStorageManager *storage_manager, AlmanahEntry *entry, AlmanahSearchDialog **search_dialog_weak_pointer);
 static void sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, AlmanahSearchDialog **search_dialog_weak_pointer);
@@ -239,7 +239,7 @@ sd_search_ready_cb (AlmanahStorageManager *storage_manager, GAsyncResult *res, A
 	priv->sd_cancellable = NULL;
 }
 
-void
+G_MODULE_EXPORT void
 sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
 	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
@@ -249,7 +249,7 @@ sd_cancel_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog
 	}
 }
 
-void
+G_MODULE_EXPORT void
 sd_search_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
 	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
@@ -315,7 +315,7 @@ select_date (AlmanahSearchDialog *self, GtkTreeModel *model, GtkTreeIter *iter)
 	almanah_main_window_select_date (main_window, &date);
 }
 
-void
+G_MODULE_EXPORT void
 sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahSearchDialog *self)
 {
 	GtkTreeIter iter;
@@ -326,7 +326,7 @@ sd_results_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path
 	select_date (self, model, &iter);
 }
 
-void
+G_MODULE_EXPORT void
 sd_view_button_clicked_cb (GtkButton *self, AlmanahSearchDialog *search_dialog)
 {
 	AlmanahSearchDialogPrivate *priv = almanah_search_dialog_get_instance_private (search_dialog);
