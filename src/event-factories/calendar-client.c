@@ -115,6 +115,7 @@ static void calendar_client_start_query (CalendarClient *client,
                                          const char *query);
 
 static void calendar_client_source_finalize (CalendarClientSource *source);
+static void calendar_client_source_destroy (gpointer source);
 static void calendar_client_query_finalize (CalendarClientQuery *query);
 
 static void
@@ -319,23 +320,12 @@ calendar_client_finalize (GObject *object)
 {
 	CalendarClient *client = CALENDAR_CLIENT (object);
 	CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
-	GSList *l;
 
 	g_clear_object (&priv->tz_monitor);
 
-	for (l = priv->appointment_sources; l; l = l->next) {
-		calendar_client_source_finalize (l->data);
-		g_free (l->data);
-	}
-	g_slist_free (priv->appointment_sources);
-	priv->appointment_sources = NULL;
+	g_clear_slist (&priv->appointment_sources, calendar_client_source_destroy);
 
-	for (l = priv->task_sources; l; l = l->next) {
-		calendar_client_source_finalize (l->data);
-		g_free (l->data);
-	}
-	g_slist_free (priv->task_sources);
-	priv->task_sources = NULL;
+	g_clear_slist (&priv->task_sources, calendar_client_source_destroy);
 	g_clear_object (&priv->calendar_sources);
 
 	if (G_OBJECT_CLASS (parent_class)->finalize)
@@ -733,12 +723,7 @@ calendar_appointment_copy (CalendarAppointment *appointment,
 static void
 calendar_appointment_finalize (CalendarAppointment *appointment)
 {
-	GSList *l;
-
-	for (l = appointment->occurrences; l; l = l->next)
-		g_free (l->data);
-	g_slist_free (appointment->occurrences);
-	appointment->occurrences = NULL;
+	g_clear_slist (&appointment->occurrences, g_free);
 
 	g_free (appointment->uid);
 	appointment->uid = NULL;
@@ -1540,6 +1525,13 @@ calendar_client_source_finalize (CalendarClientSource *source)
 	source->query_in_progress = FALSE;
 }
 
+static void
+calendar_client_source_destroy (gpointer source)
+{
+	calendar_client_source_finalize (source);
+	g_free (source);
+}
+
 static int
 compare_calendar_sources (CalendarClientSource *s1,
                           CalendarClientSource *s2)
@@ -1585,16 +1577,7 @@ calendar_client_update_sources_list (CalendarClient *client,
 		retval = g_slist_prepend (retval, new_source);
 	}
 
-	for (l = sources; l; l = l->next) {
-		CalendarClientSource *source = l->data;
-
-		dprintf ("Removing client %s from list\n",
-		         e_source_get_uid (e_client_get_source (E_CLIENT (source->cal_client))));
-
-		calendar_client_source_finalize (source);
-		g_free (source);
-	}
-	g_slist_free (sources);
+	g_slist_free_full (sources, calendar_client_source_destroy);
 
 	return retval;
 }
