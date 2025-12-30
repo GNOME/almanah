@@ -155,9 +155,10 @@ dispose (GObject *object)
 {
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (ALMANAH_APPLICATION (object));
 
-	if (priv->main_window != NULL)
+	if (priv->main_window != NULL) {
 		gtk_widget_destroy (GTK_WIDGET (priv->main_window));
-	priv->main_window = NULL;
+		priv->main_window = NULL;
+	}
 	g_clear_object (&priv->event_manager);
 	g_clear_object (&priv->storage_manager);
 	g_clear_object (&priv->settings);

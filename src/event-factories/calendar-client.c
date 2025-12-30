@@ -1351,9 +1351,10 @@ calendar_client_query_finalize (CalendarClientQuery *query)
 {
 	g_clear_object (&query->view);
 
-	if (query->events)
+	if (query->events) {
 		g_hash_table_destroy (query->events);
-	query->events = NULL;
+		query->events = NULL;
+	}
 }
 
 static void

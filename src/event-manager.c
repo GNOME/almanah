@@ -102,8 +102,8 @@ almanah_event_manager_dispose (GObject *object)
 		for (i = 0; priv->factories[i] != NULL; i++)
 			g_object_unref (priv->factories[i]);
 		g_free (priv->factories);
+		priv->factories = NULL;
 	}
-	priv->factories = NULL;
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (almanah_event_manager_parent_class)->dispose (object);
