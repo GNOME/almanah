@@ -1084,12 +1084,10 @@ calendar_event_debug_dump (CalendarEvent *event)
 #ifdef CALENDAR_ENABLE_DEBUG
 	switch (event->type) {
 		case CALENDAR_EVENT_APPOINTMENT: {
-			char *start_str;
-			char *end_str;
 			GSList *l;
 
-			start_str = CALENDAR_APPOINTMENT (event)->start_time ? isodate_from_time_t (CALENDAR_APPOINTMENT (event)->start_time) : g_strdup ("(undefined)");
-			end_str = CALENDAR_APPOINTMENT (event)->end_time ? isodate_from_time_t (CALENDAR_APPOINTMENT (event)->end_time) : g_strdup ("(undefined)");
+			g_autofree char *start_str = CALENDAR_APPOINTMENT (event)->start_time ? isodate_from_time_t (CALENDAR_APPOINTMENT (event)->start_time) : g_strdup ("(undefined)");
+			g_autofree char *end_str = CALENDAR_APPOINTMENT (event)->end_time ? isodate_from_time_t (CALENDAR_APPOINTMENT (event)->end_time) : g_strdup ("(undefined)");
 
 			dprintf ("Appointment: uid '%s', summary '%s', description '%s', "
 			         "start_time '%s', end_time '%s', is_all_day %s\n",
@@ -1100,32 +1098,22 @@ calendar_event_debug_dump (CalendarEvent *event)
 			         end_str,
 			         CALENDAR_APPOINTMENT (event)->is_all_day ? "(true)" : "(false)");
 
-			g_free (start_str);
-			g_free (end_str);
-
 			dprintf ("  Occurrences:\n");
 			for (l = CALENDAR_APPOINTMENT (event)->occurrences; l; l = l->next) {
 				CalendarOccurrence *occurrence = l->data;
 
-				start_str = occurrence->start_time ? isodate_from_time_t (occurrence->start_time) : g_strdup ("(undefined)");
+				g_autofree char *start_str = occurrence->start_time ? isodate_from_time_t (occurrence->start_time) : g_strdup ("(undefined)");
 
-				end_str = occurrence->end_time ? isodate_from_time_t (occurrence->end_time) : g_strdup ("(undefined)");
+				g_autofree char *end_str = occurrence->end_time ? isodate_from_time_t (occurrence->end_time) : g_strdup ("(undefined)");
 
 				dprintf ("    start_time '%s', end_time '%s'\n",
 				         start_str, end_str);
-
-				g_free (start_str);
-				g_free (end_str);
 			}
 		} break;
 		case CALENDAR_EVENT_TASK: {
-			char *start_str;
-			char *due_str;
-			char *completed_str;
-
-			start_str = CALENDAR_TASK (event)->start_time ? isodate_from_time_t (CALENDAR_TASK (event)->start_time) : g_strdup ("(undefined)");
-			due_str = CALENDAR_TASK (event)->due_time ? isodate_from_time_t (CALENDAR_TASK (event)->due_time) : g_strdup ("(undefined)");
-			completed_str = CALENDAR_TASK (event)->completed_time ? isodate_from_time_t (CALENDAR_TASK (event)->completed_time) : g_strdup ("(undefined)");
+			g_autofree char *start_str = CALENDAR_TASK (event)->start_time ? isodate_from_time_t (CALENDAR_TASK (event)->start_time) : g_strdup ("(undefined)");
+			g_autofree char *due_str = CALENDAR_TASK (event)->due_time ? isodate_from_time_t (CALENDAR_TASK (event)->due_time) : g_strdup ("(undefined)");
+			g_autofree char *completed_str = CALENDAR_TASK (event)->completed_time ? isodate_from_time_t (CALENDAR_TASK (event)->completed_time) : g_strdup ("(undefined)");
 
 			dprintf ("Task: uid '%s', summary '%s', description '%s', "
 			         "start_time '%s', due_time '%s', percent_complete %d, completed_time '%s'\n",
@@ -1136,8 +1124,6 @@ calendar_event_debug_dump (CalendarEvent *event)
 			         due_str,
 			         CALENDAR_TASK (event)->percent_complete,
 			         completed_str);
-
-			g_free (completed_str);
 		} break;
 		default:
 			g_assert_not_reached ();
@@ -1454,8 +1440,7 @@ static void
 calendar_client_update_tasks (CalendarClient *client)
 {
 	CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
-	GSList *l;
-	char *query;
+	g_autofree char *query = NULL;
 
 #ifdef FIX_BROKEN_TASKS_QUERY
 	/* FIXME: this doesn't work for tasks without a start or
@@ -1464,28 +1449,19 @@ calendar_client_update_tasks (CalendarClient *client)
 	 *        want.
 	 */
 
-	char *day_begin;
-	char *day_end;
-
 	if (priv->day == G_MAXUINT ||
 	    priv->month == G_MAXUINT ||
 	    priv->year == G_MAXUINT)
 		return;
 
-	day_begin = make_isodate_for_day_begin (priv->day,
-	                                        priv->month,
-	                                        priv->year);
+	g_autofree char *day_begin = make_isodate_for_day_begin (priv->day, priv->month, priv->year);
 
-	day_end = make_isodate_for_day_begin (priv->day + 1,
-	                                      priv->month,
-	                                      priv->year);
+	g_autofree char *day_end = make_isodate_for_day_begin (priv->day + 1, priv->month, priv->year);
 	if (!day_begin || !day_end) {
 		g_warning ("Cannot run query with invalid date: %dd %dy %dm\n",
 		           priv->day,
 		           priv->month,
 		           priv->year);
-		g_free (day_begin);
-		g_free (day_end);
 		return;
 	}
 
@@ -1499,17 +1475,11 @@ calendar_client_update_tasks (CalendarClient *client)
 	query = g_strdup ("#t");
 #endif /* FIX_BROKEN_TASKS_QUERY */
 
-	for (l = priv->task_sources; l; l = l->next) {
+	for (GSList *l = priv->task_sources; l; l = l->next) {
 		CalendarClientSource *cs = l->data;
 
 		calendar_client_start_query (client, cs, query);
 	}
-
-#ifdef FIX_BROKEN_TASKS_QUERY
-	g_free (day_begin);
-	g_free (day_end);
-#endif
-	g_free (query);
 }
 
 static void
