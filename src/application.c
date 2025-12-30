@@ -28,7 +28,6 @@
 #include "application.h"
 #include "event-manager.h"
 #include "import-export-dialog.h"
-#include "interface.h"
 #include "main-window.h"
 #include "preferences-dialog.h"
 #include "printing.h"

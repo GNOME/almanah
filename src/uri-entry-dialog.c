@@ -21,7 +21,6 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "interface.h"
 #include "uri-entry-dialog.h"
 
 static void almanah_uri_entry_dialog_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);

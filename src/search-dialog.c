@@ -21,7 +21,6 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "interface.h"
 #include "main-window.h"
 #include "search-dialog.h"
 

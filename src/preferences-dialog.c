@@ -23,7 +23,6 @@
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
-#include "interface.h"
 #include "preferences-dialog.h"
 #include "secret-keys-store.h"
 

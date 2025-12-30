@@ -21,7 +21,6 @@
 
 #include "calendar-button.h"
 #include "calendar.h"
-#include "interface.h"
 
 /* This enum allows to know the reason why the calendar date has been changed */
 enum {
