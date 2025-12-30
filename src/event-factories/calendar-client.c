@@ -203,17 +203,13 @@ calendar_client_class_init (CalendarClientClass *klass)
 static ICalTimezone *
 calendar_client_config_get_icaltimezone (void)
 {
-	g_autofree char *location = NULL;
-	ICalTimezone *zone = NULL;
+	g_autofree char *location = e_cal_util_get_system_timezone_location ();
 
-	location = e_cal_util_get_system_timezone_location ();
 	if (!location) {
 		return i_cal_timezone_get_utc_timezone ();
 	}
 
-	zone = i_cal_timezone_get_builtin_timezone (location);
-
-	return zone;
+	return i_cal_timezone_get_builtin_timezone (location);
 }
 
 static void
@@ -443,7 +439,6 @@ get_time_from_property (ICalComponent *ical,
 	g_autoptr (ICalTime) ical_time = NULL;
 	g_autoptr (ICalParameter) param = NULL;
 	const ICalTimezone *time_zone = NULL;
-	time_t retval;
 
 	prop = i_cal_component_get_first_property (ical, prop_kind);
 	if (!prop) {
@@ -461,9 +456,7 @@ get_time_from_property (ICalComponent *ical,
 		time_zone = default_zone;
 	}
 
-	retval = i_cal_time_as_timet_with_zone (ical_time, time_zone);
-
-	return retval;
+	return i_cal_time_as_timet_with_zone (ical_time, time_zone);
 }
 
 static char *
@@ -481,33 +474,25 @@ get_ical_rid (ICalComponent *ical)
 static char *
 get_ical_summary (ICalComponent *ical)
 {
-	g_autoptr (ICalProperty) prop = NULL;
-	char *retval;
+	g_autoptr (ICalProperty) prop = i_cal_component_get_first_property (ical, I_CAL_SUMMARY_PROPERTY);
 
-	prop = i_cal_component_get_first_property (ical, I_CAL_SUMMARY_PROPERTY);
 	if (!prop) {
 		return NULL;
 	}
 
-	retval = g_strdup (i_cal_property_get_summary (prop));
-
-	return retval;
+	return g_strdup (i_cal_property_get_summary (prop));
 }
 
 static char *
 get_ical_description (ICalComponent *ical)
 {
-	g_autoptr (ICalProperty) prop = NULL;
-	char *retval;
+	g_autoptr (ICalProperty) prop = i_cal_component_get_first_property (ical, I_CAL_DESCRIPTION_PROPERTY);
 
-	prop = i_cal_component_get_first_property (ical, I_CAL_DESCRIPTION_PROPERTY);
 	if (!prop) {
 		return NULL;
 	}
 
-	retval = g_strdup (i_cal_property_get_description (prop));
-
-	return retval;
+	return g_strdup (i_cal_property_get_description (prop));
 }
 
 static inline time_t
@@ -540,7 +525,6 @@ get_ical_is_all_day (ICalComponent *ical,
 	time_t end_time;
 	g_autoptr (ICalDuration) duration = NULL;
 	g_autoptr (ICalTime) start_icaltime = NULL;
-	gboolean retval;
 
 	start_icaltime = i_cal_component_get_dtstart (ical);
 	if (!start_icaltime) {
@@ -569,9 +553,7 @@ get_ical_is_all_day (ICalComponent *ical,
 
 	duration = i_cal_property_get_duration (prop);
 
-	retval = i_cal_duration_as_int (duration) % 86400 == 0;
-
-	return retval;
+	return i_cal_duration_as_int (duration) % 86400 == 0;
 }
 
 static inline time_t
@@ -623,17 +605,13 @@ get_ical_completed_time (ICalComponent *ical,
 static int
 get_ical_priority (ICalComponent *ical)
 {
-	g_autoptr (ICalProperty) prop = NULL;
-	int retval;
+	g_autoptr (ICalProperty) prop = i_cal_component_get_first_property (ical, I_CAL_PRIORITY_PROPERTY);
 
-	prop = i_cal_component_get_first_property (ical, I_CAL_PRIORITY_PROPERTY);
 	if (!prop) {
 		return -1;
 	}
 
-	retval = i_cal_property_get_priority (prop);
-
-	return retval;
+	return i_cal_property_get_priority (prop);
 }
 
 static char *
@@ -778,15 +756,9 @@ resolve_timezone_id (const char *tzid,
                      GCancellable *cancellable,
                      GError **error)
 {
-	ICalTimezone *retval;
 	ECalClient *source = user_data;
 
-	retval = i_cal_timezone_get_builtin_timezone_from_tzid (tzid);
-	if (!retval) {
-		retval = e_cal_client_tzlookup_cb (tzid, source, cancellable, error);
-	}
-
-	return retval;
+	return i_cal_timezone_get_builtin_timezone_from_tzid (tzid) ?: e_cal_client_tzlookup_cb (tzid, source, cancellable, error);
 }
 
 static gboolean
