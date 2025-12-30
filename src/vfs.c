@@ -1005,40 +1005,39 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 
 	memset (self, 0, sizeof (AlmanahSQLiteVFS));
 
-	self->plain_filename = g_strdup (zName);
+	g_autofree gchar *plain_filename = g_strdup (zName);
+	g_autofree gchar *encrypted_filename = NULL;
 	self->decrypted = FALSE;
 
 	if (flags & SQLITE_OPEN_MAIN_DB) {
-		self->encrypted_filename = g_strdup_printf ("%s%s", self->plain_filename, ENCRYPTED_SUFFIX);
+		encrypted_filename = g_strdup_printf ("%s%s", plain_filename, ENCRYPTED_SUFFIX);
 
-		if (g_chmod (self->encrypted_filename, 0600) != 0 && errno != ENOENT) {
+		if (g_chmod (encrypted_filename, 0600) != 0 && errno != ENOENT) {
 			return SQLITE_IOERR;
 		}
 
-		g_stat (self->encrypted_filename, &encrypted_db_stat);
+		g_stat (encrypted_filename, &encrypted_db_stat);
 
 		/* If we're decrypting, don't bother if the cipher file doesn't exist (i.e. the database hasn't yet been created), or is empty
 		 * (i.e. corrupt). */
-		if (g_file_test (self->encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
+		if (g_file_test (encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && encrypted_db_stat.st_size > 0) {
 			/* Make a backup of the encrypted database file */
-			if (back_up_file (self->encrypted_filename) == FALSE) {
+			if (back_up_file (encrypted_filename) == FALSE) {
 				/* Translators: the first parameter is a filename. */
-				g_warning (_ ("Error backing up file ‘%s’"), self->encrypted_filename);
+				g_warning (_ ("Error backing up file ‘%s’"), encrypted_filename);
 				g_clear_error (&child_error);
 			}
 
-			g_stat (self->plain_filename, &plaintext_db_stat);
+			g_stat (plain_filename, &plaintext_db_stat);
 
 			/* Only decrypt the database if the plaintext database doesn't exist or is empty. If the plaintext database exists and is non-empty,
 			 * don't decrypt — just use that database. */
-			if (g_file_test (self->plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
+			if (g_file_test (plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
 				/* Decrypt the database, or display an error if that fails (but not if it fails due to a missing encrypted DB file — just
 				 * fall through and try to open the plain DB file in that case). */
 				if (decrypt_database (self, &child_error) != TRUE) {
 					if (child_error != NULL && child_error->code != G_FILE_ERROR_NOENT) {
 						g_warning (_ ("Error decrypting database: %s"), child_error->message);
-						g_free (self->plain_filename);
-						g_free (self->encrypted_filename);
 						return SQLITE_IOERR;
 					}
 				} else
@@ -1046,9 +1045,9 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 			}
 		} else {
 			/* Make a backup of the plaintext database file */
-			if (g_file_test (self->encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && back_up_file (self->plain_filename) != TRUE) {
+			if (g_file_test (encrypted_filename, G_FILE_TEST_IS_REGULAR) == TRUE && back_up_file (plain_filename) != TRUE) {
 				/* Translators: the first parameter is a filename. */
-				g_warning (_ ("Error backing up file ‘%s’"), self->plain_filename);
+				g_warning (_ ("Error backing up file ‘%s’"), plain_filename);
 				g_clear_error (&child_error);
 			}
 		}
@@ -1066,26 +1065,20 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 		if (flags & SQLITE_OPEN_READWRITE)
 			oflags |= O_RDWR;
 
-		self->fd = g_open (self->plain_filename, oflags, 0600);
+		self->fd = g_open (plain_filename, oflags, 0600);
 		if (self->fd < 0) {
-			if (self->plain_filename)
-				g_free (self->plain_filename);
-			if (self->encrypted_filename)
-				g_free (self->encrypted_filename);
 			return SQLITE_CANTOPEN;
 		}
 
-		if (g_chmod (self->plain_filename, 0600) != 0 && errno != ENOENT) {
+		if (g_chmod (plain_filename, 0600) != 0 && errno != ENOENT) {
 			g_critical (_ ("Error changing database file permissions: %s"), g_strerror (errno));
-			if (self->plain_filename)
-				g_free (self->plain_filename);
-			if (self->encrypted_filename)
-				g_free (self->encrypted_filename);
 			close (self->fd);
 			return SQLITE_IOERR;
 		}
 
 		self->aBuffer = g_steal_pointer (&aBuf);
+		self->plain_filename = g_steal_pointer (&plain_filename);
+		self->encrypted_filename = g_steal_pointer (&encrypted_filename);
 
 		if (pOutFlags) {
 			*pOutFlags = flags;
