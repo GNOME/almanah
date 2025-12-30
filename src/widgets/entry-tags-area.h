@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_ENTRY_TAGS_AREA_H
-#define ALMANAH_ENTRY_TAGS_AREA_H
+#pragma once
 
 #include "entry.h"
 #include "storage-manager.h"
@@ -34,5 +33,3 @@ void almanah_entry_tags_area_set_storage_manager (AlmanahEntryTagsArea *entry_ta
 void almanah_entry_tags_area_set_back_widget (AlmanahEntryTagsArea *entry_tags_area, GtkWidget *back_widget);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_ENTRY_TAGS_AREA_H */

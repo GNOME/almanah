@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_PREFERENCES_DIALOG_H
-#define ALMANAH_PREFERENCES_DIALOG_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -32,5 +31,3 @@ G_DECLARE_FINAL_TYPE (AlmanahPreferencesDialog, almanah_preferences_dialog, ALMA
 AlmanahPreferencesDialog *almanah_preferences_dialog_new (GSettings *settings) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 G_END_DECLS
-
-#endif /* !ALMANAH_PREFERENCES_DIALOG_H */

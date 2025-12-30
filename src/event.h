@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_EVENT_H
-#define ALMANAH_EVENT_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -49,5 +48,3 @@ const gchar *almanah_event_get_description (AlmanahEvent *self);
 const gchar *almanah_event_get_icon_name (AlmanahEvent *self);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_EVENT_H */

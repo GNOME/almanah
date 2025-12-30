@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_ENTRY_H
-#define ALMANAH_ENTRY_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -63,5 +62,3 @@ void almanah_entry_get_last_edited (AlmanahEntry *self, GDate *last_edited);
 void almanah_entry_set_last_edited (AlmanahEntry *self, GDate *last_edited);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_ENTRY_H */

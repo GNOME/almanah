@@ -20,8 +20,7 @@
  * Author: Ettore Perazzoli <ettore@ximian.com>
  */
 
-#ifndef E_SOURCE_SELECTOR_H
-#define E_SOURCE_SELECTOR_H
+#pragma once
 
 #include <gtk/gtk.h>
 #include <libedataserver/libedataserver.h>
@@ -93,5 +92,3 @@ void e_source_selector_queue_write (ESourceSelector *selector,
                                     ESource *source);
 
 G_END_DECLS
-
-#endif /* E_SOURCE_SELECTOR_H */

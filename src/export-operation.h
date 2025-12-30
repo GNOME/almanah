@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_EXPORT_OPERATION_H
-#define ALMANAH_EXPORT_OPERATION_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -42,5 +41,3 @@ gboolean almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncRe
 void almanah_export_operation_populate_model (GtkListStore *list_store, guint type_id_column, guint name_column, guint description_column, guint action_column);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_EXPORT_OPERATION_H */

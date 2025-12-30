@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_SEARCH_DIALOG_H
-#define ALMANAH_SEARCH_DIALOG_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -32,5 +31,3 @@ G_DECLARE_FINAL_TYPE (AlmanahSearchDialog, almanah_search_dialog, ALMANAH, SEARC
 AlmanahSearchDialog *almanah_search_dialog_new (void);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_SEARCH_DIALOG_H */

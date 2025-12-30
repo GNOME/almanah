@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_HYPERLINK_TAG_H
-#define ALMANAH_HYPERLINK_TAG_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -35,5 +34,3 @@ const gchar *almanah_hyperlink_tag_get_uri (AlmanahHyperlinkTag *self) G_GNUC_PU
 void almanah_hyperlink_tag_set_uri (AlmanahHyperlinkTag *self, const gchar *uri);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_HYPERLINK_TAG_H */

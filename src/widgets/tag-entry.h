@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_TAG_ENTRY_H
-#define ALMANAH_TAG_ENTRY_H
+#pragma once
 
 #include <gtk/gtk.h>
 
@@ -32,5 +31,3 @@ G_DECLARE_FINAL_TYPE (AlmanahTagEntry, almanah_tag_entry, ALMANAH, TAG_ENTRY, Gt
 void almanah_tag_entry_set_storage_manager (AlmanahTagEntry *tag_entry, AlmanahStorageManager *storage_manager);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_TAG_ENTRY_H */

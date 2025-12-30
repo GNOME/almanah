@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_INTERFACE_H
-#define ALMANAH_INTERFACE_H
+#pragma once
 
 #include <gtk/gtk.h>
 
@@ -28,5 +27,3 @@ void almanah_calendar_month_changed_cb (GtkCalendar *calendar, gpointer user_dat
 gboolean almanah_run_on_screen (GdkScreen *screen, const gchar *command_line, GError **error);
 
 G_END_DECLS
-
-#endif /* ALMANAH_INTERFACE_H */

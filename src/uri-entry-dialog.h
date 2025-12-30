@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_URI_ENTRY_DIALOG_H
-#define ALMANAH_URI_ENTRY_DIALOG_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -36,5 +35,3 @@ const gchar *almanah_uri_entry_dialog_get_uri (AlmanahUriEntryDialog *self) G_GN
 void almanah_uri_entry_dialog_set_uri (AlmanahUriEntryDialog *self, const gchar *uri);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_URI_ENTRY_DIALOG_H */

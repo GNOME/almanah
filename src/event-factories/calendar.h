@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_CALENDAR_EVENT_FACTORY_H
-#define ALMANAH_CALENDAR_EVENT_FACTORY_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -31,5 +30,3 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (AlmanahCalendarEventFactory, almanah_calendar_event_factory, ALMANAH, CALENDAR_EVENT_FACTORY, AlmanahEventFactory)
 
 G_END_DECLS
-
-#endif /* !ALMANAH_CALENDAR_EVENT_FACTORY_H */

@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_PRINTING_H
-#define ALMANAH_PRINTING_H
+#pragma once
 
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -29,5 +28,3 @@ G_BEGIN_DECLS
 void almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPageSetup **page_setup, GtkPrintSettings **print_settings, AlmanahStorageManager *storage_manager);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_PRINTING_H */

@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_CALENDAR_BUTTON_H
-#define ALMANAH_CALENDAR_BUTTON_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -45,5 +44,3 @@ void almanah_calendar_button_popdown (AlmanahCalendarButton *self);
 void almanah_calendar_button_select_today (AlmanahCalendarButton *self);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_CALENDAR_BUTTON_H */

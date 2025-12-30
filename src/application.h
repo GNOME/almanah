@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_APPLICATION_H
-#define ALMANAH_APPLICATION_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -39,5 +38,3 @@ AlmanahStorageManager *almanah_application_dup_storage_manager (AlmanahApplicati
 GSettings *almanah_application_dup_settings (AlmanahApplication *self) G_GNUC_WARN_UNUSED_RESULT;
 
 G_END_DECLS
-
-#endif /* !ALMANAH_APPLICATION_H */

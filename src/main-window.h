@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_MAIN_WINDOW_H
-#define ALMANAH_MAIN_WINDOW_H
+#pragma once
 
 #include <config.h>
 #include <glib-object.h>
@@ -37,5 +36,3 @@ void almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date);
 void almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt_user);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_MAIN_WINDOW_H */

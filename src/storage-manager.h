@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_STORAGE_MANAGER_H
-#define ALMANAH_STORAGE_MANAGER_H
+#pragma once
 
 #include <gio/gio.h>
 #include <glib-object.h>
@@ -83,5 +82,3 @@ gboolean almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, A
 GPtrArray *almanah_storage_manager_get_tags (AlmanahStorageManager *self);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_STORAGE_MANAGER_H */

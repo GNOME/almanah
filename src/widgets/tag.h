@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_TAG_H
-#define ALMANAH_TAG_H
+#pragma once
 
 #include <gtk/gtk.h>
 
@@ -32,5 +31,3 @@ const gchar *almanah_tag_get_tag (AlmanahTag *tag_widget);
 void almanah_tag_remove (AlmanahTag *tag_widget);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_TAG_H */

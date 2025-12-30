@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_IMPORT_EXPORT_DIALOG_H
-#define ALMANAH_IMPORT_EXPORT_DIALOG_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -42,5 +41,3 @@ AlmanahImportResultsDialog *almanah_import_results_dialog_new (void) G_GNUC_WARN
 void almanah_import_results_dialog_add_result (AlmanahImportResultsDialog *self, const GDate *date, AlmanahImportStatus status, const gchar *message);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_IMPORT_EXPORT_DIALOG_H */

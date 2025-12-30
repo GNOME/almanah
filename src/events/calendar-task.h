@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_CALENDAR_TASK_EVENT_H
-#define ALMANAH_CALENDAR_TASK_EVENT_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -33,5 +32,3 @@ G_DECLARE_FINAL_TYPE (AlmanahCalendarTaskEvent, almanah_calendar_task_event, ALM
 AlmanahCalendarTaskEvent *almanah_calendar_task_event_new (const gchar *uid, const gchar *summary, time_t start_time);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_CALENDAR_TASK_EVENT_H */

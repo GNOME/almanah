@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_EVENT_MANAGER_H
-#define ALMANAH_EVENT_MANAGER_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -36,5 +35,3 @@ void almanah_event_manager_query_events (AlmanahEventManager *self, AlmanahEvent
 GSList *almanah_event_manager_get_events (AlmanahEventManager *self, AlmanahEventFactoryType type_id, GDate *date);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_EVENT_MANAGER_H */

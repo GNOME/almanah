@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_CALENDAR_H
-#define ALMANAH_CALENDAR_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -41,5 +40,3 @@ void almanah_calendar_select_today (AlmanahCalendar *self);
 void almanah_calendar_get_date (AlmanahCalendar *self, GDate *date);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_CALENDAR_H */

@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_TAG_ACCESSIBLE_H
-#define ALMANAH_TAG_ACCESSIBLE_H
+#pragma once
 
 #include <gtk/gtk-a11y.h>
 #include <gtk/gtk.h>
@@ -29,5 +28,3 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (AlmanahTagAccessible, almanah_tag_accessible, ALMANAH, TAG_ACCESSIBLE, GtkWidgetAccessible)
 
 G_END_DECLS
-
-#endif /* !ALMANAH_TAG_ACCESSIBLE_H */

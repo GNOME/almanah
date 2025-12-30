@@ -16,8 +16,7 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ALMANAH_DATE_ENTRY_DIALOG_H
-#define ALMANAH_DATE_ENTRY_DIALOG_H
+#pragma once
 
 #include <glib-object.h>
 #include <glib.h>
@@ -36,5 +35,3 @@ void almanah_date_entry_dialog_get_date (AlmanahDateEntryDialog *self, GDate *da
 void almanah_date_entry_dialog_set_date (AlmanahDateEntryDialog *self, GDate *date);
 
 G_END_DECLS
-
-#endif /* !ALMANAH_DATE_ENTRY_DIALOG_H */
