@@ -52,7 +52,7 @@ static void almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const g
 
 /* Signals */
 void tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self);
-void entry_tags_area_remove_foreach_cb (GtkWidget *tag_widget, AlmanahEntryTagsArea *self);
+static void entry_tags_area_remove_foreach_cb (GtkWidget *flow_box_child, AlmanahEntryTagsArea *self);
 static void tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahEntryTagsArea, almanah_entry_tags_area, GTK_TYPE_FLOW_BOX)
@@ -233,14 +233,16 @@ tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 	}
 }
 
-void
-entry_tags_area_remove_foreach_cb (GtkWidget *tag_widget, AlmanahEntryTagsArea *self)
+static void
+entry_tags_area_remove_foreach_cb (GtkWidget *flow_box_child, AlmanahEntryTagsArea *self)
 {
 	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);
 
+	GtkWidget *tag_widget = gtk_bin_get_child (GTK_BIN (flow_box_child));
+
 	/* Remove all the tag widget */
 	if (ALMANAH_IS_TAG (tag_widget)) {
-		gtk_widget_destroy (tag_widget);
+		gtk_widget_destroy (flow_box_child);
 		priv->tags_number--;
 	}
 
