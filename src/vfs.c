@@ -72,6 +72,13 @@ _Thread_local sqlite3_vfs *almanah_vfs_singleton = NULL;
 */
 #define MAXPATHNAME 512
 
+/**
+ * String allocated using sqlite3_malloc.
+ */
+typedef gchar *SqliteStr;
+
+G_DEFINE_AUTO_CLEANUP_FREE_FUNC (SqliteStr, sqlite3_free, NULL)
+
 /*
 ** When using this VFS, the sqlite3_file* handles that SQLite uses are
 ** actually pointers to instances of type DemoFile.
@@ -981,7 +988,7 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS *) pFile;
 	int oflags = 0;
-	char *aBuf = NULL;
+	g_auto (SqliteStr) aBuf = NULL;
 	struct stat encrypted_db_stat, plaintext_db_stat;
 	g_autoptr (GError) child_error = NULL;
 
@@ -1048,7 +1055,6 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 	}
 
 	if (self->decrypted) {
-		sqlite3_free (aBuf);
 		*pOutFlags = 0;
 	} else {
 		if (flags & SQLITE_OPEN_EXCLUSIVE)
@@ -1062,7 +1068,6 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 
 		self->fd = g_open (self->plain_filename, oflags, 0600);
 		if (self->fd < 0) {
-			sqlite3_free (aBuf);
 			if (self->plain_filename)
 				g_free (self->plain_filename);
 			if (self->encrypted_filename)
@@ -1072,7 +1077,6 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 
 		if (g_chmod (self->plain_filename, 0600) != 0 && errno != ENOENT) {
 			g_critical (_ ("Error changing database file permissions: %s"), g_strerror (errno));
-			sqlite3_free (aBuf);
 			if (self->plain_filename)
 				g_free (self->plain_filename);
 			if (self->encrypted_filename)
@@ -1081,7 +1085,7 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 			return SQLITE_IOERR;
 		}
 
-		self->aBuffer = aBuf;
+		self->aBuffer = g_steal_pointer (&aBuf);
 
 		if (pOutFlags) {
 			*pOutFlags = flags;
