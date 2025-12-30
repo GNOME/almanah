@@ -139,8 +139,7 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 	if (fixture->statement != NULL)
 		sqlite3_finalize (fixture->statement);
 
-	if (fixture->settings != NULL)
-		g_object_unref (fixture->settings);
+	g_clear_object (&fixture->settings);
 
 	if (fixture->db != NULL)
 		sqlite3_close (fixture->db);
@@ -190,8 +189,7 @@ almanah_test_vfs_plain_teardown (struct AlmanahTestVfsFixture *fixture, __attrib
 	if (fixture->statement != NULL)
 		sqlite3_finalize (fixture->statement);
 
-	if (fixture->settings != NULL)
-		g_object_unref (fixture->settings);
+	g_clear_object (&fixture->settings);
 
 	if (fixture->db != NULL)
 		sqlite3_close (fixture->db);

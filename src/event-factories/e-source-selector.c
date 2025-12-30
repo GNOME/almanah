@@ -154,12 +154,8 @@ clear_saved_primary_selection (ESourceSelector *selector)
 static void
 async_context_free (AsyncContext *async_context)
 {
-	if (async_context->selector != NULL)
-		g_object_unref (async_context->selector);
-
-	if (async_context->source != NULL)
-		g_object_unref (async_context->source);
-
+	g_clear_object (&async_context->selector);
+	g_clear_object (&async_context->source);
 	g_free (async_context);
 }
 
