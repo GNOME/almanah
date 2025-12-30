@@ -16,13 +16,13 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef ALMANAH_PRINTING_H
+#define ALMANAH_PRINTING_H
+
 #include <glib.h>
 #include <gtk/gtk.h>
 
 #include "storage-manager.h"
-
-#ifndef ALMANAH_PRINTING_H
-#define ALMANAH_PRINTING_H
 
 G_BEGIN_DECLS
 

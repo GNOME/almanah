@@ -16,10 +16,10 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtk/gtk.h>
-
 #ifndef ALMANAH_INTERFACE_H
 #define ALMANAH_INTERFACE_H
+
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
