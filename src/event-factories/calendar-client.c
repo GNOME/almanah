@@ -50,6 +50,7 @@
 typedef struct _CalendarClientQuery CalendarClientQuery;
 typedef struct _CalendarClientSource CalendarClientSource;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalDuration, g_object_unref);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalProperty, g_object_unref);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalTime, g_object_unref);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalParameter, g_object_unref);
@@ -202,7 +203,7 @@ calendar_client_class_init (CalendarClientClass *klass)
 static ICalTimezone *
 calendar_client_config_get_icaltimezone (void)
 {
-	char *location;
+	g_autofree char *location = NULL;
 	ICalTimezone *zone = NULL;
 
 	location = e_cal_util_get_system_timezone_location ();
@@ -211,7 +212,6 @@ calendar_client_config_get_icaltimezone (void)
 	}
 
 	zone = i_cal_timezone_get_builtin_timezone (location);
-	g_free (location);
 
 	return zone;
 }
@@ -278,7 +278,7 @@ calendar_client_init (CalendarClient *client)
 {
 	CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
 	GSList *esources;
-	GFile *tz;
+	g_autoptr (GFile) tz = NULL;
 
 	priv->calendar_sources = calendar_sources_get ();
 
@@ -306,7 +306,6 @@ calendar_client_init (CalendarClient *client)
 
 	tz = g_file_new_for_path ("/etc/localtime");
 	priv->tz_monitor = g_file_monitor_file (tz, G_FILE_MONITOR_NONE, NULL, NULL);
-	g_object_unref (tz);
 	if (priv->tz_monitor == NULL) {
 		g_warning ("Can't monitor /etc/localtime for changes");
 	} else {
@@ -482,7 +481,7 @@ get_ical_rid (ICalComponent *ical)
 static char *
 get_ical_summary (ICalComponent *ical)
 {
-	ICalProperty *prop;
+	g_autoptr (ICalProperty) prop = NULL;
 	char *retval;
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_SUMMARY_PROPERTY);
@@ -492,15 +491,13 @@ get_ical_summary (ICalComponent *ical)
 
 	retval = g_strdup (i_cal_property_get_summary (prop));
 
-	g_object_unref (prop);
-
 	return retval;
 }
 
 static char *
 get_ical_description (ICalComponent *ical)
 {
-	ICalProperty *prop;
+	g_autoptr (ICalProperty) prop = NULL;
 	char *retval;
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_DESCRIPTION_PROPERTY);
@@ -509,8 +506,6 @@ get_ical_description (ICalComponent *ical)
 	}
 
 	retval = g_strdup (i_cal_property_get_description (prop));
-
-	g_object_unref (prop);
 
 	return retval;
 }
@@ -540,11 +535,11 @@ get_ical_is_all_day (ICalComponent *ical,
                      time_t start_time,
                      ICalTimezone *default_zone)
 {
-	ICalProperty *prop;
+	g_autoptr (ICalProperty) prop = NULL;
 	const struct tm *start_tm;
 	time_t end_time;
-	ICalDuration *duration;
-	ICalTime *start_icaltime;
+	g_autoptr (ICalDuration) duration = NULL;
+	g_autoptr (ICalTime) start_icaltime = NULL;
 	gboolean retval;
 
 	start_icaltime = i_cal_component_get_dtstart (ical);
@@ -553,7 +548,6 @@ get_ical_is_all_day (ICalComponent *ical,
 	}
 
 	if (i_cal_time_is_date (start_icaltime)) {
-		g_object_unref (start_icaltime);
 		return TRUE;
 	}
 
@@ -579,9 +573,6 @@ get_ical_is_all_day (ICalComponent *ical,
 
 	retval = i_cal_duration_as_int (duration) % 86400 == 0;
 
-	g_object_unref (duration);
-	g_object_unref (prop);
-
 	return retval;
 }
 
@@ -598,7 +589,7 @@ get_ical_due_time (ICalComponent *ical,
 static guint
 get_ical_percent_complete (ICalComponent *ical)
 {
-	ICalProperty *prop;
+	g_autoptr (ICalProperty) prop = NULL;
 	ICalPropertyStatus status;
 	int percent_complete;
 
@@ -618,8 +609,6 @@ get_ical_percent_complete (ICalComponent *ical)
 
 	percent_complete = i_cal_property_get_percentcomplete (prop);
 
-	g_object_unref (prop);
-
 	return CLAMP (percent_complete, 0, 100);
 }
 
@@ -636,7 +625,7 @@ get_ical_completed_time (ICalComponent *ical,
 static int
 get_ical_priority (ICalComponent *ical)
 {
-	ICalProperty *prop;
+	g_autoptr (ICalProperty) prop = NULL;
 	int retval;
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_PRIORITY_PROPERTY);
@@ -645,8 +634,6 @@ get_ical_priority (ICalComponent *ical)
 	}
 
 	retval = i_cal_property_get_priority (prop);
-
-	g_object_unref (prop);
 
 	return retval;
 }
@@ -948,7 +935,7 @@ calendar_event_new (ICalComponent *ical,
                     CalendarClientSource *source,
                     ICalTimezone *default_zone)
 {
-	CalendarEvent *event;
+	g_autofree CalendarEvent *event = NULL;
 
 	event = g_new0 (CalendarEvent, 1);
 
@@ -994,11 +981,10 @@ calendar_event_new (ICalComponent *ical,
 		default:
 			g_warning ("Unknown calendar component type: %d\n",
 			           i_cal_component_isa (ical));
-			g_free (event);
 			return NULL;
 	}
 
-	return event;
+	return g_steal_pointer (&event);
 }
 
 static CalendarEvent *
@@ -1247,7 +1233,7 @@ calendar_client_handle_query_result (CalendarClientSource *source,
 		CalendarEvent *event;
 		CalendarEvent *old_event;
 		ICalComponent *ical = l->data;
-		char *uid;
+		g_autofree char *uid = NULL;
 
 		event = calendar_event_new (ical, source, priv->zone);
 		if (!event) {
@@ -1270,11 +1256,9 @@ calendar_client_handle_query_result (CalendarClientSource *source,
 
 			calendar_event_debug_dump (event);
 
-			g_hash_table_replace (query->events, uid, event);
+			g_hash_table_replace (query->events, g_steal_pointer (&uid), event);
 
 			events_changed = TRUE;
-		} else {
-			g_free (uid);
 		}
 	}
 
@@ -1388,12 +1372,11 @@ calendar_client_start_query (CalendarClient *client,
                              const char *query)
 {
 	ECalClientView *view = NULL;
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 
 	if (!e_cal_client_get_view_sync (source->cal_client, query, &view, NULL, &error)) {
 		g_warning ("Error preparing the query: '%s': %s\n",
 		           query, error->message);
-		g_error_free (error);
 		return;
 	}
 
@@ -1434,9 +1417,9 @@ calendar_client_update_appointments (CalendarClient *client)
 {
 	CalendarClientPrivate *priv = calendar_client_get_instance_private (client);
 	GSList *l;
-	char *query;
-	char *month_begin;
-	char *month_end;
+	g_autofree char *query = NULL;
+	g_autofree char *month_begin = NULL;
+	g_autofree char *month_end = NULL;
 
 	if (priv->month == G_MAXUINT ||
 	    priv->year == G_MAXUINT) {
@@ -1460,10 +1443,6 @@ calendar_client_update_appointments (CalendarClient *client)
 
 		calendar_client_start_query (client, cs, query);
 	}
-
-	g_free (month_begin);
-	g_free (month_end);
-	g_free (query);
 }
 
 /* FIXME:
