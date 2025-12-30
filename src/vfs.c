@@ -194,9 +194,6 @@ maybe_secure_memory_free (gpointer memory)
 }
 
 /* Callback based data buffer functions for GPGME */
-ssize_t _gpgme_read_cb (void *handle, void *buffer, size_t size);
-ssize_t _gpgme_write_cb (void *handle, const void *buffer, size_t size);
-off_t _gpgme_seek_cb (void *handle, off_t offset, int whence);
 
 ssize_t
 _gpgme_read_cb (void *handle, void *buffer, size_t size)
