@@ -15,3 +15,4 @@ UseTab: AlignWithSpaces
 IndentWidth: 8
 TabWidth: 8
 IndentCaseLabels: true
+InsertBraces: true
