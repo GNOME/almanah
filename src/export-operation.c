@@ -252,8 +252,9 @@ export_text_files (AlmanahExportOperation *self, GFile *destination, AlmanahExpo
 		gtk_text_buffer_delete (buffer, &start_iter, &end_iter);
 
 		/* Check for cancellation */
-		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
+		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE) {
 			break;
+		}
 	}
 
 	/* Check if the loop was broken due to an error */
@@ -354,8 +355,9 @@ almanah_export_operation_finish (AlmanahExportOperation *self, GAsyncResult *asy
 
 	g_warn_if_fail (g_task_get_source_tag (task) == almanah_export_operation_run);
 
-	if (g_async_result_legacy_propagate_error (G_ASYNC_RESULT (task), error) == TRUE)
+	if (g_async_result_legacy_propagate_error (G_ASYNC_RESULT (task), error) == TRUE) {
 		return FALSE;
+	}
 
 	return TRUE;
 }

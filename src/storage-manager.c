@@ -200,8 +200,9 @@ almanah_storage_manager_set_property (GObject *object, guint property_id, const 
 
 	switch (property_id) {
 		case PROP_FILENAME:
-			if (priv->filename)
+			if (priv->filename) {
 				g_free (priv->filename);
+			}
 			priv->filename = g_strdup (g_value_get_string (value));
 			break;
 		case PROP_SETTINGS:
@@ -232,8 +233,9 @@ create_tables (AlmanahStorageManager *self)
 	};
 
 	i = 0;
-	while (queries[i] != NULL)
+	while (queries[i] != NULL) {
 		simple_query (self, queries[i++], NULL);
+	}
 }
 
 gboolean
@@ -266,10 +268,11 @@ almanah_storage_manager_disconnect (AlmanahStorageManager *self, __attribute__ (
 
 	sqlite_ret = sqlite3_close (priv->connection);
 
-	if (sqlite_ret != SQLITE_OK)
+	if (sqlite_ret != SQLITE_OK) {
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, "Something goes wrong closing the database");
-	else
+	} else {
 		g_signal_emit (self, storage_manager_signals[SIGNAL_DISCONNECTED], 0, NULL, NULL);
+	}
 
 	almanah_vfs_finish ();
 
@@ -311,8 +314,9 @@ almanah_storage_manager_get_statistics (AlmanahStorageManager *self, guint *entr
 	*entry_count = 0;
 
 	/* Get the number of entries and the number of letters */
-	if (sqlite3_prepare_v2 (priv->connection, "SELECT COUNT (year) FROM entries", -1, &statement, NULL) != SQLITE_OK)
+	if (sqlite3_prepare_v2 (priv->connection, "SELECT COUNT (year) FROM entries", -1, &statement, NULL) != SQLITE_OK) {
 		return FALSE;
+	}
 
 	if (sqlite3_step (statement) != SQLITE_ROW) {
 		sqlite3_finalize (statement);
@@ -342,8 +346,9 @@ almanah_storage_manager_entry_exists (AlmanahStorageManager *self, GDate *date)
 	sqlite3_bind_int (statement, 3, g_date_get_day (date));
 
 	/* If there's a result, this'll return SQLITE_ROW; it'll return SQLITE_DONE otherwise */
-	if (sqlite3_step (statement) == SQLITE_ROW)
+	if (sqlite3_step (statement) == SQLITE_ROW) {
 		exists = TRUE;
+	}
 
 	sqlite3_finalize (statement);
 
@@ -502,10 +507,11 @@ almanah_storage_manager_set_entry (AlmanahStorageManager *self, AlmanahEntry *en
 		sqlite3_finalize (statement);
 
 		/* Signal of the operation */
-		if (existed_before == TRUE)
+		if (existed_before == TRUE) {
 			g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_MODIFIED], 0, entry);
-		else
+		} else {
 			g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_ADDED], 0, entry);
+		}
 
 		return TRUE;
 	}
@@ -564,8 +570,9 @@ almanah_storage_manager_search_entries (AlmanahStorageManager *self, const gchar
 	g_return_val_if_fail (iter->statement != NULL || search_string != NULL, NULL);
 	g_return_val_if_fail (iter->statement == NULL || iter->user_data != NULL, NULL);
 
-	if (iter->finished == TRUE)
+	if (iter->finished == TRUE) {
 		return NULL;
+	}
 
 	if (iter->statement == NULL) {
 		AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
@@ -825,8 +832,9 @@ almanah_storage_manager_get_entries (AlmanahStorageManager *self, AlmanahStorage
 	g_return_val_if_fail (ALMANAH_IS_STORAGE_MANAGER (self), NULL);
 	g_return_val_if_fail (iter != NULL, NULL);
 
-	if (iter->finished == TRUE)
+	if (iter->finished == TRUE) {
 		return NULL;
+	}
 
 	if (iter->statement == NULL) {
 		AlmanahStorageManagerPrivate *priv = almanah_storage_manager_get_instance_private (self);
@@ -877,8 +885,9 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 
 	/* Build the result array */
 	i = g_date_get_days_in_month (month, year);
-	if (num_days != NULL)
+	if (num_days != NULL) {
 		*num_days = i;
+	}
 	days = g_malloc0 (sizeof (gboolean) * i);
 
 	/* Prepare and run the query */
@@ -890,8 +899,9 @@ almanah_storage_manager_get_month_marked_days (AlmanahStorageManager *self, GDat
 	sqlite3_bind_int (statement, 2, month);
 
 	/* For each day which is returned, mark it in the array of days */
-	while ((result = sqlite3_step (statement)) == SQLITE_ROW)
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
 		days[sqlite3_column_int (statement, 0) - 1] = TRUE;
+	}
 
 	sqlite3_finalize (statement);
 
@@ -914,8 +924,9 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 
 	/* Build the result array */
 	i = g_date_get_days_in_month (month, year);
-	if (num_days != NULL)
+	if (num_days != NULL) {
 		*num_days = i;
+	}
 	days = g_malloc0 (sizeof (gboolean) * i);
 
 	/* Prepare and run the query */
@@ -928,8 +939,9 @@ almanah_storage_manager_get_month_important_days (AlmanahStorageManager *self, G
 	sqlite3_bind_int (statement, 2, month);
 
 	/* For each day which is returned, mark it in the array of days */
-	while ((result = sqlite3_step (statement)) == SQLITE_ROW)
+	while ((result = sqlite3_step (statement)) == SQLITE_ROW) {
 		days[sqlite3_column_int (statement, 0) - 1] = TRUE;
+	}
 
 	sqlite3_finalize (statement);
 
@@ -1038,8 +1050,9 @@ almanah_storage_manager_entry_remove_tag (AlmanahStorageManager *self, AlmanahEn
 	                       g_date_get_day (&date),
 	                       tag);
 
-	if (result)
+	if (result) {
 		g_signal_emit (self, storage_manager_signals[SIGNAL_ENTRY_TAG_REMOVED], 0, entry, tag);
+	}
 
 	return result;
 }
@@ -1141,8 +1154,9 @@ almanah_storage_manager_entry_check_tag (AlmanahStorageManager *self, AlmanahEnt
 	sqlite3_bind_text (statement, 4, tag, -1, SQLITE_STATIC);
 
 	if ((q_result = sqlite3_step (statement)) == SQLITE_ROW) {
-		if (sqlite3_column_int (statement, 0) > 0)
+		if (sqlite3_column_int (statement, 0) > 0) {
 			result = TRUE;
+		}
 	}
 
 	if (q_result != SQLITE_DONE) {

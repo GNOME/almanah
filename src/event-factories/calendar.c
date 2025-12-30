@@ -139,8 +139,9 @@ get_events (AlmanahEventFactory *event_factory, GDate *date)
 			event = ALMANAH_EVENT (almanah_calendar_appointment_event_new (calendar_event->event.appointment.summary, calendar_event->event.appointment.start_time));
 		}
 
-		if (event != NULL)
+		if (event != NULL) {
 			events = g_slist_prepend (events, event);
+		}
 
 		calendar_event_free (calendar_event);
 	}

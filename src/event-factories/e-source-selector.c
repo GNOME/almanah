@@ -113,8 +113,9 @@ safe_toggle_activate (GtkCellRenderer *cell,
 		cairo_region_destroy (region);
 	}
 
-	if (!point_in_cell_area)
+	if (!point_in_cell_area) {
 		return FALSE;
+	}
 
 	return GTK_CELL_RENDERER_CLASS (
 		   e_cell_renderer_safe_toggle_parent_class)
@@ -239,8 +240,9 @@ source_selector_update_row (ESourceSelector *selector,
 
 	/* This function runs when ANY ESource in the registry changes.
 	 * If the ESource is not in our tree model then return silently. */
-	if (reference == NULL)
+	if (reference == NULL) {
 		return;
+	}
 
 	/* If we do have a row reference, it should be valid. */
 	g_return_if_fail (gtk_tree_row_reference_valid (reference));
@@ -254,8 +256,9 @@ source_selector_update_row (ESourceSelector *selector,
 	extension_name = e_source_selector_get_extension_name (selector);
 	selected = e_source_selector_source_is_selected (selector, source);
 
-	if (e_source_has_extension (source, extension_name))
+	if (e_source_has_extension (source, extension_name)) {
 		extension = e_source_get_extension (source, extension_name);
+	}
 
 	if (extension != NULL) {
 		GdkRGBA color;
@@ -267,12 +270,14 @@ source_selector_update_row (ESourceSelector *selector,
 		    E_IS_SOURCE_SELECTABLE (extension) &&
 		    e_source_selector_get_show_colors (selector);
 
-		if (show_color)
+		if (show_color) {
 			color_spec = e_source_selectable_get_color (
 			    E_SOURCE_SELECTABLE (extension));
+		}
 
-		if (color_spec != NULL && *color_spec != '\0')
+		if (color_spec != NULL && *color_spec != '\0') {
 			show_color = gdk_rgba_parse (&color, color_spec);
+		}
 
 		show_toggle = e_source_selector_get_show_toggles (selector);
 
@@ -313,16 +318,18 @@ source_selector_traverse (GNode *node,
 	GtkTreeIter iter;
 
 	/* Skip the root node. */
-	if (G_NODE_IS_ROOT (node))
+	if (G_NODE_IS_ROOT (node)) {
 		return FALSE;
+	}
 
 	source_index = priv->source_index;
 
 	model = gtk_tree_view_get_model (GTK_TREE_VIEW (selector));
 
-	if (node->parent != NULL && node->parent->data != NULL)
+	if (node->parent != NULL && node->parent->data != NULL) {
 		reference = g_hash_table_lookup (
 		    source_index, node->parent->data);
+	}
 
 	if (gtk_tree_row_reference_valid (reference)) {
 		GtkTreeIter parent;
@@ -331,8 +338,9 @@ source_selector_traverse (GNode *node,
 		gtk_tree_model_get_iter (model, &parent, path);
 
 		gtk_tree_store_append (GTK_TREE_STORE (model), &iter, &parent);
-	} else
+	} else {
 		gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+	}
 
 	source = E_SOURCE (node->data);
 
@@ -380,8 +388,9 @@ source_selector_build_model (ESourceSelector *selector)
 
 	/* Make sure we have what we need to build the model, since
 	 * this can get called early in the initialization phase. */
-	if (registry == NULL || extension_name == NULL)
+	if (registry == NULL || extension_name == NULL) {
 		return;
+	}
 
 	source_index = priv->source_index;
 	selected = e_source_selector_ref_primary_selection (selector);
@@ -447,8 +456,9 @@ source_selector_expand_to_source (ESourceSelector *selector,
 	reference = g_hash_table_lookup (source_index, source);
 
 	/* If the ESource is not in our tree model then return silently. */
-	if (reference == NULL)
+	if (reference == NULL) {
 		return;
+	}
 
 	/* If we do have a row reference, it should be valid. */
 	g_return_if_fail (gtk_tree_row_reference_valid (reference));
@@ -521,8 +531,9 @@ same_source_name_exists (ESourceSelector *selector,
 		const gchar *source_name;
 
 		source_name = e_source_get_display_name (source);
-		if (g_strcmp0 (display_name, source_name) == 0)
+		if (g_strcmp0 (display_name, source_name) == 0) {
 			return TRUE;
+		}
 	}
 
 	return FALSE;
@@ -545,11 +556,13 @@ selection_func (GtkTreeSelection *selection,
 		return FALSE;
 	}
 
-	if (path_currently_selected)
+	if (path_currently_selected) {
 		return TRUE;
+	}
 
-	if (!gtk_tree_model_get_iter (model, &iter, path))
+	if (!gtk_tree_model_get_iter (model, &iter, path)) {
 		return FALSE;
+	}
 
 	extension_name = e_source_selector_get_extension_name (selector);
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
@@ -581,11 +594,13 @@ text_cell_edited_cb (ESourceSelector *selector,
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
 
-	if (new_name == NULL || *new_name == '\0')
+	if (new_name == NULL || *new_name == '\0') {
 		return;
+	}
 
-	if (same_source_name_exists (selector, new_name))
+	if (same_source_name_exists (selector, new_name)) {
 		return;
+	}
 
 	e_source_set_display_name (source, new_name);
 
@@ -612,10 +627,11 @@ cell_toggled_callback (GtkCellRendererToggle *renderer,
 
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
 
-	if (e_source_selector_source_is_selected (selector, source))
+	if (e_source_selector_source_is_selected (selector, source)) {
 		e_source_selector_unselect_source (selector, source);
-	else
+	} else {
 		e_source_selector_select_source (selector, source);
+	}
 
 	priv->toggled_last = TRUE;
 }
@@ -774,8 +790,9 @@ source_selector_finalize (GObject *object)
 
 	g_free (priv->extension_name);
 
-	if (priv->main_context != NULL)
+	if (priv->main_context != NULL) {
 		g_main_context_unref (priv->main_context);
+	}
 
 	/* Chain up to parent's finalize() method. */
 	G_OBJECT_CLASS (e_source_selector_parent_class)->finalize (object);
@@ -834,12 +851,13 @@ source_selector_button_press_event (GtkWidget *widget,
 
 	/* Triple-clicking a source selects it exclusively. */
 
-	if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
+	if (event->button == 3 && event->type == GDK_BUTTON_PRESS) {
 		right_click = TRUE;
-	else if (event->button == 1 && event->type == GDK_3BUTTON_PRESS)
+	} else if (event->button == 1 && event->type == GDK_3BUTTON_PRESS) {
 		triple_click = TRUE;
-	else
+	} else {
 		goto chainup;
+	}
 
 	row_exists = gtk_tree_view_get_path_at_pos (
 	    GTK_TREE_VIEW (widget), event->x, event->y,
@@ -856,16 +874,19 @@ source_selector_button_press_event (GtkWidget *widget,
 		gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
 	}
 
-	if (source == NULL)
+	if (source == NULL) {
 		goto chainup;
+	}
 
 	primary = e_source_selector_ref_primary_selection (selector);
-	if (source != primary)
+	if (source != primary) {
 		e_source_selector_set_primary_selection (selector, source);
+	}
 
-	if (right_click)
+	if (right_click) {
 		g_signal_emit (
 		    widget, signals[POPUP_EVENT], 0, source, event, &res);
+	}
 
 	if (triple_click) {
 		e_source_selector_select_exclusive (selector, source);
@@ -913,24 +934,28 @@ source_selector_drag_motion (GtkWidget *widget,
 	tree_view = GTK_TREE_VIEW (widget);
 	model = gtk_tree_view_get_model (tree_view);
 
-	if (!gtk_tree_view_get_dest_row_at_pos (tree_view, x, y, &path, NULL))
+	if (!gtk_tree_view_get_dest_row_at_pos (tree_view, x, y, &path, NULL)) {
 		goto exit;
+	}
 
-	if (!gtk_tree_model_get_iter (model, &iter, path))
+	if (!gtk_tree_model_get_iter (model, &iter, path)) {
 		goto exit;
+	}
 
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
 
-	if (!e_source_get_writable (source))
+	if (!e_source_get_writable (source)) {
 		goto exit;
+	}
 
 	pos = GTK_TREE_VIEW_DROP_INTO_OR_BEFORE;
 	gtk_tree_view_set_drag_dest_row (tree_view, path, pos);
 
-	if (gdk_drag_context_get_actions (context) & GDK_ACTION_MOVE)
+	if (gdk_drag_context_get_actions (context) & GDK_ACTION_MOVE) {
 		action = GDK_ACTION_MOVE;
-	else
+	} else {
 		action = gdk_drag_context_get_suggested_action (context);
+	}
 
 exit:
 	gdk_drag_status (context, action, time_);
@@ -959,8 +984,9 @@ source_selector_drag_drop (GtkWidget *widget,
 	model = gtk_tree_view_get_model (tree_view);
 
 	if (!gtk_tree_view_get_path_at_pos (
-		tree_view, x, y, &path, NULL, NULL, NULL))
+		tree_view, x, y, &path, NULL, NULL, NULL)) {
 		return FALSE;
+	}
 
 	valid = gtk_tree_model_get_iter (model, &iter, path);
 	g_return_val_if_fail (valid, FALSE);
@@ -998,16 +1024,19 @@ source_selector_drag_data_received (GtkWidget *widget,
 	action = gdk_drag_context_get_selected_action (context);
 	delete = (action == GDK_ACTION_MOVE);
 
-	if (!gtk_tree_view_get_dest_row_at_pos (tree_view, x, y, &path, NULL))
+	if (!gtk_tree_view_get_dest_row_at_pos (tree_view, x, y, &path, NULL)) {
 		goto exit;
+	}
 
-	if (!gtk_tree_model_get_iter (model, &iter, path))
+	if (!gtk_tree_model_get_iter (model, &iter, path)) {
 		goto exit;
+	}
 
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
 
-	if (!e_source_get_writable (source))
+	if (!e_source_get_writable (source)) {
 		goto exit;
+	}
 
 	g_signal_emit (
 	    widget, signals[DATA_DROPPED], 0, selection_data,
@@ -1047,13 +1076,15 @@ source_selector_test_collapse_row (GtkTreeView *tree_view,
 	/* Clear this because something else has been clicked on now */
 	priv->toggled_last = FALSE;
 
-	if (priv->saved_primary_selection)
+	if (priv->saved_primary_selection) {
 		return FALSE;
+	}
 
 	selection = gtk_tree_view_get_selection (tree_view);
 
-	if (!gtk_tree_selection_get_selected (selection, &model, &child_iter))
+	if (!gtk_tree_selection_get_selected (selection, &model, &child_iter)) {
 		return FALSE;
+	}
 
 	if (gtk_tree_store_is_ancestor (GTK_TREE_STORE (model), iter, &child_iter)) {
 		GtkTreeRowReference *reference;
@@ -1079,8 +1110,9 @@ source_selector_row_expanded (GtkTreeView *tree_view,
 
 	priv = e_source_selector_get_instance_private (E_SOURCE_SELECTOR (tree_view));
 
-	if (!priv->saved_primary_selection)
+	if (!priv->saved_primary_selection) {
 		return;
+	}
 
 	model = gtk_tree_view_get_model (tree_view);
 
@@ -1108,13 +1140,15 @@ source_selector_get_source_selected (ESourceSelector *selector,
 
 	extension_name = e_source_selector_get_extension_name (selector);
 
-	if (!e_source_has_extension (source, extension_name))
+	if (!e_source_has_extension (source, extension_name)) {
 		return FALSE;
+	}
 
 	extension = e_source_get_extension (source, extension_name);
 
-	if (E_IS_SOURCE_SELECTABLE (extension))
+	if (E_IS_SOURCE_SELECTABLE (extension)) {
 		selected = e_source_selectable_get_selected (extension);
+	}
 
 	return selected;
 }
@@ -1129,13 +1163,15 @@ source_selector_set_source_selected (ESourceSelector *selector,
 
 	extension_name = e_source_selector_get_extension_name (selector);
 
-	if (!e_source_has_extension (source, extension_name))
+	if (!e_source_has_extension (source, extension_name)) {
 		return;
+	}
 
 	extension = e_source_get_extension (source, extension_name);
 
-	if (!E_IS_SOURCE_SELECTABLE (extension))
+	if (!E_IS_SOURCE_SELECTABLE (extension)) {
 		return;
+	}
 
 	if (selected != e_source_selectable_get_selected (extension)) {
 		e_source_selectable_set_selected (extension, selected);
@@ -1303,8 +1339,9 @@ e_source_selector_init (ESourceSelector *selector)
 	priv->pending_writes = pending_writes;
 
 	priv->main_context = g_main_context_get_thread_default ();
-	if (priv->main_context != NULL)
+	if (priv->main_context != NULL) {
 		g_main_context_ref (priv->main_context);
+	}
 
 	tree_view = GTK_TREE_VIEW (selector);
 
@@ -1482,8 +1519,9 @@ e_source_selector_set_show_colors (ESourceSelector *selector,
 
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
 
-	if (show_colors == priv->show_colors)
+	if (show_colors == priv->show_colors) {
 		return;
+	}
 
 	priv->show_colors = show_colors;
 
@@ -1529,8 +1567,9 @@ e_source_selector_set_show_toggles (ESourceSelector *selector,
 
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
 
-	if (show_toggles == priv->show_toggles)
+	if (show_toggles == priv->show_toggles) {
 		return;
+	}
 
 	priv->show_toggles = show_toggles;
 
@@ -1555,8 +1594,9 @@ source_selector_check_selected (GtkTreeModel *model,
 
 	gtk_tree_model_get (model, iter, COLUMN_SOURCE, &source, -1);
 
-	if (e_source_selector_source_is_selected (closure->selector, source))
+	if (e_source_selector_source_is_selected (closure->selector, source)) {
 		closure->list = g_slist_prepend (closure->list, source);
+	}
 
 	return FALSE;
 }
@@ -1791,13 +1831,15 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 	reference = priv->saved_primary_selection;
 	selection = gtk_tree_view_get_selection (tree_view);
 
-	if (reference != NULL)
+	if (reference != NULL) {
 		path = gtk_tree_row_reference_get_path (reference);
-	else if (gtk_tree_selection_get_selected (selection, &model, &iter))
+	} else if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 		path = gtk_tree_model_get_path (model, &iter);
+	}
 
-	if (path == NULL)
+	if (path == NULL) {
 		return;
+	}
 
 	/* XXX Because we stuff three renderers in a single column,
 	 *     we have to manually hunt for the text renderer. */
@@ -1805,8 +1847,9 @@ e_source_selector_edit_primary_selection (ESourceSelector *selector)
 	list = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (column));
 	while (list != NULL) {
 		renderer = list->data;
-		if (GTK_IS_CELL_RENDERER_TEXT (renderer))
+		if (GTK_IS_CELL_RENDERER_TEXT (renderer)) {
 			break;
+		}
 		list = g_list_delete_link (list, list);
 	}
 
@@ -1865,12 +1908,14 @@ e_source_selector_ref_primary_selection (ESourceSelector *selector)
 		have_iter = gtk_tree_model_get_iter (model, &iter, path);
 	}
 
-	if (!have_iter)
+	if (!have_iter) {
 		have_iter = gtk_tree_selection_get_selected (
 		    selection, NULL, &iter);
+	}
 
-	if (!have_iter)
+	if (!have_iter) {
 		return NULL;
+	}
 
 	gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
 
@@ -1919,15 +1964,17 @@ e_source_selector_set_primary_selection (ESourceSelector *selector,
 	reference = g_hash_table_lookup (source_index, source);
 
 	/* XXX Maybe we should return a success/fail boolean? */
-	if (!gtk_tree_row_reference_valid (reference))
+	if (!gtk_tree_row_reference_valid (reference)) {
 		return;
+	}
 
 	extension_name = e_source_selector_get_extension_name (selector);
 
 	/* Return silently if attempting to select a parent node
 	 * lacking the expected extension (e.g. On This Computer). */
-	if (!e_source_has_extension (source, extension_name))
+	if (!e_source_has_extension (source, extension_name)) {
 		return;
+	}
 
 	/* We block the signal because this all needs to be atomic */
 	g_signal_handlers_block_matched (
@@ -1982,8 +2029,9 @@ e_source_selector_ref_source_by_path (ESourceSelector *selector,
 
 	model = gtk_tree_view_get_model (GTK_TREE_VIEW (selector));
 
-	if (gtk_tree_model_get_iter (model, &iter, path))
+	if (gtk_tree_model_get_iter (model, &iter, path)) {
 		gtk_tree_model_get (model, &iter, COLUMN_SOURCE, &source, -1);
+	}
 
 	return source;
 }
@@ -2016,8 +2064,9 @@ e_source_selector_queue_write (ESourceSelector *selector,
 	pending_writes = priv->pending_writes;
 
 	idle_source = g_hash_table_lookup (pending_writes, source);
-	if (idle_source != NULL && !g_source_is_destroyed (idle_source))
+	if (idle_source != NULL && !g_source_is_destroyed (idle_source)) {
 		return;
+	}
 
 	async_context = g_new0 (AsyncContext, 1);
 	async_context->selector = g_object_ref (selector);

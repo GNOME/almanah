@@ -156,10 +156,12 @@ maybe_secure_memory_try_realloc (gpointer memory,
 {
 	gpointer buffer = NULL;
 
-	if (gcr_secure_memory_is_secure (memory))
+	if (gcr_secure_memory_is_secure (memory)) {
 		buffer = gcr_secure_memory_try_realloc (memory, size);
-	if (buffer == NULL)
+	}
+	if (buffer == NULL) {
 		buffer = g_try_realloc (memory, size);
+	}
 
 	return buffer;
 }
@@ -170,10 +172,12 @@ maybe_secure_memory_realloc (gpointer memory,
 {
 	gpointer buffer = NULL;
 
-	if (gcr_secure_memory_is_secure (memory))
+	if (gcr_secure_memory_is_secure (memory)) {
 		buffer = gcr_secure_memory_try_realloc (memory, size);
-	if (buffer == NULL)
+	}
+	if (buffer == NULL) {
 		buffer = g_realloc (memory, size);
+	}
 
 	g_assert (buffer != NULL);
 	return buffer;
@@ -182,10 +186,11 @@ maybe_secure_memory_realloc (gpointer memory,
 static void
 maybe_secure_memory_free (gpointer memory)
 {
-	if (gcr_secure_memory_is_secure (memory))
+	if (gcr_secure_memory_is_secure (memory)) {
 		gcr_secure_memory_free (memory);
-	else
+	} else {
 		g_free (memory);
+	}
 }
 
 /* Callback based data buffer functions for GPGME */
@@ -200,10 +205,12 @@ _gpgme_read_cb (void *handle, void *buffer, size_t size)
 	gsize read_size;
 
 	read_size = npm_closure->size - npm_closure->offset;
-	if (!read_size)
+	if (!read_size) {
 		return 0;
-	if (size < read_size)
+	}
+	if (size < read_size) {
 		read_size = size;
+	}
 
 	memcpy (buffer, npm_closure->buffer + npm_closure->offset, read_size);
 	npm_closure->offset += read_size;
@@ -396,11 +403,13 @@ cipher_operation_free (CipherOperation *operation)
 		gpgme_release (operation->context);
 	}
 
-	if (operation->npm_closure != NULL)
+	if (operation->npm_closure != NULL) {
 		g_free (operation->npm_closure);
+	}
 
-	if (operation->gpgme_cbs != NULL)
+	if (operation->gpgme_cbs != NULL) {
 		g_free (operation->gpgme_cbs);
+	}
 
 	g_free (operation);
 }
@@ -512,8 +521,9 @@ get_encryption_key (AlmanahSQLiteVFS *self)
 	key_parts = g_strsplit (encryption_key, ":", 2);
 
 	for (i = 0; key_parts[i] != NULL; i++) {
-		if (strcmp (key_parts[i], "openpgp") != 0)
+		if (strcmp (key_parts[i], "openpgp") != 0) {
 			encryption_key = strdup (key_parts[i]);
+		}
 	}
 	g_strfreev (key_parts);
 
@@ -577,8 +587,9 @@ almanah_vfs_direct_write (AlmanahSQLiteVFS *self, /* File handle */
 				new_buffer = maybe_secure_memory_realloc (self->plain_buffer, new_size);
 			}
 
-			if (new_buffer == NULL)
+			if (new_buffer == NULL) {
 				return SQLITE_NOMEM;
+			}
 
 			self->plain_buffer = new_buffer;
 			self->plain_buffer_size = new_size;
@@ -613,8 +624,9 @@ almanah_vfs_flush_buffer (AlmanahSQLiteVFS *p)
 {
 	int rc = SQLITE_OK;
 
-	if (p->decrypted)
+	if (p->decrypted) {
 		return rc;
+	}
 
 	if (p->nBuffer) {
 		rc = almanah_vfs_direct_write (p, p->aBuffer, p->nBuffer, p->iBufferOfst);
@@ -631,8 +643,9 @@ almanah_vfs_close_simple_file (AlmanahSQLiteVFS *self)
 	GError *error = NULL;
 
 	rc = almanah_vfs_flush_buffer (self);
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		return rc;
+	}
 	sqlite3_free (self->aBuffer);
 	if (g_close (self->fd, &error) == FALSE) {
 		g_critical (_ ("Error closing file: %s"), error->message);
@@ -701,14 +714,14 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 		}
 	} else {
 		/* SQLITE_OPEN_MAIN_JOURNAL */
-		if (self->aBuffer != NULL)
+		if (self->aBuffer != NULL) {
 			rc = almanah_vfs_close_simple_file (self);
-		else {
+		} else {
 			gboolean from_memory;
 
-			if (self->decrypted)
+			if (self->decrypted) {
 				from_memory = TRUE;
-			else {
+			} else {
 				rc = almanah_vfs_close_simple_file (self);
 				if (rc != SQLITE_OK) {
 					g_critical ("Error closing plain file");
@@ -718,8 +731,9 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 			}
 
 			if (encrypt_database (self, encryption_key, from_memory, &child_error) != TRUE) {
-				if (child_error != NULL)
+				if (child_error != NULL) {
 					g_critical ("Error encrypting the database from the plain file %s: %s", self->plain_filename, child_error->message);
+				}
 				return SQLITE_IOERR;
 			}
 
@@ -729,14 +743,17 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 		}
 	}
 
-	if (self->plain_buffer)
+	if (self->plain_buffer) {
 		maybe_secure_memory_free (self->plain_buffer);
+	}
 
-	if (self->plain_filename)
+	if (self->plain_filename) {
 		g_free (self->plain_filename);
+	}
 
-	if (self->encrypted_filename)
+	if (self->encrypted_filename) {
 		g_free (self->encrypted_filename);
+	}
 
 	return rc;
 }
@@ -753,8 +770,9 @@ almanah_vfs_io_read (sqlite3_file *pFile, void *buffer, int len, sqlite_int64 of
 	int rc;
 
 	if (self->decrypted) {
-		if ((gsize) (offset + len) > self->plain_size)
+		if ((gsize) (offset + len) > self->plain_size) {
 			return SQLITE_IOERR_SHORT_READ;
+		}
 
 		memcpy (buffer, self->plain_buffer + offset, len);
 
@@ -795,8 +813,9 @@ almanah_vfs_io_write (sqlite3_file *pFile, const void *buffer, int len, sqlite_i
 {
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS *) pFile;
 
-	if (self->decrypted)
+	if (self->decrypted) {
 		return almanah_vfs_direct_write (self, buffer, len, offset);
+	}
 
 	if (self->aBuffer) {
 		char *z = (char *) buffer; /* Pointer to remaining data to write */
@@ -862,8 +881,9 @@ almanah_vfs_io_sync (sqlite3_file *pFile, __attribute__ ((unused)) int flags)
 	int rc;
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS *) pFile;
 
-	if (self->decrypted)
+	if (self->decrypted) {
 		return SQLITE_OK;
+	}
 
 	rc = almanah_vfs_flush_buffer (self);
 	if (rc != SQLITE_OK) {
@@ -900,8 +920,9 @@ almanah_vfs_io_file_size (sqlite3_file *pFile, sqlite_int64 *pSize)
 	}
 
 	rc = fstat (self->fd, &sStat);
-	if (rc != 0)
+	if (rc != 0) {
 		return SQLITE_IOERR_FSTAT;
+	}
 
 	*pSize = sStat.st_size;
 
@@ -1040,8 +1061,9 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 						g_warning (_ ("Error decrypting database: %s"), child_error->message);
 						return SQLITE_IOERR;
 					}
-				} else
+				} else {
 					self->decrypted = TRUE;
+				}
 			}
 		} else {
 			/* Make a backup of the plaintext database file */
@@ -1056,14 +1078,18 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 	if (self->decrypted) {
 		*pOutFlags = 0;
 	} else {
-		if (flags & SQLITE_OPEN_EXCLUSIVE)
+		if (flags & SQLITE_OPEN_EXCLUSIVE) {
 			oflags |= O_EXCL;
-		if (flags & SQLITE_OPEN_CREATE)
+		}
+		if (flags & SQLITE_OPEN_CREATE) {
 			oflags |= O_CREAT;
-		if (flags & SQLITE_OPEN_READONLY)
+		}
+		if (flags & SQLITE_OPEN_READONLY) {
 			oflags |= O_RDONLY;
-		if (flags & SQLITE_OPEN_READWRITE)
+		}
+		if (flags & SQLITE_OPEN_READWRITE) {
 			oflags |= O_RDWR;
+		}
 
 		self->fd = g_open (plain_filename, oflags, 0600);
 		if (self->fd < 0) {
@@ -1102,8 +1128,9 @@ almanah_vfs_delete (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPat
 	int rc;
 
 	rc = unlink (zPath);
-	if (rc != 0 && errno == ENOENT)
+	if (rc != 0 && errno == ENOENT) {
 		return SQLITE_OK;
+	}
 
 	if (rc == 0 && dirSync) {
 		int dfd;
@@ -1154,10 +1181,12 @@ almanah_vfs_access (__attribute__ ((unused)) sqlite3_vfs *pVfs, const char *zPat
 	        || flags == SQLITE_ACCESS_READWRITE /* access(zPath, R_OK|W_OK) */
 	);
 
-	if (flags == SQLITE_ACCESS_READWRITE)
+	if (flags == SQLITE_ACCESS_READWRITE) {
 		eAccess = R_OK | W_OK;
-	if (flags == SQLITE_ACCESS_READ)
+	}
+	if (flags == SQLITE_ACCESS_READ) {
 		eAccess = R_OK;
+	}
 
 	rc = access (zPath, eAccess);
 	*pResOut = (rc == 0);
@@ -1314,8 +1343,9 @@ almanah_vfs_init (GSettings *settings)
 void
 almanah_vfs_finish (void)
 {
-	if (almanah_vfs_singleton)
+	if (almanah_vfs_singleton) {
 		sqlite3_vfs_unregister (almanah_vfs_singleton);
+	}
 
 	g_free (almanah_vfs_singleton);
 	almanah_vfs_singleton = NULL;

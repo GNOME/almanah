@@ -142,10 +142,11 @@ almanah_calendar_month_changed (GtkCalendar *calendar)
 
 	gtk_calendar_clear_marks (calendar);
 	for (i = 0; i < num_days; i++) {
-		if (days[i] == TRUE)
+		if (days[i] == TRUE) {
 			gtk_calendar_mark_day (calendar, i + 1);
-		else
+		} else {
 			gtk_calendar_unmark_day (calendar, i + 1);
+		}
 	}
 
 	/* Cache the days which are important, so that the detail function isn't hideously slow */
@@ -162,8 +163,9 @@ almanah_calendar_detail_func (GtkCalendar *calendar, guint year, guint month, gu
 	gtk_calendar_get_date (calendar, &calendar_year, &calendar_month, NULL);
 
 	/* Check we actually have the data available for the requested month */
-	if (priv->important_days == NULL || year != calendar_year || month != calendar_month)
+	if (priv->important_days == NULL || year != calendar_year || month != calendar_month) {
 		return NULL;
+	}
 
 	/* Display markup if the day is important; don't otherwise */
 	if (priv->important_days[day - 1] == TRUE) {

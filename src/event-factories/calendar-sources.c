@@ -187,8 +187,9 @@ calendar_sources_finalize (GObject *object)
 	calendar_sources_finalize_source_data (sources, &priv->task_sources);
 	g_clear_object (&priv->esource_registry);
 
-	if (G_OBJECT_CLASS (parent_class)->finalize)
+	if (G_OBJECT_CLASS (parent_class)->finalize) {
 		G_OBJECT_CLASS (parent_class)->finalize (object);
+	}
 }
 
 CalendarSources *
@@ -196,8 +197,9 @@ calendar_sources_get (void)
 {
 	gpointer singleton_location = &calendar_sources_singleton;
 
-	if (calendar_sources_singleton)
+	if (calendar_sources_singleton) {
 		return g_object_ref (calendar_sources_singleton);
+	}
 
 	calendar_sources_singleton = g_object_new (CALENDAR_TYPE_SOURCES, NULL);
 	g_object_add_weak_pointer (G_OBJECT (calendar_sources_singleton),
@@ -254,12 +256,14 @@ compare_ecal_lists (GSList *a,
 {
 	GSList *l;
 
-	if (g_slist_length (a) != g_slist_length (b))
+	if (g_slist_length (a) != g_slist_length (b)) {
 		return FALSE;
+	}
 
 	for (l = a; l; l = l->next) {
-		if (!g_slist_find (b, l->data))
+		if (!g_slist_find (b, l->data)) {
 			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -349,8 +353,9 @@ calendar_sources_load_esources (CalendarSourceData *source_data)
 	e_source_selector_free_selection (sources);
 
 	if (source_data->loaded &&
-	    !compare_ecal_lists (source_data->clients, clients))
+	    !compare_ecal_lists (source_data->clients, clients)) {
 		emit_signal = TRUE;
+	}
 
 	for (s = source_data->clients; s; s = s->next) {
 		g_signal_handlers_disconnect_by_func (G_OBJECT (s->data),

@@ -227,8 +227,9 @@ almanah_entry_get_data (AlmanahEntry *self, gsize *length, guint *version)
 {
 	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 
-	if (length != NULL)
+	if (length != NULL) {
 		*length = priv->length;
+	}
 
 	if (version != NULL) {
 		*version = priv->version;
@@ -353,12 +354,13 @@ almanah_entry_get_editability (AlmanahEntry *self)
 	/* Entries can't be edited before they've happened */
 	days_between = g_date_days_between (&(priv->date), &current_date);
 
-	if (days_between < 0)
+	if (days_between < 0) {
 		return ALMANAH_ENTRY_FUTURE;
-	else if (days_between > ALMANAH_ENTRY_CUTOFF_AGE)
+	} else if (days_between > ALMANAH_ENTRY_CUTOFF_AGE) {
 		return ALMANAH_ENTRY_PAST;
-	else
+	} else {
 		return ALMANAH_ENTRY_EDITABLE;
+	}
 }
 
 gboolean
@@ -437,8 +439,9 @@ find_list_delta (GSList *old_list,
 	/* Find added tags */
 	tmp = new_list;
 	while (tmp) {
-		if (!g_slist_find (old_list, tmp->data))
+		if (!g_slist_find (old_list, tmp->data)) {
 			tmp_added = g_list_prepend (tmp_added, tmp->data);
+		}
 
 		tmp = tmp->next;
 	}
@@ -448,8 +451,9 @@ find_list_delta (GSList *old_list,
 	/* Find removed tags */
 	tmp = old_list;
 	while (tmp) {
-		if (!g_slist_find (new_list, tmp->data))
+		if (!g_slist_find (new_list, tmp->data)) {
 			tmp_removed = g_list_prepend (tmp_removed, tmp->data);
+		}
 
 		tmp = tmp->next;
 	}

@@ -540,8 +540,9 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	/* Don't save if it hasn't been/can't be edited */
 	if (priv->current_entry == NULL ||
 	    gtk_text_view_get_editable (GTK_TEXT_VIEW (priv->entry_view)) == FALSE ||
-	    gtk_text_buffer_get_modified (GTK_TEXT_BUFFER (priv->entry_buffer)) == FALSE)
+	    gtk_text_buffer_get_modified (GTK_TEXT_BUFFER (priv->entry_buffer)) == FALSE) {
 		return;
+	}
 
 	storage_manager = almanah_application_dup_storage_manager (ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (self))));
 
@@ -665,14 +666,16 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 	 * (Execution of this function will be sandwiched between:
 	 * * mw_entry_buffer_insert_text_cb and
 	 * * mw_entry_buffer_insert_text_after_cb */
-	if (priv->updating_formatting == TRUE)
+	if (priv->updating_formatting == TRUE) {
 		return;
+	}
 
 	/* Only get the tag list if there's no selection (just an insertion cursor),
 	 * since we want the buttons untoggled if there's a selection. */
 	range_selected = gtk_text_buffer_get_selection_bounds (GTK_TEXT_BUFFER (priv->entry_buffer), &iter, NULL);
-	if (range_selected == FALSE)
+	if (range_selected == FALSE) {
 		_tag_list = gtk_text_iter_get_tags (&iter);
+	}
 
 	/* Block signal handlers for the formatting actions while we're executing,
 	 * so formatting doesn't get unwittingly changed. */
@@ -721,12 +724,15 @@ mw_entry_buffer_cursor_position_cb (__attribute__ ((unused)) GObject *object, __
 
 	if (range_selected == FALSE) {
 		/* Untoggle the remaining actions */
-		if (bold_toggled == FALSE)
+		if (bold_toggled == FALSE) {
 			g_action_group_change_action_state (G_ACTION_GROUP (main_window), "bold", g_variant_new_boolean (FALSE));
-		if (italic_toggled == FALSE)
+		}
+		if (italic_toggled == FALSE) {
 			g_action_group_change_action_state (G_ACTION_GROUP (main_window), "italic", g_variant_new_boolean (FALSE));
-		if (underline_toggled == FALSE)
+		}
+		if (underline_toggled == FALSE) {
 			g_action_group_change_action_state (G_ACTION_GROUP (main_window), "underline", g_variant_new_boolean (FALSE));
+		}
 		if (hyperlink_toggled == FALSE) {
 			g_action_group_change_action_state (G_ACTION_GROUP (main_window), "hyperlink", g_variant_new_boolean (FALSE));
 		}
@@ -767,12 +773,15 @@ mw_entry_buffer_insert_text_after_cb (GtkSourceBuffer *text_buffer, GtkTextIter 
 	start = *end;
 	gtk_text_iter_backward_chars (&start, len);
 
-	if (priv->pending_bold_active == TRUE)
+	if (priv->pending_bold_active == TRUE) {
 		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (text_buffer), "bold", &start, end);
-	if (priv->pending_italic_active == TRUE)
+	}
+	if (priv->pending_italic_active == TRUE) {
 		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (text_buffer), "italic", &start, end);
-	if (priv->pending_underline_active == TRUE)
+	}
+	if (priv->pending_underline_active == TRUE) {
 		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (text_buffer), "underline", &start, end);
+	}
 
 	priv->updating_formatting = FALSE;
 }
@@ -902,14 +911,16 @@ apply_formatting (AlmanahMainWindow *self, const gchar *tag_name, gboolean apply
 
 	/* Make sure we don't muck up the formatting when the actions are having
 	 * their sensitivity set by the code. */
-	if (priv->updating_formatting == TRUE)
+	if (priv->updating_formatting == TRUE) {
 		return;
+	}
 
 	gtk_text_buffer_get_selection_bounds (GTK_TEXT_BUFFER (priv->entry_buffer), &start, &end);
-	if (applying == TRUE)
+	if (applying == TRUE) {
 		gtk_text_buffer_apply_tag_by_name (GTK_TEXT_BUFFER (priv->entry_buffer), tag_name, &start, &end);
-	else
+	} else {
 		gtk_text_buffer_remove_tag_by_name (GTK_TEXT_BUFFER (priv->entry_buffer), tag_name, &start, &end);
+	}
 	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 }
 
@@ -1072,8 +1083,9 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 
 finish:
-	if (update_state)
+	if (update_state) {
 		g_simple_action_set_state (action, parameter);
+	}
 }
 
 static void
@@ -1120,8 +1132,9 @@ clear_factory_events (AlmanahMainWindow *self, AlmanahEventFactoryType type_id)
 
 	g_debug ("Removing events belonging to factory %u from the list store...", type_id);
 
-	if (gtk_tree_model_get_iter_first (model, &iter) == FALSE)
+	if (gtk_tree_model_get_iter_first (model, &iter) == FALSE) {
 		return;
+	}
 
 	while (TRUE) {
 		AlmanahEventFactoryType row_type_id;
@@ -1133,8 +1146,9 @@ clear_factory_events (AlmanahMainWindow *self, AlmanahEventFactoryType type_id)
 			gtk_tree_model_get (model, &iter, 0, &event, -1);
 			g_debug ("\t%s", almanah_event_format_value (event));
 
-			if (gtk_list_store_remove (GTK_LIST_STORE (model), &iter) == FALSE)
+			if (gtk_list_store_remove (GTK_LIST_STORE (model), &iter) == FALSE) {
 				break;
+			}
 		} else if (gtk_tree_model_iter_next (model, &iter) == FALSE) {
 			/* Come to the end of the list */
 			break;
@@ -1245,8 +1259,9 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	storage_manager = almanah_application_dup_storage_manager (application);
 	entry = almanah_storage_manager_get_entry (storage_manager, &calendar_date);
 
-	if (entry == NULL)
+	if (entry == NULL) {
 		entry = almanah_entry_new (&calendar_date);
+	}
 	set_current_entry (main_window, entry);
 
 	future_entry = almanah_entry_get_editability (priv->current_entry) == ALMANAH_ENTRY_FUTURE;
@@ -1254,8 +1269,9 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	for (i = 0; affected_actions[i] != NULL; i++) {
 		action = g_action_map_lookup_action (G_ACTION_MAP (main_window), affected_actions[i]);
 		g_simple_action_set_enabled (G_SIMPLE_ACTION (action), !future_entry);
-		if (strcmp (affected_actions[i], "important") == 0)
+		if (strcmp (affected_actions[i], "important") == 0) {
 			g_simple_action_set_state (G_SIMPLE_ACTION (action), g_variant_new_boolean (almanah_entry_is_important (priv->current_entry)));
+		}
 	}
 
 	/* Prepare for the possibility of failure --- do as much of the general interface changes as possible first */
@@ -1574,8 +1590,9 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 void
 mw_desktop_interface_settings_changed (G_GNUC_UNUSED GSettings *settings, const gchar *key, gpointer user_data)
 {
-	if (strcmp (ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME, key) != 0)
+	if (strcmp (ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME, key) != 0) {
 		return;
+	}
 
 	mw_setup_size_text_view (ALMANAH_MAIN_WINDOW (user_data));
 }
@@ -1618,14 +1635,16 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 	GtkTextTag *tag;
 
 	/* Bail out if spell checking's already enabled */
-	if (gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (priv->entry_view)) != NULL)
+	if (gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (priv->entry_view)) != NULL) {
 		return TRUE;
+	}
 
 	/* If spell checking wasn't already enabled, we have a dummy gtkspell-misspelled text tag to destroy */
 	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (priv->entry_buffer));
 	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
-	if (tag != NULL)
+	if (tag != NULL) {
 		gtk_text_tag_table_remove (table, tag);
+	}
 
 	/* Get the spell checking language */
 	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (self)));
@@ -1641,8 +1660,9 @@ enable_spell_checking (AlmanahMainWindow *self, GError **error)
 	gtk_spell_checker_set_language (gtkspell, spelling_language, error);
 	gtk_spell_checker_attach (gtkspell, GTK_TEXT_VIEW (priv->entry_view));
 
-	if (gtkspell == NULL)
+	if (gtkspell == NULL) {
 		return FALSE;
+	}
 	return TRUE;
 }
 
@@ -1655,14 +1675,16 @@ disable_spell_checking (AlmanahMainWindow *self)
 	GtkTextTag *tag;
 
 	gtkspell = gtk_spell_checker_get_from_text_view (GTK_TEXT_VIEW (priv->entry_view));
-	if (gtkspell != NULL)
+	if (gtkspell != NULL) {
 		gtk_spell_checker_detach (gtkspell);
+	}
 
 	/* Remove the old gtkspell-misspelling text tag */
 	table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (priv->entry_buffer));
 	tag = gtk_text_tag_table_lookup (table, "gtkspell-misspelled");
-	if (tag != NULL)
+	if (tag != NULL) {
 		gtk_text_tag_table_remove (table, tag);
+	}
 
 	/* Create a dummy gtkspell-misspelling text tag */
 	gtk_text_buffer_create_tag (GTK_TEXT_BUFFER (priv->entry_buffer), "gtkspell-misspelled", NULL);

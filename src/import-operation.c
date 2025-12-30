@@ -238,8 +238,9 @@ set_entry (AlmanahImportOperation *self, AlmanahEntry *imported_entry, const gch
 	/* Load both entries into buffers */
 	imported_buffer = gtk_text_buffer_new (NULL);
 	if (almanah_entry_get_content (imported_entry, imported_buffer, TRUE, &error) == FALSE) {
-		if (message != NULL)
+		if (message != NULL) {
 			*message = g_strdup_printf (_ ("Error deserializing imported entry into buffer: %s"), (error != NULL) ? error->message : NULL);
+		}
 
 		return ALMANAH_IMPORT_STATUS_FAILED;
 	}
@@ -313,8 +314,9 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 
 	enumerator = g_file_enumerate_children (source, "standard::name,standard::display-name,standard::is-hidden,time::modified",
 	                                        G_FILE_QUERY_INFO_NONE, NULL, error);
-	if (enumerator == NULL)
+	if (enumerator == NULL) {
 		return FALSE;
+	}
 
 	/* Build a text buffer to use when setting all the entries */
 	buffer = gtk_text_buffer_new (NULL);
@@ -374,8 +376,9 @@ import_text_files (AlmanahImportOperation *self, GFile *source, AlmanahImportPro
 		progress_idle_callback (progress_callback, progress_user_data, &parsed_date, status, message);
 
 		/* Check for cancellation */
-		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE)
+		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, &child_error) == TRUE) {
 			break;
+		}
 	}
 
 	/* Check if the loop was broken due to an error */
@@ -401,8 +404,9 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 
 	/* Get the display name for use with set_entry(), below */
 	file_info = g_file_query_info (source, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, G_FILE_QUERY_INFO_NONE, cancellable, error);
-	if (file_info == NULL)
+	if (file_info == NULL) {
 		return FALSE;
+	}
 
 	display_name = g_file_info_get_display_name (file_info);
 
@@ -430,8 +434,9 @@ import_database (AlmanahImportOperation *self, GFile *source, AlmanahImportProgr
 		progress_idle_callback (progress_callback, progress_user_data, &date, status, message);
 
 		/* Check for cancellation */
-		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, error) == TRUE)
+		if (cancellable != NULL && g_cancellable_set_error_if_cancelled (cancellable, error) == TRUE) {
 			goto finish;
+		}
 	}
 
 	/* Success! */
@@ -505,8 +510,9 @@ almanah_import_operation_finish (AlmanahImportOperation *self, GAsyncResult *asy
 
 	g_warn_if_fail (g_task_get_source_tag (task) == almanah_import_operation_run);
 
-	if (g_async_result_legacy_propagate_error (G_ASYNC_RESULT (task), error) == TRUE)
+	if (g_async_result_legacy_propagate_error (G_ASYNC_RESULT (task), error) == TRUE) {
 		return FALSE;
+	}
 
 	return TRUE;
 }

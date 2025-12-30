@@ -63,8 +63,9 @@ get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
 	tags = gtk_text_iter_get_tags (iter);
 	gtk_text_iter_forward_to_tag_toggle (iter, NULL);
 
-	if (gtk_text_iter_compare (iter, limit) > 0)
+	if (gtk_text_iter_compare (iter, limit) > 0) {
 		*iter = *limit;
+	}
 
 	while (tags) {
 		GtkTextTag *tag;
@@ -84,65 +85,77 @@ get_iter_attrs (GtkTextIter *iter, GtkTextIter *limit)
 
 		if (bg_set) {
 			g_autoptr (GdkRGBA) color = NULL;
-			if (bg)
+			if (bg) {
 				pango_attribute_destroy (bg);
+			}
 			g_object_get (tag, "background-rgba", &color, NULL);
 			bg = pango_attr_background_new (color->red, color->green, color->blue);
 		}
 
 		if (fg_set) {
 			g_autoptr (GdkRGBA) color = NULL;
-			if (fg)
+			if (fg) {
 				pango_attribute_destroy (fg);
+			}
 			g_object_get (tag, "foreground-rgba", &color, NULL);
 			fg = pango_attr_foreground_new (color->red, color->green, color->blue);
 		}
 
 		if (style_set) {
 			PangoStyle style_value;
-			if (style)
+			if (style) {
 				pango_attribute_destroy (style);
+			}
 			g_object_get (tag, "style", &style_value, NULL);
 			style = pango_attr_style_new (style_value);
 		}
 
 		if (ul_set) {
 			PangoUnderline underline;
-			if (ul)
+			if (ul) {
 				pango_attribute_destroy (ul);
+			}
 			g_object_get (tag, "underline", &underline, NULL);
 			ul = pango_attr_underline_new (underline);
 		}
 
 		if (weight_set) {
 			PangoWeight weight_value;
-			if (weight)
+			if (weight) {
 				pango_attribute_destroy (weight);
+			}
 			g_object_get (tag, "weight", &weight_value, NULL);
 			weight = pango_attr_weight_new (weight_value);
 		}
 
 		if (st_set) {
 			gboolean strikethrough;
-			if (st)
+			if (st) {
 				pango_attribute_destroy (st);
+			}
 			g_object_get (tag, "strikethrough", &strikethrough, NULL);
 			st = pango_attr_strikethrough_new (strikethrough);
 		}
 	}
 
-	if (bg)
+	if (bg) {
 		attrs = g_slist_prepend (attrs, bg);
-	if (fg)
+	}
+	if (fg) {
 		attrs = g_slist_prepend (attrs, fg);
-	if (style)
+	}
+	if (style) {
 		attrs = g_slist_prepend (attrs, style);
-	if (ul)
+	}
+	if (ul) {
 		attrs = g_slist_prepend (attrs, ul);
-	if (weight)
+	}
+	if (weight) {
 		attrs = g_slist_prepend (attrs, weight);
-	if (st)
+	}
+	if (st) {
 		attrs = g_slist_prepend (attrs, st);
+	}
 
 	return attrs;
 }
@@ -160,8 +173,9 @@ is_empty_line (const gchar *text)
 		const gchar *p;
 
 		for (p = text; p != NULL; p = g_utf8_next_char (p)) {
-			if (!g_unichar_isspace (*p))
+			if (!g_unichar_isspace (*p)) {
 				return FALSE;
+			}
 		}
 	}
 
@@ -215,8 +229,9 @@ lay_out_entry (PangoLayout *layout, GtkTextIter *start, GtkTextIter *end)
 			a->start_index = si;
 			a->end_index = ei;
 
-			if (!attr_list)
+			if (!attr_list) {
 				attr_list = pango_attr_list_new ();
+			}
 
 			pango_attr_list_insert (attr_list, a);
 
@@ -228,8 +243,9 @@ lay_out_entry (PangoLayout *layout, GtkTextIter *start, GtkTextIter *end)
 
 	pango_layout_set_attributes (layout, attr_list);
 
-	if (attr_list)
+	if (attr_list) {
 		pango_attr_list_unref (attr_list);
+	}
 }
 
 /* TRUE if the entry was printed OK on the current page, FALSE if it needs to be moved to a new page/is split across pages */
@@ -516,10 +532,12 @@ almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPage
 
 	almanah_operation.current_date = g_memdup2 (almanah_operation.start_date, sizeof (*(almanah_operation.start_date)));
 
-	if (*print_settings != NULL)
+	if (*print_settings != NULL) {
 		gtk_print_operation_set_print_settings (operation, *print_settings);
-	if (*page_setup != NULL)
+	}
+	if (*page_setup != NULL) {
 		gtk_print_operation_set_default_page_setup (operation, *page_setup);
+	}
 
 	gtk_print_operation_set_n_pages (operation, 1);
 
@@ -533,12 +551,14 @@ almanah_print_entries (gboolean print_preview, GtkWindow *parent_window, GtkPage
 	                               parent_window, NULL);
 
 	if (res == GTK_PRINT_OPERATION_RESULT_APPLY) {
-		if (*print_settings != NULL)
+		if (*print_settings != NULL) {
 			g_object_unref (*print_settings);
+		}
 		*print_settings = g_object_ref (gtk_print_operation_get_print_settings (operation));
 
-		if (*page_setup != NULL)
+		if (*page_setup != NULL) {
 			g_object_unref (*page_setup);
+		}
 		*page_setup = g_object_ref (gtk_print_operation_get_default_page_setup (operation));
 	}
 

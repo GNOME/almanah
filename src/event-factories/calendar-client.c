@@ -206,8 +206,9 @@ calendar_client_config_get_icaltimezone (void)
 	ICalTimezone *zone = NULL;
 
 	location = e_cal_util_get_system_timezone_location ();
-	if (!location)
+	if (!location) {
 		return i_cal_timezone_get_utc_timezone ();
+	}
 
 	zone = i_cal_timezone_get_builtin_timezone (location);
 	g_free (location);
@@ -264,10 +265,11 @@ load_calendars (CalendarClient *client,
 	for (l = clients; l != NULL; l = l->next) {
 		CalendarClientSource *cl_source = l->data;
 
-		if (type == CALENDAR_EVENT_APPOINTMENT)
+		if (type == CALENDAR_EVENT_APPOINTMENT) {
 			calendar_client_update_appointments (cl_source->client);
-		else
+		} else {
 			calendar_client_update_tasks (cl_source->client);
+		}
 	}
 }
 
@@ -305,10 +307,11 @@ calendar_client_init (CalendarClient *client)
 	tz = g_file_new_for_path ("/etc/localtime");
 	priv->tz_monitor = g_file_monitor_file (tz, G_FILE_MONITOR_NONE, NULL, NULL);
 	g_object_unref (tz);
-	if (priv->tz_monitor == NULL)
+	if (priv->tz_monitor == NULL) {
 		g_warning ("Can't monitor /etc/localtime for changes");
-	else
+	} else {
 		g_signal_connect (priv->tz_monitor, "changed", G_CALLBACK (calendar_client_timezone_changed_cb), client);
+	}
 
 	priv->day = G_MAXUINT;
 	priv->month = G_MAXUINT;
@@ -328,8 +331,9 @@ calendar_client_finalize (GObject *object)
 	g_clear_slist (&priv->task_sources, calendar_client_source_destroy);
 	g_clear_object (&priv->calendar_sources);
 
-	if (G_OBJECT_CLASS (parent_class)->finalize)
+	if (G_OBJECT_CLASS (parent_class)->finalize) {
 		G_OBJECT_CLASS (parent_class)->finalize (object);
+	}
 }
 
 static void
@@ -443,18 +447,20 @@ get_time_from_property (ICalComponent *ical,
 	time_t retval;
 
 	prop = i_cal_component_get_first_property (ical, prop_kind);
-	if (!prop)
+	if (!prop) {
 		return 0;
+	}
 
 	ical_time = get_prop_func (prop);
 
 	param = i_cal_property_get_first_parameter (prop, I_CAL_TZID_PARAMETER);
-	if (param)
+	if (param) {
 		time_zone = i_cal_timezone_get_builtin_timezone_from_tzid (i_cal_parameter_get_tzid (param));
-	else if (i_cal_time_is_utc (ical_time))
+	} else if (i_cal_time_is_utc (ical_time)) {
 		time_zone = i_cal_timezone_get_utc_timezone ();
-	else
+	} else {
 		time_zone = default_zone;
+	}
 
 	retval = i_cal_time_as_timet_with_zone (ical_time, time_zone);
 
@@ -480,8 +486,9 @@ get_ical_summary (ICalComponent *ical)
 	char *retval;
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_SUMMARY_PROPERTY);
-	if (!prop)
+	if (!prop) {
 		return NULL;
+	}
 
 	retval = g_strdup (i_cal_property_get_summary (prop));
 
@@ -497,8 +504,9 @@ get_ical_description (ICalComponent *ical)
 	char *retval;
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_DESCRIPTION_PROPERTY);
-	if (!prop)
+	if (!prop) {
 		return NULL;
+	}
 
 	retval = g_strdup (i_cal_property_get_description (prop));
 
@@ -540,8 +548,9 @@ get_ical_is_all_day (ICalComponent *ical,
 	gboolean retval;
 
 	start_icaltime = i_cal_component_get_dtstart (ical);
-	if (!start_icaltime)
+	if (!start_icaltime) {
 		return FALSE;
+	}
 
 	if (i_cal_time_is_date (start_icaltime)) {
 		g_object_unref (start_icaltime);
@@ -553,15 +562,18 @@ get_ical_is_all_day (ICalComponent *ical,
 	start_tm = gmtime (&start_time);
 	if (start_tm->tm_sec != 0 ||
 	    start_tm->tm_min != 0 ||
-	    start_tm->tm_hour != 0)
+	    start_tm->tm_hour != 0) {
 		return FALSE;
+	}
 
-	if ((end_time = get_ical_end_time (ical, default_zone)))
+	if ((end_time = get_ical_end_time (ical, default_zone))) {
 		return (end_time - start_time) % 86400 == 0;
+	}
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_DURATION_PROPERTY);
-	if (!prop)
+	if (!prop) {
 		return FALSE;
+	}
 
 	duration = i_cal_property_get_duration (prop);
 
@@ -591,15 +603,18 @@ get_ical_percent_complete (ICalComponent *ical)
 	int percent_complete;
 
 	status = i_cal_component_get_status (ical);
-	if (status == I_CAL_STATUS_COMPLETED)
+	if (status == I_CAL_STATUS_COMPLETED) {
 		return 100;
+	}
 
-	if (e_cal_util_component_has_property (ical, I_CAL_COMPLETED_PROPERTY))
+	if (e_cal_util_component_has_property (ical, I_CAL_COMPLETED_PROPERTY)) {
 		return 100;
+	}
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_PERCENTCOMPLETE_PROPERTY);
-	if (!prop)
+	if (!prop) {
 		return 0;
+	}
 
 	percent_complete = i_cal_property_get_percentcomplete (prop);
 
@@ -625,8 +640,9 @@ get_ical_priority (ICalComponent *ical)
 	int retval;
 
 	prop = i_cal_component_get_first_property (ical, I_CAL_PRIORITY_PROPERTY);
-	if (!prop)
+	if (!prop) {
 		return -1;
+	}
 
 	retval = i_cal_property_get_priority (prop);
 
@@ -652,12 +668,15 @@ get_source_color (ECalClient *esource)
 
 	source = e_client_get_source (E_CLIENT (esource));
 
-	if (e_source_has_extension (source, E_SOURCE_EXTENSION_CALENDAR))
+	if (e_source_has_extension (source, E_SOURCE_EXTENSION_CALENDAR)) {
 		return color_from_extension (e_source_get_extension (source, E_SOURCE_EXTENSION_CALENDAR));
-	if (e_source_has_extension (source, E_SOURCE_EXTENSION_MEMO_LIST))
+	}
+	if (e_source_has_extension (source, E_SOURCE_EXTENSION_MEMO_LIST)) {
 		return color_from_extension (e_source_get_extension (source, E_SOURCE_EXTENSION_MEMO_LIST));
-	if (e_source_has_extension (source, E_SOURCE_EXTENSION_TASK_LIST))
+	}
+	if (e_source_has_extension (source, E_SOURCE_EXTENSION_TASK_LIST)) {
 		return color_from_extension (e_source_get_extension (source, E_SOURCE_EXTENSION_TASK_LIST));
+	}
 	return NULL;
 }
 
@@ -667,16 +686,18 @@ calendar_appointment_equal (CalendarAppointment *a,
 {
 	GSList *la, *lb;
 
-	if (g_slist_length (a->occurrences) != g_slist_length (b->occurrences))
+	if (g_slist_length (a->occurrences) != g_slist_length (b->occurrences)) {
 		return FALSE;
+	}
 
 	for (la = a->occurrences, lb = b->occurrences; la && lb; la = la->next, lb = lb->next) {
 		const CalendarOccurrence *oa = la->data;
 		const CalendarOccurrence *ob = lb->data;
 
 		if (oa->start_time != ob->start_time ||
-		    oa->end_time != ob->end_time)
+		    oa->end_time != ob->end_time) {
 			return FALSE;
+		}
 	}
 
 	return g_strcmp0 (a->uid, b->uid) == 0 &&
@@ -985,8 +1006,9 @@ calendar_event_copy (CalendarEvent *event)
 {
 	CalendarEvent *retval;
 
-	if (!event)
+	if (!event) {
 		return NULL;
+	}
 
 	retval = g_new0 (CalendarEvent, 1);
 
@@ -1033,14 +1055,17 @@ static gboolean
 calendar_event_equal (CalendarEvent *a,
                       CalendarEvent *b)
 {
-	if (!a && !b)
+	if (!a && !b) {
 		return TRUE;
+	}
 
-	if ((a && !b) || (!a && b))
+	if ((a && !b) || (!a && b)) {
 		return FALSE;
+	}
 
-	if (a->type != b->type)
+	if (a->type != b->type) {
 		return FALSE;
+	}
 
 	switch (a->type) {
 		case CALENDAR_EVENT_APPOINTMENT:
@@ -1067,8 +1092,9 @@ calendar_event_generate_ocurrences (CalendarEvent *event,
                                     time_t end,
                                     ICalTimezone *default_zone)
 {
-	if (event->type != CALENDAR_EVENT_APPOINTMENT)
+	if (event->type != CALENDAR_EVENT_APPOINTMENT) {
 		return;
+	}
 
 	calendar_appointment_generate_ocurrences (CALENDAR_APPOINTMENT (event),
 	                                          ical,
@@ -1140,12 +1166,14 @@ goddamn_this_is_crack (CalendarClientSource *source,
 	g_assert (view != NULL);
 
 	if (source->completed_query.view == view) {
-		if (emit_signal)
+		if (emit_signal) {
 			*emit_signal = TRUE;
+		}
 		return &source->completed_query;
 	} else if (source->in_progress_query.view == view) {
-		if (emit_signal)
+		if (emit_signal) {
 			*emit_signal = FALSE;
+		}
 		return &source->in_progress_query;
 	}
 
@@ -1222,8 +1250,9 @@ calendar_client_handle_query_result (CalendarClientSource *source,
 		char *uid;
 
 		event = calendar_event_new (ical, source, priv->zone);
-		if (!event)
+		if (!event) {
 			continue;
+		}
 
 		calendar_event_generate_ocurrences (event,
 		                                    ical,
@@ -1299,8 +1328,9 @@ calendar_client_handle_objects_removed (CalendarClientSource *source,
 
 			g_hash_table_foreach_remove (query->events, check_object_remove, (gpointer) e_cal_component_id_get_uid (id));
 
-			if (size != g_hash_table_size (query->events))
+			if (size != g_hash_table_size (query->events)) {
 				events_changed = TRUE;
+			}
 		} else if ((event = g_hash_table_lookup (query->events, uid))) {
 			dprintf ("Event removed: ");
 
@@ -1345,8 +1375,9 @@ calendar_client_stop_query (CalendarClient *client,
 		g_assert (source->query_completed != FALSE);
 
 		source->query_completed = FALSE;
-	} else
+	} else {
 		g_assert_not_reached ();
+	}
 
 	calendar_client_query_finalize (query);
 }
@@ -1368,8 +1399,9 @@ calendar_client_start_query (CalendarClient *client,
 
 	g_assert (view != NULL);
 
-	if (source->query_in_progress)
+	if (source->query_in_progress) {
 		calendar_client_stop_query (client, source, &source->in_progress_query);
+	}
 
 	dprintf ("Starting query %p: '%s'\n", &source->in_progress_query, query);
 
@@ -1407,8 +1439,9 @@ calendar_client_update_appointments (CalendarClient *client)
 	char *month_end;
 
 	if (priv->month == G_MAXUINT ||
-	    priv->year == G_MAXUINT)
+	    priv->year == G_MAXUINT) {
 		return;
+	}
 
 	month_begin = make_isodate_for_day_begin (1,
 	                                          priv->month,
@@ -1451,8 +1484,9 @@ calendar_client_update_tasks (CalendarClient *client)
 
 	if (priv->day == G_MAXUINT ||
 	    priv->month == G_MAXUINT ||
-	    priv->year == G_MAXUINT)
+	    priv->year == G_MAXUINT) {
 		return;
+	}
 
 	g_autofree char *day_begin = make_isodate_for_day_begin (priv->day, priv->month, priv->year);
 
@@ -1658,8 +1692,9 @@ filter_appointment (const char *uid,
 {
 	GSList *occurrences, *l;
 
-	if (event->type != CALENDAR_EVENT_APPOINTMENT)
+	if (event->type != CALENDAR_EVENT_APPOINTMENT) {
 		return;
+	}
 
 	occurrences = CALENDAR_APPOINTMENT (event)->occurrences;
 	CALENDAR_APPOINTMENT (event)->occurrences = NULL;
@@ -1696,19 +1731,22 @@ filter_task (const char *uid,
 	CalendarTask *task;
 #endif
 
-	if (event->type != CALENDAR_EVENT_TASK)
+	if (event->type != CALENDAR_EVENT_TASK) {
 		return;
+	}
 
 #ifdef FIX_BROKEN_TASKS_QUERY
 	task = CALENDAR_TASK (event);
 
-	if (task->start_time && task->start_time > filter_data->start_time)
+	if (task->start_time && task->start_time > filter_data->start_time) {
 		return;
+	}
 
 	if (task->completed_time &&
 	    (task->completed_time < filter_data->start_time ||
-	     task->completed_time > filter_data->end_time))
+	     task->completed_time > filter_data->end_time)) {
 		return;
+	}
 #endif /* FIX_BROKEN_TASKS_QUERY */
 
 	filter_data->events = g_slist_prepend (filter_data->events,
@@ -1726,8 +1764,9 @@ calendar_client_filter_events (CalendarClient *client,
 	GSList *l;
 	GSList *retval;
 
-	if (!sources)
+	if (!sources) {
 		return NULL;
+	}
 
 	filter_data.client = client;
 	filter_data.events = NULL;

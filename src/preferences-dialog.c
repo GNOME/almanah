@@ -225,8 +225,9 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 
 	/* Save the new encryption key to GSettings */
 	key = gtk_combo_box_get_active_id (priv->key_combo);
-	if (key == NULL)
+	if (key == NULL) {
 		key = "";
+	}
 
 	if (g_settings_set_string (priv->settings, "encryption-key", key) == FALSE) {
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),

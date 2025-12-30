@@ -136,13 +136,15 @@ static void
 almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
 
-	if (fixture->statement != NULL)
+	if (fixture->statement != NULL) {
 		sqlite3_finalize (fixture->statement);
+	}
 
 	g_clear_object (&fixture->settings);
 
-	if (fixture->db != NULL)
+	if (fixture->db != NULL) {
 		sqlite3_close (fixture->db);
+	}
 
 	/* Removing the encryption key */
 	if (fixture->gpgme_context) {
@@ -151,8 +153,9 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 			gpgme_error_t gpgme_error;
 
 			gpgme_error = gpgme_get_key (fixture->gpgme_context, fixture->key_fpr, &key, 1);
-			if (gpgme_error == GPG_ERR_NO_ERROR)
+			if (gpgme_error == GPG_ERR_NO_ERROR) {
 				gpgme_op_delete (fixture->gpgme_context, key, 1);
+			}
 			gpgme_key_release (key);
 			g_free (fixture->key_fpr);
 		}
@@ -186,13 +189,15 @@ almanah_test_vfs_enc_teardown (struct AlmanahTestVfsFixture *fixture, __attribut
 static void
 almanah_test_vfs_plain_teardown (struct AlmanahTestVfsFixture *fixture, __attribute__ ((unused)) gconstpointer user_data)
 {
-	if (fixture->statement != NULL)
+	if (fixture->statement != NULL) {
 		sqlite3_finalize (fixture->statement);
+	}
 
 	g_clear_object (&fixture->settings);
 
-	if (fixture->db != NULL)
+	if (fixture->db != NULL) {
 		sqlite3_close (fixture->db);
+	}
 
 	almanah_vfs_finish ();
 
@@ -217,8 +222,9 @@ almanah_test_vfs_encrypted (struct AlmanahTestVfsFixture *fixture, __attribute__
 
 	/* Create the database */
 	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
+	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	/* Add a table and some data */
@@ -247,20 +253,23 @@ almanah_test_vfs_encrypted (struct AlmanahTestVfsFixture *fixture, __attribute__
 
 	/* Reopen the database */
 	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
+	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	/* Ensure the data */
 	fixture->statement = NULL;
 	rc = sqlite3_prepare_v2 (fixture->db, "SELECT content FROM entries WHERE year=2015 AND month=4 AND day=19", -1, &fixture->statement, NULL);
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		g_test_message ("Error quering for content: %s", sqlite3_errmsg (fixture->db));
+	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	rc = sqlite3_step (fixture->statement);
-	if (rc != SQLITE_ROW)
+	if (rc != SQLITE_ROW) {
 		g_test_message ("Error steping for content: %s", sqlite3_errmsg (fixture->db));
+	}
 
 	entry_content = sqlite3_column_text (fixture->statement, 0);
 	g_assert_cmpstr ((gchar *) entry_content, ==, "Just a test");
@@ -277,8 +286,9 @@ almanah_test_vfs_plain_open (struct AlmanahTestVfsFixture *fixture, __attribute_
 	gint rc;
 
 	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
+	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	sqlite3_close (fixture->db);
@@ -293,8 +303,9 @@ almanah_test_vfs_plain_data (struct AlmanahTestVfsFixture *fixture, __attribute_
 	const guchar *entry_content = NULL;
 
 	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
+	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	rc = sqlite3_exec (fixture->db, "CREATE TABLE IF NOT EXISTS entries (year INTEGER, month INTEGER, day INTEGER, content TEXT, PRIMARY KEY (year, month, day));", NULL, 0, &error_msg);
@@ -315,19 +326,22 @@ almanah_test_vfs_plain_data (struct AlmanahTestVfsFixture *fixture, __attribute_
 	fixture->db = NULL;
 
 	rc = sqlite3_open_v2 (fixture->db_file, &fixture->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, "almanah");
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		g_test_message ("Error opening database: %s", sqlite3_errmsg (fixture->db));
+	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	fixture->statement = NULL;
 	rc = sqlite3_prepare_v2 (fixture->db, "SELECT content FROM entries WHERE year=2015 AND month=3 AND day=7", -1, &fixture->statement, NULL);
-	if (rc != SQLITE_OK)
+	if (rc != SQLITE_OK) {
 		g_test_message ("Error quering for content: %s", sqlite3_errmsg (fixture->db));
+	}
 	g_assert_cmpint (rc, ==, SQLITE_OK);
 
 	rc = sqlite3_step (fixture->statement);
-	if (rc != SQLITE_ROW)
+	if (rc != SQLITE_ROW) {
 		g_test_message ("Error steping for content: %s", sqlite3_errmsg (fixture->db));
+	}
 
 	entry_content = sqlite3_column_text (fixture->statement, 0);
 	g_assert_cmpstr ((gchar *) entry_content, ==, "Just a test");

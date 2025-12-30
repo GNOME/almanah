@@ -99,8 +99,9 @@ almanah_event_manager_dispose (GObject *object)
 	/* Free the factories */
 	if (priv->factories != NULL) {
 		guint i = 0;
-		for (i = 0; priv->factories[i] != NULL; i++)
+		for (i = 0; priv->factories[i] != NULL; i++) {
 			g_object_unref (priv->factories[i]);
+		}
 		g_free (priv->factories);
 		priv->factories = NULL;
 	}
@@ -133,16 +134,18 @@ almanah_event_manager_query_events (AlmanahEventManager *self, AlmanahEventFacto
 	if (type_id != ALMANAH_EVENT_FACTORY_UNKNOWN) {
 		/* Just query that factory */
 		for (i = 0; priv->factories[i] != NULL; i++) {
-			if (almanah_event_factory_get_type_id (priv->factories[i]) == type_id)
+			if (almanah_event_factory_get_type_id (priv->factories[i]) == type_id) {
 				almanah_event_factory_query_events (priv->factories[i], date);
+			}
 		}
 
 		return;
 	}
 
 	/* Otherwise, query all factories */
-	for (i = 0; priv->factories[i] != NULL; i++)
+	for (i = 0; priv->factories[i] != NULL; i++) {
 		almanah_event_factory_query_events (priv->factories[i], date);
+	}
 }
 
 GSList *
@@ -158,8 +161,9 @@ almanah_event_manager_get_events (AlmanahEventManager *self, AlmanahEventFactory
 	if (type_id != ALMANAH_EVENT_FACTORY_UNKNOWN) {
 		/* Just return the events for the specified event factory */
 		for (i = 0; priv->factories[i] != NULL; i++) {
-			if (almanah_event_factory_get_type_id (priv->factories[i]) == type_id)
+			if (almanah_event_factory_get_type_id (priv->factories[i]) == type_id) {
 				return almanah_event_factory_get_events (priv->factories[i], date);
+			}
 		}
 
 		return NULL;
@@ -173,8 +177,9 @@ almanah_event_manager_get_events (AlmanahEventManager *self, AlmanahEventFactory
 		end = g_slist_concat (end, end2); /* assignment's only to shut gcc up */
 		end = end2;
 
-		if (list == NULL)
+		if (list == NULL) {
 			list = end;
+		}
 	}
 
 	return list;

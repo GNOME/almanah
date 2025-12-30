@@ -208,10 +208,11 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 	                      (import == TRUE) ? C_ ("Dialog button", "_Import") : C_ ("Dialog button", "_Export"));
 
 	/* Populate the mode combo box */
-	if (import == TRUE)
+	if (import == TRUE) {
 		almanah_import_operation_populate_model (priv->mode_store, 0, 1, 2, 3);
-	else
+	} else {
 		almanah_export_operation_populate_model (priv->mode_store, 0, 1, 2, 3);
+	}
 	gtk_combo_box_set_active (priv->mode_combo_box, 0);
 
 	g_object_unref (builder);
@@ -312,10 +313,11 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 
 	/* If the user pressed Cancel, cancel the operation if we've started, and return otherwise */
 	if (response_id != GTK_RESPONSE_OK) {
-		if (priv->cancellable == NULL)
+		if (priv->cancellable == NULL) {
 			gtk_widget_destroy (GTK_WIDGET (self));
-		else
+		} else {
 			g_cancellable_cancel (priv->cancellable);
+		}
 		return;
 	}
 
@@ -362,8 +364,9 @@ ied_mode_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportExportDialog
 	GtkFileChooserAction action;
 
 	new_mode = gtk_combo_box_get_active (combo_box);
-	if (new_mode == -1 || new_mode == priv->current_mode)
+	if (new_mode == -1 || new_mode == priv->current_mode) {
 		return;
+	}
 
 	priv->current_mode = new_mode;
 
@@ -593,8 +596,9 @@ ird_view_combo_box_changed_cb (GtkComboBox *combo_box, AlmanahImportResultsDialo
 	gint new_mode;
 
 	new_mode = gtk_combo_box_get_active (combo_box);
-	if (new_mode == -1 || new_mode == (gint) priv->current_mode)
+	if (new_mode == -1 || new_mode == (gint) priv->current_mode) {
 		return;
+	}
 
 	priv->current_mode = new_mode;
 	gtk_tree_model_filter_refilter (priv->filtered_results_store);

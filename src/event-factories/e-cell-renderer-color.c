@@ -77,17 +77,21 @@ cell_renderer_color_get_size (GtkCellRenderer *cell,
 			*y_offset = MAX (*y_offset, 0);
 		}
 	} else {
-		if (x_offset)
+		if (x_offset) {
 			*x_offset = 0;
-		if (y_offset)
+		}
+		if (y_offset) {
 			*y_offset = 0;
+		}
 	}
 
-	if (width)
+	if (width) {
 		*width = calc_width;
+	}
 
-	if (height)
+	if (height) {
 		*height = calc_height;
+	}
 }
 
 static void
@@ -106,8 +110,9 @@ cell_renderer_color_render (GtkCellRenderer *cell,
 
 	priv = e_cell_renderer_color_get_instance_private (E_CELL_RENDERER_COLOR (cell));
 
-	if (priv->color == NULL)
+	if (priv->color == NULL) {
 		return;
+	}
 
 	cell_renderer_color_get_size (
 	    cell, widget, cell_area,
@@ -121,8 +126,9 @@ cell_renderer_color_render (GtkCellRenderer *cell,
 	pix_rect.width -= xpad * 2;
 	pix_rect.height -= ypad * 2;
 
-	if (!gdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect))
+	if (!gdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect)) {
 		return;
+	}
 
 	gdk_cairo_set_source_rgba (cr, priv->color);
 	cairo_rectangle (cr, pix_rect.x, pix_rect.y, draw_rect.width, draw_rect.height);
@@ -142,8 +148,9 @@ cell_renderer_color_set_property (GObject *object,
 
 	switch (property_id) {
 		case PROP_COLOR:
-			if (priv->color != NULL)
+			if (priv->color != NULL) {
 				gdk_rgba_free (priv->color);
+			}
 			priv->color = g_value_dup_boxed (value);
 			return;
 	}
@@ -177,8 +184,9 @@ cell_renderer_color_finalize (GObject *object)
 
 	priv = e_cell_renderer_color_get_instance_private (E_CELL_RENDERER_COLOR (object));
 
-	if (priv->color != NULL)
+	if (priv->color != NULL) {
 		gdk_rgba_free (priv->color);
+	}
 
 	/* Chain up to parent's finalize() method. */
 	G_OBJECT_CLASS (e_cell_renderer_color_parent_class)->finalize (object);

@@ -71,9 +71,9 @@ almanah_tag_accessible_get_name (AtkObject *accessible)
 	g_return_val_if_fail (ALMANAH_IS_TAG_ACCESSIBLE (accessible), NULL);
 
 	name = ATK_OBJECT_CLASS (almanah_tag_accessible_parent_class)->get_name (accessible);
-	if (name != NULL)
+	if (name != NULL) {
 		return name;
-	else {
+	} else {
 		/* Get the text on the tag */
 		GtkWidget *widget;
 
@@ -108,8 +108,9 @@ almanah_tag_accessible_atk_action_do_action (AtkAction *action, gint i)
 	if (i == 0) {
 		almanah_tag_remove (ALMANAH_TAG (widget));
 		return TRUE;
-	} else
+	} else {
 		return FALSE;
+	}
 }
 
 gint
@@ -121,28 +122,31 @@ almanah_tag_accessible_atk_action_get_n_actions (AtkAction *action)
 const gchar *
 almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i)
 {
-	if (i == 0)
+	if (i == 0) {
 		return "Remove the tag from the entry";
-	else
+	} else {
 		return NULL;
+	}
 }
 
 const gchar *
 almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i)
 {
-	if (i == 0)
+	if (i == 0) {
 		return "remove";
-	else
+	} else {
 		return NULL;
+	}
 }
 
 const gchar *
 almanah_tag_accessible_atk_action_get_keybinding (AtkAction *action, gint i)
 {
-	if (i == 0)
+	if (i == 0) {
 		return "R;;";
-	else
+	} else {
 		return NULL;
+	}
 }
 
 gboolean
@@ -154,8 +158,9 @@ almanah_tag_accessible_atk_action_set_description (AtkAction *action, gint i, co
 const gchar *
 almanah_tag_accessible_atk_action_get_localized_name (AtkAction *action, gint i)
 {
-	if (i == 0)
+	if (i == 0) {
 		return _ ("Remove the tag from the entry");
-	else
+	} else {
 		return NULL;
+	}
 }

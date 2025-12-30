@@ -173,8 +173,9 @@ almanah_tag_set_property (GObject *object, guint property_id, const GValue *valu
 
 	switch (property_id) {
 		case PROP_TAG:
-			if (priv->tag)
+			if (priv->tag) {
 				g_free (priv->tag);
+			}
 			priv->tag = g_strdup (g_value_get_string (value));
 			if (PANGO_IS_LAYOUT (priv->layout)) {
 				pango_layout_set_text (priv->layout, priv->tag, -1);
@@ -401,12 +402,13 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	cairo_stroke (cr);
 
 	/* Focus */
-	if (gtk_widget_has_focus (widget))
+	if (gtk_widget_has_focus (widget)) {
 		gtk_render_focus (gtk_widget_get_style_context (widget),
 		                  cr,
 		                  0, 0,
 		                  gtk_widget_get_allocated_width (widget),
 		                  gtk_widget_get_allocated_height (widget));
+	}
 
 	return FALSE;
 }
