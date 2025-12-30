@@ -71,14 +71,14 @@ static guint tag_signals[LAST_SIGNAL] = {
 static void almanah_tag_finalize (GObject *object);
 static void almanah_tag_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_tag_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
-void almanah_tag_ensure_layout (AlmanahTag *self);
-void almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *natural_width);
-void almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height);
-gboolean almanah_tag_motion_notify_event (GtkWidget *widget, GdkEventMotion *event);
-gboolean almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event);
-gboolean almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event);
-gboolean almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data);
-gboolean almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip);
+static void almanah_tag_ensure_layout (AlmanahTag *self);
+static void almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *natural_width);
+static void almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height);
+static gboolean almanah_tag_motion_notify_event (GtkWidget *widget, GdkEventMotion *event);
+static gboolean almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event);
+static gboolean almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event);
+static gboolean almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data);
+static gboolean almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTag, almanah_tag, GTK_TYPE_DRAWING_AREA)
 
@@ -188,7 +188,7 @@ almanah_tag_set_property (GObject *object, guint property_id, const GValue *valu
 	}
 }
 
-void
+static void
 almanah_tag_ensure_layout (AlmanahTag *self)
 {
 	AlmanahTagPrivate *priv = almanah_tag_get_instance_private (self);
@@ -206,7 +206,7 @@ almanah_tag_ensure_layout (AlmanahTag *self)
 	}
 }
 
-void
+static void
 almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint *natural_height)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);
@@ -220,7 +220,7 @@ almanah_tag_get_preferred_height (GtkWidget *widget, gint *minimum_height, gint 
 	*natural_height = *minimum_height;
 }
 
-void
+static void
 almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *natural_width)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);
@@ -234,7 +234,7 @@ almanah_tag_get_preferred_width (GtkWidget *widget, gint *minimum_width, gint *n
 	*natural_width = *minimum_width;
 }
 
-gboolean
+static gboolean
 almanah_tag_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);
@@ -258,7 +258,7 @@ almanah_tag_motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 	return FALSE;
 }
 
-gboolean
+static gboolean
 almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);
@@ -275,7 +275,7 @@ almanah_tag_button_press_event (GtkWidget *widget, GdkEventButton *event)
 	return FALSE;
 }
 
-gboolean
+static gboolean
 almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);
@@ -291,7 +291,7 @@ almanah_tag_button_release_event (GtkWidget *widget, GdkEventButton *event)
 	return FALSE;
 }
 
-gboolean
+static gboolean
 almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);
@@ -413,7 +413,7 @@ almanah_tag_draw (GtkWidget *widget, cairo_t *cr, gpointer data)
 	return FALSE;
 }
 
-gboolean
+static gboolean
 almanah_tag_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip)
 {
 	AlmanahTag *tag = ALMANAH_TAG (widget);

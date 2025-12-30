@@ -51,7 +51,8 @@ static void almanah_entry_tags_area_show (GtkWidget *widget);
 static void almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const gchar *tag);
 
 /* Signals */
-void tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self);
+static void tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self);
+
 static void entry_tags_area_remove_foreach_cb (GtkWidget *flow_box_child, AlmanahEntryTagsArea *self);
 static void tag_remove (AlmanahTag *tag_widget, AlmanahEntryTagsArea *self);
 
@@ -216,7 +217,7 @@ almanah_entry_tags_area_add_tag (AlmanahEntryTagsArea *self, const gchar *tag)
 	priv->tags_number++;
 }
 
-void
+static void
 tag_entry_activate_cb (GtkEntry *entry, AlmanahEntryTagsArea *self)
 {
 	AlmanahEntryTagsAreaPrivate *priv = almanah_entry_tags_area_get_instance_private (self);

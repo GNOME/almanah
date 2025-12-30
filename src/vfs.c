@@ -195,7 +195,7 @@ maybe_secure_memory_free (gpointer memory)
 
 /* Callback based data buffer functions for GPGME */
 
-ssize_t
+static ssize_t
 _gpgme_read_cb (void *handle, void *buffer, size_t size)
 {
 	GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;
@@ -215,7 +215,7 @@ _gpgme_read_cb (void *handle, void *buffer, size_t size)
 	return (ssize_t) read_size;
 }
 
-ssize_t
+static ssize_t
 _gpgme_write_cb (void *handle, const void *buffer, size_t size)
 {
 	GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;
@@ -254,7 +254,7 @@ _gpgme_write_cb (void *handle, const void *buffer, size_t size)
 	return size;
 }
 
-off_t
+static off_t
 _gpgme_seek_cb (void *handle, off_t offset, int whence)
 {
 	GpgmeNpmClosure *npm_closure = (GpgmeNpmClosure *) handle;

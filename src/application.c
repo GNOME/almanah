@@ -53,7 +53,7 @@ static void action_about_cb (GSimpleAction *action, GVariant *parameter, gpointe
 static void action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /* Some callbacks */
-void almanah_application_style_provider_parsing_error_cb (GtkCssProvider *provider, GtkCssSection *section, GError *error, gpointer user_data);
+static void almanah_application_style_provider_parsing_error_cb (GtkCssProvider *provider, GtkCssSection *section, GError *error, gpointer user_data);
 
 typedef struct {
 	gboolean debug;
@@ -527,7 +527,7 @@ action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	gtk_widget_destroy (GTK_WIDGET (main_window));
 }
 
-void
+static void
 almanah_application_style_provider_parsing_error_cb (__attribute__ ((unused)) GtkCssProvider *provider,
                                                      __attribute__ ((unused)) GtkCssSection *section,
                                                      GError *error,

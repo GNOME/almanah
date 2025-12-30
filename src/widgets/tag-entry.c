@@ -40,9 +40,9 @@ static void almanah_tag_entry_set_property (GObject *object, guint property_id, 
 static void almanah_tag_entry_finalize (GObject *object);
 static void almanah_tag_entry_update_tags (AlmanahTagEntry *tag_entry);
 static void almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *natural);
-gboolean almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event);
-gboolean almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event);
-gboolean almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
+static gboolean almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event);
+static gboolean almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event);
+static gboolean almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTagEntry, almanah_tag_entry, GTK_TYPE_ENTRY)
 
@@ -162,7 +162,7 @@ almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *n
 	*natural = n_width - 50;
 }
 
-gboolean
+static gboolean
 almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event)
 {
 	gtk_entry_set_text (GTK_ENTRY (self), _ ("add tag"));
@@ -170,7 +170,7 @@ almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event)
 	return FALSE;
 }
 
-gboolean
+static gboolean
 almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event)
 {
 	gtk_entry_set_text (GTK_ENTRY (self), "");
@@ -178,7 +178,7 @@ almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event)
 	return FALSE;
 }
 
-gboolean
+static gboolean
 almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self)
 {
 	gchar *tag;

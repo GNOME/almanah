@@ -30,13 +30,13 @@ static void almanah_tag_accessible_initialize (AtkObject *obj, gpointer data);
 static const gchar *almanah_tag_accessible_get_name (AtkObject *accessible);
 
 static void almanah_tag_accessible_atk_action_iface_init (AtkActionIface *iface);
-gboolean almanah_tag_accessible_atk_action_do_action (AtkAction *action, gint i);
-gint almanah_tag_accessible_atk_action_get_n_actions (AtkAction *action);
-const gchar *almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i);
-const gchar *almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i);
-const gchar *almanah_tag_accessible_atk_action_get_keybinding (AtkAction *action, gint i);
-gboolean almanah_tag_accessible_atk_action_set_description (AtkAction *action, gint i, const gchar *desc);
-const gchar *almanah_tag_accessible_atk_action_get_localized_name (AtkAction *action, gint i);
+static gboolean almanah_tag_accessible_atk_action_do_action (AtkAction *action, gint i);
+static gint almanah_tag_accessible_atk_action_get_n_actions (AtkAction *action);
+static const gchar *almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i);
+static const gchar *almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i);
+static const gchar *almanah_tag_accessible_atk_action_get_keybinding (AtkAction *action, gint i);
+static gboolean almanah_tag_accessible_atk_action_set_description (AtkAction *action, gint i, const gchar *desc);
+static const gchar *almanah_tag_accessible_atk_action_get_localized_name (AtkAction *action, gint i);
 
 G_DEFINE_TYPE_WITH_CODE (AlmanahTagAccessible, almanah_tag_accessible, GTK_TYPE_WIDGET_ACCESSIBLE, G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, almanah_tag_accessible_atk_action_iface_init))
 
@@ -97,7 +97,7 @@ almanah_tag_accessible_atk_action_iface_init (AtkActionIface *iface)
 	iface->get_localized_name = almanah_tag_accessible_atk_action_get_localized_name;
 }
 
-gboolean
+static gboolean
 almanah_tag_accessible_atk_action_do_action (AtkAction *action, gint i)
 {
 	GtkWidget *widget;
@@ -113,13 +113,13 @@ almanah_tag_accessible_atk_action_do_action (AtkAction *action, gint i)
 	}
 }
 
-gint
+static gint
 almanah_tag_accessible_atk_action_get_n_actions (AtkAction *action)
 {
 	return 1;
 }
 
-const gchar *
+static const gchar *
 almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i)
 {
 	if (i == 0) {
@@ -129,7 +129,7 @@ almanah_tag_accessible_atk_action_get_description (AtkAction *action, gint i)
 	}
 }
 
-const gchar *
+static const gchar *
 almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i)
 {
 	if (i == 0) {
@@ -139,7 +139,7 @@ almanah_tag_accessible_atk_action_get_name (AtkAction *action, gint i)
 	}
 }
 
-const gchar *
+static const gchar *
 almanah_tag_accessible_atk_action_get_keybinding (AtkAction *action, gint i)
 {
 	if (i == 0) {
@@ -149,13 +149,13 @@ almanah_tag_accessible_atk_action_get_keybinding (AtkAction *action, gint i)
 	}
 }
 
-gboolean
+static gboolean
 almanah_tag_accessible_atk_action_set_description (AtkAction *action, gint i, const gchar *desc)
 {
 	return FALSE;
 }
 
-const gchar *
+static const gchar *
 almanah_tag_accessible_atk_action_get_localized_name (AtkAction *action, gint i)
 {
 	if (i == 0) {

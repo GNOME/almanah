@@ -70,29 +70,30 @@ static void mw_setup_size_text_view (AlmanahMainWindow *self);
 static int mw_get_font_width (GtkWidget *widget, const gchar *font_name);
 
 /* GActions callbacks */
-void mw_cut_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_copy_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_paste_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_delete_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_insert_time_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_important_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_show_tags_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_select_date_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_bold_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_italic_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_cut_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_copy_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_paste_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_delete_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_insert_time_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_important_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_show_tags_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_select_date_activate_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_bold_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_italic_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+static void mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 static void mw_undo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 static void mw_redo_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 static void mw_source_buffer_notify_can_undo_redo_cb (GObject *obj, GParamSpec *pspec, gpointer user_data);
 
+/* GtkBuilder callbacks */
 void mw_events_tree_view_row_activated_cb (GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, AlmanahMainWindow *main_window);
+void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
 
 /* Other callbacks */
-void mw_calendar_day_selected_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
-void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
-void mw_desktop_interface_settings_changed (GSettings *settings, const gchar *key, gpointer user_data);
+static void mw_calendar_select_date_clicked_cb (AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window);
+static void mw_desktop_interface_settings_changed (GSettings *settings, const gchar *key, gpointer user_data);
 
 typedef struct {
 	GtkWidget *header_bar;
@@ -813,7 +814,7 @@ mw_delete_event_cb (GtkWindow *window, __attribute__ ((unused)) gpointer user_da
 	return TRUE;
 }
 
-void
+static void
 mw_cut_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -822,7 +823,7 @@ mw_cut_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute_
 	gtk_text_buffer_cut_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard, TRUE);
 }
 
-void
+static void
 mw_copy_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -831,7 +832,7 @@ mw_copy_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute
 	gtk_text_buffer_copy_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard);
 }
 
-void
+static void
 mw_paste_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -840,7 +841,7 @@ mw_paste_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribut
 	gtk_text_buffer_paste_clipboard (GTK_TEXT_BUFFER (priv->entry_buffer), clipboard, NULL, TRUE);
 }
 
-void
+static void
 mw_delete_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -848,7 +849,7 @@ mw_delete_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribu
 	gtk_text_buffer_delete_selection (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE, TRUE);
 }
 
-void
+static void
 mw_insert_time_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -861,7 +862,7 @@ mw_insert_time_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __at
 	gtk_text_buffer_insert_at_cursor (GTK_TEXT_BUFFER (priv->entry_buffer), time_string, -1);
 }
 
-void
+static void
 mw_important_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -871,7 +872,7 @@ mw_important_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 	g_simple_action_set_state (action, parameter);
 }
 
-void
+static void
 mw_show_tags_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -881,7 +882,7 @@ mw_show_tags_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 	g_simple_action_set_state (action, parameter);
 }
 
-void
+static void
 mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -924,7 +925,7 @@ apply_formatting (AlmanahMainWindow *self, const gchar *tag_name, gboolean apply
 	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (priv->entry_buffer), TRUE);
 }
 
-void
+static void
 mw_bold_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -933,7 +934,7 @@ mw_bold_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 	g_simple_action_set_state (action, parameter);
 }
 
-void
+static void
 mw_italic_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -942,7 +943,7 @@ mw_italic_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_d
 	g_simple_action_set_state (action, parameter);
 }
 
-void
+static void
 mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -982,7 +983,7 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 	return FALSE;
 }
 
-void
+static void
 mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *self = ALMANAH_MAIN_WINDOW (user_data);
@@ -1319,7 +1320,7 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 	almanah_entry_tags_area_set_entry (priv->entry_tags_area, priv->current_entry);
 }
 
-void
+static void
 mw_calendar_select_date_clicked_cb (__attribute__ ((unused)) AlmanahCalendarButton *calendar, AlmanahMainWindow *main_window)
 {
 	g_action_group_activate_action (G_ACTION_GROUP (main_window), "select-date", NULL);
@@ -1587,7 +1588,7 @@ mw_get_font_width (GtkWidget *widget, const gchar *font_name)
 	return width;
 }
 
-void
+static void
 mw_desktop_interface_settings_changed (G_GNUC_UNUSED GSettings *settings, const gchar *key, gpointer user_data)
 {
 	if (strcmp (ALMANAH_MAIN_WINDOW_DOCUMENT_FONT_KEY_NAME, key) != 0) {
