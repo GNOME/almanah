@@ -1008,6 +1008,9 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 	};
 
 	AlmanahSQLiteVFS *self = (AlmanahSQLiteVFS *) pFile;
+
+	memset (self, 0, sizeof (AlmanahSQLiteVFS));
+
 	int oflags = 0;
 	g_auto (SqliteStr) aBuf = NULL;
 	struct stat encrypted_db_stat, plaintext_db_stat;
@@ -1023,8 +1026,6 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 			return SQLITE_NOMEM;
 		}
 	}
-
-	memset (self, 0, sizeof (AlmanahSQLiteVFS));
 
 	g_autofree gchar *plain_filename = g_strdup (zName);
 	g_autofree gchar *encrypted_filename = NULL;
