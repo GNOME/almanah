@@ -1482,7 +1482,7 @@ e_source_selector_set_show_colors (ESourceSelector *selector,
 
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
 
-	if ((show_colors ? 1 : 0) == (priv->show_colors ? 1 : 0))
+	if (show_colors == priv->show_colors)
 		return;
 
 	priv->show_colors = show_colors;
@@ -1529,7 +1529,7 @@ e_source_selector_set_show_toggles (ESourceSelector *selector,
 
 	ESourceSelectorPrivate *priv = e_source_selector_get_instance_private (selector);
 
-	if ((show_toggles ? 1 : 0) == (priv->show_toggles ? 1 : 0))
+	if (show_toggles == priv->show_toggles)
 		return;
 
 	priv->show_toggles = show_toggles;
