@@ -551,8 +551,6 @@ get_ical_is_all_day (ICalComponent *ical,
 		return TRUE;
 	}
 
-	g_clear_object (&start_icaltime);
-
 	start_tm = gmtime (&start_time);
 	if (start_tm->tm_sec != 0 ||
 	    start_tm->tm_min != 0 ||
