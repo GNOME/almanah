@@ -50,6 +50,10 @@
 typedef struct _CalendarClientQuery CalendarClientQuery;
 typedef struct _CalendarClientSource CalendarClientSource;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalProperty, g_object_unref);
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalTime, g_object_unref);
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalParameter, g_object_unref);
+
 struct _CalendarClientQuery {
 	ECalClientView *view;
 	GHashTable *events;
@@ -442,9 +446,9 @@ get_time_from_property (ICalComponent *ical,
                         ICalTime *(*get_prop_func) (ICalProperty *prop),
                         ICalTimezone *default_zone)
 {
-	ICalProperty *prop;
-	ICalTime *ical_time;
-	ICalParameter *param;
+	g_autoptr (ICalProperty) prop = NULL;
+	g_autoptr (ICalTime) ical_time = NULL;
+	g_autoptr (ICalParameter) param = NULL;
 	const ICalTimezone *time_zone = NULL;
 	time_t retval;
 
@@ -463,10 +467,6 @@ get_time_from_property (ICalComponent *ical,
 		time_zone = default_zone;
 
 	retval = i_cal_time_as_timet_with_zone (ical_time, time_zone);
-
-	g_clear_object (&ical_time);
-	g_clear_object (&param);
-	g_clear_object (&prop);
 
 	return retval;
 }
