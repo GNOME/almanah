@@ -37,10 +37,12 @@
 	<template class="AlmanahImportResultsDialog" parent="GtkDialog">
 		<property name="border-width">5</property>
 		<child internal-child="vbox">
-			<object class="GtkVBox" id="almanah_ird_internal_vbox">
+			<object class="GtkBox" id="almanah_ird_internal_vbox">
+				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
 				<child>
-					<object class="GtkVBox" id="almanah_ird_vbox">
+					<object class="GtkBox" id="almanah_ird_vbox">
+						<property name="orientation">vertical</property>
 						<property name="border-width">5</property>
 						<property name="spacing">6</property>
 						<child>

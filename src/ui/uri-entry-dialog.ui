@@ -5,10 +5,12 @@
 	<template class="AlmanahUriEntryDialog" parent="GtkDialog">
 		<property name="border-width">5</property>
 		<child internal-child="vbox">
-			<object class="GtkVBox" id="vbox11">
+			<object class="GtkBox" id="vbox11">
+				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
 				<child>
-					<object class="GtkVBox" id="almanah_ued_vbox">
+					<object class="GtkBox" id="almanah_ued_vbox">
+						<property name="orientation">vertical</property>
 						<property name="spacing">6</property>
 						<property name="border-width">5</property>
 						<child>

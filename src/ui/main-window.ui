@@ -161,7 +161,8 @@
 		</child>
 
 		<child>
-			<object class="GtkVBox" id="vbox3">
+			<object class="GtkBox" id="vbox3">
+				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
 				<child>
 					<object class="GtkGrid" id="content_grid">
@@ -241,7 +242,8 @@
 				<child>
 					<object class="GtkExpander" id="events_expander">
 						<child type="label">
-							<object class="GtkHBox" id="almanah_mw_events_expander_label_box">
+							<object class="GtkBox" id="almanah_mw_events_expander_label_box">
+								<property name="orientation">horizontal</property>
 								<property name="spacing">6</property>
 								<child>
 									<object class="GtkLabel" id="almanah_mw_events_label">

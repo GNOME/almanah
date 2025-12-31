@@ -15,16 +15,19 @@
 		<property name="border-width">5</property>
 		<property name="default_width">400</property>
 		<child internal-child="vbox">
-			<object class="GtkVBox" id="vbox2">
+			<object class="GtkBox" id="vbox2">
+				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
 				<property name="visible">True</property>
 				<child>
-					<object class="GtkVBox" id="almanah_search_dialog_vbox">
+					<object class="GtkBox" id="almanah_search_dialog_vbox">
+						<property name="orientation">vertical</property>
 						<property name="spacing">6</property>
 						<property name="border-width">6</property>
 						<property name="visible">True</property>
 						<child>
-							<object class="GtkHBox" id="hbox0">
+							<object class="GtkBox" id="hbox0">
+								<property name="orientation">horizontal</property>
 								<property name="spacing">6</property>
 								<property name="visible">True</property>
 								<child>
@@ -83,11 +86,13 @@
 								<property name="margin-top">12</property>
 								<property name="visible">False</property>
 								<child>
-									<object class="GtkVBox" id="almanah_sd_results_vbox">
+									<object class="GtkBox" id="almanah_sd_results_vbox">
+										<property name="orientation">vertical</property>
 										<property name="spacing">6</property>
 										<property name="visible">True</property>
 										<child>
-											<object class="GtkHBox" id="almanah_sd_results_hbox">
+											<object class="GtkBox" id="almanah_sd_results_hbox">
+												<property name="orientation">horizontal</property>
 												<property name="spacing">6</property>
 												<property name="visible">True</property>
 												<child>
