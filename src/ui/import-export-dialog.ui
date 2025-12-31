@@ -97,8 +97,8 @@
 					<object class="GtkHButtonBox" id="almanah_ied_button_box">
 						<child>
 							<object class="GtkButton" id="almanah_ied_cancel_button">
-								<property name="use-stock">True</property>
-								<property name="label">gtk-cancel</property>
+								<property name="use-underline">1</property>
+								<property name="label" translatable="yes">_Cancel</property>
 							</object>
 						</child>
 						<child>

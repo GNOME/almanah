@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <interface>
 	<requires lib="gtk+" version="3.0"/>
-	<object class="GtkImage" id="almanah_sd_search_button_image">
-		<property name="stock">gtk-find</property>
-	</object>
-
 	<object class="GtkListStore" id="sd_results_store">
 		<columns>
 			<column type="guint"/><!-- Day -->
@@ -47,7 +43,6 @@
 								</child>
 								<child>
 									<object class="GtkButton" id="sd_search_button">
-										<property name="image">almanah_sd_search_button_image</property>
 										<property name="label" translatable="yes">Search</property>
 										<property name="can-default">True</property>
 										<property name="has-default">True</property>
@@ -63,8 +58,8 @@
 								</child>
 								<child>
 									<object class="GtkButton" id="sd_cancel_button">
-										<property name="use-stock">True</property>
-										<property name="label">gtk-cancel</property>
+										<property name="use-underline">1</property>
+										<property name="label" translatable="yes">_Cancel</property>
 										<property name="can-default">True</property>
 										<property name="has-default">True</property>
 										<property name="sensitive">False</property>
@@ -191,8 +186,8 @@
 						</child>
 						<child>
 							<object class="GtkButton" id="almanah_sd_close_button">
-								<property name="use-stock">True</property>
-								<property name="label">gtk-close</property>
+								<property name="use-underline">1</property>
+								<property name="label" translatable="yes">_Close</property>
 								<property name="visible">True</property>
 							</object>
 						</child>
