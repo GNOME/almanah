@@ -84,6 +84,15 @@ G_DEFINE_AUTO_CLEANUP_FREE_FUNC (SqliteStr, sqlite3_free, NULL)
 ** actually pointers to instances of type DemoFile.
 */
 
+typedef struct _PlainData PlainData;
+
+struct _PlainData {
+	guint8 *buffer;
+	gsize buffer_size; /* Reserved memory size */
+	goffset offset;
+	gsize size; /* Data size (plain_size <= plain_buffer_size) */
+};
+
 typedef struct _AlmanahSQLiteVFS AlmanahSQLiteVFS;
 
 struct _AlmanahSQLiteVFS {
@@ -99,10 +108,7 @@ struct _AlmanahSQLiteVFS {
 
 	gboolean decrypted;
 
-	guint8 *plain_buffer;
-	gsize plain_buffer_size; /* Reserved memory size */
-	goffset plain_offset;
-	gsize plain_size; /* Data size (plain_size <= plain_buffer_size) */
+	PlainData plain;
 
 	GSettings *settings;
 };
@@ -439,9 +445,9 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 	}
 
 	/* Setup the database content in memory */
-	self->plain_buffer = operation->npm_closure->buffer;
-	self->plain_offset = 0;
-	self->plain_size = operation->npm_closure->size;
+	self->plain.buffer = operation->npm_closure->buffer;
+	self->plain.offset = 0;
+	self->plain.size = operation->npm_closure->size;
 
 	return TRUE;
 }
@@ -479,9 +485,9 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 	}
 
 	if (from_memory) {
-		operation->npm_closure->buffer = self->plain_buffer;
+		operation->npm_closure->buffer = self->plain.buffer;
 		operation->npm_closure->offset = 0;
-		operation->npm_closure->size = self->plain_size;
+		operation->npm_closure->size = self->plain.size;
 	}
 
 	/* Encrypt and sign! */
@@ -568,32 +574,32 @@ almanah_vfs_direct_write (AlmanahSQLiteVFS *self, /* File handle */
 )
 {
 	if (self->decrypted) {
-		if ((gsize) (offset + len) > self->plain_buffer_size) {
+		if ((gsize) (offset + len) > self->plain.buffer_size) {
 			gsize new_size;
 			gsize exponential_size;
 			gsize required_size;
 			gpointer new_buffer = NULL;
 
-			exponential_size = self->plain_size ? (2 * self->plain_size) : 512;
+			exponential_size = self->plain.size ? (2 * self->plain.size) : 512;
 			required_size = offset + len;
 
 			new_size = MAX (exponential_size, required_size);
-			new_buffer = maybe_secure_memory_try_realloc (self->plain_buffer, new_size);
+			new_buffer = maybe_secure_memory_try_realloc (self->plain.buffer, new_size);
 			if (new_buffer == NULL && (new_size > required_size)) {
 				new_size = required_size;
-				new_buffer = maybe_secure_memory_realloc (self->plain_buffer, new_size);
+				new_buffer = maybe_secure_memory_realloc (self->plain.buffer, new_size);
 			}
 
 			if (new_buffer == NULL) {
 				return SQLITE_NOMEM;
 			}
 
-			self->plain_buffer = new_buffer;
-			self->plain_buffer_size = new_size;
+			self->plain.buffer = new_buffer;
+			self->plain.buffer_size = new_size;
 		}
 
-		memcpy (self->plain_buffer + offset, buffer, len);
-		self->plain_size = MAX (self->plain_size, (gsize) (offset + len));
+		memcpy (self->plain.buffer + offset, buffer, len);
+		self->plain.size = MAX (self->plain.size, (gsize) (offset + len));
 
 		return SQLITE_OK;
 	} else {
@@ -682,8 +688,8 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 			}
 
 			if (g_output_stream_write_all (G_OUTPUT_STREAM (plain_output_stream),
-			                               self->plain_buffer,
-			                               self->plain_size,
+			                               self->plain.buffer,
+			                               self->plain.size,
 			                               &bytes_written,
 			                               NULL,
 			                               &child_error) == FALSE) {
@@ -692,7 +698,7 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 				return SQLITE_IOERR;
 			}
 
-			if (bytes_written != self->plain_size) {
+			if (bytes_written != self->plain.size) {
 				g_warning ("Error writing data to plain file %s: %s", self->plain_filename, "Not all the data has been written to the file");
 				g_unlink (self->plain_filename);
 				return SQLITE_IOERR;
@@ -740,8 +746,8 @@ almanah_vfs_io_close (sqlite3_file *pFile)
 		}
 	}
 
-	if (self->plain_buffer) {
-		maybe_secure_memory_free (self->plain_buffer);
+	if (self->plain.buffer) {
+		maybe_secure_memory_free (self->plain.buffer);
 	}
 
 	if (self->plain_filename) {
@@ -767,11 +773,11 @@ almanah_vfs_io_read (sqlite3_file *pFile, void *buffer, int len, sqlite_int64 of
 	int rc;
 
 	if (self->decrypted) {
-		if ((gsize) (offset + len) > self->plain_size) {
+		if ((gsize) (offset + len) > self->plain.size) {
 			return SQLITE_IOERR_SHORT_READ;
 		}
 
-		memcpy (buffer, self->plain_buffer + offset, len);
+		memcpy (buffer, self->plain.buffer + offset, len);
 
 		return SQLITE_OK;
 	}
@@ -902,7 +908,7 @@ almanah_vfs_io_file_size (sqlite3_file *pFile, sqlite_int64 *pSize)
 	struct stat sStat;
 
 	if (self->decrypted) {
-		*pSize = self->plain_size;
+		*pSize = self->plain.size;
 		return SQLITE_OK;
 	}
 
