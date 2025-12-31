@@ -21,8 +21,7 @@
  *     Christian Kellner  <gicmo@xatom.net>
  */
 
-#ifndef __CALENDAR_SOURCES_H__
-#define __CALENDAR_SOURCES_H__
+#pragma once
 
 #include <glib-object.h>
 
@@ -44,5 +43,3 @@ GSList *calendar_sources_get_appointment_sources (CalendarSources *sources);
 GSList *calendar_sources_get_task_sources (CalendarSources *sources);
 
 G_END_DECLS
-
-#endif /* __CALENDAR_SOURCES_H__ */

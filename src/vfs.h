@@ -16,6 +16,8 @@
  * along with Almanah.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include <gio/gio.h>
 
 int almanah_vfs_init (GSettings *settings);

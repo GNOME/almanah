@@ -21,8 +21,7 @@
  *     Christian Kellner  <gicmo@xatom.net>
  */
 
-#ifndef __CALENDAR_CLIENT_H__
-#define __CALENDAR_CLIENT_H__
+#pragma once
 
 #include <glib-object.h>
 
@@ -112,5 +111,3 @@ GSList *calendar_client_get_events (CalendarClient *client,
 void calendar_event_free (CalendarEvent *event);
 
 G_END_DECLS
-
-#endif /* __CALENDAR_CLIENT_H__ */

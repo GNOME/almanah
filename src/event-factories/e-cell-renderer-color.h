@@ -15,8 +15,7 @@
  * License along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _E_CELL_RENDERER_COLOR_H_
-#define _E_CELL_RENDERER_COLOR_H_
+#pragma once
 
 #include <gtk/gtk.h>
 
@@ -31,5 +30,3 @@ G_BEGIN_DECLS
 GtkCellRenderer *e_cell_renderer_color_new (void);
 
 G_END_DECLS
-
-#endif /* _E_CELL_RENDERER_COLOR_H_ */
