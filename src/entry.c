@@ -22,6 +22,7 @@
 #include <gtk/gtk.h>
 
 #include "entry.h"
+#include "gtktextbufferserialize.h"
 #include "widgets/hyperlink-tag.h"
 
 GQuark
@@ -43,8 +44,8 @@ static void almanah_entry_finalize (GObject *object);
 static void almanah_entry_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void almanah_entry_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 
-static guint8 *serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, const GtkTextIter *start, const GtkTextIter *end, gsize *length, gpointer user_data);
-static gboolean deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data, gsize length, gboolean create_tags, gpointer user_data, GError **error);
+static guint8 *serialise_entry_xml_2_0 (const GtkTextIter *start, const GtkTextIter *end, gsize *length);
+static gboolean deserialise_entry_xml_2_0 (GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data, gsize length, GError **error);
 
 typedef struct {
 	GDate date;
@@ -259,43 +260,20 @@ almanah_entry_get_content (AlmanahEntry *self, GtkTextBuffer *text_buffer, gbool
 	/* Deserialise the data according to the version of the data format attached to the entry */
 	switch (priv->version) {
 		case DATA_FORMAT_XML_2_0: {
-			GdkAtom format_atom;
 			GtkTextIter start_iter;
 
-			format_atom = gtk_text_buffer_register_deserialize_format (text_buffer, "application/x-almanah-entry-xml",
-			                                                           (GtkTextBufferDeserializeFunc) deserialise_entry_xml_2_0,
-			                                                           NULL, NULL);
 			gtk_text_buffer_get_start_iter (text_buffer, &start_iter);
 
 			/* Try deserializing the serialized data */
-			return gtk_text_buffer_deserialize (text_buffer, text_buffer, format_atom, &start_iter, priv->data, priv->length, error);
+			return deserialise_entry_xml_2_0 (text_buffer, &start_iter, priv->data, priv->length, error);
 		}
 		case DATA_FORMAT_PLAIN_TEXT__GTK_TEXT_BUFFER: {
-			GdkAtom format_atom;
 			GtkTextIter start_iter;
-			g_autoptr (GError) deserialise_error = NULL;
 
-			format_atom = gtk_text_buffer_register_deserialize_tagset (text_buffer, PACKAGE_NAME);
-			gtk_text_buffer_deserialize_set_can_create_tags (text_buffer, format_atom, create_tags);
 			gtk_text_buffer_get_start_iter (text_buffer, &start_iter);
 
-			/* Try deserializing the (hopefully) serialized data first */
-			if (gtk_text_buffer_deserialize (text_buffer, text_buffer,
-			                                 format_atom,
-			                                 &start_iter,
-			                                 priv->data, priv->length,
-			                                 &deserialise_error) == FALSE) {
-				/* Since that failed, check the data's in the old format, and try to just load it as text */
-				if (g_strcmp0 ((gchar *) priv->data, "GTKTEXTBUFFERCONTENTS-0001") != 0) {
-					gtk_text_buffer_set_text (text_buffer, (gchar *) priv->data, priv->length);
-					return TRUE;
-				}
-
-				g_propagate_error (error, deserialise_error);
-				return FALSE;
-			}
-
-			return TRUE;
+			/* Try deserializing the serialized data */
+			return almanah_deserialise_entry_gtk_text_buffer (text_buffer, &start_iter, priv->data, priv->length, create_tags, error);
 		}
 		case DATA_FORMAT_UNSET:
 		default: {
@@ -312,7 +290,6 @@ void
 almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer)
 {
 	GtkTextIter start, end;
-	GdkAtom format_atom;
 	AlmanahEntryPrivate *priv = almanah_entry_get_instance_private (self);
 
 	/* Update our cached empty status */
@@ -321,10 +298,7 @@ almanah_entry_set_content (AlmanahEntry *self, GtkTextBuffer *text_buffer)
 	g_free (priv->data);
 
 	gtk_text_buffer_get_bounds (text_buffer, &start, &end);
-	format_atom = gtk_text_buffer_register_serialize_format (text_buffer, "application/x-almanah-entry-xml",
-	                                                         (GtkTextBufferSerializeFunc) serialise_entry_xml_2_0,
-	                                                         NULL, NULL);
-	priv->data = gtk_text_buffer_serialize (text_buffer, text_buffer, format_atom, &start, &end, &(priv->length));
+	priv->data = (guint8 *) serialise_entry_xml_2_0 (&start, &end, &(priv->length));
 
 	/* Always serialise data in the latest format */
 	priv->version = DATA_FORMAT_XML_2_0;
@@ -493,7 +467,7 @@ get_text_tag_element_name (GtkTextTag *tag)
 }
 
 static guint8 *
-serialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, const GtkTextIter *start, const GtkTextIter *end, gsize *length, gpointer user_data)
+serialise_entry_xml_2_0 (const GtkTextIter *start, const GtkTextIter *end, gsize *length)
 {
 	GString *markup;
 	GtkTextIter iter, old_iter;
@@ -753,7 +727,7 @@ text_cb (GMarkupParseContext *parse_context, const gchar *text, gsize text_len, 
 }
 
 static gboolean
-deserialise_entry_xml_2_0 (GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data, gsize length, gboolean create_tags, gpointer user_data, GError **error)
+deserialise_entry_xml_2_0 (GtkTextBuffer *content_buffer, GtkTextIter *iter, const guint8 *data, gsize length, GError **error)
 {
 	GMarkupParseContext *parse_context;
 	gboolean success;

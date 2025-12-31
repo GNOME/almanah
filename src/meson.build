@@ -5,6 +5,7 @@ enum_headers = [
 sources = [
   'main.c',
   'application.c',
+  'gtktextbufferserialize.c',
   'interface.c',
   'main-window.c',
   'storage-manager.c',
