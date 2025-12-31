@@ -29,7 +29,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (AlmanahDateEntryDialog, almanah_date_entry_dialog, ALMANAH, DATE_ENTRY_DIALOG, GtkDialog)
 
 AlmanahDateEntryDialog *almanah_date_entry_dialog_new (void);
-gboolean almanah_date_entry_dialog_run (AlmanahDateEntryDialog *self);
 
 void almanah_date_entry_dialog_get_date (AlmanahDateEntryDialog *self, GDate *date);
 void almanah_date_entry_dialog_set_date (AlmanahDateEntryDialog *self, GDate *date);

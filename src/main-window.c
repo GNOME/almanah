@@ -852,6 +852,24 @@ mw_show_tags_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 }
 
 static void
+date_entry_dialog_response_cb (GtkDialog *self,
+                               gint response_id,
+                               gpointer user_data)
+{
+	if (response_id == GTK_RESPONSE_OK) {
+		AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
+
+		GDate new_date;
+
+		/* Switch to the specified date */
+		almanah_date_entry_dialog_get_date (ALMANAH_DATE_ENTRY_DIALOG (self), &new_date);
+		almanah_main_window_select_date (main_window, &new_date);
+	}
+
+	gtk_widget_destroy (GTK_WIDGET (self));
+}
+
+static void
 mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __attribute__ ((unused)) GVariant *parameter, gpointer user_data)
 {
 	AlmanahMainWindow *main_window = ALMANAH_MAIN_WINDOW (user_data);
@@ -861,16 +879,12 @@ mw_select_date_activate_cb (__attribute__ ((unused)) GSimpleAction *action, __at
 	almanah_calendar_button_popdown (priv->calendar_button);
 
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (main_window));
+
+	g_signal_connect (dialog, "response",
+	                  G_CALLBACK (date_entry_dialog_response_cb),
+	                  main_window);
+
 	gtk_widget_show_all (GTK_WIDGET (dialog));
-	if (almanah_date_entry_dialog_run (dialog) == TRUE) {
-		GDate new_date;
-
-		/* Switch to the specified date */
-		almanah_date_entry_dialog_get_date (dialog, &new_date);
-		almanah_main_window_select_date (main_window, &new_date);
-	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void

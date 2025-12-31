@@ -117,16 +117,6 @@ almanah_date_entry_dialog_new (void)
 	return date_entry_dialog;
 }
 
-gboolean
-almanah_date_entry_dialog_run (AlmanahDateEntryDialog *self)
-{
-	/* Reset the date, entry and consequently the OK button */
-	gtk_entry_set_text (self->date_entry, "");
-	g_date_clear (&(self->date), 1);
-
-	return (gtk_dialog_run (GTK_DIALOG (self)) == GTK_RESPONSE_OK) ? TRUE : FALSE;
-}
-
 G_MODULE_EXPORT void
 ded_date_entry_notify_text_cb (GObject *gobject, GParamSpec *param_spec, AlmanahDateEntryDialog *self)
 {
