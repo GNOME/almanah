@@ -29,7 +29,7 @@ glib_minor = 76
 glib = dependency('glib-2.0', version: f'>= @glib_major@.@glib_minor@')
 
 gtk_major = 4
-gtk_minor = 3
+gtk_minor = 6
 gtk = dependency('gtk4', version: f'>= @gtk_major@.@gtk_minor@')
 
 gmodule = dependency('gmodule-2.0')
@@ -37,7 +37,7 @@ gthread = dependency('gthread-2.0')
 gio = dependency('gio-2.0')
 
 gtksourceview_major = 5
-gtksourceview_minor = 0
+gtksourceview_minor = 2
 gtksourceview = dependency('gtksourceview-5', version: f'>= @gtksourceview_major@.@gtksourceview_minor@')
 
 sqlite = dependency('sqlite3')
