@@ -663,7 +663,8 @@ start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name,
 		return;
 	} else {
 		GtkTextTagTable *table;
-		g_autoptr (GtkTextTag) tag = NULL;
+		// Owned by table.
+		GtkTextTag *tag = NULL;
 
 		if (!deserialise_context->in_entry) {
 			g_set_error_literal (error, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "An <entry> element must be at the top level.");
@@ -696,6 +697,7 @@ start_element_cb (GMarkupParseContext *parse_context, const gchar *element_name,
 			/* Create the tag and register it in the tag table */
 			tag = GTK_TEXT_TAG (almanah_hyperlink_tag_new (uri));
 			gtk_text_tag_table_add (table, tag);
+			g_object_unref (tag); /* the tag table keeps a reference */
 		}
 
 		/* Ignore unrecognised tags (which can happen when searching, for example). */
