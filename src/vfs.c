@@ -328,13 +328,19 @@ prepare_gpgme (CipherOperation *operation)
 }
 
 static gboolean
-open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *operation, gboolean use_memory, GError **error)
+open_db_files (
+    const gchar *plain_filename,
+    const gchar *encrypted_filename,
+    gboolean encrypting,
+    CipherOperation *operation,
+    gboolean use_memory,
+    GError **error)
 {
 	GError *io_error = NULL;
 	gpgme_error_t error_gpgme;
 
 	/* Open the encrypted file */
-	operation->cipher_io_channel = g_io_channel_new_file (self->encrypted_filename, encrypting ? "w" : "r", &io_error);
+	operation->cipher_io_channel = g_io_channel_new_file (encrypted_filename, encrypting ? "w" : "r", &io_error);
 	if (operation->cipher_io_channel == NULL) {
 		g_critical (_ ("Can't create a new GIOChannel for the encrypted database: %s"), io_error->message);
 		g_propagate_error (error, io_error);
@@ -344,7 +350,7 @@ open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *ope
 	/* Pass it to GPGME */
 	error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_cipher), g_io_channel_unix_get_fd (operation->cipher_io_channel));
 	if (error_gpgme != GPG_ERR_NO_ERROR) {
-		g_critical (_ ("Error opening encrypted database file \"%s\": %s"), self->encrypted_filename, gpgme_strerror (error_gpgme));
+		g_critical (_ ("Error opening encrypted database file \"%s\": %s"), encrypted_filename, gpgme_strerror (error_gpgme));
 		return FALSE;
 	}
 
@@ -366,7 +372,7 @@ open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *ope
 		}
 	} else {
 		/* Open the plain file */
-		operation->plain_io_channel = g_io_channel_new_file (self->plain_filename, encrypting ? "r" : "w", &io_error);
+		operation->plain_io_channel = g_io_channel_new_file (plain_filename, encrypting ? "r" : "w", &io_error);
 		if (operation->plain_io_channel == NULL) {
 			g_critical (_ ("Can't create a new GIOChannel for the plain database: %s"), io_error->message);
 			g_propagate_error (error, io_error);
@@ -376,7 +382,7 @@ open_db_files (AlmanahSQLiteVFS *self, gboolean encrypting, CipherOperation *ope
 		/* Pass it to GPGME */
 		error_gpgme = gpgme_data_new_from_fd (&(operation->gpgme_plain), g_io_channel_unix_get_fd (operation->plain_io_channel));
 		if (error_gpgme != GPG_ERR_NO_ERROR) {
-			g_critical (_ ("Error opening plain database file \"%s\": %s"), self->plain_filename, gpgme_strerror (error_gpgme));
+			g_critical (_ ("Error opening plain database file \"%s\": %s"), plain_filename, gpgme_strerror (error_gpgme));
 			return FALSE;
 		}
 	}
@@ -420,7 +426,11 @@ cipher_operation_free (CipherOperation *operation)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (CipherOperation, cipher_operation_free);
 
 static gboolean
-decrypt_database (AlmanahSQLiteVFS *self, GError **error)
+decrypt_database (
+    const gchar *plain_filename,
+    const gchar *encrypted_filename,
+    PlainData *plain_data,
+    GError **error)
 {
 	GError *preparation_error = NULL;
 	g_autoptr (CipherOperation) operation = NULL;
@@ -429,7 +439,7 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 	operation = g_new0 (CipherOperation, 1);
 
 	/* Set up, decrypting to memory */
-	if (prepare_gpgme (operation) != TRUE || open_db_files (self, FALSE, operation, TRUE, &preparation_error) != TRUE) {
+	if (prepare_gpgme (operation) != TRUE || open_db_files (plain_filename, encrypted_filename, FALSE, operation, TRUE, &preparation_error) != TRUE) {
 		g_propagate_error (error, preparation_error);
 		return FALSE;
 	}
@@ -445,9 +455,9 @@ decrypt_database (AlmanahSQLiteVFS *self, GError **error)
 	}
 
 	/* Setup the database content in memory */
-	self->plain.buffer = operation->npm_closure->buffer;
-	self->plain.offset = 0;
-	self->plain.size = operation->npm_closure->size;
+	plain_data->buffer = operation->npm_closure->buffer;
+	plain_data->offset = 0;
+	plain_data->size = operation->npm_closure->size;
 
 	return TRUE;
 }
@@ -479,7 +489,9 @@ encrypt_database (AlmanahSQLiteVFS *self, const gchar *encryption_key, gboolean 
 
 	gpgme_signers_add (operation->context, gpgme_keys[0]);
 
-	if (open_db_files (self, TRUE, operation, from_memory, &preparation_error) != TRUE) {
+	if (open_db_files (
+		self->plain_filename,
+		self->encrypted_filename, TRUE, operation, from_memory, &preparation_error) != TRUE) {
 		g_propagate_error (error, preparation_error);
 		return FALSE;
 	}
@@ -1032,6 +1044,7 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 
 	g_autofree gchar *plain_filename = g_strdup (zName);
 	g_autofree gchar *encrypted_filename = NULL;
+	PlainData plain_data = { NULL };
 	self->decrypted = FALSE;
 
 	if (flags & SQLITE_OPEN_MAIN_DB) {
@@ -1060,7 +1073,7 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 			if (g_file_test (plain_filename, G_FILE_TEST_IS_REGULAR) != TRUE || plaintext_db_stat.st_size == 0) {
 				/* Decrypt the database, or display an error if that fails (but not if it fails due to a missing encrypted DB file — just
 				 * fall through and try to open the plain DB file in that case). */
-				if (decrypt_database (self, &child_error) != TRUE) {
+				if (decrypt_database (plain_filename, encrypted_filename, &plain_data, &child_error) != TRUE) {
 					if (child_error != NULL && child_error->code != G_FILE_ERROR_NOENT) {
 						g_warning (_ ("Error decrypting database: %s"), child_error->message);
 						return SQLITE_IOERR;
@@ -1109,6 +1122,7 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 		self->aBuffer = g_steal_pointer (&aBuf);
 		self->plain_filename = g_steal_pointer (&plain_filename);
 		self->encrypted_filename = g_steal_pointer (&encrypted_filename);
+		self->plain = plain_data;
 
 		if (pOutFlags) {
 			*pOutFlags = flags;
