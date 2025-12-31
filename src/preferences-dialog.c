@@ -176,8 +176,12 @@ pd_key_combo_changed_cb (GtkComboBox *combo_box, AlmanahPreferencesDialog *prefe
 		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (preferences_dialog),
 		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 		                                            _ ("Error saving the encryption key"));
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
+
+		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+		                  G_CALLBACK (gtk_widget_destroy),
+		                  NULL);
+
+		gtk_widget_show (dialog);
 	}
 }
 
@@ -193,7 +197,11 @@ pd_new_key_button_clicked_cb (GtkButton *button, AlmanahPreferencesDialog *prefe
 		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 		                                            _ ("Error opening Seahorse"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
+
+		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+		                  G_CALLBACK (gtk_widget_destroy),
+		                  NULL);
+
+		gtk_widget_show (dialog);
 	}
 }

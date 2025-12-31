@@ -127,8 +127,12 @@ almanah_calendar_task_event_view (AlmanahEvent *event, GtkWindow *parent_window)
 		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 		                                            _ ("Error launching Evolution"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
+
+		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+		                  G_CALLBACK (gtk_widget_destroy),
+		                  NULL);
+
+		gtk_widget_show (dialog);
 
 		return FALSE;
 	}

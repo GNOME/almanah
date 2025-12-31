@@ -942,8 +942,12 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 			                                            _ ("Error opening URI"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-			gtk_dialog_run (GTK_DIALOG (dialog));
-			gtk_widget_destroy (dialog);
+
+			g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+			                  G_CALLBACK (gtk_widget_destroy),
+			                  NULL);
+
+			gtk_widget_show (dialog);
 		}
 
 		return TRUE;
@@ -1553,8 +1557,12 @@ spell_checking_enabled_changed_cb (GSettings *settings, __attribute__ ((unused))
 			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 			                                            _ ("Spelling checker could not be initialized"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-			gtk_dialog_run (GTK_DIALOG (dialog));
-			gtk_widget_destroy (dialog);
+
+			g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+			                  G_CALLBACK (gtk_widget_destroy),
+			                  NULL);
+
+			gtk_widget_show (dialog);
 		}
 	} else {
 		disable_spell_checking (self);
