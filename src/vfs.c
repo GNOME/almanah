@@ -1120,14 +1120,15 @@ almanah_vfs_open (sqlite3_vfs *pVfs,
 		}
 
 		self->aBuffer = g_steal_pointer (&aBuf);
-		self->plain_filename = g_steal_pointer (&plain_filename);
-		self->encrypted_filename = g_steal_pointer (&encrypted_filename);
-		self->plain = plain_data;
 
 		if (pOutFlags) {
 			*pOutFlags = flags;
 		}
 	}
+
+	self->plain_filename = g_steal_pointer (&plain_filename);
+	self->encrypted_filename = g_steal_pointer (&encrypted_filename);
+	self->plain = plain_data;
 
 	self->settings = (GSettings *) pVfs->pAppData;
 	self->base.pMethods = &almanah_vfs_io;
