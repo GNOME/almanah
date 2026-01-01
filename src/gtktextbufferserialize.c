@@ -32,6 +32,8 @@
 #include "gdk-pixbuf/gdk-pixdata.h"
 #include "gtktextbufferserialize.h"
 
+
+__attribute__ ((nonnull))
 static gboolean
 deserialize_value (const gchar *str,
                    GValue *value)

@@ -521,11 +521,13 @@ serialise_entry_xml_2_0 (const GtkTextIter *start, const GtkTextIter *end, gsize
 			}
 
 			/* Close the tag */
-			GSList *found = g_slist_find (active_tags, tag);
-			if (found != NULL) {
+			if (g_slist_find (active_tags, tag)) {
+				// -fanalyzer: Empty would alllow more.
+				g_assert (active_tags != NULL);
+
 				/* Close all tags that were opened after this one (i.e. which are above this on in the stack), but ensure that they're
 				 * re-opened again afterwards by pushing them onto the added list. */
-				while (active_tags != found) {
+				while (active_tags->data != tag) {
 					GtkTextTag *tag2;
 					const gchar *element_name2;
 
