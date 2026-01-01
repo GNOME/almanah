@@ -384,10 +384,12 @@ action_search_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data
 
 	gtk_window_set_application (GTK_WINDOW (dialog), GTK_APPLICATION (application));
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
-	gtk_widget_show (GTK_WIDGET (dialog));
-	gtk_dialog_run (GTK_DIALOG (dialog));
 
-	gtk_widget_destroy (GTK_WIDGET (dialog));
+	g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+	                  G_CALLBACK (gtk_widget_destroy),
+	                  NULL);
+
+	gtk_widget_show (GTK_WIDGET (dialog));
 }
 
 static void
