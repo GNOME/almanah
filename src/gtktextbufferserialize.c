@@ -29,14 +29,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gdk-pixbuf/gdk-pixdata.h"
 #include "gtktextbufferserialize.h"
 
 static gboolean
 deserialize_value (const gchar *str,
                    GValue *value)
 {
-	G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	if (g_value_type_transformable (G_TYPE_STRING, value->g_type)) {
 		GValue text_value = G_VALUE_INIT;
 		gboolean retval;
@@ -83,48 +81,6 @@ deserialize_value (const gchar *str,
 		g_value_set_double (value, v);
 
 		return TRUE;
-	} else if (value->g_type == GDK_TYPE_COLOR) {
-		GdkColor color;
-		const gchar *old;
-		gchar *tmp;
-
-		old = str;
-		tmp = NULL;
-		errno = 0;
-		color.red = g_ascii_strtoll (old, &tmp, 16);
-
-		if (errno || tmp == old) {
-			return FALSE;
-		}
-
-		old = tmp;
-		if (*old++ != ':') {
-			return FALSE;
-		}
-
-		tmp = NULL;
-		errno = 0;
-		color.green = g_ascii_strtoll (old, &tmp, 16);
-		if (errno || tmp == old) {
-			return FALSE;
-		}
-
-		old = tmp;
-		if (*old++ != ':') {
-			return FALSE;
-		}
-
-		tmp = NULL;
-		errno = 0;
-		color.blue = g_ascii_strtoll (old, &tmp, 16);
-
-		if (errno || tmp == old || *tmp != '\0') {
-			return FALSE;
-		}
-
-		g_value_set_boxed (value, &color);
-
-		return TRUE;
 	} else if (G_VALUE_HOLDS_ENUM (value)) {
 		GEnumClass *class = G_ENUM_CLASS (g_type_class_peek (value->g_type));
 		GEnumValue *enum_value;
@@ -140,7 +96,6 @@ deserialize_value (const gchar *str,
 	} else {
 		g_warning ("Type %s can not be deserialized", g_type_name (value->g_type));
 	}
-	G_GNUC_END_IGNORE_DEPRECATIONS
 
 	return FALSE;
 }
@@ -153,13 +108,11 @@ typedef enum {
 	STATE_ATTR,
 	STATE_TEXT,
 	STATE_APPLY_TAG,
-	STATE_PIXBUF
 } ParseState;
 
 typedef struct
 {
 	gchar *text;
-	GdkPixbuf *pixbuf;
 	GSList *tags;
 } TextSpan;
 
@@ -545,33 +498,6 @@ typedef struct
 	const gchar *start;
 } Header;
 
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-static GdkPixbuf *
-get_pixbuf_from_headers (GList *headers,
-                         int id,
-                         GError **error)
-{
-	Header *header;
-	GdkPixdata pixdata;
-	GdkPixbuf *pixbuf;
-
-	header = g_list_nth_data (headers, id);
-
-	if (!header) {
-		return NULL;
-	}
-
-	if (!gdk_pixdata_deserialize (&pixdata, header->length,
-	                              (const guint8 *) header->start, error)) {
-		return NULL;
-	}
-
-	pixbuf = gdk_pixbuf_from_pixdata (&pixdata, TRUE, error);
-
-	return pixbuf;
-}
-G_GNUC_END_IGNORE_DEPRECATIONS
-
 static void
 parse_apply_tag_element (GMarkupParseContext *context,
                          const gchar *element_name,
@@ -607,31 +533,6 @@ parse_apply_tag_element (GMarkupParseContext *context,
 		info->tag_stack = g_slist_prepend (info->tag_stack, tag);
 
 		push_state (info, STATE_APPLY_TAG);
-	} else if (ELEMENT_IS ("pixbuf")) {
-		int int_id;
-		GdkPixbuf *pixbuf;
-		TextSpan *span;
-		const gchar *pixbuf_id;
-
-		if (!locate_attributes (context, element_name, attribute_names, attribute_values, FALSE, error,
-		                        "index", &pixbuf_id, NULL)) {
-			return;
-		}
-
-		int_id = atoi (pixbuf_id);
-		pixbuf = get_pixbuf_from_headers (info->headers, int_id, error);
-
-		span = g_slice_new0 (TextSpan);
-		span->pixbuf = pixbuf;
-		span->tags = NULL;
-
-		info->spans = g_list_prepend (info->spans, span);
-
-		if (!pixbuf) {
-			return;
-		}
-
-		push_state (info, STATE_PIXBUF);
 	} else {
 		set_error (error, context,
 		           G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
@@ -997,11 +898,6 @@ end_element_handler (GMarkupParseContext *context,
 			pop_state (info);
 			g_assert (peek_state (info) == STATE_START);
 			break;
-		case STATE_PIXBUF:
-			pop_state (info);
-			g_assert (peek_state (info) == STATE_APPLY_TAG ||
-			          peek_state (info) == STATE_TEXT);
-			break;
 		default:
 			g_assert_not_reached ();
 			break;
@@ -1156,9 +1052,6 @@ insert_text (ParseInfo *info,
 
 		if (span->text) {
 			gtk_text_buffer_insert (info->buffer, iter, span->text, -1);
-		} else {
-			gtk_text_buffer_insert_pixbuf (info->buffer, iter, span->pixbuf);
-			g_object_unref (span->pixbuf);
 		}
 		gtk_text_buffer_get_iter_at_mark (info->buffer, &start_iter, mark);
 
