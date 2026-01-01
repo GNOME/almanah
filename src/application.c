@@ -225,11 +225,24 @@ add_accelerator (GtkApplication *app, const gchar *action_name, const gchar *acc
 }
 
 static void
+db_open_error_dialog_response_cb (GtkDialog *self,
+                                  gint response_id,
+                                  gpointer user_data)
+{
+	GApplication *application = G_APPLICATION (user_data);
+
+	gtk_widget_destroy (GTK_WIDGET (self));
+
+	/* Allow the end of the application */
+	g_application_release (application);
+}
+
+static void
 startup (GApplication *application)
 {
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (ALMANAH_APPLICATION (application));
 	g_autofree gchar *db_filename = NULL;
-	GError *error = NULL;
+	g_autoptr (GError) error = NULL;
 	g_autoptr (GtkCssProvider) style_provider = NULL;
 
 	/* Chain up. */
@@ -254,11 +267,18 @@ startup (GApplication *application)
 		GtkWidget *dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 		                                            _ ("Error opening database"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
 
-		/* TODO */
-		exit (1);
+		g_application_hold (G_APPLICATION (application));
+
+		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+		                  G_CALLBACK (db_open_error_dialog_response_cb),
+		                  application);
+
+		gtk_widget_show (GTK_WIDGET (dialog));
+
+		g_clear_object (&priv->storage_manager);
+
+		return;
 	}
 
 	/* Create the event manager */
@@ -312,6 +332,11 @@ activate (GApplication *application)
 {
 	AlmanahApplication *self = ALMANAH_APPLICATION (application);
 	AlmanahApplicationPrivate *priv = almanah_application_get_instance_private (self);
+
+	if (priv->storage_manager == NULL) {
+		// Failed to connect to storage manager.
+		return;
+	}
 
 	/* Create the interface */
 	if (priv->main_window == NULL) {
