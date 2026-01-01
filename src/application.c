@@ -325,6 +325,17 @@ activate (GApplication *application)
 }
 
 static void
+encryption_error_dialog_response_cb (GtkDialog *self,
+                                     gint response_id,
+                                     gpointer user_data)
+{
+	gtk_widget_destroy (GTK_WIDGET (self));
+
+	/* Allow the end of the application */
+	g_application_release (G_APPLICATION (user_data));
+}
+
+static void
 storage_manager_disconnected_cb (__attribute__ ((unused)) AlmanahStorageManager *storage_manager, const gchar *gpgme_error_message, const gchar *warning_message, GtkApplication *self)
 {
 	if (gpgme_error_message != NULL || warning_message != NULL) {
@@ -339,8 +350,13 @@ storage_manager_disconnected_cb (__attribute__ ((unused)) AlmanahStorageManager 
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", warning_message);
 		}
 
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
+		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+		                  G_CALLBACK (encryption_error_dialog_response_cb),
+		                  self);
+
+		gtk_widget_show (dialog);
+
+		return;
 	}
 
 	/* Allow the end of the applaction */
