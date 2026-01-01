@@ -125,6 +125,8 @@ global_c_args = [
   f'-DGDK_VERSION_MAX_ALLOWED=GDK_VERSION_@gtk_major@_@gtk_minor@',
   f'-DGTK_SOURCE_VERSION_MIN_REQUIRED=GTK_SOURCE_VERSION_@gtksourceview_major@_@gtksourceview_minor@',
   f'-DGTK_SOURCE_VERSION_MAX_ALLOWED=GTK_SOURCE_VERSION_@gtksourceview_major@_@gtksourceview_minor@',
+  '-fanalyzer',
+  '-Wnonnull',
 ]
 
 add_project_arguments(
