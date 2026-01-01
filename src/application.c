@@ -403,9 +403,7 @@ action_preferences_cb (GSimpleAction *action, GVariant *parameter, gpointer user
 	dialog = almanah_preferences_dialog_new (settings);
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (priv->main_window));
 
-	gtk_dialog_run (GTK_DIALOG (dialog));
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
+	gtk_widget_show (GTK_WIDGET (dialog));
 }
 
 static void
