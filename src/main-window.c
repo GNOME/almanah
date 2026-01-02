@@ -970,6 +970,42 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 	return FALSE;
 }
 
+typedef struct UriEntryDialogData {
+	GSimpleAction *action;
+	AlmanahMainWindowPrivate *priv;
+	GtkTextIter start;
+	GtkTextIter end;
+} UriEntryDialogData;
+
+static void
+uri_entry_dialog_response_cb (GtkDialog *self,
+                              gint response_id,
+                              gpointer user_data)
+{
+	g_autofree UriEntryDialogData *data = (UriEntryDialogData *) user_data;
+
+	if (response_id == GTK_RESPONSE_OK) {
+		g_autoptr (GtkTextTag) tag = NULL;
+		GtkTextTagTable *table;
+
+		/* Create and apply a new anonymous tag */
+		tag = GTK_TEXT_TAG (almanah_hyperlink_tag_new (almanah_uri_entry_dialog_get_uri (ALMANAH_URI_ENTRY_DIALOG (self))));
+
+		table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (data->priv->entry_buffer));
+		gtk_text_tag_table_add (table, tag);
+
+		gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (data->priv->entry_buffer), tag, &data->start, &data->end);
+
+		/* Connect up events */
+		g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, self);
+
+		/* Case 2, as described in mw_hyperlink_toggle_cb */
+		g_simple_action_set_state (data->action, g_variant_new_boolean (TRUE));
+	}
+
+	gtk_text_buffer_set_modified (GTK_TEXT_BUFFER (data->priv->entry_buffer), TRUE);
+}
+
 static void
 mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
@@ -1000,28 +1036,22 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 		/* Get a URI from the user */
 		uri_entry_dialog = almanah_uri_entry_dialog_new ();
 		gtk_window_set_transient_for (GTK_WINDOW (uri_entry_dialog), GTK_WINDOW (self));
+
+		UriEntryDialogData *data;
+		data = g_new (UriEntryDialogData, 1);
+		data->action = action;
+		data->priv = priv;
+		data->start = start;
+		data->end = end;
+
+		g_signal_connect (GTK_MESSAGE_DIALOG (uri_entry_dialog), "response",
+		                  G_CALLBACK (uri_entry_dialog_response_cb),
+		                  data);
+
 		gtk_widget_show (GTK_WIDGET (uri_entry_dialog));
 
-		if (almanah_uri_entry_dialog_run (uri_entry_dialog) == TRUE) {
-			g_autoptr (GtkTextTag) tag = NULL;
-			GtkTextTagTable *table;
-
-			/* Create and apply a new anonymous tag */
-			tag = GTK_TEXT_TAG (almanah_hyperlink_tag_new (almanah_uri_entry_dialog_get_uri (uri_entry_dialog)));
-
-			table = gtk_text_buffer_get_tag_table (GTK_TEXT_BUFFER (priv->entry_buffer));
-			gtk_text_tag_table_add (table, tag);
-
-			gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (priv->entry_buffer), tag, &start, &end);
-
-			/* Connect up events */
-			g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, self);
-
-			/* Case 2 */
-			update_state = TRUE;
-		}
-
-		gtk_widget_destroy (GTK_WIDGET (uri_entry_dialog));
+		/* Case 2, will be handled by the response callback */
+		return;
 	} else {
 		GtkTextIter iter = start;
 		GSList *tags, *i;

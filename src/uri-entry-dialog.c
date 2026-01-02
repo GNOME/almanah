@@ -118,19 +118,6 @@ almanah_uri_entry_dialog_new (void)
 	return uri_entry_dialog;
 }
 
-gboolean
-almanah_uri_entry_dialog_run (AlmanahUriEntryDialog *self)
-{
-	AlmanahUriEntryDialogPrivate *priv = almanah_uri_entry_dialog_get_instance_private (self);
-
-	/* Reset the URI entry and consequently the OK button */
-	gtk_entry_set_text (priv->uri_entry, "");
-	g_free (priv->uri);
-	priv->uri = NULL;
-
-	return (gtk_dialog_run (GTK_DIALOG (self)) == GTK_RESPONSE_OK) ? TRUE : FALSE;
-}
-
 static gboolean
 is_uri_valid (const gchar *uri)
 {
