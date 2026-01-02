@@ -1000,7 +1000,7 @@ mw_hyperlink_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 		/* Get a URI from the user */
 		uri_entry_dialog = almanah_uri_entry_dialog_new ();
 		gtk_window_set_transient_for (GTK_WINDOW (uri_entry_dialog), GTK_WINDOW (self));
-		gtk_widget_show_all (GTK_WIDGET (uri_entry_dialog));
+		gtk_widget_show (GTK_WIDGET (uri_entry_dialog));
 
 		if (almanah_uri_entry_dialog_run (uri_entry_dialog) == TRUE) {
 			g_autoptr (GtkTextTag) tag = NULL;
