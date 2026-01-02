@@ -13,9 +13,11 @@
 						<property name="column-spacing">12</property>
 						<property name="row-spacing">18</property>
 						<property name="border-width">18</property>
+						<property name="visible">1</property>
 						<child>
 							<object class="GtkLabel" id="encryption_key_label">
 								<property name="label" translatable="yes">Encryption key: </property>
+								<property name="visible">1</property>
 								<accessibility>
 									<relation target="key_combo" type="label-for"/>
 								</accessibility>
@@ -28,6 +30,7 @@
 
 						<child>
 							<object class="GtkComboBox" id="key_combo">
+								<property name="visible">1</property>
 								<!-- Model and cell renderers set up programatically -->
 								<signal name="changed" handler="pd_key_combo_changed_cb"/>
 								<accessibility>
@@ -44,6 +47,7 @@
 							<object class="GtkButton">
 								<property name="label" translatable="yes">New _Key</property>
 								<property name="use_underline">True</property>
+								<property name="visible">1</property>
 								<signal name="clicked" handler="pd_new_key_button_clicked_cb"/>
 							</object>
 							<packing>
@@ -57,6 +61,7 @@
 							<object class="GtkCheckButton" id="spell_checking_enabled_check_button">
 								<property name="label" translatable="yes">Enable _spell checking</property>
 								<property name="use_underline">True</property>
+								<property name="visible">1</property>
 							</object>
 							<packing>
 								<property name="left_attach">0</property>
