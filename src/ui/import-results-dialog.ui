@@ -76,6 +76,7 @@
 										<property name="model">filtered_results_store</property>
 										<property name="headers-visible">False</property>
 										<signal name="row-activated" handler="ird_results_tree_view_row_activated_cb"/>
+										<property name="vexpand">1</property>
 										<property name="visible">1</property>
 										<accessibility>
 											<relation target="view_combo_box" type="labelled-by"/>
