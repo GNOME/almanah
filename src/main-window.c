@@ -496,6 +496,31 @@ restore_window_state (AlmanahMainWindow *self)
 	g_file_load_contents_async (key_file_path, NULL, (GAsyncReadyCallback) restore_window_state_cb, self);
 }
 
+typedef struct SaveCurrentEntryFinalizeData {
+	AlmanahMainWindow *main_window;
+	AlmanahStorageManager *storage_manager;
+	gboolean entry_is_empty;
+	MwEntryReadyCallback entry_ready_cb;
+} SaveCurrentEntryFinalizeData;
+
+static void mw_save_current_entry_finalize (SaveCurrentEntryFinalizeData *);
+
+static void
+edit_confirm_prompt_response_cb (GtkDialog *self,
+                                 gint response_id,
+                                 gpointer user_data)
+{
+	g_autofree SaveCurrentEntryFinalizeData *data = (SaveCurrentEntryFinalizeData *) user_data;
+
+	gtk_widget_destroy (GTK_WIDGET (self));
+
+	if (response_id == GTK_RESPONSE_ACCEPT) {
+		mw_save_current_entry_finalize (g_steal_pointer (&data));
+	} else if (data->entry_ready_cb != NULL) {
+		(*data->entry_ready_cb) (data->main_window);
+	}
+}
+
 /**
  * almanah_main_window_save_current_entry:
  * @self: an #AlmanahMainWindow
@@ -510,7 +535,7 @@ void
 almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt_user, MwEntryReadyCallback entry_ready_cb)
 {
 	gboolean entry_exists, existing_entry_is_empty, entry_is_empty;
-	GDate date, last_edited;
+	GDate date;
 	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
 	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (self);
 	AlmanahEntryEditability editability;
@@ -535,6 +560,12 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	entry_exists = almanah_storage_manager_entry_exists (storage_manager, &date);
 	existing_entry_is_empty = almanah_entry_is_empty (priv->current_entry);
 	entry_is_empty = (gtk_text_buffer_get_char_count (GTK_TEXT_BUFFER (priv->entry_buffer)) == 0) ? TRUE : FALSE;
+
+	g_autofree SaveCurrentEntryFinalizeData *data = g_new (SaveCurrentEntryFinalizeData, 1);
+	data->main_window = self;
+	data->storage_manager = storage_manager;
+	data->entry_is_empty = entry_is_empty;
+	data->entry_ready_cb = entry_ready_cb;
 
 	/* Make sure they're editable: don't allow entries in the future to be edited,
 	 * but allow entries in the past to be added or edited, as long as permission is given.
@@ -573,18 +604,13 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		                        NULL);
 		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
-		gtk_widget_show_all (dialog);
-		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
-			/* Cancelled the edit */
-			gtk_widget_destroy (dialog);
+		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+		                  G_CALLBACK (edit_confirm_prompt_response_cb),
+		                  g_steal_pointer (&data));
 
-			if (entry_ready_cb != NULL) {
-				(*entry_ready_cb) (self);
-			}
-			return;
-		}
+		gtk_widget_show (dialog);
 
-		gtk_widget_destroy (dialog);
+		return;
 	} else if (entry_exists == TRUE && existing_entry_is_empty == FALSE && entry_is_empty == TRUE) {
 		/* Deleting an existing entry */
 		gchar date_string[100];
@@ -612,19 +638,26 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		                        NULL);
 		gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 
-		gtk_widget_show_all (dialog);
-		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
-			/* Cancelled deletion */
-			gtk_widget_destroy (dialog);
+		g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+		                  G_CALLBACK (edit_confirm_prompt_response_cb),
+		                  g_steal_pointer (&data));
 
-			if (entry_ready_cb != NULL) {
-				(*entry_ready_cb) (self);
-			}
-			return;
-		}
+		gtk_widget_show (dialog);
 
-		gtk_widget_destroy (dialog);
+		return;
 	}
+
+	mw_save_current_entry_finalize (g_steal_pointer (&data));
+}
+
+static void
+mw_save_current_entry_finalize (SaveCurrentEntryFinalizeData *user_data)
+{
+	g_autofree SaveCurrentEntryFinalizeData *data = user_data;
+
+	AlmanahMainWindowPrivate *priv = almanah_main_window_get_instance_private (data->main_window);
+
+	GDate last_edited;
 
 	/* Save the entry */
 	almanah_entry_set_content (priv->current_entry, GTK_TEXT_BUFFER (priv->entry_buffer));
@@ -634,15 +667,15 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	almanah_entry_set_last_edited (priv->current_entry, &last_edited);
 
 	/* Store the entry! */
-	almanah_storage_manager_set_entry (storage_manager, priv->current_entry);
+	almanah_storage_manager_set_entry (data->storage_manager, priv->current_entry);
 
-	if (entry_is_empty == TRUE) {
+	if (data->entry_is_empty == TRUE) {
 		/* Since the entry is empty, remove all the events from the treeview */
 		gtk_list_store_clear (priv->event_store);
 	}
 
-	if (entry_ready_cb != NULL) {
-		(*entry_ready_cb) (self);
+	if (data->entry_ready_cb != NULL) {
+		(*data->entry_ready_cb) (data->main_window);
 	}
 }
 
