@@ -496,8 +496,18 @@ restore_window_state (AlmanahMainWindow *self)
 	g_file_load_contents_async (key_file_path, NULL, (GAsyncReadyCallback) restore_window_state_cb, self);
 }
 
+/**
+ * almanah_main_window_save_current_entry:
+ * @self: an #AlmanahMainWindow
+ * @prompt_user: %TRUE if user should be prompted to confirm the operation.
+ * @entry_ready_cb: (nullable): runs after the operation was performed or skipped
+ *
+ * Saves the contents of the text entry into the database.
+ * If the text is empty, the entry will ber removed.
+ * When @prompt_user is %TRUE, user will be asked to confirm before saving or removing old entries. When %FALSE, the operation will be performed automatically.
+ */
 void
-almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt_user)
+almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt_user, MwEntryReadyCallback entry_ready_cb)
 {
 	gboolean entry_exists, existing_entry_is_empty, entry_is_empty;
 	GDate date, last_edited;
@@ -511,6 +521,10 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	if (priv->current_entry == NULL ||
 	    gtk_text_view_get_editable (GTK_TEXT_VIEW (priv->entry_view)) == FALSE ||
 	    gtk_text_buffer_get_modified (GTK_TEXT_BUFFER (priv->entry_buffer)) == FALSE) {
+
+		if (entry_ready_cb != NULL) {
+			(*entry_ready_cb) (self);
+		}
 		return;
 	}
 
@@ -527,6 +541,10 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 	 * If an entry is being deleted, permission must be given for that as a priority. */
 	if (editability == ALMANAH_ENTRY_FUTURE) {
 		/* Can't edit entries for dates in the future */
+
+		if (entry_ready_cb != NULL) {
+			(*entry_ready_cb) (self);
+		}
 		return;
 	} else if (editability == ALMANAH_ENTRY_PAST && (existing_entry_is_empty == FALSE || entry_is_empty == FALSE)) {
 		/* Attempting to edit an existing entry in the past */
@@ -535,6 +553,10 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 
 		/* No-op if we're not allowed to prompt the user. */
 		if (prompt_user == FALSE) {
+
+			if (entry_ready_cb != NULL) {
+				(*entry_ready_cb) (self);
+			}
 			return;
 		}
 
@@ -555,6 +577,10 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled the edit */
 			gtk_widget_destroy (dialog);
+
+			if (entry_ready_cb != NULL) {
+				(*entry_ready_cb) (self);
+			}
 			return;
 		}
 
@@ -566,6 +592,10 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 
 		/* No-op if we're not allowed to prompt the user. */
 		if (prompt_user == FALSE) {
+
+			if (entry_ready_cb != NULL) {
+				(*entry_ready_cb) (self);
+			}
 			return;
 		}
 
@@ -586,6 +616,10 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		if (gtk_dialog_run (GTK_DIALOG (dialog)) != GTK_RESPONSE_ACCEPT) {
 			/* Cancelled deletion */
 			gtk_widget_destroy (dialog);
+
+			if (entry_ready_cb != NULL) {
+				(*entry_ready_cb) (self);
+			}
 			return;
 		}
 
@@ -606,12 +640,16 @@ almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt
 		/* Since the entry is empty, remove all the events from the treeview */
 		gtk_list_store_clear (priv->event_store);
 	}
+
+	if (entry_ready_cb != NULL) {
+		(*entry_ready_cb) (self);
+	}
 }
 
 static gboolean
 save_entry_timeout_cb (AlmanahMainWindow *self)
 {
-	almanah_main_window_save_current_entry (self, FALSE);
+	almanah_main_window_save_current_entry (self, FALSE, NULL);
 	return TRUE;
 }
 
@@ -775,7 +813,7 @@ mw_entry_buffer_has_selection_cb (GObject *object, __attribute__ ((unused)) GPar
 static gboolean
 mw_delete_event_cb (GtkWindow *window, __attribute__ ((unused)) gpointer user_data)
 {
-	almanah_main_window_save_current_entry (ALMANAH_MAIN_WINDOW (window), TRUE);
+	almanah_main_window_save_current_entry (ALMANAH_MAIN_WINDOW (window), TRUE, NULL);
 	save_window_state (ALMANAH_MAIN_WINDOW (window));
 
 	gtk_widget_destroy (GTK_WIDGET (window));
@@ -1230,8 +1268,17 @@ mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryTyp
 	g_slist_free (_events);
 }
 
+static void mw_calendar_day_selected_current_entry_ready_cb (AlmanahMainWindow *main_window);
+
 G_MODULE_EXPORT void
 mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *calendar_button, AlmanahMainWindow *main_window)
+{
+	/* Save the previous entry */
+	almanah_main_window_save_current_entry (main_window, TRUE, mw_calendar_day_selected_current_entry_ready_cb);
+}
+
+static void
+mw_calendar_day_selected_current_entry_ready_cb (AlmanahMainWindow *main_window)
 {
 	AlmanahApplication *application;
 	g_autoptr (AlmanahStorageManager) storage_manager = NULL;
@@ -1263,9 +1310,6 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 
 	/* Set up */
 	application = ALMANAH_APPLICATION (gtk_window_get_application (GTK_WINDOW (main_window)));
-
-	/* Save the previous entry */
-	almanah_main_window_save_current_entry (main_window, TRUE);
 
 	/* Update the date label */
 	almanah_calendar_button_get_date (priv->calendar_button, &calendar_date);

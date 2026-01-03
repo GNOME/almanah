@@ -563,7 +563,7 @@ action_quit_cb (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	/* Hide the window to make things look faster */
 	gtk_widget_hide (GTK_WIDGET (main_window));
 
-	almanah_main_window_save_current_entry (main_window, TRUE);
+	almanah_main_window_save_current_entry (main_window, TRUE, NULL);
 	gtk_widget_destroy (GTK_WIDGET (main_window));
 }
 

@@ -30,9 +30,11 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (AlmanahMainWindow, almanah_main_window, ALMANAH, MAIN_WINDOW, GtkApplicationWindow)
 
+typedef void (*MwEntryReadyCallback) (AlmanahMainWindow *main_window);
+
 AlmanahMainWindow *almanah_main_window_new (AlmanahApplication *application) G_GNUC_WARN_UNUSED_RESULT G_GNUC_MALLOC;
 
 void almanah_main_window_select_date (AlmanahMainWindow *self, GDate *date);
-void almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt_user);
+void almanah_main_window_save_current_entry (AlmanahMainWindow *self, gboolean prompt_user, MwEntryReadyCallback entry_ready_cb);
 
 G_END_DECLS
