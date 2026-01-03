@@ -419,8 +419,6 @@ almanah_import_results_dialog_init (AlmanahImportResultsDialog *self)
 {
 	gtk_widget_init_template (GTK_WIDGET (self));
 
-	g_signal_connect (self, "response", G_CALLBACK (response_cb), self);
-	g_signal_connect (self, "delete-event", G_CALLBACK (gtk_widget_hide_on_delete), self);
 	gtk_window_set_resizable (GTK_WINDOW (self), TRUE);
 	gtk_window_set_title (GTK_WINDOW (self), _ ("Import Results"));
 	gtk_window_set_default_size (GTK_WINDOW (self), 600, 400);
