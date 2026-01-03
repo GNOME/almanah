@@ -117,8 +117,8 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-6">almanah_ied_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
-			<action-widget response="-5">import_export_button</action-widget><!-- GTK_RESPONSE_OK -->
+			<action-widget response="cancel">almanah_ied_cancel_button</action-widget>
+			<action-widget response="ok">import_export_button</action-widget>
 		</action-widgets>
 	</template>
 </interface>

@@ -64,8 +64,8 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-6">almanah_ued_cancel_button</action-widget><!-- GTK_RESPONSE_CANCEL -->
-			<action-widget response="-5">ok_button</action-widget><!-- GTK_RESPONSE_OK -->
+			<action-widget response="cancel">almanah_ued_cancel_button</action-widget>
+			<action-widget response="ok">ok_button</action-widget>
 		</action-widgets>
 	</template>
 </interface>

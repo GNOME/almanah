@@ -133,7 +133,7 @@
 			</object>
 		</child>
 		<action-widgets>
-			<action-widget response="-7">almanah_ird_close_button</action-widget><!-- GTK_RESPONSE_CLOSE -->
+			<action-widget response="close">almanah_ird_close_button</action-widget>
 		</action-widgets>
 	</template>
 </interface>
