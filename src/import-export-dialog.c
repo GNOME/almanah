@@ -218,12 +218,18 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, gpoint
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
 	if (almanah_import_operation_finish (operation, async_result, &error) == FALSE) {
 		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == FALSE) {
+			GtkWindow *main_window = gtk_window_get_transient_for (gtk_window_get_transient_for (GTK_WINDOW (self)));
+
 			/* Show an error if the operation wasn't cancelled */
-			GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
+			GtkWidget *error_dialog = gtk_message_dialog_new (main_window, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
 			                                                  GTK_BUTTONS_OK, _ ("Import failed"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
-			gtk_dialog_run (GTK_DIALOG (error_dialog));
-			gtk_widget_destroy (error_dialog);
+
+			g_signal_connect (GTK_MESSAGE_DIALOG (error_dialog), "response",
+			                  G_CALLBACK (gtk_widget_destroy),
+			                  NULL);
+
+			gtk_widget_show (error_dialog);
 		}
 	} else {
 		/* Show the results dialogue */
@@ -256,23 +262,34 @@ export_cb (AlmanahExportOperation *operation, GAsyncResult *async_result, Almana
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
 	if (almanah_export_operation_finish (operation, async_result, &error) == FALSE) {
 		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) == FALSE) {
+			GtkWindow *main_window = gtk_window_get_transient_for (gtk_window_get_transient_for (GTK_WINDOW (self)));
+
 			/* Show an error if the operation wasn't cancelled */
-			GtkWidget *error_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
+			GtkWidget *error_dialog = gtk_message_dialog_new (main_window, GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR,
 			                                                  GTK_BUTTONS_OK, _ ("Export failed"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (error_dialog), "%s", error->message);
-			gtk_dialog_run (GTK_DIALOG (error_dialog));
-			gtk_widget_destroy (error_dialog);
+
+			g_signal_connect (GTK_MESSAGE_DIALOG (error_dialog), "response",
+			                  G_CALLBACK (gtk_widget_destroy),
+			                  NULL);
+
+			gtk_widget_show (error_dialog);
 		}
 	} else {
+		GtkWindow *main_window = gtk_window_get_transient_for (gtk_window_get_transient_for (GTK_WINDOW (self)));
+
 		/* Show a success message */
 		GtkWidget *message_dialog;
 
-		gtk_widget_hide (GTK_WIDGET (self));
-		message_dialog = gtk_message_dialog_new (GTK_WINDOW (self), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO,
+		message_dialog = gtk_message_dialog_new (main_window, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO,
 		                                         GTK_BUTTONS_OK, _ ("Export successful"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (message_dialog), _ ("The diary was successfully exported."));
-		gtk_dialog_run (GTK_DIALOG (message_dialog));
-		gtk_widget_destroy (message_dialog);
+
+		g_signal_connect (GTK_MESSAGE_DIALOG (message_dialog), "response",
+		                  G_CALLBACK (gtk_widget_destroy),
+		                  NULL);
+
+		gtk_widget_show (GTK_WIDGET (message_dialog));
 	}
 
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
