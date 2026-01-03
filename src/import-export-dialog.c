@@ -231,14 +231,16 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, gpoint
 
 			gtk_widget_show (error_dialog);
 		}
-	} else {
-		/* Show the results dialogue */
-		gtk_widget_hide (GTK_WIDGET (self));
-		gtk_widget_show (GTK_WIDGET (results_dialog));
-		gtk_dialog_run (GTK_DIALOG (results_dialog));
-	}
 
-	gtk_widget_destroy (GTK_WIDGET (results_dialog));
+		gtk_widget_destroy (GTK_WIDGET (results_dialog));
+	} else {
+		g_signal_connect (GTK_MESSAGE_DIALOG (results_dialog), "response",
+		                  G_CALLBACK (gtk_widget_destroy),
+		                  NULL);
+
+		/* Show the results dialogue */
+		gtk_widget_show (GTK_WIDGET (results_dialog));
+	}
 
 	g_object_unref (priv->cancellable);
 	priv->cancellable = NULL;
