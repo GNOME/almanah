@@ -65,7 +65,7 @@ static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static gboolean save_entry_timeout_cb (AlmanahMainWindow *self);
 static void mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application);
-static void hyperlink_tag_presed_cb (GtkGestureMultiPress *self, gint n_press, gdouble x, gdouble y, gpointer user_data);
+static void hyperlink_tag_presed_cb (GtkGestureClick *self, gint n_press, gdouble x, gdouble y, gpointer user_data);
 
 static void mw_setup_size_text_view (AlmanahMainWindow *self);
 static int mw_get_font_width (GtkWidget *widget, const gchar *font_name);
@@ -239,9 +239,12 @@ almanah_main_window_new (AlmanahApplication *application)
 	priv->entry_buffer = GTK_SOURCE_BUFFER (gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->entry_view)));
 	priv->events_selection = gtk_tree_view_get_selection (priv->events_tree_view);
 
-	GtkGesture *gesture = gtk_gesture_multi_press_new (GTK_WIDGET (priv->entry_view));
+	GtkGesture *gesture = gtk_gesture_click_new ();
 
 	g_signal_connect (gesture, "pressed", G_CALLBACK (hyperlink_tag_presed_cb), NULL);
+
+	gtk_widget_add_controller (GTK_WIDGET (priv->entry_view),
+	                           GTK_EVENT_CONTROLLER (gesture));
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
@@ -989,20 +992,14 @@ mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 
 static void
 hyperlink_tag_presed_cb (
-    GtkGestureMultiPress *self,
+    GtkGestureClick *self,
     gint n_press,
     gdouble x,
     gdouble y,
     gpointer user_data)
 {
-	const GdkEvent *event = gtk_gesture_get_last_event (GTK_GESTURE (self), gtk_gesture_get_last_updated_sequence (GTK_GESTURE (self)));
-
-	if (!event) {
-		return;
-	}
-
-	GdkModifierType mod_state;
-	gdk_event_get_state (event, &mod_state);
+	const GdkEvent *event = gtk_event_controller_get_current_event (GTK_EVENT_CONTROLLER (self));
+	GdkModifierType mod_state = gtk_event_controller_get_current_event_state (GTK_EVENT_CONTROLLER (self));
 
 	/* Open the hyperlink if it's control-clicked */
 	if (!(mod_state & GDK_CONTROL_MASK)) {
