@@ -191,21 +191,28 @@ almanah_import_export_dialog_new (AlmanahStorageManager *storage_manager, gboole
 	return import_export_dialog;
 }
 
-static void
-import_progress_cb (const GDate *date, AlmanahImportStatus status, const gchar *message, AlmanahImportResultsDialog *results_dialog)
-{
-	AlmanahImportExportDialog *self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
-	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
+typedef struct ImportCbData {
+	AlmanahImportExportDialog *import_export_dialog;
+	AlmanahImportResultsDialog *results_dialog;
+} ImportCbData;
 
-	almanah_import_results_dialog_add_result (results_dialog, date, status, message);
+static void
+import_progress_cb (const GDate *date, AlmanahImportStatus status, const gchar *message, gpointer user_data)
+{
+	ImportCbData *data = (ImportCbData *) user_data;
+	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (data->import_export_dialog);
+
+	almanah_import_results_dialog_add_result (data->results_dialog, date, status, message);
 	gtk_progress_bar_pulse (priv->progress_bar);
 }
 
 static void
-import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, AlmanahImportResultsDialog *results_dialog)
+import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, gpointer user_data)
 {
-	AlmanahImportExportDialog *self = ALMANAH_IMPORT_EXPORT_DIALOG (gtk_window_get_transient_for (GTK_WINDOW (results_dialog))); /* set in response_cb() */
+	g_autofree ImportCbData *data = (ImportCbData *) user_data;
+	AlmanahImportExportDialog *self = data->import_export_dialog;
 	AlmanahImportExportDialogPrivate *priv = almanah_import_export_dialog_get_instance_private (self);
+	AlmanahImportResultsDialog *results_dialog = data->results_dialog;
 	g_autoptr (GError) error = NULL;
 
 	/* Check for errors (e.g. errors opening databases or files; not errors importing individual entries once we have the content to import) */
@@ -309,11 +316,16 @@ response_cb (GtkDialog *dialog, gint response_id, AlmanahImportExportDialog *sel
 		/* Import the entries according to the selected method.*/
 		g_autoptr (AlmanahImportOperation) operation = NULL;
 		AlmanahImportResultsDialog *results_dialog = almanah_import_results_dialog_new (); /* destroyed in import_cb() */
-		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), GTK_WINDOW (self));     /* this is required in import_cb() */
+		gtk_window_set_transient_for (GTK_WINDOW (results_dialog), gtk_window_get_transient_for (GTK_WINDOW (self)));
 
 		operation = almanah_import_operation_new (priv->current_mode, file, priv->storage_manager);
-		almanah_import_operation_run (operation, priv->cancellable, (AlmanahImportProgressCallback) import_progress_cb, results_dialog,
-		                              (GAsyncReadyCallback) import_cb, results_dialog);
+
+		ImportCbData *data = g_new (ImportCbData, 1); /* destroyed in import_cb() */
+		data->import_export_dialog = self;
+		data->results_dialog = results_dialog;
+
+		almanah_import_operation_run (operation, priv->cancellable, (AlmanahImportProgressCallback) import_progress_cb, data,
+		                              (GAsyncReadyCallback) import_cb, data);
 	} else {
 		/* Export the entries according to the selected method. */
 		g_autoptr (AlmanahExportOperation) operation = NULL;
@@ -502,7 +514,7 @@ select_date (AlmanahImportResultsDialog *self, GtkTreeModel *model, GtkTreeIter 
 	                    2, &year,
 	                    -1);
 
-	main_window = ALMANAH_MAIN_WINDOW (gtk_window_get_transient_for (gtk_window_get_transient_for (GTK_WINDOW (self))));
+	main_window = ALMANAH_MAIN_WINDOW (gtk_window_get_transient_for (GTK_WINDOW (self)));
 	g_date_set_dmy (&date, day, month, year);
 	almanah_main_window_select_date (main_window, &date);
 }
