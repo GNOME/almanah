@@ -65,6 +65,7 @@ static void mw_entry_buffer_has_selection_cb (GObject *object, GParamSpec *pspec
 static void mw_events_updated_cb (AlmanahEventManager *event_manager, AlmanahEventFactoryType type_id, AlmanahMainWindow *main_window);
 static gboolean save_entry_timeout_cb (AlmanahMainWindow *self);
 static void mw_setup_headerbar (AlmanahMainWindow *main_window, AlmanahApplication *application);
+static void hyperlink_tag_presed_cb (GtkGestureMultiPress *self, gint n_press, gdouble x, gdouble y, gpointer user_data);
 
 static void mw_setup_size_text_view (AlmanahMainWindow *self);
 static int mw_get_font_width (GtkWidget *widget, const gchar *font_name);
@@ -237,6 +238,10 @@ almanah_main_window_new (AlmanahApplication *application)
 
 	priv->entry_buffer = GTK_SOURCE_BUFFER (gtk_text_view_get_buffer (GTK_TEXT_VIEW (priv->entry_view)));
 	priv->events_selection = gtk_tree_view_get_selection (priv->events_tree_view);
+
+	GtkGesture *gesture = gtk_gesture_multi_press_new (GTK_WIDGET (priv->entry_view));
+
+	g_signal_connect (gesture, "pressed", G_CALLBACK (hyperlink_tag_presed_cb), NULL);
 
 #ifdef ENABLE_SPELL_CHECKING
 	/* Set up spell checking, if it's enabled */
@@ -1006,14 +1011,48 @@ mw_underline_toggle_cb (GSimpleAction *action, GVariant *parameter, gpointer use
 	g_simple_action_set_state (action, parameter);
 }
 
-static gboolean
-hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *object, GdkEvent *event, __attribute__ ((unused)) GtkTextIter *iter, AlmanahMainWindow *self)
+static void
+hyperlink_tag_presed_cb (
+    GtkGestureMultiPress *self,
+    gint n_press,
+    gdouble x,
+    gdouble y,
+    gpointer user_data)
 {
-	AlmanahHyperlinkTag *hyperlink_tag = ALMANAH_HYPERLINK_TAG (tag);
+	const GdkEvent *event = gtk_gesture_get_last_event (GTK_GESTURE (self),
+	                                gtk_gesture_get_last_updated_sequence (GTK_GESTURE (self)));
+
+	if (!event) {
+		return;
+	}
+
+	GdkModifierType mod_state;
+	gdk_event_get_state (event, &mod_state);
 
 	/* Open the hyperlink if it's control-clicked */
-	if (!(event->type == GDK_BUTTON_RELEASE && event->button.state & GDK_CONTROL_MASK)) {
-		return FALSE;
+	if (!(mod_state & GDK_CONTROL_MASK)) {
+		return;
+	}
+
+	GtkWidget *entry_view = gtk_event_controller_get_widget (GTK_EVENT_CONTROLLER (self));
+
+	GtkWindow *window = GTK_WINDOW (gtk_widget_get_toplevel (entry_view));
+
+	GtkTextIter iter;
+	gtk_text_view_get_iter_at_location (GTK_TEXT_VIEW (entry_view), &iter, x, y);
+
+	g_autoptr (GSList) tags = gtk_text_iter_get_tags (&iter);
+	AlmanahHyperlinkTag *hyperlink_tag = NULL;
+
+	for (GSList *tag = tags; tag != NULL; tag = tag->next) {
+		if (ALMANAH_IS_HYPERLINK_TAG (tag->data)) {
+			hyperlink_tag = ALMANAH_HYPERLINK_TAG (tag->data);
+			break;
+		}
+	}
+
+	if (hyperlink_tag == NULL) {
+		return;
 	}
 
 	const gchar *uri;
@@ -1022,11 +1061,11 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 	uri = almanah_hyperlink_tag_get_uri (hyperlink_tag);
 
 	/* Attempt to open the URI */
-	gtk_show_uri_on_window (GTK_WINDOW (self), uri, gdk_event_get_time (event), &error);
+	gtk_show_uri_on_window (window, uri, gdk_event_get_time (event), &error);
 
 	if (error != NULL) {
 		/* Error */
-		GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (self),
+		GtkWidget *dialog = gtk_message_dialog_new (window,
 		                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 		                                            _ ("Error opening URI"));
 		gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
@@ -1037,8 +1076,6 @@ hyperlink_tag_event_cb (GtkTextTag *tag, __attribute__ ((unused)) GObject *objec
 
 		gtk_widget_show (dialog);
 	}
-
-	return TRUE;
 }
 
 typedef struct UriEntryDialogData {
@@ -1066,9 +1103,6 @@ uri_entry_dialog_response_cb (GtkDialog *self,
 		gtk_text_tag_table_add (table, tag);
 
 		gtk_text_buffer_apply_tag (GTK_TEXT_BUFFER (data->priv->entry_buffer), tag, &data->start, &data->end);
-
-		/* Connect up events */
-		g_signal_connect (tag, "event", (GCallback) hyperlink_tag_event_cb, self);
 
 		/* Case 2, as described in mw_hyperlink_toggle_cb */
 		g_simple_action_set_state (data->action, g_variant_new_boolean (TRUE));
