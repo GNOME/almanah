@@ -1274,8 +1274,12 @@ mw_calendar_day_selected_cb (__attribute__ ((unused)) AlmanahCalendarButton *cal
 			                                            GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
 			                                            _ ("Entry content could not be loaded"));
 			gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), "%s", error->message);
-			gtk_dialog_run (GTK_DIALOG (dialog));
-			gtk_widget_destroy (dialog);
+
+			g_signal_connect (GTK_MESSAGE_DIALOG (dialog), "response",
+			                  G_CALLBACK (gtk_widget_destroy),
+			                  NULL);
+
+			gtk_widget_show (dialog);
 
 			/* Make sure the interface is left in a decent state before we return */
 			gtk_text_view_set_editable (GTK_TEXT_VIEW (priv->entry_view), FALSE);
