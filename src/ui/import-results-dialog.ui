@@ -45,10 +45,12 @@
 						<property name="orientation">vertical</property>
 						<property name="border-width">5</property>
 						<property name="spacing">6</property>
+						<property name="visible">1</property>
 						<child>
 							<object class="GtkComboBox" id="view_combo_box">
 								<signal name="changed" handler="ird_view_combo_box_changed_cb"/>
 								<property name="model">almanah_ird_view_store</property>
+								<property name="visible">1</property>
 								<accessibility>
 									<relation target="results_tree_view" type="label-for"/>
 								</accessibility>
@@ -68,11 +70,13 @@
 								<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
 								<property name="shadow-type">GTK_SHADOW_IN</property>
+								<property name="visible">1</property>
 								<child>
 									<object class="GtkTreeView" id="results_tree_view">
 										<property name="model">filtered_results_store</property>
 										<property name="headers-visible">False</property>
 										<signal name="row-activated" handler="ird_results_tree_view_row_activated_cb"/>
+										<property name="visible">1</property>
 										<accessibility>
 											<relation target="view_combo_box" type="labelled-by"/>
 										</accessibility>
@@ -113,6 +117,7 @@
 							<object class="GtkButton" id="view_button">
 								<property name="label" translatable="yes">View Entry</property>
 								<property name="sensitive">False</property>
+								<property name="visible">1</property>
 								<signal name="clicked" handler="ird_view_button_clicked_cb"/>
 							</object>
 						</child>
@@ -120,6 +125,7 @@
 							<object class="GtkButton" id="almanah_ird_close_button">
 								<property name="use-underline">1</property>
 								<property name="label" translatable="yes">_Close</property>
+								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>

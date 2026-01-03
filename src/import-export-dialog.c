@@ -234,7 +234,7 @@ import_cb (AlmanahImportOperation *operation, GAsyncResult *async_result, gpoint
 	} else {
 		/* Show the results dialogue */
 		gtk_widget_hide (GTK_WIDGET (self));
-		gtk_widget_show_all (GTK_WIDGET (results_dialog));
+		gtk_widget_show (GTK_WIDGET (results_dialog));
 		gtk_dialog_run (GTK_DIALOG (results_dialog));
 	}
 
