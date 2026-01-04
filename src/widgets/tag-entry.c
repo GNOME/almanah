@@ -63,7 +63,6 @@ static void
 almanah_tag_entry_init (AlmanahTagEntry *self)
 {
 	GtkEntryCompletion *completion;
-	AtkObject *self_atk_object;
 
 	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (self);
 
@@ -76,8 +75,10 @@ almanah_tag_entry_init (AlmanahTagEntry *self)
 	gtk_entry_set_completion (GTK_ENTRY (self), completion);
 	g_signal_connect (completion, "match-selected", G_CALLBACK (almanah_tag_entry_match_selected), self);
 
-	self_atk_object = gtk_widget_get_accessible (GTK_WIDGET (self));
-	atk_object_set_name (self_atk_object, _ ("Tag entry"));
+	gtk_accessible_update_property (GTK_ACCESSIBLE (self),
+	                                GTK_ACCESSIBLE_PROPERTY_LABEL,
+	                                _ ("Tag entry"),
+	                                -1);
 }
 
 static void
