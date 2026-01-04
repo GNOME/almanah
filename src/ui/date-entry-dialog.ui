@@ -1,63 +1,63 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-	<requires lib="gtk+" version="3.0"/>
+	<requires lib="gtk" version="4.0"/>
 	<template class="AlmanahDateEntryDialog" parent="GtkDialog">
 		<property name="border-width">5</property>
-		<child internal-child="vbox">
+		<child internal-child="content_area">
 			<object class="GtkBox" id="vbox1">
+				<property name="visible">0</property>
 				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
 				<child>
 					<object class="GtkBox" id="almanah_ded_vbox">
+						<property name="visible">0</property>
 						<property name="orientation">vertical</property>
 						<property name="spacing">6</property>
 						<property name="border-width">5</property>
 						<child>
 							<object class="GtkEntry" id="date_entry">
-								<property name="activates-default">True</property>
+								<property name="visible">0</property>
+								<property name="activates-default">1</property>
 								<signal name="notify::text" handler="ded_date_entry_notify_text_cb"/>
 								<accessibility>
 									<relation target="almanah_ded_description_label" type="described-by"/>
 								</accessibility>
 							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
 						</child>
 						<child>
 							<object class="GtkLabel" id="almanah_ded_description_label">
+								<property name="visible">0</property>
 								<property name="xalign">0</property>
-								<property name="label" translatable="yes" comments="Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.">e.g. "14/03/2009" or "14th March 2009".</property>
+								<property name="label" translatable="1" comments="Translators: Use two common date formats from your locale which will be parsed correctly by GLib&apos;s g_date_set_parse() function.">e.g. &quot;14/03/2009&quot; or &quot;14th March 2009&quot;.</property>
 								<accessibility>
 									<relation target="date_entry" type="description-for"/>
 								</accessibility>
 								<attributes>
-									<attribute name="scale" value="0.8"/>
+									<attribute name="scale" value="0.8"></attribute>
 								</attributes>
 							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
 						</child>
 					</object>
 				</child>
-				<child internal-child="action_area">
-					<object class="GtkHButtonBox" id="almanah_ded_hbuttonbox">
-						<child>
-							<object class="GtkButton" id="almanah_ded_cancel_button">
-								<property name="use-underline">1</property>
-								<property name="label" translatable="yes">_Cancel</property>
-							</object>
-						</child>
-						<child>
-							<object class="GtkButton" id="ok_button">
-								<property name="use-underline">1</property>
-								<property name="label" translatable="yes">_OK</property>
-								<property name="can-default">True</property>
-								<property name="has-default">True</property>
-								<property name="sensitive">False</property>
-							</object>
-						</child>
+			</object>
+		</child>
+		<child internal-child="action_area">
+			<object class="GtkHButtonBox" id="almanah_ded_hbuttonbox">
+				<child>
+					<object class="GtkButton" id="almanah_ded_cancel_button">
+						<property name="visible">0</property>
+						<property name="use-underline">1</property>
+						<property name="label" translatable="1">_Cancel</property>
+					</object>
+				</child>
+				<child>
+					<object class="GtkButton" id="ok_button">
+						<property name="visible">0</property>
+						<property name="use-underline">1</property>
+						<property name="label" translatable="1">_OK</property>
+						<property name="can-default">True</property>
+						<property name="has-default">1</property>
+						<property name="sensitive">0</property>
 					</object>
 				</child>
 			</object>

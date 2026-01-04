@@ -1,47 +1,45 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-	<requires lib="gtk+" version="3.0"/>
-
+	<requires lib="gtk" version="4.0"/>
 	<object class="GtkListStore" id="mode_store">
 		<columns>
-			<column type="guint"/><!-- Type -->
-			<column type="gchararray"/><!-- Name -->
-			<column type="gchararray"/><!-- Description -->
-			<column type="guint"/><!-- Action -->
+			<column type="guint"/>
+			<column type="gchararray"/>
+			<column type="gchararray"/>
+			<column type="guint"/>
 		</columns>
 	</object>
-
 	<template class="AlmanahImportExportDialog" parent="GtkDialog">
 		<property name="border-width">5</property>
-		<child internal-child="vbox">
+		<child internal-child="content_area">
 			<object class="GtkBox" id="almanah_ied_internal_vbox">
+				<property name="visible">0</property>
 				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
 				<child>
 					<object class="GtkBox" id="almanah_ied_vbox">
+						<property name="visible">0</property>
 						<property name="orientation">vertical</property>
 						<property name="border-width">5</property>
 						<property name="spacing">6</property>
 						<child>
 							<object class="GtkBox" id="almanah_ied_hbox">
-								<property name="orientation">horizontal</property>
+								<property name="visible">0</property>
 								<property name="spacing">6</property>
 								<child>
 									<object class="GtkLabel" id="mode_label">
+										<property name="visible">0</property>
 										<property name="xalign">0</property>
-										<property name="label"></property><!-- Set in import-export-dialog.c -->
 										<property name="mnemonic-widget">mode_combo_box</property>
-										<property name="use-underline">True</property>
+										<property name="use-underline">1</property>
 										<accessibility>
 											<relation target="mode_combo_box" type="label-for"/>
 										</accessibility>
 									</object>
-									<packing>
-										<property name="expand">False</property>
-									</packing>
 								</child>
 								<child>
 									<object class="GtkComboBox" id="mode_combo_box">
+										<property name="visible">0</property>
 										<signal name="changed" handler="ied_mode_combo_box_changed_cb"/>
 										<property name="model">mode_store</property>
 										<accessibility>
@@ -56,30 +54,26 @@
 									</object>
 								</child>
 							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
 						</child>
 						<child>
 							<object class="GtkAlignment" id="almanah_ied_alignment">
 								<property name="margin-bottom">12</property>
 								<child>
 									<object class="GtkLabel" id="description_label">
-										<property name="wrap">True</property>
+										<property name="visible">0</property>
+										<property name="wrap">1</property>
 										<property name="mnemonic-widget">file_chooser</property>
-										<property name="use-underline">True</property>
+										<property name="use-underline">1</property>
 									</object>
 								</child>
 							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
 						</child>
 						<child>
 							<object class="GtkFileChooserWidget" id="file_chooser">
+								<property name="visible">0</property>
 								<signal name="selection-changed" handler="ied_file_chooser_selection_changed_cb"/>
 								<signal name="file-activated" handler="ied_file_chooser_file_activated_cb"/>
-								<property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+								<property name="action">select-folder</property>
 								<property name="do-overwrite-confirmation">True</property>
 							</object>
 						</child>
@@ -87,31 +81,32 @@
 							<object class="GtkAlignment" id="almanah_ied_alignment2">
 								<property name="margin-top">12</property>
 								<child>
-									<object class="GtkProgressBar" id="progress_bar"/>
+									<object class="GtkProgressBar" id="progress_bar">
+										<property name="visible">0</property>
+									</object>
 								</child>
 							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
 						</child>
 					</object>
 				</child>
-				<child internal-child="action_area">
-					<object class="GtkHButtonBox" id="almanah_ied_button_box">
-						<child>
-							<object class="GtkButton" id="almanah_ied_cancel_button">
-								<property name="use-underline">1</property>
-								<property name="label" translatable="yes">_Cancel</property>
-							</object>
-						</child>
-						<child>
-							<object class="GtkButton" id="import_export_button">
-								<property name="use-underline">True</property>
-								<property name="label"></property><!-- Set in import-export-dialog.c -->
-								<property name="can-default">True</property>
-								<property name="has-default">True</property>
-							</object>
-						</child>
+			</object>
+		</child>
+		<child internal-child="action_area">
+			<object class="GtkHButtonBox" id="almanah_ied_button_box">
+				<child>
+					<object class="GtkButton" id="almanah_ied_cancel_button">
+						<property name="visible">0</property>
+						<property name="use-underline">1</property>
+						<property name="label" translatable="1">_Cancel</property>
+					</object>
+				</child>
+				<child>
+					<object class="GtkButton" id="import_export_button">
+						<property name="visible">0</property>
+						<property name="use-underline">1</property>
+						<property name="label"></property>
+						<property name="can-default">True</property>
+						<property name="has-default">1</property>
 					</object>
 				</child>
 			</object>

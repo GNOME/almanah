@@ -1,5 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
+	<requires lib="gtk" version="4.0"/>
 	<menu id="formatting-menu">
 		<section>
 			<item>
@@ -80,106 +81,76 @@
 			</item>
 		</section>
 	</menu>
-
 	<object class="GtkListStore" id="event_store">
 		<columns>
-			<column type="AlmanahEvent"/><!-- Event object -->
-			<column type="gchararray"/><!-- Icon name -->
-			<column type="guint"/><!-- Factory type ID -->
-			<column type="gchararray"/><!-- Event value -->
-			<column type="gchararray"/><!-- Event source -->
+			<column type="AlmanahEvent"/>
+			<column type="gchararray"/>
+			<column type="guint"/>
+			<column type="gchararray"/>
+			<column type="gchararray"/>
 		</columns>
 	</object>
-
 	<template class="AlmanahMainWindow" parent="GtkApplicationWindow">
-		<property name="title" translatable="yes">Almanah Diary</property>
+		<property name="title" translatable="1">Almanah Diary</property>
 		<property name="hide-titlebar-when-maximized">True</property>
 		<signal name="delete-event" handler="mw_delete_event_cb"/>
 		<property name="default-width">640</property>
 		<property name="default-height">480</property>
-
 		<child type="titlebar">
 			<object class="GtkHeaderBar" id="header_bar">
-				<property name="show_close_button">True</property>
-				<property name="visible">1</property>
-
-				<child>
+				<child type="end">
 					<object class="GtkMenuButton">
 						<property name="menu-model">main-window-menu</property>
-						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">open-menu-symbolic</property>
-								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
-					<packing>
-						<property name="pack-type">end</property>
-					</packing>
 				</child>
-
-				<child>
+				<child type="end">
 					<object class="GtkMenuButton">
 						<property name="menu-model">formatting-menu</property>
-						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">format-text-rich-symbolic</property>
-								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
 					<packing>
-						<property name="pack-type">end</property>
 						<property name="visible">1</property>
 					</packing>
 				</child>
-
-				<child>
+				<child type="end">
 					<object class="GtkToggleButton">
 						<property name="action-name">win.important</property>
-						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">starred-symbolic</property>
-								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
-					<packing>
-						<property name="pack-type">end</property>
-					</packing>
 				</child>
-
-				<child>
+				<child type="end">
 					<object class="GtkToggleButton" id="show_tags_toggle_button">
 						<property name="action-name">win.show-tags</property>
-						<property name="visible">1</property>
 						<child>
 							<object class="GtkImage">
 								<property name="icon-name">org.gnome.Almanah-tags-symbolic</property>
-								<property name="visible">1</property>
 							</object>
 						</child>
 					</object>
-					<packing>
-						<property name="pack-type">end</property>
-					</packing>
 				</child>
 			</object>
 		</child>
-
 		<child>
 			<object class="GtkBox" id="vbox3">
 				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
-				<property name="visible">1</property>
 				<child>
 					<object class="GtkGrid" id="content_grid">
-						<property name="orientation">GTK_ORIENTATION_VERTICAL</property>
-						<property name="row_spacing">0</property>
-						<property name="visible">1</property>
+						<property name="vexpand">1</property>
+						<property name="orientation">vertical</property>
 						<style>
 							<class name="almanah-mw-main-content"/>
 						</style>
@@ -196,23 +167,19 @@
 								<property name="margin_end">0</property>
 								<property name="margin_bottom">0</property>
 								<property name="border-width">6</property>
+								<layout>
+									<property name="column">0</property>
+									<property name="row">0</property>
+								</layout>
 							</object>
-							<packing>
-								<property name="left_attach">0</property>
-								<property name="top_attach">0</property>
-								<property name="width">1</property>
-								<property name="height">1</property>
-							</packing>
 						</child>
 						<child>
 							<object class="GtkScrolledWindow" id="entry_scrolled">
-								<property name="can-focus">True</property>
-								<property name="hscrollbar-policy">GTK_POLICY_NEVER</property>
-								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+								<property name="focusable">1</property>
+								<property name="hscrollbar-policy">never</property>
 								<property name="shadow-type">GTK_SHADOW_IN</property>
-								<property name="hexpand">True</property>
-								<property name="vexpand">True</property>
-								<property name="visible">1</property>
+								<property name="hexpand">1</property>
+								<property name="vexpand">1</property>
 								<style>
 									<class name="almanah-mw-scrolled"/>
 									<class name="view"/>
@@ -234,84 +201,61 @@
 										</style>
 										<child internal-child="accessible">
 											<object class="AtkObject" id="a11y-entry_view">
-												<property name="AtkObject::accessible-name" translatable="yes">Entry editing area</property>
+												<property name="AtkObject::accessible-name" translatable="1">Entry editing area</property>
 											</object>
 										</child>
 									</object>
 								</child>
+								<layout>
+									<property name="column">0</property>
+									<property name="row">1</property>
+								</layout>
 							</object>
-							<packing>
-								<property name="left_attach">0</property>
-								<property name="top_attach">1</property>
-								<property name="width">1</property>
-								<property name="height">1</property>
-							</packing>
 						</child>
 					</object>
-					<packing>
-						<property name="expand">True</property>
-						<property name="fill">True</property>
-					</packing>
 				</child>
 				<child>
 					<object class="GtkExpander" id="events_expander">
-						<property name="visible">1</property>
+						<property name="valign">center</property>
 						<child type="label">
 							<object class="GtkBox" id="almanah_mw_events_expander_label_box">
-								<property name="orientation">horizontal</property>
 								<property name="spacing">6</property>
-								<property name="visible">1</property>
 								<child>
 									<object class="GtkLabel" id="almanah_mw_events_label">
-										<property name="label" translatable="yes">Past events</property>
-										<property name="visible">1</property>
+										<property name="label" translatable="1">Past events</property>
 										<accessibility>
 											<relation target="events_tree_view" type="label-for"/>
 										</accessibility>
 										<attributes>
-											<attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+											<attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
 										</attributes>
 									</object>
-									<packing>
-										<property name="expand">False</property>
-										<property name="fill">True</property>
-									</packing>
 								</child>
 								<child>
-									<object class="GtkLabel" id="events_count_label">
-										<property name="visible">1</property>
-									</object>
-									<packing>
-										<property name="expand">False</property>
-										<property name="fill">True</property>
-									</packing>
+									<object class="GtkLabel" id="events_count_label"/>
 								</child>
 							</object>
 						</child>
 						<child>
 							<object class="GtkScrolledWindow" id="scrolledwindow2">
-								<property name="can-focus">True</property>
-								<property name="hscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
-								<property name="vscrollbar-policy">GTK_POLICY_AUTOMATIC</property>
+								<property name="focusable">1</property>
 								<property name="shadow-type">GTK_SHADOW_IN</property>
 								<property name="height-request">150</property>
-								<property name="visible">1</property>
-                                                                <style>
-                                                                  <class name="almanah-events-scrolled"/>
-                                                                </style>
-								<child>
+								<style>
+									<class name="almanah-events-scrolled"/>
+								</style>
+								<property name="child">
 									<object class="GtkTreeView" id="events_tree_view">
 										<property name="model">event_store</property>
-										<property name="can-focus">True</property>
-										<property name="headers-visible">False</property>
-										<property name="visible">1</property>
+										<property name="focusable">1</property>
+										<property name="headers-visible">0</property>
 										<signal name="row-activated" handler="mw_events_tree_view_row_activated_cb"/>
 										<accessibility>
 											<relation target="almanah_mw_events_label" type="labelled-by"/>
 										</accessibility>
 										<child internal-child="accessible">
 											<object class="AtkObject" id="a11y-events_tree_view">
-												<property name="AtkObject::accessible-name" translatable="yes">Past Event List</property>
+												<property name="AtkObject::accessible-name" translatable="1">Past Event List</property>
 											</object>
 										</child>
 										<child>
@@ -326,7 +270,7 @@
 										</child>
 										<child>
 											<object class="GtkTreeViewColumn" id="almanah_mw_event_value_column">
-												<property name="expand">True</property>
+												<property name="expand">1</property>
 												<child>
 													<object class="GtkCellRendererText" id="almanah_mw_event_value_renderer"/>
 													<attributes>
@@ -346,14 +290,10 @@
 											</object>
 										</child>
 									</object>
-								</child>
+								</property>
 							</object>
 						</child>
 					</object>
-					<packing>
-						<property name="fill">False</property>
-						<property name="expand">False</property>
-					</packing>
 				</child>
 			</object>
 		</child>

@@ -1,11 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-	<requires lib="gtk+" version="3.0"/>
-
+	<requires lib="gtk" version="4.0"/>
 	<template class="AlmanahUriEntryDialog" parent="GtkDialog">
 		<property name="border-width">5</property>
-		<child internal-child="vbox">
+		<child internal-child="content_area">
 			<object class="GtkBox" id="vbox11">
+				<property name="visible">0</property>
 				<property name="orientation">vertical</property>
 				<property name="spacing">6</property>
 				<child>
@@ -13,57 +13,46 @@
 						<property name="orientation">vertical</property>
 						<property name="spacing">6</property>
 						<property name="border-width">5</property>
-						<property name="visible">1</property>
 						<child>
 							<object class="GtkEntry" id="uri_entry">
-								<property name="activates-default">True</property>
-								<property name="visible">1</property>
+								<property name="activates-default">1</property>
 								<signal name="notify::text" handler="ued_uri_entry_notify_text_cb"/>
 								<accessibility>
 									<relation target="almanah_ued_description_label" type="described-by"/>
 								</accessibility>
 							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
 						</child>
 						<child>
 							<object class="GtkLabel" id="almanah_ued_description_label">
 								<property name="xalign">0</property>
-								<property name="label" translatable="yes" comments="Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.">e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”.</property>
-								<property name="visible">1</property>
+								<property name="label" translatable="1" comments="Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.">e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”.</property>
 								<accessibility>
 									<relation target="uri_entry" type="description-for"/>
 								</accessibility>
 								<attributes>
-									<attribute name="scale" value="0.8"/>
+									<attribute name="scale" value="0.8"></attribute>
 								</attributes>
 							</object>
-							<packing>
-								<property name="expand">False</property>
-							</packing>
 						</child>
 					</object>
 				</child>
-				<child internal-child="action_area">
-					<object class="GtkHButtonBox" id="almanah_ued_hbuttonbox">
-						<child>
-							<object class="GtkButton" id="almanah_ued_cancel_button">
-								<property name="use-underline">1</property>
-								<property name="label" translatable="yes">_Cancel</property>
-								<property name="visible">1</property>
-							</object>
-						</child>
-						<child>
-							<object class="GtkButton" id="ok_button">
-								<property name="use-underline">1</property>
-								<property name="label" translatable="yes">_OK</property>
-								<property name="can-default">True</property>
-								<property name="has-default">True</property>
-								<property name="sensitive">False</property>
-								<property name="visible">1</property>
-							</object>
-						</child>
+			</object>
+		</child>
+		<child internal-child="action_area">
+			<object class="GtkHButtonBox" id="almanah_ued_hbuttonbox">
+				<child>
+					<object class="GtkButton" id="almanah_ued_cancel_button">
+						<property name="use-underline">1</property>
+						<property name="label" translatable="1">_Cancel</property>
+					</object>
+				</child>
+				<child>
+					<object class="GtkButton" id="ok_button">
+						<property name="use-underline">1</property>
+						<property name="label" translatable="1">_OK</property>
+						<property name="can-default">True</property>
+						<property name="has-default">1</property>
+						<property name="sensitive">0</property>
 					</object>
 				</child>
 			</object>
