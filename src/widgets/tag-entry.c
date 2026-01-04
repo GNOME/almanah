@@ -40,8 +40,6 @@ static void almanah_tag_entry_set_property (GObject *object, guint property_id, 
 static void almanah_tag_entry_finalize (GObject *object);
 static void almanah_tag_entry_update_tags (AlmanahTagEntry *tag_entry);
 static void almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *natural);
-static gboolean almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event);
-static gboolean almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event);
 static gboolean almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTagEntry, almanah_tag_entry, GTK_TYPE_ENTRY)
@@ -56,8 +54,6 @@ almanah_tag_entry_class_init (AlmanahTagEntryClass *klass)
 	gobject_class->set_property = almanah_tag_entry_set_property;
 	gobject_class->finalize = almanah_tag_entry_finalize;
 
-	gtkwidget_class->focus_out_event = almanah_tag_entry_focus_out_event;
-	gtkwidget_class->focus_in_event = almanah_tag_entry_focus_in_event;
 	gtkwidget_class->get_preferred_width = almanah_tag_entry_get_preferred_width;
 
 	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
@@ -74,6 +70,8 @@ almanah_tag_entry_init (AlmanahTagEntry *self)
 	AtkObject *self_atk_object;
 
 	AlmanahTagEntryPrivate *priv = almanah_tag_entry_get_instance_private (self);
+
+	gtk_entry_set_placeholder_text (GTK_ENTRY (self), _ ("add tag"));
 
 	priv->tags_store = gtk_list_store_new (1, G_TYPE_STRING);
 	completion = gtk_entry_completion_new ();
@@ -160,22 +158,6 @@ almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *n
 	/* Just a bad hack... @TODO: set the width to a maximun number of characters, using the pango layout */
 	*minimum = m_width - 100;
 	*natural = n_width - 50;
-}
-
-static gboolean
-almanah_tag_entry_focus_out_event (GtkWidget *self, GdkEventFocus *event)
-{
-	gtk_entry_set_text (GTK_ENTRY (self), _ ("add tag"));
-
-	return FALSE;
-}
-
-static gboolean
-almanah_tag_entry_focus_in_event (GtkWidget *self, GdkEventFocus *event)
-{
-	gtk_entry_set_text (GTK_ENTRY (self), "");
-
-	return FALSE;
 }
 
 static gboolean
