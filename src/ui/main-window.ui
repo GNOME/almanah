@@ -92,8 +92,7 @@
 	</object>
 	<template class="AlmanahMainWindow" parent="GtkApplicationWindow">
 		<property name="title" translatable="1">Almanah Diary</property>
-		<property name="hide-titlebar-when-maximized">True</property>
-		<signal name="delete-event" handler="mw_delete_event_cb"/>
+		<signal name="close-request" handler="mw_delete_event_cb"/>
 		<property name="default-width">640</property>
 		<property name="default-height">480</property>
 		<child type="titlebar">

@@ -18,6 +18,7 @@
 
 #include <glib.h>
 
+#include "calendar-button.h"
 #include "calendar.h"
 #include "storage-manager.h"
 
@@ -72,7 +73,11 @@ almanah_calendar_init (AlmanahCalendar *self)
 
 	gtk_box_append (GTK_BOX (self), GTK_WIDGET (priv->calendar));
 
-	g_signal_connect (priv->calendar, "month_changed", (GCallback) almanah_calendar_month_changed, self);
+	g_signal_connect (priv->calendar, "day-selected", (GCallback) almanah_calendar_button_day_selected_cb, self);
+	g_signal_connect (priv->calendar, "next-month", (GCallback) almanah_calendar_month_changed, self);
+	g_signal_connect (priv->calendar, "next-year", (GCallback) almanah_calendar_month_changed, self);
+	g_signal_connect (priv->calendar, "prev-month", (GCallback) almanah_calendar_month_changed, self);
+	g_signal_connect (priv->calendar, "prev-year", (GCallback) almanah_calendar_month_changed, self);
 }
 
 static void

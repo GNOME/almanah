@@ -28,7 +28,6 @@ enum {
 	FIRST_EVENT,    /* The widget is instatiated the first time */
 	TODAY_EVENT,    /* The user clicks on "Today" button */
 	DAY_EVENT,      /* The user selects a concret day in the calendar widget */
-	MONTH_EVENT     /* The user changes the month, or the year clicking in the calendar widget */
 };
 
 enum {
@@ -60,7 +59,6 @@ static void almanah_calendar_button_dock_closed (GtkWidget *dock, AlmanahCalenda
 
 static void almanah_calendar_button_toggled (GtkToggleButton *togglebutton);
 static void almanah_calendar_button_day_selected_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
-static void almanah_calendar_button_month_changed_cb (GtkCalendar *calendar, AlmanahCalendarButton *self);
 static gboolean almanah_calendar_button_today_press_cb (GtkWidget *widget, GdkEvent *event, AlmanahCalendarButton *self);
 static void almanah_calendar_button_today_clicked_cb (GtkButton *button, gpointer user_data);
 static void almanah_calendar_button_select_date_clicked_cb (GtkButton *button, gpointer user_data);
@@ -124,7 +122,6 @@ almanah_calendar_button_class_init (AlmanahCalendarButtonClass *klass)
 
 	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_dock_closed);
 	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_day_selected_cb);
-	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_month_changed_cb);
 	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_today_clicked_cb);
 	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_today_press_cb);
 	gtk_widget_class_bind_template_callback (widget_class, almanah_calendar_button_select_date_clicked_cb);
@@ -220,18 +217,6 @@ almanah_calendar_button_day_selected_cb (GtkCalendar *calendar, AlmanahCalendarB
 
 	/* Emmits the signal at the end */
 	g_signal_emit (self, calendar_button_signals[DAY_SELECTED_SIGNAL], 0);
-}
-
-static void
-almanah_calendar_button_month_changed_cb (GtkCalendar *calendar, AlmanahCalendarButton *self)
-{
-	AlmanahCalendarButtonPrivate *priv = almanah_calendar_button_get_instance_private (self);
-
-	if (priv->user_event != TODAY_EVENT) {
-		/* Save the month changed event just if the user hasn't click the today button
-		 * beacuse the dock window should not hide in this case */
-		priv->user_event = MONTH_EVENT;
-	}
 }
 
 static gboolean
