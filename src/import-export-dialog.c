@@ -403,7 +403,7 @@ G_MODULE_EXPORT void
 ied_file_chooser_file_activated_cb (GtkFileChooser *file_chooser, AlmanahImportExportDialog *self)
 {
 	/* Activate the dialogue's default button */
-	gtk_window_activate_default (GTK_WINDOW (self));
+	gtk_widget_activate_default (GTK_WIDGET (self));
 }
 
 static gboolean filter_results_cb (GtkTreeModel *model, GtkTreeIter *iter, AlmanahImportResultsDialog *self);
