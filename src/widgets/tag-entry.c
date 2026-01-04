@@ -39,7 +39,6 @@ static void almanah_tag_entry_get_property (GObject *object, guint property_id, 
 static void almanah_tag_entry_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 static void almanah_tag_entry_finalize (GObject *object);
 static void almanah_tag_entry_update_tags (AlmanahTagEntry *tag_entry);
-static void almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *natural);
 static gboolean almanah_tag_entry_match_selected (GtkEntryCompletion *widget, GtkTreeModel *model, GtkTreeIter *iter, AlmanahTagEntry *self);
 
 G_DEFINE_TYPE_WITH_PRIVATE (AlmanahTagEntry, almanah_tag_entry, GTK_TYPE_ENTRY)
@@ -48,13 +47,10 @@ static void
 almanah_tag_entry_class_init (AlmanahTagEntryClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-	GtkWidgetClass *gtkwidget_class = GTK_WIDGET_CLASS (klass);
 
 	gobject_class->get_property = almanah_tag_entry_get_property;
 	gobject_class->set_property = almanah_tag_entry_set_property;
 	gobject_class->finalize = almanah_tag_entry_finalize;
-
-	gtkwidget_class->get_preferred_width = almanah_tag_entry_get_preferred_width;
 
 	g_object_class_install_property (gobject_class, PROP_STORAGE_MANAGER,
 	                                 g_param_spec_object ("storage-manager",
@@ -146,18 +142,6 @@ almanah_tag_entry_update_tags (AlmanahTagEntry *tag_entry)
 		gtk_list_store_append (priv->tags_store, &iter);
 		gtk_list_store_set (priv->tags_store, &iter, 0, tag, -1);
 	}
-}
-
-static void
-almanah_tag_entry_get_preferred_width (GtkWidget *widget, gint *minimum, gint *natural)
-{
-	gint m_width, n_width;
-
-	GTK_WIDGET_CLASS (almanah_tag_entry_parent_class)->get_preferred_width (widget, &m_width, &n_width);
-
-	/* Just a bad hack... @TODO: set the width to a maximun number of characters, using the pango layout */
-	*minimum = m_width - 100;
-	*natural = n_width - 50;
 }
 
 static gboolean
