@@ -26,7 +26,6 @@ sources = [
   'widgets/calendar-button.c',
   'widgets/entry-tags-area.c',
   'widgets/hyperlink-tag.c',
-  'widgets/tag-accessible.c',
   'widgets/tag.c',
   'widgets/tag-entry.c',
   'vfs.c',
