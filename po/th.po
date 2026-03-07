@@ -7,295 +7,769 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: almanah HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-17 19:03+0700\n"
-"PO-Revision-Date: 2008-09-17 19:34+0700\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues/\n"
+"POT-Creation-Date: 2025-12-31 04:11+0000\n"
+"PO-Revision-Date: 2026-03-07 13:44+0700\n"
 "Last-Translator: อนุชิต สกุลวิไลเลิศ <sarapaowa_it12@hotmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.8\n"
 
-#: ../data/almanah.desktop.in.h:1 ../data/almanah.ui.h:2 ../src/main.c:82
+#: data/org.gnome.Almanah.metainfo.xml.in:7 data/org.gnome.Almanah.desktop.in:2
+#: src/application.c:145 src/main-window.c:163
 msgid "Almanah Diary"
 msgstr "สมุดบันทึก Almanah"
 
-#: ../data/almanah.desktop.in.h:2
-msgid "Diary"
-msgstr "สมุดบันทึก"
+#: data/org.gnome.Almanah.metainfo.xml.in:8
+msgid "Keep a diary of your life"
+msgstr "จดบันทึกเรื่องราวชีวิตของคุณ"
 
-#: ../data/almanah.desktop.in.h:3
+#: data/org.gnome.Almanah.metainfo.xml.in:10
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr "Almanah Diary เป็นแอปพลิเคชันที่ช่วยให้คุณจดบันทึกเรื่องราวชีวิตของคุณ"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:13
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"คุณสามารถเข้ารหัสลับสมุดบันทึกเพื่อปกป้องความเป็นส่วนตัวได้ สมุดบันทึกนี้มีความสามารถในการแก้ไข "
+"รวมทั้งการจัดรูปแบบข้อความและการพิมพ์และแสดงรายการเหตุการณ์ที่เกิดขึ้น (ในคอมพิวเตอร์ของคุณ) "
+"ในแต่ละวัน (เช่น งานและนัดหมายจาก Evolution)"
+
+#: data/org.gnome.Almanah.desktop.in:3
 msgid "Keep a personal diary"
 msgstr "เก็บรักษาบันทึกส่วนตัว"
 
-#: ../data/almanah.ui.h:1
-msgid "Add Link"
-msgstr "เพิ่มการเชื่อมโยง"
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is printed to if "Print to File" is chosen.
+#: data/org.gnome.Almanah.desktop.in:4 src/application.c:272
+msgid "Diary"
+msgstr "สมุดบันทึก"
 
-#: ../data/almanah.ui.h:3
-msgid "Attached Links"
-msgstr "การเชื่อมโยงที่แนบ"
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Almanah.desktop.in:6
+msgid "diary;journal;"
+msgstr "สมุดบันทึก;บันทึก;"
 
-#: ../data/almanah.ui.h:4
+#: src/ui/almanah.ui:27
 msgid "Calendar"
 msgstr "ปฏิทิน"
 
-#: ../data/almanah.ui.h:5
-msgid "Go To Today"
+#: src/ui/almanah.ui:46
+msgid "Go to Today"
 msgstr "ไปที่วันนี้"
 
-#: ../data/almanah.ui.h:6
-msgid "Link Type"
-msgstr "ชนิดของการเชื่อมโยง"
+#: src/ui/almanah.ui:56
+msgid "Select Date…"
+msgstr "เลือกวันที่…"
 
-#: ../data/almanah.ui.h:7
-msgid "Remove Link"
-msgstr "ลบการเชื่อมโยง"
+#: src/ui/almanah.ui:134
+msgid "Entry editing area"
+msgstr "พื้นที่แก้ไขรายการ"
 
-#: ../data/almanah.ui.h:8
-msgid "Results"
-msgstr "ผลลัพธ์"
+#: src/ui/almanah.ui:160
+msgid "Past events"
+msgstr "เหตุการณ์ในอดีต"
 
-#: ../data/almanah.ui.h:9
+#: src/ui/almanah.ui:204
+msgid "Past Event List"
+msgstr "รายชื่อเหตุการณ์ในอดีต"
+
+#: src/ui/almanah.ui:299
+msgid "Search entry"
+msgstr "ค้นหารายการ"
+
+#: src/ui/almanah.ui:307 src/search-dialog.c:67
 msgid "Search"
 msgstr "ค้นหา"
 
-#: ../data/almanah.ui.h:10
-msgid "View"
-msgstr "แสดง"
+#: src/ui/almanah.ui:398
+msgid "Result List"
+msgstr "รายชื่อผลลัพธ์"
 
-#: ../data/almanah.ui.h:11
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
 msgid "View Entry"
 msgstr "แสดงรายการ"
 
-#: ../data/almanah.ui.h:12
-msgid "_Edit"
-msgstr "แ_ก้ไข"
+#. Translators: Use two common date formats from your locale which will be parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "ตัวอย่าง \"14/03/2552\" หรือ \"14 มีนาคม 2552\""
 
-#: ../data/almanah.ui.h:13
-msgid "_File"
-msgstr "แ_ฟ้ม"
+#. Translators: Use two popular URIs from your locale, preferably one on the Internet and one local file.
+#: src/ui/almanah.ui:570
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr "ตัวอย่าง “http://google.com/” หรือ “file:///home/me/Photos/photo.jpg”"
 
-#: ../data/almanah.ui.h:14
-msgid "_Help"
-msgstr "_วิธีใช้"
+#: src/ui/almanah.ui:734
+msgid "Successful Entries"
+msgstr "รายการที่สำเร็จ"
 
-#: ../data/almanah.ui.h:15
-msgid "_Search"
-msgstr "_ค้นหา"
+#: src/ui/almanah.ui:737
+msgid "Merged Entries"
+msgstr "รายการที่รวมเข้ากัน"
 
-#: ../src/interface.c:45
-#, c-format
-msgid "UI file \"%s/almanah/almanah.ui\" could not be loaded."
-msgstr "ไม่สามารถโหลดแฟ้ม UI \"%s/almanah/almanah.ui\""
+#: src/ui/almanah.ui:740
+msgid "Failed Entries"
+msgstr "รายการที่ล้มเหลว"
 
-#. Type,	Name,			Description,				Icon,				Columns,	Format function,		View function,		Dialogue build function,	Get values function
-#. { "email", 	N_("E-mail"),		N_("An e-mail you sent or received."),	"mail-read",			2,		&link_email_format_value,	&link_email_view,	&link_email_build_dialog,	&link_email_get_values },
-#. Translators: These are the names and descriptions of the different link types.
-#: ../src/link.c:52
-msgid "File"
-msgstr "แฟ้ม"
+#: src/ui/almanah.ui:802
+msgid "Import Results List"
+msgstr "รายชื่อผลลัพธ์การนำเข้า"
 
-#: ../src/link.c:52
-msgid "An attached file."
-msgstr "แฟ้มแนบ"
+#: data/org.gnome.almanah.gschema.xml:6
+msgid "Database encryption key ID"
+msgstr "ID คีย์เข้ารหัสลับฐานข้อมูล"
 
-#: ../src/link.c:53
-msgid "Note"
-msgstr "บันทึกข้อความ"
-
-#: ../src/link.c:53
-msgid "A note about an important event."
-msgstr "บันทึกเกี่ยวกับเหตุการณ์สำคัญ"
-
-#: ../src/link.c:54 ../src/links/uri.c:50
-msgid "URI"
-msgstr "URI"
-
-#: ../src/link.c:54
-msgid "A URI of a file or web page."
-msgstr "URI ของแฟ้มหรือหน้าเว็บ"
-
-#: ../src/links/file.c:39
-msgid "Due to an unknown error the file cannot be opened."
-msgstr "เปิดแฟ้มไม่ได้ โดยเกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ"
-
-#: ../src/links/file.c:50
-msgid "Select File"
-msgstr "เลือกแฟ้ม"
-
-#: ../src/links/uri.c:39
-msgid "Due to an unknown error the URI cannot be opened."
-msgstr "เปิด URI ไม่ได้ โดยเกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ"
-
-#: ../src/main-window.c:178
-#, c-format
-msgid "The spelling checker could not be initialized: %s"
-msgstr ""
-
-#: ../src/main-window.c:265
+#: data/org.gnome.almanah.gschema.xml:7
 msgid ""
-"Diary is free software: you can redistribute it and/or modify it under the "
+"The ID of the key to use to encrypt and decrypt the database, if Almanah has "
+"been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"ID ของคีย์ที่จะใช้เข้ารหัสลับและถอดรหัสลับฐานข้อมูล ถ้า Almanah รองรับการเข้ารหัสลับ "
+"เว้นว่างไว้เพื่อปิดการเข้ารหัสลับฐานข้อมูล"
+
+#: data/org.gnome.almanah.gschema.xml:11
+msgid "Spell checking language"
+msgstr "ภาษาสำหรับตรวจตัวสะกด"
+
+#: data/org.gnome.almanah.gschema.xml:12
+msgid "The locale specifier of the language in which to check entry spellings."
+msgstr "ระบุรูปแบบท้องถิ่นที่จะใช้ในการตรวจตัวสะกดในรายการ"
+
+#: data/org.gnome.almanah.gschema.xml:16
+msgid "Spell checking enabled?"
+msgstr "เปิดใช้การตรวจตัวสะกดหรือไม่?"
+
+#: data/org.gnome.almanah.gschema.xml:17
+msgid "Whether spell checking of entries is enabled."
+msgstr "เลือกว่าจะเปิดใช้การตรวจตัวสะกดของรายการหรือไม่"
+
+#: src/application.c:137
+msgid "Enable debug mode"
+msgstr "เปิดใช้โหมดดีบั๊ก"
+
+#: src/application.c:143
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr "จัดการสมุดบันทึกของคุณ สามารถเปิดโปรแกรมได้เพียงหนึ่งอันในแต่ละครั้ง"
+
+#: src/application.c:255
+msgid "Error opening database"
+msgstr "เกิดข้อผิดพลาดขณะเปิดฐานข้อมูล"
+
+#: src/application.c:332
+msgid "Error encrypting database"
+msgstr "เกิดข้อผิดพลาดขณะเข้ารหัสลับฐานข้อมูล"
+
+#: src/application.c:471
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
 "Foundation, either version 3 of the License, or (at your option) any later "
 "version."
 msgstr ""
+"Almanah เป็นซอฟต์แวร์เสรี: คุณสามารถแจกจ่ายและ/หรือดัดแปลงได้ภายใต้เงื่อนไขของ GNU "
+"General Public License ตามที่เผยแพร่โดย Free Software Foundation ไม่ว่าจะเป็นรุ่น 3 "
+"ของสัญญาอนุญาต หรือ (ตามตัวเลือกของคุณ) รุ่นใดก็ตามที่ใหม่กว่านั้น"
 
-#: ../src/main-window.c:269
+#: src/application.c:475
 msgid ""
-"Diary is distributed in the hope that it will be useful, but WITHOUT ANY "
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
 "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
 "details."
 msgstr ""
+"Almanah ถูกแจกจ่ายโดยหวังว่ามันจะเป็นประโยชน์ แต่ปราศจากการรับประกันใด ๆ; "
+"แม้แต่การรับประกันโดยนัยเกี่ยวกับการค้าหรือความเหมาะสมสำหรับจุดประสงค์เฉพาะ "
+"ดูรายละเอียดเพิ่มเติมได้ที่ GNU General Public License"
 
-#: ../src/main-window.c:273
+#: src/application.c:479
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
-"Diary.  If not, see <http://www.gnu.org/licenses/>."
+"Almanah.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"คุณควรจะได้รับสำเนาของ GNU General Public License มาพร้อมกับโปรแกรมนี้ "
+"คุณควรจะได้รับสำเนาของ GNU General Public License มาพร้อมกับ Almanah "
 "ถ้าคุณไม่ได้รับกรุณาดูได้ที่ <http://www.gnu.org/licenses/>"
 
-#: ../src/main-window.c:284
+#: src/application.c:492
 #, c-format
-msgid ""
-"A helpful diary keeper, storing %u entries with %u links and a total of %u "
-"characters."
-msgstr ""
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "ผู้เก็บรักษาสมุดบันทึกที่เป็นประโยชน์ เก็บไว้ %u รายการ"
 
-#: ../src/main-window.c:291
-msgid "Copyright © 2008 Philip Withnall"
-msgstr "สงวนลิขสิทธิ์ © 2008 Philip Withnall"
+#: src/application.c:496
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "สงวนลิขสิทธิ์ © 2008-2009 Philip Withnall"
 
 #. Translators: please include your names here to be credited for your hard work!
 #. * Format:
 #. * "Translator name 1 <translator@email.address>\n"
 #. * "Translator name 2 <translator2@email.address>"
 #.
-#: ../src/main-window.c:299
+#: src/application.c:504
 msgid "translator-credits"
 msgstr ""
 "อนุชิต สกุลวิไลเลิศ\n"
-"\n"
-"ถ้ามีเวลาโปรดมาช่วยกันแปล :-)\n"
-"http://gnome-th.sf.net"
+"Aefgh Threenine <aefgh39622@gmail.com>"
 
-#: ../src/main-window.c:303
-msgid "Diary Website"
-msgstr "เว็บไซต์ของสมุดบันทึก"
+#: src/application.c:508
+msgid "Almanah Website"
+msgstr "เว็บไซต์ Almanah"
 
+#: src/application.c:536
+#, c-format
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr "ไม่สามารถโหลดทรัพยากร CSS ได้ ส่วนติดต่อผู้ใช้อาจจะไม่ถูกจัดรูปแบบอย่างถูกต้อง: %s"
+
+#: src/date-entry-dialog.c:71
+msgid "Select Date"
+msgstr "เลือกวันที่"
+
+#: src/date-entry-dialog.c:126 src/import-export-dialog.c:166
+#: src/import-export-dialog.c:469 src/main-window.c:235
+#: src/preferences-dialog.c:151 src/search-dialog.c:93
+#: src/uri-entry-dialog.c:123
+msgid "UI data could not be loaded"
+msgstr "ไม่สามารถโหลดข้อมูล UI ได้"
+
+#: src/entry.c:304
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "หมายเลขรุ่นข้อมูล %u ไม่ถูกต้อง"
+
+#: src/events/calendar-appointment.c:51
+msgid "Calendar Appointment"
+msgstr "นัดหมายในปฏิทิน"
+
+#: src/events/calendar-appointment.c:52
+msgid "An appointment on an Evolution calendar."
+msgstr "นัดหมายในปฏิทินของ Evolution"
+
+#. Translators: This is a time string with the format hh:mm
+#: src/events/calendar-appointment.c:89 src/events/calendar-task.c:90
+#, c-format
+msgid "%.2d:%.2d"
+msgstr "%.2d:%.2d น."
+
+#: src/events/calendar-appointment.c:138 src/events/calendar-task.c:128
+msgid "Error launching Evolution"
+msgstr "เกิดข้อผิดพลาดขณะเปิด Evolution"
+
+#: src/events/calendar-task.c:51
+msgid "Calendar Task"
+msgstr "งานในปฏิทิน"
+
+#: src/events/calendar-task.c:52
+msgid "A task on an Evolution calendar."
+msgstr "งานในปฏิทินของ Evolution"
+
+#: src/export-operation.c:43 src/import-operation.c:41
+msgid "Text Files"
+msgstr "ไฟล์ข้อความ"
+
+#: src/export-operation.c:44
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, with "
+"names in the format 'yyyy-mm-dd', and no extension. All entries will be "
+"exported, unencrypted in plain text format."
+msgstr ""
+"เลือกโ_ฟลเดอร์เพื่อส่งออกรายการเป็นไฟล์ข้อความ หนึ่งไฟล์ต่อหนึ่งรายการ โดยชื่อไฟล์จะอยู่ในรูปแบบ "
+"'yyyy-mm-dd' และไม่มีนามสกุล "
+"รายการทั้งหมดจะถูกส่งออกโดยไม่เข้ารหัสลับในรูปแบบข้อความธรรมดา"
+
+#: src/export-operation.c:48 src/import-operation.c:46
+msgid "Database"
+msgstr "ฐานข้อมูล"
+
+#: src/export-operation.c:49
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr "เลือก_ชื่อไฟล์เพื่อสร้างสำเนาฐานข้อมูลสมุดบันทึก Almanah แบบครบถ้วนที่ไม่ได้เข้ารหัสลับ"
+
+#: src/export-operation.c:242 src/export-operation.c:289
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนแปลงสิทธิ์อนุญาตของไฟล์ที่ส่งออก: %s"
+
+#: src/gtk/menus.ui:6
+msgid "_Bold"
+msgstr "ตัว_หนา"
+
+#: src/gtk/menus.ui:10
+msgid "_Italic"
+msgstr "ตัวเ_อน"
+
+#: src/gtk/menus.ui:14
+msgid "_Underline"
+msgstr "_ขีดเส้นใต้"
+
+#: src/gtk/menus.ui:20
+msgid "_Cut"
+msgstr "_ตัด"
+
+#: src/gtk/menus.ui:24
+msgid "_Copy"
+msgstr "_คัดลอก"
+
+#: src/gtk/menus.ui:28
+msgid "_Paste"
+msgstr "_วาง"
+
+#: src/gtk/menus.ui:32 src/main-window.c:612
+msgid "_Delete"
+msgstr "_ลบ"
+
+#: src/gtk/menus.ui:38
+msgid "Insert _Time"
+msgstr "แทรก_เวลา"
+
+#: src/gtk/menus.ui:42
+msgid "Add/Remove _Hyperlink"
+msgstr "เพิ่ม/ลบไ_ฮเปอร์ลิงก์"
+
+#: src/gtk/menus.ui:50
+msgid "_Search"
+msgstr "_ค้นหา"
+
+#: src/gtk/menus.ui:56
+msgid "Pr_eferences"
+msgstr "_การปรับแต่ง"
+
+#: src/gtk/menus.ui:60
+msgctxt "Main menu"
+msgid "_Import"
+msgstr "นำเ_ข้า"
+
+#: src/gtk/menus.ui:64
+msgctxt "Main menu"
+msgid "_Export"
+msgstr "_ส่งออก"
+
+#: src/gtk/menus.ui:68
+msgid "_Print diary"
+msgstr "_พิมพ์สมุดบันทึก"
+
+#: src/gtk/menus.ui:74
+msgid "_About Almanah Diary"
+msgstr "เ_กี่ยวกับสมุดบันทึก Almanah"
+
+#: src/gtk/menus.ui:78
+msgid "_Quit"
+msgstr "_ออก"
+
+#: src/import-export-dialog.c:200
+msgid "Import _mode: "
+msgstr "โ_หมดนำเข้า:"
+
+#: src/import-export-dialog.c:200
+msgid "Export _mode: "
+msgstr "โ_หมดส่งออก:"
+
+#. Set the window title
+#: src/import-export-dialog.c:203
+msgid "Import Entries"
+msgstr "นำเข้ารายการ"
+
+#: src/import-export-dialog.c:203
+msgid "Export Entries"
+msgstr "ส่งออกรายการ"
+
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:208
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "นำเ_ข้า"
+
+#: src/import-export-dialog.c:208
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "_ส่งออก"
+
+#: src/import-export-dialog.c:245
+msgid "Import failed"
+msgstr "การนำเข้าล้มเหลว"
+
+#: src/import-export-dialog.c:283
+msgid "Export failed"
+msgstr "การส่งออกล้มเหลว"
+
+#: src/import-export-dialog.c:294
+msgid "Export successful"
+msgstr "การส่งออกสำเร็จ"
+
+#: src/import-export-dialog.c:295
+msgid "The diary was successfully exported."
+msgstr "สมุดบันทึกได้ถูกส่งออกสำเร็จแล้ว"
+
+#: src/import-export-dialog.c:441
+msgid "Import Results"
+msgstr "ผลลัพธ์การนำเข้า"
+
+#. Translators: This is a strftime()-format string for the dates displayed in import results.
+#. Translators: This is a strftime()-format string for the date to display when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display when asking about deleting a diary entry.
 #. Translators: This is a strftime()-format string for the date displayed at the top of the main window.
 #. Translators: This is a strftime()-format string for the date displayed above each printed entry.
 #. Translators: This is a strftime()-format string for the dates displayed in search results.
-#: ../src/main-window.c:349 ../src/printing.c:66 ../src/search-dialog.c:62
+#: src/import-export-dialog.c:538 src/main-window.c:573 src/main-window.c:604
+#: src/main-window.c:1256 src/printing.c:275 src/search-dialog.c:180
 msgid "%A, %e %B %Y"
+msgstr "%Aที่ %e %B %EY"
+
+#: src/import-operation.c:42
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
 msgstr ""
+"เลือกโ_ฟลเดอร์ที่บรรจุไฟล์ข้อความ หนึ่งไฟล์ต่อหนึ่งรายการ โดยชื่อไฟล์จะอยู่ในรูปแบบ 'yyyy-mm-"
+"dd' และไม่มีนามสกุล ไฟล์ทั้งหมดที่มีรูปแบบดังกล่าวจะถูกนำเข้า"
 
-#: ../src/main.c:70
-msgid "Enable debug mode"
-msgstr "เปิดโหมดแก้จุดบกพร่อง"
+#: src/import-operation.c:47
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr "เลือกไ_ฟล์ฐานข้อมูลที่สร้างโดยสมุดบันทึก Almanah เพื่อนำเข้า"
 
-#. Options
-#: ../src/main.c:86
-msgid "- Manage your diary"
-msgstr "- จัดการสมุดบันทึกของคุณ"
-
-#: ../src/main.c:96
+#: src/import-operation.c:242
 #, c-format
-msgid "Command-line options could not be parsed. Error: %s"
-msgstr ""
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "เกิดข้อผิดพลาดขณะดีซีเรียลไลซ์รายการที่นำเข้าใส่ในบัฟเฟอร์: %s"
 
-#: ../src/printing.c:82
-msgid "No entry for this date."
-msgstr "ไม่มีรายการสำหรับวันที่นี้"
-
-#: ../src/printing.c:215
-msgid "Start Date"
-msgstr "วันเริ่มต้น"
-
-#: ../src/printing.c:218
-msgid "End Date"
-msgstr "วันสิ้นสุด"
-
-#: ../src/storage-manager.c:184
-#, c-format
-msgid "GPGME doesn't support OpenPGP: %s"
-msgstr "GPGME ไม่รองรับ OpenPGP: %s"
-
-#: ../src/storage-manager.c:193
-#, c-format
-msgid "Error creating cipher context: %s"
-msgstr ""
-
-#: ../src/storage-manager.c:222
-#, c-format
-msgid "Error opening encrypted database file \"%s\": %s"
-msgstr ""
-
-#: ../src/storage-manager.c:242
-#, c-format
-msgid "Error opening plain database file \"%s\": %s"
-msgstr ""
-
-#: ../src/storage-manager.c:312
-#, c-format
-msgid "Error decrypting database: %s"
-msgstr ""
-
-#: ../src/storage-manager.c:345
-#, c-format
-msgid "Error getting encryption key: %s"
-msgstr "เกิดข้อผิดพลาดขณะหากุญแจสำหรับการเข้ารหัสลับ: %s"
-
-#: ../src/storage-manager.c:366
-#, c-format
-msgid "Error encrypting database: %s"
-msgstr ""
-
-#: ../src/storage-manager.c:377
-#, c-format
-msgid "Could not delete plain database file \"%s\"."
-msgstr ""
-
-#: ../src/storage-manager.c:425
+#: src/import-operation.c:255
 #, c-format
 msgid ""
-"Both an encrypted and plaintext version of the database exist as \"%s\" and "
-"\"%s\", and one is likely corrupt. Please delete the corrupt one (i.e. one "
-"which is 0KiB in size) before continuing. If neither file is 0KiB, the "
-"problem will most likely have been caused by Diary being unable to encrypt "
-"the database, so you should move the first file."
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
 msgstr ""
+"เกิดข้อผิดพลาดขณะดีซีเรียลไลซ์รายการที่มีอยู่ใส่ในบัฟเฟอร์; กำลังเขียนทับด้วยรายการที่นำเข้า: %s"
 
-#: ../src/storage-manager.c:450
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is being imported to the same date.
+#. * The imported entry is appended to this text.
+#: src/import-operation.c:284
 #, c-format
 msgid ""
-"Could not open database \"%s\". SQLite provided the following error message: "
-"%s"
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
 msgstr ""
+"\n"
+"\n"
+"รายการที่นำเข้าจาก \"%s\":\n"
 
-#: ../src/storage-manager.c:482
-#, c-format
-msgid ""
-"Error getting encryption key: GConf key \"%s\" invalid or empty. Your diary "
-"will not be encrypted; please install Seahorse and set up a default key, or "
-"ignore this message."
-msgstr ""
-
-#: ../src/storage-manager.c:526 ../src/storage-manager.c:559
-#, c-format
-msgid ""
-"Could not run query \"%s\". SQLite provided the following error message: %s"
-msgstr ""
-
-#: ../src/storage-manager.c:707
+#: src/main-window.c:577
 #, c-format
 msgid "Are you sure you want to edit this diary entry for %s?"
 msgstr "คุณแน่ใจว่าต้องการแก้ไขรายการบันทึกสำหรับ %s หรือไม่?"
 
-#: ../src/storage-manager.c:734
+#: src/main-window.c:580 src/main-window.c:611
+msgid "_Cancel"
+msgstr "_ยกเลิก"
+
+#: src/main-window.c:581
+msgid "_Edit"
+msgstr "แ_ก้ไข"
+
+#: src/main-window.c:608
 #, c-format
 msgid "Are you sure you want to delete this diary entry for %s?"
 msgstr "คุณแน่ใจว่าต้องการลบรายการบันทึกสำหรับ %s หรือไม่?"
+
+#. Print a warning about the unknown tag
+#: src/main-window.c:719
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "พบป้ายข้อความที่ไม่รู้จักหรือซ้ำกัน \"%s\" ในรายการ กำลังข้ามไป"
+
+#: src/main-window.c:974
+msgid "Error opening URI"
+msgstr "เกิดข้อผิดพลาดขณะเปิด URI"
+
+#. Translators: this is an event source name (like Calendar appointment) and the time when the event takes place
+#: src/main-window.c:1187
+#, c-format
+msgid "%s @ %s"
+msgstr "%s @ %s"
+
+#: src/main-window.c:1288
+msgid "Entry content could not be loaded"
+msgstr "ไม่สามารถโหลดเนื้อหารายการได้"
+
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15 words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: src/main-window.c:1583
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text view "
+"size"
+msgstr "นี่เป็นเพียงประโยคสิบห้าคำเพื่อใช้คำนวณขนาดพื้นที่แสดงข้อความของรายการบันทึก"
+
+#: src/main-window.c:1617
+msgid "Spelling checker could not be initialized"
+msgstr "ไม่สามารถเริ่มต้นตัวตรวจตัวสะกดได้"
+
+#: src/preferences-dialog.c:75
+msgid "Preferences"
+msgstr "การปรับแต่ง"
+
+#. Grab our child widgets
+#: src/preferences-dialog.c:178
+msgid "Encryption key: "
+msgstr "คีย์เข้ารหัสลับ: "
+
+#: src/preferences-dialog.c:190
+msgid "New _Key"
+msgstr "คีย์_ใหม่"
+
+#. Set up the "Enable spell checking" check button
+#: src/preferences-dialog.c:208
+msgid "Enable _spell checking"
+msgstr "เปิดใช้การตรวจตัว_สะกด"
+
+#: src/preferences-dialog.c:234
+msgid "Error saving the encryption key"
+msgstr "เกิดข้อผิดพลาดขณะบันทึกคีย์เข้ารหัสลับ"
+
+#: src/preferences-dialog.c:250
+msgid "Error opening Seahorse"
+msgstr "เกิดข้อผิดพลาดขณะเปิด Seahorse"
+
+#: src/printing.c:288
+msgid "This entry is marked as important."
+msgstr "รายการนี้ถูกทำเครื่องหมายว่าสำคัญ"
+
+#: src/printing.c:308
+msgid "No entry for this date."
+msgstr "ไม่มีรายการสำหรับวันที่นี้"
+
+#: src/printing.c:446
+msgid "Start date:"
+msgstr "วันเริ่มต้น:"
+
+#: src/printing.c:448
+msgid "End date:"
+msgstr "วันสิ้นสุด:"
+
+#. Line spacing
+#: src/printing.c:464
+msgid "Line spacing:"
+msgstr "ระยะห่างบรรทัด:"
+
+#: src/search-dialog.c:221
+msgid "Search canceled."
+msgstr "การค้นหายกเลิกแล้ว"
+
+#. Translators: This is an error message wrapper for when searches encounter an error. The placeholder is for an error message.
+#: src/search-dialog.c:224
+#, c-format
+msgid "Error: %s"
+msgstr "ผิดพลาด: %s"
+
+#. Success!
+#: src/search-dialog.c:228
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "พบ %d รายการ:"
+
+#: src/search-dialog.c:276
+msgid "Searching…"
+msgstr "กำลังค้นหา…"
+
+#: src/storage-manager.c:252
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error message: "
+"%s"
+msgstr "ไม่สามารถเปิดฐานข้อมูล \"%s\" ได้ SQLite ได้ให้ข้อความระบุข้อผิดพลาดดังต่อไปนี้: %s"
+
+#: src/storage-manager.c:297
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr "ไม่สามารถเรียกใช้คิวรี \"%s\" ได้ SQLite ได้ให้ข้อความระบุข้อผิดพลาดดังต่อไปนี้: %s"
+
+#. Error: return the next entry instead
+#: src/storage-manager.c:614
+msgid "Error deserializing entry into buffer while searching."
+msgstr "เกิดข้อผิดพลาดขณะดีซีเรียลไลซ์รายการใส่ในบัฟเฟอร์ขณะค้นหา"
+
+#: src/uri-entry-dialog.c:68
+msgid "Enter URI"
+msgstr "ป้อน URI"
+
+#: src/vfs.c:299
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME ไม่ใช่รุ่นอย่างน้อย %s"
+
+#: src/vfs.c:306
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME ไม่รองรับ OpenPGP: %s"
+
+#: src/vfs.c:313
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "เกิดข้อผิดพลาดขณะสร้างบริบทการเข้ารหัส: %s"
+
+#: src/vfs.c:333
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "ไม่สามารถสร้าง GIOChannel ใหม่สำหรับฐานข้อมูลที่เข้ารหัสลับได้: %s"
+
+#: src/vfs.c:341
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดไฟล์ฐานข้อมูลที่เข้ารหัสลับ \"%s\": %s"
+
+#: src/vfs.c:357
+#, c-format
+msgid "Error creating Callback base data buffer: %s"
+msgstr "เกิดข้อผิดพลาดขณะสร้างบัฟเฟอร์ข้อมูลหลักของ Callback: %s"
+
+#: src/vfs.c:365
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "ไม่สามารถสร้าง GIOChannel ใหม่สำหรับฐานข้อมูลธรรมดาได้: %s"
+
+#: src/vfs.c:373
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "เกิดข้อผิดพลาดขณะเปิดไฟล์ฐานข้อมูลธรรมดา \"%s\": %s"
+
+#: src/vfs.c:470
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "เกิดข้อผิดพลาดขณะรับคีย์เข้ารหัสลับ: %s"
+
+#: src/vfs.c:492 src/vfs.c:498
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "เกิดข้อผิดพลาดขณะเข้ารหัสลับฐานข้อมูล: %s"
+
+#. Translators: The first and second params are file paths, the last param is an error message.
+#: src/vfs.c:546
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "เกิดข้อผิดพลาดขณะคัดลอกไฟล์จาก %s ไปยัง %s: %s"
+
+#: src/vfs.c:552
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนแปลงสิทธิ์อนุญาตของไฟล์สำรองข้อมูล: %s"
+
+#: src/vfs.c:648
+#, c-format
+msgid "Error closing file: %s"
+msgstr "เกิดข้อผิดพลาดขณะปิดไฟล์: %s"
+
+#. Translators: the first parameter is a filename.
+#: src/vfs.c:1046 src/vfs.c:1070
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "เกิดข้อผิดพลาดขณะสำรองไฟล์ ‘%s’"
+
+#: src/vfs.c:1059
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "เกิดข้อผิดพลาดขณะถอดรหัสลับฐานข้อมูล: %s"
+
+#: src/vfs.c:1098
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนแปลงสิทธิ์อนุญาตของไฟล์ฐานข้อมูล: %s"
+
+#: src/widgets/calendar-button.c:136
+#, c-format
+msgid "UI data could not be loaded: %s"
+msgstr "ไม่สามารถโหลดข้อมูล UI ได้: %s"
+
+#: src/widgets/calendar-button.c:146
+msgid "Can't load calendar window object from UI file"
+msgstr "ไม่สามารถโหลดวัตถุหน้าต่างปฏิทินจากไฟล์ UI ได้"
+
+#. Translators: This is the detail string for important days as displayed in the calendar.
+#: src/widgets/calendar.c:173
+msgid "Important!"
+msgstr "สำคัญ!"
+
+#: src/widgets/entry-tags-area.c:102 src/widgets/tag-entry.c:168
+msgid "add tag"
+msgstr "เพิ่มป้าย"
+
+#: src/widgets/entry-tags-area.c:103
+msgid "Write the tag and press enter to save it"
+msgstr "เขียนป้ายแล้วกด enter เพื่อบันทึก"
+
+#: src/widgets/tag-accessible.c:162
+msgid "Remove the tag from the entry"
+msgstr "ลบป้ายออกจากรายการ"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the init... ?
+#: src/widgets/tag.c:427
+msgid "Remove tag"
+msgstr "ลบป้าย"
+
+#: src/widgets/tag-entry.c:86
+msgid "Tag entry"
+msgstr "รายการป้าย"
+
+#~ msgid "Add Link"
+#~ msgstr "เพิ่มการเชื่อมโยง"
+
+#~ msgid "Attached Links"
+#~ msgstr "การเชื่อมโยงที่แนบ"
+
+#~ msgid "Link Type"
+#~ msgstr "ชนิดของการเชื่อมโยง"
+
+#~ msgid "View"
+#~ msgstr "แสดง"
+
+#~ msgid "_File"
+#~ msgstr "แ_ฟ้ม"
+
+#~ msgid "_Help"
+#~ msgstr "_วิธีใช้"
+
+#~ msgid "File"
+#~ msgstr "แฟ้ม"
+
+#~ msgid "An attached file."
+#~ msgstr "แฟ้มแนบ"
+
+#~ msgid "Note"
+#~ msgstr "บันทึกข้อความ"
+
+#~ msgid "A note about an important event."
+#~ msgstr "บันทึกเกี่ยวกับเหตุการณ์สำคัญ"
+
+#~ msgid "URI"
+#~ msgstr "URI"
+
+#~ msgid "A URI of a file or web page."
+#~ msgstr "URI ของแฟ้มหรือหน้าเว็บ"
+
+#~ msgid "Due to an unknown error the file cannot be opened."
+#~ msgstr "เปิดแฟ้มไม่ได้ โดยเกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ"
+
+#~ msgid "Due to an unknown error the URI cannot be opened."
+#~ msgstr "เปิด URI ไม่ได้ โดยเกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ"
+
+#~ msgid "Diary Website"
+#~ msgstr "เว็บไซต์ของสมุดบันทึก"
+
+#~ msgid "- Manage your diary"
+#~ msgstr "- จัดการสมุดบันทึกของคุณ"
