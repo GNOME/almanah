@@ -1,0 +1,765 @@
+# Kazakh translation for almanah.
+# Copyright (C) 2026 almanah's COPYRIGHT HOLDER
+# This file is distributed under the same license as the almanah package.
+# Baurzhan Muftakhidinov <baurthefirst@gmail.com>,  2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: almanah master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/almanah/issues/\n"
+"POT-Creation-Date: 2025-12-31 04:11+0000\n"
+"PO-Revision-Date: 2026-03-15 13:31+0500\n"
+"Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
+"Language-Team: Kazakh <Kazakh>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:7
+#: data/org.gnome.Almanah.desktop.in:2 src/application.c:145
+#: src/main-window.c:163
+msgid "Almanah Diary"
+msgstr "Almanah күнделігі"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:8
+msgid "Keep a diary of your life"
+msgstr "Өз өміріңіздің күнделігін жүргізіңіз"
+
+#: data/org.gnome.Almanah.metainfo.xml.in:10
+msgid ""
+"Almanah Diary is an application to allow you to keep a diary of your life."
+msgstr ""
+"Almanah күнделігі — бұл өз өміріңіздің күнделігін жүргізуге мүмкіндік "
+"беретін бағдарламалық қамтама."
+
+#: data/org.gnome.Almanah.metainfo.xml.in:13
+msgid ""
+"You can encrypt the diary to preserve your privacy. It has editing "
+"abilities, including text formatting and printing and shows you a lists of "
+"events which happened (on your computer) for each day (such as tasks and "
+"appointments from Evolution)."
+msgstr ""
+"Жекелікті сақтау үшін күнделікті шифрлеуге болады. Оның мәтінді пішімдеу "
+"мен басып шығаруды қоса алғанда түзету мүмкіндіктері бар және әр күн үшін "
+"(компьютеріңіздегі) болған оқиғалардың (Evolution-нан алынған тапсырмалар "
+"мен кездесулер сияқты) тізімдерін көрсетеді."
+
+#: data/org.gnome.Almanah.desktop.in:3
+msgid "Keep a personal diary"
+msgstr "Жеке күнделікті жүргізу"
+
+#. Translators: This is the default name of the PDF/PS/SVG file the diary is
+#. printed to if "Print to File" is chosen.
+#: data/org.gnome.Almanah.desktop.in:4 src/application.c:272
+msgid "Diary"
+msgstr "Күнделік"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.Almanah.desktop.in:6
+msgid "diary;journal;"
+msgstr "күнделік;журнал;"
+
+#: src/ui/almanah.ui:27
+msgid "Calendar"
+msgstr "Күнтізбе"
+
+#: src/ui/almanah.ui:46
+msgid "Go to Today"
+msgstr "Бүгінгі күнге өту"
+
+#: src/ui/almanah.ui:56
+msgid "Select Date…"
+msgstr "Күнді таңдау…"
+
+#: src/ui/almanah.ui:134
+msgid "Entry editing area"
+msgstr "Жазбаны түзету аймағы"
+
+#: src/ui/almanah.ui:160
+msgid "Past events"
+msgstr "Өткен оқиғалар"
+
+#: src/ui/almanah.ui:204
+msgid "Past Event List"
+msgstr "Өткен оқиғалар тізімі"
+
+#: src/ui/almanah.ui:299
+msgid "Search entry"
+msgstr "Жазбаны іздеу"
+
+#: src/ui/almanah.ui:307 src/search-dialog.c:67
+msgid "Search"
+msgstr "Іздеу"
+
+#: src/ui/almanah.ui:398
+msgid "Result List"
+msgstr "Нәтижелер тізімі"
+
+#: src/ui/almanah.ui:442 src/ui/almanah.ui:835
+msgid "View Entry"
+msgstr "Жазбаны қарау"
+
+#. Translators: Use two common date formats from your locale which will be
+#. parsed correctly by GLib's g_date_set_parse() function.
+#: src/ui/almanah.ui:505
+msgid "e.g. \"14/03/2009\" or \"14th March 2009\"."
+msgstr "мысалы, «14/03/2009» немесе «14-ші наурыз 2009»."
+
+#. Translators: Use two popular URIs from your locale, preferably one on the
+#. Internet and one local file.
+#: src/ui/almanah.ui:570
+msgid "e.g. “http://google.com/” or “file:///home/me/Photos/photo.jpg”."
+msgstr ""
+"мысалы, «http://google.com/» немесе «file:///home/me/Photos/photo.jpg»."
+
+#: src/ui/almanah.ui:734
+msgid "Successful Entries"
+msgstr "Сәтті жазбалар"
+
+#: src/ui/almanah.ui:737
+msgid "Merged Entries"
+msgstr "Біріктірілген жазбалар"
+
+#: src/ui/almanah.ui:740
+msgid "Failed Entries"
+msgstr "Сәтсіз аяқталған жазбалар"
+
+#: src/ui/almanah.ui:802
+msgid "Import Results List"
+msgstr "Импорттау нәтижелерінің тізімі"
+
+#: data/org.gnome.almanah.gschema.xml:6
+msgid "Database encryption key ID"
+msgstr "Дерекқорды шифрлеу кілтінің ID-і"
+
+#: data/org.gnome.almanah.gschema.xml:7
+msgid ""
+"The ID of the key to use to encrypt and decrypt the database, if Almanah "
+"has been built with encryption support. Leave blank to disable database "
+"encryption."
+msgstr ""
+"Егер Almanah шифрлеу қолдауымен құрастырылған болса, дерекқорды шифрлеу "
+"және шифрын ашу үшін қолданылатын кілттің ID-і. Дерекқорды шифрлеуді "
+"сөндіру үшін бос қалдырыңыз."
+
+#: data/org.gnome.almanah.gschema.xml:11
+msgid "Spell checking language"
+msgstr "Емлені тексеру тілі"
+
+#: data/org.gnome.almanah.gschema.xml:12
+msgid ""
+"The locale specifier of the language in which to check entry spellings."
+msgstr "Жазбалардың емлесін тексеретін тілдің локаль спецификаторы."
+
+#: data/org.gnome.almanah.gschema.xml:16
+msgid "Spell checking enabled?"
+msgstr "Емлені тексеру іске қосылған ба?"
+
+#: data/org.gnome.almanah.gschema.xml:17
+msgid "Whether spell checking of entries is enabled."
+msgstr "Жазбалардың емлесін тексеру іске қосылған-қосылмағандығы."
+
+#: src/application.c:137
+msgid "Enable debug mode"
+msgstr "Жөндеу режимін іске қосу"
+
+#: src/application.c:143
+msgid ""
+"Manage your diary. Only one instance of the program may be open at any time."
+msgstr ""
+"Күнделікті басқару. Бағдарламаның тек бір данасы ғана кез келген уақытта "
+"ашық болуы мүмкін."
+
+#: src/application.c:255
+msgid "Error opening database"
+msgstr "Дерекқорды ашу қатесі"
+
+#: src/application.c:332
+msgid "Error encrypting database"
+msgstr "Дерекқорды шифрлеу қатесі"
+
+#: src/application.c:471
+msgid ""
+"Almanah is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version."
+msgstr ""
+"Almanah — еркін бағдарламалық қамтама: сіз оны Еркін бағдарламалық қамтама "
+"қоры (Free Software Foundation) жариялаған GNU General Public License (3-"
+"нұсқа немесе одан кейінгі кез келген нұсқа) шарттарына сәйкес қайта тарата "
+"аласыз және/немесе өзгерте аласыз."
+
+#: src/application.c:475
+msgid ""
+"Almanah is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"Almanah пайдалы болады деген үмітпен таратылады, бірақ ЕШҚАНДАЙ "
+"КЕПІЛДІКСІЗ; тіпті САТУҒА ЖАРАМДЫЛЫҒЫ немесе БЕЛГІЛІ БІР МАҚСАТТАРҒА "
+"СӘЙКЕСТІГІ бойынша жанама кепілдіктерсіз де. Толығырақ білу үшін GNU "
+"General Public License қараңыз."
+
+#: src/application.c:479
+msgid ""
+"You should have received a copy of the GNU General Public License along "
+"with Almanah.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Сіз Almanah-пен бірге GNU General Public License көшірмесін алуыңыз керек "
+"еді. Олай болмаса, <http://www.gnu.org/licenses/> қараңыз."
+
+#: src/application.c:492
+#, c-format
+msgid "A helpful diary keeper, storing %u entries."
+msgstr "%u жазбаны сақтайтын пайдалы күнделік жүргізуші."
+
+#: src/application.c:496
+msgid "Copyright © 2008-2009 Philip Withnall"
+msgstr "Copyright © 2008-2009 Philip Withnall"
+
+#. Translators: please include your names here to be credited for your hard
+#. work!
+#. * Format:
+#. * "Translator name 1 <translator@email.address>\n"
+#. * "Translator name 2 <translator2@email.address>"
+#: src/application.c:504
+msgid "translator-credits"
+msgstr "Baurzhan Muftakhidinov <baurthefirst@gmail.com>"
+
+#: src/application.c:508
+msgid "Almanah Website"
+msgstr "Almanah веб-сайты"
+
+#: src/application.c:536
+#, c-format
+msgid ""
+"Couldn't load the CSS resources. The interface might not be styled "
+"correctly: %s"
+msgstr ""
+"CSS ресурстарын жүктеу мүмкін болмады. Интерфейс стилі дұрыс болмауы "
+"мүмкін: %s"
+
+#: src/date-entry-dialog.c:71
+msgid "Select Date"
+msgstr "Күнді таңдау"
+
+#: src/date-entry-dialog.c:126 src/import-export-dialog.c:166
+#: src/import-export-dialog.c:469 src/main-window.c:235
+#: src/preferences-dialog.c:151 src/search-dialog.c:93
+#: src/uri-entry-dialog.c:123
+msgid "UI data could not be loaded"
+msgstr "Интерфейс деректерін жүктеу мүмкін болмады"
+
+#: src/entry.c:304
+#, c-format
+msgid "Invalid data version number %u."
+msgstr "Деректердің жарамсыз нұсқа нөмірі %u."
+
+#: src/events/calendar-appointment.c:51
+msgid "Calendar Appointment"
+msgstr "Күнтізбелік кездесу"
+
+#: src/events/calendar-appointment.c:52
+msgid "An appointment on an Evolution calendar."
+msgstr "Evolution күнтізбесіндегі кездесу."
+
+#. Translators: This is a time string with the format hh:mm
+#: src/events/calendar-appointment.c:89 src/events/calendar-task.c:90
+#, c-format
+msgid "%.2d:%.2d"
+msgstr "%.2d:%.2d"
+
+#: src/events/calendar-appointment.c:138 src/events/calendar-task.c:128
+msgid "Error launching Evolution"
+msgstr "Evolution-ды іске қосу қатесі"
+
+#: src/events/calendar-task.c:51
+msgid "Calendar Task"
+msgstr "Күнтізбелік тапсырма"
+
+#: src/events/calendar-task.c:52
+msgid "A task on an Evolution calendar."
+msgstr "Evolution күнтізбесіндегі тапсырма."
+
+#: src/export-operation.c:43 src/import-operation.c:41
+msgid "Text Files"
+msgstr "Мәтіндік файлдар"
+
+#: src/export-operation.c:44
+msgid ""
+"Select a _folder to export the entries to as text files, one per entry, "
+"with names in the format 'yyyy-mm-dd', and no extension. All entries will "
+"be exported, unencrypted in plain text format."
+msgstr ""
+"Жазбаларды мәтіндік файлдар ретінде экспорттау үшін _буманы таңдаңыз. Әр "
+"жазбаға бір файлдан, аты «жжжж-аа-кк» пішімінде және кеңейтусіз болады. "
+"Барлық жазбалар шифрленбеген жай мәтін пішімінде экспортталады."
+
+#: src/export-operation.c:48 src/import-operation.c:46
+msgid "Database"
+msgstr "Дерекқор"
+
+#: src/export-operation.c:49
+msgid ""
+"Select a _filename for a complete copy of the unencrypted Almanah Diary "
+"database to be given."
+msgstr ""
+"Almanah күнделігі дерекқорының шифрленбеген толық көшірмесі үшін _файл атын "
+"таңдаңыз."
+
+#: src/export-operation.c:242 src/export-operation.c:289
+#, c-format
+msgid "Error changing exported file permissions: %s"
+msgstr "Экспортталған файлдың рұқсаттарын өзгерту қатесі: %s"
+
+#: src/gtk/menus.ui:6
+msgid "_Bold"
+msgstr "_Жуан"
+
+#: src/gtk/menus.ui:10
+msgid "_Italic"
+msgstr "_Көлбеу"
+
+#: src/gtk/menus.ui:14
+msgid "_Underline"
+msgstr "_Асты сызылған"
+
+#: src/gtk/menus.ui:20
+msgid "_Cut"
+msgstr "Қиып _алу"
+
+#: src/gtk/menus.ui:24
+msgid "_Copy"
+msgstr "Кө_шіріп алу"
+
+#: src/gtk/menus.ui:28
+msgid "_Paste"
+msgstr "_Кірістіру"
+
+#: src/gtk/menus.ui:32 src/main-window.c:612
+msgid "_Delete"
+msgstr "Өші_ру"
+
+#: src/gtk/menus.ui:38
+msgid "Insert _Time"
+msgstr "Уақытты _кірістіру"
+
+#: src/gtk/menus.ui:42
+msgid "Add/Remove _Hyperlink"
+msgstr "Гиперсілтемені қосу/ө_шіру"
+
+#: src/gtk/menus.ui:50
+msgid "_Search"
+msgstr "Із_деу"
+
+#: src/gtk/menus.ui:56
+msgid "Pr_eferences"
+msgstr "Б_аптаулар"
+
+#: src/gtk/menus.ui:60
+msgctxt "Main menu"
+msgid "_Import"
+msgstr "_Импорттау"
+
+#: src/gtk/menus.ui:64
+msgctxt "Main menu"
+msgid "_Export"
+msgstr "_Экспорттау"
+
+#: src/gtk/menus.ui:68
+msgid "_Print diary"
+msgstr "Күнделікті басып _шығару"
+
+#: src/gtk/menus.ui:74
+msgid "_About Almanah Diary"
+msgstr "Almanah күнделігі _туралы"
+
+#: src/gtk/menus.ui:78
+msgid "_Quit"
+msgstr "Ш_ығу"
+
+#: src/import-export-dialog.c:200
+msgid "Import _mode: "
+msgstr "Импорттау _режимі: "
+
+#: src/import-export-dialog.c:200
+msgid "Export _mode: "
+msgstr "Экспорттау _режимі: "
+
+#. Set the window title
+#: src/import-export-dialog.c:203
+msgid "Import Entries"
+msgstr "Жазбаларды импорттау"
+
+#: src/import-export-dialog.c:203
+msgid "Export Entries"
+msgstr "Жазбаларды экспорттау"
+
+#. Translators: These are verbs.
+#: src/import-export-dialog.c:208
+msgctxt "Dialog button"
+msgid "_Import"
+msgstr "_Импорттау"
+
+#: src/import-export-dialog.c:208
+msgctxt "Dialog button"
+msgid "_Export"
+msgstr "_Экспорттау"
+
+#: src/import-export-dialog.c:245
+msgid "Import failed"
+msgstr "Импорттау сәтсіз аяқталды"
+
+#: src/import-export-dialog.c:283
+msgid "Export failed"
+msgstr "Экспорттау сәтсіз аяқталды"
+
+#: src/import-export-dialog.c:294
+msgid "Export successful"
+msgstr "Экспорттау сәтті аяқталды"
+
+#: src/import-export-dialog.c:295
+msgid "The diary was successfully exported."
+msgstr "Күнделік сәтті экспортталды."
+
+#: src/import-export-dialog.c:441
+msgid "Import Results"
+msgstr "Импорттау нәтижелері"
+
+#. Translators: This is a strftime()-format string for the dates displayed in
+#. import results.
+#. Translators: This is a strftime()-format string for the date to display
+#. when asking about editing a diary entry.
+#. Translators: This is a strftime()-format string for the date to display
+#. when asking about deleting a diary entry.
+#. Translators: This is a strftime()-format string for the date displayed at
+#. the top of the main window.
+#. Translators: This is a strftime()-format string for the date displayed
+#. above each printed entry.
+#. Translators: This is a strftime()-format string for the dates displayed in
+#. search results.
+#: src/import-export-dialog.c:538 src/main-window.c:573 src/main-window.c:604
+#: src/main-window.c:1256 src/printing.c:275 src/search-dialog.c:180
+msgid "%A, %e %B %Y"
+msgstr "%A, %e %B %Y"
+
+#: src/import-operation.c:42
+msgid ""
+"Select a _folder containing text files, one per entry, with names in the "
+"format 'yyyy-mm-dd', and no extension. Any and all such files will be "
+"imported."
+msgstr ""
+"Ішінде мәтіндік файлдары бар _буманы таңдаңыз. Әр жазбаға бір файлдан, аты "
+"«жжжж-аа-кк» пішімінде және кеңейтусіз болуы керек. Мұндай файлдардың "
+"барлығы импортталады."
+
+#: src/import-operation.c:47
+msgid "Select a database _file created by Almanah Diary to import."
+msgstr "Импорттау үшін Almanah күнделігі жасаған дерекқор _файлын таңдаңыз."
+
+#: src/import-operation.c:242
+#, c-format
+msgid "Error deserializing imported entry into buffer: %s"
+msgstr "Импортталған жазбаны буферге десериализациялау қатесі: %s"
+
+#: src/import-operation.c:255
+#, c-format
+msgid ""
+"Error deserializing existing entry into buffer; overwriting with imported "
+"entry: %s"
+msgstr ""
+"Бар жазбаны буферге десериализациялау қатесі; импортталған жазбамен үстінен "
+"жазылуда: %s"
+
+#. Append some header text for the imported entry
+#. Translators: This text is appended to an existing entry when an entry is
+#. being imported to the same date.
+#. * The imported entry is appended to this text.
+#: src/import-operation.c:284
+#, c-format
+msgid ""
+"\n"
+"\n"
+"Entry imported from \"%s\":\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"«%s» ішінен импортталған жазба:\n"
+"\n"
+
+#: src/main-window.c:577
+#, c-format
+msgid "Are you sure you want to edit this diary entry for %s?"
+msgstr "%s күніне арналған күнделік жазбасын түзетуді қалайсыз ба?"
+
+#: src/main-window.c:580 src/main-window.c:611
+msgid "_Cancel"
+msgstr "_Бас тарту"
+
+#: src/main-window.c:581
+msgid "_Edit"
+msgstr "_Түзету"
+
+#: src/main-window.c:608
+#, c-format
+msgid "Are you sure you want to delete this diary entry for %s?"
+msgstr "%s күніне арналған күнделік жазбасын өшіруді қалайсыз ба?"
+
+#. Print a warning about the unknown tag
+#: src/main-window.c:719
+#, c-format
+msgid "Unknown or duplicate text tag \"%s\" in entry. Ignoring."
+msgstr "Жазбадағы белгісіз немесе қайталанатын «%s» мәтіндік тегі. Еленбейді."
+
+#: src/main-window.c:974
+msgid "Error opening URI"
+msgstr "URI ашу қатесі"
+
+#. Translators: this is an event source name (like Calendar appointment) and
+#. the time when the event takes place
+#: src/main-window.c:1187
+#, c-format
+msgid "%s @ %s"
+msgstr "%s @ %s"
+
+#: src/main-window.c:1288
+msgid "Entry content could not be loaded"
+msgstr "Жазба мазмұнын жүктеу мүмкін болмады"
+
+#. Translators: this sentence is just used in startup to estimate the width
+#. of a 15 words sentence. Translate with some random sentences with just 15
+#. words.
+#. See: https://bugzilla.gnome.org/show_bug.cgi?id=754841
+#: src/main-window.c:1583
+msgid ""
+"This is just a fifteen words sentence to calculate the diary entry text "
+"view size"
+msgstr ""
+"Бұл күнделік жазбасының мәтінін көру өлшемін есептеуге арналған он бес "
+"сөзден тұратын сөйлем"
+
+#: src/main-window.c:1617
+msgid "Spelling checker could not be initialized"
+msgstr "Емлені тексерушіні инициализациялау мүмкін болмады"
+
+#: src/preferences-dialog.c:75
+msgid "Preferences"
+msgstr "Баптаулар"
+
+#. Grab our child widgets
+#: src/preferences-dialog.c:178
+msgid "Encryption key: "
+msgstr "Шифрлеу кілті: "
+
+#: src/preferences-dialog.c:190
+msgid "New _Key"
+msgstr "Жаңа _кілт"
+
+#. Set up the "Enable spell checking" check button
+#: src/preferences-dialog.c:208
+msgid "Enable _spell checking"
+msgstr "Емлені тексеруді іске _қосу"
+
+#: src/preferences-dialog.c:234
+msgid "Error saving the encryption key"
+msgstr "Шифрлеу кілтін сақтау қатесі"
+
+#: src/preferences-dialog.c:250
+msgid "Error opening Seahorse"
+msgstr "Seahorse ашу қатесі"
+
+#: src/printing.c:288
+msgid "This entry is marked as important."
+msgstr "Бұл жазба маңызды ретінде белгіленген."
+
+#: src/printing.c:308
+msgid "No entry for this date."
+msgstr "Бұл күнге жазба жоқ."
+
+#: src/printing.c:446
+msgid "Start date:"
+msgstr "Басталу күні:"
+
+#: src/printing.c:448
+msgid "End date:"
+msgstr "Аяқталу күні:"
+
+#. Line spacing
+#: src/printing.c:464
+msgid "Line spacing:"
+msgstr "Жол аралығы:"
+
+#: src/search-dialog.c:221
+msgid "Search canceled."
+msgstr "Іздеуден бас тартылды."
+
+#. Translators: This is an error message wrapper for when searches encounter
+#. an error. The placeholder is for an error message.
+#: src/search-dialog.c:224
+#, c-format
+msgid "Error: %s"
+msgstr "Қате: %s"
+
+#. Success!
+#: src/search-dialog.c:228
+#, c-format
+msgid "Found %d entry:"
+msgid_plural "Found %d entries:"
+msgstr[0] "%d жазба табылды:"
+
+#: src/search-dialog.c:276
+msgid "Searching…"
+msgstr "Ізделуде…"
+
+#: src/storage-manager.c:252
+#, c-format
+msgid ""
+"Could not open database \"%s\". SQLite provided the following error "
+"message: %s"
+msgstr ""
+"«%s» дерекқорын ашу мүмкін емес. SQLite келесі қате туралы хабарламаны "
+"берді: %s"
+
+#: src/storage-manager.c:297
+#, c-format
+msgid ""
+"Could not run query \"%s\". SQLite provided the following error message: %s"
+msgstr ""
+"«%s» сұранысын орындау мүмкін емес. SQLite келесі қате туралы хабарламаны "
+"берді: %s"
+
+#. Error: return the next entry instead
+#: src/storage-manager.c:614
+msgid "Error deserializing entry into buffer while searching."
+msgstr "Іздеу кезінде жазбаны буферге десериализациялау қатесі."
+
+#: src/uri-entry-dialog.c:68
+msgid "Enter URI"
+msgstr "URI енгізіңіз"
+
+#: src/vfs.c:299
+#, c-format
+msgid "GPGME is not at least version %s"
+msgstr "GPGME нұсқасы кем дегенде %s болуы керек"
+
+#: src/vfs.c:306
+#, c-format
+msgid "GPGME doesn't support OpenPGP: %s"
+msgstr "GPGME OpenPGP қолдамайды: %s"
+
+#: src/vfs.c:313
+#, c-format
+msgid "Error creating cipher context: %s"
+msgstr "Шифр мәтінін жасау қатесі: %s"
+
+#: src/vfs.c:333
+#, c-format
+msgid "Can't create a new GIOChannel for the encrypted database: %s"
+msgstr "Шифрленген дерекқор үшін жаңа GIOChannel жасау мүмкін емес: %s"
+
+#: src/vfs.c:341
+#, c-format
+msgid "Error opening encrypted database file \"%s\": %s"
+msgstr "Шифрленген «%s» дерекқор файлын ашу қатесі: %s"
+
+#: src/vfs.c:357
+#, c-format
+msgid "Error creating Callback base data buffer: %s"
+msgstr "Callback негізгі деректер буферін жасау қатесі: %s"
+
+#: src/vfs.c:365
+#, c-format
+msgid "Can't create a new GIOChannel for the plain database: %s"
+msgstr "Ашық дерекқор үшін жаңа GIOChannel жасау мүмкін емес: %s"
+
+#: src/vfs.c:373
+#, c-format
+msgid "Error opening plain database file \"%s\": %s"
+msgstr "Ашық «%s» дерекқор файлын ашу қатесі: %s"
+
+#: src/vfs.c:470
+#, c-format
+msgid "Error getting encryption key: %s"
+msgstr "Шифрлеу кілтін алу қатесі: %s"
+
+#: src/vfs.c:492 src/vfs.c:498
+#, c-format
+msgid "Error encrypting database: %s"
+msgstr "Дерекқорды шифрлеу қатесі: %s"
+
+#. Translators: The first and second params are file paths, the last param is
+#. an error message.
+#: src/vfs.c:546
+#, c-format
+msgid "Error copying the file from %s to %s: %s"
+msgstr "Файлды %s ішінен %s ішіне көшіру қатесі: %s"
+
+#: src/vfs.c:552
+#, c-format
+msgid "Error changing database backup file permissions: %s"
+msgstr "Дерекқордың сақтық көшірме файлының рұқсаттарын өзгерту қатесі: %s"
+
+#: src/vfs.c:648
+#, c-format
+msgid "Error closing file: %s"
+msgstr "Файлды жабу қатесі: %s"
+
+#. Translators: the first parameter is a filename.
+#: src/vfs.c:1046 src/vfs.c:1070
+#, c-format
+msgid "Error backing up file ‘%s’"
+msgstr "«%s» файлын сақтық көшірмелеу қатесі"
+
+#: src/vfs.c:1059
+#, c-format
+msgid "Error decrypting database: %s"
+msgstr "Дерекқордың шифрын ашу қатесі: %s"
+
+#: src/vfs.c:1098
+#, c-format
+msgid "Error changing database file permissions: %s"
+msgstr "Дерекқор файлының рұқсаттарын өзгерту қатесі: %s"
+
+#: src/widgets/calendar-button.c:136
+#, c-format
+msgid "UI data could not be loaded: %s"
+msgstr "Интерфейс деректерін жүктеу мүмкін болмады: %s"
+
+#: src/widgets/calendar-button.c:146
+msgid "Can't load calendar window object from UI file"
+msgstr "UI файлынан күнтізбе терезесі объектісін жүктеу мүмкін емес"
+
+#. Translators: This is the detail string for important days as displayed in
+#. the calendar.
+#: src/widgets/calendar.c:173
+msgid "Important!"
+msgstr "Маңызды!"
+
+#: src/widgets/entry-tags-area.c:102 src/widgets/tag-entry.c:168
+msgid "add tag"
+msgstr "тегті қосу"
+
+#: src/widgets/entry-tags-area.c:103
+msgid "Write the tag and press enter to save it"
+msgstr "Тегті жазып, оны сақтау үшін Enter пернесін басыңыз"
+
+#: src/widgets/tag-accessible.c:162
+msgid "Remove the tag from the entry"
+msgstr "Тегті жазбадан өшіру"
+
+#. Looks like gtk_widget_set_tooltip_text don't works here, even in the
+#. init... ?
+#: src/widgets/tag.c:427
+msgid "Remove tag"
+msgstr "Тегті өшіру"
+
+#: src/widgets/tag-entry.c:86
+msgid "Tag entry"
+msgstr "Тег жазбасы"
