@@ -50,10 +50,12 @@
 typedef struct _CalendarClientQuery CalendarClientQuery;
 typedef struct _CalendarClientSource CalendarClientSource;
 
+#if !ICAL_CHECK_VERSION(4, 0, 0)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalDuration, g_object_unref);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalProperty, g_object_unref);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalTime, g_object_unref);
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ICalParameter, g_object_unref);
+#endif
 
 struct _CalendarClientQuery {
 	ECalClientView *view;
@@ -432,7 +434,11 @@ make_isodate_for_day_begin (int day,
 static time_t
 get_time_from_property (ICalComponent *ical,
                         ICalPropertyKind prop_kind,
+#if ICAL_CHECK_VERSION(4, 0, 0)
+                        ICalTime *(*get_prop_func) (const ICalProperty *prop),
+#else
                         ICalTime *(*get_prop_func) (ICalProperty *prop),
+#endif
                         ICalTimezone *default_zone)
 {
 	g_autoptr (ICalProperty) prop = NULL;
@@ -553,7 +559,11 @@ get_ical_is_all_day (ICalComponent *ical,
 
 	duration = i_cal_property_get_duration (prop);
 
+#if ICAL_CHECK_VERSION(4, 0, 0)
+	return i_cal_duration_as_seconds (duration) % 86400 == 0;
+#else
 	return i_cal_duration_as_int (duration) % 86400 == 0;
+#endif
 }
 
 static inline time_t
